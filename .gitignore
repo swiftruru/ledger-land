@@ -1,0 +1,52 @@
+references/
+
+# 建置與本機輸出（09 第 9 節）
+.DS_Store
+node_modules/
+build/
+dist/
+coverage/
+playwright-report/
+test-results/
+.local-reports/
+.wrangler/
+.dev.vars*
+.env*
+*.local
+
+# 教材衍生文件，只存在本機（D3）
+docs/plan/01-materials.md
+docs/plan/13-material-questions.md
+
+# M0a 試作程式與本機工具快取，只存在本機（M0a，2026-10-20）
+/prototypes/
+
+# AI 工具設定：僅供本機使用，不納入版本控制
+**/.claude/
+**/CLAUDE.md
+**/CLAUDE.local.md
+**/AGENTS.md
+**/GEMINI.md
+.mcp.json
+.gemini/
+.codex/
+.cursor/
+.cursorrules
+.cursorignore
+.windsurf/
+.windsurfrules
+.clinerules
+.roo/
+.kiro/
+.continue/
+.junie/
+.aider*
+.github/copilot-instructions.md
+.github/instructions/
+.github/prompts/
+.github/chatmodes/
+docs/plan/15-ai-workflow.md
+
+# 專案隔離環境：pnpm store 與工具快取都在 repo 內（09 第 7.5 節，M0b，2026-10-22）
+.pnpm-store/
+.cache/
