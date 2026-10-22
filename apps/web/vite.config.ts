@@ -22,7 +22,7 @@ function shell(): Plugin {
     transformIndexHtml: {
       order: 'pre',
       handler(html) {
-        const boot = readFileSync(`${root}src/shell/boot.js`, 'utf8').replace('__LL_THEME_COLOR__', JSON.stringify(THEME_COLOR));
+        const boot = readFileSync(`${root}src/shell/boot.js`, 'utf8').replaceAll('__LL_THEME_COLOR__', JSON.stringify(THEME_COLOR));
         return html
           .replace('<!--ll:theme-color-->', buildThemeColorMetas())
           .replace('<!--ll:robots-->', isProduction ? '' : '<meta name="robots" content="noindex">')

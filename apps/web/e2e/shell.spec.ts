@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { watchCsp } from './helpers.ts';
+import { waitForApp, watchCsp } from './helpers.ts';
 
 test.describe('殼層與深層連結（10 M0b 完成標準）', () => {
   test('中文首頁：殼層、Tab bar、html lang、沒有 CSP 違規', async ({ page }) => {
@@ -74,6 +74,7 @@ test.describe('純鍵盤操作（10 第 4 節第 2 項）', () => {
   test('Tab 鍵先到跳到主要內容，換頁後焦點移到標題', async ({ page, browserName }) => {
     test.skip(browserName === 'webkit', 'WebKit 的 Tab 鍵焦點順序依系統設定，實機清單另外檢查');
     await page.goto('/');
+    await waitForApp(page);
     await page.keyboard.press('Tab');
     await expect(page.getByRole('link', { name: '跳到主要內容' })).toBeFocused();
     await page.getByRole('navigation').getByRole('link', { name: '圖鑑', exact: true }).focus();

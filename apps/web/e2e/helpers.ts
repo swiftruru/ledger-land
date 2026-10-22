@@ -21,3 +21,8 @@ export async function waitForSw(page: Page): Promise<void> {
   if (!(await page.evaluate(() => !!navigator.serviceWorker.controller))) await page.reload();
   await page.waitForFunction(() => !!navigator.serviceWorker?.controller, null, { timeout: 30_000 });
 }
+
+/** 等 React 掛載完成（main 裡出現 h1）。殼層的連結在掛載前是一般連結，按 Enter 會整頁載入，鍵盤測試要先等這一步 */
+export async function waitForApp(page: Page): Promise<void> {
+  await page.locator('main h1').first().waitFor();
+}
