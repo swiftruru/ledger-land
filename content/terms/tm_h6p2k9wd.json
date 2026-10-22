@@ -1,0 +1,21 @@
+{
+  "id": "tm_h6p2k9wd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": { "zh-TW": "負債", "en": "Liabilities" },
+  "teacherLabel": "負債",
+  "currentTwLabel": "負債",
+  "ifrsEnglish": "Liabilities",
+  "aliases": { "zh-TW": [], "en": ["Liability"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "Conceptual Framework",
+  "definition": {
+    "zh-TW": "公司現在就背負、將來要用資源去履行的義務，例如還沒付的貨款與向銀行借的錢。",
+    "en": "A present obligation the business will have to settle with its resources, such as unpaid supplier bills or a bank loan."
+  },
+  "related": ["tm_r4w8n2qe", "tm_x3n8v5tc"]
+}

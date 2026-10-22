@@ -1,0 +1,212 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "rev": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "revKind": {
+      "type": "string",
+      "enum": [
+        "text",
+        "answer"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "retired"
+      ]
+    },
+    "supersededBy": {
+      "type": "string"
+    },
+    "retiredNote": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "authorNotes": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^ch_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "core",
+        "extension"
+      ]
+    },
+    "examScope": {
+      "type": "string",
+      "enum": [
+        "midterm",
+        "not_in_exam",
+        "unconfirmed"
+      ]
+    },
+    "title": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "objectiveIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^obj_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+      }
+    },
+    "levelIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^lv_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ch_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+      }
+    },
+    "badge": {
+      "type": "object",
+      "properties": {
+        "icon": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "object",
+          "properties": {
+            "zh-TW": {
+              "type": "string",
+              "minLength": 1
+            },
+            "en": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "zh-TW"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "icon",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "chapterEndLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "lab"
+          },
+          "story": {
+            "type": "string",
+            "pattern": "^story_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+          },
+          "step": {
+            "type": "string",
+            "pattern": "^st_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+          }
+        },
+        "required": [
+          "kind",
+          "story",
+          "step"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "termRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+      }
+    }
+  },
+  "required": [
+    "rev",
+    "revKind",
+    "status",
+    "id",
+    "order",
+    "scope",
+    "examScope",
+    "title",
+    "summary",
+    "objectiveIds",
+    "levelIds"
+  ],
+  "additionalProperties": false
+}

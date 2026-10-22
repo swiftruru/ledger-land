@@ -1,0 +1,289 @@
+/* 由 packages/tokens 產生，不要手改；來源是 packages/tokens/src（16 主題、07 設計系統）。執行 pnpm tokens:build 重新產生。 */
+
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
+  --ll-bg: #FCF8F0;
+  --ll-surface: #FFFDF9;
+  --ll-surface-2: #F4F0E7;
+  --ll-elevated: #FFFDF9;
+  --ll-border: #E0DACF;
+  --ll-border-strong: #8F8880;
+  --ll-text: #292622;
+  --ll-text-2: #625D56;
+  --ll-text-3: #6D6861;
+  --ll-text-4: #C2BDB4;
+  --ll-accent: #9E4A25;
+  --ll-accent-contrast: #FFFDF9;
+  --ll-accent-ink: #9E4A25;
+  --ll-accent-tint: #F4F0E7;
+  --ll-accent-pressed: #7F3A1C;
+  --ll-link: #1D5F8C;
+  --ll-focus: #1D5F8C;
+  --ll-success-ink: #1F6E52;
+  --ll-success-tint: #E4ECE5;
+  --ll-danger-ink: #A8383A;
+  --ll-danger-tint: #F5E5E2;
+  --ll-warning-ink: #7F5A00;
+  --ll-warning-tint: #F0E9DB;
+  --ll-info-ink: #1D5F8C;
+  --ll-info-tint: #E4EAEC;
+  --ll-change-up-ink: #1D5F8C;
+  --ll-change-up-tint: #E4EAEC;
+  --ll-change-down-ink: #7F5A00;
+  --ll-change-down-tint: #F0E9DB;
+  --ll-change-none-ink: #625D56;
+  --ll-change-none-tint: #F4F0E7;
+  --ll-element-asset-ink: #1D5F8C;
+  --ll-element-asset-tint: #E4EAEC;
+  --ll-element-liability-ink: #A8383A;
+  --ll-element-liability-tint: #F5E5E2;
+  --ll-element-equity-ink: #1F6E52;
+  --ll-element-equity-tint: #E4ECE5;
+  --ll-element-revenue-ink: #7F5A00;
+  --ll-element-revenue-tint: #F0E9DB;
+  --ll-element-expense-ink: #9E4A25;
+  --ll-element-expense-tint: #F3E8E0;
+  --ll-highlight-ring: #F49A6C;
+  --ll-star: #F0C64A;
+  --ll-tabbar-solid-bg: #FFFDF9;
+  --ll-tabbar-glass-bg: rgb(255 253 249 / 0.6);
+  --ll-tabbar-hairline: rgb(59 47 42 / 0.10);
+  --ll-tabbar-edge: 0 0 0 0.5px rgb(59 47 42 / 0.11);
+  --ll-glass-highlight: inset 0 1px 0.5px rgb(255 255 255 / 0.9), inset 0 -1.5px 2px rgb(255 255 255 / 0.8), inset 0 0 12px rgb(255 255 255 / 0.25);
+  --ll-glass-rim: linear-gradient(135deg, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.35) 22%, rgb(255 255 255 / 0.08) 50%, rgb(255 255 255 / 0.3) 80%, rgb(255 255 255 / 0.7));
+  --ll-glass-shadow: 0 6px 20px rgb(60 40 20 / 0.08), 0 1px 2px rgb(60 40 20 / 0.06);
+  --ll-lens-rest-bg: linear-gradient(180deg, rgb(255 255 255 / 0.36) 0%, rgb(255 255 255 / 0.05) 55%, rgb(255 255 255 / 0) 100%), rgb(222 216 208 / 0.65);
+  --ll-lens-rest-rim: inset 0 1px 1px rgb(255 255 255 / 0.7), inset 0 -1px 1.5px rgb(59 47 42 / 0.1);
+  --ll-lens-gloss: linear-gradient(180deg, rgb(255 255 255 / 0.62) 0%, rgb(255 255 255 / 0.22) 55%, rgb(255 255 255 / 0.4) 100%);
+  --ll-lens-face: var(--ll-lens-gloss), var(--ll-tabbar-solid-bg);
+  --ll-lens-face-shade: inset 0 7px 9px -9px rgb(255 255 255 / 0.9), inset 0 -8px 10px -10px rgb(59 47 42 / 0.22);
+  --ll-lens-spec: linear-gradient(135deg, rgb(255 255 255 / 1) 0%, rgb(255 255 255 / 0.6) 20%, rgb(255 255 255 / 0) 46%, rgb(59 47 42 / 0.12) 70%, rgb(59 47 42 / 0.34) 100%);
+  --ll-lens-ring: conic-gradient(from 20deg, rgb(255 90 90 / 0.5), rgb(255 220 90 / 0.4), rgb(90 230 160 / 0.45), rgb(90 160 255 / 0.5), rgb(220 90 255 / 0.4), rgb(255 90 90 / 0.5));
+  --ll-lens-lift-shadow: 0 6px 10px -6px rgb(59 47 42 / 0.16), 0 14px 20px -12px rgb(59 47 42 / 0.32);
+  --ll-shadow-1: 0 1px 2px rgb(60 40 20 / 0.06), 0 1px 1px rgb(60 40 20 / 0.04);
+  --ll-shadow-2: 0 4px 12px rgb(60 40 20 / 0.10);
+  --ll-shadow-3: 0 8px 24px rgb(60 40 20 / 0.16), 0 2px 6px rgb(60 40 20 / 0.10);
+  --ll-card-ring: 0 0 0 1px rgb(60 40 20 / 0.07);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ll-bg: #121018;
+  --ll-surface: #22212C;
+  --ll-surface-2: #2C2938;
+  --ll-elevated: #353243;
+  --ll-border: #353243;
+  --ll-border-strong: #7970A9;
+  --ll-text: #F8F8F2;
+  --ll-text-2: #BFBCD2;
+  --ll-text-3: #948CBA;
+  --ll-text-4: #7970A9;
+  --ll-accent: #9580FF;
+  --ll-accent-contrast: #121018;
+  --ll-accent-ink: #AA99FF;
+  --ll-accent-tint: #454158;
+  --ll-accent-pressed: #AA99FF;
+  --ll-link: #80FFEA;
+  --ll-focus: #80FFEA;
+  --ll-success-ink: #8AFF80;
+  --ll-success-tint: #324239;
+  --ll-danger-ink: #FF9580;
+  --ll-danger-tint: #433239;
+  --ll-warning-ink: #FFCA80;
+  --ll-warning-tint: #433A39;
+  --ll-info-ink: #80FFEA;
+  --ll-info-tint: #304249;
+  --ll-change-up-ink: #80FFEA;
+  --ll-change-up-tint: #304249;
+  --ll-change-down-ink: #FFFF80;
+  --ll-change-down-tint: #434239;
+  --ll-change-none-ink: #BFBCD2;
+  --ll-change-none-tint: #2C2938;
+  --ll-element-asset-ink: #80FFEA;
+  --ll-element-asset-tint: #304249;
+  --ll-element-liability-ink: #FF9580;
+  --ll-element-liability-tint: #433239;
+  --ll-element-equity-ink: #8AFF80;
+  --ll-element-equity-tint: #324239;
+  --ll-element-revenue-ink: #FFFF80;
+  --ll-element-revenue-tint: #434239;
+  --ll-element-expense-ink: #FF80BF;
+  --ll-element-expense-tint: #432F42;
+  --ll-highlight-ring: #9580FF;
+  --ll-star: #FFFF80;
+  --ll-tabbar-solid-bg: #353243;
+  --ll-tabbar-glass-bg: rgb(53 50 67 / 0.5);
+  --ll-tabbar-hairline: rgb(255 255 255 / 0.10);
+  --ll-tabbar-edge: 0 0 0 0.5px rgb(255 255 255 / 0.10);
+  --ll-glass-highlight: inset 0 1px 1px rgb(255 255 255 / 0.14), inset 0 0 12px rgb(255 255 255 / 0.04);
+  --ll-glass-rim: linear-gradient(135deg, rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.12) 22%, rgb(255 255 255 / 0.03) 50%, rgb(255 255 255 / 0.08) 80%, rgb(255 255 255 / 0.22));
+  --ll-glass-shadow: 0 8px 28px rgb(0 0 0 / 0.35), 0 1px 3px rgb(0 0 0 / 0.25);
+  --ll-lens-rest-bg: linear-gradient(180deg, rgb(255 255 255 / 0.02) 0%, rgb(255 255 255 / 0) 60%), color-mix(in srgb, var(--ll-border-strong) 20%, transparent);
+  --ll-lens-rest-rim: inset 0 1px 1px rgb(255 255 255 / 0.14), inset 0 -1px 1.5px rgb(0 0 0 / 0.25);
+  --ll-lens-gloss: linear-gradient(180deg, rgb(255 255 255 / 0.06) 0%, rgb(255 255 255 / 0.02) 55%, rgb(255 255 255 / 0.04) 100%);
+  --ll-lens-face: var(--ll-lens-gloss), var(--ll-tabbar-solid-bg);
+  --ll-lens-face-shade: inset 0 7px 9px -9px rgb(255 255 255 / 0.22), inset 0 -8px 10px -10px rgb(0 0 0 / 0.4);
+  --ll-lens-spec: linear-gradient(135deg, rgb(255 255 255 / 0.55) 0%, rgb(255 255 255 / 0.25) 20%, rgb(255 255 255 / 0) 46%, rgb(0 0 0 / 0.22) 70%, rgb(0 0 0 / 0.5) 100%);
+  --ll-lens-ring: conic-gradient(from 20deg, rgb(255 90 90 / 0.5), rgb(255 220 90 / 0.4), rgb(90 230 160 / 0.45), rgb(90 160 255 / 0.5), rgb(220 90 255 / 0.4), rgb(255 90 90 / 0.5));
+  --ll-lens-lift-shadow: 0 4px 10px rgb(0 0 0 / 0.4), 0 14px 28px -10px rgb(0 0 0 / 0.65);
+  --ll-shadow-1: 0 1px 2px rgb(0 0 0 / 0.30);
+  --ll-shadow-2: 0 4px 12px rgb(0 0 0 / 0.35);
+  --ll-shadow-3: 0 8px 24px rgb(0 0 0 / 0.40), 0 2px 6px rgb(0 0 0 / 0.30);
+  --ll-card-ring: 0 0 0 1px rgb(53 50 67 / 0.70);
+}
+
+html[data-theme="dark"][data-flavor="berry"] {
+  --ll-bg: #171018;
+  --ll-surface: #2A212C;
+  --ll-surface-2: #352938;
+  --ll-elevated: #413243;
+  --ll-border: #413243;
+  --ll-border-strong: #9F70A9;
+  --ll-text-2: #CEBCD2;
+  --ll-text-3: #B38CBA;
+  --ll-text-4: #9F70A9;
+  --ll-accent-tint: #544158;
+  --ll-accent-contrast: #171018;
+  --ll-success-tint: #384239;
+  --ll-danger-tint: #4A3239;
+  --ll-warning-tint: #4A3A39;
+  --ll-info-tint: #374249;
+  --ll-change-up-tint: #374249;
+  --ll-change-down-tint: #4A4239;
+  --ll-change-none-ink: #CEBCD2;
+  --ll-change-none-tint: #352938;
+  --ll-element-asset-tint: #374249;
+  --ll-element-liability-tint: #4A3239;
+  --ll-element-equity-tint: #384239;
+  --ll-element-revenue-tint: #4A4239;
+  --ll-element-expense-tint: #4A2F42;
+  --ll-tabbar-solid-bg: #413243;
+  --ll-tabbar-glass-bg: rgb(65 50 67 / 0.5);
+  --ll-card-ring: 0 0 0 1px rgb(65 50 67 / 0.70);
+}
+
+html[data-theme="dark"][data-flavor="wine"] {
+  --ll-bg: #181012;
+  --ll-surface: #2C2122;
+  --ll-surface-2: #38292C;
+  --ll-elevated: #433235;
+  --ll-border: #433235;
+  --ll-border-strong: #A97079;
+  --ll-text-2: #D2BCBF;
+  --ll-text-3: #BA8C94;
+  --ll-text-4: #A97079;
+  --ll-accent-tint: #584145;
+  --ll-accent-contrast: #181012;
+  --ll-success-tint: #3A4230;
+  --ll-danger-tint: #4C3230;
+  --ll-warning-tint: #4C3A30;
+  --ll-info-tint: #394240;
+  --ll-change-up-tint: #394240;
+  --ll-change-down-tint: #4C4230;
+  --ll-change-none-ink: #D2BCBF;
+  --ll-change-none-tint: #38292C;
+  --ll-element-asset-tint: #394240;
+  --ll-element-liability-tint: #4C3230;
+  --ll-element-equity-tint: #3A4230;
+  --ll-element-revenue-tint: #4C4230;
+  --ll-element-expense-tint: #4C2F3A;
+  --ll-tabbar-solid-bg: #433235;
+  --ll-tabbar-glass-bg: rgb(67 50 53 / 0.5);
+  --ll-card-ring: 0 0 0 1px rgb(67 50 53 / 0.70);
+}
+
+:root {
+  --ll-font-zh: "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", "Microsoft JhengHei", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ll-font-en: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --ll-font-num: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ll-type-caption-size: 0.75rem;
+  --ll-type-caption-line: 1rem;
+  --ll-type-caption-weight: 600;
+  --ll-type-footnote-size: 0.8125rem;
+  --ll-type-footnote-line: 1.125rem;
+  --ll-type-footnote-weight: 400;
+  --ll-type-body-sm-size: 0.9375rem;
+  --ll-type-body-sm-line: 1.5rem;
+  --ll-type-body-sm-weight: 400;
+  --ll-type-body-size: 1.0625rem;
+  --ll-type-body-line: 1.75rem;
+  --ll-type-body-weight: 400;
+  --ll-type-input-size: 1.0625rem;
+  --ll-type-input-line: 1.5rem;
+  --ll-type-input-weight: 400;
+  --ll-type-callout-size: 1rem;
+  --ll-type-callout-line: 1.5rem;
+  --ll-type-callout-weight: 600;
+  --ll-type-title-3-size: 1.25rem;
+  --ll-type-title-3-line: 1.75rem;
+  --ll-type-title-3-weight: 600;
+  --ll-type-title-2-size: 1.375rem;
+  --ll-type-title-2-line: 1.875rem;
+  --ll-type-title-2-weight: 700;
+  --ll-type-title-1-size: 1.75rem;
+  --ll-type-title-1-line: 2.25rem;
+  --ll-type-title-1-weight: 700;
+  --ll-type-number-lg-size: 1.75rem;
+  --ll-type-number-lg-line: 2.125rem;
+  --ll-type-number-lg-weight: 700;
+  --ll-type-display-size: clamp(1.75rem, 6vw, 2.5rem);
+  --ll-type-display-line: 1.2;
+  --ll-type-display-weight: 700;
+  --ll-space-1: 4px;
+  --ll-space-2: 8px;
+  --ll-space-3: 12px;
+  --ll-space-4: 16px;
+  --ll-space-5: 20px;
+  --ll-space-6: 24px;
+  --ll-space-8: 32px;
+  --ll-space-10: 40px;
+  --ll-space-12: 48px;
+  --ll-space-16: 64px;
+  --ll-target-min: 44px;
+  --ll-radius-xs: 6px;
+  --ll-radius-sm: 10px;
+  --ll-radius-md: 14px;
+  --ll-radius-lg: 20px;
+  --ll-radius-xl: 28px;
+  --ll-radius-full: 999px;
+  --ll-z-sticky: 10;
+  --ll-z-tabbar: 50;
+  --ll-z-sheet: 60;
+  --ll-z-toast: 70;
+  --ll-z-skiplink: 100;
+  --ll-tabbar-h: 64px;
+  --ll-tabbar-max-w: 480px;
+  --ll-tabbar-inset: 21px;
+  --ll-tabbar-rail-w: 88px;
+  --ll-dur-fast: 120ms;
+  --ll-dur-base: 200ms;
+  --ll-dur-slow: 320ms;
+  --ll-dur-lab: 450ms;
+  --ll-dur-lift: 620ms;
+  --ll-lift-lag: 70ms;
+  --ll-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ll-ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ll-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ll-ease-spring-snappy: cubic-bezier(0.3, 1.35, 0.5, 1);
+  --ll-ease-spring-gentle: cubic-bezier(0.22, 1.2, 0.36, 1);
+  --ll-ease-lift: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ll-ease-spring-snappy: linear(0, 0.125, 0.373, 0.619, 0.81, 0.935, 1.004, 1.033, 1.038, 1.032, 1.022, 1.013, 1.006, 1.002, 1, 0.999, 1);
+    --ll-ease-spring-gentle: linear(0, 0.103, 0.309, 0.521, 0.697, 0.826, 0.912, 0.964, 0.993, 1.006, 1.011, 1.011, 1.009, 1.006, 1.004, 1.003, 1);
+    --ll-ease-lift: linear(0, 0.042 2.1%, 0.152 4.2%, 0.307 6.2%, 0.486 8.3%, 0.670 10.4%, 0.843 12.5%, 0.993 14.6%, 1.113 16.7%, 1.199 18.8%, 1.252 20.8%, 1.274 22.9%, 1.269 25.0%, 1.244 27.1%, 1.204 29.2%, 1.156 31.2%, 1.106 33.3%, 1.057 35.4%, 1.013 37.5%, 0.978 39.6%, 0.951 41.7%, 0.934 43.8%, 0.926 45.8%, 0.925 47.9%, 0.930 50.0%, 0.940 52.1%, 0.953 54.2%, 0.967 56.2%, 0.980 58.3%, 0.993 60.4%, 1.003 62.5%, 1.011 64.6%, 1.017 66.7%, 1.020 68.8%, 1.021 70.8%, 1.020 72.9%, 1.017 75.0%, 1.014 77.1%, 1.010 79.2%, 1.006 81.2%, 1.003 83.3%, 1.000 85.4%, 0.997 87.5%, 0.996 89.6%, 0.995 91.7%, 0.995 93.8%, 0.997 95.8%, 0.999 97.9%, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --ll-dur-fast: 0ms; --ll-dur-base: 120ms; --ll-dur-slow: 0ms; --ll-dur-lab: 0ms; --ll-dur-lift: 0ms; --ll-lift-lag: 0ms; --ll-ease-standard: linear; --ll-ease-enter: linear; --ll-ease-exit: linear; }
+}
+
+html[data-motion="reduced"] { --ll-dur-fast: 0ms; --ll-dur-base: 120ms; --ll-dur-slow: 0ms; --ll-dur-lab: 0ms; --ll-dur-lift: 0ms; --ll-lift-lag: 0ms; --ll-ease-standard: linear; --ll-ease-enter: linear; --ll-ease-exit: linear; }
+
+:lang(zh-TW) { font-family: var(--ll-font-zh); }
+:lang(en) { font-family: var(--ll-font-en); }
+.ll-num { font-family: var(--ll-font-num); font-variant-numeric: tabular-nums lining-nums; }

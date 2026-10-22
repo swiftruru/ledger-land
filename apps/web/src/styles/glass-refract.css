@@ -1,0 +1,8 @@
+/* 只有閘門判定為 refract（Chromium）時才由 JS 插入這個樣式表；Safari 永遠不會套用（07 第 5.3 節）。
+   折射之外保留與霧面相同的 contrast 與 brightness，對比下限才不會消失；深色規則的權重與 tabbar.css 相同，靠插入順序勝出 */
+html[data-glass='refract'] .ll-tabbar {
+  backdrop-filter: url(#ll-refract) blur(3px) saturate(160%) contrast(45%) brightness(135%);
+}
+html[data-glass='refract'][data-theme='dark'] .ll-tabbar {
+  backdrop-filter: url(#ll-refract) blur(3px) saturate(160%) contrast(50%) brightness(45%);
+}

@@ -1,0 +1,29 @@
+packages:
+  - apps/*
+  - packages/*
+  - tools
+# 兩週規則與信任政策（09 第 2.2 節）：只用發布滿 20,160 分鐘（14 天）的版本；信任等級不得降級
+minimumReleaseAge: 20160
+trustPolicy: no-downgrade
+# 每一條例外都要在 tools/release-age-exceptions.json 留紀錄（含公告編號與到期日），CI 比對並在到期時提醒移除
+minimumReleaseAgeExclude: []
+# 信任政策例外與版本覆寫的紀錄在 tools/trust-policy-exceptions.json（M0b 安裝時依實際觸發情況填寫）
+trustPolicyExclude:
+  # semver@6.3.1：2023-07 在 6.x 版線補發的安全修正版，沒有 provenance；pnpm 只依發布日期比較而判為信任降級。
+  # 由 @lingui/cli 6.9.0 → @babel/core 7.29.7 引入，沒有符合 ^6.3.1 且帶 provenance 的版本（使用者 2026-10-20 同意，M0b 2026-10-22 再次觸發，沿用）
+  - 'semver@6.3.1'
+# 專案隔離環境（09 第 7.5 節）：store 與快取都在 repo 內；stateDir 自 pnpm 11.22 起不能寫在這裡，由 tools/env.sh 的環境變數指定
+storeDir: .pnpm-store
+cacheDir: .cache/pnpm
+# 一律不執行第三方安裝腳本；需要的平台二進位檔都以 optional dependency 安裝（M0a 實測不需要腳本）
+allowBuilds:
+  esbuild: false
+  workerd: false
+  sharp: false
+  lightningcss: false
+# 版本覆寫（使用者 2026-10-20 選擇 B，紀錄見 tools/trust-policy-exceptions.json）：
+# workbox-build 7.4.1 依賴 @trickfilm400/rollup-plugin-off-main-thread ^3.0.0-pre1，該版沒有 provenance（作者表示原本只是測試版）；
+# 3.0.0-pre1 執行時用到的檔案與有 provenance 的 2.5.0 只差換行字元，dependencies 相同，所以固定到 2.5.0，trustPolicy 維持全部檢查。
+# Workbox 更新這個相依時要重新檢查並移除。
+overrides:
+  '@trickfilm400/rollup-plugin-off-main-thread': 2.5.0

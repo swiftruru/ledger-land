@@ -1,0 +1,69 @@
+{
+  "name": "ledger-land",
+  "private": true,
+  "version": "0.0.0",
+  "description": "LedgerLand 會計樂園：公開、開源、手機優先、中英雙語的會計入門學習 PWA",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.28.5",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.21.0",
+      "onFail": "download"
+    }
+  },
+  "browserslist": [
+    "iOS >= 17",
+    "Safari >= 17",
+    "last 2 Chrome versions",
+    "last 2 Edge versions",
+    "last 2 Firefox versions",
+    "last 2 ChromeAndroid versions"
+  ],
+  "scripts": {
+    "typecheck": "pnpm -r --parallel --aggregate-output run typecheck",
+    "lint": "oxlint --deny-warnings",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "e2e": "playwright test",
+    "tokens:build": "pnpm --filter @ledgerland/tokens run build",
+    "tokens:check": "pnpm --filter @ledgerland/tokens run check",
+    "schemas:build": "pnpm --filter @ledgerland/content-schema run schemas:build",
+    "schemas:check": "pnpm --filter @ledgerland/content-schema run schemas:check",
+    "content:check": "node tools/content-check.mjs",
+    "content:build": "node tools/content-build.mjs",
+    "content:i18n-report": "node tools/content-i18n-report.mjs",
+    "docs:examples": "node tools/docs-examples.mjs",
+    "i18n:extract": "pnpm --filter @ledgerland/web run i18n:extract",
+    "i18n:check": "pnpm --filter @ledgerland/web run i18n:check",
+    "check:deps": "node tools/check-deps.mjs",
+    "check:dom": "node tools/check-dom.mjs",
+    "check:actions": "node tools/check-actions.mjs",
+    "check:exceptions": "node tools/check-exceptions.mjs",
+    "check:tw": "node tools/check-tw-style.mjs",
+    "check:hygiene": "node tools/check-hygiene.mjs",
+    "licenses:build": "node tools/licenses.mjs --write",
+    "licenses:check": "node tools/licenses.mjs --check",
+    "perf": "node tools/perf.mjs",
+    "budget": "node tools/budget.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@fast-check/vitest": "0.5.0",
+    "@playwright/test": "1.64.0",
+    "@types/node": "24.19.1",
+    "@vitest/browser-playwright": "5.0.3",
+    "fast-check": "4.10.2",
+    "lighthouse": "13.5.0",
+    "oxlint": "1.87.0",
+    "prettier": "3.9.9",
+    "typescript": "6.0.3",
+    "vitest": "5.0.3",
+    "zod": "4.6.5"
+  }
+}

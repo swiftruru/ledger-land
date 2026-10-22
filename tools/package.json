@@ -1,0 +1,17 @@
+{
+  "name": "@ledgerland/tools",
+  "version": "0.0.0",
+  "private": true,
+  "description": "建置期工具與檢查腳本：內容管線、schema 一致性、依賴方向、DOM 禁用、Action 釘版、例外清單、用語、授權白名單、CSP 與 _headers、體積預算、Lighthouse",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ledgerland/content-schema": "workspace:*",
+    "@ledgerland/i18n": "workspace:*",
+    "@ledgerland/tokens": "workspace:*",
+    "zod": "4.6.5"
+  }
+}

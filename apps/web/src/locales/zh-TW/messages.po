@@ -1,0 +1,538 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-22 13:02+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: zh-TW\n"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.name"
+msgstr "「LedgerLand 會計樂園」的名稱與標誌另外保留，不隨開源授權授出。"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.contact.body"
+msgstr "GitHub repo 的 issue 頁面"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.ifrsEnglish"
+msgstr "IFRS 英文"
+
+#. 首頁大標題，站名
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.title"
+msgstr "LedgerLand 會計樂園"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.intro"
+msgstr "LedgerLand 會計樂園是一個公開、開源、手機優先的會計入門學習網站：用闖關題目與報表實驗室，從一家小店的帳開始認識資產、負債、股東權益與三大財務報表，中英雙語，可離線使用。"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.not.title"
+msgstr "不做哪些事"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.not.body"
+msgstr "不登入、不收集姓名或學號、不寫入 cookie、不把作答資料送出裝置；除了下面的流量統計腳本，不載入任何第三方腳本、字型或圖片。"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.host.title"
+msgstr "主機會記錄什麼"
+
+#. js-lingui-explicit-id
+#: src/app/Root.tsx
+msgid "shell.main"
+msgstr "主要內容"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.elapsed"
+msgstr "作答時間"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.title"
+msgstr "作答示範：資產是什麼"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.link.demo"
+msgstr "作答示範頁（語言切換時保留作答狀態）"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.stored.body"
+msgstr "作答紀錄、星星、錯題本、徽章、名詞解鎖、設定與語言偏好，以及最近 50 筆錯誤紀錄。這些資料存在 IndexedDB、localStorage 與 Service Worker 快取，都屬於這個網站的來源（origin）。Safari 分頁與主畫面 App 的資料是分開的兩份。"
+
+#. js-lingui-explicit-id
+#: src/components/EphemeralNotice.tsx
+msgid "ephemeral.body"
+msgstr "你現在是在相機開啟的預覽畫面。請點右下角的指南針圖示，改用 Safari 開啟；如果已經把會計樂園加到主畫面，請改用 App 裡的「掃描課堂 QR」。"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.summary"
+msgstr "你的學習紀錄只存在這台裝置的這個瀏覽器裡；網站沒有帳號、不用 cookie，只有不收集個資的匿名流量統計。"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.storage"
+msgstr "儲存"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.updated"
+msgstr "最後更新：2026 年 10 月 22 日"
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.generic.title"
+msgstr "出了一點問題"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.content"
+msgstr "原創教學內容（題目、名詞卡、解說、故事的敘述文字）：創用 CC 姓名標示 相同方式分享 4.0 國際（CC BY-SA 4.0）。"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.repo"
+msgstr "原始碼與第三方授權聲明（GitHub）"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.camera.body"
+msgstr "只有在你按下「掃描課堂 QR」時才要求相機權限；影像只在這台裝置上解讀 QR，不錄影、不截圖、不上傳，離開掃描畫面就關閉相機。（這個功能在之後的里程碑加入。）"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.link.terms"
+msgstr "名詞圖鑑"
+
+#. 名詞圖鑑的頁面標題（模組全名）
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.title"
+msgstr "名詞圖鑑"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.back"
+msgstr "回到名詞圖鑑"
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+#: src/pages/NotFound.tsx
+msgid "error.home"
+msgstr "回到首頁"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.delete.body"
+msgstr "在瀏覽器裡清除這個網站的資料即可；「我的 › 設定」的「清除這台裝置上的資料」會在之後的里程碑加入。"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.title"
+msgstr "報表實驗室"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.placeholder"
+msgstr "報表實驗室會在之後的里程碑加入。"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.theme.label"
+msgstr "外觀"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.appearanceLink"
+msgstr "外觀、深色風味與玻璃效果在「我的 › 設定」調整。"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.flavor.violet"
+msgstr "夜空"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.delete.title"
+msgstr "如何刪除"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.hint"
+msgstr "如果你在 iPhone 開了「降低透明度」，網頁讀不到這個設定，請在這裡選「降低透明度」。折射只在電腦版的 Chromium 瀏覽器有效。"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.stored.title"
+msgstr "存了哪些資料"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.progressLater"
+msgstr "學習進度、徽章與備份會在之後的里程碑加入。"
+
+#. 第一次快取完成、可以離線使用時的一次性提示
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.offlineReady"
+msgstr "已經可以離線使用了。"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.copied"
+msgstr "已複製"
+
+#. 「我的」頁面標題
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.title"
+msgstr "我的"
+
+#. js-lingui-explicit-id
+#: src/pages/NotFound.tsx
+msgid "notfound.title"
+msgstr "找不到這一頁"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.stressHint"
+msgstr "把這些色塊捲到下方的導覽列後面，檢查標籤與圖示是否仍然清楚。"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.refract"
+msgstr "折射"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.title"
+msgstr "授權"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.story"
+msgstr "故事的情境與金額經陳彥宏老師授權使用，不在 CC 授權範圍內；重用前要另外取得老師同意。"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.teacherLabel"
+msgstr "教材用語"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.numbers"
+msgstr "數字格式"
+
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.update"
+msgstr "更新"
+
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.updateAvailable"
+msgstr "有新版本可以使用。你的進度已經存好，按「更新」就會重新載入。"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.analytics.note"
+msgstr "服務：Cloudflare Web Analytics。不用 cookie、不含作答資料；只在正式網址啟用，離線或被擋下時略過。"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: site.productionOrigin
+#: src/pages/Privacy.tsx
+msgid "privacy.analytics.body"
+msgstr "本站使用 Cloudflare Web Analytics（服務由 Cloudflare 提供與保存），只用來了解有多少人在用、哪些頁面被開啟與載入速度。它不使用 cookie，也不收集姓名、email 或任何識別個人的資料；收集的內容是瀏覽的頁面路徑（只有路徑，不含查詢字串）、來源網站、瀏覽器與作業系統類型、國家或地區，以及頁面載入效能指標。統計不含作答內容、進度或錯誤紀錄，只在正式網址{0} 啟用；離線時不送出，載入失敗也不影響學習。"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.materials"
+msgstr "本站的授權不涵蓋老師的教材（投影片、Excel、題目、解答）；網站不收錄、不散布這些教材。"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.analytics"
+msgstr "流量統計"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.analytics.title"
+msgstr "流量統計"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.theme.dark"
+msgstr "深色"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.flavor.label"
+msgstr "深色風味"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.theme.light"
+msgstr "淺色"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.errors.clear"
+msgstr "清除"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.loss.body"
+msgstr "清除瀏覽器資料，或長時間未使用時瀏覽器主動清除（例如 Safari 的規則），都可能讓進度消失。網站會盡量降低被清除的機率，但不保證不會發生；之後的里程碑會提供備份與匯出。"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.inputLabel"
+msgstr "測試用的金額輸入框"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.version.title"
+msgstr "版本"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.version"
+msgstr "版本"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.label"
+msgstr "玻璃效果"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.stressTitle"
+msgstr "玻璃效果測試區"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.currentTwLabel"
+msgstr "現行用語"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.tagline"
+msgstr "用闖關與報表實驗室學會計入門，中英雙語，可離線使用。"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.build.title"
+msgstr "目前的進度"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.camera.title"
+msgstr "相機"
+
+#. js-lingui-explicit-id
+#: src/components/EphemeralNotice.tsx
+#: src/components/UpdatePrompt.tsx
+msgid "common.ok"
+msgstr "知道了"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.code"
+msgstr "程式碼：MIT 授權。"
+
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.later"
+msgstr "稍後"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.flavor.wine"
+msgstr "紅酒"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.host.body"
+msgstr "網站主機 Cloudflare 的伺服器紀錄會包含 IP 位址與瀏覽器資訊，由主機商依其政策處理。"
+
+#. 部署後舊頁面載入已不存在的檔案時的標題
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.updated.title"
+msgstr "網站已更新"
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.updated.body"
+msgstr "網站已更新，重新整理即可繼續。你的進度已經存好。"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.contact.title"
+msgstr "聯絡方式"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.auto"
+msgstr "自動"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.flavor.berry"
+msgstr "莓果"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.env"
+msgstr "裝置與環境"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.copy"
+msgstr "複製全部結果"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.settings"
+msgstr "設定"
+
+#. js-lingui-explicit-id
+#: src/pages/Settings.tsx
+msgid "settings.title"
+msgstr "設定"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.link.settings"
+msgstr "設定（語言、外觀、深色風味）"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.debug"
+msgstr "診斷資訊"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.title"
+msgstr "診斷資訊"
+
+#. js-lingui-explicit-id
+#: src/components/LangSwitch.tsx
+#: src/pages/Settings.tsx
+msgid "lang.label"
+msgstr "語言"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.loss.title"
+msgstr "資料可能消失的情況"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.theme.system"
+msgstr "跟隨系統"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.hint"
+msgstr "這一頁只在本機顯示資訊，不會送出任何資料；「複製全部結果」由你自己決定要不要貼給別人。"
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.generic.body"
+msgstr "這一頁暫時無法顯示。你可以回到首頁，或先把這個畫面截圖回報給我們。"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+#: src/pages/Terms.tsx
+msgid "content.offlineMissing"
+msgstr "這一頁還沒下載到這台裝置。連上網路後再試一次，已下載的內容現在也能繼續使用。"
+
+#. js-lingui-explicit-id
+#: src/components/EphemeralNotice.tsx
+msgid "ephemeral.title"
+msgstr "這個畫面關掉後，作答進度不會保留"
+
+#. js-lingui-explicit-id
+#: src/pages/NotFound.tsx
+msgid "notfound.body"
+msgstr "這個網址沒有對應的頁面，可能是輸入錯誤，或內容已經下架。"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.build.body"
+msgstr "這是基礎建設階段（M0b）的殼層網站：導覽列、語言切換、外觀設定、名詞圖鑑的範例資料與作答示範頁都已經可以試用；闖關關卡與報表實驗室在之後的里程碑加入。"
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.reload"
+msgstr "重新整理"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.refresh"
+msgstr "重新量測"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.errors"
+msgstr "錯誤紀錄（最近 50 筆）"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.inputHint"
+msgstr "鍵盤測試：輸入一個金額（開啟鍵盤時導覽列應該隱藏）"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "play.title"
+msgstr "闖關區"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "play.placeholder"
+msgstr "闖關地圖與關卡會在之後的里程碑加入。"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.title"
+msgstr "關於與授權"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.about"
+msgstr "關於與授權"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.reduced"
+msgstr "降低透明度"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.privacy"
+msgstr "隱私說明"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.title"
+msgstr "隱私說明"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.frost"
+msgstr "霧面"

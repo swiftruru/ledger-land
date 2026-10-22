@@ -1,0 +1,21 @@
+// 學習端的 Workers Static Assets 設定（09 第 7.3 節）。只有 /assets/* 先執行 worker/index.js（找不到檔案時回 404），其他路徑完全由 Static Assets 回應。
+// 自訂網域 ledgerland.swift.moe 在第一次正式部署時綁定（使用者決定）；在那之前只部署到 workers.dev。
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ledgerland",
+  "compatibility_date": "2026-10-01",
+  "main": "worker/index.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/assets/*"],
+  },
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": { "enabled": false },
+  // 自訂網域（09 第 7.3 節）：第一次正式部署時由使用者確認後再加回下面這段，加回之前只部署到 workers.dev。
+  // M0b 查證（2026-10-22）：ledgerland.swift.moe 在 DNS 上已經有指向 Cloudflare 的 A 與 AAAA 記錄，Workers 的自訂網域不能建立在已有記錄的主機名稱上，要先處理既有記錄。
+  // "routes": [{ "pattern": "ledgerland.swift.moe", "custom_domain": true }],
+}

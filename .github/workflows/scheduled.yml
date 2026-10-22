@@ -1,0 +1,74 @@
+# 每週一次（09 第 10.1 節）：例外清單到期檢查、pnpm audit、對正式網址的 Lighthouse 趨勢紀錄（含 D7 的統計腳本）；失敗時開 issue 提醒。
+name: scheduled
+
+on:
+  schedule:
+    - cron: '0 1 * * 1' # 每週一 09:00（台北）
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/ms-playwright
+  npm_config_cache: ${{ github.workspace }}/.cache/npm
+  pnpm_config_state_dir: ${{ github.workspace }}/.cache/pnpm/state
+  XDG_CONFIG_HOME: ${{ github.workspace }}/.cache/xdg-config
+
+jobs:
+  weekly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            .pnpm-store
+            .cache/pnpm
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile
+      - name: 例外清單到期檢查
+        id: exceptions
+        run: pnpm check:exceptions
+        continue-on-error: true
+      - name: pnpm audit
+        id: audit
+        run: pnpm audit --audit-level high
+        continue-on-error: true
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: 正式網址的 Lighthouse 趨勢（統計腳本照正式方式載入但指向 stub）
+        id: perf
+        run: pnpm perf --base "$LL_PRODUCTION_ORIGIN" --runs 3 --out .local-reports/perf-production
+        continue-on-error: true
+        env:
+          LL_PRODUCTION_ORIGIN: ${{ vars.LL_PRODUCTION_ORIGIN || 'https://ledgerland.swift.moe' }}
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: weekly-perf
+          path: .local-reports/perf-production
+          retention-days: 90
+      - name: 失敗時開 issue 提醒
+        if: steps.exceptions.outcome == 'failure' || steps.audit.outcome == 'failure' || steps.perf.outcome == 'failure'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          EXC: ${{ steps.exceptions.outcome }}
+          AUD: ${{ steps.audit.outcome }}
+          PERF: ${{ steps.perf.outcome }}
+        with:
+          script: |
+            const title = `每週檢查失敗（${new Date().toISOString().slice(0, 10)}）`;
+            const body = `例外清單：${process.env.EXC}\npnpm audit：${process.env.AUD}\nLighthouse：${process.env.PERF}\n\n執行紀錄：${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.create({ ...context.repo, title, body, labels: ['scheduled'] });

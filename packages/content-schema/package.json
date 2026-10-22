@@ -1,0 +1,20 @@
+{
+  "name": "@ledgerland/content-schema",
+  "version": "0.0.0",
+  "private": true,
+  "description": "內容的 Zod schema（M0b 先有 Term 與 Chapter）、ID 規則與驗證；輸出 draft-07 JSON Schema 到 schemas/",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "schemas:build": "node --experimental-strip-types scripts/export-json-schema.ts",
+    "schemas:check": "node --experimental-strip-types scripts/export-json-schema.ts --check"
+  },
+  "dependencies": {
+    "@ledgerland/i18n": "workspace:*",
+    "zod": "4.6.5"
+  }
+}

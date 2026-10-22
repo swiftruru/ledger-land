@@ -1,0 +1,18 @@
+{
+  "id": "ch_c5f8w2",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "order": 1,
+  "scope": "core",
+  "examScope": "unconfirmed",
+  "title": { "zh-TW": "一家小店的帳", "en": "The books of a small shop" },
+  "summary": {
+    "zh-TW": "從一家剛開張的小咖啡店出發，認識資產、負債與股東權益，以及它們之間永遠成立的關係。",
+    "en": "Starting from a newly opened coffee shop, meet assets, liabilities and equity, and the relationship between them that always holds."
+  },
+  "objectiveIds": [],
+  "levelIds": [],
+  "badge": { "icon": "storefront", "title": { "zh-TW": "開店了", "en": "Open for business" } },
+  "termRefs": ["tm_r4w8n2qe", "tm_h6p2k9wd", "tm_x3n8v5tc"]
+}

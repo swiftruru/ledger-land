@@ -1,0 +1,337 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "rev": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "revKind": {
+      "type": "string",
+      "enum": [
+        "text",
+        "answer"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "retired"
+      ]
+    },
+    "supersededBy": {
+      "type": "string"
+    },
+    "retiredNote": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "authorNotes": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "statement",
+        "account",
+        "ratio",
+        "concept",
+        "process",
+        "other"
+      ]
+    },
+    "label": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "teacherLabel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currentTwLabel": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ifrsEnglish": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "aliases": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "en": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "zh-TW",
+        "en"
+      ],
+      "additionalProperties": false
+    },
+    "enUsVariant": {
+      "type": "string"
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "japanese",
+          "old_name",
+          "typo_fixed",
+          "unused",
+          "not_ifrs_line",
+          "ifrs_treatment_differs",
+          "simplified"
+        ]
+      }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "pending"
+      ]
+    },
+    "pendingRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^T\\d{2}$"
+      }
+    },
+    "ifrsBasis": {
+      "type": "string"
+    },
+    "note": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "definition": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "misconception": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "formula": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "ifrsNote": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "accountRef": {
+      "type": "string"
+    },
+    "ratioRef": {
+      "type": "string"
+    },
+    "related": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+      }
+    },
+    "labRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "story": {
+            "type": "string",
+            "pattern": "^story_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+          },
+          "step": {
+            "type": "string",
+            "pattern": "^st_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+          }
+        },
+        "required": [
+          "story",
+          "step"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "unlock": {
+      "type": "object",
+      "properties": {
+        "levelId": {
+          "type": "string",
+          "pattern": "^lv_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+        }
+      },
+      "required": [
+        "levelId"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "rev",
+    "revKind",
+    "status",
+    "id",
+    "category",
+    "label",
+    "teacherLabel",
+    "currentTwLabel",
+    "ifrsEnglish",
+    "aliases",
+    "flags",
+    "confidence",
+    "pendingRefs",
+    "definition"
+  ],
+  "additionalProperties": false
+}

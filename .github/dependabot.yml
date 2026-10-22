@@ -1,0 +1,29 @@
+# 依賴更新（09 第 2.5 節）：14 天冷卻期與兩週規則一致；npm 套件另外由 pnpm 的 minimumReleaseAge 把關
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Taipei
+    cooldown:
+      default-days: 14
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: ['minor', 'patch']
+    ignore:
+      # TypeScript 精確鎖定 6.0.3（09 第 2.3 節）；7.x 等 7.1 的 API 推出後再評估
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Taipei
+    cooldown:
+      default-days: 14

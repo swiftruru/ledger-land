@@ -1,0 +1,4 @@
+{
+  "note": "第三方套件在執行期插入、內容固定的 <style>，以 sha256 放行，不開 'unsafe-inline'。M0b 沒有這類套件（拖放的 @dnd-kit 在 M2 才加入，屆時把 M0a 擷取的三段雜湊加回來，並由 E2E 的 securitypolicyviolation 監聽把關）。",
+  "style-src": []
+}

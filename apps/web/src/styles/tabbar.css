@@ -1,0 +1,479 @@
+/* Tab bar（07 第 5.3 節、第 6 節）。nav 寫在殼層 index.html，React 不建立也不替換它。
+   Tab bar 與祖先（html、body）不設定 opacity、filter、mask、clip-path、mix-blend-mode、will-change、view-transition-name（07 第 6.5 節）。
+   2026-10-21 依你的 nekoserve 實作改成 Liquid Glass：較透明的底盤、鏡面描邊、選取鏡片，按住或拖曳時鏡片放大並顯示放大的分身。
+   2026-10-22 依你提供的 LINE 截圖改了位置與尺寸（底盤左右 21pt、膠囊 1.3 格寬）；同一天你說 LINE 式的鏡片像「生硬的玻璃」，
+   鏡片改回上一版的果凍質感（光澤、鏡面環、彩虹色散環、以鏡片中心放大 1.3 倍），並加上史萊姆式的晃動：
+   抬起與放下時水平與垂直錯開 70ms 回彈，橫向、縱向交替鼓起幾下。
+   全站仍只有底盤一個 backdrop-filter；鏡片與分身不用 backdrop，動畫只動 transform 與 opacity。 */
+
+/* Tier 0：預設樣式，也是所有降級情況的終點 */
+.ll-tabbar {
+  position: fixed;
+  z-index: 50;
+  /* 位置與寬度照 LINE 截圖（2026-10-22）：左右各留 21pt；主畫面 App 裡離螢幕底 21pt（安全區 34pt 減 13），
+     沒有安全區的機型與 Safari 分頁維持離底 8px */
+  left: max(21px, env(safe-area-inset-left));
+  right: max(21px, env(safe-area-inset-right));
+  bottom: max(8px, calc(env(safe-area-inset-bottom, 0px) - 13px));
+  max-width: 480px;
+  margin-inline: auto;
+  height: 64px;
+  border-radius: 999px;
+  background: var(--ll-tabbar-solid-bg);
+  color: var(--ll-text);
+  border: 1px solid var(--ll-tabbar-hairline);
+  box-shadow: var(--ll-shadow-3);
+  transform-origin: 50% 100%;
+  transform: translateY(var(--ll-tabbar-y, 0px)) scale(var(--ll-tabbar-scale, 1));
+  transition: transform var(--ll-dur-base) var(--ll-ease-standard);
+  /* 在 Tab bar 上按住拖曳選取：不捲動頁面、不選字、不出現長按選單與連結拖曳（nekoserve 的做法） */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  /* 抬起時鏡片（連同裡面的分身）放大的倍數：上一版的 1.3 倍。83 × 54pt 的膠囊抬起後約 108 × 70pt，比底盤上下各凸出約 3pt */
+  --ll-lift: 1.3;
+  /* 膠囊寬度是 Tab 間距的幾倍（LINE：間距 64pt、膠囊 83pt）。膠囊離底盤內緣 4px，Tab 間距 S = (寬 - 8px) / (4 + 這個值)，
+     清單左右留 4px + (這個值 - 1) / 2 × S，第一格與最後一格的膠囊剛好貼齊 4px 的內緣 */
+  --ll-pill-w: 1.3;
+}
+.ll-tabbar a,
+.ll-tabbar svg {
+  -webkit-user-drag: none;
+}
+
+/* Tier 1：Liquid Glass。backdrop-filter 一律寫字面值，不用 var()；-webkit- 前綴由 Lightning CSS 依 browserslist 補上（D8）。
+   contrast 與 brightness 把背後內容壓進固定的亮度範圍（淺色往亮、深色往暗），底盤因此可以比以前透明，標籤對比仍有下限 */
+html[data-glass='frost'] .ll-tabbar,
+html[data-glass='refract'] .ll-tabbar {
+  background: var(--ll-tabbar-glass-bg);
+  border-color: transparent;
+  backdrop-filter: blur(12px) saturate(180%) contrast(45%) brightness(135%);
+  box-shadow: var(--ll-glass-highlight), var(--ll-tabbar-edge), var(--ll-glass-shadow);
+}
+html[data-glass='frost'][data-theme='dark'] .ll-tabbar,
+html[data-glass='refract'][data-theme='dark'] .ll-tabbar {
+  backdrop-filter: blur(12px) saturate(160%) contrast(50%) brightness(45%);
+}
+/* 鏡面描邊：左上亮、右下補光的 1px 環。mask 只放在 Tab bar 的子層（::after），不會讓底盤失去背景（07 第 6.5 節） */
+html[data-glass='frost'] .ll-tabbar::after,
+html[data-glass='refract'] .ll-tabbar::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--ll-glass-rim);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.ll-tabbar__list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  height: 100%;
+  margin: 0;
+  padding: 6px calc(4px + (100% - 8px) * (var(--ll-pill-w) - 1) / 2 / (4 + var(--ll-pill-w)));
+  list-style: none;
+}
+.ll-tabbar__list > li {
+  display: flex;
+}
+
+/* 選取膠囊：位置由殼層在地化腳本寫入的 data-current 決定，首次繪製就在正確位置；切換、按住與拖曳由 tabbar.ts 用 transform 移動 */
+.ll-tabbar__pill {
+  position: absolute;
+  /* 四周各留 4px：膠囊約是底盤高度的 87%（LINE 截圖量到 54 / 62.5pt）；寬度是 Tab 間距的 --ll-pill-w 倍 */
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) * var(--ll-pill-w) / (4 + var(--ll-pill-w)));
+  border-radius: 999px;
+  pointer-events: none;
+  /* 靜止位置：tabbar.ts 掛上後寫入 px 值（--ll-pill-x），百分比（膠囊寬度除以倍數，等於 Tab 間距）只用在第一次繪製 */
+  transform: translateX(var(--ll-pill-x, calc(var(--ll-pill-i, 0) * 100% / var(--ll-pill-w))));
+}
+.ll-tabbar:not([data-current]) .ll-tabbar__pill {
+  display: none;
+}
+.ll-tabbar[data-current='0'] {
+  --ll-pill-i: 0;
+}
+.ll-tabbar[data-current='1'] {
+  --ll-pill-i: 1;
+}
+.ll-tabbar[data-current='2'] {
+  --ll-pill-i: 2;
+}
+.ll-tabbar[data-current='3'] {
+  --ll-pill-i: 3;
+}
+.ll-tabbar[data-current='4'] {
+  --ll-pill-i: 4;
+}
+
+/* 抬起時的浮起陰影：放在鏡片外面（鏡片有 overflow: hidden），只淡入並跟著鏡片放大與晃動，不做 box-shadow 轉場 */
+.ll-tabbar__pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--ll-shadow-2);
+  opacity: 0;
+  /* 垂直的 scale 屬性靜止時不寫（none）。Lightning CSS 會把同一條規則裡字面值的 transform 與 scale 併成一個 transform
+     （例如 scale: 1 1 或 scale: 1 1.3），垂直就沒有自己的轉場、70ms 的錯開也會消失；用 var() 的寫法不會被併 */
+  transform: scaleX(1);
+  transition:
+    opacity var(--ll-dur-fast) var(--ll-ease-standard),
+    transform var(--ll-dur-lift) var(--ll-ease-lift),
+    scale var(--ll-dur-lift) var(--ll-ease-lift) var(--ll-lift-lag);
+}
+
+/* 鏡片：Tier 0 是不透明的強調淡色膠囊；Liquid Glass 時靜止是半透明的灰色果凍膠囊（上半部一層光澤、上緣亮線、下緣淡淡的內陰影），
+   背後是黑色或白色都看得出是一顆膠囊（2026-10-22 你回報首頁背後是黑色時，整條底盤看起來都像被選取）。鏡片本身不用 backdrop-filter。
+   抬起時水平放大由 transform 的 scaleX 負責，垂直放大由獨立的 scale 屬性負責：兩者用同一條彈簧曲線，垂直晚 --ll-lift-lag 才開始，
+   按下時先橫向撐開、再往上彈高，接著橫向與縱向交替回彈幾下，像史萊姆；放下時也一樣。兩個轉場各自可以中途反轉，不會跳 */
+.ll-lens {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  background: var(--ll-accent-tint);
+  /* 垂直的 scale 屬性靜止時不寫（none）。Lightning CSS 會把同一條規則裡字面值的 transform 與 scale 併成一個 transform
+     （例如 scale: 1 1 或 scale: 1 1.3），垂直就沒有自己的轉場、70ms 的錯開也會消失；用 var() 的寫法不會被併 */
+  transform: scaleX(1);
+  transition:
+    transform var(--ll-dur-lift) var(--ll-ease-lift),
+    scale var(--ll-dur-lift) var(--ll-ease-lift) var(--ll-lift-lag);
+}
+html[data-glass='frost'] .ll-lens,
+html[data-glass='refract'] .ll-lens {
+  background: var(--ll-lens-rest-bg);
+  box-shadow: var(--ll-lens-rest-rim);
+}
+html[data-glass='frost'] .ll-tabbar__pill::before,
+html[data-glass='refract'] .ll-tabbar__pill::before {
+  box-shadow: var(--ll-lens-lift-shadow);
+}
+/* 抬起時的鏡片邊緣（Liquid Glass，上一版的果凍質感）：::before 是一圈細的彩虹色散環，::after 是左上亮、右下暗的鏡面環，
+   兩層都疊在放大的分身上面（z-index 1）。mask 只用在鏡片的子層，不影響底盤（07 第 6.5 節） */
+html[data-glass='frost'] .ll-lens::before,
+html[data-glass='refract'] .ll-lens::before,
+html[data-glass='frost'] .ll-lens::after,
+html[data-glass='refract'] .ll-lens::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+html[data-glass='frost'] .ll-lens::before,
+html[data-glass='refract'] .ll-lens::before {
+  padding: 1.5px;
+  background: var(--ll-lens-ring);
+}
+html[data-glass='frost'] .ll-lens::after,
+html[data-glass='refract'] .ll-lens::after {
+  padding: 1.25px;
+  background: var(--ll-lens-spec);
+}
+.ll-lens::before,
+.ll-lens::after {
+  opacity: 0;
+  transition: opacity 160ms var(--ll-ease-standard);
+}
+
+/* 放大鏡（nekoserve D-161）：鏡片裡的 Tab 分身與真的 Tab 重合，鏡片放大時分身跟著以鏡片中心放大（晃動時也跟著晃，像透過果凍看）。
+   分身底板不透明，下面原尺寸的字才不會透出來疊成兩層；內縮 1px（3x 螢幕上是整數像素），Tier 0 的細邊畫在這 1px 裡 */
+.ll-lens__mag {
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  overflow: hidden;
+  /* Tier 0 與靜止的鏡片同色，抬起時選取的底色不會突然變掉 */
+  background: var(--ll-accent-tint);
+  opacity: 0;
+  visibility: hidden;
+  /* 看得到的淡出是下面 is-fading 的 160ms；這裡的 220ms 只在 destroy() 一次拿掉所有 class 時用到，
+     visibility 等不透明度歸零後才變成 hidden */
+  transition:
+    opacity 220ms var(--ll-ease-standard),
+    visibility 0s linear 220ms;
+}
+/* 分身底板：接近白色的光澤，上緣亮、下緣一點內陰影，看起來有厚度 */
+html[data-glass='frost'] .ll-lens__mag,
+html[data-glass='refract'] .ll-lens__mag {
+  background: var(--ll-lens-face);
+  box-shadow: var(--ll-lens-face-shade);
+}
+/* Tier 0：抬起的鏡片超出底盤時，用 1px 細邊與頁面分開（審查建議，2026-10-22） */
+html:not([data-glass='frost']):not([data-glass='refract']) .ll-tabbar.is-raised .ll-lens {
+  box-shadow: inset 0 0 0 1px var(--ll-tabbar-hairline);
+}
+/* 分身的版面與 .ll-tabbar__list 相同；寬高由 tabbar.ts 量好寫進 --ll-row-w、--ll-row-h，位置由 tabbar.ts 用 transform 對齊 */
+.ll-lens__row {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: var(--ll-row-w, 0px);
+  height: var(--ll-row-h, 0px);
+  /* 左右留白與真的清單相同（tabbar.ts 量好寫進 --ll-row-pad） */
+  padding: 6px var(--ll-row-pad, 6px);
+  transform-origin: 0 0;
+}
+.ll-lens__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  color: var(--ll-text);
+}
+
+/* 抬起（按住、拖曳、按下後的切換）：鏡片浮到 Tab 上方並放大 --ll-lift 倍；靜止時在 Tab 下方，選取的 Tab 保持清晰（nekoserve D-079）。
+   is-raised 管「在 Tab 上方、顯示分身」，is-lifted 管「放大」：抬起時兩個同時加上，分身立刻出現（縮放 1 時分身與真的 Tab 重合）；
+   放下時先拿掉 is-lifted 讓鏡片縮回，縮回之後 tabbar.ts 才拿掉 is-raised，所以不會出現兩層字 */
+.ll-tabbar.is-raised .ll-tabbar__pill {
+  z-index: 2;
+}
+/* 放下淡出分身時，膠囊先降回 Tab 下面：靜止的膠囊是半透明的，若還蓋在真的 Tab 上，淡出那 160ms 選取的圖示與字會變淡（2026-10-22 模擬器錄影）。
+   這時（LIFT_MS 的 70%，483ms）鏡片已縮回約 0.995 倍，分身與真的 Tab 幾乎重合，不會看到兩層字；
+   iOS 17.0 與 17.1 用 cubic-bezier 退路時約 0.98 倍 */
+.ll-tabbar.is-raised.is-fading .ll-tabbar__pill {
+  z-index: auto;
+}
+.ll-tabbar.is-raised .ll-lens__mag {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+.ll-tabbar.is-raised.is-fading .ll-lens__mag {
+  opacity: 0;
+  transition: opacity 160ms var(--ll-ease-standard);
+}
+/* 鏡片邊緣與分身同時出現、同時淡出；彩虹環維持上一版抬起時的 0.55 */
+.ll-tabbar.is-raised .ll-lens::before {
+  opacity: 0.55;
+  transition: none;
+}
+.ll-tabbar.is-raised .ll-lens::after {
+  opacity: 1;
+  transition: none;
+}
+.ll-tabbar.is-raised.is-fading .ll-lens::before,
+.ll-tabbar.is-raised.is-fading .ll-lens::after {
+  opacity: 0;
+  transition: opacity 160ms var(--ll-ease-standard);
+}
+.ll-tabbar.is-lifted .ll-lens,
+.ll-tabbar.is-lifted .ll-tabbar__pill::before {
+  transform: scaleX(var(--ll-lift));
+  scale: 1 var(--ll-lift);
+}
+.ll-tabbar.is-lifted .ll-tabbar__pill::before {
+  opacity: 1;
+}
+/* 2026-10-21 試過抬起時在鏡片兩端加模糊（nekoserve 的 liquid-lens::after），驗證時看起來像霧玻璃、彩虹邊變弱，
+   又違反「全站只有一個 backdrop-filter」，已拿掉；邊緣的玻璃感改靠上面的鏡面環與彩虹色散環 */
+/* 試作專用（?ll-lens=align）：抬起但不放大，用來截圖檢查分身是否與真的 Tab 重合。
+   用 token 歸 1，不寫 transform: none 與 scale: none（Lightning CSS 會把兩者併成 transform: scale(1)，垂直的 1.3 倍就漏出來） */
+.ll-tabbar.is-align {
+  --ll-lift: 1;
+}
+
+.ll-tabbar__link {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 999px;
+  /* 未選取圖示改用主要文字色（底盤比以前透明；也與 iOS 的 Tab bar 一致） */
+  color: var(--ll-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-tabbar__link:active {
+  transform: scale(0.96);
+}
+.ll-tabbar__link:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: -3px;
+}
+.ll-icon {
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+.ll-icon--fill {
+  display: none;
+}
+.ll-tabbar__label {
+  /* 16 第 5 節：標籤一律用主要文字色 */
+  color: var(--ll-text);
+  font-size: 12px;
+  /* 07 的 --ll-type-caption（12px、600）；LINE 的標籤也是半粗體。選取的 Tab 是 700 */
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+/* 選取樣式跟著 data-current（真的 Tab 與分身共用）：拖曳放開時指示可以先移到新 Tab，aria-current 等路由真的換頁才改 */
+:is(
+  .ll-tabbar[data-current='0'] :is(.ll-tabbar__list > li:nth-child(1) > .ll-tabbar__link, .ll-lens__item:nth-child(1)),
+  .ll-tabbar[data-current='1'] :is(.ll-tabbar__list > li:nth-child(2) > .ll-tabbar__link, .ll-lens__item:nth-child(2)),
+  .ll-tabbar[data-current='2'] :is(.ll-tabbar__list > li:nth-child(3) > .ll-tabbar__link, .ll-lens__item:nth-child(3)),
+  .ll-tabbar[data-current='3'] :is(.ll-tabbar__list > li:nth-child(4) > .ll-tabbar__link, .ll-lens__item:nth-child(4)),
+  .ll-tabbar[data-current='4'] :is(.ll-tabbar__list > li:nth-child(5) > .ll-tabbar__link, .ll-lens__item:nth-child(5))
+) {
+  color: var(--ll-accent-ink);
+}
+:is(
+    .ll-tabbar[data-current='0'] :is(.ll-tabbar__list > li:nth-child(1) > .ll-tabbar__link, .ll-lens__item:nth-child(1)),
+    .ll-tabbar[data-current='1'] :is(.ll-tabbar__list > li:nth-child(2) > .ll-tabbar__link, .ll-lens__item:nth-child(2)),
+    .ll-tabbar[data-current='2'] :is(.ll-tabbar__list > li:nth-child(3) > .ll-tabbar__link, .ll-lens__item:nth-child(3)),
+    .ll-tabbar[data-current='3'] :is(.ll-tabbar__list > li:nth-child(4) > .ll-tabbar__link, .ll-lens__item:nth-child(4)),
+    .ll-tabbar[data-current='4'] :is(.ll-tabbar__list > li:nth-child(5) > .ll-tabbar__link, .ll-lens__item:nth-child(5))
+  )
+  .ll-icon--regular {
+  display: none;
+}
+:is(
+    .ll-tabbar[data-current='0'] :is(.ll-tabbar__list > li:nth-child(1) > .ll-tabbar__link, .ll-lens__item:nth-child(1)),
+    .ll-tabbar[data-current='1'] :is(.ll-tabbar__list > li:nth-child(2) > .ll-tabbar__link, .ll-lens__item:nth-child(2)),
+    .ll-tabbar[data-current='2'] :is(.ll-tabbar__list > li:nth-child(3) > .ll-tabbar__link, .ll-lens__item:nth-child(3)),
+    .ll-tabbar[data-current='3'] :is(.ll-tabbar__list > li:nth-child(4) > .ll-tabbar__link, .ll-lens__item:nth-child(4)),
+    .ll-tabbar[data-current='4'] :is(.ll-tabbar__list > li:nth-child(5) > .ll-tabbar__link, .ll-lens__item:nth-child(5))
+  )
+  .ll-icon--fill {
+  display: block;
+}
+:is(
+    .ll-tabbar[data-current='0'] :is(.ll-tabbar__list > li:nth-child(1) > .ll-tabbar__link, .ll-lens__item:nth-child(1)),
+    .ll-tabbar[data-current='1'] :is(.ll-tabbar__list > li:nth-child(2) > .ll-tabbar__link, .ll-lens__item:nth-child(2)),
+    .ll-tabbar[data-current='2'] :is(.ll-tabbar__list > li:nth-child(3) > .ll-tabbar__link, .ll-lens__item:nth-child(3)),
+    .ll-tabbar[data-current='3'] :is(.ll-tabbar__list > li:nth-child(4) > .ll-tabbar__link, .ll-lens__item:nth-child(4)),
+    .ll-tabbar[data-current='4'] :is(.ll-tabbar__list > li:nth-child(5) > .ll-tabbar__link, .ll-lens__item:nth-child(5))
+  )
+  .ll-tabbar__label {
+  font-weight: 700;
+}
+
+/* 捲動收合：只動 transform、只輕微縮小，標籤一律保持可見（07 第 6.3 節；你在實機上回報不喜歡標籤消失，2026-10-21） */
+.ll-tabbar.is-collapsed {
+  --ll-tabbar-y: 4px;
+  --ll-tabbar-scale: 0.92;
+}
+/* 鍵盤開啟時整條隱藏，動畫結束後 visibility: hidden（移出焦點順序） */
+.ll-tabbar.is-hidden {
+  --ll-tabbar-y: calc(100% + 24px + env(safe-area-inset-bottom, 0px));
+}
+.ll-tabbar.is-hidden-done {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ll-tabbar,
+  .ll-tabbar__link,
+  .ll-lens,
+  .ll-lens::before,
+  .ll-lens::after,
+  .ll-lens__mag,
+  .ll-tabbar__pill::before {
+    transition: none;
+  }
+}
+
+/* 電腦：同一個 nav 改成左側懸浮側邊欄（02、07 第 6.1 節）。不做捲動收合，也不做按住放大與拖曳（只有切換動畫） */
+@media (min-width: 1024px) {
+  .ll-tabbar {
+    left: max(16px, env(safe-area-inset-left));
+    right: auto;
+    top: 50%;
+    bottom: auto;
+    width: 88px;
+    height: auto;
+    max-width: none;
+    margin: 0;
+    border-radius: 28px;
+    transform: translateY(-50%);
+  }
+  .ll-tabbar__list {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 64px;
+    padding: 6px;
+  }
+  .ll-tabbar__pill {
+    top: 6px;
+    bottom: auto;
+    left: 6px;
+    right: 6px;
+    width: auto;
+    height: 64px;
+    border-radius: 22px;
+    transform: translateY(var(--ll-pill-x, calc(var(--ll-pill-i, 0) * 100%)));
+  }
+  .ll-lens__mag {
+    display: none;
+  }
+  .ll-tabbar__link {
+    border-radius: 22px;
+  }
+  .ll-tabbar.is-collapsed {
+    --ll-tabbar-y: 0px;
+    --ll-tabbar-scale: 1;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .ll-tabbar {
+    border-color: var(--ll-text);
+  }
+  .ll-lens {
+    box-shadow: inset 0 0 0 1px var(--ll-text);
+  }
+  /* 增加對比時（強制 Tier 0）抬起的鏡片也維持文字色外框，權重要高過上面 Tier 0 的細邊 */
+  html:not([data-glass='frost']):not([data-glass='refract']) .ll-tabbar.is-raised .ll-lens {
+    box-shadow: inset 0 0 0 1px var(--ll-text);
+  }
+}
+@media (forced-colors: active) {
+  .ll-tabbar {
+    background: Canvas;
+    color: CanvasText;
+    border: 1px solid CanvasText;
+    box-shadow: none;
+  }
+  .ll-tabbar::after,
+  .ll-tabbar__pill {
+    display: none;
+  }
+  .ll-tabbar [aria-current='page'] {
+    outline: 2px solid Highlight;
+  }
+}

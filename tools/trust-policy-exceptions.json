@@ -1,0 +1,28 @@
+{
+  "note": "信任政策例外（trustPolicyExclude）與版本覆寫（overrides）的紀錄。09 第 2.2 節只定義了 minimumReleaseAge 例外的格式，這裡比照它的欄位；CI 的 check:exceptions 比對本檔與 pnpm-workspace.yaml 一致，並在超過 expires 時失敗提醒移除。",
+  "exceptions": [
+    {
+      "entry": "semver@6.3.1",
+      "setting": "trustPolicyExclude",
+      "advisory": null,
+      "reason": "2023-07 在 6.x 版線補發的安全修正版（修正空白字元處理），沒有 provenance；比它早發布的 7.5.x 有 provenance，pnpm 只依發布日期比較而判為信任降級。由 @lingui/cli 6.9.0 → @babel/core 7.29.7 引入，沒有符合 ^6.3.1 且帶 provenance 的版本。發布者 lukekarrys（npm CLI 團隊），gitHead b717044 為 npm/node-semver 的 release 6.3.1 commit（M0a 查核）。",
+      "approvedBy": "使用者（2026-10-20，M0a）；M0b 建立正式 repo 時再次觸發（2026-10-22），沿用同一個例外",
+      "added": "2026-10-22",
+      "expires": null,
+      "review": "@babel/core 改依賴 semver 7 以上、Lingui 不再透過 @babel/core 引入 semver 6，或 pnpm 改善跨 major 的信任比較時移除；每個里程碑開工時重新確認是否仍需要。"
+    }
+  ],
+  "overrides": [
+    {
+      "entry": "@trickfilm400/rollup-plugin-off-main-thread",
+      "setting": "overrides",
+      "pinnedTo": "2.5.0",
+      "declaredBy": "workbox-build@7.4.1（^3.0.0-pre1），經由 vite-plugin-pwa@2.0.0",
+      "reason": "3.0.0-pre1 沒有 provenance，比它早 32 分鐘發布的 2.5.0 有，pnpm 判為信任降級；作者在 Workbox PR #3446 表示那一版原本只是測試版。M0a 查核：兩個 tarball 的 integrity 與 registry 一致；執行時用到的 index.js、loader.ejs 與 2.5.0 只差 CRLF 換行，dependencies 相同，沒有安裝腳本；多出的只有 tests/ 底下的建置檔。固定到 2.5.0，trustPolicy 不加例外。",
+      "approvedBy": "使用者（2026-10-20，選項 B）；M0b 2026-10-22 再次觸發，沿用",
+      "added": "2026-10-22",
+      "expires": null,
+      "review": "Workbox 改用有 provenance 的版本（例如 4.x）或回到其他實作時移除；每個里程碑開工時重新確認。"
+    }
+  ]
+}

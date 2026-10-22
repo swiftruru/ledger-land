@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-22 12:04+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: zh-TW\n"
+
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChoiceGroup.tsx
+msgid "quiz.choice.status.wrongUnselected"
+msgstr "不是正確答案"
+
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChoiceGroup.tsx
+msgid "quiz.choice.status.wrongSelected"
+msgstr "不是正確答案，你選了"
+
+#. 答錯時的回饋標題
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FeedbackPanel.tsx
+msgid "quiz.feedback.wrong"
+msgstr "再想想"
+
+#. 作答後重新作答同一題
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChoiceGroup.tsx
+msgid "quiz.retry"
+msgstr "再試一次"
+
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChoiceGroup.tsx
+msgid "quiz.choice.status.correctMissed"
+msgstr "正確答案，你沒有選"
+
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChoiceGroup.tsx
+msgid "quiz.choice.status.correctSelected"
+msgstr "正確答案，你選了"
+
+#. 作答的共用按鈕，按下後才判分
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChoiceGroup.tsx
+msgid "quiz.submit"
+msgstr "確認答案"
+
+#. 答對時的回饋標題
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FeedbackPanel.tsx
+msgid "quiz.feedback.correct"
+msgstr "答對了！"

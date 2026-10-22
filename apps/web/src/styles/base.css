@@ -1,0 +1,195 @@
+/* 頁面與殼層的樣式（apps/web）：只用 packages/tokens 的變數；共用元件的樣式在 packages/web-ui；Tab bar 在 tabbar.css */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  background: var(--ll-bg);
+  color: var(--ll-text);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Tab bar 高度加 safe area 再加 24px（07 第 6.1 節，WCAG 2.4.11） */
+  scroll-padding-bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + 24px);
+  scroll-padding-top: var(--ll-space-4);
+}
+body {
+  margin: 0;
+  background: var(--ll-bg);
+  min-height: 100dvh;
+  font-size: var(--ll-type-body-size);
+  line-height: 1.6;
+  touch-action: manipulation;
+}
+a {
+  color: var(--ll-link);
+}
+:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-skiplink {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: var(--ll-z-skiplink);
+  padding: 8px 12px;
+  background: var(--ll-surface);
+  color: var(--ll-text);
+  border-radius: var(--ll-radius-sm);
+}
+.ll-skiplink:focus {
+  top: calc(env(safe-area-inset-top, 0px) + 8px);
+}
+.ll-topbar {
+  /* 頂部實色區域，不依賴 black-translucent（06 第 2.4 節、07 第 6.6 節） */
+  background: var(--ll-bg);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+main {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--ll-space-4) max(var(--ll-space-4), env(safe-area-inset-left)) calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + 24px)
+    max(var(--ll-space-4), env(safe-area-inset-right));
+}
+h1 {
+  font-size: var(--ll-type-title-1-size);
+  line-height: var(--ll-type-title-1-line);
+  font-weight: var(--ll-type-title-1-weight);
+  margin: 8px 0 12px;
+}
+h2 {
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: var(--ll-type-title-3-weight);
+  margin: var(--ll-space-6) 0 var(--ll-space-2);
+}
+/* 換頁後由程式把焦點移到頁面標題（07 第 8.2 節）：標題不是互動元素，不畫焦點框 */
+main h1[tabindex='-1']:focus {
+  outline: none;
+}
+.ll-muted {
+  color: var(--ll-text-2);
+}
+.ll-small {
+  font-size: var(--ll-type-body-sm-size);
+}
+.ll-ok {
+  color: var(--ll-success-ink);
+}
+.ll-list {
+  padding-left: 1.2em;
+}
+.ll-list li {
+  margin: var(--ll-space-2) 0;
+}
+.ll-dl dt {
+  font-weight: 600;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+}
+.ll-dl dd {
+  margin: 0 0 var(--ll-space-3);
+}
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--ll-surface-2);
+  border-radius: var(--ll-radius-sm);
+  padding: 10px;
+  font-size: var(--ll-type-footnote-size);
+}
+input[type='text'],
+input:not([type]) {
+  font-size: 16px; /* 至少 16px，避免 iOS 聚焦時放大 */
+  min-height: var(--ll-target-min);
+  padding: 8px 12px;
+  border-radius: var(--ll-radius-sm);
+  border: 1px solid var(--ll-border-strong);
+  background: var(--ll-surface);
+  color: var(--ll-text);
+}
+.ll-notice__title {
+  margin: 0 0 6px;
+  font-size: var(--ll-type-callout-size);
+}
+.ll-locale-suggest {
+  display: flex;
+  gap: var(--ll-space-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+.ll-update {
+  position: fixed;
+  z-index: var(--ll-z-toast);
+  left: 12px;
+  right: 12px;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  max-width: 480px;
+  margin-inline: auto;
+}
+.ll-settings .ll-seg {
+  margin-bottom: var(--ll-space-2);
+}
+/* 外觀設定的風味圓點：該風味的卡片色（由 tokens 的 surface 值而來） */
+.ll-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+  box-shadow: 0 0 0 1px var(--ll-border-strong);
+  vertical-align: -1px;
+}
+.ll-dot--violet {
+  background: #22212c;
+}
+.ll-dot--berry {
+  background: #2a212c;
+}
+.ll-dot--wine {
+  background: #2c2122;
+}
+/* 最糟背景測試區（07 第 6.4 節） */
+.ll-stress {
+  height: 220px;
+  border-radius: var(--ll-radius-md);
+  margin: var(--ll-space-3) 0;
+}
+.ll-stress--black {
+  background: #000000;
+}
+.ll-stress--white {
+  background: #ffffff;
+}
+.ll-stress--stripes {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--ll-highlight-ring) 0 16px,
+    var(--ll-link) 16px 32px,
+    var(--ll-star) 32px 48px,
+    var(--ll-success-ink) 48px 64px
+  );
+}
+/* debug 頁讀取 safe area 用的探針（不可見） */
+.ll-safearea-probe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+}
+.ll-svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+@media (min-width: 1024px) {
+  main {
+    /* 電腦版左側有 88px 的懸浮側邊欄（07 第 6.1 節） */
+    padding-left: calc(var(--ll-tabbar-rail-w) + 32px);
+    padding-bottom: var(--ll-space-8);
+  }
+}

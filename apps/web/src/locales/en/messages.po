@@ -1,0 +1,538 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-22 13:02+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.name"
+msgstr "The name and logo of LedgerLand 會計樂園 are reserved and not covered by the open source licences."
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.contact.body"
+msgstr "The issue page of the GitHub repository"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.ifrsEnglish"
+msgstr "IFRS term"
+
+#. 首頁大標題，站名
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.title"
+msgstr "LedgerLand 會計樂園"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.intro"
+msgstr "LedgerLand 會計樂園 is a public, open source, mobile first site for learning introductory accounting: through quest questions and a statement lab, starting from the books of a small shop, you meet assets, liabilities, equity and the three financial statements. Bilingual and usable offline."
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.not.title"
+msgstr "What we do not do"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.not.body"
+msgstr "No sign in, no collection of names or student numbers, no cookies, and your answers never leave your device. Apart from the analytics script described below, no third party scripts, fonts or images are loaded."
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.host.title"
+msgstr "What the host records"
+
+#. js-lingui-explicit-id
+#: src/app/Root.tsx
+msgid "shell.main"
+msgstr "Main content"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.elapsed"
+msgstr "Time"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.title"
+msgstr "Demo question: what is an asset?"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.link.demo"
+msgstr "Demo question page (your answer is kept when you switch language)"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.stored.body"
+msgstr "Your answers, stars, review list, badges, unlocked terms, settings and language preference, plus the last 50 error records. They live in IndexedDB, localStorage and the Service Worker cache, all belonging to this site’s origin. A Safari tab and a Home Screen app keep two separate copies."
+
+#. js-lingui-explicit-id
+#: src/components/EphemeralNotice.tsx
+msgid "ephemeral.body"
+msgstr "You are in the preview that the Camera opened. Tap the compass icon at the bottom right to open this page in Safari. If you have added LedgerLand to your Home Screen, use “Scan class QR” in the app instead."
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.summary"
+msgstr "Your learning records stay in this browser on this device. There are no accounts and no cookies; the only tracking is anonymous analytics that collects no personal data."
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.storage"
+msgstr "Storage"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.updated"
+msgstr "Last updated: 22 October 2026"
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.generic.title"
+msgstr "Something went wrong"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.content"
+msgstr "Original teaching content (questions, term cards, explanations and the narrative text of stories): Creative Commons Attribution ShareAlike 4.0 International (CC BY-SA 4.0)."
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.repo"
+msgstr "Source code and third party notices (GitHub)"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.camera.body"
+msgstr "Camera permission is requested only when you tap “Scan class QR”. The image is decoded on this device only; nothing is recorded, captured or uploaded, and the camera is turned off when you leave the scanner. (This feature arrives in a later milestone.)"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.link.terms"
+msgstr "Glossary"
+
+#. 名詞圖鑑的頁面標題（模組全名）
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.title"
+msgstr "Glossary"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.back"
+msgstr "Back to the glossary"
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+#: src/pages/NotFound.tsx
+msgid "error.home"
+msgstr "Back to home"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.delete.body"
+msgstr "Clear this site’s data in your browser. The “Clear data on this device” option under Me › Settings arrives in a later milestone."
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.title"
+msgstr "Statement Lab"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.placeholder"
+msgstr "The Statement Lab arrives in a later milestone."
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.theme.label"
+msgstr "Appearance"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.appearanceLink"
+msgstr "Appearance, dark flavour and glass effect are set under Me › Settings."
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.flavor.violet"
+msgstr "Night sky"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.delete.title"
+msgstr "How to delete"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.hint"
+msgstr "If you have turned on “Reduce Transparency” on your iPhone, the web page cannot read that setting; choose “Reduce transparency” here. Refraction only works in desktop Chromium browsers."
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.stored.title"
+msgstr "What is stored"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.progressLater"
+msgstr "Progress, badges and backups arrive in later milestones."
+
+#. 第一次快取完成、可以離線使用時的一次性提示
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.offlineReady"
+msgstr "Ready to use offline."
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.copied"
+msgstr "Copied"
+
+#. 「我的」頁面標題
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.title"
+msgstr "Me"
+
+#. js-lingui-explicit-id
+#: src/pages/NotFound.tsx
+msgid "notfound.title"
+msgstr "Page not found"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.stressHint"
+msgstr "Scroll these blocks behind the tab bar below and check that the labels and icons stay readable."
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.refract"
+msgstr "Refraction"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.title"
+msgstr "Licences"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.story"
+msgstr "The story scenarios and amounts are used with the permission of teacher 陳彥宏 and are not covered by the CC licence; ask the teacher before reusing them."
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.teacherLabel"
+msgstr "Course wording"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.numbers"
+msgstr "Number formats"
+
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.update"
+msgstr "Update"
+
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.updateAvailable"
+msgstr "A new version is available. Your progress has been saved; tap “Update” to reload."
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.analytics.note"
+msgstr "Service: Cloudflare Web Analytics. No cookies, no answer data; enabled only on the production site and skipped when offline or blocked."
+
+#. js-lingui-explicit-id
+#. placeholder {0}: site.productionOrigin
+#: src/pages/Privacy.tsx
+msgid "privacy.analytics.body"
+msgstr "This site uses Cloudflare Web Analytics (provided and stored by Cloudflare) only to learn how many people use it, which pages are opened and how fast they load. It uses no cookies and collects no names, emails or anything that identifies a person. It collects the page path (path only, no query string), the referring site, browser and operating system type, country or region, and page load performance metrics. It never includes your answers, progress or error records, and it is enabled only on the production site {0}. Nothing is sent while offline, and a failed load does not affect learning."
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.materials"
+msgstr "This site’s licences do not cover the teacher’s course materials (slides, spreadsheets, questions, answers); the site does not include or distribute them."
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.analytics"
+msgstr "Analytics"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.analytics.title"
+msgstr "Analytics"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.theme.dark"
+msgstr "Dark"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.flavor.label"
+msgstr "Dark flavour"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.theme.light"
+msgstr "Light"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.errors.clear"
+msgstr "Clear"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.loss.body"
+msgstr "Clearing browser data, or the browser clearing data after a long period of no use (for example Safari’s rules), can make your progress disappear. The site tries to lower that chance but cannot guarantee it; backup and export arrive in a later milestone."
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.inputLabel"
+msgstr "Test amount input"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.version.title"
+msgstr "Version"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.version"
+msgstr "Version"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.label"
+msgstr "Glass effect"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.stressTitle"
+msgstr "Glass test area"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.currentTwLabel"
+msgstr "Current Taiwanese wording"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.tagline"
+msgstr "Learn introductory accounting through quests and a statement lab. Bilingual and usable offline."
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.build.title"
+msgstr "Current progress"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.camera.title"
+msgstr "Camera"
+
+#. js-lingui-explicit-id
+#: src/components/EphemeralNotice.tsx
+#: src/components/UpdatePrompt.tsx
+msgid "common.ok"
+msgstr "Got it"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.license.code"
+msgstr "Code: MIT licence."
+
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.later"
+msgstr "Later"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.flavor.wine"
+msgstr "Red wine"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.host.body"
+msgstr "The hosting provider, Cloudflare, keeps server logs that include IP addresses and browser information, handled under its own policies."
+
+#. 部署後舊頁面載入已不存在的檔案時的標題
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.updated.title"
+msgstr "The site has been updated"
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.updated.body"
+msgstr "The site has been updated. Reload to continue; your progress has been saved."
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.contact.title"
+msgstr "Contact"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.auto"
+msgstr "Automatic"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.flavor.berry"
+msgstr "Berry"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.env"
+msgstr "Device and environment"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.copy"
+msgstr "Copy everything"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.settings"
+msgstr "Settings"
+
+#. js-lingui-explicit-id
+#: src/pages/Settings.tsx
+msgid "settings.title"
+msgstr "Settings"
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.link.settings"
+msgstr "Settings (language, appearance, dark flavour)"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.debug"
+msgstr "Diagnostics"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.title"
+msgstr "Diagnostics"
+
+#. js-lingui-explicit-id
+#: src/components/LangSwitch.tsx
+#: src/pages/Settings.tsx
+msgid "lang.label"
+msgstr "Language"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.loss.title"
+msgstr "When data may be lost"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.theme.system"
+msgstr "Follow system"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.hint"
+msgstr "This page only shows information on this device and sends nothing. Whether to share “Copy everything” with anyone is up to you."
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.generic.body"
+msgstr "This page cannot be shown right now. You can go back to the home page, or take a screenshot of this screen to report it to us."
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+#: src/pages/Terms.tsx
+msgid "content.offlineMissing"
+msgstr "This page has not been downloaded to this device yet. Try again once you are online; content already downloaded still works."
+
+#. js-lingui-explicit-id
+#: src/components/EphemeralNotice.tsx
+msgid "ephemeral.title"
+msgstr "Your progress will not be kept when this screen is closed"
+
+#. js-lingui-explicit-id
+#: src/pages/NotFound.tsx
+msgid "notfound.body"
+msgstr "There is no page at this address. The address may be mistyped, or the content has been retired."
+
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.build.body"
+msgstr "This is the shell site of the foundations stage (M0b): the tab bar, language switch, appearance settings, sample glossary data and the demo question page are ready to try. Quest levels and the Statement Lab arrive in later milestones."
+
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.reload"
+msgstr "Reload"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.refresh"
+msgstr "Measure again"
+
+#. js-lingui-explicit-id
+#: src/pages/Debug.tsx
+msgid "debug.errors"
+msgstr "Error records (last 50)"
+
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.demo.inputHint"
+msgstr "Keyboard test: enter an amount (the tab bar should hide while the keyboard is open)"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "play.title"
+msgstr "Quest"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "play.placeholder"
+msgstr "The quest map and levels arrive in later milestones."
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.title"
+msgstr "About and licences"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.about"
+msgstr "About and licences"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.reduced"
+msgstr "Reduce transparency"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.privacy"
+msgstr "Privacy"
+
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.title"
+msgstr "Privacy"
+
+#. js-lingui-explicit-id
+#: src/components/AppearanceSetting.tsx
+msgid "settings.glass.frost"
+msgstr "Frosted"

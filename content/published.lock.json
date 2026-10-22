@@ -1,0 +1,6 @@
+{
+  "$comment": "已發布內容的比對基準（08 第 4.4 節）。M0b 只記錄 ID 與 rev；完整的 lock 規則（已發布 ID 不得消失、rev 只能遞增）在 M1 的 content:lock 實作。",
+  "contentVersion": 1,
+  "terms": { "tm_r4w8n2qe": 1, "tm_h6p2k9wd": 1, "tm_x3n8v5tc": 1 },
+  "chapters": { "ch_c5f8w2": 1 }
+}

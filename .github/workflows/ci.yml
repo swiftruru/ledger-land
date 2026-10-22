@@ -1,0 +1,137 @@
+# CI（09 第 10.2 節）。所有 action 以完整 commit SHA 釘版（版本註解在後）；permissions 只讀；checkout 不保留憑證。
+# 工作：install、lint、typecheck、test、content、i18n、build（含建置後檢查與體積預算）、e2e（含 axe 與減少動態）、lighthouse、hygiene、licenses。
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # pnpm 的 store 與快取都在 repo 內（.pnpm-store/、.cache/），CI 直接快取這兩個資料夾（09 第 2.5 節的查證結果）
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/ms-playwright
+  npm_config_cache: ${{ github.workspace }}/.cache/npm
+  pnpm_config_state_dir: ${{ github.workspace }}/.cache/pnpm/state
+  XDG_CONFIG_HOME: ${{ github.workspace }}/.cache/xdg-config
+  WRANGLER_SEND_METRICS: 'false'
+
+jobs:
+  verify:
+    name: lint、typecheck、test、content、i18n、hygiene、licenses
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - name: 還原 repo 內的 pnpm store
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            .pnpm-store
+            .cache/pnpm
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:exceptions
+      - run: pnpm check:actions
+      - run: pnpm check:deps
+      - run: pnpm check:dom
+      - run: pnpm check:tw
+      - run: pnpm check:hygiene
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm tokens:check
+      - run: pnpm schemas:check
+      - run: pnpm content:check
+      - run: pnpm docs:examples
+      - run: pnpm content:i18n-report
+      - name: i18n：抽取後 catalog 不得有未 commit 的變動；complete 語系不得缺字
+        run: pnpm i18n:check
+      - run: pnpm licenses:check
+      - name: 安裝 Playwright 的 WebKit（web-ui 的元件測試在 Browser Mode）
+        run: pnpm exec playwright install --with-deps webkit
+      - run: pnpm test
+
+  build:
+    name: build、postbuild、budget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            .pnpm-store
+            .cache/pnpm
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm content:build
+      - run: pnpm --filter @ledgerland/web build
+      - run: pnpm budget
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: web-dist
+          path: apps/web/dist
+          retention-days: 7
+
+  e2e:
+    name: e2e、axe、reduced motion、lighthouse
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            .pnpm-store
+            .cache/pnpm
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: web-dist
+          path: apps/web/dist
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: pnpm exec playwright install --with-deps chromium webkit firefox
+      - name: E2E（對 apps/web 的 wrangler dev，重現 Workers 的 SPA fallback 與 _headers）
+        run: pnpm e2e
+      - name: Lighthouse（5 次中位數；統計腳本指向 stub）
+        run: pnpm perf --runs 5
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: e2e-report
+          path: |
+            playwright-report
+            test-results
+            .local-reports/perf
+          retention-days: 7

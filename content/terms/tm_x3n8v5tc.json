@@ -1,0 +1,25 @@
+{
+  "id": "tm_x3n8v5tc",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": { "zh-TW": "股東權益", "en": "Equity" },
+  "teacherLabel": "股東權益",
+  "currentTwLabel": "權益",
+  "ifrsEnglish": "Equity",
+  "aliases": { "zh-TW": ["權益", "業主權益"], "en": ["Owners' equity", "Shareholders' equity"] },
+  "flags": ["old_name"],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "Conceptual Framework",
+  "note": {
+    "zh-TW": "教材用「股東權益」，現行報表的科目名稱是「權益」；本站的主要顯示跟著教材。",
+    "en": "The course materials say shareholders' equity; current Taiwanese statements use the shorter heading equity. The site follows the course wording."
+  },
+  "definition": {
+    "zh-TW": "資產減去負債後剩下、屬於股東的部分；股東投入的本錢加上公司累積下來的盈餘。",
+    "en": "What is left for the owners after subtracting liabilities from assets: the capital the owners put in plus the profits the business has kept."
+  },
+  "related": ["tm_r4w8n2qe", "tm_h6p2k9wd"]
+}

@@ -1,0 +1,4 @@
+{
+  "note": "minimumReleaseAgeExclude 的紀錄（09 第 2.2 節）。每一條都要有安全公告編號、理由、加入日與到期日（該版本自然滿兩週的日期）；CI 的 check:exceptions 比對本檔與 pnpm-workspace.yaml，缺紀錄或已過期都讓 CI 失敗。",
+  "exceptions": []
+}

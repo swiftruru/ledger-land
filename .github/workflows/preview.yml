@@ -1,0 +1,89 @@
+# PR 預覽（09 第 10.1 節）：在 apps/web 目錄以 wrangler versions upload 上傳不切換正式流量的版本，取得預覽網址並留言在 PR 上，
+# 再對預覽網址跑 Playwright E2E。fork 的 PR 拿不到 secrets，不部署預覽，只靠 ci.yml 的 e2e 工作。
+# 預覽網址是另一個 origin：一律視為測試資料、不啟用統計、殼層帶 noindex（M0a 實測：Workers 的版本預覽網址預設公開、沒有 Access 保護）。
+name: preview
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/ms-playwright
+  npm_config_cache: ${{ github.workspace }}/.cache/npm
+  pnpm_config_state_dir: ${{ github.workspace }}/.cache/pnpm/state
+  XDG_CONFIG_HOME: ${{ github.workspace }}/.cache/xdg-config
+  WRANGLER_SEND_METRICS: 'false'
+
+jobs:
+  preview:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            .pnpm-store
+            .cache/pnpm
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm content:build
+      - run: pnpm --filter @ledgerland/web build
+      - name: 上傳預覽版本（不切換正式流量）
+        id: upload
+        working-directory: apps/web
+        run: |
+          pnpm exec wrangler versions upload --message "PR #${PR_NUMBER} ${HEAD_SHA}" > upload.log 2>&1 || { cat upload.log; exit 1; }
+          cat upload.log
+          url=$(grep -Eo 'https://[a-z0-9-]+-ledgerland\.[a-z0-9-]+\.workers\.dev' upload.log | head -1)
+          [ -n "$url" ] || { echo "找不到預覽網址"; exit 1; }
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      - name: 在 PR 留言預覽網址
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          PREVIEW_URL: ${{ steps.upload.outputs.url }}
+        with:
+          script: |
+            const url = process.env.PREVIEW_URL;
+            const marker = '<!-- ll-preview -->';
+            const body = `${marker}\n預覽網址（測試資料、不收錄、不載入統計）：${url}\n\n中文深層連結：${url}/terms/tm_r4w8n2qe/ ，英文：${url}/en/terms/tm_r4w8n2qe/`;
+            const { data: comments } = await github.rest.issues.listComments({ ...context.repo, issue_number: context.issue.number });
+            const mine = comments.find((c) => c.body?.startsWith(marker));
+            if (mine) await github.rest.issues.updateComment({ ...context.repo, comment_id: mine.id, body });
+            else await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: pnpm exec playwright install --with-deps chromium webkit firefox
+      - name: 對預覽網址跑 E2E（全部通過才允許合併與部署）
+        run: pnpm e2e
+        env:
+          LL_E2E_BASE_URL: ${{ steps.upload.outputs.url }}
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: preview-e2e-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

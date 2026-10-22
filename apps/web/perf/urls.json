@@ -1,0 +1,20 @@
+{
+  "$comment": "固定量測網址與預算（06 第 8.2 節）。M0b 只量已存在的頁面；章節頁、闖關地圖與實驗室步驟在對應里程碑加入。analytics.mode 為 stub 時統計腳本照正式方式載入但指向 stub 端點。",
+  "lighthouse": { "version": "13.5.0", "runs": 5, "aggregate": "median", "formFactor": "mobile", "cpuSlowdownMultiplier": 4 },
+  "analytics": { "mode": "stub" },
+  "urls": [
+    { "name": "home", "path": "/" },
+    { "name": "quiz", "path": "/level/lv_k7m2q9xd/" },
+    { "name": "quiz-en", "path": "/en/level/lv_k7m2q9xd/" },
+    { "name": "terms", "path": "/terms/" },
+    { "name": "term", "path": "/terms/tm_r4w8n2qe/" }
+  ],
+  "assertions": {
+    "largest-contentful-paint": { "maxMs": 2500 },
+    "total-blocking-time": { "maxMs": 200 },
+    "cumulative-layout-shift": { "max": 0.1 },
+    "categories.performance": { "min": 0.9 },
+    "categories.accessibility": { "min": 0.95 }
+  },
+  "budgets": { "initialJsGzipKb": 150, "initialCssGzipKb": 30, "precacheKb": 1024 }
+}

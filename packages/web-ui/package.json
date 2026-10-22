@@ -1,0 +1,35 @@
+{
+  "name": "@ledgerland/web-ui",
+  "version": "0.0.0",
+  "private": true,
+  "description": "網站與後台共用的 React 元件與其樣式，含元件自己的 Lingui 字串檔；不放路由、頁面、殼層與 Service Worker",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles.css",
+    "./locales/*": "./src/locales/*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ledgerland/content-schema": "workspace:*",
+    "@ledgerland/i18n": "workspace:*",
+    "@ledgerland/tokens": "workspace:*",
+    "@lingui/core": "6.9.0",
+    "@lingui/react": "6.9.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@lingui/cli": "6.9.0",
+    "@lingui/format-po": "6.9.0",
+    "@lingui/vite-plugin": "6.9.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "vite": "8.3.3",
+    "vitest-browser-react": "2.3.0"
+  }
+}

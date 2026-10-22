@@ -1,0 +1,14 @@
+LedgerLand 會計樂園
+https://github.com/swiftruru/ledger-land
+
+授權分層（D6）：
+
+1. 程式碼（apps/、packages/、tools/、設定檔）：MIT，全文在 LICENSE。
+2. 原創教學內容（content/ 的題目、名詞、章節、故事的敘述文字、交易範本的文字）與 docs/ 的規劃文件：
+   創用 CC 姓名標示 相同方式分享 4.0 國際（CC BY-SA 4.0），全文在 LICENSES/CC-BY-SA-4.0.txt。
+3. 來自老師的故事情境與金額（M1 起在 content/stories/）：經陳彥宏老師授權使用，不在 CC 授權範圍內；
+   重用前要另外取得老師同意。
+4. 名稱與標誌：「LedgerLand 會計樂園」的名稱、標誌與 App 圖示另外保留，不隨 MIT 與 CC BY-SA 授出。
+   改作或 fork 的版本請改用其他名稱與標誌，不得暗示是 LedgerLand 官方版本。
+5. 第三方套件與圖示：各自原本的授權，列在 THIRD_PARTY_NOTICES.md。
+6. 本站的授權不涵蓋老師的教材（投影片、Excel、題目、解答）；網站不收錄、不散布這些教材。

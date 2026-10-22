@@ -1,0 +1,17 @@
+{
+  "id": "ch_m2t7q4",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "order": 2,
+  "scope": "core",
+  "examScope": "unconfirmed",
+  "title": { "zh-TW": "錢從哪裡來，到哪裡去" },
+  "summary": {
+    "zh-TW": "跟著小店的每一筆交易，看資產、負債與股東權益怎麼一起變動。"
+  },
+  "objectiveIds": [],
+  "levelIds": [],
+  "prerequisites": ["ch_c5f8w2"],
+  "termRefs": ["tm_r4w8n2qe"]
+}

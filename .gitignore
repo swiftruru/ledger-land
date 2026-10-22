@@ -50,3 +50,6 @@ docs/plan/15-ai-workflow.md
 # 專案隔離環境：pnpm store 與工具快取都在 repo 內（09 第 7.5 節，M0b，2026-10-22）
 .pnpm-store/
 .cache/
+
+# 內容管線的建置輸出（tools/content-build.mjs 產生到 apps/web/public/content/，Vite 複製進 dist/），不 commit
+apps/web/public/content/
