@@ -44,7 +44,8 @@ const cache = new Map<string, Promise<unknown>>();
 async function fetchJson<T>(path: string): Promise<T> {
   let res: Response;
   try {
-    res = await fetch(path, { credentials: 'omit' });
+    // 同源請求用預設的 credentials（殼層的 preload 才會被重用；本站沒有 cookie）
+    res = await fetch(path);
   } catch (e) {
     throw new ContentLoadError(`無法載入 ${path}：${String(e)}`, 'network');
   }

@@ -12,20 +12,25 @@ const TEXT: Record<Locale, { text: string; action: string; close: string }> = {
   'zh-TW': { text: '要改看中文嗎？', action: '切換', close: '關閉' },
 };
 
+function suggestFor(current: Locale): Locale | null {
+  try {
+    if (sessionStorage.getItem(KEY) === '1') return null;
+  } catch {
+    /* 忽略 */
+  }
+  const pref = readPref('ll:locale');
+  const preferred = pref && isLocale(pref) ? pref : matchLocaleOrNull(navigator.languages ?? []);
+  return preferred && preferred !== current ? preferred : null;
+}
+
 export function LocaleSuggest() {
   const current = useLocale();
   const location = useLocation();
   const navigate = useNavigate();
-  const [target, setTarget] = useState<Locale | null>(null);
+  // 在第一次 render 就決定要不要顯示（同步讀偏好與瀏覽器語言）：若等 effect 再插入，會把下面的內容往下推（CLS）
+  const [target, setTarget] = useState<Locale | null>(() => suggestFor(current));
   useEffect(() => {
-    try {
-      if (sessionStorage.getItem(KEY) === '1') return;
-    } catch {
-      /* 忽略 */
-    }
-    const pref = readPref('ll:locale');
-    const preferred = pref && isLocale(pref) ? pref : matchLocaleOrNull(navigator.languages ?? []);
-    if (preferred && preferred !== current) setTarget(preferred);
+    setTarget(suggestFor(current));
   }, [current]);
   if (!target) return null;
   const dismiss = () => {
