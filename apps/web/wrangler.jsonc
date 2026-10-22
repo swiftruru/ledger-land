@@ -15,7 +15,6 @@
   "workers_dev": true,
   "preview_urls": true,
   "observability": { "enabled": false },
-  // 自訂網域（09 第 7.3 節）：第一次正式部署時由使用者確認後再加回下面這段，加回之前只部署到 workers.dev。
-  // M0b 查證（2026-10-22）：ledgerland.swift.moe 在 DNS 上已經有指向 Cloudflare 的 A 與 AAAA 記錄，Workers 的自訂網域不能建立在已有記錄的主機名稱上，要先處理既有記錄。
-  // "routes": [{ "pattern": "ledgerland.swift.moe", "custom_domain": true }],
+  // 自訂網域（09 第 7.3 節）：2026-10-22 使用者先在儀表板把這個主機名稱從 M0a 試作的 Worker 移除，之後才加回這段；由 CI 的 deploy workflow 綁定。
+  "routes": [{ "pattern": "ledgerland.swift.moe", "custom_domain": true }],
 }
