@@ -18,6 +18,9 @@ updates:
       # TypeScript 精確鎖定 6.0.3（09 第 2.3 節）；7.x 等 7.1 的 API 推出後再評估
       - dependency-name: typescript
         update-types: ['version-update:semver-major']
+      # 執行環境釘在 Node 24（devEngines），型別定義不跟到下一個主版本
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:
