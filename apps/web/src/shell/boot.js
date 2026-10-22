@@ -37,7 +37,7 @@
   root.dataset.display = dm.standalone || dm.fullscreen || dm.navigatorStandalone ? 'app' : 'browser';
 
   // 主題（16 第 7 節）：ll:theme 為 system、light、dark（預設 system）；ll:dark-flavor 為 violet、berry、wine（預設 violet）。
-  // 色碼由 packages/tokens 在建置時填入 __LL_THEME_COLOR__
+  // 色碼由 packages/tokens 在建置時填入（vite.config.ts 的殼層外掛會把下一行的佔位換成色碼）
   var darkMq = window.matchMedia('(prefers-color-scheme: dark)');
   var THEME_COLOR = __LL_THEME_COLOR__;
   function themePref() {

@@ -56,6 +56,7 @@ headers = headers
   .replace('<統計腳本網域>', site.analytics.scriptOrigin)
   .replace('<統計回報網域>', site.analytics.reportOrigin);
 if (/[<>]/.test(headers)) fail('_headers 仍有角括號佔位');
+if (/__LL_[A-Z_]+__/.test(html)) fail('index.html 仍有未替換的 __LL_ 佔位（殼層腳本會在執行期拋錯）');
 const cspLine = headers.split('\n').find((l) => l.includes('Content-Security-Policy'));
 if (!cspLine || !cspLine.includes("frame-ancestors 'none'")) fail("_headers 的 CSP 沒有 frame-ancestors 'none'");
 writeFileSync(join(dist, '_headers'), headers);
