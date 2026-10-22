@@ -5,16 +5,17 @@ import { useEffect, useState } from 'react';
 import { Segmented } from '@ledgerland/web-ui';
 import { readFlavor, readGlass, readTheme, setFlavor, setGlass, setTheme, type Flavor, type GlassPref, type ThemePref } from '../lib/prefs.ts';
 
+const readResolved = () => ({
+  theme: document.documentElement.dataset.theme ?? 'light',
+  flavor: document.documentElement.dataset.flavor ?? 'violet',
+  glass: document.documentElement.dataset.glass ?? 'solid',
+});
+
 /** 目前生效的主題與風味（boot 腳本寫在 html 上），屬性改變時重新繪製 */
 export function useResolvedTheme() {
-  const get = () => ({
-    theme: document.documentElement.dataset.theme ?? 'light',
-    flavor: document.documentElement.dataset.flavor ?? 'violet',
-    glass: document.documentElement.dataset.glass ?? 'solid',
-  });
-  const [state, setState] = useState(get);
+  const [state, setState] = useState(readResolved);
   useEffect(() => {
-    const obs = new MutationObserver(() => setState(get()));
+    const obs = new MutationObserver(() => setState(readResolved()));
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-flavor', 'data-glass'] });
     return () => obs.disconnect();
   }, []);
