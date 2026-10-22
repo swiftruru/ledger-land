@@ -21,7 +21,7 @@ export function Root() {
   const matches = useMatches();
   const { t } = useLingui();
   const locale = localeFromPath(location.pathname);
-  const firstRender = useRef(true);
+  const lastPath = useRef<string | null>(null);
 
   // Tab bar：只掛一次；以 ref 取得殼層裡的 nav，不建立也不替換（07 第 6.1 節）
   useEffect(() => {
@@ -54,14 +54,17 @@ export function Root() {
       meta.dataset.ll = 'route';
       document.head.appendChild(meta);
     } else if (!noindex && meta) meta.remove();
-  }, [matches, locale]);
+  }, [matches]);
 
   // 換頁後焦點移到頁面標題（07 第 8.2 節）；首次載入不搶焦點
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
+    // 首次載入與同一路徑的重新繪製（例如語系切換後的 re-render）都不搶焦點
+    if (lastPath.current === null) {
+      lastPath.current = location.pathname;
       return;
     }
+    if (lastPath.current === location.pathname) return;
+    lastPath.current = location.pathname;
     const h1 = document.querySelector<HTMLElement>('main h1');
     if (h1) {
       h1.tabIndex = -1;
