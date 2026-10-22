@@ -92,7 +92,7 @@ D 系列都已決定（2026-10-20），所以下表把「依據的決定」和�
 | 里程碑 | 目標 | 主要內容 | 依據的決定 | 開工前仍待處理 | 狀態 |
 | --- | --- | --- | --- | --- | --- |
 | M0a 技術驗證 | 驗證會影響架構的技術假設，產出 go / no-go 報告 | data mode 加 `/en/` 前綴的最小專案、Cloudflare 預覽部署、PWA 離線與更新、玻璃 Tab bar（含 iOS 17）與減少動態、儲存隔離、QR 開啟位置、iOS 拖放、安裝外觀 | D4（預覽主機）、D5、D8 | 實機清單（iOS 17、26、27 與中低階 Android）、Cloudflare 帳號與預覽部署前的 `wrangler login`；試作程式的存放位置已決定（`prototypes/m0a/`） | 已完成（2026-10-22，建議 go；報告在本機 `prototypes/m0a/REPORT.md`；實機項目全部通過；缺漏只剩沒有硬體的 Android 與 iOS 26、17 實機） |
-| M0b 基礎建設 | 讓之後每個里程碑都在同一套工具與品質閘門下進行 | repo 初始化（含 01、13 的排除規則）、monorepo 骨架（根目錄 workspace、`apps/web`、`packages/tokens`、`packages/i18n`、`packages/content-schema`、`packages/web-ui`）、隔離環境、依賴方向檢查、工具鏈、CI、Cloudflare 部署（`apps/web/wrangler.jsonc`）、語系架構、design tokens、PWA 殼層、內容 pipeline 與 Term、Chapter 最小 schema、授權檔、流量統計、debug 頁 | D3、D4、D6、D7、D8、D9（Tab 名稱） | M0a 的 go 決定；統計服務的查證結果；致謝文字請老師看過；第一次正式部署前的 API token 與 GitHub secrets | 未開始 |
+| M0b 基礎建設 | 讓之後每個里程碑都在同一套工具與品質閘門下進行 | repo 初始化（含 01、13 的排除規則）、monorepo 骨架（根目錄 workspace、`apps/web`、`packages/tokens`、`packages/i18n`、`packages/content-schema`、`packages/web-ui`）、隔離環境、依賴方向檢查、工具鏈、CI、Cloudflare 部署（`apps/web/wrangler.jsonc`）、語系架構、design tokens、PWA 殼層、內容 pipeline 與 Term、Chapter 最小 schema、授權檔、流量統計、debug 頁 | D3、D4、D6、D7、D8、D9（Tab 名稱） | M0a 的 go 決定；統計服務的查證結果；致謝文字請老師看過；第一次正式部署前的 API token 與 GitHub secrets | 已完成（2026-10-22；報告在 [docs/reports/m0b.md](../reports/m0b.md)；完成標準全部達成，正式網域 `ledgerland.swift.moe` 已由 CI 部署；留給 M1、M2 的事見報告第 9 節） |
 | M1 會計核心 | 會計核心成為唯一的資料來源 | 建立 `packages/core`；科目表、交易範本、故事資料、教材版面三表、間接法現金流量表、指標登錄檔與狀態、五步驟檢查、effects、題目與範本 schema（含 `multi_choice`、`journal_entry`，放在 `packages/content-schema`） | D1、D2、D10(c)、D10(f)、D12、D13 | 建議先寄出 T 系列清單 | 未開始 |
 | M2 闖關區 MVP | 第一個可以給學生試用的版本 | `packages/quiz`、`packages/progress`、主要題型（含 `multi_choice`）、回饋與名詞卡、錯題本、進度、星星、IndexedDB 與 migration、完整的進度保護、關卡代號入口、App 內掃描 QR、前 2 到 3 章的中英原創內容 | D1、D4（正式網域）、D9、D10(a)、D11（拼字）、D12、D13 | QR 解碼器選型；試用的對象與規模 | 未開始 |
 | M3 闖關區完整 | 涵蓋期中考範圍 | 第一部分全部章節、其餘題型、「借貸與分錄」延伸章（`journal_entry`）、名詞圖鑑、徽章、完整安裝圖解 | D1 | T32 等內容相關確認 | 未開始 |
@@ -229,6 +229,8 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 - 驗證不通過時想「邊做邊修」：不允許，一律停下回報並提出備案。
 
 ## 7. M0b 基礎建設
+
+**狀態**：已完成（2026-10-22）。回報在 [docs/reports/m0b.md](../reports/m0b.md)：第 5 節逐項對照下方的完成標準，第 8 節列出 16 項與計畫不同或新發現的事（已回寫 06 第 8.2 節、09 第 7.4 與第 10 節、11 第 2 節風險 41、16），第 9 節是留給 M1 與 M2 的事（實機清單、套件 README、作答頁 CLS 複量、05 第 8.5 節的錨點還原）。下方的範圍與完成標準保留原文作為對照。
 
 **目標**：建立 repo、工具鏈、CI 與各項基礎，讓之後每個里程碑都在同一套品質閘門下進行。
 

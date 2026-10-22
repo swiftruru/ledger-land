@@ -1198,7 +1198,7 @@ V 系列在對應的里程碑執行，結果寫進該里程碑的回報（M0a �
 | React 19.3 的 `<ViewTransition>` 在不支援的瀏覽器上是否只是沒有動畫、不會出錯 | 09 |
 | 匯出備份檔（blob 下載與分享表單）在 CSP 下是否正常 | 09 |
 | M1 本機測試前，確認選用的 xlsx 讀取方式能取得公式字串與輸入值 | 04 |
-| `@lingui/vite-plugin` 的 macroTransform 能否處理 workspace 套件（`packages/web-ui`）的原始碼，抽取與編譯都正確（M0b）；不行時的退路是把 `packages/web-ui/src` 加進 app 的抽取設定 | 09 |
+| `@lingui/vite-plugin` 的 macroTransform 能否處理 workspace 套件（`packages/web-ui`）的原始碼，抽取與編譯都正確（M0b）；不行時的退路是把 `packages/web-ui/src` 加進 app 的抽取設定 | 09；M0b 結果（2026-10-22）：一半通過，macro 可處理 web-ui 原始碼，但 `.po` 要列在 `apps/web/lingui.config.ts` 的 catalogs（05 第 3.1 節） |
 
 ### 5.4 需要查證
 
@@ -1215,9 +1215,10 @@ V 系列在對應的里程碑執行，結果寫進該里程碑的回報（M0a �
 | 未查證的工具版本與發布日（axe-core/playwright、體積預算工具、Phosphor、pre-commit 工具、oxlint、Prettier） | 09 |
 | Cloudflare Workers Static Assets 的結尾斜線行為、SPA fallback 是否套用 `_headers`、`_headers` 規則上限、Workers Previews 的存取保護與費用 | 09 |
 | oxlint-tsgolint 與 `tsc` 6 結果不一致的程度 | 09 |
-| pnpm 11 能否在 `package.json` 宣告 Node 版本並自動下載到專案內（M0b）；可行就採用，否則沿用版本管理工具加 `.node-version`（寫 24） | 09 第 7.5 節 | 查證（2026-10-22，pnpm 官方文件）：`package.json` 的 `devEngines.runtime`（`{ name: "node", version: "^24.x", onFail: "download" }`，pnpm 10.14 起）會在 `pnpm install` 時解析並下載符合的 Node，精確版本與雜湊寫進 lockfile，scripts 使用這個 Node；下載到哪個目錄文件沒寫，M0b 實測並確認能設在專案內。另：`stateDir` 自 pnpm 11.22 起不能寫在 `pnpm-workspace.yaml`（會被忽略並警告），只能用全域設定或指令列，M0b 用 env 檔指定 |
-| 退回 Cloudflare Workers 保留的上一個版本的指令與步驟（M0b），查證後寫入 09 | 09 第 7.5 節 | 查證（2026-10-22，Cloudflare 官方文件）：`wrangler rollback [<VERSION_ID>] [--message]`（省略版本 ID 時退回上一個版本；互動模式可從最近 100 個版本選）；`wrangler versions list` 與 `wrangler deployments list` 查版本；儀表板在 Workers & Pages › 該 Worker › Deployments › 版本旁的選單選 Rollback。退回只換程式與資產版本，不改綁定的資源。M0b 寫進 09 第 7.5 節並實際演練一次 |
-| pnpm store 放在 repo 內（`.pnpm-store/`、`.cache/pnpm/`）時，CI 快取的設定寫法（M0b） | 09 第 2.5、7.5 節 |
+| `ledgerland.swift.moe` 在 DNS 上已有指向 Cloudflare 的 A 與 AAAA 記錄（M0b 查證，2026-10-22）；Workers 自訂網域不能建立在已有記錄的主機名稱上，綁定前要由你處理既有記錄 | 09 第 7.1 節 |
+| pnpm 11 能否在 `package.json` 宣告 Node 版本並自動下載到專案內（M0b）；可行就採用，否則沿用版本管理工具加 `.node-version`（寫 24） | 09 第 7.5 節 | 已採用（2026-10-22，M0b 實測）：Node 24.21.0 下載到 `.pnpm-store/v11/links/@/node`，lockfile 記錄；npx 不認得 `onFail: download`，用 `.cache/npx-boot` 啟動 pnpm。原查證：`package.json` 的 `devEngines.runtime`（`{ name: "node", version: "^24.x", onFail: "download" }`，pnpm 10.14 起）會在 `pnpm install` 時解析並下載符合的 Node，精確版本與雜湊寫進 lockfile，scripts 使用這個 Node；下載到哪個目錄文件沒寫，M0b 實測並確認能設在專案內。另：`stateDir` 自 pnpm 11.22 起不能寫在 `pnpm-workspace.yaml`（會被忽略並警告），只能用全域設定或指令列，M0b 用 env 檔指定 |
+| 退回 Cloudflare Workers 保留的上一個版本的指令與步驟（M0b），查證後寫入 09 | 09 第 7.5 節 | 已演練（2026-10-22，M0b）。查證：`wrangler rollback [<VERSION_ID>] [--message]`（省略版本 ID 時退回上一個版本；互動模式可從最近 100 個版本選）；`wrangler versions list` 與 `wrangler deployments list` 查版本；儀表板在 Workers & Pages › 該 Worker › Deployments › 版本旁的選單選 Rollback。退回只換程式與資產版本，不改綁定的資源。M0b 寫進 09 第 7.5 節並實際演練一次 |
+| pnpm store 放在 repo 內（`.pnpm-store/`、`.cache/pnpm/`）時，CI 快取的設定寫法（M0b） | 09 第 2.5、7.5 節 | 已查證（2026-10-22）：`setup-node` 的 `cache: pnpm` 不適用，改用 `actions/cache` 快取 `.pnpm-store` 與 `.cache/pnpm`，key 用 lockfile 的 hash；`stateDir` 由 env 設定 |
 
 ---
 

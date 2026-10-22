@@ -1074,6 +1074,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
 - 每個網址跑 **5 次取中位數**。CI runner 效能浮動大，只跑一次的結果時好時壞。
 - assertion 只看 metric 數值（LCP、TBT、CLS、總傳輸量）與類別分數，不依賴會改名的 insight 或 opportunity audit（Lighthouse 13.0 已把舊的效能 audit 換成 insights，另移除 8 個沒有替代的 audit；效能計分方式不變）。
 - 記錄每次報告的 `benchmarkIndex`，據此校準 `--throttling.cpuSlowdownMultiplier`。Lighthouse 預設的行動節流是 simulated：RTT 150ms、下行 1.6 Mbps、上行 750 Kbps、CPU 4 倍減速，模擬中階行動裝置；`benchmarkIndex` 125 到 800 為中階、低於 125 為低階。另加一組 6 倍減速的低階設定，代表較舊的 Android 手機。
+- **M0b 的兩個實測教訓（2026-10-22）**：(1) 會插入到內容上方的元素（語言切換提示、橫幅）必須在首次繪製就決定要不要顯示或預留空間，不能在 effect 裡才插入，否則會把下面的卡片往下推，首頁與作答頁的 CLS 曾因此到 0.073 與 0.097；(2) 內容頁不能在頁面 chunk 載入後才開始串行請求 manifest 與內容快照，名詞頁曾因此比列表頁多約 450ms、LCP 超過 2.5 秒；做法是殼層 `preload` manifest、App 啟動就讀 manifest、路由在載入 chunk 的同時讀快照。
 - **固定量測網址**：首頁（`/`）、闖關地圖（`/play/`，17 第 8 節）、一個章節頁（`/chapter/<chapterId>/`）、一個關卡作答頁（`/level/<levelId>/`）、實驗室故事的第 7 個步驟（`/lab/story/<storyId>/<stepId>/`），另加同一個關卡的英文作答頁（`/en/level/<levelId>/`），確認英文殼層與英文 catalog 同樣達標。路徑格式以 02 的頁面總表為準（關卡不巢狀在章節底下，一律帶結尾斜線）；D5 決定中文在根路徑、英文加 `/en/`。實際網址寫在 `perf/urls.json`，不因功能調整而換網址。D5 也決定不預先產生 HTML，所以每個網址都是經由 Cloudflare 的 SPA fallback 拿到殼層、再由用戶端載入資料，一律量「冷啟動直接開啟深層連結」的情況。
 - **統計腳本保持開啟**（D7，8.3）：量測時照正式網站的方式載入統計腳本，但把送出目的地換成本機的 stub（或用 Playwright 攔截請求），讓它的體積與執行成本算進結果，又不汙染正式的統計資料。統計腳本讓數值超出預算時，改它的載入方式，不放寬預算。
 - **JS 與 CSS 體積**：用 size-limit 之類的工具在每個 PR 檢查；QR 解碼器是動態載入的 chunk，不計入首次載入，但另設一條 chunk 體積的檢查，數值在解碼器選型後訂定。
@@ -1161,10 +1162,10 @@ iOS 手動檢查清單（iOS 26 與 27 各一次；iOS 17 跑標示「17」的�
 1. **載入時機**：不寫在殼層 HTML 裡。App 掛載完成、`load` 事件之後，用 `requestIdleCallback`（不支援時用 `setTimeout`）動態插入一個 `async` 腳本；`navigator.onLine` 為 false 時不插入。理由：網路很差時，寫在 HTML 的 `defer` 腳本會拖住後面的模組腳本與 `DOMContentLoaded`，學生就開不了 App。
 2. **失敗一律略過**：腳本被內容阻擋器擋下、載入失敗或送出失敗時，不重試、不顯示訊息，也不寫入本機錯誤紀錄（避免離線時塞滿 50 筆的環狀紀錄）。App 的任何功能都不依賴統計腳本。
 3. **SW 不碰它**：統計腳本與送出的請求不 precache、不進 runtime 快取（3.1）；若服務使用同源路徑（例如 Cloudflare 保留的 `/cdn-cgi/` 開頭路徑，以 M0b 的查證為準），這些路徑已列在 `navigateFallbackDenylist`，不會被殼層攔截。
-4. **安裝方式**：若採用 Cloudflare 網頁分析，用手動放置的 JS 片段，不使用邊緣自動注入（若服務提供）；自動注入會改寫回應的 HTML，和 precache 的 revision、CSP 雜湊與上面的載入時機都對不上。實際行為以 M0b 的查證為準。
+4. **安裝方式**：已決定（D7，2026-10-22）：採用 Cloudflare Web Analytics，站點以「不屬於 Cloudflare 網站」的方式建立，所以是手動 JS 片段，不會自動注入；片段是 `type="module"` 的 `beacon.min.js` 加 `data-cf-beacon` 的 token（token 本來就在網頁原始碼裡，放在 `site.config.ts`）；`spa` 省略時預設開啟，程式仍明確寫 `spa: true`；`_headers` 對 HTML、`/assets`、`/content` 與 manifest 的回應加 `Cache-Control: no-transform`，當作邊緣注入的第二道保險（綁上正式網域後要回儀表板確認仍是 JS Snippet 安裝）。原則：自動注入會改寫回應的 HTML，和 precache 的 revision、CSP 雜湊與上面的載入時機都對不上。實際行為以 M0b 的查證為準。
 5. **站內換頁**：SPA 的換頁不是真正的導覽，服務必須支援以 History API 計算頁面瀏覽（例如 beacon 的 SPA 設定），M0b 查證時確認。
 6. **只送匿名的頁面瀏覽**：網址只送路徑（內容 ID），查詢字串（例如 `?term=`、`?from=`）一律去掉；不送作答內容、進度、錯誤紀錄或 `deviceId`，也不另外定義含學習資料的自訂事件。
-7. **環境**：正式網域的建置載入統計腳本並送到正式端點；CI 的效能量測也載入統計腳本，但指向 stub 端點（不送出真實資料），讓它的成本計入效能預算（8.2）；本機開發與 PR 預覽都不載入（3.5）；正式站的趨勢由 scheduled workflow 量測（見 09）。
+7. **環境**：正式網域的建置載入統計腳本並送到正式端點；CI 的效能量測也載入統計腳本，但指向 stub 端點（不送出真實資料；M0b 實測（2026-10-22）：beacon 預設用 XMLHttpRequest 送回報、離開頁面時才用 sendBeacon，所以 stub 要同時改寫 `XMLHttpRequest.prototype.open`、`fetch` 與 `sendBeacon`，否則會有回報真的送到正式端點；非 Cloudflare 網域上 beacon 打絕對網址 `https://cloudflareinsights.com/cdn-cgi/rum`，綁到 `swift.moe` 後可能改打同源的 `/cdn-cgi/rum`，`connect-src 'self'` 已涵蓋，stub 兩種都攔），讓它的成本計入效能預算（8.2）；本機開發與 PR 預覽都不載入（3.5）；正式站的趨勢由 scheduled workflow 量測（見 09）。
 8. **說明與診斷**：隱私說明頁（`/privacy/` 與 `/en/privacy/`）寫明服務名稱與收集的內容（見 09）；debug 頁顯示統計腳本的狀態（已載入、略過及原因：離線、非正式環境、被擋）。
 
 ---

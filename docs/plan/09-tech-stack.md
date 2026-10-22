@@ -123,11 +123,11 @@
 
 | 領域 | 建議 | 版本（發布日） | 理由 | 替代方案 |
 | --- | --- | --- | --- | --- |
-| 執行環境 | Node.js 24 LTS；`engines` 寫 `>=22.22.0` | 24.x（patch 於 M0b 選發布滿兩週者） | React Router 8 需要 22.22 以上，Lighthouse 13 需要 22.19 以上；Node 20 已於 2026-03-24 結束支援 | Node 22 LTS（可用）；Node 26（目前是 Current，轉 LTS 的日期官方頁面未列） |
+| 執行環境 | Node.js 24 LTS；`engines` 寫 `>=22.22.0` | 24.21.0（M0b 以 `devEngines.runtime` 釘版並由 pnpm 下載到專案內，第 2.4 節） | React Router 8 需要 22.22 以上，Lighthouse 13 需要 22.19 以上；Node 20 已於 2026-03-24 結束支援 | Node 22 LTS（可用）；Node 26（目前是 Current，轉 LTS 的日期官方頁面未列） |
 | 套件管理 | pnpm（workspace） | 11.28.5（2026-10-06） | 內建 `minimumReleaseAge`、`trustPolicy`；pnpm 11 是成熟的 JS 實作；store 與快取放在 repo 內（第 7.5 節） | pnpm 12（2026-08-26 推出的 Rust 改寫版，約 8 週，建議 2027 年初再評估）；npm、Yarn |
 | UI | React 與 react-dom | 19.3.0（2026-09-09） | 穩定版 `<ViewTransition>`、`addTransitionType`、`browser()`；符合 React Router 8 要求的 19.2.7 以上 | 19.3.1（2026-10-14，只改了 RSC 傳輸，滿兩週後再升） |
 | 語言 | TypeScript，精確鎖定 | 6.0.3（2026-04-16） | 7.0 沒有 programmatic API，typescript-eslint 只支援到 6.0；詳見第 2.3 節 | TypeScript 7.0.2（2026-07-08），以官方 alias 選用 |
-| 建置 | Vite 8 | 8.3.3 以上（8.3.3 發布於 2026-10-06） | Rolldown 加 Oxc；8.3.3 修補了 2026-10-06 公布的三則 dev server 安全公告 | Vite 7.3.7（只修重要與安全問題的版線） |
+| 建置 | Vite 8 | 8.3.3（M0b 釘版；8.3.4 於 2026-10-08 發布，M0b 開工時未滿兩週） | Rolldown 加 Oxc；8.3.3 修補了 2026-10-06 公布的三則 dev server 安全公告 | Vite 7.3.7（只修重要與安全問題的版線） |
 | 路由 | React Router 8（`react-router`）的 data mode（已決定 D5） | 8.4.0（2026-09-15） | `createBrowserRouter` 加 lazy route；中文在根路徑、英文在 `/en/`；v8 已移除 `react-router-dom`，一律從 `react-router` 與 `react-router/dom` 匯入，只出 ESM | 8.5.0（2026-10-19，未滿兩週）；framework mode 加 prerender（日後再評估，見第 3.3 節）；TanStack Router（見第 4 節） |
 | React 外掛 | `@vitejs/plugin-react` | 6.1.2（2026-10-05） | v6 起不依賴 Babel，改用 Oxc 處理 React Refresh | `reactRouter()` 外掛（只在日後改用 framework mode 時使用） |
 | PWA | vite-plugin-pwa，generateSW，`registerType: 'prompt'` | 2.0.0（2026-10-03） | 官方 Vite 整合；不自動 skipWaiting 的更新流程 | injectManifest（需要自訂 SW 邏輯時）；workbox-build 7.4.1（2026-05-04，只在日後改用 framework mode 時需要，見第 3.3 節） |
@@ -141,13 +141,13 @@
 | 拖放（選用） | `@dnd-kit/react`，包在自家 adapter 後面 | 0.5.0（2026-06-11） | 點選與鍵盤是必備操作，拖放是漸進增強；iOS 拖曳偏移【待實測 V07】 | Pragmatic drag and drop 4.0.0（備案）；舊版 `@dnd-kit/core` 已停止更新，不用 |
 | 單元測試 | Vitest 與 `@vitest/browser-playwright` | 5.0.3（2026-10-06 以前發布） | Node 環境跑會計核心與 schema；Browser Mode 加 WebKit 跑元件 | Vitest 4.1 線 |
 | 性質測試 | fast-check 與 `@fast-check/vitest` | 4.10.2（2026-09-19）與 0.5.0（2026-09-11） | 驗證借貸平衡、恆等式、現金流量等不變式 | 無 |
-| E2E | `@playwright/test` | 1.63.0（2026-09-04，內含 WebKit 26.6） | iPhone 加 WebKit、桌機 Chromium、Firefox 三個專案，另有減少動態效果專案 | 1.64.0（2026-10-07，內含 WebKit 27.2，2026-10-21 起滿兩週，建議 M0b 時採用） |
-| 無障礙自動檢查 | `@axe-core/playwright` | 未查證，M0b 選定 | 擋下 serious 與 critical 問題 | Lighthouse 無障礙分數（只當參考） |
+| E2E | `@playwright/test` | 1.64.0（M0b 釘版，2026-10-07，已滿兩週） | iPhone 加 WebKit、桌機 Chromium、Firefox 三個專案，另有減少動態效果專案 | 1.64.0（2026-10-07，內含 WebKit 27.2，2026-10-21 起滿兩週，建議 M0b 時採用） |
+| 無障礙自動檢查 | `@axe-core/playwright` | 4.13.0（M0b 釘版，2026-08-11） | 擋下 serious 與 critical 問題 | Lighthouse 無障礙分數（只當參考） |
 | 效能 | lighthouse CLI | 13.5.0（2026-09-18） | 以 metric 做 assertion，每個網址跑 5 次取中位數 | `@lhci/cli` 0.15.1（內建的仍是 Lighthouse 12.6.1，audit ID 不同） |
 | 實機量測 | web-vitals（只在 debug 頁載入） | 6.2.3（2026-10-05） | iPhone 上讀 LCP 與 INP（CLS 只有 Chromium 量得到） | Safari Web Inspector Timelines |
 | 體積預算 | size-limit 或自寫腳本 | 未查證，M0b 選定 | 首次載入 JS 暫訂 gzip 後 150 KB，從 M0b 起由 CI 把關 | 無 |
-| Lint | Oxlint 加 oxlint-tsgolint | oxlint 1.87.0（研究建議值，發布日 M0b 確認）；oxlint-tsgolint 7.0.2003（2026-09-24） | 一套工具涵蓋 TypeScript、React Hooks、jsx-a11y、import、vitest 規則，沒有 ESLint 10 的 peer 衝突 | ESLint 10（jsx-a11y 官方套件不支援 ESLint 10，要用 fork）；Biome 2.5 |
-| 格式化 | Prettier | 3.9.9（研究建議值，發布日 M0b 確認） | 成熟穩定 | Oxfmt（仍是 0.x beta，1.0 之後再評估） |
+| Lint | Oxlint 加 oxlint-tsgolint | oxlint 1.87.0（M0b 釘版，2026-10-05）；oxlint-tsgolint 在 M0b 未加入，M1 再評估；oxlint-tsgolint 7.0.2003（2026-09-24） | 一套工具涵蓋 TypeScript、React Hooks、jsx-a11y、import、vitest 規則，沒有 ESLint 10 的 peer 衝突 | ESLint 10（jsx-a11y 官方套件不支援 ESLint 10，要用 fork）；Biome 2.5 |
+| 格式化 | Prettier | 3.9.9（M0b 釘版，2026-09-23） | 成熟穩定 | Oxfmt（仍是 0.x beta，1.0 之後再評估） |
 | 圖示 | Phosphor（MIT，線條與實心成對） | 未查證，M0b 選定 | 開源授權，打包進站內，不從 CDN 載入 | 其他 MIT 圖示庫；不用 SF Symbols |
 | 主機與部署 | Cloudflare Workers Static Assets，用 wrangler 部署（已決定 D4） | wrangler 未查證，M0b 依兩週規則選定（列在 devDependencies） | `_headers` 設定 CSP 與快取；SPA fallback 回 200；有預覽網址；靜態請求免費且不限量；設定檔在 `apps/web/wrangler.jsonc`（第 7 節） | GitHub Pages、Cloudflare Pages（比較過，不使用，見第 7.2 節） |
 | 流量統計 | 不用 cookie、不收集個資的統計服務（已決定 D7），候選 Cloudflare 網頁分析 | 外部服務，M0b 開工前查證 | 與主機同一家；只在正式網域、頁面載入後才插入腳本，不影響離線與效能預算（第 11.3 節） | 其他隱私友善的統計服務（查證時一併比較） |
@@ -158,6 +158,8 @@
 | Excel 匯入（M6，D10(d)） | read-excel-file 或 SheetJS 0.20.3 vendored tarball；CSV 用 papaparse | read-excel-file 9.3.12（2026-10-07，2026-10-21 起才滿兩週）；papaparse 5.7.0（2026-08-24） | 見第 6.7 節 | exceljs（約 3 年沒有穩定版，不用）；npm 上的 `xlsx`（有漏洞，禁止） |
 
 來源：https://registry.npmjs.org/react 、https://reactrouter.com/changelog 、https://vite.dev/releases 。查證日期 2026-10-20。
+
+M0b 實際釘版（2026-10-22，兩週規則截止 2026-10-08）：wrangler 4.148.0、`@types/node` 24.19.1、vitest 5.0.3、vitest-browser-react 2.3.0（web-ui 元件測試）；idb 在 M0b 未加入（M2 的 IndexedDB 實作時再選）。GitHub Actions 以 SHA 釘版，對應的版本：checkout v7.0.1、setup-node v7.1.0、pnpm/action-setup v6.1.0、upload-artifact v7.0.2、download-artifact v8.0.2、github-script v9.0.0、cache v6.1.0。
 
 ## 2. 版本與供應鏈政策
 
@@ -287,7 +289,7 @@ TypeScript 7 的新預設值（`strict: true`、`module: "esnext"`、`types: []`
 - Node 24（Krypton）與 Node 22（Jod）是 LTS；Node 20 已於 2026-03-24 結束支援；Node 26 是 Current，官方頁面沒有列出轉 LTS 的日期。從 Node 27 起每年一個 major，而且每個 major 都會進入 LTS。
 - 用 `.node-version` 寫 `24`，CI 的 `actions/setup-node` 讀這個檔案。`engines` 寫 `>=22.22.0`，這是各工具需求的最大值：React Router 8 要 22.22.0 以上、Lighthouse 13 要 22.19 以上、Vitest 5 要 22.12.0 以上、pnpm 11 要 22 以上。
 - Node 25.0.0 起不再隨附 Corepack（官方 changelog 的 SEMVER-MAJOR 變更 #57617）。為了日後升級時不受影響，現在就不依賴 Corepack：pnpm 本身依 `package.json` 的 `packageManager` 欄位鎖定 11.28.5，本機請貢獻者自行安裝 pnpm 11.28.5，CI 用 `pnpm/action-setup`，它會讀 `packageManager` 欄位。
-- 已決定（2026-10-20）：Node 也盡量隔離在專案內。M0b 查證 pnpm 11 能否在 `package.json` 宣告 Node 版本並自動下載到專案內；可行就採用，否則沿用版本管理工具加 `.node-version`。這是沒有 registry 編號的查證事項（見 [14 待確認](14-open-questions.md) 第 5.4 節；隔離環境的整體做法見第 7.5 節）。
+- 已決定（2026-10-20）：Node 也盡量隔離在專案內。M0b 查證結果（2026-10-22）：可行，已採用。`package.json` 的 `devEngines.runtime`（`name: node`、`version: 24.21.0`、`onFail: download`）讓 `pnpm install` 把 Node 下載到 repo 內的 `.pnpm-store/v11/links/@/node`，lockfile 記錄版本，`pnpm exec` 與 scripts 都用它；`.node-version` 仍寫 24 給 CI 的 setup-node。注意：npm（含 npx）會用啟動它的 Node 檢查目前目錄 `package.json` 的 `devEngines`，不認得 `onFail: download`，所以 `tools/env.sh` 從 `.cache/npx-boot`（一個空的 `package.json`）啟動 pnpm，再用 `--dir` 指回專案。原文：M0b 查證 pnpm 11 能否在 `package.json` 宣告 Node 版本並自動下載到專案內；可行就採用，否則沿用版本管理工具加 `.node-version`。這是沒有 registry 編號的查證事項（見 [14 待確認](14-open-questions.md) 第 5.4 節；隔離環境的整體做法見第 7.5 節）。
 
 來源：https://nodejs.org/en/about/previous-releases 、https://github.com/nodejs/node/blob/v26.x/doc/changelogs/CHANGELOG_V25.md 。查證日期 2026-10-20。
 
@@ -536,7 +538,7 @@ Catalog 位置：已決定（2026-10-20）：`apps/web/src/locales/{locale}/mess
 學習進度只存在 IndexedDB 與 localStorage；它們、SW 的註冊、已安裝的主畫面 App、已經印出來的 QR code，全部綁定 origin（協定加主機名稱加連接埠）。換網域就是換 origin，學生的進度不會跟著搬過去。所以：
 
 - 已決定（D4，2026-10-20）：正式的 origin 是 `https://ledgerland.swift.moe`，base path 為 `/`（base、basename、manifest scope、SW scope 都是 `/`）。這個 origin 從第一次讓學生使用（包括課堂試用與印 QR）起就不再更換。
-- `ledgerland.swift.moe` 和你在 `swift.moe` 底下的其他網站是不同的 origin，不共用 IndexedDB、localStorage 與 SW。Workers 的自訂網域不能建立在已有 CNAME 記錄的主機名稱上，M0b 設定前先確認 `ledgerland` 這個名稱在 DNS 上沒有既有記錄。
+- `ledgerland.swift.moe` 和你在 `swift.moe` 底下的其他網站是不同的 origin，不共用 IndexedDB、localStorage 與 SW。Workers 的自訂網域不能建立在已有記錄的主機名稱上。M0b 查證（2026-10-22）：`ledgerland.swift.moe` 在 DNS 上已經有指向 Cloudflare 的 A 與 AAAA 記錄（不是萬用字元），綁定前要先由你處理既有記錄（刪除，或確認它屬於哪個服務）；`apps/web/wrangler.jsonc` 的 `routes` 先註解掉，等你決定。
 - 不使用 GitHub Pages 的原因之一：`swiftruru.github.io` 這個 origin 已經被你其他的 GitHub Pages 專案共用，IndexedDB 與 localStorage 是同一個命名空間，配額與淘汰判斷也是同一份；其他專案的腳本（包括它們可能有的 XSS）都能讀寫 LedgerLand 的進度；若有專案在根 scope 註冊 SW，也會攔截子路徑底下的請求。
 - M0a 的技術驗證可以先用暫時的 HTTPS 預覽網址（例如 `workers.dev` 底下的網址），那是另一個 origin，資料一律視為測試資料，不印發給學生的 QR。base path 已定為 `/`，CI 只以根路徑建置與測試。
 - 不得不搬家時的遷移流程（舊網址保留匯出頁、`sw.js` 不刪除而改部署會自我解除的版本、新網址主動提供匯入）寫在 [06 PWA 與響應式](06-pwa-responsive.md)。
@@ -603,6 +605,7 @@ D4 已選 Cloudflare Workers Static Assets；GitHub Pages 與 Cloudflare Pages �
 ### 7.4 部署安全
 
 - 部署只用整批替換的方式：CI 在 `apps/web` 目錄執行 wrangler（例如 `pnpm --filter @ledgerland/web exec wrangler deploy`），上傳整份建置產物（wrangler 列在 devDependencies，受兩週規則管）。不逐檔同步。
+- M0b 的教訓（2026-10-22，正式網域停機約 40 分鐘）：任何會改變正式網域綁定的變更（加回 `routes`、換 Worker）之前，先確認 main 最新一次 `ci` 是綠的，不能只看 PR 分支的結果，否則 deploy 被跳過時舊綁定已經移除、網站就斷線；要用本機 wrangler 緊急部署前，先跑 `wrangler whoami` 確認 OAuth 登入沒有過期（過期時非互動環境無法重新整理，要由你執行 `wrangler login`）。
 - `sw.js` 的路徑固定，絕不刪檔或改名：Safari 27.0 修正了「主腳本不存在時解除 SW 註冊」，代表 `sw.js` 一旦暫時消失，iOS 27 使用者的 SW 會被直接移除；反過來，`sw.js` 回 404 時其他環境可能保留舊 SW，永遠停在舊版。要停用 SW 時，部署一個會自我解除並清除快取的版本。
 - 舊頁面之後才 lazy 載入的 chunk 或內容 JSON，可能在新部署後已經不存在。每條路由都設 ErrorBoundary，偵測到動態載入失敗時先寫入進度，再提示「網站已更新，重新整理即可」（細節見 [06 PWA 與響應式](06-pwa-responsive.md)）。
 - CI 在部署前檢查：`sw.js` 存在；manifest 的 `id` 與上一版相同；`apps/web/wrangler.jsonc` 的 `not_found_handling` 是 `single-page-application`、`assets.directory` 指向建置產物（`./dist`）；`_headers` 存在，而且其中 CSP 的雜湊與這次建置的 `index.html` 兩段 inline 腳本（head 的 boot 腳本、`nav` 之後的殼層在地化腳本）及首次繪製的 `<style>` 一致（第 11.1 節）。
@@ -614,17 +617,17 @@ D4 已選 Cloudflare Workers Static Assets；GitHub Pages 與 Cloudflare Pages �
 
 **做法**：
 
-- pnpm 的 store 放在 repo 內的 `.pnpm-store/`，快取與狀態放在 `.cache/pnpm/`（`pnpm-workspace.yaml` 的 `storeDir`、`cacheDir`、`stateDir`，第 2.2 節）；npm 快取（`npm_config_cache`）、Playwright 瀏覽器（`PLAYWRIGHT_BROWSERS_PATH`）也放在 `.cache/` 底下。M0b 時把 `.pnpm-store/` 與 `.cache/` 附加到 `.gitignore`（第 9 節第 3 步）。M0a 的 `prototypes/env.sh` 是可用的範例。
+- pnpm 的 store 放在 repo 內的 `.pnpm-store/`，快取放在 `.cache/pnpm/`（`pnpm-workspace.yaml` 的 `storeDir`、`cacheDir`，第 2.2 節）；`stateDir` 自 pnpm 11.22 起不能寫在 `pnpm-workspace.yaml`，改由 `tools/env.sh` 與 workflow 的 env 設 `pnpm_config_state_dir`（M0b 查證，2026-10-22）。CI 快取：`setup-node` 的 `cache: pnpm` 假設 store 在家目錄、不適用，改用 `actions/cache` 直接快取 `.pnpm-store` 與 `.cache/pnpm`，key 用 `pnpm-lock.yaml` 的 hash；npm 快取（`npm_config_cache`）、Playwright 瀏覽器（`PLAYWRIGHT_BROWSERS_PATH`）也放在 `.cache/` 底下。M0b 時把 `.pnpm-store/` 與 `.cache/` 附加到 `.gitignore`（第 9 節第 3 步）。M0a 的 `prototypes/env.sh` 是可用的範例。
 - 代價：不同專案之間不共用快取，比較佔硬碟空間。
 - wrangler、lighthouse、Playwright 都列在 devDependencies，不全域安裝。pnpm 本身依 `packageManager` 欄位鎖定 11.28.5（不依賴 Corepack，第 2.4 節）。
-- Node：`.node-version` 寫 24。M0b 查證 pnpm 11 能否在 `package.json` 宣告 Node 版本並自動下載到專案內（讓 Node 也隔離）；可行就採用，否則沿用版本管理工具加 `.node-version`。這是沒有 registry 編號的查證事項（見 [14 待確認](14-open-questions.md) 第 5.4 節）。
+- Node：已採用 `devEngines.runtime`（第 2.4 節的查證結果，2026-10-22）：pnpm 把 Node 24.21.0 下載到 `.pnpm-store/` 內並鎖進 lockfile；`.node-version` 寫 24 給 CI。這是沒有 registry 編號的查證事項（見 [14 待確認](14-open-questions.md) 第 5.4 節）。
 - 重設：刪掉 `node_modules/`、`.pnpm-store/`、`.cache/` 後執行 `pnpm install --frozen-lockfile` 即可重建。
 
 **重新部署**：
 
 - 重建與部署需要的東西都在 repo 裡：精確鎖版的 `package.json`、`pnpm-lock.yaml`、`packageManager`、`.node-version`、`apps/web/wrangler.jsonc`、`_headers` 範本、CI workflow，不依賴任何人電腦上的狀態。
 - 新環境只要 clone、`pnpm install --frozen-lockfile`、建置、部署；平常由 CI 在 main 通過檢查後自動部署（第 10 節）。
-- 出問題時可以退回 Cloudflare Workers 保留的上一個版本（最近 100 個）：`pnpm --filter @ledgerland/web exec wrangler rollback [<VERSION_ID>] --message "原因"`（省略版本 ID 時退回上一個版本），版本用 `wrangler versions list` 或 `wrangler deployments list` 查；儀表板路徑 Workers & Pages › ledgerland › Deployments › Rollback（查證 2026-10-22；M0b 實際演練一次）。
+- 出問題時可以退回 Cloudflare Workers 保留的上一個版本（最近 100 個）：`pnpm --filter @ledgerland/web exec wrangler rollback [<VERSION_ID>] --message "原因"`（省略版本 ID 時退回上一個版本，非互動模式加 `--yes`），版本用 `wrangler versions list` 或 `wrangler deployments list` 查；儀表板路徑 Workers & Pages › ledgerland › Deployments › Rollback（查證 2026-10-22；M0b 已演練，紀錄在 M0b 報告）。
 
 **部署方式**：維持 GitHub Actions 執行 wrangler（第 10 節），不使用 Cloudflare 儀表板的 Git 整合（Workers Builds）。理由：部署前的 CSP 雜湊檢查與測試在同一條流程；目錄調整只改 repo 裡的 wrangler 設定與 workflow，Cloudflare 儀表板沒有「根目錄、建置指令、輸出目錄」要改。若改用 Workers Builds，就要在儀表板設定根目錄、建置指令與部署指令，之後每次搬目錄都要手動改（未採用）。
 
@@ -853,7 +856,7 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | --- | --- | --- | --- |
 | `ci.yml` | pull request、push 到 main | 第 10.2 節的全部工作；只跑受影響的套件（`pnpm --filter "...[origin/main]"`），改到 `packages/` 時，用到它的 app 測試也一起跑；`apps/web` 的建置輸入（`content/`、`schemas/`、`tools/`）有變動也算受影響，所以只改內容時同樣執行 `content:check` | 是 |
 | `deploy.yml` | `ci.yml` 在 main 上全部通過後，而且 `apps/web` 或它依賴的套件有變動（`apps/web` 的建置輸入 `content/`、`schemas/`、`tools/` 有變動也算，所以只改內容的合併同樣部署） | 在 `apps/web` 目錄執行 wrangler（`pnpm --filter @ledgerland/web exec wrangler deploy`，或 workflow 的 `working-directory: apps/web`），整批部署到 Cloudflare Workers（`ledgerland.swift.moe`）；`concurrency` 確保同時只有一個部署；部署後執行第 7.4 節的煙霧測試 | 不適用 |
-| `preview.yml` | pull request | 同樣在 `apps/web` 目錄以 `wrangler versions upload` 上傳不切換正式流量的版本，取得預覽網址並留言在 PR 上（指令與預覽網址的存取保護於 M0b 查證）；上傳後對預覽網址執行 Playwright E2E，全部通過才允許合併與部署；fork 的 PR 拿不到 secrets，不部署預覽，只靠 `ci.yml` 的 e2e 工作 | 是 |
+| `preview.yml` | pull request | 同樣在 `apps/web` 目錄以 `wrangler versions upload` 上傳不切換正式流量的版本，取得預覽網址並留言在 PR 上（指令與預覽網址的存取保護於 M0b 查證）；上傳後對預覽網址執行 Playwright E2E，全部通過才允許合併與部署；fork 的 PR 拿不到 secrets，不部署預覽，只靠 `ci.yml` 的 e2e 工作；Dependabot 的 PR 同樣拿不到 secrets（M0b 實測，2026-10-22，第一個 Dependabot PR 的 preview 工作因此失敗），workflow 以 `github.actor` 跳過 Dependabot 的 PR | 是 |
 | `scheduled.yml` | 每週一次 | 例外清單到期檢查、`pnpm audit`、對正式網址的 Lighthouse 趨勢紀錄（含 D7 的統計腳本） | 失敗時開 issue 提醒 |
 
 所有 workflow 預設 `permissions: contents: read`；`actions/checkout` 一律設 `persist-credentials: false`。部署到 Cloudflare 不需要 GitHub 的額外權限，只需要 repo secrets 中的 `CLOUDFLARE_API_TOKEN`（權限只限這個帳號的 Workers 與 `swift.moe` 這個 zone 的必要範圍）與 `CLOUDFLARE_ACCOUNT_ID`；token 由你在 Cloudflare 建立並存進 repo secrets。若部署流程要建立 [08 題庫與後台](08-content-admin.md) 的 `content/v{n}` tag，只有 `deploy.yml` 另外加 `contents: write`。預覽網址是另一個 origin，進度不會和正式網址共用，一律視為測試資料，也不啟用統計。M7 的管理後台另有自己的部署 workflow（獨立的 Worker、`apps/admin/wrangler.jsonc` 與 D1 migration），細節在 M7 開工前定案。
@@ -897,12 +900,12 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | 指令 | 值 | 說明 |
 | --- | --- | --- |
 | `default-src` | `'self'` | 除了 D7 的統計服務之外，不載入任何第三方資源（第 11.3 節） |
-| `script-src` | `'self'`、建置期計算的兩個 `'sha256-...'`，以及 D7 統計服務的腳本網域 | 雜湊涵蓋兩段 inline 腳本：head 裡的 boot 腳本（玻璃層級、`isAppMode()`、主題、減少動態、語系，見 05、06、07），以及緊接在 `nav` 之後的殼層在地化腳本（英文頁的 Tab bar 標籤、`href` 與 `aria-label`，見 06 第 2.3 節、07 第 6.1 節）。統計腳本的網域以 Cloudflare 網頁分析為例，常見的是 `https://static.cloudflareinsights.com`，本次沒有查證，M0b 前確認後才寫入 |
+| `script-src` | `'self'`、建置期計算的兩個 `'sha256-...'`，以及 D7 統計服務的腳本網域 | 雜湊涵蓋兩段 inline 腳本：head 裡的 boot 腳本（玻璃層級、`isAppMode()`、主題、減少動態、語系，見 05、06、07），以及緊接在 `nav` 之後的殼層在地化腳本（英文頁的 Tab bar 標籤、`href` 與 `aria-label`，見 06 第 2.3 節、07 第 6.1 節）。已決定（D7，2026-10-22）：Cloudflare Web Analytics，腳本網域 `https://static.cloudflareinsights.com`（已查證並在 M0b 實測） |
 | `style-src` | `'self'` 加上建置期計算的 `'sha256-...'` | 除了 head 裡那段首次繪製背景色的 `<style>`（見 [06 PWA 與響應式](06-pwa-responsive.md) 第 2.3 節），樣式全部是外部檔案；這段 `<style>` 的背景色由 `packages/tokens` 產生，內容改變時雜湊跟著重算 |
 | `style-src-attr` | 不另外設定，沿用 `style-src`（不允許 inline 的 `style` 屬性） | `index.html` 殼層（含靜態 Tab bar 的標記）不得有 `style` 屬性；React 與動畫函式庫透過 CSSOM（`element.style`）設定樣式，不受這條限制；用 `setAttribute('style', ...)` 會被擋下，由 e2e 的 `securitypolicyviolation` 監聽抓出 |
 | `img-src` | `'self' data:` | 允許 data URL 的小圖示；統計服務若以圖片回報，查證後另外加上它的網域 |
 | `font-src` | `'self'` | 使用系統字型，不從外部載入 |
-| `connect-src` | `'self'` 加上 D7 統計服務的回報網域 | 內容 JSON 與 SW 只需要 `'self'`。回報網域以 Cloudflare 網頁分析為例，常見的是 `https://cloudflareinsights.com`，本次沒有查證，M0b 前確認後才寫入 |
+| `connect-src` | `'self'` 加上 D7 統計服務的回報網域 | 內容 JSON 與 SW 只需要 `'self'`。已決定（D7，2026-10-22）：回報網域 `https://cloudflareinsights.com`（非 Cloudflare 網域時的絕對網址；綁到 `swift.moe` 後可能改打同源 `/cdn-cgi/rum`，`'self'` 已涵蓋） |
 | `worker-src`、`manifest-src` | `'self'` | SW 與 manifest；QR 解碼器若用 Web Worker 也只從 `'self'` 載入（第 6.9 節） |
 | `object-src` | `'none'` | 不使用外掛內容 |
 | `base-uri` | `'self'` | 防止竄改 base |

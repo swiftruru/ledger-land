@@ -3,7 +3,7 @@
 這是 LedgerLand 的規劃總覽與索引。LedgerLand 是一個開源、公開、手機優先、中英雙語、可以離線使用的互動式會計學習網站，以陳彥宏老師的兩部分教材為靈感：闖關區練觀念與題目，報表實驗室看交易怎麼牽動三張報表與財務指標，兩者共用同一顆會計核心。本文件與 `docs/plan/` 底下的 15 份文件都只是規劃，還沒有任何程式碼；請你確認後，再一次進行一個階段。
 
 - 規劃日期：2026-10-20
-- 狀態：規劃完成；D 系列 13 項已於 2026-10-20 全部決定，等待你確認後進入 M0a
+- 狀態：規劃完成；D 系列 13 項已於 2026-10-20 全部決定；M0a 已完成（2026-10-22，go）；M0b 已完成（2026-10-22，網站已上線 `ledgerland.swift.moe`，回報在 [docs/reports/m0b.md](reports/m0b.md)）；下一個是 M1 會計核心，等你確認後開工
 - 技術資料的查證日期：2026-10-20（每份文件都附上來源）
 
 ## 目錄
@@ -260,8 +260,8 @@
 
 | 里程碑 | 目標 | 依據的決定與仍待確認的事 |
 | --- | --- | --- |
-| M0a 技術驗證 | 用 data mode 最小專案（中文根路徑、英文 `/en/`）部署到 Cloudflare 預覽網址，在 iPhone 實機（含 iOS 17）驗證 PWA、玻璃 Tab bar、儲存隔離、QR、拖放；建立本機 AI 設定（先附加 `.gitignore` 排除規則）；做完停下讓你決定 | D4（預覽主機）、D5、D8 已決定；V01 到 V07、V09、V13 到 V15、V17、V18 待實測 |
-| M0b 基礎建設 | repo 初始化（含 01、13、15 與 AI 設定的排除）、工具鏈、CI、語系架構、design tokens、內容管線、無 cookie 統計、授權檔；建立根目錄 workspace、`apps/web`（含 `apps/web/wrangler.jsonc`）、`packages/tokens`、`packages/i18n`、`packages/content-schema`、`packages/web-ui`，以及專案隔離環境設定與依賴方向檢查 | D3、D4、D6、D7、D8、D9（Tab 名稱）已決定；M0a 的 go 決定 |
+| M0a 技術驗證 | 用 data mode 最小專案（中文根路徑、英文 `/en/`）部署到 Cloudflare 預覽網址，在 iPhone 實機（含 iOS 17）驗證 PWA、玻璃 Tab bar、儲存隔離、QR、拖放；建立本機 AI 設定（先附加 `.gitignore` 排除規則）；做完停下讓你決定 | D4（預覽主機）、D5、D8 已決定；V01 到 V07、V09、V13 到 V15、V17、V18 已實測。已完成（2026-10-22，建議 go，報告只在本機） |
+| M0b 基礎建設 | repo 初始化（含 01、13、15 與 AI 設定的排除）、工具鏈、CI、語系架構、design tokens、內容管線、無 cookie 統計、授權檔；建立根目錄 workspace、`apps/web`（含 `apps/web/wrangler.jsonc`）、`packages/tokens`、`packages/i18n`、`packages/content-schema`、`packages/web-ui`，以及專案隔離環境設定與依賴方向檢查 | D3、D4、D6、D7、D8、D9（Tab 名稱）已決定；M0a 已 go。已完成（2026-10-22，[報告](reports/m0b.md)） |
 | M1 會計核心 | 建立 `packages/core`：科目表、交易範本、三表、指標、五步驟檢查、完整追蹤所需的來源資料、IFRS 政策欄位、測試；題目與範本的 schema（含分錄題與多正解題）加進 `packages/content-schema` | D1、D2、D10(c)、D10(f)、D12、D13 已決定；建議先寄出向老師確認的清單（T 系列） |
 | M2 闖關區 MVP | 主要題型（含多正解題）、回饋、名詞卡、錯題本、進度保護、關卡代號與 App 內掃 QR；前 2 到 3 章原創內容；建立 `packages/quiz`、`packages/progress` 與 `apps/web` 的 IndexedDB 儲存實作 | D1、D4（正式網域）、D9、D10(a)、D11（拼字）、D12、D13 已決定 |
 | M3 闖關區完整 | 期中考範圍全部章節、名詞圖鑑、徽章、借貸與分錄延伸章 | D1 已決定；T32（期中考範圍）待老師確認 |
