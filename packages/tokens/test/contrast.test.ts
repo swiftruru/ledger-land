@@ -54,8 +54,8 @@ describe.each(THEMES)('主題 %s 的對比度門檻（16 第 6 節）', (name) =
   });
   it('所有用在對比配對的 token 都是六位 hex', () => {
     for (const p of pairs(t)) {
-      expect(isHex(p.fg), p.name).toBe(true);
-      expect(isHex(p.bg), p.name).toBe(true);
+      expect(isHex(p.fg)).toBe(true);
+      expect(isHex(p.bg)).toBe(true);
     }
   });
 });
@@ -98,8 +98,8 @@ describe('深色三風味的結構（16 第 3 節）', () => {
   it('覆寫區塊只含底色階梯，強調色與狀態色三個風味相同', () => {
     const shared = SEMANTIC_COLOR_TOKENS.filter((k) => !(FLAVOR_TOKENS as readonly string[]).includes(k));
     for (const k of shared) {
-      expect(themes.berry[k], k).toBe(themes.violet[k]);
-      expect(themes.wine[k], k).toBe(themes.violet[k]);
+      expect(themes.berry[k]).toBe(themes.violet[k]);
+      expect(themes.wine[k]).toBe(themes.violet[k]);
     }
     for (const flavor of ['berry', 'wine'] as const) {
       const keys = Object.keys(flavorColors(flavor));
@@ -120,7 +120,7 @@ describe('深色三風味的結構（16 第 3 節）', () => {
       ] as const) {
         const expected = blendHex(t[ink], t.surface, 0.15);
         const diff = contrastRatio(expected, t[tint]);
-        expect(diff, `${flavor} ${tint}`).toBeLessThan(1.03);
+        expect(diff).toBeLessThan(1.03);
       }
     }
   });
@@ -142,7 +142,7 @@ describe('紙質淺色（16 第 1、2 節）', () => {
       ['element-expense-ink', 'element-expense-tint'],
     ] as const) {
       const expected = blendHex(lightColors[ink], lightColors.surface, 0.12);
-      expect(contrastRatio(expected, lightColors[tint]), tint).toBeLessThan(1.03);
+      expect(contrastRatio(expected, lightColors[tint])).toBeLessThan(1.03);
     }
   });
   it('蜜桃只當裝飾：不是任何 tint 或強調填色', () => {

@@ -1,6 +1,6 @@
 // prompt 模式的更新提示（06 第 3.3 節）：絕不自動 skipWaiting；作答頁不顯示提示，只記下「有更新」；第一次可以離線時提示一次（06 第 3.2 節）
 import { Trans } from '@lingui/react/macro';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useMatches } from 'react-router';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import { Button, Card } from '@ledgerland/web-ui';
@@ -17,7 +17,7 @@ export const swState: { registration: ServiceWorkerRegistration | null; swUrl: s
 };
 
 export function UpdatePrompt() {
-  const dismissed = useRef(false);
+  const [dismissed, setDismissed] = useState(false);
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     offlineReady: [offlineReady, setOfflineReady],
@@ -50,7 +50,7 @@ export function UpdatePrompt() {
   const blocked = matches.some((m) => (m.handle as RouteHandle | undefined)?.blocksUpdatePrompt);
 
   useEffect(() => {
-    if (!needRefresh) dismissed.current = false;
+    if (!needRefresh) setDismissed(false);
   }, [needRefresh]);
 
   if (offlineReady && !needRefresh && !blocked) {
@@ -69,7 +69,7 @@ export function UpdatePrompt() {
       </Card>
     );
   }
-  if (!needRefresh || blocked || dismissed.current) return null;
+  if (!needRefresh || blocked || dismissed) return null;
   return (
     <Card className="ll-update" role="status">
       <p>
@@ -81,7 +81,7 @@ export function UpdatePrompt() {
         </Button>
         <Button
           onClick={() => {
-            dismissed.current = true;
+            setDismissed(true);
             setNeedRefresh(false);
           }}
         >

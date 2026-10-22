@@ -1,3 +1,4 @@
+// oxlint-disable vitest/no-standalone-expect -- @fast-check/vitest 的 test.prop 不被 vitest 外掛認得
 // 05 第 16 節的單元測試：登錄檔、路徑函式、格式化、輸入正規化（格式化的字串比對只在同一引擎內成立）
 import { describe, expect, it } from 'vitest';
 import { fc, test } from '@fast-check/vitest';
