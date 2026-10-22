@@ -1,5 +1,7 @@
 # LedgerLand 會計樂園
 
+[![CI](https://github.com/swiftruru/ledger-land/actions/workflows/ci.yml/badge.svg)](https://github.com/swiftruru/ledger-land/actions/workflows/ci.yml)
+
 公開、開源、手機優先、中英雙語（中文在根路徑、英文在 `/en/`）的會計入門學習 PWA：用闖關題目與報表實驗室，從一家小店的帳開始認識資產、負債、股東權益與三大財務報表，可離線使用。
 
 - 正式網址：https://ledgerland.swift.moe/ （基礎建設階段，內容陸續加入）
