@@ -30,14 +30,22 @@ function skip(reason: string) {
 function installStub() {
   const target = `${site.analytics.reportOrigin}${site.analytics.reportPath}`;
   const stub = '/__ll/rum-stub';
+  // 腳本在 Cloudflare 自家網域上可能改打同源的 /cdn-cgi/rum，兩種都攔
+  const isReport = (url: string) => url.startsWith(target) || url.startsWith(site.analytics.reportPath);
   const origBeacon = navigator.sendBeacon?.bind(navigator);
   if (origBeacon) {
-    navigator.sendBeacon = (url, data) => origBeacon(String(url).startsWith(target) ? stub : url, data);
+    navigator.sendBeacon = (url, data) => origBeacon(isReport(String(url)) ? stub : url, data);
   }
   const origFetch = window.fetch.bind(window);
   window.fetch = (input, init) => {
     const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
-    return origFetch(url.startsWith(target) ? stub : input, init);
+    return origFetch(isReport(url) ? stub : input, init);
+  };
+  // beacon 預設用 XMLHttpRequest 送出，只有離開頁面時才用 sendBeacon，所以 open 也要改寫
+  const origOpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (this: XMLHttpRequest, ...args: [string, string | URL, boolean?, (string | null)?, (string | null)?]) {
+    if (isReport(String(args[1]))) args[1] = stub;
+    return origOpen.apply(this, args as Parameters<typeof origOpen>);
   };
   state.sentTo = stub;
 }
@@ -55,8 +63,8 @@ export function loadAnalytics(): void {
     else state.sentTo = `${site.analytics.reportOrigin}${site.analytics.reportPath}`;
     const s = document.createElement('script');
     s.src = `${site.analytics.scriptOrigin}${site.analytics.scriptPath}`;
+    s.type = 'module'; // 官方片段是 type=module；動態插入的 module 腳本預設延後執行
     s.async = true;
-    s.defer = true;
     s.dataset.cfBeacon = JSON.stringify({ token: site.analytics.token || '00000000000000000000000000000000', spa: true });
     s.dataset.ll = 'analytics';
     s.onload = () => {

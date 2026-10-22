@@ -22,7 +22,7 @@ export const site = {
     scriptPath: '/beacon.min.js',
     reportOrigin: 'https://cloudflareinsights.com',
     reportPath: '/cdn-cgi/rum',
-    token: '',
+    token: 'a16a4e523a3b430db3d348ea97ed6a85', // Web Analytics 的 beacon token（公開值；網站以 JS Snippet 手動安裝，2026-10-22 建立）
   },
 } as const;
 
