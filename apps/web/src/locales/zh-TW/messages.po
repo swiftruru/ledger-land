@@ -220,12 +220,6 @@ msgstr "存了哪些資料"
 msgid "me.progressLater"
 msgstr "學習進度、徽章與備份會在之後的里程碑加入。"
 
-#. 第一次快取完成、可以離線使用時的一次性提示
-#. js-lingui-explicit-id
-#: src/components/UpdatePrompt.tsx
-msgid "sw.offlineReady"
-msgstr "已經可以離線使用了。"
-
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.copied"
@@ -455,7 +449,6 @@ msgstr "相機"
 
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
-#: src/components/UpdatePrompt.tsx
 msgid "common.ok"
 msgstr "知道了"
 
