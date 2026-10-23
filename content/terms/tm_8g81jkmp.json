@@ -10,7 +10,7 @@
   "ifrsEnglish": null,
   "aliases": { "zh-TW": [], "en": ["Deferred charges"] },
   "flags": ["japanese", "not_ifrs_line", "ifrs_treatment_differs"],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": ["T04"],
   "ifrsBasis": "IAS 38",
   "note": { "zh-TW": "日本基準的繰延資産；台灣現行報表沒有這一類。", "en": "The Japanese GAAP deferred assets; current Taiwanese statements have no such category." },

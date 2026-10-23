@@ -21,13 +21,13 @@
     ]
   },
   "flags": [],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": [
     "T27"
   ],
   "note": {
-    "zh-TW": "分子用銷貨成本還是本期進貨，教材與模板不同（T27）。介面統一寫「帳」與「週轉率」，模板原字列為別名。",
-    "en": "Whether the numerator is cost of sales or purchases differs between the slides and the template (T27). The interface uses one spelling and keeps the template wording as an alias."
+    "zh-TW": "分子用銷貨成本還是本期進貨，教材與模板不同，網站以兩個版本並列（設計說明見 T27）。介面統一寫「帳」與「週轉率」，模板原字列為別名。",
+    "en": "Whether the numerator is cost of sales or purchases differs between the slides and the template, so the site keeps both as versions (see the design note T27). The interface uses one spelling and keeps the template wording as an alias."
   },
   "definition": {
     "zh-TW": "一年內應付帳款被付清、再重新賒購幾次。次數越多表示付款越快，供應商給的賒帳期越短。",

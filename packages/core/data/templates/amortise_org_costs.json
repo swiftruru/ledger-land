@@ -62,6 +62,5 @@
     "en": "The course holds start-up costs as a deferred asset and amortises them year by year; the divisor is the original cost, so the amount is the same each year, capped at the remaining carrying amount. There is no separate accumulated amortisation account: the amortisation is deducted directly from the deferred asset and shown under non-operating expenses as amortisation of deferred assets. No cash is paid, so the indirect method adds it back. Under IFRS the costs were expensed at the start, so this step has no effect."
   },
   "termRefs": ["tm_a2m7z4tf", "tm_d9f3g7cs"],
-  "pendingRefs": ["T04", "T05", "T12"],
-  "entryQuestionBlockedBy": ["T04", "T05"]
+  "pendingRefs": ["T04", "T05", "T12"]
 }

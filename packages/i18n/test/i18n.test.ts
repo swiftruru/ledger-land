@@ -80,10 +80,14 @@ describe('網址的語系片段', () => {
   ])('normalizePath(%s) = %s', (input, expected) => {
     expect(normalizePath(input)).toBe(expected);
   });
-  test.prop([fc.array(fc.stringMatching(/^[a-z0-9_]{1,10}$/), { minLength: 0, maxLength: 4 })])('localePath 再 stripLocale 後不變', (segs) => {
-    const path = segs.length ? `/${segs.join('/')}/` : '/';
-    for (const l of LOCALES) expect(stripLocale(localePath(l.code, path))).toBe(path);
-  });
+  // 第一段剛好等於語系代碼（例如 /en/）的路徑本來就會被當成語系前綴，不在這個性質的範圍內
+  test.prop([fc.array(fc.stringMatching(/^[a-z0-9_]{1,10}$/), { minLength: 0, maxLength: 4 }).filter((segs) => !LOCALES.some((l) => l.code === segs[0]))])(
+    'localePath 再 stripLocale 後不變',
+    (segs) => {
+      const path = segs.length ? `/${segs.join('/')}/` : '/';
+      for (const l of LOCALES) expect(stripLocale(localePath(l.code, path))).toBe(path);
+    },
+  );
 });
 
 describe('格式化（05 第 10 節）', () => {

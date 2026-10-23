@@ -4,18 +4,18 @@
   "revKind": "text",
   "status": "draft",
   "category": "statement",
-  "label": { "zh-TW": "利息支出(-)", "en": "Interest paid (-)" },
+  "label": { "zh-TW": "支付利息(-)", "en": "Interest paid (-)" },
   "teacherLabel": "利息支出(-)",
   "currentTwLabel": "支付之利息",
   "ifrsEnglish": "Interest paid",
-  "aliases": { "zh-TW": ["支付之利息(-)", "支付之利息"], "en": [] },
+  "aliases": { "zh-TW": ["利息支出(-)", "支付之利息(-)", "支付之利息"], "en": [] },
   "flags": [],
   "confidence": "high",
   "pendingRefs": ["T11"],
   "ifrsBasis": "IAS 7.31",
   "note": {
-    "zh-TW": "T11 回覆後再定主要顯示。現行 IAS 7 允許列營業或籌資，教材列營業；IFRS 18 修正 IAS 7 後一般企業改列籌資活動。",
-    "en": "The main display will be settled after T11. Current IAS 7 allows operating or financing and the course uses operating; after the IFRS 18 amendments most entities will classify it as financing."
+    "zh-TW": "課程的列名「利息支出(-)」指實際付現的利息；網站主要顯示改為「支付利息(-)」，課程原字收進別名（設計說明見 T11）。現行 IAS 7 允許列營業或籌資，課程列營業；IFRS 18 修正 IAS 7 後一般企業改列籌資活動。",
+    "en": "The course label means the interest actually paid; the site shows interest paid (-) and keeps the course wording as an alias (see the design note T11). Current IAS 7 allows operating or financing and the course uses operating; after the IFRS 18 amendments most entities will classify it as financing."
   },
   "definition": {
     "zh-TW": "本期實際付出去的利息現金。它和損益表的利息費用不同：費用是本期發生的，這裡是真的付了錢。",

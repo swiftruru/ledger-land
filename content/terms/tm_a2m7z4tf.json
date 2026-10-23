@@ -20,7 +20,7 @@
     "not_ifrs_line",
     "ifrs_treatment_differs"
   ],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": [
     "T04",
     "T05",
@@ -28,8 +28,8 @@
   ],
   "ifrsBasis": "IAS 38.69",
   "note": {
-    "zh-TW": "教材列在營業外支出（T05）；間接法的加回列預設放在其他非現金損失增加（T12）。老師確認前不出分錄題。",
-    "en": "The course lists it under non-operating expenses (T05); the indirect-method add-back goes by default to other non-cash losses (T12). No journal entry questions are set until the teacher confirms."
+    "zh-TW": "教材列在營業外支出（T05）；間接法的加回列預設放在其他非現金損失增加（T12）。依 14 的決定處理，可出分錄題，老師可回饋。",
+    "en": "The course lists it under non-operating expenses (T05); the indirect-method add-back goes by default to other non-cash losses (T12). Handled per the decisions in 14; journal entry questions may be set, and the teacher may give feedback."
   },
   "definition": {
     "zh-TW": "把先列為資產的設立費等遞延資產，依年限逐年轉成費用的金額。現行報表沒有這一項。",

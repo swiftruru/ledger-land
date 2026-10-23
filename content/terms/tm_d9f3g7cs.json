@@ -25,7 +25,7 @@
     "not_ifrs_line",
     "ifrs_treatment_differs"
   ],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": [
     "T04",
     "T05",
@@ -33,8 +33,8 @@
   ],
   "ifrsBasis": "IAS 38.69",
   "note": {
-    "zh-TW": "現行用語是開辦費，英文舊譯 organisation costs 列為別名。老師確認前不出分錄題。",
-    "en": "The current Taiwanese term is 開辦費 (start-up costs); the older English organisation costs is kept as an alias. No journal entry questions are set until the teacher confirms."
+    "zh-TW": "現行用語是開辦費，英文舊譯 organisation costs 列為別名。依 14 的決定處理，可出分錄題，老師可回饋。",
+    "en": "The current Taiwanese term is 開辦費 (start-up costs); the older English organisation costs is kept as an alias. Handled per the decisions in 14; journal entry questions may be set, and the teacher may give feedback."
   },
   "definition": {
     "zh-TW": "公司成立時付出的登記、顧問等開辦支出。教材把它先列為資產，再分幾年攤銷成費用；現行做法是付出當年就全部列為費用。",

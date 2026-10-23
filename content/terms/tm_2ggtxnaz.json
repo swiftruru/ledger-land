@@ -12,7 +12,7 @@
   "flags": [],
   "confidence": "high",
   "pendingRefs": ["T38"],
-  "note": { "zh-TW": "與負債比率的關係待確認（T38）。", "en": "The relationship with the debt ratio is pending (T38)." },
+  "note": { "zh-TW": "與負債比率的換算關係在解說中補上：權益倍數等於 1 除以（1 減負債比率）（設計說明見 T38）。", "en": "The explanation gives the conversion from the debt ratio: the equity multiplier equals 1 divided by (1 minus the debt ratio) (see the design note T38)." },
   "definition": {
     "zh-TW": "資產總計是權益的幾倍，看公司用股東的錢撐起多大的資產。倍數越高表示借的錢越多；它和負債比率是同一件事的兩種看法。",
     "en": "Total assets as a multiple of equity: how large an asset base the shareholders' money supports. A higher multiple means more borrowing; it and the debt ratio are two views of the same thing."

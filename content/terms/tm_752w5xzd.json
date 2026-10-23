@@ -23,13 +23,13 @@
     "japanese",
     "unused"
   ],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": [
     "T15"
   ],
   "note": {
-    "zh-TW": "直譯自日文的新株予約権；台灣多列在資本公積之下的認股權，對照等老師確認（T15）。",
-    "en": "A direct translation of the Japanese share subscription rights; in Taiwan they are usually shown under capital surplus, and the mapping awaits the teacher (T15)."
+    "zh-TW": "直譯自日文的新株予約権；台灣多列在資本公積之下的認股權，網站維持課程名稱為主要顯示並加現行對照（設計說明見 T15）。",
+    "en": "A direct translation of the Japanese share subscription rights; in Taiwan they are usually shown under capital surplus, and the site keeps the course name as the main display with the current caption alongside (see the design note T15)."
   },
   "definition": {
     "zh-TW": "持有人有權依約定價格認購新股的權利，在行使之前列在權益。本課未用。",

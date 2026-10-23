@@ -27,8 +27,8 @@
     "T24"
   ],
   "note": {
-    "zh-TW": "「固定資產」是舊稱，照教材顯示並加「舊稱」標記，現行名稱列為別名；參考值待確認（T24）。",
-    "en": "Fixed assets is an older term, shown as the course writes it with an old-name marker; the current name is kept as an alias and the reference value is pending (T24)."
+    "zh-TW": "「固定資產」是舊稱，照教材顯示並加「舊稱」標記，現行名稱列為別名；課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）。",
+    "en": "Fixed assets is an older term, shown as the course writes it with an old-name marker; the current name is kept as an alias and the course threshold is shown only as a course reference value and is not scored (see the design note T24)."
   },
   "definition": {
     "zh-TW": "權益加非流動負債這些長期資金，相對於不動產、廠房及設備淨額的比率。它檢查長期資產是不是用長期的錢買的；數值越高越穩健，太低表示拿短期的錢去買長期資產。",
