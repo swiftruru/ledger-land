@@ -707,6 +707,7 @@ ledger-land/
 | `packages/i18n/` | 語系登錄檔（代號、顯示名稱、`html lang`、數字格式、退回語系、complete 或 beta；zh-TW 與 en 從 M0b 起都是 complete，beta 只給日後新增的第三種語言）、網址的語系函式、金額與百分比等格式化函式、作答輸入正規化；原名 `i18n-config`，已決定改名（第 8.1 節） | commit |
 | `packages/content-schema/` | 題目、名詞、交易範本、章節、故事的 Zod schema、ID 產生、佔位符文法、內容驗證規則 | commit |
 | `packages/core/` | 會計核心，只放會計：科目表、交易範本、過帳、三表、指標、五步驟勾稽、追蹤、IFRS 政策、分錄的正規化比對（第 8.1 節） | commit |
+| `packages/core/data/` | 會計核心的程式資料：科目表、交易範本、指標登錄檔、政策、effects 片語、版面（`layouts/teacher@1.json`）；適用 MIT（11 第 4.1 節，已決定 2026-10-23） | commit |
 | `packages/core/test/` | 單元測試、性質測試、自編數字的黃金測試 | commit |
 | `packages/core/test/**/*.local.test.ts` | 對老師 Excel 的本機驗證。期望值在執行時從 `references/` 讀出，不用 `toMatchSnapshot` 或 `toMatchInlineSnapshot`；`references/` 不存在時由 Vitest 設定自動排除 | commit（檔案本身不含老師的數字或教材文字；逐格比對只在本機執行，D3） |
 | `packages/quiz/` | 題型的判分、選項打散、星星計算、錯題本的間隔複習排程（第 8.1 節） | commit |
@@ -769,7 +770,7 @@ wrangler 設定不放在根目錄：每個要部署的 app 自己帶部署設定
 | `packages/i18n`（原名 `i18n-config`，已決定改名） | 語系登錄檔、網址的語系函式（`localeFromPath`、`stripLocale`、`localePath`）、金額與百分比等格式化函式、作答輸入正規化 | Lingui 的介面字串檔 | M0b |
 | `packages/content-schema` | 題目、名詞、交易範本、章節、故事的 Zod schema、ID 產生、佔位符文法、內容驗證規則 | 內容本身（在 `content/`）、會計計算 | M0b |
 | `packages/web-ui` | 網站與後台共用的 React 元件與其樣式：題目（ChoiceGroup 等）、回饋（FeedbackPanel）、名詞卡、報表表格、實驗室的步驟元件等；元件自己的 Lingui 字串檔 | 路由、頁面、殼層、Service Worker；App 的畫面 | 已決定（2026-10-20）：M0b 就建立（你的選擇），元件一開始就寫在這裡，後台日後直接使用 |
-| `packages/core` | 只放會計：科目表、交易範本、過帳、三表、指標、五步驟勾稽、追蹤、IFRS 政策；分錄的正規化比對（合併同科目同方向的行、多重集合比對）屬於會計知識，留在這裡 | 選擇題與數字題的判分、星星、錯題本 | M1 |
+| `packages/core` | 只放會計：科目表、交易範本、過帳、三表、指標、五步驟勾稽、追蹤、IFRS 政策；分錄的正規化比對（合併同科目同方向的行、多重集合比對）屬於會計知識，留在這裡 | 選擇題與數字題的判分、星星、錯題本 | M1 建立（2026-10-23）；資料放 `packages/core/data/` |
 | `packages/quiz` | 12 種題型的判分入口：多正解題判分 `scoreMultiChoice`（從 04 原本規劃在 `core` 的判分子目錄移過來）、數字題比對（含 N/A 與位數規則）、分錄題計分 `scoreJournalEntry`（呼叫 `core` 的分錄比對）；以固定種子打散選項；星星計算；錯題本的間隔複習排程；題目改版後（`id` 加 `rev`）的處理規則 | 畫面、儲存 | M2 |
 | `packages/progress` | 進度資料模型（作答紀錄、關卡、星星、徽章、設定含 `labView`）、備份檔與文字備份碼的格式、匯入合併規則（作答紀錄取聯集、星星取最大值等）、資料版本升級（migration）、儲存介面的定義 | IndexedDB 的實作（在 `apps/web`）、原生儲存的實作（日後在 `apps/mobile`） | M2 |
 
@@ -807,7 +808,8 @@ tools       -> content-schema、core、quiz、i18n、tokens
 
 1. 這些套件的 tsconfig 不含 DOM 型別（`lib` 不列 `DOM`）。
 2. lint 規則（`no-restricted-imports`）禁止匯入 `react`、`react-dom`、`vite`、`node:*`。
-3. `tools/` 的檢查腳本確認各套件 `package.json` 的依賴符合第 8.2 節的方向，CI 的 hygiene 工作執行它（第 10.2 節）。
+3. `tools/` 的檢查腳本確認各套件 `package.json` 的依賴符合第 8.2 節的方向，CI 的 hygiene 工作執行它（第 10.2 節）。根目錄的指令名稱是 `check:deps`（依賴方向）與 `check:dom`（DOM 禁用檢查）。
+4. M1 起（2026-10-23）另有 `check:core`：`packages/core/src` 不得含 `eval`、`new Function`、`Date`、`Math.random`、`Intl` 與計時器（`setTimeout`、`setInterval`、`queueMicrotask`），讓核心保持純函式；以及 `test:coverage`：只量 `packages/core/src`，陳述式與行 90%、分支 85%、函式 90%，低於門檻就失敗。
 
 ## 9. repo 初始化的固定步驟（M0b 執行）
 
@@ -870,7 +872,7 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | install | `pnpm install --frozen-lockfile` | 成功；lockfile 中 `typescript` 為 6.0.3 |
 | lint | `oxlint`（啟用 typescript、react、jsx-a11y、import、vitest，type-aware 只當輔助）、`prettier --check`、台灣用語與破折號掃描（docs、content、介面字串）、workflow 的 SHA 釘版檢查；純 TypeScript 套件的 `no-restricted-imports`（禁止匯入 `react`、`react-dom`、`vite`、`node:*`，第 8.3 節） | 沒有錯誤 |
 | typecheck | `tsc -b`（TypeScript 6.0.3） | 沒有錯誤；這是型別的權威結果 |
-| test | `vitest run`：會計核心單元測試、fast-check 性質測試、黃金測試、元件測試；`*.local.test.ts` 自動排除 | 全部通過；`packages/core` 的覆蓋率達門檻（門檻數字 M1 定案） |
+| test | `vitest run`：會計核心單元測試、fast-check 性質測試、黃金測試、元件測試；`*.local.test.ts` 自動排除 | 全部通過；`packages/core` 的覆蓋率達門檻（已決定 2026-10-23：陳述式與行 90%、分支 85%、函式 90%，`pnpm test:coverage`，第 8.3 節） |
 | content | `content:check`：Zod 格式與必填欄位、各語系欄位、引用存在、範本借貸平衡、核心算得出答案且與作者填的一致、佔位符中英一致、已發布 ID 不得消失、`published.lock.json` 的 rev 檢查；`schemas:check`：重新產生 JSON Schema 後 `git diff --exit-code`；`docs:examples`：抽出 `docs/` 中所有 `json` 程式碼區塊，全部要能解析，有對應 schema 的範例（M0b 起是名詞與章節，M1 起加上題目、交易範本與故事）要通過同一套 Zod 驗證（見 [08 題庫與後台](08-content-admin.md)） | 全部通過 |
 | i18n | `lingui extract` 後確認 catalog 沒有未 commit 的變動；`lingui check missing --mode catalog --locale en`；`content:i18n-report`（只對已發布的內容、complete 語系強制；內容只有中英兩種語言都齊全時才能設為 published） | complete 語系沒有缺字 |
 | build | 以根路徑建置 `apps/web` 一次（base path 已定為 `/`），產物在 `apps/web/dist/`；檢查產物：`sw.js` 存在、manifest 正確、precache 清單涵蓋殼層、JS、CSS 與內容 JSON 而且不含統計腳本；`index.html` 含完整的靜態 Tab bar（`#ll-tabbar` 與五個連結，D8）與緊接在後的殼層在地化腳本、不含 `style` 屬性；`_headers` 的 CSP 雜湊與 `index.html` 的兩段 inline 腳本（boot 腳本、殼層在地化腳本）及首次繪製的 `<style>` 一致；有 `backdrop-filter` 的 CSS 規則都同時有 `-webkit-backdrop-filter`（第 6.8 節）；站內連結都有結尾斜線 | 全部通過；上傳建置產物給後續工作 |
