@@ -75,9 +75,10 @@ jobs:
         with:
           path: .cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-      - run: pnpm exec playwright install --with-deps chromium webkit firefox
-      - name: 對預覽網址跑 E2E（全部通過才允許合併與部署）
-        run: pnpm e2e
+      # 預覽網址只跑 Chromium 專案（2026-10-23，縮短 PR 的等待時間）；三個瀏覽器在 push 到 main 的 ci 跑
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: 對預覽網址跑 E2E（Chromium；全部通過才允許合併與部署）
+        run: pnpm e2e --project desktop-chromium --project reduced-motion
         env:
           LL_E2E_BASE_URL: ${{ steps.upload.outputs.url }}
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
