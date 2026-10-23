@@ -136,7 +136,7 @@
 | 介面字串 | Lingui（`@lingui/core`、`@lingui/react`、`@lingui/cli`、`@lingui/vite-plugin`） | 6.9.0（2026-10-01） | runtime 約 2.03 kB 加 1.24 kB（gzip）；ICU 複數、PO catalog、抽取與缺字檢查、依語系動態載入 | Paraglide JS 2、i18next 26、react-intl 12（見第 6 節） |
 | Schema | Zod 4 | 4.6.5（2026-09-13） | 一份 schema 同時負責建置期驗證、輸出 draft-07 JSON Schema、匯入備份時的執行期驗證 | Valibot 1.5.0（體積更小）、ArkType 2.2 |
 | 狀態 | Zustand | 5.0.15（2026-08-13） | 約 0.49 kB；作答狀態放在 store，不綁在路由參數上，切換語言不會遺失 | Jotai 3（2026-09 剛發 major） |
-| 本機儲存 | idb | 8.0.4（2026-10-06，剛滿兩週） | 有型別的 DBSchema 與 upgrade callback，約 1.19 kB（brotli） | Dexie 4.4.6（約 31 kB gzip，需要索引查詢時再考慮）；idb-keyval 6.3.0 |
+| 本機儲存 | idb | 8.0.4（2026-10-06，剛滿兩週；M2 採用，2026-10-23） | 有型別的 DBSchema 與 upgrade callback，約 1.19 kB（brotli） | Dexie 4.4.6（約 31 kB gzip，需要索引查詢時再考慮）；idb-keyval 6.3.0 |
 | 動畫 | CSS 加 View Transitions；React 19.3 的 `<ViewTransition>` 只包住內容區 | 隨 React | iOS 26 支援同文件與跨文件 View Transitions；一律尊重減少動態效果 | Motion 14.0.0（2026-10-02，選用，只透過 `LazyMotion` 加 `m` 局部載入） |
 | 拖放（選用） | `@dnd-kit/react`，包在自家 adapter 後面 | 0.5.0（2026-06-11） | 點選與鍵盤是必備操作，拖放是漸進增強；iOS 拖曳偏移【待實測 V07】 | Pragmatic drag and drop 4.0.0（備案）；舊版 `@dnd-kit/core` 已停止更新，不用 |
 | 單元測試 | Vitest 與 `@vitest/browser-playwright` | 5.0.3（2026-10-06 以前發布） | Node 環境跑會計核心與 schema；Browser Mode 加 WebKit 跑元件 | Vitest 4.1 線 |
@@ -151,7 +151,7 @@
 | 圖示 | Phosphor（MIT，線條與實心成對） | 未查證，M0b 選定 | 開源授權，打包進站內，不從 CDN 載入 | 其他 MIT 圖示庫；不用 SF Symbols |
 | 主機與部署 | Cloudflare Workers Static Assets，用 wrangler 部署（已決定 D4） | wrangler 未查證，M0b 依兩週規則選定（列在 devDependencies） | `_headers` 設定 CSP 與快取；SPA fallback 回 200；有預覽網址；靜態請求免費且不限量；設定檔在 `apps/web/wrangler.jsonc`（第 7 節） | GitHub Pages、Cloudflare Pages（比較過，不使用，見第 7.2 節） |
 | 流量統計 | 不用 cookie、不收集個資的統計服務（已決定 D7），候選 Cloudflare 網頁分析 | 外部服務，M0b 開工前查證 | 與主機同一家；只在正式網域、頁面載入後才插入腳本，不影響離線與效能預算（第 11.3 節） | 其他隱私友善的統計服務（查證時一併比較） |
-| QR 解碼（M2） | JS 的 QR 解碼器加相機權限（D10(a)） | 未查證，M2 開工前選定 | Safari 沒有正式的 BarcodeDetector；只在掃描畫面 lazy 載入（第 6.9 節） | 只用系統相機掃 QR（D10(a) 已決定另外做 App 內掃描） |
+| QR 解碼（M2） | `@zxing/library` 的 QR 子集在 Web Worker 解碼（D10(a)；已決定 2026-10-23） | 0.23.0（Apache-2.0，純 JS，約 25 KB gzip） | Safari 沒有正式的 BarcodeDetector；只在掃描畫面 lazy 載入；不需要 WebAssembly，CSP 不用放寬（第 6.9 節） | jsQR 1.4.0（退路）；未採用：zxing-wasm、barcode-detector（需要 wasm）、zbar-wasm（LGPL）、qr-scanner（blob worker 違反 CSP）；原生 BarcodeDetector（iOS Safari 到 27 仍在旗標後） |
 | 管理後台（M7） | Cloudflare Access 加 Workers 加 D1（已決定 D10(e)） | 未查證，M7 開工前選定 | 與主機同一家；權限在伺服器端檢查；放在獨立 origin（第 11.3 節） | Sveltia、Decap、Supabase、Firebase（比較過，未採用，見第 4 節） |
 | 金額運算 | 整數加自寫 helper（集中處理四捨五入） | 不需要套件 | 金額範圍在安全整數內；見 [04 會計核心](04-accounting-core.md) | dinero.js 2.0.2、big.js 7.0.1、decimal.js 10.6.0（目前都不需要） |
 | 說明文字 | 受控標記在建置期編譯成 AST，用戶端不帶 Markdown parser | 不需要 runtime 套件 | 不允許原始 HTML，也不需要執行期解析 | react-markdown（約 34 kB gzip）、MDX（能執行任意 JS，不採用） |
@@ -159,7 +159,7 @@
 
 來源：https://registry.npmjs.org/react 、https://reactrouter.com/changelog 、https://vite.dev/releases 。查證日期 2026-10-20。
 
-M0b 實際釘版（2026-10-22，兩週規則截止 2026-10-08）：wrangler 4.148.0、`@types/node` 24.19.1、vitest 5.0.3、vitest-browser-react 2.3.0（web-ui 元件測試）；idb 在 M0b 未加入（M2 的 IndexedDB 實作時再選）。GitHub Actions 以 SHA 釘版，對應的版本：checkout v7.0.1、setup-node v7.1.0、pnpm/action-setup v6.1.0、upload-artifact v7.0.2、download-artifact v8.0.2、github-script v9.0.0、cache v6.1.0。
+M0b 實際釘版（2026-10-22，兩週規則截止 2026-10-08）：wrangler 4.148.0、`@types/node` 24.19.1、vitest 5.0.3、vitest-browser-react 2.3.0（web-ui 元件測試）；idb 在 M0b 未加入（M2 的 IndexedDB 實作時再選）。M2 實際釘版（2026-10-23）：idb 8.0.4（2026-10-06）、fake-indexeddb 6.2.5（只在測試中模擬 IndexedDB）、`@zxing/library` 0.23.0（QR 解碼，第 6.9 節）。GitHub Actions 以 SHA 釘版，對應的版本：checkout v7.0.1、setup-node v7.1.0、pnpm/action-setup v6.1.0、upload-artifact v7.0.2、download-artifact v8.0.2、github-script v9.0.0、cache v6.1.0。
 
 ## 2. 版本與供應鏈政策
 
@@ -468,6 +468,7 @@ Catalog 位置：已決定（2026-10-20）：`apps/web/src/locales/{locale}/mess
 - Zustand 管介面與作答狀態。官方說明 persist middleware 內建的 `JSON.parse` 沒有執行期驗證，所以學習進度不透過 Zustand persist，而是經過一層 repository 存進 IndexedDB（idb），讀回時用 Zod 驗證並依 schema 版本 migrate。進度資料模型、資料版本升級與儲存介面的定義在 `packages/progress`，IndexedDB 的實作在 `apps/web`（第 8.1 節）。
 - MVP 用 idb 8；若之後需要對作答紀錄做索引查詢或自動更新畫面，再評估 Dexie 4.4.6（多約 30 kB gzip）。
 - 不採用 OPFS：沒有證據顯示它比 IndexedDB 更不容易被淘汰，進度資料量也不需要它。儲存的細節見 [06 PWA 與響應式](06-pwa-responsive.md)。
+- Zod 4 在 `apps/web` 以 `config({ jitless: true })` 關掉 JIT 探測（`apps/web/src/lib/zod-config.ts`，2026-10-23）：Zod 4 預設會用 `new Function` 試探能否產生快速路徑，在第 11.1 節的 CSP 下會回報一次 `eval` 違規；關掉後驗證改走一般路徑，備份檔與進度資料的量不需要那個最佳化。
 
 ### 6.4 動畫
 
@@ -526,7 +527,7 @@ Catalog 位置：已決定（2026-10-20）：`apps/web/src/locales/{locale}/mess
 
 ### 6.9 App 內掃描課堂 QR（M2，D10(a)）
 
-- D10(a) 決定在 App 內加入相機掃描課堂 QR。Safari 沒有正式的 BarcodeDetector，所以要內建 JS 解碼器並取得相機權限；解碼器的選型在 M2 開工前查證，同樣適用兩週規則與授權白名單。
+- D10(a) 決定在 App 內加入相機掃描課堂 QR。Safari 沒有正式的 BarcodeDetector，所以要內建 JS 解碼器並取得相機權限；解碼器的選型在 M2 開工前查證，同樣適用兩週規則與授權白名單。已決定（2026-10-23）：主案 `@zxing/library` 0.23.0，深層匯入 QR 子集、在 Web Worker 解碼（Apache-2.0、純 JS、不需要 WebAssembly、約 25 KB gzip，列入 THIRD_PARTY_NOTICES）；退路 jsQR 1.4.0；M2 不用原生 BarcodeDetector（iOS Safari 到 27 仍在旗標後）。未採用：zxing-wasm 與 barcode-detector（需要 WebAssembly 與放寬 CSP）、zbar-wasm（LGPL）、qr-scanner（blob worker 違反 CSP，且已停更）。實機表現見 14 的 V19。
 - 選型條件：純 JS 或不需要放寬 CSP 的實作優先；若解碼器用 WebAssembly，`script-src` 要加 `'wasm-unsafe-eval'`，這是放寬，必須在第 11.1 節記錄並重新評估；若用 Web Worker，維持 `worker-src 'self'`，不使用 `blob:`。
 - 解碼器只在掃描畫面 lazy 載入，不計入首次載入的 JS 預算，但要進 precache，離線時也能掃描（QR 內容是站內網址，掃到之後在 App 內導覽）。
 - `_headers` 的 `Permissions-Policy` 為 `camera=(self)`（第 11.2 節）；隱私說明頁寫明影像只在裝置上解碼、不上傳、不保存（第 11.4 節）。
@@ -771,8 +772,8 @@ wrangler 設定不放在根目錄：每個要部署的 app 自己帶部署設定
 | `packages/content-schema` | 題目、名詞、交易範本、章節、故事的 Zod schema、ID 產生、佔位符文法、內容驗證規則 | 內容本身（在 `content/`）、會計計算 | M0b |
 | `packages/web-ui` | 網站與後台共用的 React 元件與其樣式：題目（ChoiceGroup 等）、回饋（FeedbackPanel）、名詞卡、報表表格、實驗室的步驟元件等；元件自己的 Lingui 字串檔 | 路由、頁面、殼層、Service Worker；App 的畫面 | 已決定（2026-10-20）：M0b 就建立（你的選擇），元件一開始就寫在這裡，後台日後直接使用 |
 | `packages/core` | 只放會計：科目表、交易範本、過帳、三表、指標、五步驟勾稽、追蹤、IFRS 政策；分錄的正規化比對（合併同科目同方向的行、多重集合比對）屬於會計知識，留在這裡 | 選擇題與數字題的判分、星星、錯題本 | M1 建立（2026-10-23）；資料放 `packages/core/data/` |
-| `packages/quiz` | 12 種題型的判分入口：多正解題判分 `scoreMultiChoice`（從 04 原本規劃在 `core` 的判分子目錄移過來）、數字題比對（含 N/A 與位數規則）、分錄題計分 `scoreJournalEntry`（呼叫 `core` 的分錄比對）；以固定種子打散選項；星星計算；錯題本的間隔複習排程；題目改版後（`id` 加 `rev`）的處理規則 | 畫面、儲存 | M2 |
-| `packages/progress` | 進度資料模型（作答紀錄、關卡、星星、徽章、設定含 `labView`）、備份檔與文字備份碼的格式、匯入合併規則（作答紀錄取聯集、星星取最大值等）、資料版本升級（migration）、儲存介面的定義 | IndexedDB 的實作（在 `apps/web`）、原生儲存的實作（日後在 `apps/mobile`） | M2 |
+| `packages/quiz` | 12 種題型的判分入口：多正解題判分 `scoreMultiChoice`（從 04 原本規劃在 `core` 的判分子目錄移過來）、數字題比對（含 N/A 與位數規則）、分錄題計分 `scoreJournalEntry`（呼叫 `core` 的分錄比對）；以固定種子打散選項；星星計算；錯題本的間隔複習排程；題目改版後（`id` 加 `rev`）的處理規則 | 畫面、儲存 | M2 建立（2026-10-23） |
+| `packages/progress` | 進度資料模型（作答紀錄、關卡、星星、徽章、設定含 `labView`）、備份檔與文字備份碼的格式、匯入合併規則（作答紀錄取聯集、星星取最大值等）、資料版本升級（migration）、儲存介面的定義 | IndexedDB 的實作（在 `apps/web`）、原生儲存的實作（日後在 `apps/mobile`） | M2 建立（2026-10-23） |
 
 各里程碑建立的項目：
 
@@ -872,8 +873,8 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | install | `pnpm install --frozen-lockfile` | 成功；lockfile 中 `typescript` 為 6.0.3 |
 | lint | `oxlint`（啟用 typescript、react、jsx-a11y、import、vitest，type-aware 只當輔助）、`prettier --check`、台灣用語與破折號掃描（docs、content、介面字串）、workflow 的 SHA 釘版檢查；純 TypeScript 套件的 `no-restricted-imports`（禁止匯入 `react`、`react-dom`、`vite`、`node:*`，第 8.3 節） | 沒有錯誤 |
 | typecheck | `tsc -b`（TypeScript 6.0.3） | 沒有錯誤；這是型別的權威結果 |
-| test | `vitest run`：會計核心單元測試、fast-check 性質測試、黃金測試、元件測試；`*.local.test.ts` 自動排除 | 全部通過；`packages/core` 的覆蓋率達門檻（已決定 2026-10-23：陳述式與行 90%、分支 85%、函式 90%，`pnpm test:coverage`，第 8.3 節） |
-| content | `content:check`：Zod 格式與必填欄位、各語系欄位、引用存在、範本借貸平衡、核心算得出答案且與作者填的一致、佔位符中英一致、已發布 ID 不得消失、`published.lock.json` 的 rev 檢查；`schemas:check`：重新產生 JSON Schema 後 `git diff --exit-code`；`docs:examples`：抽出 `docs/` 中所有 `json` 程式碼區塊，全部要能解析，有對應 schema 的範例（M0b 起是名詞與章節，M1 起加上題目、交易範本與故事）要通過同一套 Zod 驗證（見 [08 題庫與後台](08-content-admin.md)） | 全部通過 |
+| test | `vitest run`：會計核心單元測試、fast-check 性質測試、黃金測試、元件測試；`*.local.test.ts` 自動排除；`pnpm test:coverage`（node 專案加覆蓋率門檻）；`pnpm check:core`（`packages/core` 原始碼不得用 constructor parameter property 等 Node 24 strip-only 模式不支援的語法，M1 起） | 全部通過；`packages/core` 的覆蓋率達門檻（已決定 2026-10-23：陳述式與行 90%、分支 85%、函式 90%，`pnpm test:coverage`，第 8.3 節） |
+| content | `content:check`：Zod 格式與必填欄位、各語系欄位、引用存在、範本借貸平衡、核心算得出答案且與作者填的一致、佔位符中英一致、已發布 ID 不得消失、`published.lock.json` 的 rev 檢查（`pnpm content:lock --check`，M1 起獨立一步）；`schemas:check`：重新產生 JSON Schema 後 `git diff --exit-code`；`docs:examples`：抽出 `docs/` 中所有 `json` 程式碼區塊，全部要能解析，有對應 schema 的範例（M0b 起是名詞與章節，M1 起加上題目、交易範本與故事）要通過同一套 Zod 驗證（見 [08 題庫與後台](08-content-admin.md)） | 全部通過 |
 | i18n | `lingui extract` 後確認 catalog 沒有未 commit 的變動；`lingui check missing --mode catalog --locale en`；`content:i18n-report`（只對已發布的內容、complete 語系強制；內容只有中英兩種語言都齊全時才能設為 published） | complete 語系沒有缺字 |
 | build | 以根路徑建置 `apps/web` 一次（base path 已定為 `/`），產物在 `apps/web/dist/`；檢查產物：`sw.js` 存在、manifest 正確、precache 清單涵蓋殼層、JS、CSS 與內容 JSON 而且不含統計腳本；`index.html` 含完整的靜態 Tab bar（`#ll-tabbar` 與五個連結，D8）與緊接在後的殼層在地化腳本、不含 `style` 屬性；`_headers` 的 CSP 雜湊與 `index.html` 的兩段 inline 腳本（boot 腳本、殼層在地化腳本）及首次繪製的 `<style>` 一致；有 `backdrop-filter` 的 CSS 規則都同時有 `-webkit-backdrop-filter`（第 6.8 節）；站內連結都有結尾斜線 | 全部通過；上傳建置產物給後續工作 |
 | budget | 首次載入 JS（gzip）不超過 150 KB（暫訂，見 [06 PWA 與響應式](06-pwa-responsive.md)），中文入口與 `/en/` 入口分別計算（英文多載入 en catalog）；precache 總量不超過預算（數字由 M0a 實測後提出）；QR 解碼器與 Excel 相關函式庫不得出現在首次載入的 chunk | 不超過預算 |
