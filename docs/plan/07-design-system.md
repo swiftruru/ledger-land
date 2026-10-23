@@ -696,6 +696,8 @@ axe 沒有 serious 或 critical 問題；Playwright 純鍵盤 E2E；iOS VoiceOve
 
 已決定（2026-10-20）：下表的元件實作在 `packages/web-ui`（M0b 建立，網站與後台共用，元件自己的 Lingui 字串檔放在 `packages/web-ui/src/locales/{locale}/messages.po`）；殼層與頁面不放在 `packages/web-ui`，所以 AppShell、SkipLink，以及寫在殼層 HTML 的 TabBar、NavRail、Sidebar 留在 `apps/web`（6.1）。玻璃樣式的位置見 5.2。下表的規格不因套件切分而改變。
 
+M2 的元件已實作（2026-10-23）：下表「首次需要」為 M2 的元件都已建立。放在 `packages/web-ui` 的有 TopBar、SegmentedControl（檔名 Segmented）、Switch、Card、LevelCard、Stars、Badge、TermChip、TermSheet、QuestionCard、ChoiceGroup（含 ChoiceOption）、TrueFalse、PickStatement、PickLine、ClassifyBoard、ImpactPicker、NumberInput、FeedbackPanel、NoteTag、Toast、Banner、LevelCodeInput、LevelCode、EmptyState 與 ErrorState（檔名 States）、Skeleton，以及地圖的 LevelNode、LevelSheet、ChapterBanner、ChapterEnd、MapMarker、MapHud、MapListToggle；會用到相機、IndexedDB 或殼層狀態的 QrScanner（`apps/web/src/features/quest-map/`）、BackupPanel（備份頁 `/me/backup/`）、InstallGuide 精簡版（安裝提示卡）、Safari 分頁提示與內建瀏覽器橫幅都在 `apps/web`，後台不需要它們。與下表的差異：ElementTag 與 ChangeBadge 在 M2 還沒有獨立的元件，M4a 的報表實驗室需要時再建立；NavRail 與 Sidebar 仍是殼層的 Tab bar 元素由 CSS 變形，不是元件。做法上的共同點：選項與分段控制的原生 `<input type="radio">`、`<input type="checkbox">` 做成透明覆蓋層（`opacity: 0`，絕對定位蓋滿整張選項卡片或分段），視覺由外層的卡片與圖示呈現，鍵盤、螢幕閱讀器與 Playwright 都直接操作原生輸入，不用 `aria-hidden` 的假元件。
+
 | 元件 | 用途 | 主要變體 | 玻璃 | 無障礙重點 | 首次需要 |
 | --- | --- | --- | --- | --- | --- |
 | AppShell | 殼層、safe area、背景 | 手機、平板、電腦 | 否 | 地標區域（header、nav、main） | M0b |
@@ -769,7 +771,7 @@ axe 沒有 serious 或 critical 問題；Playwright 純鍵盤 E2E；iOS VoiceOve
 <button type="button" class="ll-button ll-button--primary">確認答案</button>
 ```
 
-M0a 實測後補充（2026-10-21，iOS 17.0 Simulator）：
+M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 的 ChoiceGroup 就是這樣寫）：
 - `fieldset` 本身維持 block（加 `min-width: 0`），選項另外包一層 `div` 做 grid 或 flex；iOS 17.0 的 Safari 在 `fieldset` 直接是 grid 時，`legend` 會縮成一行只剩一兩個字，給 `legend` 寬度 100% 反而更窄。iOS 18.6、26.4.1、27.0 沒有這個問題。
 - 作答後的狀態樣式（`.is-correct`、`.is-wrong` 等）要寫在「選取中」樣式（`:has(input:checked)`）之後並確保能蓋過它，因為 `:has()` 的權重較高。
 - 選取狀態的文字一律用 `--ll-text`，`--ll-accent-ink` 只用在圖示（通用規則，見 16 第 5 節）。

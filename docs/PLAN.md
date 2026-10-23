@@ -3,7 +3,7 @@
 這是 LedgerLand 的規劃總覽與索引。LedgerLand 是一個開源、公開、手機優先、中英雙語、可以離線使用的互動式會計學習網站，以陳彥宏老師的兩部分教材為靈感：闖關區練觀念與題目，報表實驗室看交易怎麼牽動三張報表與財務指標，兩者共用同一顆會計核心。本文件與 `docs/plan/` 底下的 15 份文件都只是規劃，還沒有任何程式碼；請你確認後，再一次進行一個階段。
 
 - 規劃日期：2026-10-20
-- 狀態：規劃完成；D 系列 13 項已於 2026-10-20 全部決定；M0a 已完成（2026-10-22，go）；M0b 已完成（2026-10-22，網站已上線 `ledgerland.swift.moe`，回報在 [docs/reports/m0b.md](reports/m0b.md)）；M1 會計核心進行中（2026-10-23 開工）
+- 狀態：規劃完成；D 系列 13 項已於 2026-10-20 全部決定；M0a 已完成（2026-10-22，go）；M0b 已完成（2026-10-22，網站已上線 `ledgerland.swift.moe`，回報在 [docs/reports/m0b.md](reports/m0b.md)）；M1 已完成（2026-10-23，回報在 [docs/reports/m1.md](reports/m1.md)）；M2 闖關區 MVP 進行中（2026-10-23 開工）
 - 技術資料的查證日期：2026-10-20（每份文件都附上來源）
 
 ## 目錄
@@ -362,7 +362,7 @@ M3 完成後另有 App 技術決策點（不是里程碑，沒有 registry 編�
 - W14：0-2 的指標期間與用語簡化
 - W15：「計畫經濟產業」與「代理問題」的教材詮釋
 
-### V 系列：待實測（18 項）
+### V 系列：待實測（22 項；V19 到 V22 於 2026-10-23 新增）
 
 - V01：iOS 26、27 上 isAppMode() 的判斷（display-mode standalone、fullscreen、navigator.standalone；有無 manifest；從 Safari 分頁或主畫面開啟）
 - V02：Safari 分頁與主畫面 web app 是否共享 IndexedDB、localStorage、Cache
@@ -382,6 +382,10 @@ M3 完成後另有 App 技術決策點（不是里程碑，沒有 registry 編�
 - V16：GitHub Free 組織能否使用「只允許安全 2FA 方法」選項
 - V17：Claude Code 是否從被 .gitignore 排除的 .claude/ 正常載入 agents、skills、rules 與 hooks（以 /context、/hooks、/skills 確認）
 - V18：權限 deny 規則與 guard-bash.sh 是否確實擋下強制推送、git add -f、寫入 references/ 等動作（逐一建立測試案例）
+- V19：App 內掃描課堂 QR 的實機辨識率與速度（iOS 17、26、27 主畫面 App 的紙本與投影幕；Android Chrome 一次；M2）
+- V20：主畫面 App 每次重新開啟是否再問相機權限（WebKit bug 327237）與同一次啟動內的 1 分鐘規則（215884）；M2
+- V21：Safari 分頁與主畫面 App 之間用備份碼轉移進度，在 iPhone 實機走一次（M2）
+- V22：VoiceOver 與 TalkBack 對 multi_choice 兩種判分方式先唸出 legend 提示，以及地圖節點狀態的唸法（M2）
 
 ### 其他待你決定（沒有編號，詳見 14 第 5.2 節）
 
@@ -400,4 +404,5 @@ M3 完成後另有 App 技術決策點（不是里程碑，沒有 registry 編�
 - 年報口徑的多期資料是否支援（04 評估四）
 - 交易範本的授權歸屬：已決定（2026-10-23），科目表、交易範本、指標登錄檔與版面放在 packages/core/data/，適用 MIT（11 第 4.1 節、14 第 5.2 節）
 - 各里程碑的門檻數字（10，開工時提出）；M1 覆蓋率門檻已決定（2026-10-23）：陳述式與行 90%、分支 85%、函式 90%（10 第 8 節）
-- M2 試用的對象與規模（10）
+- M2 試用的對象與規模（10）：尚未決定（2026-10-23 提醒使用者）；M2 的進度保護已全部做完，試用時再定
+- QR 解碼器選型：已決定（2026-10-23），`@zxing/library` 0.23.0 的 QR 子集在 Worker 解碼（純 JS、不需要 WebAssembly），退路 jsQR 1.4.0；未採用的方案見 14 第 5.2 節

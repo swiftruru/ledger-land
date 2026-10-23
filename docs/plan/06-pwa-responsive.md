@@ -303,6 +303,7 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 - 不在首次載入時跳出；不在課堂 QR 的落地頁跳出（QR 落地頁要直接進入內容，見 02）；不在作答中或實驗室步驟中跳出。
 - 觸發點：第一次完成一個關卡、看到星星結算頁時，在結算頁下方顯示一張可關閉的卡片：「把會計樂園加到主畫面，開啟更快，進度也比較不容易被清除。」
 - 記住選擇（存在 IndexedDB 的設定，暫定規則）：按「之後再說」後，至少再完成 3 個關卡且距離上次至少 7 天才再顯示；累計關閉 2 次後不再自動顯示，只保留「我的 › 安裝教學」入口（`/install/`）；按下安裝或偵測到 `appinstalled` 後永久不顯示。
+- M2 簡易版（已決定 2026-10-23）：關閉一次就記住、不再自動顯示；只出現在首頁與章節頁；上面「3 個關卡、7 天、累計 2 次」的完整細則留到 M3 的完整安裝圖解一起做。
 
 **Chromium 的實作**
 
@@ -458,7 +459,7 @@ generateSW 只處理 precache、導覽 fallback 與明確設定的 `runtimeCachi
 - **第一次啟動要上線完成快取才能離線**（M0a 實機發現，2026-10-22）：新加入主畫面的 App 有自己的儲存（V02），第一次啟動時才在背景下載 precache；加入後馬上關掉再離線開啟，會看到 Safari 的「未連接網際網路」頁。Simulator 重現：加入後約 1.5 秒就關掉，離線開啟就是錯誤頁；開一次開到快取完成，離線就正常。原本決定用 vite-plugin-pwa 的 `offlineReady` 顯示一次性提示「已經可以離線使用了。」；已改決定（2026-10-23，使用者覺得這則提示干擾又沒有意義）：不顯示提示，離線就緒的狀態只在 debug 頁看得到；安裝教學與老師的課堂說明改成提醒「加入主畫面後先打開，停留幾秒再離線」。這也是課堂情境的風險：學生裝完就失去訊號時，App 還不能離線用。
 - **課程內容不用 stale-while-revalidate**：會造成介面與內容版本混用，也會讓學生在同一堂課看到前後不同版本的題目。內容更新一律走 SW 更新流程（3.3）。
 - Workbox v7 在 install 時，對帶 revision 的項目（例如 `index.html`）用 `cache: 'reload'` 繞過 HTTP 快取，hash 檔名的資源用 `'default'`。所以就算 HTTP 快取標頭設錯（例如 GitHub Pages 那種固定 `max-age=600` 的主機），precache 也不會抓到舊版；Cloudflare 上的快取標頭見 3.5 與 9.4。會變動但檔名不帶 hash 的檔案都要放進 precache 清單並帶 revision。
-- **precache 體積預算**（暫定）：未壓縮總和不超過 5 MB，從 M0b 起由 CI 加總 precache manifest 並把關；QR 解碼器的 chunk 也算在內。若雙語內容讓總量超過預算，改成只 precache 目前介面語言，另一個語言包用 runtime CacheFirst，並在切換語言時提示下載（這會影響 05 的切換流程與離線切換語言，屆時回報）。雙語核心內容的實際大小在 M1 之後估算。
+- **precache 體積預算**（暫定）：未壓縮總和不超過 5 MB，從 M0b 起由 CI 加總 precache manifest 並把關；QR 解碼器的 chunk 也算在內。若雙語內容讓總量超過預算，改成只 precache 目前介面語言，另一個語言包用 runtime CacheFirst，並在切換語言時提示下載（這會影響 05 的切換流程與離線切換語言，屆時回報）。雙語核心內容的實際大小在 M1 之後估算。已決定（2026-10-23）：CI 的檢查值（`apps/web/perf/urls.json` 的 `precacheKb`）從 1024 提高到 2048，上限 5 MB 不變；雙語內容快照隨已發布的章節成長，M2 發布三章後 precache 約 1.1 MB（量測值 1094 KB），超過 5 MB 才改成只 precache 目前語言。
 - 進度以「題目 id 加 rev」對應（見 [08 題庫管理](08-content-admin.md)），內容更新後進度不會錯位；錯題本遇到改版顯示「題目已更新」。
 - 配額不是問題：WebKit（Safari 17 起）的瀏覽器 App 每個 origin 最多約占磁碟 60%，主畫面 App 相同；真正的風險是淘汰（4.5）。
 
@@ -632,9 +633,9 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 | object store | key | 主要欄位 | 索引 | 說明 |
 | --- | --- | --- | --- | --- |
 | `meta` | 固定 key | `deviceId`、`createdAt`、`dbSchemaVersion`、`appVersion`、`contentVersion`、`importHistory` | 無 | `deviceId` 第一次啟動時隨機產生，用於合併去重；`dbSchemaVersion` 是本機資料庫的版本，和 08 的內容 `schemaVersion` 是兩回事 |
-| `attempts` | `attemptId` | `questionId`、`rev`、`chapterId`、`levelId`、`answer`、`correct`、`durationMs`、`answeredAt`、`deviceId`、`source`（play、lab、review） | `byQuestion`（questionId）、`byQuestionRev`（questionId、rev）、`byTime`（answeredAt） | 只增不改，是合併的基礎；`answer` 的格式依題型而定（見下表） |
+| `attempts` | `attemptId` | `questionId`、`rev`、`chapterId`、`levelId`、`answer`、`correct`、`durationMs`、`answeredAt`、`deviceId`、`source`（play、lab、review）；選填 `score`（0 到 1，逐目標或逐格計分的題型用）與 `guessed`（答對後按「我是猜的」，2026-10-23 補） | `byQuestion`（questionId）、`byQuestionRev`（questionId、rev）、`byTime`（answeredAt） | 只增不改，是合併的基礎；`answer` 的格式依題型而定（見下表） |
 | `levelProgress` | `levelId` | `stars`（0 到 3）、`bestScore`、`firstCompletedAt`、`lastPlayedAt` | 無 | 由 attempts 推導，但另存以加速列表 |
-| `reviewQueue` | `questionId` | `rev`、`lastResult`、`lastAnsweredAt`、`box`、`dueAt`、`wrongCount`、`status`（active、mastered、question_updated） | `byDue`（dueAt） | 錯題本與簡易間隔複習 |
+| `reviewQueue` | `questionId` | `rev`、`lastResult`、`lastAnsweredAt`、`box`、`dueAt`（本地日期 `YYYY-MM-DD`，不帶時間與時區，2026-10-23 定案）、`wrongCount`、`status`（active、mastered、question_updated） | `byDue`（dueAt） | 錯題本與簡易間隔複習 |
 | `unlocks` | `id`（例如 `term:<名詞 ID>`、`badge:<徽章 ID>`） | `kind`、`unlockedAt` | 無 | 名詞圖鑑與徽章 |
 | `labState` | `storyId` | `stepId`（故事模式目前所在的步驟）、`updatedAt` | 無 | 故事模式的進度；自由實驗的修改不放這裡，存在 `labSandbox` |
 | `labSandbox` | `id`（目前固定為 `sandbox-default`，自由實驗只存一份） | `basedOn`（`{ story, storyRev, throughStep }`）、`policy`、`layout`、`overrides`（`{ stepId, eventId, param, value }` 的陣列，即 04 第 9.2 節的 `(stepId, eventId, param)` 覆寫）、`inserted`（新增的步驟，用 `local_` 開頭的本機 ID）、`removed`（刪除的步驟）、`updatedAt` | 無 | 自由實驗的狀態，形狀與 [03 模組設計](03-modules.md) 第 3.7 節的範例相同，欄位以 03 為準；只存修改，不存報表 |
@@ -651,7 +652,8 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 | `true_false` | 布林值，選「對」為 `true` | `true` |
 | `pick_line` | 選中的版面列 ID（字串） | `"is_gross_profit"` |
 | `classify` | 以項目 ID 為鍵、所選分類為值的物件 | `{ "it_4k2m": "asset", "it_9p3x": "expense" }` |
-| `transaction_effect`、`five_step_fill` | 以 target ID 為鍵的物件（03 的 `PredictionAnswer`）：方向目標存方向代號，金額目標存數字 | `{ "t1": "up", "t2": "down", "t3": 210000 }` |
+| `transaction_effect` | 以 target ID 為鍵的物件（03 的 `PredictionAnswer`）：方向目標存方向代號，金額目標存數字 | `{ "t1": "up", "t2": "down", "t3": 210000 }` |
+| `five_step_fill` | 以開放格子的線 ID 為鍵的物件（`openCells` 的版面列 ID），值是輸入的數字（2026-10-23 定案） | `{ "is_gross_profit": 90000, "bs_cash": 210000 }` |
 | `ratio_numeric` | 04 `scoreNumeric` 的輸入 `NumericAnswer`（數值，或按下 N/A 的狀態） | 依 04 |
 | `journal_entry` | 04 `scoreJournalEntry` 的輸入 `EntryLine[][]`（每筆分錄的各行） | 依 04 |
 
@@ -753,7 +755,7 @@ export async function maybePersist(trigger: PersistTrigger) {
 - `isGeckoFirefox()` 只認 Gecko 引擎的 Firefox（電腦與 Android）；iPhone 上的 Firefox 是 WebKit（UA 含 `FxiOS`），比照 Safari。
 - 結果寫進設定，「我的 › 備份」（`/me/backup/`）與 debug 頁顯示「觸發來源、是否取得、時間」與 `estimate()` 的用量；沒有取得時套用下面較頻繁的備份提醒。
 
-**備份提醒**（暫定預設）：沒有取得 persistent 時，每完成 3 個關卡或距離上次匯出 7 天（先到者）提醒一次；在 Safari 分頁與 App 內建瀏覽器中，每完成 1 個關卡就提醒。
+**備份提醒**（暫定預設）：沒有取得 persistent 時，每完成 3 個關卡或距離上次匯出 7 天（先到者）提醒一次；在 Safari 分頁與 App 內建瀏覽器中，每完成 1 個關卡就提醒。已決定（2026-10-23）：提醒顯示時把設定裡的 `levelsCompletedSinceExport` 歸零並寫入 `lastRemindedAt`，所以同一個條件不會連續出現；匯出成功時同樣歸零。
 
 來源：https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/ 、https://webkit.org/blog/14403/updates-to-storage-policy/ 、https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria （查證日期 2026-10-20）
 
@@ -790,7 +792,7 @@ export async function maybePersist(trigger: PersistTrigger) {
       { "levelId": "lv_k7m2q9xd", "stars": 2, "bestScore": 0.8, "firstCompletedAt": "2026-11-03T08:00:00.000Z", "lastPlayedAt": "2026-11-04T13:06:00.000Z" }
     ],
     "reviewQueue": [
-      { "questionId": "q_7f3k2m9x", "rev": 2, "lastResult": "wrong", "lastAnsweredAt": "2026-11-04T13:05:12.000Z", "box": 1, "dueAt": "2026-11-05T00:00:00.000Z", "wrongCount": 1, "status": "active" }
+      { "questionId": "q_7f3k2m9x", "rev": 2, "lastResult": "wrong", "lastAnsweredAt": "2026-11-04T13:05:12.000Z", "box": 1, "dueAt": "2026-11-05", "wrongCount": 1, "status": "active" }
     ],
     "unlocks": [
       { "id": "term:tm_c4sh8k2p", "kind": "term", "unlockedAt": "2026-11-03T08:01:00.000Z" }
@@ -830,10 +832,10 @@ export async function maybePersist(trigger: PersistTrigger) {
 ```
 
 - 檔名：`ledgerland-backup-YYYYMMDD.json`。
-- **文字備份碼**（介面上稱「備份碼」）：`LL1:` 前綴加上壓縮後的 base64url 字串，內容與備份檔相同，`checksum` 用來發現貼錯或截斷。壓縮方式在 M2 決定並查證支援度（候選是瀏覽器內建的 CompressionStream，要涵蓋 D8 正式支援的 iOS 17）。資料量大時備份碼會很長，超過暫定上限（M2 依實際大小訂定）時，畫面建議改用備份檔。
+- **文字備份碼**（介面上稱「備份碼」）：`LL1:` 前綴加上壓縮後的 base64url 字串，內容與備份檔相同，`checksum` 用來發現貼錯或截斷。已決定（2026-10-23）：壓縮用瀏覽器內建 CompressionStream 的 `deflate-raw`（iOS 16.4 起支援，涵蓋 D8 的 iOS 17），`LL1:` 後接 base64url，上限 8000 字元；格式與上限定義在 `packages/progress`，壓縮與 SHA-256 由 `apps/web` 注入。超過上限時畫面建議改用備份檔（實機轉移見【待實測 V21】）。原本的寫法（壓縮方式與上限在 M2 依實際大小訂定）保留作為紀錄。
 - 匯出畫面兩個按鈕並列：「存成備份檔」（分享表單或下載）與「複製備份碼」（`navigator.clipboard.writeText`，需由使用者點按觸發）；匯入畫面同樣有「選擇備份檔」與「貼上備份碼」。
 - `errors` 預設為空陣列，只有使用者在匯出畫面勾選「附上錯誤紀錄」時才填入。
-- `origin` 與 `mode` 用來辨識來源（例如「這份來自 Safari 分頁」），也用於搬家流程（第 5 節）。
+- `origin` 與 `mode` 用來辨識來源（例如「這份來自 Safari 分頁」），也用於搬家流程（第 5 節）。`mode` 的值是 `browser`（一般分頁）、`app`（主畫面 App）、`in-app-browser`（App 內建瀏覽器）（2026-10-23 定案）。
 - 進度不放進網址參數或片段：會留在瀏覽紀錄，長度也有限。
 
 **匯入驗證**（依序，任何一步失敗就停止並說明原因）：
@@ -914,9 +916,9 @@ export async function maybePersist(trigger: PersistTrigger) {
 - **相機一定要關**：辨識成功、按「取消」、換頁、`visibilitychange` 轉為 hidden 時，一律對所有 track 呼叫 `stop()`。
 - **沒有權限或沒有相機**：拒絕權限、找不到相機或 `getUserMedia` 失敗時，顯示「沒有相機權限也沒關係，可以改輸入關卡代號」並直接帶到代號輸入框；另附一句如何在系統設定重新允許。
 - **離線**：解碼在本機完成，解碼器已 precache（3.2），掃到的網址只要對應的內容已下載就能開啟。
-- **解碼器選型（M2 前查證）**：Safari 沒有正式的 BarcodeDetector，所以要內建 JS 解碼器。比較項目：gzip 後的大小（以動態 `import()` 載入，不計入首次載入 JS，但計入 precache 預算）、授權（要和 MIT 程式碼相容，並列入 THIRD_PARTY_NOTICES）、維護狀況、在投影幕反光與教室燈光下的辨識率、iOS 17 上能否執行。若選用的解碼器需要 WebAssembly，CSP 另評估是否在 `script-src` 加上 `'wasm-unsafe-eval'`（M2 前查證，見 09），純 JS 的解碼器不需要這一項，所以這一點也列入比較；在有原生 BarcodeDetector 的瀏覽器（例如 Android Chrome）是否優先用原生 API，選型時一併評估。
+- **解碼器選型（M2 前查證）**：已決定（2026-10-23，與 14 第 5.2 節相同）：主案 `@zxing/library` 0.23.0，深層匯入 QR 子集、在 Web Worker 解碼（Apache-2.0、純 JS、不需要 WebAssembly、約 25 KB gzip，每 200 ms 取一格、影格縮到最長邊 640px）；退路 jsQR 1.4.0；M2 不用原生 BarcodeDetector（iOS Safari 到 27 仍在旗標後）。未採用：zxing-wasm 與 barcode-detector（需要 WebAssembly 與放寬 CSP）、zbar-wasm（LGPL）、qr-scanner（blob worker 違反 CSP，且已停更）。實機辨識率與速度見【待實測 V19】。原本的比較項目如下：Safari 沒有正式的 BarcodeDetector，所以要內建 JS 解碼器。比較項目：gzip 後的大小（以動態 `import()` 載入，不計入首次載入 JS，但計入 precache 預算）、授權（要和 MIT 程式碼相容，並列入 THIRD_PARTY_NOTICES）、維護狀況、在投影幕反光與教室燈光下的辨識率、iOS 17 上能否執行。若選用的解碼器需要 WebAssembly，CSP 另評估是否在 `script-src` 加上 `'wasm-unsafe-eval'`（M2 前查證，見 09），純 JS 的解碼器不需要這一項，所以這一點也列入比較；在有原生 BarcodeDetector 的瀏覽器（例如 Android Chrome）是否優先用原生 API，選型時一併評估。
 - **標頭**：`_headers` 的 `Permissions-Policy` 為 `camera=(self)`（3.5、09 第 11.2 節），App 內掃描才能使用相機；其餘權限一律關閉。
-- **測試**：Playwright 的 Chromium 專案用假的攝影機影像（內含站內與站外 QR）測試導覽、拒絕站外網址與拒絕權限三種情況；iOS Simulator 沒有相機，iOS 17、26、27 的掃描都在實機上測（第 10 節）。主畫面 App 中相機權限是否每次啟動都重新詢問，目前沒有資料（見文末建議新增）。
+- **測試**：Playwright 的 Chromium 專案用假的攝影機影像（內含站內與站外 QR）測試導覽、拒絕站外網址與拒絕權限三種情況；iOS Simulator 沒有相機，iOS 17、26、27 的掃描都在實機上測（第 10 節）。主畫面 App 中相機權限是否每次啟動都重新詢問【待實測 V20】：每次重新開啟 App 再問一次是 WebKit 的已知行為，不算阻礙；同一次啟動、同一個畫面內反覆詢問才算（10 第 9 節）。
 
 ---
 
@@ -1062,7 +1064,7 @@ document.addEventListener('focusout', () => {
 | Lighthouse 無障礙分數 | ≥ 95 | 同上 | 另有人工檢查，見 07 第 8 節 |
 | 首次載入 JS | ≤ 150 KB（gzip 後，暫定） | 首頁與 QR 落地頁 | 從 M0b 起由 CI 把關；M0a 實測後調整，只能附理由放寬 |
 | 首次載入 CSS | ≤ 30 KB（gzip 後，暫定） | 同上 | 同上 |
-| precache 總量 | ≤ 5 MB（未壓縮，暫定） | 第一次安裝 SW | 見 3.2 |
+| precache 總量 | ≤ 5 MB（未壓縮，暫定）；CI 的檢查值 2 MB（`precacheKb` 2048，2026-10-23 從 1 MB 提高） | 第一次安裝 SW | 見 3.2 |
 
 Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算。坊間有「2026 年調整門檻」的說法，但查不到 Google 的一手來源，維持現行門檻。
 
@@ -1075,6 +1077,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
 - assertion 只看 metric 數值（LCP、TBT、CLS、總傳輸量）與類別分數，不依賴會改名的 insight 或 opportunity audit（Lighthouse 13.0 已把舊的效能 audit 換成 insights，另移除 8 個沒有替代的 audit；效能計分方式不變）。
 - 記錄每次報告的 `benchmarkIndex`，據此校準 `--throttling.cpuSlowdownMultiplier`。Lighthouse 預設的行動節流是 simulated：RTT 150ms、下行 1.6 Mbps、上行 750 Kbps、CPU 4 倍減速，模擬中階行動裝置；`benchmarkIndex` 125 到 800 為中階、低於 125 為低階。另加一組 6 倍減速的低階設定，代表較舊的 Android 手機。
 - **M0b 的兩個實測教訓（2026-10-22）**：(1) 會插入到內容上方的元素（語言切換提示、橫幅）必須在首次繪製就決定要不要顯示或預留空間，不能在 effect 裡才插入，否則會把下面的卡片往下推，首頁與作答頁的 CLS 曾因此到 0.073 與 0.097；(2) 內容頁不能在頁面 chunk 載入後才開始串行請求 manifest 與內容快照，名詞頁曾因此比列表頁多約 450ms、LCP 超過 2.5 秒；做法是殼層 `preload` manifest、App 啟動就讀 manifest、路由在載入 chunk 的同時讀快照。
+- **M2 的實測教訓（2026-10-23）**：(1) 量效能只能用完整建置（`vite build` 之後要跑 `tools/postbuild.mjs` 填 CSP 雜湊），只跑 `vite build` 會讓殼層的 inline 腳本與首次繪製的 style 被 CSP 擋掉，每一頁 LCP 一致多約 300ms，看起來像程式回歸其實不是；(2) rolldown 的 `codeSplitting.groups` 預設連依賴一起抓（`includeDependenciesRecursively`），群組要依「共用的先宣告」排序，作答頁專用的群組用 `entriesAware` 拆開，否則地圖頁會多載判分與題目元件；(3) 進度資料庫的開啟（runtime、zod 約 37 KB gzip）一律在第一次繪製送出之後（`afterFirstPaint`：兩個動畫影格、閒置、再等 400ms），任何在 effect 裡直接呼叫 `getProgressStore()` 的元件都會搶在 LCP 前面；(4) 闖關地圖與作答頁第二波仍要 75 到 110 KB，M2 把這兩頁的 LCP 門檻暫放寬到 3000ms，M3 拆 progress 的 schema 與 runtime、判分改成按下確認才載入後收回（14 第 5.2 節）。
 - **固定量測網址**：首頁（`/`）、闖關地圖（`/play/`，17 第 8 節）、一個章節頁（`/chapter/<chapterId>/`）、一個關卡作答頁（`/level/<levelId>/`）、實驗室故事的第 7 個步驟（`/lab/story/<storyId>/<stepId>/`），另加同一個關卡的英文作答頁（`/en/level/<levelId>/`），確認英文殼層與英文 catalog 同樣達標。路徑格式以 02 的頁面總表為準（關卡不巢狀在章節底下，一律帶結尾斜線）；D5 決定中文在根路徑、英文加 `/en/`。實際網址寫在 `perf/urls.json`，不因功能調整而換網址。D5 也決定不預先產生 HTML，所以每個網址都是經由 Cloudflare 的 SPA fallback 拿到殼層、再由用戶端載入資料，一律量「冷啟動直接開啟深層連結」的情況。
 - **統計腳本保持開啟**（D7，8.3）：量測時照正式網站的方式載入統計腳本，但把送出目的地換成本機的 stub（或用 Playwright 攔截請求），讓它的體積與執行成本算進結果，又不汙染正式的統計資料。統計腳本讓數值超出預算時，改它的載入方式，不放寬預算。
 - **JS 與 CSS 體積**：用 size-limit 之類的工具在每個 PR 檢查；QR 解碼器是動態載入的 chunk，不計入首次載入，但另設一條 chunk 體積的檢查，數值在解碼器選型後訂定。
@@ -1100,7 +1103,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
     "categories.performance": { "min": 0.9 },
     "categories.accessibility": { "min": 0.95 }
   },
-  "budgets": { "initialJsGzipKb": 150, "initialCssGzipKb": 30, "precacheMb": 5 }
+  "budgets": { "initialJsGzipKb": 150, "initialCssGzipKb": 30, "precacheKb": 2048 }
 }
 ```
 

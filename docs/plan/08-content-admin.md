@@ -116,7 +116,7 @@ D 系列與本文件有關的項目已在 2026-10-20 全部決定，內容併入
 - **方法**：
   1. 把教材題目頁的文字擷取到 `.local-reports/originality/source/`（只在本機）。
   2. 兩邊都做正規化：NFKC、去除空白與標點、把所有數字換成同一個記號。
-  3. 中文以字元 3-gram 計算「題目被教材覆蓋的比例」（題目的 n-gram 有多少比例出現在某一頁教材題目中），另外計算最長共同子字串長度。
+  3. 中文以字元 n-gram 計算「題目被教材覆蓋的比例」（題目的 n-gram 有多少比例出現在某一頁教材題目中），另外計算最長共同子字串長度。已決定（2026-10-23，`tools/local/originality-check.mjs`）：中文用 8 字、英文用 6 詞；原規劃的 3-gram 對會計名詞太敏感，幾乎每題都命中，未採用。
   4. 對每一題列出覆蓋比例最高的前三個教材頁、分數與重疊片段。
   5. 另外列出題目文字中寫死的教材故事特有金額。故事資料照老師的金額（D2 已決定），所以這些金額只應該出現在故事資料，以及以 `opening.storyRef` 引用故事狀態、由核心算出數字的題目；其他題目出現時列入報表，由審稿者確認是否應改成自編數字。
 - **門檻**：在第一批原創題寫完後試跑，再訂出提醒門檻（列在文末「建議新增的待確認」）。
@@ -220,8 +220,8 @@ content/
 | `packages/content-schema/` | Zod schema、ID 產生、佔位符文法、正規化與驗證程式 | commit |
 | `packages/web-ui/` | 已決定（2026-10-20）：學習端與後台共用的 React 元件（題目、回饋、名詞卡、報表表格等），本機預覽、匯入頁與後台的預覽都用它（10.4 節） | commit |
 | `schemas/*.schema.json` | 由 Zod 產生的 draft-07 JSON Schema（給 VS Code 自動完成與 Excel 範本產生器） | commit，CI 重新產生後比對 |
-| `tools/content-build/` | ContentAdapter、編譯、切分、lock 檢查 | commit |
-| `tools/local/` | 只在本機執行的腳本（例如相似度檢查） | 腳本 commit，輸出不 commit |
+| `tools/content-build.mjs` 加 `tools/lib/`（實際路徑，2026-10-23） | ContentAdapter、編譯、切分、lock 檢查；`tools/lib/` 放共用模組（檔案讀取、規則、快照、lock、覆蓋表、`open-refs.json`），`tools/content-*.mjs` 是各指令的入口 | commit |
+| `tools/local/originality-check.mjs`（實際路徑） | 只在本機執行的相似度檢查（1.5 節） | 腳本 commit，輸出不 commit |
 | 建置輸出的內容快照 | 依語系、章節切分的 JSON 與 `content-manifest.json` | 不 commit |
 | `.local-reports/` | 工具產生的報表：相似度比對的原始結果與教材文字擷取（`.local-reports/originality/`）、i18n 報表等 | 不 commit（gitignored） |
 | `.claude/reports/` | AI Agent 自己的筆記與摘要，例如原創比對的判讀摘要（`.claude/reports/originality/`） | 不 commit（整個 `.claude/` 以 `.gitignore` 排除，只存在本機） |
@@ -277,6 +277,8 @@ content/
 
 ### 3.4 Objective 學習目標（本文件定義）
 
+檔案形狀（2026-10-23 定案）：一章一檔 `content/objectives/<chapterId>.json`，內容是 `{ chapterId, items }`，`items` 是下表欄位的陣列（每筆另有 3.2 節的管理欄位，ID 前綴 `obj_`）。
+
 | 欄位 | 型別 | 必填 | 說明 |
 | --- | --- | --- | --- |
 | `chapterId` | string | 是 | 所屬章節 |
@@ -326,12 +328,12 @@ content/
 
 | 代號 | 題型 | 專屬欄位 | 正解從哪裡來 | 計分 | 表格可維護 |
 | --- | --- | --- | --- | --- | --- |
-| `single_choice` | 情境單選 | `options`（3 或 4 個，每個 `{ id, text, feedback }`）、`correctOptionId` | 作者 | 計分 | 可以 |
+| `single_choice` | 情境單選 | `options`（3 或 4 個，每個 `{ id, text, feedback }`，選填 `short` 與 `pin: 'last'`，見下表）、`correctOptionId` | 作者 | 計分 | 可以 |
 | `true_false` | 是非（破解迷思） | `statement`、`correct`、`feedbackTrue`、`feedbackFalse` | 作者 | 計分 | 可以 |
 | `pick_statement` | 選報表 | 同 `single_choice`，選項是報表 | 作者 | 計分 | 可以 |
 | `pick_line` | 點選報表列 | `scenario`（決定畫面上的數字）、`statement`（哪一張表）、`correctLines` | 作者；驗證列存在於版面 | 計分 | 不行 |
 | `classify` | 分類 | `dimension`（`element`、`current`、`cf_activity`、`ratio_category`）、`items`（`{ id, account?, ratio?, text?, allowContra? }`，項目 ID 用 `it_` 前綴；`text` 是 LocalizedText，給不對應科目或指標的自訂文字項目；抵銷科目要標 `allowContra` 才能出題）、`correctCategories`（只給自訂文字項目，鍵是項目 ID，見 04 第 16.2 節） | 以科目或指標為項目時由科目表或指標登錄檔推導，不必填；自訂文字項目由作者在 `correctCategories` 填寫 | 計分 | 可以（項目一列一筆） |
-| `transaction_effect` | 交易影響（上升、下降、不變，或變動金額） | `scenario`（`targets` 的 `measure` 可以是 `direction`、`delta` 或 `value`）、`choices`（`up`、`down`、`unchanged`、`becomes_computable`、`becomes_na` 的子集；只適用於 `direction` 目標，`delta` 與 `value` 目標改用數字輸入） | 核心 | 計分 | 不行 |
+| `transaction_effect` | 交易影響（上升、下降、不變，或變動金額） | `scenario`（`targets` 的 `measure` 可以是 `direction`、`delta` 或 `value`）、`choices`（`up`、`down`、`unchanged`、`becomes_computable`、`becomes_na` 的子集；只適用於 `direction` 目標，`delta` 與 `value` 目標改用數字輸入）、`scoring`（選填：`allOrNothing` 預設，全部目標都對才算對；`perTarget` 逐目標計分，`attempts.score` 記答對比例；2026-10-23 納入 schema） | 核心 | 計分 | 不行 |
 | `five_step_fill` | 五步驟勾稽填格 | `scenario`、`openCells`（預設三格，見 04） | 核心 | 計分 | 不行 |
 | `ratio_numeric` | 指標計算 | `compute`（`ratioRef` 加 `scenario` 或 `measures`）、`answerUnit`、`decimals`、`tolerance`、`acceptStatus` | 核心 | 計分 | 不行 |
 | `ratio_interpret` | 指標判讀 | 同 `single_choice`，另有 `ratioRef` | 作者 | 計分 | 可以 |
@@ -345,6 +347,8 @@ content/
 | --- | --- |
 | `options[].misconceptionId` | 干擾選項對應的迷思（3.4 節），讓覆蓋報表統計每個迷思有沒有被練到 |
 | `distractorExprs` | 數字型 `single_choice` 以運算式定義干擾選項（04 第 15.2 節第 6 步的做法） |
+| `options[].short` | 選項的簡短版，給解說的 `{{option:o_xxxx}}` 引用（03 第 2.8 節；2026-10-23 納入 schema） |
+| `options[].pin` | 只能是 `'last'`：「以上皆是」這類選項固定在最後、不參與打散；一題最多一個（03 第 2.8 節；2026-10-23 納入 schema） |
 
 補充規則：
 
@@ -679,13 +683,14 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | 欄位 | 說明 |
 | --- | --- |
 | `id` | 實體 ID |
-| `kind` | 實體種類 |
+| `kind` | 實體種類：`term`、`chapter`、`objective`、`level`、`template`、`story`、`question`（`objective` 與 `level` 於 2026-10-23 加入，章節的 `levelIds` 與關卡的 `questionIds` 順序也納入 answerHash） |
 | `rev` | 最近一次發布的 rev |
 | `revKind` | 最近一次改版的種類 |
 | `answerRev` | 最近一次答案改版時的 rev；快照也帶這個值，學習端用它判斷「題目已更新」 |
 | `status` | `published` 或 `retired` |
 | `answerHash` | 答案相關欄位的雜湊（名詞沒有這一欄） |
 | `optionIds` | 曾經發布過的所有選項 ID（只增不減） |
+| `removedOptionIds` | 發布後被移除的選項 ID（2026-10-23 加入；CI 規則 6 用它判斷「再次出現」，不必回頭比對前一版） |
 | `supersededBy` | 下架時的替代項目 |
 
 範例（雜湊值已截短）：
@@ -779,7 +784,7 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `struct.filename` | 一筆一檔的實體，檔名必須等於 `id`；題目檔必須放在所屬章節的資料夾 | 錯誤 | 全部 |
 | `struct.idFormat` | 隨機 ID 的前綴與種類相符、字元在 Crockford Base32 小寫字母表內、長度符合 4.1 節；語意 ID 是小寫 snake_case（範本有 `tpl.` 前綴，版本參照以 `@` 連接）；事件 ID 是 `e` 加流水號 | 錯誤 | 全部 |
 | `struct.duplicateId` | 全站 ID 不重複；題目內的選項 ID、項目 ID、事件 ID 不重複；故事步驟內的事件 ID 不重複 | 錯誤 | 全部 |
-| `struct.levelSize` | 關卡有 5 到 8 題計分題，另外至多 1 題不計分的 `judgment`；`pendingRefs` 不是空而暫不計分的題目不算在計分題數內 | 錯誤 | 已發布 |
+| `struct.levelSize` | 關卡有 5 到 8 題計分題，另外至多 1 題不計分的 `judgment`；`pendingRefs` 不是空而暫不計分的題目不算在計分題數內。草稿關卡題數不足時只警告（2026-10-23 補，讓逐題撰寫的章節可以先 commit） | 錯誤（已發布）、警告（草稿） | 全部 |
 | `struct.optionCount` | `single_choice`、`pick_statement`、`ratio_interpret` 有 3 或 4 個選項；`multi_choice` 有 3 到 5 個；`judgment` 有 3 個 | 錯誤 | 全部 |
 | `struct.unknownField` | 不允許 schema 以外的欄位（避免打錯欄位名稱而被忽略） | 錯誤 | 全部 |
 | `struct.noSourceField` | 不得出現 `source`、`page`、`inspiredBy` 等出處欄位 | 錯誤 | 全部 |
@@ -829,7 +834,7 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `acct.storyReplay` | 故事從期初逐步過帳，每一步都成功，資產與負債科目不為負 | 錯誤 | 全部 |
 | `acct.invariants` | 每一步之後：資產等於負債加權益；現金流量表淨額等於現金變動；本期淨利與未分配盈餘一致；間接法與直接法的營業活動金額相等；版面上的營業成本等於營業成本帳戶餘額 | 錯誤 | 全部 |
 | `acct.scenarioComputes` | 每個計算型題目的 scenario 都能由核心算出答案 | 錯誤 | 全部 |
-| `acct.pendingBlocked` | 計分題的 scenario 用到 `pendingRefs` 不是空的範本，或題目的學習目標列有 `pendingRefs` 時提出警告，提醒審稿者看過對應的設計說明（14 的條目）；2026-10-23 起 T 系列已全部決定，這個警告不阻擋放行；只有真正懸而未決的事項可能改變正解時，才在題目層級的 `pendingRefs` 列出編號，這一題暫不計分（1.1 節第 4 點） | 警告 | 已發布 |
+| `acct.pendingBlocked` | 只對 `tools/lib/open-refs.json` 列為「仍開放」的編號警告（2026-10-23 定案）：計分題的 scenario 用到的範本、題目的學習目標或題目本身的 `pendingRefs` 含有仍開放的編號時提醒審稿者；`pendingRefs` 自 2026-10-23 起是「相關設計決定的編號」，不代表懸而未決，所以不在清單內的編號不警告。清單目前為空；某條 T 或 D 若日後重新開放，加進清單即可。只有真正懸而未決的事項可能改變正解時，才在題目層級的 `pendingRefs` 列出編號，這一題暫不計分（1.1 節第 4 點） | 警告 | 已發布 |
 | `acct.entryBlocked` | `journal_entry` 的 scenario 不得用到 `entryQuestionBlockedBy` 列有 T 編號的範本（04 第 14 節）；只帶 `pendingRefs` 的範本不受這條限制。2026-10-23 起沒有範本帶這個欄位，規則保留 | 錯誤 | 全部 |
 | `acct.teacherPolicy` | 題目的 `scenario.policy` 與 `scenario.layout` 只能是 `teacher@1`；`ifrs@1` 只用在實驗室的 IFRS 對照（D10(f)，不計分） | 錯誤 | 全部 |
 | `acct.classifyDerived` | `classify` 的項目以 `account` 或 `ratio` 引用核心資料，正解由科目表的 `element`、`current`、`cashFlow.defaultActivity` 或指標登錄檔的類別推導；作者若有填正解必須一致；自訂文字項目（只有 `text`）的正解必須寫在 `correctCategories`；抵銷科目要標 `allowContra` 才能出題 | 錯誤 | 全部 |
@@ -896,12 +901,12 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 
 | 指令 | 做什麼 | CI |
 | --- | --- | --- |
-| `pnpm content:new <kind>` | 建立新檔案並產生 ID | 否 |
+| `pnpm content:new <kind>` | 建立新檔案並產生 ID。實際用法（2026-10-23）：`pnpm content:new <question|level|objective|term|chapter> [--chapter ch_xxxxxx] [--type <題型>] [--order <n>]`，產生不與既有 ID 和 lock 衝突的 ID，題目放進所屬章節的資料夾 | 否 |
 | `pnpm content:check` | 跑 5.1 到 5.7 全部規則 | 是 |
 | `pnpm content:compile` | 核心算答案、編譯標記、產生快照與 manifest | 是 |
 | `pnpm content:lock --check`、`--write` | 檢查或更新 lock 檔 | 是（只跑 check） |
 | `pnpm content:i18n-report` | 缺翻譯報表（已發布項目強制） | 是 |
-| `pnpm content:coverage` | 觀念覆蓋表的進度報表 | 是（貼在 PR 留言） |
+| `pnpm content:coverage` | 觀念覆蓋表的進度報表：每個學習目標的 `plannedQuestions` 對已寫、已發布的題數，以及每個迷思有沒有被干擾選項練到。實際用法（2026-10-23）：`pnpm content:coverage`，在終端機輸出表格；CI 貼 PR 留言留到 M6 | 是（貼在 PR 留言，M6 起） |
 | `pnpm schemas:check` | 重新產生 `schemas/*.schema.json`，CI 以 `git diff --exit-code` 比對 | 是 |
 | `pnpm content:preview` | 本機預覽，包含草稿 | 否 |
 | `pnpm content:template` | 由 Zod schema 產生 Excel 範本（M6，D10(d)，10.2 節） | 是（比對範本與 schema 一致） |
