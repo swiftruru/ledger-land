@@ -5,6 +5,7 @@
   "description": "語系登錄檔、網址的語系函式（localeFromPath、stripLocale、localePath）、金額與百分比等格式化函式、作答輸入正規化；純 TypeScript，不含 Lingui 字串檔",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts"
   },

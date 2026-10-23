@@ -5,6 +5,7 @@
   "description": "設計 token 的唯一來源：色彩（紙質淺色與深色三風味）、字級、間距、圓角、陰影、動態、斷點；建置時產生 CSS 變數檔、TS 常數、manifest 色碼與首次繪製背景色",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
     "./tokens.css": "./generated/tokens.css"

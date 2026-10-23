@@ -1,0 +1,155 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "rev": {
+      "$ref": "#/definitions/__schema0"
+    },
+    "revKind": {
+      "$ref": "#/definitions/__schema1"
+    },
+    "status": {
+      "$ref": "#/definitions/__schema2"
+    },
+    "supersededBy": {
+      "$ref": "#/definitions/__schema3"
+    },
+    "retiredNote": {
+      "$ref": "#/definitions/__schema4"
+    },
+    "authorNotes": {
+      "$ref": "#/definitions/__schema7"
+    },
+    "updatedAt": {
+      "$ref": "#/definitions/__schema8"
+    },
+    "id": {
+      "$ref": "#/definitions/__schema9"
+    },
+    "chapterId": {
+      "$ref": "#/definitions/__schema10"
+    },
+    "order": {
+      "$ref": "#/definitions/__schema11"
+    },
+    "title": {
+      "$ref": "#/definitions/LocalizedText"
+    },
+    "objectiveIds": {
+      "$ref": "#/definitions/__schema12"
+    },
+    "questionIds": {
+      "$ref": "#/definitions/__schema13"
+    },
+    "timerSeconds": {
+      "$ref": "#/definitions/__schema14"
+    }
+  },
+  "required": [
+    "rev",
+    "revKind",
+    "status",
+    "id",
+    "chapterId",
+    "order",
+    "title",
+    "questionIds"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "__schema0": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "__schema1": {
+      "type": "string",
+      "enum": [
+        "text",
+        "answer"
+      ]
+    },
+    "__schema2": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "retired"
+      ]
+    },
+    "__schema3": {
+      "type": "string"
+    },
+    "__schema4": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
+        }
+      ]
+    },
+    "LocalizedText": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "en": {
+          "$ref": "#/definitions/__schema6"
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "__schema5": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema6": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema7": {
+      "type": "string"
+    },
+    "__schema8": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "__schema9": {
+      "type": "string",
+      "pattern": "^lv_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+    },
+    "__schema10": {
+      "type": "string",
+      "pattern": "^ch_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+    },
+    "__schema11": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "__schema12": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^obj_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+      }
+    },
+    "__schema13": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^q_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+      }
+    },
+    "__schema14": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600
+    }
+  }
+}

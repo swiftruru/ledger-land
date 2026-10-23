@@ -5,6 +5,7 @@
   "description": "內容的 Zod schema（M0b 先有 Term 與 Chapter）、ID 規則與驗證；輸出 draft-07 JSON Schema 到 schemas/",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts"
   },
