@@ -1,0 +1,62 @@
+{
+  "id": "tpl.pay_directors_remuneration_cash",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "以現金支付董監事酬勞",
+    "en": "Pay remuneration of directors and supervisors in cash"
+  },
+  "summary": {
+    "zh-TW": "以現金 {{money:param.amount}} 支付董監事酬勞。",
+    "en": "Pay {{money:param.amount}} in cash as remuneration of directors and supervisors."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 200000,
+      "label": {
+        "zh-TW": "董監事酬勞",
+        "en": "Remuneration paid"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= param.amount",
+      "message": {
+        "zh-TW": "帳上現金不夠付這筆款項。",
+        "en": "There is not enough cash on the books for this payment."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "directors_remuneration",
+      "side": "debit",
+      "amount": "param.amount"
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "payments_for_operating_expenses"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "付給董監事的酬勞是經營公司的費用，列在銷管費用；現金減少、獲利減少。現行報表多稱董事酬勞，教材沿用董監事酬勞。",
+    "en": "Remuneration paid to directors and supervisors is a cost of running the company and belongs to distribution costs and administrative expenses; cash and profit both fall. Current financial statements usually call it directors' remuneration; the course keeps the older name covering supervisors too."
+  },
+  "termRefs": ["tm_q5srzxb2", "tm_c4sh8k2p"]
+}

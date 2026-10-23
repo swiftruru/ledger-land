@@ -1,0 +1,106 @@
+{
+  "id": "tpl.repay_all_short_term_loans_with_interest",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "還清短期借款並支付利息",
+    "en": "Repay all short-term borrowings with interest"
+  },
+  "summary": {
+    "zh-TW": "以現金還清短期借款本金 {{money:derived.principal}}，並支付利息 {{money:param.interest}}。",
+    "en": "Repay short-term borrowings of {{money:derived.principal}} in cash and pay interest of {{money:param.interest}}."
+  },
+  "params": [
+    {
+      "name": "interest",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 30000,
+      "label": {
+        "zh-TW": "本期支付的利息",
+        "en": "Interest paid"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [
+    {
+      "name": "principal",
+      "type": "money",
+      "expr": "balance(short_term_borrowings)",
+      "label": {
+        "zh-TW": "要還的本金（帳上短期借款餘額）",
+        "en": "Principal to repay (short-term borrowings balance)"
+      }
+    },
+    {
+      "name": "totalPaid",
+      "type": "money",
+      "expr": "derived.principal + param.interest",
+      "label": {
+        "zh-TW": "付出的現金合計",
+        "en": "Total cash paid"
+      }
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "has_loan",
+      "expr": "balance(short_term_borrowings) > 0",
+      "message": {
+        "zh-TW": "帳上沒有短期借款可以還。",
+        "en": "There are no short-term borrowings to repay."
+      }
+    },
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= derived.totalPaid",
+      "message": {
+        "zh-TW": "現金不夠同時還本金和付利息。",
+        "en": "There is not enough cash to repay the principal and pay the interest."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "short_term_borrowings",
+      "side": "debit",
+      "amount": "derived.principal"
+    },
+    {
+      "id": "l2",
+      "account": "interest_expense",
+      "side": "debit",
+      "amount": "param.interest"
+    },
+    {
+      "id": "l3",
+      "account": "cash",
+      "side": "credit",
+      "amount": "derived.principal",
+      "cf": {
+        "activity": "financing",
+        "kind": "st_borrowing_repayment"
+      }
+    },
+    {
+      "id": "l4",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.interest",
+      "cf": {
+        "activity": "operating",
+        "kind": "interest_paid"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "同一次付款拆成兩條現金行：還本金屬於籌資活動，出現在短期借款返還；付利息在教材的間接法裡屬於營業活動，出現在支付之利息。損益表上的{{term:tm_k6t2e9wr}}會在小計之前先加回，所以利息不會被扣兩次。",
+    "en": "One payment is split into two cash lines. Repaying the principal is a financing activity and appears as repayment of short-term borrowings. In the course's indirect method, paying interest is an operating activity and appears as interest paid. The {{term:tm_k6t2e9wr}} on the income statement is added back before the subtotal, so the interest is not deducted twice."
+  },
+  "termRefs": ["tm_s5b8r3hd", "tm_k6t2e9wr", "tm_f9a4c6md", "tm_p2a7c5vk"],
+  "pendingRefs": ["T11"]
+}

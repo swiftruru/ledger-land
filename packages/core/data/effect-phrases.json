@@ -1,0 +1,5 @@
+{
+  "increase": { "zh-TW": "{{term:account}}增加 {{money:amount}}", "en": "{{term:account}} increases by {{money:amount}}" },
+  "decrease": { "zh-TW": "{{term:account}}減少 {{money:amount}}", "en": "{{term:account}} decreases by {{money:amount}}" },
+  "unchanged": { "zh-TW": "{{term:account}}不變", "en": "{{term:account}} is unchanged" }
+}

@@ -1,0 +1,68 @@
+{
+  "id": "tpl.pay_income_tax_payable",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "繳納應付所得稅",
+    "en": "Pay the income tax liability"
+  },
+  "summary": {
+    "zh-TW": "以現金付清帳上的應付所得稅 {{money:derived.amount}}。",
+    "en": "Pay the income tax liability of {{money:derived.amount}} on the books in cash."
+  },
+  "params": [],
+  "derived": [
+    {
+      "name": "amount",
+      "type": "money",
+      "expr": "balance(income_tax_payable)",
+      "label": {
+        "zh-TW": "要繳的所得稅（帳上應付所得稅餘額）",
+        "en": "Tax to pay (income tax payable balance)"
+      }
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "has_payable",
+      "expr": "balance(income_tax_payable) > 0",
+      "message": {
+        "zh-TW": "帳上沒有應付所得稅可以繳。",
+        "en": "There is no income tax liability to pay."
+      }
+    },
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= derived.amount",
+      "message": {
+        "zh-TW": "帳上現金不夠付這筆款項。",
+        "en": "There is not enough cash on the books for this payment."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "income_tax_payable",
+      "side": "debit",
+      "amount": "derived.amount"
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "derived.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "income_tax_paid"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "先前估列的所得稅費用已經減少了獲利，這一步只是把負債換成現金流出：應付所得稅減少、現金減少，獲利不變。付出的現金列在營業活動的支付所得稅。這個範本只在所得稅採「先估列再繳納」時使用。",
+    "en": "The income tax expense accrued earlier has already reduced profit; this step simply settles the liability: income tax payable and cash both fall, and profit is unchanged. The cash paid appears under operating activities as income taxes paid. This template is only used when income tax is accrued first and paid later."
+  },
+  "termRefs": ["tm_kgv20zg0", "tm_c4sh8k2p"],
+  "pendingRefs": ["T10", "T36"]
+}

@@ -1,0 +1,4652 @@
+{
+  "$comment": "青檸文具社（story_q7m2v9，04 第 17 節的自編數字）在 teacher@1 政策與版面下，每一步之後的累計三表、23 項 excel 版指標與五步驟檢查。來源與計算方式：期望值不是由核心 snapshot 產生，而是由一支獨立的計算表腳本（只用加減法逐步累計餘額與現金標籤）算出，再依 04 第 11 節每一列的規則組成三表、依第 12.2 節表 A 的公式與第 12.6 節的狀態順序算指標；第 18 步與 04 第 17 節的表逐項核對。逐步累計規則：賣出全部存貨的成本等於帳上存貨；付清貨款等於應付帳款餘額；還款本金等於短期借款餘額；盤點 420,000 時帳上為 0，盤盈 420,000 沖減營業成本（T06 預設）；折舊 360,000 ÷ 4 ＝ 90,000；攤銷 150,000 ÷ 5 ＝ 30,000；設立費付現歸投資活動 capex（T30）；事務用品全額費用化（W01）；所得稅付現（T10）。lines 是 measureMap 的形狀（含 hidden、延伸與分組列，分組列為 0）；ratios 只記 status 與 displayValue（百分比以百分點表示，2 位小數，.5 遠離 0）；fiveStep.checks 的 left、right、diff 都由同一份計算表算出，diff 全為 0。",
+  "story": "story_q7m2v9",
+  "policy": "teacher@1",
+  "layout": "teacher@1",
+  "steps": [
+    {
+      "stepId": "st_a1b2c3",
+      "order": 1,
+      "lines": {
+        "is_revenue": 0,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 0,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 0,
+        "is_gross_profit": 0,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 0,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 0,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 0,
+        "is_operating_income": 0,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 0,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 0,
+        "is_income_tax_expense": 0,
+        "is_net_income": 0,
+        "bs_current_assets_group": 0,
+        "bs_cash": 2400000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 2400000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 0,
+        "bs_ppe_gross": 0,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 0,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 2400000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 0,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2400000,
+        "bs_total_liabilities_equity": 2400000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 0,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 0,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 0,
+        "cf_investing_group": 0,
+        "cf_capex": 0,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": 0,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 0,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 2400000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 2400000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 0,
+        "dc_payments_to_suppliers": 0,
+        "dc_payments_for_operating_expenses": 0,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 0,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 0,
+        "dc_investing_total": 0,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 2400000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 2400000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_flow_adequacy": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "total_asset_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "dol": {
+          "status": "na",
+          "displayValue": null
+        },
+        "dfl": {
+          "status": "na",
+          "displayValue": null
+        },
+        "roa": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "roe": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "eps": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "net_profit_margin": {
+          "status": "na",
+          "displayValue": null
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 0,
+          "operatingIncome": 0,
+          "ordinaryIncome": 0,
+          "pretaxIncome": 0,
+          "netIncome": 0
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 0,
+            "right": 0,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 2400000,
+            "right": 2400000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 0,
+            "right": 0,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 2400000,
+            "right": 2400000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_d4e5f6",
+      "order": 2,
+      "lines": {
+        "is_revenue": 0,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 0,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 0,
+        "is_gross_profit": 0,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 0,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 36000,
+        "is_operating_income": -36000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": -36000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": -36000,
+        "is_income_tax_expense": 0,
+        "is_net_income": -36000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 2364000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 2364000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 0,
+        "bs_ppe_gross": 0,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 0,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 2364000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": -36000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2364000,
+        "bs_total_liabilities_equity": 2364000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": -36000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": -36000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": -36000,
+        "cf_investing_group": 0,
+        "cf_capex": 0,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": 0,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 0,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 2364000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 2364000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 0,
+        "dc_payments_to_suppliers": 0,
+        "dc_payments_for_operating_expenses": -36000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": -36000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": -36000,
+        "dc_investing_total": 0,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 2364000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 2364000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_flow_adequacy": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": -1.52
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "total_asset_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "dol": {
+          "status": "not_meaningful",
+          "displayValue": 0
+        },
+        "dfl": {
+          "status": "not_meaningful",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": -1.52
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -1.5
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -1.5
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": -1.52
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": -0.15
+        },
+        "net_profit_margin": {
+          "status": "na",
+          "displayValue": null
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 0,
+          "operatingIncome": -36000,
+          "ordinaryIncome": -36000,
+          "pretaxIncome": -36000,
+          "netIncome": -36000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": -36000,
+            "right": -36000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 2364000,
+            "right": 2364000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": -36000,
+            "right": -36000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 2364000,
+            "right": 2364000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_g7h8j9",
+      "order": 3,
+      "lines": {
+        "is_revenue": 0,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 0,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 0,
+        "is_gross_profit": 0,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 0,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 36000,
+        "is_operating_income": -36000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": -36000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": -36000,
+        "is_income_tax_expense": 0,
+        "is_net_income": -36000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 2004000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 2004000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 0,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 2364000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": -36000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2364000,
+        "bs_total_liabilities_equity": 2364000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": -36000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": -36000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": -36000,
+        "cf_investing_group": 0,
+        "cf_capex": -360000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -360000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 0,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 2004000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 2004000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 0,
+        "dc_payments_to_suppliers": 0,
+        "dc_payments_for_operating_expenses": -36000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": -36000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": -36000,
+        "dc_investing_total": -360000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 2004000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 2004000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 656.67
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": -10
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": -1.52
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "total_asset_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "dol": {
+          "status": "not_meaningful",
+          "displayValue": 0
+        },
+        "dfl": {
+          "status": "not_meaningful",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": -1.52
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -1.5
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -1.5
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": -1.52
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": -0.15
+        },
+        "net_profit_margin": {
+          "status": "na",
+          "displayValue": null
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 0,
+          "operatingIncome": -36000,
+          "ordinaryIncome": -36000,
+          "pretaxIncome": -36000,
+          "netIncome": -36000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": -36000,
+            "right": -36000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 2004000,
+            "right": 2004000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": -36000,
+            "right": -36000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 2364000,
+            "right": 2364000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_k2m3n4",
+      "order": 4,
+      "lines": {
+        "is_revenue": 0,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 0,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 0,
+        "is_gross_profit": 0,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": -156000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": -156000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": -156000,
+        "is_income_tax_expense": 0,
+        "is_net_income": -156000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 1884000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 1884000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 0,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 2244000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": -156000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2244000,
+        "bs_total_liabilities_equity": 2244000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": -156000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": -156000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": -156000,
+        "cf_investing_group": 0,
+        "cf_capex": -360000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -360000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 0,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 1884000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 1884000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 0,
+        "dc_payments_to_suppliers": 0,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": -156000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": -156000,
+        "dc_investing_total": -360000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 1884000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 1884000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 623.33
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": -43.33
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": -6.95
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "total_asset_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "dol": {
+          "status": "not_meaningful",
+          "displayValue": 0
+        },
+        "dfl": {
+          "status": "not_meaningful",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": -6.95
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -6.5
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -6.5
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": -6.95
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": -0.65
+        },
+        "net_profit_margin": {
+          "status": "na",
+          "displayValue": null
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 0,
+          "operatingIncome": -156000,
+          "ordinaryIncome": -156000,
+          "pretaxIncome": -156000,
+          "netIncome": -156000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": -156000,
+            "right": -156000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 1884000,
+            "right": 1884000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": -156000,
+            "right": -156000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 2244000,
+            "right": 2244000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_p5q6r7",
+      "order": 5,
+      "lines": {
+        "is_revenue": 0,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 0,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 0,
+        "is_gross_profit": 0,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": -156000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": -156000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": -156000,
+        "is_income_tax_expense": 0,
+        "is_net_income": -156000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 1734000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 1734000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 2244000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": -156000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2244000,
+        "bs_total_liabilities_equity": 2244000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": -156000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": -156000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": -156000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 0,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 1734000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 1734000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 0,
+        "dc_payments_to_suppliers": 0,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": -156000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": -156000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 1734000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 1734000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 623.33
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": -30.59
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": -6.95
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "total_asset_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "dol": {
+          "status": "not_meaningful",
+          "displayValue": 0
+        },
+        "dfl": {
+          "status": "not_meaningful",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": -6.95
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -6.5
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -6.5
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": -6.95
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": -0.65
+        },
+        "net_profit_margin": {
+          "status": "na",
+          "displayValue": null
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 0,
+          "operatingIncome": -156000,
+          "ordinaryIncome": -156000,
+          "pretaxIncome": -156000,
+          "netIncome": -156000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": -156000,
+            "right": -156000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 1734000,
+            "right": 1734000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": -156000,
+            "right": -156000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 2244000,
+            "right": 2244000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_p4n7e2",
+      "order": 6,
+      "lines": {
+        "is_revenue": 0,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 640000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 640000,
+        "is_cogs": 0,
+        "is_gross_profit": 0,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": -156000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": -156000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": -156000,
+        "is_income_tax_expense": 0,
+        "is_net_income": -156000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 1094000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 640000,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 1734000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 2244000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": -156000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2244000,
+        "bs_total_liabilities_equity": 2244000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": -156000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": -640000,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": -796000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": -796000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 0,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 1094000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 1094000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 0,
+        "dc_payments_to_suppliers": -640000,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": -796000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": -796000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 1094000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 1094000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 623.33
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": -69.22
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": -35.47
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "total_asset_turnover": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "dol": {
+          "status": "not_meaningful",
+          "displayValue": 0
+        },
+        "dfl": {
+          "status": "not_meaningful",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": -6.95
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -6.5
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": -6.5
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": -6.95
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": -0.65
+        },
+        "net_profit_margin": {
+          "status": "na",
+          "displayValue": null
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 0,
+          "operatingIncome": -156000,
+          "ordinaryIncome": -156000,
+          "pretaxIncome": -156000,
+          "netIncome": -156000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": -156000,
+            "right": -156000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 1094000,
+            "right": 1094000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": -156000,
+            "right": -156000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 2244000,
+            "right": 2244000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_h8q3z6",
+      "order": 7,
+      "lines": {
+        "is_revenue": 1120000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 640000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 640000,
+        "is_gross_profit": 480000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": 324000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 324000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 324000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 324000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 2214000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 2214000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 2724000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 324000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2724000,
+        "bs_total_liabilities_equity": 2724000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 324000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 324000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 324000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 0,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 2214000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 2214000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 1120000,
+        "dc_payments_to_suppliers": -640000,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 324000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 324000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 2214000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 2214000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 756.67
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 63.53
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 11.89
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 3.11
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 0.41
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.48
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 11.89
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 13.5
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 13.5
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 11.89
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 1.35
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 28.93
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 480000,
+          "operatingIncome": 324000,
+          "ordinaryIncome": 324000,
+          "pretaxIncome": 324000,
+          "netIncome": 324000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 324000,
+            "right": 324000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 2214000,
+            "right": 2214000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 324000,
+            "right": 324000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 2724000,
+            "right": 2724000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_s8t9v2",
+      "order": 8,
+      "lines": {
+        "is_revenue": 1120000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 640000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 640000,
+        "is_gross_profit": 480000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": 324000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 324000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 324000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 324000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 3114000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 3114000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 3624000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 900000,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 900000,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 900000,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 324000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2724000,
+        "bs_total_liabilities_equity": 3624000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 324000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 324000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 324000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 3300000,
+        "cf_cash_group": 0,
+        "cf_net_change": 3114000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 3114000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 1120000,
+        "dc_payments_to_suppliers": -640000,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 324000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 324000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 3300000,
+        "dc_net_change": 3114000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 3114000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "ok",
+          "displayValue": 24.83
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 756.67
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 63.53
+        },
+        "cash_flow_ratio": {
+          "status": "ok",
+          "displayValue": 36
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 11.89
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 3.11
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 0.31
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.48
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 8.94
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 13.5
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 13.5
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 11.89
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 1.35
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 28.93
+        },
+        "quick_ratio": {
+          "status": "ok",
+          "displayValue": 3.46
+        },
+        "current_ratio": {
+          "status": "ok",
+          "displayValue": 3.46
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 480000,
+          "operatingIncome": 324000,
+          "ordinaryIncome": 324000,
+          "pretaxIncome": 324000,
+          "netIncome": 324000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 324000,
+            "right": 324000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 3114000,
+            "right": 3114000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 324000,
+            "right": 324000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 3624000,
+            "right": 3624000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_j3v9k2",
+      "order": 9,
+      "lines": {
+        "is_revenue": 1120000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 2800000,
+        "is_cogs": 640000,
+        "is_gross_profit": 480000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": 324000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 324000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 324000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 324000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 3114000,
+        "bs_accounts_receivable": 0,
+        "bs_inventory": 2800000,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 5914000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 6424000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 2800000,
+        "bs_short_term_borrowings": 900000,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 3700000,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 3700000,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 324000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 2724000,
+        "bs_total_liabilities_equity": 6424000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 324000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": 0,
+        "cf_inventory_increase": -2800000,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 2800000,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 324000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 324000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 3300000,
+        "cf_cash_group": 0,
+        "cf_net_change": 3114000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 3114000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 1120000,
+        "dc_payments_to_suppliers": -640000,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 324000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 324000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 3300000,
+        "dc_net_change": 3114000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 3114000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "ok",
+          "displayValue": 57.6
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 756.67
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 9.79
+        },
+        "cash_flow_ratio": {
+          "status": "ok",
+          "displayValue": 8.76
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 11.89
+        },
+        "ar_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_sales_outstanding": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ap_turnover": {
+          "status": "ok",
+          "displayValue": 1.23
+        },
+        "inventory_turnover": {
+          "status": "ok",
+          "displayValue": 0.23
+        },
+        "days_inventory": {
+          "status": "ok",
+          "displayValue": 1596.88
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 3.11
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 0.17
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.48
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 5.04
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 13.5
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 13.5
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 11.89
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 1.35
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 28.93
+        },
+        "quick_ratio": {
+          "status": "ok",
+          "displayValue": 0.84
+        },
+        "current_ratio": {
+          "status": "ok",
+          "displayValue": 1.6
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 480000,
+          "operatingIncome": 324000,
+          "ordinaryIncome": 324000,
+          "pretaxIncome": 324000,
+          "netIncome": 324000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 324000,
+            "right": 324000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 3114000,
+            "right": 3114000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 324000,
+            "right": 324000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 6424000,
+            "right": 6424000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_c6w1q4",
+      "order": 10,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 3440000,
+        "is_gross_profit": 3280000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": 3124000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 3124000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 3124000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 3124000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 3114000,
+        "bs_accounts_receivable": 5600000,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 8714000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 9224000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 2800000,
+        "bs_short_term_borrowings": 900000,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 3700000,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 3700000,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 3124000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 5524000,
+        "bs_total_liabilities_equity": 9224000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 3124000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": -5600000,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 2800000,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 324000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 324000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 3300000,
+        "cf_cash_group": 0,
+        "cf_net_change": 3114000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 3114000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 1120000,
+        "dc_payments_to_suppliers": -640000,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 324000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 324000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 3300000,
+        "dc_net_change": 3114000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 3114000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "ok",
+          "displayValue": 40.11
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1534.44
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 63.53
+        },
+        "cash_flow_ratio": {
+          "status": "ok",
+          "displayValue": 8.76
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 5.87
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 1.2
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 304.17
+        },
+        "ap_turnover": {
+          "status": "ok",
+          "displayValue": 1.23
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 18.67
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 0.73
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.05
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 33.87
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 130.17
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 130.17
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 56.55
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 13.02
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 46.49
+        },
+        "quick_ratio": {
+          "status": "ok",
+          "displayValue": 2.36
+        },
+        "current_ratio": {
+          "status": "ok",
+          "displayValue": 2.36
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3280000,
+          "operatingIncome": 3124000,
+          "ordinaryIncome": 3124000,
+          "pretaxIncome": 3124000,
+          "netIncome": 3124000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 3124000,
+            "right": 3124000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 3114000,
+            "right": 3114000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 3124000,
+            "right": 3124000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 9224000,
+            "right": 9224000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_w3x4y5",
+      "order": 11,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 3440000,
+        "is_gross_profit": 3280000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": 3124000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 3124000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 3124000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 3124000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 314000,
+        "bs_accounts_receivable": 5600000,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 5914000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 6424000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 900000,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 900000,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 900000,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 3124000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 5524000,
+        "bs_total_liabilities_equity": 6424000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 3124000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": -5600000,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": -2476000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": -2476000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 3300000,
+        "cf_cash_group": 0,
+        "cf_net_change": 314000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 314000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 1120000,
+        "dc_payments_to_suppliers": -3440000,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": -2476000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": -2476000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 3300000,
+        "dc_net_change": 314000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 314000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "ok",
+          "displayValue": 14.01
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1534.44
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": -485.49
+        },
+        "cash_flow_ratio": {
+          "status": "ok",
+          "displayValue": -275.11
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": -44.82
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 1.2
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 304.17
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 18.67
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 1.05
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.05
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 48.63
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 130.17
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 130.17
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 56.55
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 13.02
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 46.49
+        },
+        "quick_ratio": {
+          "status": "ok",
+          "displayValue": 6.57
+        },
+        "current_ratio": {
+          "status": "ok",
+          "displayValue": 6.57
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3280000,
+          "operatingIncome": 3124000,
+          "ordinaryIncome": 3124000,
+          "pretaxIncome": 3124000,
+          "netIncome": 3124000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 3124000,
+            "right": 3124000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 314000,
+            "right": 314000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 3124000,
+            "right": 3124000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 6424000,
+            "right": 6424000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_m2x8r5",
+      "order": 12,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 3440000,
+        "is_gross_profit": 3280000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 0,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 156000,
+        "is_operating_income": 3124000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 3124000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 3124000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 3124000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 4214000,
+        "bs_accounts_receivable": 1700000,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 5914000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 6424000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 900000,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 900000,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 900000,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 3124000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 5524000,
+        "bs_total_liabilities_equity": 6424000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 3124000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": -1700000,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 1424000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 1424000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 3300000,
+        "cf_cash_group": 0,
+        "cf_net_change": 4214000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 4214000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 5020000,
+        "dc_payments_to_suppliers": -3440000,
+        "dc_payments_for_operating_expenses": -156000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 1424000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 1424000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 3300000,
+        "dc_net_change": 4214000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 4214000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "ok",
+          "displayValue": 14.01
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1534.44
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 279.22
+        },
+        "cash_flow_ratio": {
+          "status": "ok",
+          "displayValue": 158.22
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 25.78
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 3.95
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 92.34
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 18.67
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 1.05
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.05
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 48.63
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 130.17
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 130.17
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 56.55
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 13.02
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 46.49
+        },
+        "quick_ratio": {
+          "status": "ok",
+          "displayValue": 6.57
+        },
+        "current_ratio": {
+          "status": "ok",
+          "displayValue": 6.57
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3280000,
+          "operatingIncome": 3124000,
+          "ordinaryIncome": 3124000,
+          "pretaxIncome": 3124000,
+          "netIncome": 3124000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 3124000,
+            "right": 3124000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 4214000,
+            "right": 4214000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 3124000,
+            "right": 3124000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 6424000,
+            "right": 6424000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_z6a7b8",
+      "order": 13,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 3440000,
+        "is_gross_profit": 3280000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 210000,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 0,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 366000,
+        "is_operating_income": 2914000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 2914000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 2914000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 2914000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 4004000,
+        "bs_accounts_receivable": 1700000,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 5704000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 6214000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 900000,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 900000,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 900000,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 2914000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 5314000,
+        "bs_total_liabilities_equity": 6214000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 2914000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": -1700000,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 1214000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 1214000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 3300000,
+        "cf_cash_group": 0,
+        "cf_net_change": 4004000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 4004000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 5020000,
+        "dc_payments_to_suppliers": -3440000,
+        "dc_payments_for_operating_expenses": -366000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 1214000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 1214000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 3300000,
+        "dc_net_change": 4004000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 4004000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "ok",
+          "displayValue": 14.48
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1476.11
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 238.04
+        },
+        "cash_flow_ratio": {
+          "status": "ok",
+          "displayValue": 134.89
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 22.85
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 3.95
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 92.34
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 18.67
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 1.08
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.13
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 46.89
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 121.42
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 121.42
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 54.84
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 12.14
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 43.36
+        },
+        "quick_ratio": {
+          "status": "ok",
+          "displayValue": 6.34
+        },
+        "current_ratio": {
+          "status": "ok",
+          "displayValue": 6.34
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3280000,
+          "operatingIncome": 2914000,
+          "ordinaryIncome": 2914000,
+          "pretaxIncome": 2914000,
+          "netIncome": 2914000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 2914000,
+            "right": 2914000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 4004000,
+            "right": 4004000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 2914000,
+            "right": 2914000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 6214000,
+            "right": 6214000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_c9d2e3",
+      "order": 14,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 3440000,
+        "is_gross_profit": 3280000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 210000,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 380000,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 746000,
+        "is_operating_income": 2534000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 0,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 0,
+        "is_ordinary_income": 2534000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 2534000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 2534000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 3624000,
+        "bs_accounts_receivable": 1700000,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 5324000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 5834000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 900000,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 900000,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 900000,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 2534000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 4934000,
+        "bs_total_liabilities_equity": 5834000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 2534000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 0,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": -1700000,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 834000,
+        "cf_interest_paid": 0,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 834000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": 0,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 3300000,
+        "cf_cash_group": 0,
+        "cf_net_change": 3624000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 3624000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 5020000,
+        "dc_payments_to_suppliers": -3440000,
+        "dc_payments_for_operating_expenses": -746000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 834000,
+        "dc_interest_paid": 0,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 834000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 3300000,
+        "dc_net_change": 3624000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 3624000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "ok",
+          "displayValue": 15.43
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1370.56
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 163.53
+        },
+        "cash_flow_ratio": {
+          "status": "ok",
+          "displayValue": 92.67
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 16.9
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 3.95
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 92.34
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 18.67
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 1.15
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.29
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 43.44
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 105.58
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 105.58
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 51.36
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 10.56
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 37.71
+        },
+        "quick_ratio": {
+          "status": "ok",
+          "displayValue": 5.92
+        },
+        "current_ratio": {
+          "status": "ok",
+          "displayValue": 5.92
+        },
+        "interest_coverage": {
+          "status": "na",
+          "displayValue": null
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3280000,
+          "operatingIncome": 2534000,
+          "ordinaryIncome": 2534000,
+          "pretaxIncome": 2534000,
+          "netIncome": 2534000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 2534000,
+            "right": 2534000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 3624000,
+            "right": 3624000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 2534000,
+            "right": 2534000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 5834000,
+            "right": 5834000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_w4r8n2",
+      "order": 15,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 0,
+        "is_cogs": 3440000,
+        "is_gross_profit": 3280000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 210000,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 380000,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 746000,
+        "is_operating_income": 2534000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 27000,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 27000,
+        "is_ordinary_income": 2507000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 2507000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 2507000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 2697000,
+        "bs_accounts_receivable": 1700000,
+        "bs_inventory": 0,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 4397000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 4907000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 2507000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 4907000,
+        "bs_total_liabilities_equity": 4907000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 2507000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 27000,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": -1700000,
+        "cf_inventory_increase": 0,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 834000,
+        "cf_interest_paid": -27000,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 807000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": -900000,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 2697000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 2697000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 5020000,
+        "dc_payments_to_suppliers": -3440000,
+        "dc_payments_for_operating_expenses": -746000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 834000,
+        "dc_interest_paid": -27000,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 807000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 2697000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 2697000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1363.06
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 158.24
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 16.45
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 3.95
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 92.34
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "days_inventory": {
+          "status": "na",
+          "displayValue": null
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 18.67
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 1.37
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.29
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1.01
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 51.09
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 104.46
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 105.58
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 51.09
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 10.45
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 37.31
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "ok",
+          "displayValue": 93.85
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3280000,
+          "operatingIncome": 2534000,
+          "ordinaryIncome": 2507000,
+          "pretaxIncome": 2507000,
+          "netIncome": 2507000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 2507000,
+            "right": 2507000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 2697000,
+            "right": 2697000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 2507000,
+            "right": 2507000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 4907000,
+            "right": 4907000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_f4g5h6",
+      "order": 16,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 420000,
+        "is_cogs": 3020000,
+        "is_gross_profit": 3700000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 210000,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 380000,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 0,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 746000,
+        "is_operating_income": 2954000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 27000,
+        "is_amortisation": 0,
+        "is_non_operating_expense_total": 27000,
+        "is_ordinary_income": 2927000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 2927000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 2927000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 2697000,
+        "bs_accounts_receivable": 1700000,
+        "bs_inventory": 420000,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 4817000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 360000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 150000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 5327000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 2927000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 5327000,
+        "bs_total_liabilities_equity": 5327000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 2927000,
+        "cf_depreciation": 0,
+        "cf_interest_expense_addback": 27000,
+        "cf_other_noncash_losses": 0,
+        "cf_receivables_increase": -1700000,
+        "cf_inventory_increase": -420000,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 834000,
+        "cf_interest_paid": -27000,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 807000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": -900000,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 2697000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 2697000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 5020000,
+        "dc_payments_to_suppliers": -3440000,
+        "dc_payments_for_operating_expenses": -746000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 834000,
+        "dc_interest_paid": -27000,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 807000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 2697000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 2697000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1479.72
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 86.77
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 15.15
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 3.95
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 92.34
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "ok",
+          "displayValue": 7.19
+        },
+        "days_inventory": {
+          "status": "ok",
+          "displayValue": 50.76
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 18.67
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 1.26
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.25
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1.01
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 54.95
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 121.96
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 123.08
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 54.95
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 12.2
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 43.56
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "ok",
+          "displayValue": 109.41
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3700000,
+          "operatingIncome": 2954000,
+          "ordinaryIncome": 2927000,
+          "pretaxIncome": 2927000,
+          "netIncome": 2927000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 2927000,
+            "right": 2927000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 2697000,
+            "right": 2697000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 2927000,
+            "right": 2927000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 5327000,
+            "right": 5327000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_y5c1h8",
+      "order": 17,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 420000,
+        "is_cogs": 3020000,
+        "is_gross_profit": 3700000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 210000,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 380000,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 90000,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 836000,
+        "is_operating_income": 2864000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 27000,
+        "is_amortisation": 30000,
+        "is_non_operating_expense_total": 57000,
+        "is_ordinary_income": 2807000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 2807000,
+        "is_income_tax_expense": 0,
+        "is_net_income": 2807000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 2697000,
+        "bs_accounts_receivable": 1700000,
+        "bs_inventory": 420000,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 4817000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 270000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 120000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 5207000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 2807000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 5207000,
+        "bs_total_liabilities_equity": 5207000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 2807000,
+        "cf_depreciation": 90000,
+        "cf_interest_expense_addback": 27000,
+        "cf_other_noncash_losses": 30000,
+        "cf_receivables_increase": -1700000,
+        "cf_inventory_increase": -420000,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 834000,
+        "cf_interest_paid": -27000,
+        "cf_income_tax_paid": 0,
+        "cf_operating_total": 807000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": -900000,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 2697000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 2697000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 5020000,
+        "dc_payments_to_suppliers": -3440000,
+        "dc_payments_for_operating_expenses": -746000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 834000,
+        "dc_interest_paid": -27000,
+        "dc_income_tax_paid": 0,
+        "dc_operating_total": 807000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 2697000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 2697000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1928.52
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 86.77
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 15.5
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 3.95
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 92.34
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "ok",
+          "displayValue": 7.19
+        },
+        "days_inventory": {
+          "status": "ok",
+          "displayValue": 50.76
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 24.89
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 1.29
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.29
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1.01
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 53.91
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 116.96
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 119.33
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 53.91
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 11.7
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 41.77
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "ok",
+          "displayValue": 104.96
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3700000,
+          "operatingIncome": 2864000,
+          "ordinaryIncome": 2807000,
+          "pretaxIncome": 2807000,
+          "netIncome": 2807000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 2807000,
+            "right": 2807000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 2697000,
+            "right": 2697000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 2807000,
+            "right": 2807000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 5207000,
+            "right": 5207000,
+            "diff": 0
+          }
+        ]
+      }
+    },
+    {
+      "stepId": "st_j7k8m9",
+      "order": 18,
+      "lines": {
+        "is_revenue": 6720000,
+        "is_cogs_group": 0,
+        "is_opening_inventory": 0,
+        "is_purchases": 3440000,
+        "is_inventory_overage_excluded": 0,
+        "is_closing_inventory": 420000,
+        "is_cogs": 3020000,
+        "is_gross_profit": 3700000,
+        "is_sga_group": 0,
+        "is_directors_remuneration": 210000,
+        "is_outsourcing_expense": 120000,
+        "is_packing_freight_expense": 380000,
+        "is_office_supplies_expense": 36000,
+        "is_depreciation_expense": 90000,
+        "is_organisation_costs_expense": 0,
+        "is_research_development_expense": 0,
+        "is_marketing_expense": 0,
+        "is_sga_total": 836000,
+        "is_operating_income": 2864000,
+        "is_non_operating_income": 0,
+        "is_non_operating_expense_group": 0,
+        "is_interest_expense": 27000,
+        "is_amortisation": 30000,
+        "is_non_operating_expense_total": 57000,
+        "is_ordinary_income": 2807000,
+        "is_extraordinary_gains": 0,
+        "is_extraordinary_losses": 0,
+        "is_pretax_income": 2807000,
+        "is_income_tax_expense": 560000,
+        "is_net_income": 2247000,
+        "bs_current_assets_group": 0,
+        "bs_cash": 2137000,
+        "bs_accounts_receivable": 1700000,
+        "bs_inventory": 420000,
+        "bs_short_term_loans_receivable": 0,
+        "bs_prepaid_expenses": 0,
+        "bs_supplies_on_hand": 0,
+        "bs_current_assets": 4257000,
+        "bs_noncurrent_assets_group": 0,
+        "bs_fixed_assets_group": 0,
+        "bs_machinery_net": 270000,
+        "bs_ppe_gross": 360000,
+        "bs_office_equipment": 0,
+        "bs_intangible_assets": 0,
+        "bs_investments_other": 0,
+        "bs_deferred_assets_group": 0,
+        "bs_deferred_org_costs": 120000,
+        "bs_deferred_dev_costs": 0,
+        "bs_total_assets": 4647000,
+        "bs_current_liabilities_group": 0,
+        "bs_accounts_payable": 0,
+        "bs_short_term_borrowings": 0,
+        "bs_income_tax_payable": 0,
+        "bs_deposits_received": 0,
+        "bs_interest_payable": 0,
+        "bs_other_payables": 0,
+        "bs_contract_liabilities": 0,
+        "bs_dividends_payable": 0,
+        "bs_current_liabilities": 0,
+        "bs_noncurrent_liabilities_group": 0,
+        "bs_long_term_borrowings": 0,
+        "bs_noncurrent_liabilities": 0,
+        "bs_total_liabilities": 0,
+        "bs_equity_group": 0,
+        "bs_share_capital": 2400000,
+        "bs_capital_surplus": 0,
+        "bs_retained_earnings_group": 0,
+        "bs_legal_reserve": 0,
+        "bs_special_reserve": 0,
+        "bs_retained_earnings": 2247000,
+        "bs_valuation_adjustments": 0,
+        "bs_share_subscription_rights": 0,
+        "bs_total_equity": 4647000,
+        "bs_total_liabilities_equity": 4647000,
+        "cf_operating_group": 0,
+        "cf_pretax_income": 2807000,
+        "cf_depreciation": 90000,
+        "cf_interest_expense_addback": 27000,
+        "cf_other_noncash_losses": 30000,
+        "cf_receivables_increase": -1700000,
+        "cf_inventory_increase": -420000,
+        "cf_receivables_decrease": 0,
+        "cf_payables_increase": 0,
+        "cf_other_liabilities_increase": 0,
+        "cf_other_operating_assets_increase": 0,
+        "cf_noncash_gains": 0,
+        "cf_operating_subtotal": 834000,
+        "cf_interest_paid": -27000,
+        "cf_income_tax_paid": -560000,
+        "cf_operating_total": 247000,
+        "cf_investing_group": 0,
+        "cf_capex": -510000,
+        "cf_loans_advanced": 0,
+        "cf_other_investing": 0,
+        "cf_loans_collected": 0,
+        "cf_disposal_proceeds": 0,
+        "cf_investing_total": -510000,
+        "cf_financing_group": 0,
+        "cf_st_borrowing_proceeds": 900000,
+        "cf_st_borrowing_repayment": -900000,
+        "cf_share_issue": 2400000,
+        "cf_dividends_paid": 0,
+        "cf_lt_borrowing_proceeds": 0,
+        "cf_lt_borrowing_repayment": 0,
+        "cf_financing_total": 2400000,
+        "cf_cash_group": 0,
+        "cf_net_change": 2137000,
+        "cf_cash_begin": 0,
+        "cf_cash_end": 2137000,
+        "dc_operating_group": 0,
+        "dc_receipts_from_customers": 5020000,
+        "dc_payments_to_suppliers": -3440000,
+        "dc_payments_for_operating_expenses": -746000,
+        "dc_other_operating_receipts": 0,
+        "dc_cash_generated_from_operations": 834000,
+        "dc_interest_paid": -27000,
+        "dc_income_tax_paid": -560000,
+        "dc_operating_total": 247000,
+        "dc_investing_total": -510000,
+        "dc_financing_total": 2400000,
+        "dc_net_change": 2137000,
+        "dc_cash_begin": 0,
+        "dc_cash_end": 2137000
+      },
+      "ratios": {
+        "debt_ratio": {
+          "status": "zero",
+          "displayValue": 0
+        },
+        "long_term_funds_to_ppe": {
+          "status": "ok",
+          "displayValue": 1721.11
+        },
+        "cash_flow_adequacy": {
+          "status": "ok",
+          "displayValue": 26.56
+        },
+        "cash_flow_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "cash_reinvestment": {
+          "status": "ok",
+          "displayValue": 5.32
+        },
+        "ar_turnover": {
+          "status": "ok",
+          "displayValue": 3.95
+        },
+        "days_sales_outstanding": {
+          "status": "ok",
+          "displayValue": 92.34
+        },
+        "ap_turnover": {
+          "status": "na",
+          "displayValue": null
+        },
+        "inventory_turnover": {
+          "status": "ok",
+          "displayValue": 7.19
+        },
+        "days_inventory": {
+          "status": "ok",
+          "displayValue": 50.76
+        },
+        "ppe_turnover": {
+          "status": "ok",
+          "displayValue": 24.89
+        },
+        "total_asset_turnover": {
+          "status": "ok",
+          "displayValue": 1.45
+        },
+        "dol": {
+          "status": "ok",
+          "displayValue": 1.29
+        },
+        "dfl": {
+          "status": "ok",
+          "displayValue": 1.01
+        },
+        "roa": {
+          "status": "ok",
+          "displayValue": 48.35
+        },
+        "pretax_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 116.96
+        },
+        "operating_income_to_paid_in_capital": {
+          "status": "ok",
+          "displayValue": 119.33
+        },
+        "roe": {
+          "status": "ok",
+          "displayValue": 48.35
+        },
+        "eps": {
+          "status": "ok",
+          "displayValue": 9.36
+        },
+        "net_profit_margin": {
+          "status": "ok",
+          "displayValue": 33.44
+        },
+        "quick_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "current_ratio": {
+          "status": "na",
+          "displayValue": null
+        },
+        "interest_coverage": {
+          "status": "ok",
+          "displayValue": 104.96
+        }
+      },
+      "fiveStep": {
+        "step1": {
+          "grossProfit": 3700000,
+          "operatingIncome": 2864000,
+          "ordinaryIncome": 2807000,
+          "pretaxIncome": 2807000,
+          "netIncome": 2247000
+        },
+        "checks": [
+          {
+            "step": 2,
+            "left": 2807000,
+            "right": 2807000,
+            "diff": 0
+          },
+          {
+            "step": 3,
+            "left": 2137000,
+            "right": 2137000,
+            "diff": 0
+          },
+          {
+            "step": 4,
+            "left": 2247000,
+            "right": 2247000,
+            "diff": 0
+          },
+          {
+            "step": 5,
+            "left": 4647000,
+            "right": 4647000,
+            "diff": 0
+          }
+        ]
+      }
+    }
+  ]
+}

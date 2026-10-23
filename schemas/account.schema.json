@@ -1,0 +1,345 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/definitions/SemanticId"
+    },
+    "order": {
+      "$ref": "#/definitions/__schema0"
+    },
+    "element": {
+      "$ref": "#/definitions/__schema1"
+    },
+    "section": {
+      "$ref": "#/definitions/__schema2"
+    },
+    "normalSide": {
+      "$ref": "#/definitions/Side"
+    },
+    "current": {
+      "$ref": "#/definitions/__schema3"
+    },
+    "contraOf": {
+      "$ref": "#/definitions/__schema4"
+    },
+    "allowNegative": {
+      "$ref": "#/definitions/__schema5"
+    },
+    "enabledByDefault": {
+      "$ref": "#/definitions/__schema6"
+    },
+    "teacherCell": {
+      "$ref": "#/definitions/__schema7"
+    },
+    "labels": {
+      "$ref": "#/definitions/__schema8"
+    },
+    "termRef": {
+      "$ref": "#/definitions/__schema9"
+    },
+    "flags": {
+      "$ref": "#/definitions/__schema10"
+    },
+    "ifrsTreatment": {
+      "$ref": "#/definitions/__schema11"
+    },
+    "cashFlow": {
+      "$ref": "#/definitions/__schema14"
+    },
+    "pendingRefs": {
+      "$ref": "#/definitions/__schema15"
+    }
+  },
+  "required": [
+    "id",
+    "order",
+    "element",
+    "section",
+    "normalSide",
+    "current",
+    "contraOf",
+    "allowNegative",
+    "enabledByDefault",
+    "teacherCell",
+    "labels",
+    "termRef",
+    "flags",
+    "ifrsTreatment",
+    "cashFlow",
+    "pendingRefs"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "SemanticId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "__schema0": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "__schema1": {
+      "type": "string",
+      "enum": [
+        "asset",
+        "liability",
+        "equity",
+        "revenue",
+        "expense"
+      ]
+    },
+    "__schema2": {
+      "type": "string",
+      "enum": [
+        "current_asset",
+        "noncurrent_asset",
+        "deferred_asset",
+        "current_liability",
+        "noncurrent_liability",
+        "equity",
+        "retained_earnings_group",
+        "operating_revenue",
+        "non_operating_income",
+        "extraordinary_gain",
+        "cost_of_sales",
+        "sga_expense",
+        "non_operating_expense",
+        "extraordinary_loss",
+        "income_tax"
+      ]
+    },
+    "Side": {
+      "type": "string",
+      "enum": [
+        "debit",
+        "credit"
+      ]
+    },
+    "__schema3": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "__schema4": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SemanticId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "__schema5": {
+      "type": "boolean"
+    },
+    "__schema6": {
+      "type": "boolean"
+    },
+    "__schema7": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/TeacherCell"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "TeacherCell": {
+      "type": "string",
+      "pattern": "^[A-Z]{1,2}\\d{1,3}$"
+    },
+    "__schema8": {
+      "type": "object",
+      "properties": {
+        "teacher": {
+          "type": "object",
+          "properties": {
+            "zh-TW": {
+              "type": "string",
+              "minLength": 1
+            },
+            "en": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "zh-TW",
+            "en"
+          ],
+          "additionalProperties": false
+        },
+        "currentTw": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ifrsEn": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aliases": {
+          "type": "object",
+          "properties": {
+            "zh-TW": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "en": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "zh-TW",
+            "en"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "teacher",
+        "currentTw",
+        "ifrsEn",
+        "aliases"
+      ],
+      "additionalProperties": false
+    },
+    "__schema9": {
+      "type": "string",
+      "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+    },
+    "__schema10": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/AccountFlag"
+      }
+    },
+    "AccountFlag": {
+      "type": "string",
+      "enum": [
+        "japanese",
+        "old_name",
+        "typo_fixed",
+        "unused",
+        "not_ifrs_line",
+        "ifrs_treatment_differs",
+        "not_in_template",
+        "extension"
+      ]
+    },
+    "__schema11": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "note": {
+              "$ref": "#/definitions/LocalizedText"
+            },
+            "amountImpact": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "required": [
+            "note",
+            "amountImpact"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "LocalizedText": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "en": {
+          "$ref": "#/definitions/__schema13"
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "__schema12": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema13": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema14": {
+      "type": "object",
+      "properties": {
+        "indirect": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(:[a-z][a-z0-9_]*)?$"
+        },
+        "defaultActivity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/CashFlowActivity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "indirect",
+        "defaultActivity"
+      ],
+      "additionalProperties": false
+    },
+    "CashFlowActivity": {
+      "type": "string",
+      "enum": [
+        "operating",
+        "investing",
+        "financing"
+      ]
+    },
+    "__schema15": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PendingRef"
+      }
+    },
+    "PendingRef": {
+      "type": "string",
+      "pattern": "^T\\d{2}$"
+    }
+  }
+}

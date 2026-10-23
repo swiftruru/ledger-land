@@ -1,0 +1,54 @@
+{
+  "id": "tpl.collect_receivables",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "收回應收帳款",
+    "en": "Collect trade receivables"
+  },
+  "summary": {
+    "zh-TW": "客戶付來 {{money:param.amount}}，沖減應收帳款。",
+    "en": "A customer pays {{money:param.amount}}, reducing trade receivables."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 1500000,
+      "label": {
+        "zh-TW": "收到的金額",
+        "en": "Amount collected"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "cash",
+      "side": "debit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "receipts_from_customers"
+      }
+    },
+    {
+      "id": "l2",
+      "account": "accounts_receivable",
+      "side": "credit",
+      "amount": "param.amount"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "收回帳款只是把應收帳款換成現金，資產總額與獲利都不變，因為收入早在賒銷時就認列了。這一步現金增加，列在營業活動的自客戶收取之現金。收款金額不能超過帳上的應收帳款，超過時系統會擋下來。",
+    "en": "Collecting a receivable simply converts a trade receivable into cash; total assets and profit are unchanged because revenue was recognised at the time of the credit sale. Cash rises at this step and appears under operating activities as cash receipts from customers. The amount cannot exceed the receivables on the books; a larger amount is rejected."
+  },
+  "termRefs": ["tm_c4sh8k2p", "tm_r7x2c9fa"],
+  "pendingRefs": ["T08"]
+}

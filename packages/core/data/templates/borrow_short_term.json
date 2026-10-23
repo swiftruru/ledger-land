@@ -1,0 +1,54 @@
+{
+  "id": "tpl.borrow_short_term",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "向銀行短期借款",
+    "en": "Take out a short-term bank loan"
+  },
+  "summary": {
+    "zh-TW": "向銀行借入 {{money:param.amount}}，一年內要還，列為短期借款。",
+    "en": "Borrow {{money:param.amount}} from the bank, repayable within a year, recorded as short-term borrowings."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 800000,
+      "label": {
+        "zh-TW": "借款金額",
+        "en": "Amount borrowed"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "cash",
+      "side": "debit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "financing",
+        "kind": "st_borrowing_proceeds"
+      }
+    },
+    {
+      "id": "l2",
+      "account": "short_term_borrowings",
+      "side": "credit",
+      "amount": "param.amount"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "借來的錢讓現金增加，但同時多了一筆要還的義務，所以負債也增加，獲利不受影響。它和股東出資不同：借款要還本付息。現金流量表把借入的錢列在籌資活動的短期借款收入。",
+    "en": "Borrowed money increases cash, but it also creates an obligation to repay, so liabilities rise and profit is unaffected. Unlike capital from shareholders, a loan must be repaid with interest. The statement of cash flows shows the proceeds under financing activities as proceeds from short-term borrowings."
+  },
+  "termRefs": ["tm_c4sh8k2p", "tm_s5b8r3hd", "tm_f9a4c6md"],
+  "pendingRefs": ["T30"]
+}

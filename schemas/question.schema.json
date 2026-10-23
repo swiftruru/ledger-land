@@ -1,0 +1,1807 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/__schema0"
+    },
+    {
+      "$ref": "#/definitions/__schema25"
+    },
+    {
+      "$ref": "#/definitions/__schema27"
+    },
+    {
+      "$ref": "#/definitions/__schema28"
+    },
+    {
+      "$ref": "#/definitions/__schema42"
+    },
+    {
+      "$ref": "#/definitions/__schema44"
+    },
+    {
+      "$ref": "#/definitions/__schema45"
+    },
+    {
+      "$ref": "#/definitions/__schema46"
+    },
+    {
+      "$ref": "#/definitions/__schema47"
+    },
+    {
+      "$ref": "#/definitions/__schema49"
+    }
+  ],
+  "definitions": {
+    "__schema0": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "single_choice",
+            "pick_statement",
+            "ratio_interpret"
+          ]
+        },
+        "options": {
+          "minItems": 3,
+          "maxItems": 4,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChoiceOption"
+          }
+        },
+        "correctOptionId": {
+          "type": "string",
+          "pattern": "^o_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+        },
+        "ratioRef": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/RatioRef"
+            }
+          ]
+        },
+        "distractorExprs": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^o_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          }
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "options",
+        "correctOptionId"
+      ],
+      "additionalProperties": false
+    },
+    "__schema1": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "__schema2": {
+      "type": "string",
+      "enum": [
+        "text",
+        "answer"
+      ]
+    },
+    "__schema3": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "retired"
+      ]
+    },
+    "__schema4": {
+      "type": "string"
+    },
+    "__schema5": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
+        }
+      ]
+    },
+    "LocalizedText": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "$ref": "#/definitions/__schema6"
+        },
+        "en": {
+          "$ref": "#/definitions/__schema7"
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "__schema6": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema7": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema8": {
+      "type": "string"
+    },
+    "__schema9": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "__schema10": {
+      "type": "string",
+      "pattern": "^q_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+    },
+    "__schema11": {
+      "type": "string",
+      "pattern": "^ch_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+    },
+    "__schema12": {
+      "type": "string",
+      "pattern": "^obj_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+    },
+    "__schema13": {
+      "anyOf": [
+        {
+          "type": "number",
+          "const": 1
+        },
+        {
+          "type": "number",
+          "const": 2
+        },
+        {
+          "type": "number",
+          "const": 3
+        }
+      ]
+    },
+    "__schema14": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "__schema15": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+      }
+    },
+    "__schema16": {
+      "type": "object",
+      "properties": {
+        "story": {
+          "type": "string",
+          "pattern": "^story_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+        },
+        "step": {
+          "type": "string",
+          "pattern": "^st_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+        }
+      },
+      "required": [
+        "story",
+        "step"
+      ],
+      "additionalProperties": false
+    },
+    "__schema17": {
+      "type": "boolean"
+    },
+    "__schema18": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/definitions/Name"
+      },
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "Name": {
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9_]{0,63}$"
+    },
+    "__schema19": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
+        }
+      ]
+    },
+    "__schema20": {
+      "type": "object",
+      "properties": {
+        "statements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/__schema21"
+          }
+        },
+        "scenario": {
+          "type": "string",
+          "const": "self"
+        }
+      },
+      "additionalProperties": false
+    },
+    "__schema21": {
+      "type": "string",
+      "enum": [
+        "is",
+        "bs",
+        "cf"
+      ]
+    },
+    "__schema22": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PendingRef"
+      }
+    },
+    "PendingRef": {
+      "type": "string",
+      "pattern": "^T\\d{2}$"
+    },
+    "ChoiceOption": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/__schema23"
+        },
+        "text": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "feedback": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "misconceptionId": {
+          "$ref": "#/definitions/__schema24"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "feedback"
+      ],
+      "additionalProperties": false
+    },
+    "__schema23": {
+      "type": "string",
+      "pattern": "^o_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+    },
+    "__schema24": {
+      "type": "string",
+      "pattern": "^mc_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+    },
+    "RatioRef": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*@(excel|slides03|slides02|dupont|slides01)$"
+    },
+    "__schema25": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "multi_choice"
+        },
+        "options": {
+          "minItems": 3,
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChoiceOption"
+          }
+        },
+        "correctOptionIds": {
+          "minItems": 2,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/__schema26"
+          }
+        },
+        "scoringMode": {
+          "type": "string",
+          "enum": [
+            "any_correct",
+            "all_correct"
+          ]
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "options",
+        "correctOptionIds",
+        "scoringMode"
+      ],
+      "additionalProperties": false
+    },
+    "__schema26": {
+      "type": "string",
+      "pattern": "^o_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+    },
+    "__schema27": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "true_false"
+        },
+        "statement": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "correct": {
+          "type": "boolean"
+        },
+        "feedbackTrue": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "feedbackFalse": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "misconceptionId": {
+          "type": "string",
+          "pattern": "^mc_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "explanation",
+        "type",
+        "statement",
+        "correct",
+        "feedbackTrue",
+        "feedbackFalse"
+      ],
+      "additionalProperties": false
+    },
+    "__schema28": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "pick_line"
+        },
+        "scenario": {
+          "$ref": "#/definitions/Scenario"
+        },
+        "statement": {
+          "$ref": "#/definitions/__schema21"
+        },
+        "correctLines": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LineId"
+          }
+        },
+        "feedbackByLine": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/definitions/LineId"
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/LocalizedText"
+          }
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "scenario",
+        "statement",
+        "correctLines"
+      ],
+      "additionalProperties": false
+    },
+    "Scenario": {
+      "type": "object",
+      "properties": {
+        "opening": {
+          "$ref": "#/definitions/__schema29"
+        },
+        "events": {
+          "$ref": "#/definitions/__schema30"
+        },
+        "policy": {
+          "$ref": "#/definitions/__schema32"
+        },
+        "layout": {
+          "$ref": "#/definitions/__schema33"
+        },
+        "window": {
+          "$ref": "#/definitions/__schema34"
+        },
+        "targets": {
+          "$ref": "#/definitions/__schema35"
+        },
+        "expected": {
+          "$ref": "#/definitions/__schema41"
+        }
+      },
+      "required": [
+        "opening",
+        "events",
+        "policy",
+        "layout",
+        "window",
+        "targets"
+      ],
+      "additionalProperties": false
+    },
+    "__schema29": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "storyRef": {
+              "type": "string",
+              "pattern": "^story_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+            },
+            "afterStep": {
+              "type": "string",
+              "pattern": "^st_[0123456789abcdefghjkmnpqrstvwxyz]{6}$"
+            }
+          },
+          "required": [
+            "storyRef",
+            "afterStep"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "balances": {
+              "type": "object",
+              "propertyNames": {
+                "$ref": "#/definitions/SemanticId"
+              },
+              "additionalProperties": {
+                "$ref": "#/definitions/Money"
+              }
+            }
+          },
+          "required": [
+            "balances"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SemanticId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "Money": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "__schema30": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ScenarioEvent"
+      }
+    },
+    "ScenarioEvent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/EventId"
+        },
+        "template": {
+          "$ref": "#/definitions/TemplateId"
+        },
+        "params": {
+          "$ref": "#/definitions/__schema31"
+        }
+      },
+      "required": [
+        "id",
+        "template",
+        "params"
+      ],
+      "additionalProperties": false
+    },
+    "EventId": {
+      "type": "string",
+      "pattern": "^e[1-9]\\d*$"
+    },
+    "TemplateId": {
+      "type": "string",
+      "pattern": "^tpl\\.[a-z][a-z0-9_]*$"
+    },
+    "__schema31": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/definitions/Name"
+      },
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "__schema32": {
+      "type": "string",
+      "const": "teacher@1"
+    },
+    "__schema33": {
+      "type": "string",
+      "const": "teacher@1"
+    },
+    "__schema34": {
+      "type": "string",
+      "enum": [
+        "cumulative",
+        "transaction"
+      ]
+    },
+    "__schema35": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Target"
+      }
+    },
+    "Target": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/__schema36"
+        },
+        {
+          "$ref": "#/definitions/__schema38"
+        },
+        {
+          "$ref": "#/definitions/__schema39"
+        },
+        {
+          "$ref": "#/definitions/__schema40"
+        }
+      ]
+    },
+    "__schema36": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/TargetId"
+        },
+        "kind": {
+          "type": "string",
+          "const": "line"
+        },
+        "line": {
+          "$ref": "#/definitions/LineId"
+        },
+        "measure": {
+          "$ref": "#/definitions/__schema37"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "line",
+        "measure"
+      ],
+      "additionalProperties": false
+    },
+    "TargetId": {
+      "type": "string",
+      "pattern": "^t[1-9]\\d*$"
+    },
+    "LineId": {
+      "type": "string",
+      "pattern": "^(is|bs|cf|dc)_[a-z0-9_]+$"
+    },
+    "__schema37": {
+      "type": "string",
+      "enum": [
+        "direction",
+        "delta",
+        "value"
+      ]
+    },
+    "__schema38": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/TargetId"
+        },
+        "kind": {
+          "type": "string",
+          "const": "account"
+        },
+        "account": {
+          "$ref": "#/definitions/SemanticId"
+        },
+        "measure": {
+          "$ref": "#/definitions/__schema37"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "account",
+        "measure"
+      ],
+      "additionalProperties": false
+    },
+    "__schema39": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/TargetId"
+        },
+        "kind": {
+          "type": "string",
+          "const": "ratio"
+        },
+        "ratioRef": {
+          "$ref": "#/definitions/RatioRef"
+        },
+        "measure": {
+          "type": "string",
+          "enum": [
+            "direction",
+            "delta",
+            "value",
+            "status"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "ratioRef",
+        "measure"
+      ],
+      "additionalProperties": false
+    },
+    "__schema40": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/TargetId"
+        },
+        "kind": {
+          "type": "string",
+          "const": "check"
+        },
+        "step": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 2
+            },
+            {
+              "type": "number",
+              "const": 3
+            },
+            {
+              "type": "number",
+              "const": 4
+            },
+            {
+              "type": "number",
+              "const": 5
+            }
+          ]
+        },
+        "measure": {
+          "type": "string",
+          "const": "value"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "step",
+        "measure"
+      ],
+      "additionalProperties": false
+    },
+    "__schema41": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "direction": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/Direction"
+              }
+            ]
+          },
+          "before": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "after": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "delta": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "zero",
+              "na",
+              "not_meaningful"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "Direction": {
+      "type": "string",
+      "enum": [
+        "up",
+        "down",
+        "unchanged",
+        "becomes_computable",
+        "becomes_na"
+      ]
+    },
+    "__schema42": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "classify"
+        },
+        "dimension": {
+          "type": "string",
+          "enum": [
+            "element",
+            "current",
+            "cf_activity",
+            "ratio_category"
+          ]
+        },
+        "items": {
+          "minItems": 2,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/__schema43"
+          }
+        },
+        "correctCategories": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^it_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "dimension",
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    "__schema43": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^it_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+        },
+        "account": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/SemanticId"
+            }
+          ]
+        },
+        "ratio": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/SemanticId"
+            }
+          ]
+        },
+        "text": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          ]
+        },
+        "allowContra": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "__schema44": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "transaction_effect"
+        },
+        "scenario": {
+          "$ref": "#/definitions/Scenario"
+        },
+        "choices": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Direction"
+          }
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "scenario"
+      ],
+      "additionalProperties": false
+    },
+    "__schema45": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "five_step_fill"
+        },
+        "scenario": {
+          "$ref": "#/definitions/Scenario"
+        },
+        "openCells": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LineId"
+          }
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "scenario",
+        "openCells"
+      ],
+      "additionalProperties": false
+    },
+    "__schema46": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "ratio_numeric"
+        },
+        "compute": {
+          "type": "object",
+          "properties": {
+            "ratioRef": {
+              "$ref": "#/definitions/RatioRef"
+            },
+            "scenario": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/Scenario"
+                }
+              ]
+            },
+            "measures": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^([a-z][a-z0-9_]*|input\\.[a-z][a-z0-9_]*)$"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^vars\\.[a-z][A-Za-z0-9_]*$"
+              }
+            }
+          },
+          "required": [
+            "ratioRef"
+          ],
+          "additionalProperties": false
+        },
+        "answerUnit": {
+          "$ref": "#/definitions/RatioUnit"
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "tolerance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "acceptStatus": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "const": "na"
+          }
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "compute",
+        "answerUnit",
+        "decimals",
+        "tolerance"
+      ],
+      "additionalProperties": false
+    },
+    "RatioUnit": {
+      "type": "string",
+      "enum": [
+        "percent",
+        "turnover",
+        "days",
+        "multiple",
+        "currency_per_share",
+        "currency"
+      ]
+    },
+    "__schema47": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "type": "boolean",
+          "const": false
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "judgment"
+        },
+        "options": {
+          "minItems": 3,
+          "maxItems": 3,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/__schema48"
+          }
+        },
+        "viewpoint": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "attribution": {
+          "type": "string",
+          "const": "site"
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "options",
+        "viewpoint",
+        "attribution"
+      ],
+      "additionalProperties": false
+    },
+    "__schema48": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^o_[0123456789abcdefghjkmnpqrstvwxyz]{4}$"
+        },
+        "text": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "upside": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "downside": {
+          "$ref": "#/definitions/LocalizedText"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "upside",
+        "downside"
+      ],
+      "additionalProperties": false
+    },
+    "__schema49": {
+      "type": "object",
+      "properties": {
+        "rev": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "revKind": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "status": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "supersededBy": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "retiredNote": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "authorNotes": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "id": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "chapterId": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "objectiveId": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "difficulty": {
+          "$ref": "#/definitions/__schema13"
+        },
+        "tags": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "termRefs": {
+          "$ref": "#/definitions/__schema15"
+        },
+        "labRef": {
+          "$ref": "#/definitions/__schema16"
+        },
+        "scored": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "vars": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "prompt": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "explanation": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "hint": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "display": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "pendingRefs": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "type": {
+          "type": "string",
+          "const": "journal_entry"
+        },
+        "scenario": {
+          "$ref": "#/definitions/Scenario"
+        },
+        "accountChoices": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SemanticId"
+          }
+        },
+        "allowAliases": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "rev",
+        "revKind",
+        "status",
+        "id",
+        "chapterId",
+        "objectiveId",
+        "difficulty",
+        "tags",
+        "termRefs",
+        "scored",
+        "prompt",
+        "explanation",
+        "type",
+        "scenario",
+        "accountChoices"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

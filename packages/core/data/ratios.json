@@ -1,0 +1,1258 @@
+[
+  {
+    "id": "debt_ratio",
+    "termRef": "tm_9e1rb64c",
+    "category": "financial_structure",
+    "framework": "input",
+    "versions": {
+      "excel": {
+        "numerator": "line.bs_total_liabilities",
+        "denominator": "line.bs_total_assets",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "D10",
+          "formula": "SUM(財務報表!N11:N17)/財務報表!L29",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.bs_total_liabilities",
+        "denominator": "line.bs_total_assets",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": ["T24", "T38"]
+  },
+  {
+    "id": "long_term_funds_to_ppe",
+    "termRef": "tm_8eyx0srs",
+    "category": "financial_structure",
+    "framework": "input",
+    "versions": {
+      "excel": {
+        "numerator": "line.bs_noncurrent_liabilities + line.bs_total_equity",
+        "denominator": "line.bs_machinery_net",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "D11",
+          "formula": "(SUM(財務報表!N16:N17)+SUM(財務報表!N19:N28))/財務報表!L19",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance", "excel_approximation"]
+      },
+      "slides03": {
+        "numerator": "line.bs_noncurrent_liabilities + line.bs_total_equity",
+        "denominator": "line.bs_machinery_net + line.bs_office_equipment",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": ["T24"]
+  },
+  {
+    "id": "cash_flow_adequacy",
+    "termRef": "tm_35qb8and",
+    "category": "cash_flow",
+    "framework": "input",
+    "versions": {
+      "excel": {
+        "numerator": "line.cf_operating_total",
+        "denominator": "-line.cf_capex + max(-line.cf_inventory_increase, 0) - line.cf_dividends_paid",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "D15",
+          "formula": "財務報表!H23/(-財務報表!H26-財務報表!H16-財務報表!H35)",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": ["single_period_approx", "website_fix"]
+      },
+      "slides03": {
+        "numerator": "line.cf_operating_total",
+        "denominator": "-line.cf_capex + max(-line.cf_inventory_increase, 0) - line.cf_dividends_paid",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": ["single_period_approx"]
+      }
+    },
+    "pendingRefs": ["T24"]
+  },
+  {
+    "id": "cash_flow_ratio",
+    "termRef": "tm_555a7d2s",
+    "category": "cash_flow",
+    "framework": "input",
+    "versions": {
+      "excel": {
+        "numerator": "line.cf_operating_total",
+        "denominator": "line.bs_current_liabilities",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "D16",
+          "formula": "財務報表!H23/SUM(財務報表!N11:N15)",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.cf_operating_total",
+        "denominator": "line.bs_current_liabilities",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "cash_reinvestment",
+    "termRef": "tm_jbtbky5v",
+    "category": "cash_flow",
+    "framework": "input",
+    "versions": {
+      "excel": {
+        "numerator": "line.cf_operating_total + line.cf_dividends_paid",
+        "denominator": "line.bs_total_assets - line.bs_current_liabilities",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "D17",
+          "formula": "(財務報表!H23-財務報表!H35)/(SUM(財務報表!L18:L21)+SUM(財務報表!L23:L25)+SUM(財務報表!L12:L15)-SUM(財務報表!N11:N15))",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": ["end_of_period_balance", "website_fix"]
+      },
+      "slides03": {
+        "numerator": "line.cf_operating_total + line.cf_dividends_paid",
+        "denominator": "line.bs_ppe_gross + line.bs_investments_other + line.bs_intangible_assets + line.bs_current_assets - line.bs_current_liabilities",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": ["end_of_period_balance", "website_definition"]
+      }
+    },
+    "pendingRefs": ["T24", "T25"]
+  },
+  {
+    "id": "ar_turnover",
+    "termRef": "tm_2s4hterv",
+    "category": "activity",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_revenue",
+        "denominator": "line.bs_accounts_receivable",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H11",
+          "formula": "財務報表!R10/財務報表!L13",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.is_revenue",
+        "denominator": "avg(line.bs_accounts_receivable)",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "days_sales_outstanding",
+    "termRef": "tm_gysqtps0",
+    "category": "activity",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "expr": "365 / ratio.ar_turnover.excel",
+        "unit": "days",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H12",
+          "formula": "365/H11",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["chained_source_na_or_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "expr": "365 / ratio.ar_turnover.slides03",
+        "unit": "days",
+        "displayDecimals": 2,
+        "naWhen": ["chained_source_na_or_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "ap_turnover",
+    "termRef": "tm_2jyfy0hn",
+    "category": "activity",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_purchases",
+        "denominator": "line.bs_accounts_payable",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H14",
+          "formula": "財務報表!R13/財務報表!N12",
+          "format": "0.00",
+          "iferror": "N/A(應付帳款為0)"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance", "excel_approximation"]
+      },
+      "slides03": {
+        "numerator": "line.is_cogs",
+        "denominator": "avg(line.bs_accounts_payable)",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": ["T27"]
+  },
+  {
+    "id": "inventory_turnover",
+    "termRef": "tm_08g66t9j",
+    "category": "activity",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_cogs",
+        "denominator": "line.bs_inventory",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H16",
+          "formula": "財務報表!R15/財務報表!L14",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.is_cogs",
+        "denominator": "avg(line.bs_inventory)",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": ["T06"]
+  },
+  {
+    "id": "days_inventory",
+    "termRef": "tm_fsv83x2z",
+    "category": "activity",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "expr": "365 / ratio.inventory_turnover.excel",
+        "unit": "days",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H17",
+          "formula": "365/H16",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["chained_source_na_or_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "expr": "365 / ratio.inventory_turnover.slides03",
+        "unit": "days",
+        "displayDecimals": 2,
+        "naWhen": ["chained_source_na_or_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "ppe_turnover",
+    "termRef": "tm_4tz4q9pa",
+    "category": "activity",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_revenue",
+        "denominator": "line.bs_machinery_net",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H19",
+          "formula": "財務報表!R10/財務報表!L19",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.is_revenue",
+        "denominator": "avg(line.bs_machinery_net)",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "total_asset_turnover",
+    "termRef": "tm_2cqt9cfd",
+    "category": "activity",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_revenue",
+        "denominator": "line.bs_total_assets",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H20",
+          "formula": "財務報表!R10/財務報表!L29",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.is_revenue",
+        "denominator": "avg(line.bs_total_assets)",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      },
+      "slides02": {
+        "numerator": "line.is_revenue",
+        "denominator": "line.bs_total_assets",
+        "unit": "turnover",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "dol",
+    "termRef": "tm_tspyazrx",
+    "category": "leverage",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_gross_profit",
+        "denominator": "line.is_operating_income",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H24",
+          "formula": "財務報表!R16/財務報表!R24",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["base_not_positive"],
+        "notMeaningfulBase": "line.is_operating_income",
+        "flags": ["excel_approximation"]
+      },
+      "slides03": {
+        "numerator": "line.is_revenue - line.is_cogs",
+        "denominator": "line.is_operating_income",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["base_not_positive"],
+        "notMeaningfulBase": "line.is_operating_income",
+        "flags": ["website_definition"]
+      }
+    },
+    "pendingRefs": ["T20", "T26"]
+  },
+  {
+    "id": "dfl",
+    "termRef": "tm_gkmknxh4",
+    "category": "leverage",
+    "framework": "transform",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_operating_income",
+        "denominator": "line.is_operating_income - line.is_interest_expense",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "H25",
+          "formula": "財務報表!R24/(財務報表!R24-財務報表!R27)",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative", "base_not_positive"],
+        "notMeaningfulBase": "line.is_operating_income",
+        "flags": []
+      },
+      "slides03": {
+        "numerator": "line.is_operating_income",
+        "denominator": "line.is_operating_income - line.is_interest_expense",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative", "base_not_positive"],
+        "notMeaningfulBase": "line.is_operating_income",
+        "flags": []
+      }
+    },
+    "pendingRefs": ["T20"]
+  },
+  {
+    "id": "roa",
+    "termRef": "tm_r0a5t3kq",
+    "category": "profitability",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.bs_total_assets",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L10",
+          "formula": "財務報表!R35/財務報表!L29",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.is_net_income + line.is_interest_expense * (1 - input.tax_rate)",
+        "denominator": "avg(line.bs_total_assets)",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero", "missing_input"],
+        "notMeaningfulWhen": [],
+        "flags": [],
+        "inputs": {
+          "tax_rate": {
+            "default": 0.2,
+            "label": {
+              "zh-TW": "稅率",
+              "en": "Tax rate"
+            },
+            "pendingRefs": ["T21"]
+          }
+        }
+      },
+      "slides02": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.bs_total_assets",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "dupont": {
+        "expr": "ratio.net_profit_margin.slides02 * ratio.total_asset_turnover.slides02",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["chained_source_na"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": ["T21"]
+  },
+  {
+    "id": "pretax_to_paid_in_capital",
+    "termRef": "tm_bkqw8c59",
+    "category": "profitability",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_pretax_income",
+        "denominator": "line.bs_share_capital",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L11",
+          "formula": "財務報表!R33/財務報表!N21",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.is_pretax_income",
+        "denominator": "line.bs_share_capital",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "operating_income_to_paid_in_capital",
+    "termRef": "tm_7km3j04r",
+    "category": "profitability",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_operating_income",
+        "denominator": "line.bs_share_capital",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L12",
+          "formula": "財務報表!R24/財務報表!N21",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.is_operating_income",
+        "denominator": "line.bs_share_capital",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": ["T23"]
+  },
+  {
+    "id": "roe",
+    "termRef": "tm_0k8vegyr",
+    "category": "profitability",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.bs_total_equity",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L13",
+          "formula": "財務報表!R35/SUM(財務報表!N19:N28)",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.is_net_income",
+        "denominator": "avg(line.bs_total_equity)",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": []
+      },
+      "slides02": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.bs_total_equity",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": ["end_of_period_balance"]
+      },
+      "dupont": {
+        "expr": "ratio.net_profit_margin.slides02 * ratio.total_asset_turnover.slides02 * ratio.equity_multiplier.slides02",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["chained_source_na"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": ["T22"]
+  },
+  {
+    "id": "eps",
+    "termRef": "tm_knqbr6g4",
+    "category": "profitability",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.bs_share_capital / input.par_value",
+        "unit": "currency_per_share",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L14",
+          "formula": "財務報表!R35/(財務報表!N21/L16)",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero", "missing_input"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"],
+        "inputs": {
+          "par_value": {
+            "default": 10,
+            "label": {
+              "zh-TW": "每股面額",
+              "en": "Par value per share"
+            }
+          }
+        }
+      },
+      "slides03": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.bs_share_capital / input.par_value",
+        "unit": "currency_per_share",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero", "missing_input"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance", "single_period_approx"],
+        "inputs": {
+          "par_value": {
+            "default": 10,
+            "label": {
+              "zh-TW": "每股面額",
+              "en": "Par value per share"
+            }
+          }
+        }
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "net_profit_margin",
+    "termRef": "tm_92yzx0fn",
+    "category": "profitability",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L15",
+          "formula": "財務報表!R35/財務報表!R10",
+          "format": "0.0%",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      },
+      "slides03": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      },
+      "slides02": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      },
+      "slides01": {
+        "numerator": "line.is_net_income",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "quick_ratio",
+    "termRef": "tm_n8ysnw1m",
+    "category": "solvency",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.bs_cash + line.bs_accounts_receivable + line.bs_short_term_loans_receivable",
+        "denominator": "line.bs_current_liabilities",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L20",
+          "formula": "(財務報表!L12+財務報表!L13+財務報表!L15)/SUM(財務報表!N11:N15)",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.bs_current_assets - line.bs_inventory - line.bs_prepaid_expenses",
+        "denominator": "line.bs_current_liabilities",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": ["T24", "T28"]
+  },
+  {
+    "id": "current_ratio",
+    "termRef": "tm_c8r1t4zm",
+    "category": "solvency",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.bs_current_assets",
+        "denominator": "line.bs_current_liabilities",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L21",
+          "formula": "SUM(財務報表!L12:L15)/SUM(財務報表!N11:N15)",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      },
+      "slides03": {
+        "numerator": "line.bs_current_assets",
+        "denominator": "line.bs_current_liabilities",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": ["T24", "T28"]
+  },
+  {
+    "id": "interest_coverage",
+    "termRef": "tm_h3c7v1xe",
+    "category": "solvency",
+    "framework": "output",
+    "versions": {
+      "excel": {
+        "numerator": "line.is_pretax_income + line.is_interest_expense",
+        "denominator": "line.is_interest_expense",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "excel": {
+          "cell": "L22",
+          "formula": "(財務報表!R33+財務報表!R27)/財務報表!R27",
+          "format": "0.00",
+          "iferror": "N/A"
+        },
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      },
+      "slides03": {
+        "numerator": "line.is_pretax_income + line.is_interest_expense",
+        "denominator": "line.is_interest_expense",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": ["T24"]
+  },
+  {
+    "id": "equity_multiplier",
+    "termRef": "tm_2ggtxnaz",
+    "category": "financial_structure",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "line.bs_total_assets",
+        "denominator": "line.bs_total_equity",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": ["end_of_period_balance"]
+      }
+    },
+    "pendingRefs": ["T38"]
+  },
+  {
+    "id": "revenue_per_employee",
+    "termRef": "tm_g50575m9",
+    "category": "department",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "line.is_revenue",
+        "denominator": "input.employees",
+        "unit": "currency",
+        "displayDecimals": 0,
+        "naWhen": ["denominator_zero", "missing_input"],
+        "notMeaningfulWhen": [],
+        "flags": [],
+        "inputs": {
+          "employees": {
+            "default": null,
+            "label": {
+              "zh-TW": "員工人數",
+              "en": "Number of employees"
+            }
+          }
+        }
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "rd_intensity",
+    "termRef": "tm_vpzcjk6n",
+    "category": "department",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "line.is_research_development_expense",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "rd_leverage",
+    "termRef": "tm_1vxjew8q",
+    "category": "department",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "line.is_revenue - input.prior_revenue",
+        "denominator": "line.is_research_development_expense",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero", "missing_input"],
+        "notMeaningfulWhen": [],
+        "flags": ["website_definition"],
+        "inputs": {
+          "prior_revenue": {
+            "default": null,
+            "label": {
+              "zh-TW": "前期營業收入",
+              "en": "Prior-period revenue"
+            }
+          }
+        }
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "ce_intensity",
+    "termRef": "tm_1hgn004m",
+    "category": "department",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "-line.cf_capex",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "ce_turnover",
+    "termRef": "tm_jcbwesg8",
+    "category": "department",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "line.is_revenue",
+        "denominator": "-line.cf_capex",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "me_intensity",
+    "termRef": "tm_x6e56fqp",
+    "category": "department",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "line.is_marketing_expense",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "me_leverage",
+    "termRef": "tm_j8zg281d",
+    "category": "department",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "line.is_revenue - input.prior_revenue",
+        "denominator": "line.is_marketing_expense",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero", "missing_input"],
+        "notMeaningfulWhen": [],
+        "flags": ["website_definition"],
+        "inputs": {
+          "prior_revenue": {
+            "default": null,
+            "label": {
+              "zh-TW": "前期營業收入",
+              "en": "Prior-period revenue"
+            }
+          }
+        }
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "pe_ratio",
+    "termRef": "tm_wd3fx6rh",
+    "category": "market",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "input.share_price",
+        "denominator": "ratio.eps.excel",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero", "missing_input", "chained_source_na_or_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": [],
+        "inputs": {
+          "share_price": {
+            "default": null,
+            "label": {
+              "zh-TW": "股價",
+              "en": "Share price"
+            }
+          }
+        }
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "margin_maintenance",
+    "termRef": "tm_n70k1r9t",
+    "category": "market",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "input.collateral_value",
+        "denominator": "input.loan_amount",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero", "missing_input"],
+        "notMeaningfulWhen": [],
+        "flags": [],
+        "inputs": {
+          "collateral_value": {
+            "default": null,
+            "label": {
+              "zh-TW": "擔保品市值",
+              "en": "Market value of collateral"
+            }
+          },
+          "loan_amount": {
+            "default": null,
+            "label": {
+              "zh-TW": "融資金額",
+              "en": "Margin loan amount"
+            }
+          }
+        }
+      }
+    },
+    "pendingRefs": ["T18"]
+  },
+  {
+    "id": "capital_surplus_to_share_capital",
+    "termRef": "tm_qpw1px47",
+    "category": "financial_structure",
+    "framework": null,
+    "versions": {
+      "slides02": {
+        "numerator": "line.bs_capital_surplus",
+        "denominator": "line.bs_share_capital",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": ["end_of_period_balance", "website_definition"]
+      }
+    },
+    "pendingRefs": ["T17"]
+  },
+  {
+    "id": "gross_margin",
+    "termRef": "tm_axb9rtr7",
+    "category": "income_structure",
+    "framework": null,
+    "versions": {
+      "slides01": {
+        "numerator": "line.is_gross_profit",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "operating_margin",
+    "termRef": "tm_1c1g4a7q",
+    "category": "income_structure",
+    "framework": null,
+    "versions": {
+      "slides01": {
+        "numerator": "line.is_operating_income",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "cost_ratio",
+    "termRef": "tm_zn4nbxtb",
+    "category": "income_structure",
+    "framework": null,
+    "versions": {
+      "slides01": {
+        "numerator": "line.is_cogs",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "sga_ratio",
+    "termRef": "tm_2f3fqvmq",
+    "category": "income_structure",
+    "framework": null,
+    "versions": {
+      "slides01": {
+        "numerator": "line.is_sga_total",
+        "denominator": "line.is_revenue",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "effective_tax_rate",
+    "termRef": "tm_baexgs31",
+    "category": "income_structure",
+    "framework": null,
+    "versions": {
+      "slides01": {
+        "numerator": "line.is_income_tax_expense",
+        "denominator": "line.is_pretax_income",
+        "unit": "percent",
+        "displayDecimals": 2,
+        "naWhen": ["denominator_zero"],
+        "notMeaningfulWhen": ["denominator_negative"],
+        "flags": []
+      }
+    },
+    "pendingRefs": ["T10"]
+  },
+  {
+    "id": "days_payable",
+    "termRef": "tm_kzkzng5e",
+    "category": "activity",
+    "framework": null,
+    "versions": {
+      "slides03": {
+        "expr": "365 / ratio.ap_turnover.slides03",
+        "unit": "days",
+        "displayDecimals": 2,
+        "naWhen": ["chained_source_na_or_zero"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "operating_cycle",
+    "termRef": "tm_7v02zwjf",
+    "category": "activity",
+    "framework": null,
+    "versions": {
+      "slides03": {
+        "expr": "ratio.days_inventory.slides03 + ratio.days_sales_outstanding.slides03",
+        "unit": "days",
+        "displayDecimals": 2,
+        "naWhen": ["chained_source_na"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "cash_conversion_cycle",
+    "termRef": "tm_arb3vgk7",
+    "category": "activity",
+    "framework": null,
+    "versions": {
+      "slides03": {
+        "expr": "ratio.operating_cycle.slides03 - ratio.days_payable.slides03",
+        "unit": "days",
+        "displayDecimals": 2,
+        "naWhen": ["chained_source_na"],
+        "notMeaningfulWhen": [],
+        "flags": ["website_definition"]
+      }
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "total_leverage",
+    "termRef": "tm_jx267rna",
+    "category": "leverage",
+    "framework": null,
+    "versions": {
+      "slides03": {
+        "expr": "ratio.dol.slides03 * ratio.dfl.slides03",
+        "unit": "multiple",
+        "displayDecimals": 2,
+        "naWhen": ["chained_source_na"],
+        "notMeaningfulWhen": [],
+        "flags": []
+      }
+    },
+    "pendingRefs": []
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "id": "tpl.issue_shares_cash",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "股東出資成立公司",
+    "en": "Shareholders contribute capital to form the company"
+  },
+  "summary": {
+    "zh-TW": "股東以現金 {{money:param.amount}} 出資，公司發行股票並收到現金。",
+    "en": "Shareholders contribute {{money:param.amount}} in cash and the company issues shares in return."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 1000000,
+      "label": {
+        "zh-TW": "出資金額（收到的現金）",
+        "en": "Capital contributed (cash received)"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "cash",
+      "side": "debit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "financing",
+        "kind": "share_issue"
+      }
+    },
+    {
+      "id": "l2",
+      "account": "share_capital",
+      "side": "credit",
+      "amount": "param.amount"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "公司收到股東的現金，所以現金增加；同時公司對股東有了出資的紀錄，股本增加。這筆錢不是借來的，不用還，所以放在權益而不是負債。現金流量表把它列在籌資活動的發行股票收入。",
+    "en": "The company receives cash from its shareholders, so cash goes up; at the same time the contribution is recorded as share capital. The money is not borrowed and does not have to be repaid, so it sits in equity rather than liabilities. The statement of cash flows shows it under financing activities as proceeds from issuing shares."
+  },
+  "termRefs": ["tm_c4sh8k2p", "tm_5e3py55a", "tm_4n517fc3"]
+}

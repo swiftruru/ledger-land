@@ -13,6 +13,15 @@ export default defineConfig({
       '**/e2e/**',
       '**/*.local.test.ts',
     ],
+    // 覆蓋率（使用者 2026-10-23 決定）：只量 packages/core/src，陳述式與行 90%、分支 85%、函式 90%；pnpm test:coverage 低於門檻就失敗
+    coverage: {
+      provider: 'v8',
+      include: ['packages/core/src/**/*.ts'],
+      exclude: ['packages/core/src/**/types.ts', 'packages/core/src/**/index.ts'],
+      reporter: ['text-summary', 'json-summary'],
+      reportsDirectory: '.local-reports/coverage',
+      thresholds: { statements: 90, lines: 90, branches: 85, functions: 90 },
+    },
     projects: [
       {
         test: {
@@ -22,6 +31,7 @@ export default defineConfig({
             'packages/tokens/test/**/*.test.ts',
             'packages/i18n/test/**/*.test.ts',
             'packages/content-schema/test/**/*.test.ts',
+            'packages/core/test/**/*.test.ts',
             'tools/test/**/*.test.ts',
           ],
           exclude: ['**/*.local.test.ts'],

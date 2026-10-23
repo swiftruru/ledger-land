@@ -27,21 +27,11 @@
       "type": "string"
     },
     "retiredNote": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
         }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
+      ]
     },
     "authorNotes": {
       "type": "string"
@@ -76,38 +66,10 @@
       ]
     },
     "title": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
+      "$ref": "#/definitions/LocalizedText"
     },
     "summary": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
+      "$ref": "#/definitions/LocalizedText"
     },
     "objectiveIds": {
       "type": "array",
@@ -138,21 +100,7 @@
           "minLength": 1
         },
         "title": {
-          "type": "object",
-          "properties": {
-            "zh-TW": {
-              "type": "string",
-              "minLength": 1
-            },
-            "en": {
-              "type": "string",
-              "minLength": 1
-            }
-          },
-          "required": [
-            "zh-TW"
-          ],
-          "additionalProperties": false
+          "$ref": "#/definitions/LocalizedText"
         }
       },
       "required": [
@@ -208,5 +156,30 @@
     "objectiveIds",
     "levelIds"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "definitions": {
+    "LocalizedText": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "$ref": "#/definitions/__schema0"
+        },
+        "en": {
+          "$ref": "#/definitions/__schema1"
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "__schema0": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema1": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
 }

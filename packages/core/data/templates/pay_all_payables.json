@@ -1,0 +1,67 @@
+{
+  "id": "tpl.pay_all_payables",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "付清應付帳款",
+    "en": "Pay all trade payables"
+  },
+  "summary": {
+    "zh-TW": "以現金付清帳上全部應付帳款 {{money:derived.amount}}。",
+    "en": "Pay all trade payables on the books, {{money:derived.amount}}, in cash."
+  },
+  "params": [],
+  "derived": [
+    {
+      "name": "amount",
+      "type": "money",
+      "expr": "balance(accounts_payable)",
+      "label": {
+        "zh-TW": "要付的貨款（帳上應付帳款餘額）",
+        "en": "Amount to pay (trade payables balance)"
+      }
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "has_payables",
+      "expr": "balance(accounts_payable) > 0",
+      "message": {
+        "zh-TW": "帳上沒有應付帳款可以付。",
+        "en": "There are no trade payables to pay."
+      }
+    },
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= derived.amount",
+      "message": {
+        "zh-TW": "帳上現金不夠付這筆款項。",
+        "en": "There is not enough cash on the books for this payment."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "accounts_payable",
+      "side": "debit",
+      "amount": "derived.amount"
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "derived.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "payments_to_suppliers"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "付款時現金減少、應付帳款也減少，獲利不變，因為成本早在賣出商品時就認列了。金額直接讀帳上的應付帳款餘額，所以前面賒購的金額改了，這裡也會跟著變。付出的現金列在營業活動的支付供應商。",
+    "en": "Paying the supplier reduces cash and trade payables by the same amount; profit is unchanged because the cost was recognised when the goods were sold. The amount is read from the trade payables balance, so a change to the earlier credit purchase flows through here. The cash paid appears under operating activities as cash paid to suppliers."
+  },
+  "termRefs": ["tm_a3p9y6kc", "tm_c4sh8k2p"]
+}

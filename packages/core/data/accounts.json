@@ -1,0 +1,1487 @@
+[
+  {
+    "id": "cash",
+    "order": 10,
+    "element": "asset",
+    "section": "current_asset",
+    "normalSide": "debit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L12",
+    "labels": {
+      "teacher": {
+        "zh-TW": "現金及約當現金",
+        "en": "Cash and cash equivalents"
+      },
+      "currentTw": null,
+      "ifrsEn": "Cash and cash equivalents",
+      "aliases": {
+        "zh-TW": ["現金"],
+        "en": ["Cash"]
+      }
+    },
+    "termRef": "tm_c4sh8k2p",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "cash",
+      "defaultActivity": null
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "accounts_receivable",
+    "order": 20,
+    "element": "asset",
+    "section": "current_asset",
+    "normalSide": "debit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L13",
+    "labels": {
+      "teacher": {
+        "zh-TW": "應收帳款",
+        "en": "Trade receivables"
+      },
+      "currentTw": "應收帳款淨額",
+      "ifrsEn": "Trade receivables",
+      "aliases": {
+        "zh-TW": ["銷貨債權"],
+        "en": ["Accounts receivable", "Trade and other receivables"]
+      }
+    },
+    "termRef": "tm_r7x2c9fa",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "working_capital",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T08", "T12", "T15"]
+  },
+  {
+    "id": "inventory",
+    "order": 30,
+    "element": "asset",
+    "section": "current_asset",
+    "normalSide": "debit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L14",
+    "labels": {
+      "teacher": {
+        "zh-TW": "存貨",
+        "en": "Inventories"
+      },
+      "currentTw": null,
+      "ifrsEn": "Inventories",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Inventory"]
+      }
+    },
+    "termRef": "tm_n7v3k8pq",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "working_capital",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T06", "T07"]
+  },
+  {
+    "id": "short_term_loans_receivable",
+    "order": 40,
+    "element": "asset",
+    "section": "current_asset",
+    "normalSide": "debit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L15",
+    "labels": {
+      "teacher": {
+        "zh-TW": "短期放貨",
+        "en": "Short-term loans receivable"
+      },
+      "currentTw": null,
+      "ifrsEn": "Short-term loans receivable",
+      "aliases": {
+        "zh-TW": ["短期放款", "短期放貸"],
+        "en": ["Loans receivable"]
+      }
+    },
+    "termRef": "tm_3sy1gk7c",
+    "flags": ["unused", "japanese"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "investing"
+    },
+    "pendingRefs": ["T09"]
+  },
+  {
+    "id": "prepaid_expenses",
+    "order": 50,
+    "element": "asset",
+    "section": "current_asset",
+    "normalSide": "debit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "預付費用",
+        "en": "Prepayments"
+      },
+      "currentTw": "預付款項",
+      "ifrsEn": "Prepayments",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Prepaid expenses"]
+      }
+    },
+    "termRef": "tm_5xm3qcz9",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "working_capital",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "supplies_on_hand",
+    "order": 60,
+    "element": "asset",
+    "section": "current_asset",
+    "normalSide": "debit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "用品盤存",
+        "en": "Supplies on hand"
+      },
+      "currentTw": null,
+      "ifrsEn": "Supplies on hand",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_rp85wtm7",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "working_capital",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "machinery_equipment",
+    "order": 70,
+    "element": "asset",
+    "section": "noncurrent_asset",
+    "normalSide": "debit",
+    "current": false,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L19",
+    "labels": {
+      "teacher": {
+        "zh-TW": "機器設備",
+        "en": "Machinery and equipment"
+      },
+      "currentTw": "不動產、廠房及設備（機器設備）",
+      "ifrsEn": "Machinery and equipment",
+      "aliases": {
+        "zh-TW": ["固定資產", "電腦設備"],
+        "en": ["Fixed assets", "Computer equipment"]
+      }
+    },
+    "termRef": "tm_gt8g4afe",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "investing"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "accumulated_depreciation_machinery",
+    "order": 80,
+    "element": "asset",
+    "section": "noncurrent_asset",
+    "normalSide": "credit",
+    "current": false,
+    "contraOf": "machinery_equipment",
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "累計折舊（機器設備）",
+        "en": "Accumulated depreciation (machinery and equipment)"
+      },
+      "currentTw": "累計折舊",
+      "ifrsEn": "Accumulated depreciation",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_a8d5c1pz",
+    "flags": ["not_in_template"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "none",
+      "defaultActivity": null
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "office_equipment",
+    "order": 90,
+    "element": "asset",
+    "section": "noncurrent_asset",
+    "normalSide": "debit",
+    "current": false,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "辦公設備",
+        "en": "Office equipment"
+      },
+      "currentTw": null,
+      "ifrsEn": "Office equipment",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_njqd0f5g",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "investing"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "intangible_assets",
+    "order": 100,
+    "element": "asset",
+    "section": "noncurrent_asset",
+    "normalSide": "debit",
+    "current": false,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L20",
+    "labels": {
+      "teacher": {
+        "zh-TW": "無形資產",
+        "en": "Intangible assets"
+      },
+      "currentTw": null,
+      "ifrsEn": "Intangible assets",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_wqn6nph9",
+    "flags": ["unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "investing"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "investments_other_assets",
+    "order": 110,
+    "element": "asset",
+    "section": "noncurrent_asset",
+    "normalSide": "debit",
+    "current": false,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L21",
+    "labels": {
+      "teacher": {
+        "zh-TW": "投資其他資產",
+        "en": "Investments and other assets"
+      },
+      "currentTw": null,
+      "ifrsEn": "Investments and other assets",
+      "aliases": {
+        "zh-TW": ["長期投資", "其他非流動資產"],
+        "en": ["Long-term investments", "Other non-current assets"]
+      }
+    },
+    "termRef": "tm_yw1wvkkd",
+    "flags": ["japanese", "unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "investing"
+    },
+    "pendingRefs": ["T15"]
+  },
+  {
+    "id": "deferred_organisation_costs",
+    "order": 120,
+    "element": "asset",
+    "section": "deferred_asset",
+    "normalSide": "debit",
+    "current": false,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L24",
+    "labels": {
+      "teacher": {
+        "zh-TW": "設立費",
+        "en": "Start-up costs"
+      },
+      "currentTw": null,
+      "ifrsEn": null,
+      "aliases": {
+        "zh-TW": ["開辦費"],
+        "en": ["Establishment costs", "Organisation costs"]
+      }
+    },
+    "termRef": "tm_d9f3g7cs",
+    "flags": ["japanese", "not_ifrs_line", "ifrs_treatment_differs"],
+    "ifrsTreatment": {
+      "note": {
+        "zh-TW": "IAS 38.69 規定開辦活動的支出在發生時認列為費用，不能列為資產。",
+        "en": "Under IAS 38.69, expenditure on start-up activities is recognised as an expense when it is incurred."
+      },
+      "amountImpact": {
+        "zh-TW": "改用 IFRS 時，取得當期的費用增加、之後各期不再攤銷；付出的現金由投資活動改列營業活動。",
+        "en": "Under IFRS the expense is higher in the period of payment and there is no later amortisation. The cash paid moves from investing to operating activities."
+      }
+    },
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "investing"
+    },
+    "pendingRefs": ["T04", "T05", "T30"]
+  },
+  {
+    "id": "deferred_development_costs",
+    "order": 130,
+    "element": "asset",
+    "section": "deferred_asset",
+    "normalSide": "debit",
+    "current": false,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "L25",
+    "labels": {
+      "teacher": {
+        "zh-TW": "開發費",
+        "en": "Development costs"
+      },
+      "currentTw": null,
+      "ifrsEn": null,
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_7nja2cvf",
+    "flags": ["japanese", "not_ifrs_line", "ifrs_treatment_differs", "unused"],
+    "ifrsTreatment": {
+      "note": {
+        "zh-TW": "IAS 38.57 只允許符合六項條件的開發階段支出列為無形資產，研究階段與不符合條件的開發支出都在發生時認列為費用。",
+        "en": "IAS 38.57 allows development expenditure to be recognised as an intangible asset only when six conditions are met. Research expenditure and development expenditure that does not qualify are expensed when incurred."
+      },
+      "amountImpact": {
+        "zh-TW": "改用 IFRS 時，不符合條件的部分在支出當期列費用，資產與之後各期的攤銷都減少；符合條件的部分改列無形資產。",
+        "en": "Under IFRS the part that does not qualify is expensed in the period of payment, so assets and later amortisation are lower; the part that qualifies is presented as an intangible asset."
+      }
+    },
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "investing"
+    },
+    "pendingRefs": ["T04"]
+  },
+  {
+    "id": "accounts_payable",
+    "order": 140,
+    "element": "liability",
+    "section": "current_liability",
+    "normalSide": "credit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N12",
+    "labels": {
+      "teacher": {
+        "zh-TW": "應付帳款",
+        "en": "Trade payables"
+      },
+      "currentTw": null,
+      "ifrsEn": "Trade payables",
+      "aliases": {
+        "zh-TW": ["應付賬款", "應付貨款"],
+        "en": ["Accounts payable", "Trade and other payables"]
+      }
+    },
+    "termRef": "tm_a3p9y6kc",
+    "flags": ["typo_fixed"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "working_capital",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "short_term_borrowings",
+    "order": 150,
+    "element": "liability",
+    "section": "current_liability",
+    "normalSide": "credit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N13",
+    "labels": {
+      "teacher": {
+        "zh-TW": "短期借款",
+        "en": "Short-term borrowings"
+      },
+      "currentTw": null,
+      "ifrsEn": "Short-term borrowings",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Short-term loans"]
+      }
+    },
+    "termRef": "tm_s5b8r3hd",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "financing"
+    },
+    "pendingRefs": ["T30"]
+  },
+  {
+    "id": "income_tax_payable",
+    "order": 160,
+    "element": "liability",
+    "section": "current_liability",
+    "normalSide": "credit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N14",
+    "labels": {
+      "teacher": {
+        "zh-TW": "應付所得稅",
+        "en": "Current tax liabilities"
+      },
+      "currentTw": "本期所得稅負債",
+      "ifrsEn": "Current tax liabilities",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Income tax payable"]
+      }
+    },
+    "termRef": "tm_kgv20zg0",
+    "flags": ["unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "excluded",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T10", "T36"]
+  },
+  {
+    "id": "deposits_received",
+    "order": 170,
+    "element": "liability",
+    "section": "current_liability",
+    "normalSide": "credit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N15",
+    "labels": {
+      "teacher": {
+        "zh-TW": "保證金",
+        "en": "Deposits received"
+      },
+      "currentTw": null,
+      "ifrsEn": "Deposits received",
+      "aliases": {
+        "zh-TW": ["存入保證金", "代收款"],
+        "en": []
+      }
+    },
+    "termRef": "tm_zx169kcm",
+    "flags": ["japanese", "unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "working_capital",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T15"]
+  },
+  {
+    "id": "interest_payable",
+    "order": 180,
+    "element": "liability",
+    "section": "current_liability",
+    "normalSide": "credit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "應付利息",
+        "en": "Interest payable"
+      },
+      "currentTw": null,
+      "ifrsEn": "Interest payable",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_hg8c967a",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "excluded",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "other_payables",
+    "order": 190,
+    "element": "liability",
+    "section": "current_liability",
+    "normalSide": "credit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "其他應付款",
+        "en": "Other payables"
+      },
+      "currentTw": null,
+      "ifrsEn": "Other payables",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_bgtgsvhr",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "working_capital",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "contract_liabilities",
+    "order": 200,
+    "element": "liability",
+    "section": "current_liability",
+    "normalSide": "credit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "預收收入",
+        "en": "Contract liabilities"
+      },
+      "currentTw": "合約負債",
+      "ifrsEn": "Contract liabilities",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Unearned revenue"]
+      }
+    },
+    "termRef": "tm_bcs4fvmn",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "working_capital",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "dividends_payable",
+    "order": 210,
+    "element": "liability",
+    "section": "current_liability",
+    "normalSide": "credit",
+    "current": true,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "應付股利",
+        "en": "Dividends payable"
+      },
+      "currentTw": null,
+      "ifrsEn": "Dividends payable",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_4kwp1jdw",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "excluded",
+      "defaultActivity": "financing"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "long_term_borrowings",
+    "order": 220,
+    "element": "liability",
+    "section": "noncurrent_liability",
+    "normalSide": "credit",
+    "current": false,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N17",
+    "labels": {
+      "teacher": {
+        "zh-TW": "長期借款",
+        "en": "Long-term borrowings"
+      },
+      "currentTw": null,
+      "ifrsEn": "Long-term borrowings",
+      "aliases": {
+        "zh-TW": ["長期負債", "長期銀行借款"],
+        "en": ["Long-term loans"]
+      }
+    },
+    "termRef": "tm_gcp2zeys",
+    "flags": ["unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "financing"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "share_capital",
+    "order": 230,
+    "element": "equity",
+    "section": "equity",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N21",
+    "labels": {
+      "teacher": {
+        "zh-TW": "股本",
+        "en": "Share capital"
+      },
+      "currentTw": "普通股股本",
+      "ifrsEn": "Share capital",
+      "aliases": {
+        "zh-TW": ["實收資本"],
+        "en": ["Issued capital", "Paid-in capital"]
+      }
+    },
+    "termRef": "tm_5e3py55a",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "financing"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "capital_surplus",
+    "order": 240,
+    "element": "equity",
+    "section": "equity",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N22",
+    "labels": {
+      "teacher": {
+        "zh-TW": "資本公積",
+        "en": "Capital surplus"
+      },
+      "currentTw": null,
+      "ifrsEn": "Capital surplus",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Share premium", "Additional paid-in capital"]
+      }
+    },
+    "termRef": "tm_yka0razf",
+    "flags": ["unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "financing"
+    },
+    "pendingRefs": ["T16"]
+  },
+  {
+    "id": "legal_reserve",
+    "order": 250,
+    "element": "equity",
+    "section": "retained_earnings_group",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N24",
+    "labels": {
+      "teacher": {
+        "zh-TW": "法定盈餘公積",
+        "en": "Legal reserve"
+      },
+      "currentTw": null,
+      "ifrsEn": "Legal reserve",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_3bd0kmwn",
+    "flags": ["unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "equity_transfer",
+      "defaultActivity": null
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "special_reserve",
+    "order": 260,
+    "element": "equity",
+    "section": "retained_earnings_group",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N25",
+    "labels": {
+      "teacher": {
+        "zh-TW": "特別盈餘公積",
+        "en": "Special reserve"
+      },
+      "currentTw": null,
+      "ifrsEn": "Special reserve",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_j5778msk",
+    "flags": ["unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "equity_transfer",
+      "defaultActivity": null
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "retained_earnings",
+    "order": 270,
+    "element": "equity",
+    "section": "retained_earnings_group",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "N26",
+    "labels": {
+      "teacher": {
+        "zh-TW": "未分配盈餘",
+        "en": "Unappropriated retained earnings"
+      },
+      "currentTw": "未分配盈餘（待彌補虧損）",
+      "ifrsEn": "Unappropriated retained earnings (accumulated deficit)",
+      "aliases": {
+        "zh-TW": ["累積盈餘"],
+        "en": ["Retained earnings"]
+      }
+    },
+    "termRef": "tm_4c6v99nn",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "financing"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "valuation_translation_adjustments",
+    "order": 280,
+    "element": "equity",
+    "section": "equity",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "N27",
+    "labels": {
+      "teacher": {
+        "zh-TW": "評價及換算差額",
+        "en": "Other components of equity"
+      },
+      "currentTw": "其他權益",
+      "ifrsEn": "Other components of equity",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Valuation and translation adjustments"]
+      }
+    },
+    "termRef": "tm_zmxytm7w",
+    "flags": ["japanese", "unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "equity_transfer",
+      "defaultActivity": null
+    },
+    "pendingRefs": ["T15"]
+  },
+  {
+    "id": "share_subscription_rights",
+    "order": 290,
+    "element": "equity",
+    "section": "equity",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": false,
+    "enabledByDefault": true,
+    "teacherCell": "N28",
+    "labels": {
+      "teacher": {
+        "zh-TW": "新股預約申購權",
+        "en": "Share options and warrants"
+      },
+      "currentTw": null,
+      "ifrsEn": "Share options and warrants",
+      "aliases": {
+        "zh-TW": ["認股權"],
+        "en": ["Share subscription rights"]
+      }
+    },
+    "termRef": "tm_752w5xzd",
+    "flags": ["japanese", "unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "via_cash_tag",
+      "defaultActivity": "financing"
+    },
+    "pendingRefs": ["T15"]
+  },
+  {
+    "id": "revenue",
+    "order": 300,
+    "element": "revenue",
+    "section": "operating_revenue",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R10",
+    "labels": {
+      "teacher": {
+        "zh-TW": "營業收入",
+        "en": "Revenue"
+      },
+      "currentTw": null,
+      "ifrsEn": "Revenue",
+      "aliases": {
+        "zh-TW": ["營收", "銷貨收入", "銷貨淨額", "營業收入淨額"],
+        "en": ["Sales", "Net sales", "Turnover"]
+      }
+    },
+    "termRef": "tm_v3n8q2ye",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "non_operating_income",
+    "order": 310,
+    "element": "revenue",
+    "section": "non_operating_income",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R25",
+    "labels": {
+      "teacher": {
+        "zh-TW": "營業外收入",
+        "en": "Non-operating income"
+      },
+      "currentTw": null,
+      "ifrsEn": "Non-operating income",
+      "aliases": {
+        "zh-TW": ["其他收入", "利息收入"],
+        "en": ["Other income"]
+      }
+    },
+    "termRef": "tm_6nmfxa10",
+    "flags": ["unused"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "extraordinary_gains",
+    "order": 320,
+    "element": "revenue",
+    "section": "extraordinary_gain",
+    "normalSide": "credit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R31",
+    "labels": {
+      "teacher": {
+        "zh-TW": "非常利益",
+        "en": "Extraordinary gains"
+      },
+      "currentTw": null,
+      "ifrsEn": null,
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_kqwv1rjs",
+    "flags": ["not_ifrs_line", "ifrs_treatment_differs", "unused"],
+    "ifrsTreatment": {
+      "note": {
+        "zh-TW": "IAS 1.87 禁止在損益表或附註中把任何收益或費損項目列為非常項目。",
+        "en": "IAS 1.87 prohibits presenting any item of income or expense as an extraordinary item, in the statement of profit or loss or in the notes."
+      },
+      "amountImpact": {
+        "zh-TW": "改用 IFRS 時，這類利益併入營業外收入或其他利益，稅前淨利不變，但經常利益這一層消失。",
+        "en": "Under IFRS such gains are included in non-operating or other income. Profit before tax is unchanged, but the ordinary profit subtotal disappears."
+      }
+    },
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T02", "T06"]
+  },
+  {
+    "id": "cost_of_goods_sold",
+    "order": 330,
+    "element": "expense",
+    "section": "cost_of_sales",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R15",
+    "labels": {
+      "teacher": {
+        "zh-TW": "營業成本",
+        "en": "Cost of sales"
+      },
+      "currentTw": null,
+      "ifrsEn": "Cost of sales",
+      "aliases": {
+        "zh-TW": ["銷貨成本"],
+        "en": ["Cost of goods sold"]
+      }
+    },
+    "termRef": "tm_g5c2m8tw",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T06"]
+  },
+  {
+    "id": "directors_remuneration",
+    "order": 340,
+    "element": "expense",
+    "section": "sga_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R18",
+    "labels": {
+      "teacher": {
+        "zh-TW": "董監事酬勞",
+        "en": "Remuneration of directors and supervisors"
+      },
+      "currentTw": "董事酬勞",
+      "ifrsEn": "Remuneration of directors and supervisors",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Directors' remuneration"]
+      }
+    },
+    "termRef": "tm_q5srzxb2",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "outsourcing_expense",
+    "order": 350,
+    "element": "expense",
+    "section": "sga_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R19",
+    "labels": {
+      "teacher": {
+        "zh-TW": "外包費用",
+        "en": "Outsourcing expenses"
+      },
+      "currentTw": null,
+      "ifrsEn": "Outsourcing expenses",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Outsourcing expense"]
+      }
+    },
+    "termRef": "tm_r3nvm8jy",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "packing_freight_expense",
+    "order": 360,
+    "element": "expense",
+    "section": "sga_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R20",
+    "labels": {
+      "teacher": {
+        "zh-TW": "包裝運送費",
+        "en": "Packing and delivery expenses"
+      },
+      "currentTw": "運費",
+      "ifrsEn": "Packing and delivery expenses",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Packing and freight-out expense", "Freight-out"]
+      }
+    },
+    "termRef": "tm_dxr5anv4",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "office_supplies_expense",
+    "order": 370,
+    "element": "expense",
+    "section": "sga_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R21",
+    "labels": {
+      "teacher": {
+        "zh-TW": "事務用品費",
+        "en": "Office supplies expense"
+      },
+      "currentTw": "文具用品",
+      "ifrsEn": "Office supplies expense",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_24scevxv",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "depreciation_expense",
+    "order": 380,
+    "element": "expense",
+    "section": "sga_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R22",
+    "labels": {
+      "teacher": {
+        "zh-TW": "折舊費用",
+        "en": "Depreciation expense"
+      },
+      "currentTw": null,
+      "ifrsEn": "Depreciation expense",
+      "aliases": {
+        "zh-TW": ["折舊", "攤提折舊"],
+        "en": ["Depreciation"]
+      }
+    },
+    "termRef": "tm_d4p7x2mv",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "noncash_addback",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T05"]
+  },
+  {
+    "id": "organisation_costs_expense",
+    "order": 390,
+    "element": "expense",
+    "section": "sga_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "設立費（費用化）",
+        "en": "Start-up costs (expensed)"
+      },
+      "currentTw": null,
+      "ifrsEn": "Start-up costs (expensed)",
+      "aliases": {
+        "zh-TW": ["開辦費用"],
+        "en": ["Expenditure on start-up activities", "Organisation costs expense"]
+      }
+    },
+    "termRef": "tm_hz08w4k5",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T04"]
+  },
+  {
+    "id": "research_development_expense",
+    "order": 400,
+    "element": "expense",
+    "section": "sga_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "研究發展費用",
+        "en": "Research and development expenses"
+      },
+      "currentTw": null,
+      "ifrsEn": "Research and development expenses",
+      "aliases": {
+        "zh-TW": ["研發費用"],
+        "en": ["R&D expenses"]
+      }
+    },
+    "termRef": "tm_avgpa43e",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "marketing_expense",
+    "order": 410,
+    "element": "expense",
+    "section": "sga_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": false,
+    "teacherCell": null,
+    "labels": {
+      "teacher": {
+        "zh-TW": "行銷費用",
+        "en": "Marketing expenses"
+      },
+      "currentTw": null,
+      "ifrsEn": "Marketing expenses",
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_k1tghpyd",
+    "flags": ["extension"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": []
+  },
+  {
+    "id": "interest_expense",
+    "order": 420,
+    "element": "expense",
+    "section": "non_operating_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R27",
+    "labels": {
+      "teacher": {
+        "zh-TW": "支付利息",
+        "en": "Finance costs"
+      },
+      "currentTw": "利息費用",
+      "ifrsEn": "Finance costs",
+      "aliases": {
+        "zh-TW": ["財務成本"],
+        "en": ["Interest expense"]
+      }
+    },
+    "termRef": "tm_k6t2e9wr",
+    "flags": ["japanese"],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "noncash_addback",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T11"]
+  },
+  {
+    "id": "amortisation_deferred_assets",
+    "order": 430,
+    "element": "expense",
+    "section": "non_operating_expense",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R28",
+    "labels": {
+      "teacher": {
+        "zh-TW": "攤銷遞延資產",
+        "en": "Amortisation of deferred assets"
+      },
+      "currentTw": null,
+      "ifrsEn": null,
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_a2m7z4tf",
+    "flags": ["not_ifrs_line", "ifrs_treatment_differs"],
+    "ifrsTreatment": {
+      "note": {
+        "zh-TW": "IFRS 下設立費在發生時就已費用化，沒有可供攤銷的遞延資產，所以不會有這一項費用。",
+        "en": "Under IFRS start-up costs are expensed when incurred, so there is no deferred asset to amortise and this expense does not arise."
+      },
+      "amountImpact": {
+        "zh-TW": "改用 IFRS 時，取得之後各期的營業外支出減少、稅前淨利增加；間接法也不再有這筆加回。",
+        "en": "Under IFRS non-operating expenses are lower and profit before tax is higher in the periods after the payment, and the indirect method no longer adds this amount back."
+      }
+    },
+    "cashFlow": {
+      "indirect": "noncash_addback",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T04", "T05", "T12"]
+  },
+  {
+    "id": "extraordinary_losses",
+    "order": 440,
+    "element": "expense",
+    "section": "extraordinary_loss",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R32",
+    "labels": {
+      "teacher": {
+        "zh-TW": "非常損失",
+        "en": "Extraordinary losses"
+      },
+      "currentTw": null,
+      "ifrsEn": null,
+      "aliases": {
+        "zh-TW": [],
+        "en": []
+      }
+    },
+    "termRef": "tm_jbt23kpz",
+    "flags": ["not_ifrs_line", "ifrs_treatment_differs", "unused"],
+    "ifrsTreatment": {
+      "note": {
+        "zh-TW": "IAS 1.87 禁止在損益表或附註中把任何收益或費損項目列為非常項目。",
+        "en": "IAS 1.87 prohibits presenting any item of income or expense as an extraordinary item, in the statement of profit or loss or in the notes."
+      },
+      "amountImpact": {
+        "zh-TW": "改用 IFRS 時，這類損失併入營業外支出或其他損失，稅前淨利不變，但經常利益這一層消失。",
+        "en": "Under IFRS such losses are included in non-operating or other expenses. Profit before tax is unchanged, but the ordinary profit subtotal disappears."
+      }
+    },
+    "cashFlow": {
+      "indirect": "profit_or_loss",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T02"]
+  },
+  {
+    "id": "income_tax_expense",
+    "order": 450,
+    "element": "expense",
+    "section": "income_tax",
+    "normalSide": "debit",
+    "current": null,
+    "contraOf": null,
+    "allowNegative": true,
+    "enabledByDefault": true,
+    "teacherCell": "R34",
+    "labels": {
+      "teacher": {
+        "zh-TW": "所得稅費用",
+        "en": "Income tax expense"
+      },
+      "currentTw": null,
+      "ifrsEn": "Income tax expense",
+      "aliases": {
+        "zh-TW": [],
+        "en": ["Tax expense"]
+      }
+    },
+    "termRef": "tm_3qfqnrmm",
+    "flags": [],
+    "ifrsTreatment": null,
+    "cashFlow": {
+      "indirect": "none",
+      "defaultActivity": "operating"
+    },
+    "pendingRefs": ["T10"]
+  }
+]
