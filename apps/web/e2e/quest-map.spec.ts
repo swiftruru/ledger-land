@@ -27,7 +27,8 @@ test.describe('闖關地圖', () => {
     await openMap(page);
     const current = page.locator('[aria-current="step"]');
     await expect(current).toHaveCount(1);
-    await expect(current).toHaveAttribute('aria-label', /第 1 章第 3 關 股東權益.*建議下一關/);
+    // 關卡名稱來自各章快照，CI 的 Firefox 曾超過預設的 5 秒才載到
+    await expect(current).toHaveAttribute('aria-label', /第 1 章第 3 關 股東權益.*建議下一關/, { timeout: 15_000 });
     await expect.poll(() => inViewport(page, '[aria-current="step"]')).toBe(true);
     await expect(page.locator('.ll-node__btn').first()).toHaveAttribute('aria-label', /第 1 章第 1 關 認識資產，3 顆星中的 3 顆/);
     await expect(page.getByTestId('map-marker')).toHaveCSS('visibility', 'visible');
