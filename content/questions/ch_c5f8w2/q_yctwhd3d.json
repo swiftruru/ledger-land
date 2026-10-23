@@ -1,0 +1,73 @@
+{
+  "id": "q_yctwhd3d",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_y3ykhc",
+  "difficulty": 1,
+  "tags": [
+    "equation",
+    "share_capital"
+  ],
+  "termRefs": [
+    "tm_c4sh8k2p",
+    "tm_5e3py55a",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 300000,
+        "share_capital": 300000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.issue_shares_cash",
+        "params": {
+          "amount": 200000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_share_capital",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_total_assets",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "小山咖啡想多買一台磨豆機，小晴決定再投入 {{money:e1.amount}} 當股本，錢已經存進店的戶頭。這筆交易之後，下面三個數字各會怎麼變？",
+    "en": "Hillside Coffee wants another grinder, so Ching puts in a further {{money:e1.amount}} as share capital, and the money is now in the shop's account. After this transaction, how does each of the three figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金增加 {{money:expected.t1.delta}}，股本也增加 {{money:expected.t2.delta}}：左邊的資產和右邊的股東權益一起變大，資產總計增加，式子仍然平衡。",
+    "en": "Cash rises by {{money:expected.t1.delta}} and share capital rises by {{money:expected.t2.delta}}: assets on one side and equity on the other grow together, total assets increase, and the equation still balances."
+  }
+}

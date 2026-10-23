@@ -1,0 +1,65 @@
+{
+  "id": "q_4dc31y14",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_bwx8x2",
+  "difficulty": 1,
+  "tags": [
+    "pick_statement",
+    "performance"
+  ],
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_67e7f0mn"
+  ],
+  "scored": true,
+  "type": "pick_statement",
+  "prompt": {
+    "zh-TW": "林姊想比較晴川花坊「今年上半年」和「去年上半年」哪一段做得比較好。該看哪一張報表？",
+    "en": "Lin wants to compare how Clearwater Florist did in the first half of this year against the first half of last year. Which statement should she look at?"
+  },
+  "options": [
+    {
+      "id": "o_4t8s",
+      "text": {
+        "zh-TW": "損益表",
+        "en": "Income statement"
+      },
+      "feedback": {
+        "zh-TW": "答對了。損益表就是一段期間的成績單，兩段期間各拿一張來比最直接。",
+        "en": "Correct. The income statement is the report card for a period; comparing one for each half-year is the most direct way."
+      }
+    },
+    {
+      "id": "o_m08k",
+      "text": {
+        "zh-TW": "資產負債表",
+        "en": "Balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "資產負債表是某一天的快照，拿兩張來比只看得出餘額的差異，看不出哪一段「做得」比較好。",
+        "en": "The balance sheet is a snapshot of one day; comparing two only shows differences in balances, not which period was run better."
+      },
+      "misconceptionId": "mc_3mj1"
+    },
+    {
+      "id": "o_55ck",
+      "text": {
+        "zh-TW": "現金流量表",
+        "en": "Statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "現金流量表能比現金的進出，但現金多未必是做得好，可能只是借了錢。",
+        "en": "The statement of cash flows can compare cash movements, but more cash does not mean a better performance; it may simply have been borrowed."
+      }
+    }
+  ],
+  "correctOptionId": "o_4t8s",
+  "explanation": {
+    "zh-TW": "「哪一段期間做得比較好」是期間的問題，看{{option:o_4t8s}}。{{option:o_m08k}}只是時點快照；{{option:o_55ck}}的現金可能受借款與買設備影響，不等於經營成績。",
+    "en": "\"Which period was better\" is a question about a period, so look at {{option:o_4t8s}}. {{option:o_m08k}} is only a snapshot, and the cash on {{option:o_55ck}} can be swayed by loans and equipment purchases, so it is not a measure of performance."
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "q_02539p7z",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_bwx8x2",
+  "difficulty": 3,
+  "tags": [
+    "judgment",
+    "pick_statement"
+  ],
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_67e7f0mn"
+  ],
+  "scored": false,
+  "type": "judgment",
+  "prompt": {
+    "zh-TW": "林姊的朋友阿婷想加盟晴川花坊，在隔壁鎮開第二家店。阿婷說她只想先看一張報表，再決定要不要認真談。你是林姊，會先給哪一張？三個選擇都說得通，重點是你想讓阿婷先看到什麼。",
+    "en": "Lin's friend Ting wants to open a second Clearwater Florist as a franchise in the next town. Ting says she only wants to look at one statement first before deciding whether to talk seriously. If you were Lin, which would you show first? All three can make sense; what matters is what you want Ting to see first."
+  },
+  "options": [
+    {
+      "id": "o_9m6s",
+      "text": {
+        "zh-TW": "先給損益表，讓她看到這套做法賣花真的賺得到錢",
+        "en": "Show the income statement, so she sees that this way of selling flowers really earns money"
+      },
+      "upside": {
+        "zh-TW": "加盟最想知道的是「照著做會不會賺」，損益表的毛利和營業利益正好回答這件事。",
+        "en": "What a franchisee most wants to know is whether copying the model makes money, and gross profit and operating profit answer exactly that."
+      },
+      "downside": {
+        "zh-TW": "看不出開一家店要壓多少錢在存貨與設備上，也看不出利益有多少還卡在應收帳款。",
+        "en": "It does not show how much money a shop ties up in inventories and equipment, or how much of the profit is still stuck in receivables."
+      }
+    },
+    {
+      "id": "o_ff1t",
+      "text": {
+        "zh-TW": "先給資產負債表，讓她知道開一家店要投入多少、欠不欠錢",
+        "en": "Show the balance sheet, so she knows how much a shop takes to set up and whether it carries debt"
+      },
+      "upside": {
+        "zh-TW": "一眼看出店裡放了多少資產、靠借款還是靠股東出的錢撐起來；阿婷可以估算自己要準備多少資金。",
+        "en": "Shows at a glance how many assets a shop holds and whether borrowing or the owners' money supports them, so Ting can estimate how much capital she needs."
+      },
+      "downside": {
+        "zh-TW": "它是某一天的快照，看不出這家店平常賺不賺錢，也看不出每個月現金週轉得過不過來。",
+        "en": "It is a snapshot of one day and says nothing about whether the shop normally earns money or whether cash turns over comfortably each month."
+      }
+    },
+    {
+      "id": "o_g22v",
+      "text": {
+        "zh-TW": "先給現金流量表，讓她知道做生意本身帶不帶得進現金",
+        "en": "Show the statement of cash flows, so she knows whether the business itself brings in cash"
+      },
+      "upside": {
+        "zh-TW": "新店最怕的是帳上有賺、戶頭沒錢；營業活動的現金流量為正，表示這門生意養得活自己。",
+        "en": "A new shop's biggest fear is profit on paper and nothing in the bank; positive operating cash flow shows the business can feed itself."
+      },
+      "downside": {
+        "zh-TW": "單看現金進出，看不出利益的結構，也看不出店裡已經背了多少負債。",
+        "en": "Cash movements alone do not show how profit is made, or how much debt the shop already carries."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "阿婷最後一定三張都會看，問題只在「先看到什麼最有幫助」。能不能賺、要投入多少、養不養得活自己，三者各是加盟者的一種擔心。如果花坊的強項是毛利高，就先給損益表；如果強項是不靠借款、投入不大，就先給資產負債表；如果強項是現金週轉順，就先給現金流量表。選報表的原則永遠一樣：先想對方要回答的問題是什麼。",
+    "en": "Ting will read all three in the end; the only question is which helps most first. Whether it earns, how much it takes to set up and whether it feeds itself are three different worries a franchisee has. If the florist's strength is a high gross margin, lead with the income statement; if it is low debt and a modest outlay, the balance sheet; if it is smooth cash turnover, the statement of cash flows. The rule for choosing a statement never changes: first ask what question the reader needs answered."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

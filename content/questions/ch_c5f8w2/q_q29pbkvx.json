@@ -1,0 +1,69 @@
+{
+  "id": "q_q29pbkvx",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_39p0w4",
+  "difficulty": 2,
+  "tags": [
+    "reverse_inference",
+    "cash"
+  ],
+  "termRefs": [
+    "tm_c4sh8k2p",
+    "tm_s5b8r3hd",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "cashBefore": 180000,
+    "cashAfter": 480000
+  },
+  "prompt": {
+    "zh-TW": "小山咖啡上個月底的現金是 {{money:vars.cashBefore}}，這個月底變成 {{money:vars.cashAfter}}，但這個月的本期淨利幾乎是零。最可能發生了哪一類交易？",
+    "en": "Hillside Coffee had {{money:vars.cashBefore}} in cash at the end of last month and {{money:vars.cashAfter}} at the end of this month, yet this month's profit was close to zero. What kind of transaction most likely happened?"
+  },
+  "options": [
+    {
+      "id": "o_4qhs",
+      "text": {
+        "zh-TW": "店借了錢或股東增資，所以現金變多但沒有賺到",
+        "en": "The shop borrowed money or the owner put in more capital, so cash rose without any profit"
+      },
+      "feedback": {
+        "zh-TW": "答對了。借款與增資都會讓現金增加，卻不會出現在損益表上。",
+        "en": "Correct. Borrowing and new capital both raise cash without appearing on the income statement."
+      }
+    },
+    {
+      "id": "o_3605",
+      "text": {
+        "zh-TW": "店這個月大賺一筆",
+        "en": "The shop made a large profit this month"
+      },
+      "feedback": {
+        "zh-TW": "現金變多確實常常是賺錢的結果，這個直覺不壞。不過題目說本期淨利幾乎是零，所以這筆現金不是賺來的。",
+        "en": "Cash often rises because of profit, so that instinct is reasonable. But the question says profit was close to zero, so this cash was not earned."
+      },
+      "misconceptionId": "mc_20c1"
+    },
+    {
+      "id": "o_envn",
+      "text": {
+        "zh-TW": "店用現金買了一台新設備",
+        "en": "The shop bought new equipment with cash"
+      },
+      "feedback": {
+        "zh-TW": "買設備是付出現金，會讓現金變少，方向剛好相反。",
+        "en": "Buying equipment pays cash out, so cash would fall, which is the opposite direction."
+      }
+    }
+  ],
+  "correctOptionId": "o_4qhs",
+  "explanation": {
+    "zh-TW": "現金變多卻沒有利益，表示錢不是賺來的，而是借來的或股東出的，所以是{{option:o_4qhs}}。{{option:o_3605}}把現金和利益畫上等號；{{option:o_envn}}的方向相反。學會從數字倒推，就能用報表看出公司做過什麼。",
+    "en": "Cash rising without profit means the money was not earned; it was borrowed or contributed, so {{option:o_4qhs}} is right. {{option:o_3605}} equates cash with profit, and {{option:o_envn}} points the wrong way. Reasoning backwards from the figures is how you read what a company has done."
+  }
+}

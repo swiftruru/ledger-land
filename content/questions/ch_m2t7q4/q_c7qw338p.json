@@ -1,0 +1,69 @@
+{
+  "id": "q_c7qw338p",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_nqw4e9",
+  "difficulty": 2,
+  "tags": [
+    "accrual",
+    "credit_sale"
+  ],
+  "termRefs": [
+    "tm_05t9wphy",
+    "tm_v3n8q2ye",
+    "tm_r7x2c9fa"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "order": 48000
+  },
+  "prompt": {
+    "zh-TW": "晴川花坊替一場婚禮布置會場，價值 {{money:vars.order}}，新人說下個月才付款。花坊這個月的損益表上，這筆生意怎麼呈現？",
+    "en": "Clearwater Florist decorates a wedding venue for {{money:vars.order}}, and the couple will pay next month. How does this job appear on the florist's income statement for this month?"
+  },
+  "options": [
+    {
+      "id": "o_ee8q",
+      "text": {
+        "zh-TW": "營業收入這個月就增加 {{money:vars.order}}，因為服務已經完成",
+        "en": "Revenue rises by {{money:vars.order}} this month, because the service has been delivered"
+      },
+      "feedback": {
+        "zh-TW": "答對了。花坊已經把該做的做完，收入就算賺到了，什麼時候收錢是另一件事。",
+        "en": "Nice work. The florist has done what it promised, so the revenue is earned; when the cash arrives is a separate matter."
+      }
+    },
+    {
+      "id": "o_s17c",
+      "text": {
+        "zh-TW": "這個月沒有收入，要等收到錢那個月才算",
+        "en": "No revenue this month; it counts in the month the cash arrives"
+      },
+      "feedback": {
+        "zh-TW": "你把「收到錢」當成認列的時點，這是現金的想法。損益表用權責發生制：服務完成的那個月就要認列收入。",
+        "en": "You used the arrival of cash as the trigger, which is the cash way of thinking. The income statement uses the accrual basis: revenue is recognised in the month the service is completed."
+      },
+      "misconceptionId": "mc_pvbc"
+    },
+    {
+      "id": "o_f2xq",
+      "text": {
+        "zh-TW": "這筆生意在收到錢之前不會影響任何報表",
+        "en": "The job does not affect any statement until the cash is received"
+      },
+      "feedback": {
+        "zh-TW": "其實已經影響兩張表了：損益表的收入增加，資產負債表的應收帳款也增加。",
+        "en": "It already affects two statements: revenue on the income statement rises, and so do trade receivables on the balance sheet."
+      },
+      "misconceptionId": "mc_sbmt"
+    }
+  ],
+  "correctOptionId": "o_ee8q",
+  "explanation": {
+    "zh-TW": "權責發生制的規則是：收入在賺到的時候認列。會場布置完成，收入就賺到了，所以{{option:o_ee8q}}正確。還沒收到的錢，暫時放在資產負債表的應收帳款。",
+    "en": "Under the accrual basis, revenue is recognised when it is earned. The venue is decorated, so the revenue is earned and {{option:o_ee8q}} is right. The money not yet received sits in trade receivables on the balance sheet for now."
+  }
+}

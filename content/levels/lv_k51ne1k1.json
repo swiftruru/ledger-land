@@ -1,0 +1,25 @@
+{
+  "id": "lv_k51ne1k1",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "order": 3,
+  "title": {
+    "zh-TW": "綜合挑戰：從數字倒推",
+    "en": "Challenge: reading backwards from the figures"
+  },
+  "objectiveIds": [
+    "obj_y3ykhc",
+    "obj_39p0w4",
+    "obj_nd6s2j"
+  ],
+  "questionIds": [
+    "q_zw7rn2a0",
+    "q_q29pbkvx",
+    "q_53rg357p",
+    "q_8dscgkmq",
+    "q_1krr530f",
+    "q_ytrpj345"
+  ]
+}

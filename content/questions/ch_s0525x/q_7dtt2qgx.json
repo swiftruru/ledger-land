@@ -1,0 +1,113 @@
+{
+  "id": "q_7dtt2qgx",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_hz3wcr",
+  "difficulty": 2,
+  "tags": [
+    "cost_of_sales",
+    "pick_line",
+    "linkage"
+  ],
+  "termRefs": [
+    "tm_q4k9v2nd",
+    "tm_n7v3k8pq",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "pick_line",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 200000,
+        "inventory": 120000,
+        "share_capital": 320000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_cash",
+        "params": {
+          "price": 190000
+        }
+      },
+      {
+        "id": "e2",
+        "template": "tpl.purchase_inventory_cash",
+        "params": {
+          "amount": 150000
+        }
+      },
+      {
+        "id": "e3",
+        "template": "tpl.pay_packing_freight_cash",
+        "params": {
+          "amount": 15000
+        }
+      },
+      {
+        "id": "e4",
+        "template": "tpl.pay_outsourcing_cash",
+        "params": {
+          "amount": 20000
+        }
+      },
+      {
+        "id": "e5",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 100000
+        }
+      },
+      {
+        "id": "e6",
+        "template": "tpl.repay_all_short_term_loans_with_interest",
+        "params": {
+          "interest": 3000
+        }
+      },
+      {
+        "id": "e7",
+        "template": "tpl.pay_income_tax_cash",
+        "params": {
+          "amount": 6000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": []
+  },
+  "statement": "is",
+  "correctLines": [
+    "is_closing_inventory"
+  ],
+  "feedbackByLine": {
+    "is_purchases": {
+      "zh-TW": "本期進貨是這期買進的貨，其中有些可能已經賣掉了。",
+      "en": "Purchases are the inventories bought this period, some of which may already have been sold."
+    },
+    "is_opening_inventory": {
+      "zh-TW": "期初存貨是期初那一天的存貨，對應的是上一期的資產負債表。",
+      "en": "Opening inventories are what was held at the start of the period and match last period's balance sheet."
+    }
+  },
+  "prompt": {
+    "zh-TW": "日暮文具社的損益表裡，有一列的金額和資產負債表上的「存貨」完全相同。請在損益表上點出那一列。",
+    "en": "One line on Sunset Stationery's income statement carries exactly the same amount as \"inventories\" on the balance sheet. Tap that line on the income statement."
+  },
+  "explanation": {
+    "zh-TW": "期末存貨是這一期結束時還沒賣出的貨。在損益表上它被減掉（因為不是這期的成本），在資產負債表上它是一項資產，兩邊是同一個數字。",
+    "en": "Closing inventories are the goods still unsold at the end of the period. On the income statement they are deducted (because they are not this period's cost); on the balance sheet they are an asset. Both show the same figure."
+  },
+  "display": {
+    "statements": [
+      "is",
+      "bs"
+    ]
+  }
+}

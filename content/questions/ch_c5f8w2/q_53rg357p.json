@@ -1,0 +1,37 @@
+{
+  "id": "q_53rg357p",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_39p0w4",
+  "difficulty": 2,
+  "tags": [
+    "reverse_inference"
+  ],
+  "termRefs": [
+    "tm_sf72dfsv",
+    "tm_n7v3k8pq",
+    "tm_a3p9y6kc"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "小山咖啡這個月的存貨和應付帳款增加了同樣的金額，現金沒變。光看這些數字，就能合理推測店這個月賒購了一批咖啡豆。",
+    "en": "This month Hillside Coffee's inventory and trade payables both rose by the same amount, while cash did not change. From these figures alone it is reasonable to infer that the shop bought beans on credit."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。存貨增加代表進了貨，應付帳款增加代表錢還沒付，現金沒動：這組變化正是賒購的樣子。",
+    "en": "Correct. Higher inventory means goods came in, higher payables mean they were not paid for, and cash did not move: that pattern is exactly a credit purchase."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你可能覺得報表看不出背後的交易。其實每一類交易在報表上都有固定的「腳印」：存貨與應付帳款一起增加、現金不變，就是賒購留下的腳印。",
+    "en": "You may think the statements cannot reveal the transaction behind them. In fact each kind of transaction leaves a fixed footprint: inventory and payables rising together with cash unchanged is the footprint of a credit purchase."
+  },
+  "misconceptionId": "mc_n6zm",
+  "explanation": {
+    "zh-TW": "從報表倒推交易，就是辨認這些腳印。賒購：存貨增加、應付帳款增加；現金進貨：存貨增加、現金減少；付清貨款：應付帳款減少、現金減少。",
+    "en": "Inferring transactions from the statements means recognising these footprints. Credit purchase: inventory up, payables up. Cash purchase: inventory up, cash down. Paying the supplier: payables down, cash down."
+  }
+}

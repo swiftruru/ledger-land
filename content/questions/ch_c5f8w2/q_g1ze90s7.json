@@ -1,0 +1,65 @@
+{
+  "id": "q_g1ze90s7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_erqmw9",
+  "difficulty": 1,
+  "tags": [
+    "elements",
+    "assets"
+  ],
+  "termRefs": [
+    "tm_r4w8n2qe",
+    "tm_n7v3k8pq",
+    "tm_gt8g4afe"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "小晴開了一家「小山咖啡」。開店第一個月底，店裡有一台義式咖啡機、一批還沒用完的咖啡豆，銀行戶頭裡也還有一些錢。這三樣東西在帳上都屬於哪一類？",
+    "en": "Ching has opened Hillside Coffee. At the end of the first month the shop has an espresso machine, a stock of unused coffee beans and some money in the bank. Which class do all three belong to in the books?"
+  },
+  "options": [
+    {
+      "id": "o_80gh",
+      "text": {
+        "zh-TW": "資產：都是店裡擁有、之後能帶來好處的資源",
+        "en": "Assets: all are resources the shop owns and expects to benefit from"
+      },
+      "feedback": {
+        "zh-TW": "答對了。能賣咖啡的機器、能做成飲料的豆子、能付帳的現金，都是資產。",
+        "en": "That's right. A machine that makes coffee, beans that become drinks and cash that pays the bills are all assets."
+      }
+    },
+    {
+      "id": "o_60qb",
+      "text": {
+        "zh-TW": "只有銀行裡的錢是資產，機器和豆子不是",
+        "en": "Only the money in the bank is an asset; the machine and beans are not"
+      },
+      "feedback": {
+        "zh-TW": "你把現金放對地方了。不過資產不只現金：咖啡機與咖啡豆也是店裡擁有、之後會帶來好處的東西，一樣是資產。",
+        "en": "You placed the cash correctly. Assets are more than cash, though: the machine and the beans are also things the shop owns that will bring future benefit, so they are assets too."
+      },
+      "misconceptionId": "mc_fjnf"
+    },
+    {
+      "id": "o_xx5r",
+      "text": {
+        "zh-TW": "負債：買這些東西都花了錢",
+        "en": "Liabilities: buying these things cost money"
+      },
+      "feedback": {
+        "zh-TW": "花了錢買東西，錢變成了另一種資產，不是欠別人錢。負債是公司還沒付、將來要付給別人的款項。",
+        "en": "Spending cash on something turns it into a different asset; it does not create a debt. Liabilities are amounts still owed to others."
+      }
+    }
+  ],
+  "correctOptionId": "o_80gh",
+  "explanation": {
+    "zh-TW": "判斷資產的方法是問：這是店裡擁有、之後能帶來好處的東西嗎？咖啡機、咖啡豆、現金都是，所以答案是{{option:o_80gh}}。{{option:o_60qb}}把資產想得太窄；{{option:o_xx5r}}把「花過錢」和「欠別人錢」混在一起了。",
+    "en": "To spot an asset, ask: does the shop own this, and will it bring future benefit? The machine, the beans and the cash all qualify, so the answer is {{option:o_80gh}}. {{option:o_60qb}} takes too narrow a view of assets, and {{option:o_xx5r}} confuses having spent money with owing money."
+  }
+}

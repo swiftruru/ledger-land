@@ -1,0 +1,68 @@
+{
+  "id": "q_458chw78",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_1kbk22",
+  "difficulty": 3,
+  "tags": [
+    "linkage"
+  ],
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_67e7f0mn"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "阿凱說：「三張報表只是三張各自獨立的表格。」你想用一個例子說服他三張表其實互相連動。下列哪一個例子說得通？",
+    "en": "Kai says the three statements are just three separate tables. You want one example that shows they are connected. Which of these examples makes the point?"
+  },
+  "options": [
+    {
+      "id": "o_53v0",
+      "text": {
+        "zh-TW": "現金流量表最後的期末現金，等於資產負債表上的現金",
+        "en": "Closing cash at the bottom of the statement of cash flows equals cash on the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "說得通。這是現金流量表和資產負債表的連接點。",
+        "en": "That works. It is the link between the statement of cash flows and the balance sheet."
+      }
+    },
+    {
+      "id": "o_kc37",
+      "text": {
+        "zh-TW": "損益表的本期淨利會流進未分配盈餘，留在資產負債表的股東權益裡",
+        "en": "Profit for the period on the income statement flows into unappropriated retained earnings and stays in equity on the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "說得通。這是損益表和資產負債表的連接點。",
+        "en": "That works too. It is the link between the income statement and the balance sheet."
+      }
+    },
+    {
+      "id": "o_p9c3",
+      "text": {
+        "zh-TW": "損益表的營業收入等於資產負債表的資產總計",
+        "en": "Revenue on the income statement equals total assets on the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "你在找兩張表之間的連線，方向是對的。不過這兩個數字沒有這種關係：收入是一段期間賺到的，資產總計是某一天擁有的，通常差很多。",
+        "en": "You are looking for a link between two statements, and that is the right idea. But no such relationship exists: revenue is what was earned over a period, total assets is what is owned on a day, and the two usually differ a lot."
+      },
+      "misconceptionId": "mc_naxf"
+    }
+  ],
+  "correctOptionIds": [
+    "o_53v0",
+    "o_kc37"
+  ],
+  "scoringMode": "any_correct",
+  "explanation": {
+    "zh-TW": "三張表之間有兩條最常用的連線：{{option:o_53v0}}把現金流量表接到資產負債表，{{option:o_kc37}}把損益表接到資產負債表。選哪一條都能說服阿凱；{{option:o_p9c3}}則不是真的連線。",
+    "en": "Two links between the statements are used most often: {{option:o_53v0}} joins the statement of cash flows to the balance sheet, and {{option:o_kc37}} joins the income statement to the balance sheet. Either would convince Kai; {{option:o_p9c3}} is not a real link."
+  }
+}

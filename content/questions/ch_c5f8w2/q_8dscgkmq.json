@@ -1,0 +1,80 @@
+{
+  "id": "q_8dscgkmq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_y3ykhc",
+  "difficulty": 3,
+  "tags": [
+    "equation",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_s5b8r3hd",
+    "tm_y37ymj9w",
+    "tm_ec80jjev"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 250000,
+        "inventory": 90000,
+        "share_capital": 340000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 180000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_short_term_borrowings",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_total_equity",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_total_liabilities_equity",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "為了撐過淡季，小山咖啡向銀行借了 {{money:e1.amount}}，一年內要還。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "To get through the quiet season, Hillside Coffee borrows {{money:e1.amount}} from the bank, repayable within a year. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金增加 {{money:expected.t1.delta}}，短期借款也增加 {{money:expected.t2.delta}}，所以負債及股東權益總計跟著增加；股東權益總額完全不變，因為借來的錢不是股東的錢。",
+    "en": "Cash rises by {{money:expected.t1.delta}} and short-term borrowings rise by {{money:expected.t2.delta}}, so total liabilities and equity rise with them. Total equity does not change at all, because borrowed money is not the owner's money."
+  }
+}

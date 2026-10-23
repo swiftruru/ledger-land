@@ -1,0 +1,84 @@
+{
+  "id": "q_khpt2x4j",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_hz3wcr",
+  "difficulty": 1,
+  "tags": [
+    "cost_of_sales",
+    "purchase"
+  ],
+  "termRefs": [
+    "tm_p7h3c5xq",
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw",
+    "tm_g8p4w1rz"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 500000,
+        "share_capital": 500000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.purchase_inventory_cash",
+        "params": {
+          "amount": 220000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "is_purchases",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_inventory",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "is_cogs",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_gross_profit",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "日暮文具社用現金 {{money:e1.amount}} 進了一批鋼筆，這個月還沒賣出任何一支。這筆進貨之後，下面四個數字各會怎麼變？",
+    "en": "Sunset Stationery pays {{money:e1.amount}} in cash for a batch of fountain pens and has not sold any of them this month. After this purchase, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "本期進貨這一列增加 {{money:e1.amount}}，但一支都沒賣出，期末存貨也同時增加 {{money:e1.amount}}，兩者相抵，營業成本小計不變，營業毛利也不變。資產負債表上的存貨增加了同樣的金額。進貨不是費用，賣出去的那一刻才變成成本。",
+    "en": "The purchases line rises by {{money:e1.amount}}, but since none were sold, closing inventory rises by {{money:e1.amount}} too; the two cancel out, so the cost of sales subtotal and gross profit do not change. Inventory on the balance sheet rises by the same amount. A purchase is not an expense; it becomes a cost only when the goods are sold."
+  },
+  "hint": {
+    "zh-TW": "賣出之前，鋼筆是費用還是資產？",
+    "en": "Before they are sold, are the pens an expense or an asset?"
+  }
+}

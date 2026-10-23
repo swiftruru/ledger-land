@@ -1,0 +1,188 @@
+{
+  "chapterId": "ch_m2t7q4",
+  "items": [
+    {
+      "id": "obj_jey1mk",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_m2t7q4",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能分辨三張報表各自回答的問題：一段期間賺了多少、某一天擁有多少、現金怎麼進出",
+        "en": "Tell apart the question each statement answers: how much was earned over a period, what is owned on a given day, and how cash moved"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_s6mx",
+          "text": {
+            "zh-TW": "以為三張報表都在描述同一天的狀況",
+            "en": "Thinking that all three statements describe the same day"
+          }
+        },
+        {
+          "id": "mc_hkwj",
+          "text": {
+            "zh-TW": "以為資產負債表會告訴你賺了多少",
+            "en": "Thinking the balance sheet tells you how much was earned"
+          }
+        },
+        {
+          "id": "mc_7hx8",
+          "text": {
+            "zh-TW": "以為損益表的本期淨利就是帳上多出來的現金",
+            "en": "Thinking that profit on the income statement is the extra cash in the account"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "pick_statement",
+        "single_choice",
+        "true_false",
+        "multi_choice"
+      ],
+      "termRefs": [
+        "tm_tkj8x3a7",
+        "tm_sf72dfsv",
+        "tm_67e7f0mn"
+      ]
+    },
+    {
+      "id": "obj_bwx8x2",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_m2t7q4",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能依一個實際情境問的是「一段期間」「某一天」還是「現金」，選出最該看的報表",
+        "en": "Given a real situation, choose the statement to look at depending on whether the question is about a period, a day or cash"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_tvn1",
+          "text": {
+            "zh-TW": "想知道付不付得出錢時去看損益表",
+            "en": "Looking at the income statement to find out whether a bill can be paid"
+          }
+        },
+        {
+          "id": "mc_3mj1",
+          "text": {
+            "zh-TW": "想知道一段期間的表現時去看資產負債表",
+            "en": "Looking at the balance sheet to judge performance over a period"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "pick_statement",
+        "single_choice"
+      ],
+      "termRefs": [
+        "tm_tkj8x3a7",
+        "tm_sf72dfsv",
+        "tm_67e7f0mn"
+      ]
+    },
+    {
+      "id": "obj_nqw4e9",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_m2t7q4",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能說明為什麼「賺到錢」與「收到現金」不一定同時發生，並指出賒銷與收款各動到哪些數字",
+        "en": "Explain why earning money and receiving cash do not always happen together, and say which figures a credit sale and a later collection each change"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_pvbc",
+          "text": {
+            "zh-TW": "以為收入要等收到錢才算",
+            "en": "Thinking that revenue only counts once the cash is received"
+          }
+        },
+        {
+          "id": "mc_2ny7",
+          "text": {
+            "zh-TW": "把收回應收帳款當成一筆新的收入",
+            "en": "Treating the collection of a receivable as new revenue"
+          }
+        },
+        {
+          "id": "mc_sbmt",
+          "text": {
+            "zh-TW": "以為賒銷在收到錢之前對報表沒有任何影響",
+            "en": "Thinking a credit sale has no effect on the statements until cash arrives"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "single_choice",
+        "transaction_effect",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_05t9wphy",
+        "tm_r7x2c9fa",
+        "tm_v3n8q2ye"
+      ]
+    },
+    {
+      "id": "obj_1kbk22",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_m2t7q4",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能認出同一個數字在表與表之間怎麼連動：期末現金、本期淨利與資產負債表的關係",
+        "en": "Recognise how a figure links one statement to another: closing cash, profit for the period and the balance sheet"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_naxf",
+          "text": {
+            "zh-TW": "以為三張報表各自獨立、數字互不相干",
+            "en": "Thinking the three statements are independent and share no figures"
+          }
+        },
+        {
+          "id": "mc_5xbd",
+          "text": {
+            "zh-TW": "以為本期淨利結算後就消失，不會留在資產負債表上",
+            "en": "Thinking profit disappears after the period ends and does not stay on the balance sheet"
+          }
+        },
+        {
+          "id": "mc_ycga",
+          "text": {
+            "zh-TW": "把本期淨利當成資產負債表上同樣金額的現金",
+            "en": "Treating profit for the period as the same amount of cash on the balance sheet"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "pick_line",
+        "single_choice",
+        "multi_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_12k2yq6k",
+        "tm_c4sh8k2p",
+        "tm_n4e8t2jy",
+        "tm_4c6v99nn"
+      ]
+    }
+  ]
+}

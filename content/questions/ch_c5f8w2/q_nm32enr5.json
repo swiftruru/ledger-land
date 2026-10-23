@@ -1,0 +1,55 @@
+{
+  "id": "q_nm32enr5",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_erqmw9",
+  "difficulty": 1,
+  "tags": [
+    "elements",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_r4w8n2qe",
+    "tm_h6p2k9wd",
+    "tm_x3n8v5tc"
+  ],
+  "scored": true,
+  "type": "classify",
+  "prompt": {
+    "zh-TW": "小山咖啡月底整理帳目，下面這些項目各屬於資產、負債還是股東權益？把每張卡片放進正確的格子。",
+    "en": "Hillside Coffee is tidying its books at month end. Is each of these items an asset, a liability or equity? Put each card in the right box."
+  },
+  "dimension": "element",
+  "items": [
+    {
+      "id": "it_ehxd",
+      "account": "cash"
+    },
+    {
+      "id": "it_yqq5",
+      "account": "inventory"
+    },
+    {
+      "id": "it_zwpa",
+      "account": "machinery_equipment"
+    },
+    {
+      "id": "it_dex8",
+      "account": "accounts_payable"
+    },
+    {
+      "id": "it_4bw8",
+      "account": "short_term_borrowings"
+    },
+    {
+      "id": "it_1jje",
+      "account": "share_capital"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "現金、存貨、機器設備是店裡擁有的資源，放資產。應付帳款是還沒付給豆商的貨款，短期借款是欠銀行的錢，都放負債。股本是小晴自己投入的錢，放股東權益。",
+    "en": "Cash, inventory and machinery are resources the shop owns, so they are assets. Trade payables are what is still owed to the bean supplier and short-term borrowings are owed to the bank, so both are liabilities. Share capital is the money Ching put in herself, so it is equity."
+  }
+}

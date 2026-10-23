@@ -1,0 +1,22 @@
+{
+  "id": "lv_4gy4e5h4",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "order": 1,
+  "title": {
+    "zh-TW": "三張表，三個問題",
+    "en": "Three statements, three questions"
+  },
+  "objectiveIds": [
+    "obj_jey1mk"
+  ],
+  "questionIds": [
+    "q_q3bwezxa",
+    "q_e6x32tbk",
+    "q_265y2jqn",
+    "q_n2dyehqx",
+    "q_x6tvx3be"
+  ]
+}

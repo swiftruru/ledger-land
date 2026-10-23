@@ -1,0 +1,23 @@
+{
+  "id": "lv_kfcqkmya",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "order": 2,
+  "title": {
+    "zh-TW": "該看哪一張",
+    "en": "Which statement to read"
+  },
+  "objectiveIds": [
+    "obj_bwx8x2",
+    "obj_nqw4e9"
+  ],
+  "questionIds": [
+    "q_dnx9x4b7",
+    "q_4dc31y14",
+    "q_c7qw338p",
+    "q_tshgq192",
+    "q_1kmz3pjr"
+  ]
+}

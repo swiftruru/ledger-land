@@ -1,0 +1,40 @@
+{
+  "id": "q_m29f3khg",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_erqmw9",
+  "difficulty": 1,
+  "tags": [
+    "elements",
+    "liabilities"
+  ],
+  "termRefs": [
+    "tm_h6p2k9wd",
+    "tm_s5b8r3hd"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "vars": {
+    "loan": 300000
+  },
+  "statement": {
+    "zh-TW": "小山咖啡向銀行借了 {{money:vars.loan}}，存進店裡的戶頭。因為錢已經在戶頭裡，這 {{money:vars.loan}} 算是店自己的錢，屬於股東權益。",
+    "en": "Hillside Coffee borrowed {{money:vars.loan}} from the bank and the money is now in the shop's account. Because the money is in the account, that {{money:vars.loan}} counts as the shop's own money and belongs to equity."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "錢確實進了戶頭，現金是增加了。不過這筆錢是借來的，將來要還給銀行，所以它同時是一筆負債，不是股東權益。",
+    "en": "The money did arrive and cash did increase. But it was borrowed and has to be repaid to the bank, so it is also a liability, not equity."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。借來的錢讓現金增加，但同時多了一筆要還給銀行的負債；股東權益一點都沒變。",
+    "en": "Correct. Borrowed money raises cash, but it also creates a liability to the bank; equity does not change at all."
+  },
+  "misconceptionId": "mc_drhv",
+  "explanation": {
+    "zh-TW": "要分辨是負債還是股東權益，問一句：這筆錢將來要不要還給別人？要還的，就是負債。銀行借款要還，所以是負債；小晴自己投入的資金不用還，才是股東權益。",
+    "en": "To tell a liability from equity, ask one question: does this money have to be paid back to someone? If so, it is a liability. A bank loan must be repaid, so it is a liability; the capital Ching put in herself does not have to be repaid, so that is equity."
+  }
+}

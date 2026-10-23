@@ -1,0 +1,39 @@
+{
+  "id": "tm_tkj8x3a7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "statement",
+  "label": {
+    "zh-TW": "損益表",
+    "en": "Income statement"
+  },
+  "teacherLabel": "損益表",
+  "currentTwLabel": "綜合損益表",
+  "ifrsEnglish": "Statement of profit or loss",
+  "aliases": {
+    "zh-TW": [
+      "綜合損益表"
+    ],
+    "en": [
+      "Statement of profit or loss",
+      "Profit and loss statement"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.10",
+  "note": {
+    "zh-TW": "現行台灣報表稱為綜合損益表，多了其他綜合損益的部分，本課不教。",
+    "en": "Current Taiwanese statements are titled statement of comprehensive income, which adds other comprehensive income; this course does not cover that part."
+  },
+  "definition": {
+    "zh-TW": "一段期間的經營成績單。最上面是這段期間賣出商品或服務的營業收入，往下一層一層減掉商品成本、銷管費用、業外收支與所得稅，每減一次就得到一層利益，最後一層是本期淨利。因為算的是一段期間的累計，標題寫的是起訖日期。",
+    "en": "The scorecard for a period of trading. Revenue from the goods or services sold during the period sits at the top; cost of sales, distribution costs and administrative expenses, non-operating items and income tax are then deducted one layer at a time, each deduction producing a profit level, down to profit for the period at the bottom. Because it accumulates a span of time, its heading shows a start date and an end date."
+  },
+  "related": [
+    "tm_sf72dfsv",
+    "tm_67e7f0mn"
+  ]
+}

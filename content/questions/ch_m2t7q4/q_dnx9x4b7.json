@@ -1,0 +1,65 @@
+{
+  "id": "q_dnx9x4b7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_bwx8x2",
+  "difficulty": 1,
+  "tags": [
+    "pick_statement",
+    "cash"
+  ],
+  "termRefs": [
+    "tm_67e7f0mn",
+    "tm_sf72dfsv",
+    "tm_tkj8x3a7"
+  ],
+  "scored": true,
+  "type": "pick_statement",
+  "prompt": {
+    "zh-TW": "林姊看著晴川花坊上個月的損益表，本期淨利明明是正的，可是銀行戶頭的錢卻比月初少。她想知道是哪一類活動把現金用掉了。該看哪一張報表？",
+    "en": "Lin looks at Clearwater Florist's income statement for last month: profit for the period is clearly positive, yet the bank account holds less than it did at the start of the month. She wants to know which kind of activity used up the cash. Which statement should she look at?"
+  },
+  "options": [
+    {
+      "id": "o_m70j",
+      "text": {
+        "zh-TW": "損益表",
+        "en": "Income statement"
+      },
+      "feedback": {
+        "zh-TW": "你已經從損益表看出有賺錢，這一步是對的。但損益表只回答賺了多少，本來就不管現金去了哪裡；要看另一張表。",
+        "en": "You have already read from the income statement that there was a profit, and that step is right. But the income statement only answers how much was earned; it was never meant to say where the cash went. Look at another statement."
+      },
+      "misconceptionId": "mc_tvn1"
+    },
+    {
+      "id": "o_amsj",
+      "text": {
+        "zh-TW": "資產負債表",
+        "en": "Balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "資產負債表能看到月底剩多少現金，這點沒錯。但它只給一個時點的餘額，看不出這個月現金是被哪一類活動用掉的。",
+        "en": "The balance sheet does show how much cash was left at month end, that much is right. But it gives only a balance at one point and cannot say which kind of activity used the cash during the month."
+      }
+    },
+    {
+      "id": "o_4y6m",
+      "text": {
+        "zh-TW": "現金流量表",
+        "en": "Statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "答對了。現金流量表把一段期間的現金收付分成營業、投資、籌資三類活動，一眼就能看出錢是花在買設備、還借款，還是本業本身就沒有帶進現金。",
+        "en": "That's right. The statement of cash flows sorts a period's receipts and payments into operating, investing and financing activities, so it shows at once whether the money went on equipment, on repaying loans, or whether the business itself simply did not bring cash in."
+      }
+    }
+  ],
+  "correctOptionId": "o_4y6m",
+  "explanation": {
+    "zh-TW": "「有賺錢」是損益表的事，「現金去了哪裡」是{{option:o_4y6m}}的事：它按三類活動列出一段期間的現金進出。{{option:o_amsj}}只給月底一個時點的餘額，{{option:o_m70j}}說的是利益而不是現金。",
+    "en": "\"Did we earn money\" is a question for the income statement; \"where did the cash go\" is the job of {{option:o_4y6m}}, which lists a period's cash movements under three activities. {{option:o_amsj}} gives only a balance at month end, and {{option:o_m70j}} is about profit rather than cash."
+  }
+}

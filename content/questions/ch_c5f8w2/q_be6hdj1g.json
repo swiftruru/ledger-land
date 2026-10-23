@@ -1,0 +1,81 @@
+{
+  "id": "q_be6hdj1g",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_y3ykhc",
+  "difficulty": 2,
+  "tags": [
+    "equation",
+    "transactions"
+  ],
+  "termRefs": [
+    "tm_cfghjxzq",
+    "tm_c4sh8k2p",
+    "tm_a3p9y6kc"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "小晴想在月底前讓小山咖啡的「資產總計」變大一些。下列哪一個做法真的會讓資產總計增加？",
+    "en": "Ching wants Hillside Coffee's total assets to be a little larger by month end. Which of these would actually increase total assets?"
+  },
+  "options": [
+    {
+      "id": "o_f3c9",
+      "text": {
+        "zh-TW": "向銀行借一筆短期借款，存進戶頭",
+        "en": "Take out a short-term bank loan and put it in the account"
+      },
+      "feedback": {
+        "zh-TW": "說得通。現金增加，同時負債增加，資產總計變大。",
+        "en": "This works. Cash rises and so does a liability, so total assets grow."
+      }
+    },
+    {
+      "id": "o_fa6g",
+      "text": {
+        "zh-TW": "向豆商賒購一批咖啡豆，下個月再付款",
+        "en": "Buy a batch of beans on credit and pay the supplier next month"
+      },
+      "feedback": {
+        "zh-TW": "說得通。存貨增加、應付帳款增加，資產總計同樣變大。",
+        "en": "This works too. Inventory rises and trade payables rise, so total assets also grow."
+      }
+    },
+    {
+      "id": "o_92dv",
+      "text": {
+        "zh-TW": "用店裡的現金買一台新的冰箱",
+        "en": "Use cash from the account to buy a new fridge"
+      },
+      "feedback": {
+        "zh-TW": "現金變少、設備變多，只是資產之間互換，資產總計不變。",
+        "en": "Cash goes down and equipment goes up: one asset is swapped for another, and total assets stay the same."
+      },
+      "misconceptionId": "mc_p1hw"
+    },
+    {
+      "id": "o_6rmj",
+      "text": {
+        "zh-TW": "用現金付清欠豆商的貨款",
+        "en": "Pay the supplier what is owed, in cash"
+      },
+      "feedback": {
+        "zh-TW": "付款之後現金減少、應付帳款也減少，資產總計反而變小。",
+        "en": "After paying, cash falls and trade payables fall as well, so total assets actually shrink."
+      },
+      "misconceptionId": "mc_rs0d"
+    }
+  ],
+  "correctOptionIds": [
+    "o_f3c9",
+    "o_fa6g"
+  ],
+  "scoringMode": "any_correct",
+  "explanation": {
+    "zh-TW": "要讓資產總計變大，右邊的負債或股東權益也要一起變大。{{option:o_f3c9}}與{{option:o_fa6g}}都是資產與負債同時增加，所以選哪一個都算對；{{option:o_92dv}}只是資產互換，{{option:o_6rmj}}則讓兩邊一起縮小。",
+    "en": "For total assets to grow, liabilities or equity on the other side must grow too. {{option:o_f3c9}} and {{option:o_fa6g}} both raise an asset and a liability together, so either is correct. {{option:o_92dv}} only swaps one asset for another, and {{option:o_6rmj}} shrinks both sides."
+  }
+}

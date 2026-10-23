@@ -1,0 +1,69 @@
+{
+  "id": "q_t60452hc",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_erqmw9",
+  "difficulty": 2,
+  "tags": [
+    "elements",
+    "equity"
+  ],
+  "termRefs": [
+    "tm_x3n8v5tc",
+    "tm_5e3py55a",
+    "tm_h6p2k9wd"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "capital": 800000
+  },
+  "prompt": {
+    "zh-TW": "小晴開店時從自己的存款拿出 {{money:vars.capital}} 當股本。從店的角度看，這筆錢該怎麼看？",
+    "en": "When she opened the shop, Ching put {{money:vars.capital}} of her own savings in as share capital. From the shop's point of view, how should this money be treated?"
+  },
+  "options": [
+    {
+      "id": "o_fbmr",
+      "text": {
+        "zh-TW": "股東權益：股東投入、不用還的錢",
+        "en": "Equity: money the owner put in that does not have to be repaid"
+      },
+      "feedback": {
+        "zh-TW": "答對了。股東出資是股東權益，店不必像還貸款那樣把它還給小晴。",
+        "en": "That's right. Capital from the owner is equity; the shop does not have to repay it the way it repays a loan."
+      }
+    },
+    {
+      "id": "o_k0gz",
+      "text": {
+        "zh-TW": "負債：店欠小晴這筆錢",
+        "en": "A liability: the shop owes Ching this money"
+      },
+      "feedback": {
+        "zh-TW": "你注意到這筆錢來自小晴，不是店自己賺的，這點沒錯。不過股東出資沒有還款期限，也沒有利息，店不必「還」它，所以放股東權益而不是負債。",
+        "en": "You noticed that the money came from Ching rather than from the shop's own earnings, which is right. But capital has no repayment date and no interest; the shop does not have to pay it back, so it is equity rather than a liability."
+      },
+      "misconceptionId": "mc_8ef5"
+    },
+    {
+      "id": "o_0wsm",
+      "text": {
+        "zh-TW": "營業收入：店收到了一筆錢",
+        "en": "Revenue: the shop received a sum of money"
+      },
+      "feedback": {
+        "zh-TW": "店確實收到錢，但收入是賣咖啡賺來的；股東出資不是做生意賺到的，不能算收入。",
+        "en": "The shop did receive money, but revenue is what it earns by selling coffee. Capital from the owner is not earned from trading, so it is not revenue."
+      },
+      "misconceptionId": "mc_5841"
+    }
+  ],
+  "correctOptionId": "o_fbmr",
+  "explanation": {
+    "zh-TW": "店收到的錢有三種來源：賺來的（收入）、借來的（負債）、股東出的（股東權益）。這筆是小晴出的資金，所以是{{option:o_fbmr}}。{{option:o_k0gz}}忘了股東出資不必償還，{{option:o_0wsm}}則把「收到錢」和「賺到錢」混在一起。",
+    "en": "Money that reaches the shop comes from three sources: earned (revenue), borrowed (liabilities) or contributed by the owner (equity). This sum came from Ching, so it is {{option:o_fbmr}}. {{option:o_k0gz}} forgets that capital need not be repaid, and {{option:o_0wsm}} confuses receiving money with earning it."
+  }
+}

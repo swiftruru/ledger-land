@@ -1,0 +1,23 @@
+{
+  "id": "lv_enjpm9th",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "order": 3,
+  "title": {
+    "zh-TW": "費用與業外收支",
+    "en": "Expenses and non-operating items"
+  },
+  "objectiveIds": [
+    "obj_vqayt8",
+    "obj_vfc2zz"
+  ],
+  "questionIds": [
+    "q_x0kw6x7w",
+    "q_53wgztcw",
+    "q_08s8m454",
+    "q_sc7jphv2",
+    "q_rv5zx8qv"
+  ]
+}

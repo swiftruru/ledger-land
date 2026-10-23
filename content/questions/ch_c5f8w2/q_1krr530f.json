@@ -1,0 +1,65 @@
+{
+  "id": "q_1krr530f",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_nd6s2j",
+  "difficulty": 3,
+  "tags": [
+    "sceptic"
+  ],
+  "termRefs": [
+    "tm_sf72dfsv",
+    "tm_67e7f0mn",
+    "tm_n4e8t2jy"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "會計師把小山咖啡這個月的三張報表交給小晴，損益表上的本期淨利比她預期的高很多。如果你是小晴，最該追問的問題是哪一個？",
+    "en": "The accountant hands Ching this month's three statements for Hillside Coffee, and profit for the period on the income statement is far higher than she expected. If you were Ching, which question would be the most important to ask?"
+  },
+  "options": [
+    {
+      "id": "o_73yv",
+      "text": {
+        "zh-TW": "這些利益有沒有變成現金？還欠別人多少錢？",
+        "en": "Has this profit turned into cash, and how much does the shop still owe?"
+      },
+      "feedback": {
+        "zh-TW": "答對了。利益高不代表現金多，也不代表沒有負債；要把三張報表合起來看。",
+        "en": "That's right. High profit does not mean plenty of cash or no debts; the three statements have to be read together."
+      }
+    },
+    {
+      "id": "o_0ajh",
+      "text": {
+        "zh-TW": "資產負債表左右兩邊已經相等，數字應該沒問題，不用再問",
+        "en": "The two sides of the balance sheet already agree, so the figures must be fine and there is nothing to ask"
+      },
+      "feedback": {
+        "zh-TW": "兩邊相等確實是記帳最基本的檢查，這點沒錯。但恆等式只保證每筆交易兩邊都記了，不保證賺到的錢真的收得到、也不保證負債不多；讀報表的人還是要追問數字背後的交易。",
+        "en": "Agreement between the two sides is indeed the most basic check in bookkeeping, that much is right. But the equation only guarantees that both sides of each transaction were recorded; it says nothing about whether the profit will actually be collected or how much is owed. A reader still has to ask what transactions lie behind the figures."
+      },
+      "misconceptionId": "mc_xqfm"
+    },
+    {
+      "id": "o_8syt",
+      "text": {
+        "zh-TW": "本期淨利這麼高，下個月會不會更高？",
+        "en": "With profit this high, will next month be even higher?"
+      },
+      "feedback": {
+        "zh-TW": "你關心未來，這很合理。不過在問「會不會更高」之前，先要確認這個月的利益是真的、而且有現金支撐。",
+        "en": "Caring about the future is reasonable. But before asking whether it will rise, first check that this month's profit is real and backed by cash."
+      },
+      "misconceptionId": "mc_1ppe"
+    }
+  ],
+  "correctOptionId": "o_73yv",
+  "explanation": {
+    "zh-TW": "讀報表的人要會追問：利益是損益表的數字，現金在現金流量表，欠多少錢在資產負債表。{{option:o_73yv}}把三張表串起來問；{{option:o_0ajh}}把帳平了當成數字沒問題，{{option:o_8syt}}只盯著利益。",
+    "en": "A reader of the statements has to keep asking: profit is on the income statement, cash on the statement of cash flows, and debts on the balance sheet. {{option:o_73yv}} links all three; {{option:o_0ajh}} mistakes a balanced sheet for sound figures, and {{option:o_8syt}} looks only at profit."
+  }
+}

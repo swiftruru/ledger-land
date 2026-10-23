@@ -1,0 +1,69 @@
+{
+  "id": "q_sc7jphv2",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vfc2zz",
+  "difficulty": 2,
+  "tags": [
+    "non_operating",
+    "one_off"
+  ],
+  "termRefs": [
+    "tm_v3n8q2ye",
+    "tm_6nmfxa10",
+    "tm_z3vbt800"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "penalty": 42000
+  },
+  "prompt": {
+    "zh-TW": "河岸麵包坊的麵粉供應商這個月延遲交貨，依合約付給麵包坊 {{money:vars.penalty}} 的違約金。這筆收益該怎麼看？",
+    "en": "This month Riverside Bakery's flour supplier delivered late and, under the contract, paid the bakery a penalty of {{money:vars.penalty}}. How should this income be viewed?"
+  },
+  "options": [
+    {
+      "id": "o_s0mt",
+      "text": {
+        "zh-TW": "業外的一次性收益，不算麵包坊本業的成績",
+        "en": "A one-off gain outside the core business, not part of the bakery's trading performance"
+      },
+      "feedback": {
+        "zh-TW": "答對了。麵包坊的本業是賣麵包；違約金是供應商出狀況才有的錢，要和營業收入分開看。",
+        "en": "That's right. The bakery's business is selling bread; the penalty only arrived because the supplier slipped up, so it is kept apart from revenue."
+      }
+    },
+    {
+      "id": "o_78gj",
+      "text": {
+        "zh-TW": "營業收入的一部分，因為錢是麵包坊收到的",
+        "en": "Part of revenue, because the bakery received the money"
+      },
+      "feedback": {
+        "zh-TW": "錢確實進了麵包坊，這點沒錯。但營業收入只算賣麵包賺的；違約金不是客人買麵包付的錢，混進去會讓人以為生意比實際好。",
+        "en": "The money did reach the bakery, that much is right. But revenue counts only what is earned by selling bread; a penalty is not money customers paid for bread, and mixing it in would make the business look better than it is."
+      },
+      "misconceptionId": "mc_w3wz"
+    },
+    {
+      "id": "o_qvs1",
+      "text": {
+        "zh-TW": "每個月都能期待的經常性收益",
+        "en": "A recurring gain to expect every month"
+      },
+      "feedback": {
+        "zh-TW": "你想到了「以後還會不會有」，這個問題問得對。不過供應商不會每個月都延遲交貨；這筆錢是對方出狀況才有的，一次性的收益不能當成每月的常態。",
+        "en": "You asked whether it will come again, and that is the right question. But the supplier will not deliver late every month; this money arrived only because something went wrong, and a one-off gain cannot be treated as the monthly norm."
+      },
+      "misconceptionId": "mc_etqs"
+    }
+  ],
+  "correctOptionId": "o_s0mt",
+  "explanation": {
+    "zh-TW": "讀損益表時要問兩件事：這筆是本業還是業外？是經常有還是一次性的？供應商付的違約金兩個答案都是後者，所以是{{option:o_s0mt}}。{{option:o_78gj}}把它混進本業，{{option:o_qvs1}}把它當成常態。",
+    "en": "When reading an income statement, ask two things: is this item from the core business or outside it, and is it recurring or one-off? A supplier's penalty payment is the latter on both counts, so {{option:o_s0mt}} is right. {{option:o_78gj}} mixes it into the core business and {{option:o_qvs1}} treats it as the norm."
+  }
+}

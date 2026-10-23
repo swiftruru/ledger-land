@@ -1,0 +1,35 @@
+{
+  "id": "tm_sf72dfsv",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "statement",
+  "label": {
+    "zh-TW": "資產負債表",
+    "en": "Balance sheet"
+  },
+  "teacherLabel": "資產負債表",
+  "currentTwLabel": "資產負債表",
+  "ifrsEnglish": "Statement of financial position",
+  "aliases": {
+    "zh-TW": [
+      "財務狀況表"
+    ],
+    "en": [
+      "Statement of financial position"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.10",
+  "definition": {
+    "zh-TW": "列出公司在某一天擁有什麼、這些東西是用誰的錢換來的。左邊是資產；右邊說明資產的來源：欠別人的算負債，屬於股東的算股東權益。兩邊一定相等，因為資產的每一塊錢都有來源。標題只寫一個日期，換一天看，數字就不同。",
+    "en": "Lists what the company owns on a given day and whose money paid for it. Assets sit on the left; the right side explains where they came from: amounts owed to others are liabilities, and what belongs to the shareholders is equity. The two sides always agree, because every dollar of assets has a source. The heading carries a single date; look on a different day and the figures change."
+  },
+  "related": [
+    "tm_tkj8x3a7",
+    "tm_67e7f0mn",
+    "tm_cfghjxzq"
+  ]
+}
