@@ -10,7 +10,7 @@ import { Banner, Button } from '@ledgerland/web-ui';
 import type { RouteHandle } from '../app/router.tsx';
 import { environmentKind } from '../lib/env.ts';
 import { nowIso } from '../lib/progress/app-info.ts';
-import { whenIdle } from '../lib/idle.ts';
+import { afterFirstPaint } from '../lib/idle.ts';
 import { getProgressStore } from '../lib/progress/index.ts';
 import { refreshPersisted } from '../lib/progress/persist.ts';
 import { useStorageStatus } from '../lib/progress/status.ts';
@@ -57,8 +57,9 @@ export function useBackupReminder(): BackupReminderStateHook {
       return;
     }
     let alive = true;
-    // 進度資料庫等第一次閒置再開（06 第 8.2 節）：這個元件會插在內容上方，不能再多等 afterFirstPaint 的 400ms，否則會在使用者開始捲動後才把內容往下推，提醒晚幾百毫秒出現沒有關係
-    const cancel = whenIdle(() => {
+    // 這個 hook 每一頁都會跑：進度資料庫等第一次繪製送出後再開（afterFirstPaint，06 第 8.2 節），否則 runtime 與 zod 的 chunk 會跟 LCP 搶頻寬，名詞頁多 300ms；
+    // 提醒晚半秒出現沒有關係，作答頁的捲動錨點在版面改變時會重新記錄（useScrollAnchor），提醒晚幾百毫秒出現沒有關係
+    const cancel = afterFirstPaint(() => {
       isReminderDue(persisted).then(
         (v) => alive && setDue(v),
         () => alive && setDue(false),
