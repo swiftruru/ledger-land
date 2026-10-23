@@ -5,8 +5,12 @@
   "description": "網站與後台共用的 React 元件與其樣式，含元件自己的 Lingui 字串檔；不放路由、頁面、殼層與 Service Worker",
   "license": "MIT",
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
     ".": "./src/index.ts",
+    "./map": "./src/map.ts",
     "./styles.css": "./src/styles.css",
     "./locales/*": "./src/locales/*"
   },

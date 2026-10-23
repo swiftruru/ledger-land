@@ -12,6 +12,7 @@ export default defineConfig({
     name: 'web-ui',
     include: ['test/**/*.test.tsx', 'test/**/*.test.ts'],
     exclude: ['**/*.local.test.ts'],
+    setupFiles: ['./test/setup.ts'],
     browser: {
       enabled: true,
       provider: playwright(),
