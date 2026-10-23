@@ -51,7 +51,7 @@ D 系列與本文件有關的項目已在 2026-10-20 全部決定，內容併入
    - **以故事狀態出題**：題目的 `scenario.opening` 用 `{ storyRef, afterStep }` 從故事某一步之後的狀態出題時，畫面會帶出故事的金額，這是允許的；其他題目的情境與數字一律自編。
 2. **用詞例外**。科目名稱、指標名稱與公式依教材（你的原則是「用詞跟著教材走」），這些屬於專業術語，不在原創性要求的範圍內；術語的現行用語與 IFRS 英文放在術語表（見 [12 術語表](12-glossary.md)）。
 3. **題數依觀念估算**。不以教材題數一對一轉寫，而是依觀念覆蓋表（1.2 節）估算每個學習目標需要幾題原創題。
-4. **答案會隨疑義改變的觀念，先不出計分題**。如果老師對某個 T 系列事項的回覆會改變正解（例如存貨盤盈的入帳方式【待確認 T06】、遞延資產與攤銷【待確認 T04】【待確認 T05】會改變營業成本與各層利益），在老師回覆前不出計分題；必要時可以出不計分的說明題：在題目層級的 `pendingRefs` 列出 T 系列編號，這一題就標記為「答案可能因待確認事項而改變、暫不計分」，畫面標示「待確認」（3.6 節）。只牽涉名稱或用詞、不影響正解的事項（例如現金流量表中利息相關列的名稱【待確認 T11】），照常出題，名詞卡加註即可。判斷方式見 5.4 節的 `acct.pendingBlocked`。分錄題另有一道關卡：交易範本的 `entryQuestionBlockedBy` 列出 T 編號時，不得用它出分錄題（3.8 節）；`pendingRefs` 與 `entryQuestionBlockedBy` 兩者並存、用途不同。
+4. **答案會隨真正懸而未決的事項改變的觀念，先不出計分題**。已決定（2026-10-23）：T 系列（例如存貨盤盈的入帳方式【待確認 T06】、遞延資產與攤銷【待確認 T04】【待確認 T05】）已全部由規劃者依專業判斷決定並寫在 14，題目照決定出題並正常計分，解說可以連到 14 的「設計說明」；老師回饋後只改資料。機制保留：日後若出現真正懸而未決、會改變正解的事項，在題目層級的 `pendingRefs` 列出編號，這一題就標記為「答案可能因懸而未決的事項而改變、暫不計分」（3.6 節）；目前沒有這種題目。只牽涉名稱或用詞的事項（例如現金流量表中利息相關列的名稱【待確認 T11】），照決定顯示，名詞卡加註即可。判斷方式見 5.4 節的 `acct.pendingBlocked`。分錄題另有一道關卡：交易範本的 `entryQuestionBlockedBy` 列出編號時，不得用它出分錄題（3.8 節；目前沒有範本使用）；`pendingRefs` 與 `entryQuestionBlockedBy` 兩者並存、用途不同。
 5. **選項一律打散**。題目資料裡的選項順序沒有意義，作答時隨機排列；解說只用選項 ID 引用選項（第 8 節的 `{{option:o_id}}`），不寫「選項 A」。
 
 ### 1.2 觀念覆蓋表
@@ -130,7 +130,7 @@ D 系列與本文件有關的項目已在 2026-10-20 全部決定，內容併入
 | --- | --- | --- |
 | 正確性 | 計算型答案由核心算出，作者填的答案與核心一致 | 自動 |
 | 正確性 | 用詞依教材；新舊用語不同時，名詞卡有標記與說明 | 人工 |
-| 正確性 | 答案會隨待確認事項改變的觀念沒有出計分題；這類題目在 `pendingRefs` 列出 T 編號並暫不計分（1.1 節第 4 點） | 自動提醒（5.4 節）加人工確認 |
+| 正確性 | 答案會隨真正懸而未決的事項改變的觀念沒有出計分題（2026-10-23 起 T 系列已全部決定，目前沒有這種題目）；若出現，在題目層級 `pendingRefs` 列出編號並暫不計分（1.1 節第 4 點） | 自動提醒（5.4 節）加人工確認 |
 | 原創性 | 情境、人物、數字、干擾選項、解說都是新寫的（1.3 節）；故事資料的情境與金額照老師（D2），但敘述與解說仍是新寫的 | 人工 |
 | 原創性 | 已看過本機相似度報表 | 人工 |
 | 原創性 | 沒有教材頁碼、題號、檔名 | 自動 |
@@ -288,7 +288,7 @@ content/
 | `suggestedTypes` | string[] | 否 | 建議題型（3.6 節的代號） |
 | `termRefs` | string[] | 否 | 相關名詞 |
 | `labRefs` | array | 否 | 相關故事步驟，格式同題目的 `labRef` |
-| `pendingRefs` | string[] | 否 | 答案可能受影響的 T 系列編號，例如 `["T06"]`；出題時提醒，計分題的規則見 5.4 節 |
+| `pendingRefs` | string[] | 否 | 相關設計決定的編號（14 的 T 系列），例如 `["T06"]`；出題時提醒作者看設計說明，計分題的規則見 5.4 節 |
 
 ### 3.5 Level 關卡（本文件定義）
 
@@ -320,7 +320,7 @@ content/
 | `vars` | object | 否 | 題目自帶的數字，例如 `{ "loan": 240000 }`；題幹以 `{{money:vars.loan}}` 引用，確保畫面顯示與計算用的是同一個值。交易事件的參數不放這裡，放在 `scenario.events[].params` |
 | `prompt` | Markup | 依題型 | 題幹；`true_false` 改用 `statement` |
 | `explanation` | Markup | 是 | 解說；用 `{{option:o_xxxx}}` 引用選項 |
-| `pendingRefs` | string[] | 否 | 題目層級的待確認標記：列出 T 系列編號，表示「答案可能因待確認事項而改變、暫不計分」；非空時 `scored` 必須為 false，畫面標示「待確認」（1.1 節第 4 點、5.5 節）。與交易範本阻擋分錄題的 `entryQuestionBlockedBy`（3.8 節）並存、用途不同 |
+| `pendingRefs` | string[] | 否 | 題目層級的待確認標記：列出已登錄的 T 系列編號，表示「答案可能因真正懸而未決的事項而改變、暫不計分」；非空時 `scored` 必須為 false，畫面標示「待確認」（1.1 節第 4 點、5.5 節）。已決定（2026-10-23）：T 系列已全部決定，目前沒有題目使用，機制保留。與交易範本阻擋分錄題的 `entryQuestionBlockedBy`（3.8 節）並存、用途不同 |
 
 題型代號與專屬欄位（代號與欄位名稱同 04；「表格可維護」指能否用第 9 節的 Excel 範本維護）：
 
@@ -348,8 +348,8 @@ content/
 
 補充規則：
 
-- `journal_entry` 只能放在「借貸與分錄」延伸章（D1）。計分依 04 第 14 節：作答與正解都先合併同科目同方向的行，再以「科目、借貸方、金額」的多重集合比對；接受複合或拆開的分錄，不看行序。交易範本的 `entryQuestionBlockedBy` 列有 T 編號（設立費、存貨盤盈、攤銷），就不得用來出分錄題，直到老師確認【待確認 T04】【待確認 T05】【待確認 T06】；範本只帶 `pendingRefs`（例如只影響列名的待確認）時不擋分錄題。
-- `judgment` 的 `attribution` 目前固定為 `site`（網站觀點，原創撰寫）。改成以老師名義標示，要先得到老師同意【待確認 T37】。
+- `journal_entry` 只能放在「借貸與分錄」延伸章（D1）。計分依 04 第 14 節：作答與正解都先合併同科目同方向的行，再以「科目、借貸方、金額」的多重集合比對；接受複合或拆開的分錄，不看行序。交易範本的 `entryQuestionBlockedBy` 列有編號時不得用來出分錄題；已決定（2026-10-23）【待確認 T04】【待確認 T05】【待確認 T06】依專業判斷處理，設立費、存貨盤盈、攤銷的範本不再帶這個欄位，機制保留給日後真正懸而未決的做法；範本只帶 `pendingRefs`（設計說明）時不擋分錄題。
+- `judgment` 的 `attribution` 固定為 `site`（網站觀點，原創撰寫；已決定【待確認 T37】，2026-10-23：不以老師名義標示）。
 - 數字型干擾選項（`distractorExprs`）編譯後依顯示位數四捨五入，不得與正解或彼此相同。
 - `ratio_numeric` 的正解不得是 not_meaningful 狀態；正解為 N/A 時設 `acceptStatus: ["na"]`，作答框固定提供「N/A」按鈕（狀態定義見 04 第 12.6 節）。
 
@@ -479,7 +479,7 @@ content/
 | `enUsVariant` | string | 否 | 美式拼字變體。已決定（D11，2026-10-20）：英文介面用英式拼字（與 IFRS 原文一致），`label.en` 與 `ifrsEnglish` 寫英式，美式寫法放在這一欄並收進英文別名供搜尋 |
 | `flags` | TermFlag[] | 是（可為空陣列） | 旗標代號以 04 第 16.3 節的 TermFlag 為準：`japanese`、`old_name`、`typo_fixed`、`unused`、`not_ifrs_line`、`ifrs_treatment_differs`、`simplified`；前六種與 04 第 4.1 節的科目旗標同名，`not_in_template` 與 `extension` 只用於科目表，名詞不使用 |
 | `confidence` | `high`、`medium`、`pending` | 是 | 信心程度 |
-| `pendingRefs` | string[] | 是（可為空陣列） | `confidence` 為 `pending` 時至少要有一個 T 系列編號，可同時列多個 |
+| `pendingRefs` | string[] | 是（可為空陣列） | 相關設計決定的編號（14 的 T 系列），可同時列多個；`confidence` 為 `pending` 時至少要有一個編號。已決定（2026-10-23）：T 系列已全部決定，名詞不再因 T 系列而 `pending`，`pendingRefs` 只用來讓名詞卡顯示「設計說明」 |
 | `ifrsBasis` | string | 否 | 英文用語依據的準則版本，例如 `IAS 1`；IFRS 18 生效後可據此找出要更新的名詞（見 [11 風險](11-risks-license.md)） |
 | `note` | LocalizedText | 否 | 用語本身的說明，例如教材異寫的原因 |
 | `definition` | Markup | 是 | 原創定義 |
@@ -501,10 +501,10 @@ content/
 | `title`、`summary`、`explanation` | 交易卡與解說文字，走多語系與文字風格檢查；`summary` 與 `explanation` 另可用 `param.<name>`、`derived.<name>` 佔位符引用本範本的參數與推導值（8.1 節） |
 | `params`、`derived`、`preconditions`、`lines` | 答案相關欄位，變動時是答案改版 |
 | `termRefs` | 引用檢查 |
-| `pendingRefs` | 牽涉的待確認編號；實驗室顯示「待確認」標記，計分題的規則見 5.4 節；不擋分錄題 |
-| `entryQuestionBlockedBy` | 範本涉及待老師確認的做法時，列出 T 系列編號，例如 `["T04"]`；非空時不得用這個範本出分錄題（5.4 節的 `acct.entryBlocked`）。老師確認後移除編號即可 |
+| `pendingRefs` | 相關設計決定的編號（14 的 T 系列）；實驗室顯示「設計說明」標記，計分題的規則見 5.4 節；不擋分錄題 |
+| `entryQuestionBlockedBy` | 範本涉及真正懸而未決的做法時，列出 T 系列編號，例如 `["T04"]`；非空時不得用這個範本出分錄題（5.4 節的 `acct.entryBlocked`）。已決定（2026-10-23）：T 系列已全部決定，目前沒有範本使用；日後決定後移除編號即可 |
 
-`entryQuestionBlockedBy` 只管「能不能出分錄題」；題目層級的 `pendingRefs`（3.6 節）只管「這一題的答案可能改變、暫不計分」。兩者並存、用途不同：一個範本可以只帶範本層級的 `pendingRefs`（例如只影響列名，只在實驗室顯示標記），也可以兩者都有。
+`entryQuestionBlockedBy` 只管「能不能出分錄題」；題目層級的 `pendingRefs`（3.6 節）只管「這一題的答案可能改變、暫不計分」。兩者並存、用途不同：一個範本可以只帶範本層級的 `pendingRefs`（連到設計說明，只在實驗室顯示標記），也可以兩者都有；2026-10-23 起實際資料只有前者。
 
 ### 3.9 Story 故事與步驟
 
@@ -520,7 +520,7 @@ content/
 
 下面兩個欄位的形狀以這裡為準，04 第 9.1 節與 03 的範例都照這個寫：
 
-- **事件的 `pendingRefs`（選填）**：故事事件是 `{ id, template, params, pendingRefs? }`。`pendingRefs` 列出 T 系列編號，表示這一步的這個事件牽涉待老師確認的做法，實驗室在事件旁顯示「待確認」標記；省略時代表事件本身沒有另外的待確認。它和範本層級的 `entryQuestionBlockedBy`（3.8 節，只管能不能出分錄題）用途不同，也不取代範本自己的 `pendingRefs`。`struct.unknownField`（5.1 節）依這個形狀檢查，事件不得有其他欄位；`pendingRefs` 只能列已登錄的 T 系列編號。題目 `scenario.events[]` 的事件仍只有 `{ id, template, params }`，題目的待確認一律寫在題目層級的 `pendingRefs`（3.6 節）。
+- **事件的 `pendingRefs`（選填）**：故事事件是 `{ id, template, params, pendingRefs? }`。`pendingRefs` 列出 T 系列編號，表示這一步的這個事件有對應的設計決定（14 第 2 節），實驗室在事件旁顯示「設計說明」標記（2026-10-23 起不再是「待確認」）；省略時代表事件本身沒有另外要說明的決定。它和範本層級的 `entryQuestionBlockedBy`（3.8 節，只管能不能出分錄題）用途不同，也不取代範本自己的 `pendingRefs`。`struct.unknownField`（5.1 節）依這個形狀檢查，事件不得有其他欄位；`pendingRefs` 只能列已登錄的 T 系列編號。題目 `scenario.events[]` 的事件仍只有 `{ id, template, params }`，題目的待確認一律寫在題目層級的 `pendingRefs`（3.6 節）。
 - **`chapterLinks`（選填）**：`[{ "chapter": 章節 ID, "level": 關卡 ID }]`，`chapter` 必填、`level` 選填，列出這一步結束時建議練習的闖關區章節；有 `level` 時直接連到那一關（`/level/<levelId>/`），沒有時連到章節頁（`/chapter/<chapterId>/`）；英文介面的連結在前面加 `/en/`（D5），資料本身只存 ID，不存路徑。不使用純字串陣列。引用檢查：`chapter` 必須存在，`level` 必須存在且屬於該章（5.3 節的 `ref.chapter`）。
 
 範例（只示範一個步驟；ID 為範例，敘述為原創）：
@@ -552,7 +552,7 @@ content/
 | --- | --- |
 | `predictTargets` | 預測題要問的目標，格式同 `scenario.targets`，使用交易影響題元件（見 03） |
 | `stakeholders` | 利害關係人卡：`[{ role, positive, negative, advice }]`，全部原創撰寫；只有重點步驟才有（見 03） |
-| `verification` | `excel_verified`（已在本機對老師 Excel 驗證）或 `inferred`（推論，待老師確認【待確認 T33】）；畫面依此顯示「推論」標記。驗證本身只在本機執行，這個欄位只記結果 |
+| `verification` | `excel_verified`（已在本機對老師 Excel 驗證）或 `inferred`（依課程情境推算，【待確認 T33】的決定）；畫面依此顯示「依課程情境推算」標記。驗證本身只在本機執行，這個欄位只記結果 |
 
 故事層級的來源欄位 `origin` 已由 04 第 9.1 節定義（見上方「授權標示」），本文件不另設欄位。
 
@@ -829,8 +829,8 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `acct.storyReplay` | 故事從期初逐步過帳，每一步都成功，資產與負債科目不為負 | 錯誤 | 全部 |
 | `acct.invariants` | 每一步之後：資產等於負債加權益；現金流量表淨額等於現金變動；本期淨利與未分配盈餘一致；間接法與直接法的營業活動金額相等；版面上的營業成本等於營業成本帳戶餘額 | 錯誤 | 全部 |
 | `acct.scenarioComputes` | 每個計算型題目的 scenario 都能由核心算出答案 | 錯誤 | 全部 |
-| `acct.pendingBlocked` | 計分題的 scenario 用到 `pendingRefs` 不是空的範本，或題目的學習目標列有 `pendingRefs` 時提出警告；審稿者確認正解不受該待確認事項影響（1.1 節第 4 點）後，才能在 PR 中放行；正解可能受影響時，在題目層級的 `pendingRefs` 列出編號，這一題暫不計分 | 警告 | 已發布 |
-| `acct.entryBlocked` | `journal_entry` 的 scenario 不得用到 `entryQuestionBlockedBy` 列有 T 編號的範本（04 第 14 節）；只帶 `pendingRefs` 的範本不受這條限制 | 錯誤 | 全部 |
+| `acct.pendingBlocked` | 計分題的 scenario 用到 `pendingRefs` 不是空的範本，或題目的學習目標列有 `pendingRefs` 時提出警告，提醒審稿者看過對應的設計說明（14 的條目）；2026-10-23 起 T 系列已全部決定，這個警告不阻擋放行；只有真正懸而未決的事項可能改變正解時，才在題目層級的 `pendingRefs` 列出編號，這一題暫不計分（1.1 節第 4 點） | 警告 | 已發布 |
+| `acct.entryBlocked` | `journal_entry` 的 scenario 不得用到 `entryQuestionBlockedBy` 列有 T 編號的範本（04 第 14 節）；只帶 `pendingRefs` 的範本不受這條限制。2026-10-23 起沒有範本帶這個欄位，規則保留 | 錯誤 | 全部 |
 | `acct.teacherPolicy` | 題目的 `scenario.policy` 與 `scenario.layout` 只能是 `teacher@1`；`ifrs@1` 只用在實驗室的 IFRS 對照（D10(f)，不計分） | 錯誤 | 全部 |
 | `acct.classifyDerived` | `classify` 的項目以 `account` 或 `ratio` 引用核心資料，正解由科目表的 `element`、`current`、`cashFlow.defaultActivity` 或指標登錄檔的類別推導；作者若有填正解必須一致；自訂文字項目（只有 `text`）的正解必須寫在 `correctCategories`；抵銷科目要標 `allowContra` 才能出題 | 錯誤 | 全部 |
 | `acct.directionAmbiguous` | 方向題的目標若精確值有變、但依顯示位數四捨五入後相同，或前後任一端是 not_meaningful，判定為有歧義（04 第 15.1 節） | 錯誤 | 全部 |
@@ -849,8 +849,8 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `ans.ratioNumericFields` | `ratio_numeric` 有 `compute.ratioRef`、`answerUnit`、`decimals`；`compute` 的 `scenario` 與 `measures` 二選一，用 `measures` 時公式用到的線都有給值、沒用到的不准多給；`tolerance` 未填時套用 04 第 12.5 節的預設 | 錯誤 | 全部 |
 | `ans.notMeaningful` | 數字題的正解不得是 not_meaningful 狀態 | 錯誤 | 全部 |
 | `ans.acceptStatus` | `acceptStatus` 只能是指標狀態中的允許值，且與核心結果一致 | 錯誤 | 全部 |
-| `ans.judgmentUnscored` | `judgment` 一律 `scored: false`，有 `viewpoint`，`attribution` 為 `site`（【待確認 T37】有答案之前） | 錯誤 | 全部 |
-| `ans.pendingUnscored` | 題目層級的 `pendingRefs` 不是空的時，`scored` 必須為 false（暫不計分）；`pendingRefs` 只能列已登錄的 T 系列編號（見 [14 待確認事項](14-open-questions.md)） | 錯誤 | 全部 |
+| `ans.judgmentUnscored` | `judgment` 一律 `scored: false`，有 `viewpoint`，`attribution` 為 `site`（已決定【待確認 T37】，2026-10-23，固定為網站觀點） | 錯誤 | 全部 |
+| `ans.pendingUnscored` | 題目層級的 `pendingRefs` 不是空的時，`scored` 必須為 false（暫不計分）；`pendingRefs` 只能列已登錄的 T 系列編號（見 [14 待確認事項](14-open-questions.md)）。機制保留，2026-10-23 起 T 系列已全部決定，目前沒有這種題目 | 錯誤 | 全部 |
 | `ans.noLetterRefs` | 解說與回饋不得寫「選項 A」「(B)」之類的字母引用 | 錯誤 | 全部 |
 | `ans.journalScope` | `journal_entry` 只能屬於 `scope` 為 `extension` 的章節，也就是「借貸與分錄」延伸章（D1）；出現在主線章節時回報錯誤 | 錯誤 | 全部 |
 
@@ -1275,7 +1275,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 | S 到 V | `feedbackTrue.zh-TW`、`feedbackTrue.en`、`feedbackFalse.zh-TW`、`feedbackFalse.en` | `true_false` | 兩種回饋 |
 | W、X | `viewpoint.zh-TW`、`viewpoint.en` | `judgment` | 解說觀點 |
 | Y | `dimension` | `classify` | 下拉選單 |
-| Z | `pendingRefs` | 選填 | 以半形逗號分隔的 T 系列編號；有值時這一題暫不計分，`scored` 必須為 FALSE |
+| Z | `pendingRefs` | 選填 | 以半形逗號分隔的 T 系列編號；有值時這一題暫不計分，`scored` 必須為 FALSE。只在真正懸而未決時填，2026-10-23 起 T 系列已全部決定，一般留空 |
 | AA | `scoringMode` | `multi_choice` | 判分方式，下拉選單；`multi_choice` 必填、沒有預設值，其他題型留空 |
 
 「選項」工作表的欄位：A `questionId`、B `optionId`（空白代表新增）、C `order`（只影響編輯時的排列，作答時一律打散）、D 與 E `text`、F 與 G `feedback`、H 與 I `upside`、J 與 K `downside`（後兩組只用於 `judgment`）、L `isAnswer`（`judgment` 留空）。匯入工具把標為正解的選項寫成 `correctOptionId`；`multi_choice` 的每個正解都標 TRUE，寫成 `correctOptionIds`（至少 2 個，而且至少留 1 個 FALSE）。
