@@ -103,6 +103,5 @@
     "en": "A physical count corrects the books to the inventory actually on hand. If the count is above the books, inventory is raised and by default the difference reduces cost of sales; if it is below, inventory is lowered and the difference is added to cost of sales. The course does not say whether a surplus should instead be non-operating income or an extraordinary gain, so the site keeps both as policy switches. No cash moves, so only the inventory change line on the statement of cash flows is affected."
   },
   "termRefs": ["tm_n7v3k8pq", "tm_g5c2m8tw", "tm_6nmfxa10", "tm_kqwv1rjs"],
-  "pendingRefs": ["T06"],
-  "entryQuestionBlockedBy": ["T06"]
+  "pendingRefs": ["T06"]
 }

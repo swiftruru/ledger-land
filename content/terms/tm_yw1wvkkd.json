@@ -10,11 +10,11 @@
   "ifrsEnglish": "Investments and other assets",
   "aliases": { "zh-TW": ["長期投資", "其他非流動資產"], "en": ["Long-term investments", "Other non-current assets"] },
   "flags": ["japanese", "unused"],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": ["T15"],
   "note": {
-    "zh-TW": "直譯自日文的投資その他の資産；台灣報表拆成採用權益法之投資、其他非流動金融資產、其他非流動資產等，對照等老師確認（T15）。",
-    "en": "A direct translation of the Japanese balance sheet category. Taiwanese statements split it into investments under the equity method, other non-current financial assets and other non-current assets; the mapping awaits the teacher (T15)."
+    "zh-TW": "直譯自日文的投資その他の資産；台灣報表拆成採用權益法之投資、其他非流動金融資產、其他非流動資產等，網站維持課程名稱為主要顯示並加現行對照（設計說明見 T15）。",
+    "en": "A direct translation of the Japanese balance sheet category. Taiwanese statements split it into investments under the equity method, other non-current financial assets and other non-current assets; the site keeps the course name as the main display with the current captions alongside (see the design note T15)."
   },
   "definition": {
     "zh-TW": "模板裡放長期投資與其他非流動資產的一列。它包含哪些項目教材沒有說明，本課的故事也沒有用到。",

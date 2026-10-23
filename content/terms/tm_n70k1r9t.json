@@ -10,7 +10,7 @@
   "ifrsEnglish": null,
   "aliases": { "zh-TW": ["整戶擔保維持率"], "en": [] },
   "flags": [],
-  "confidence": "pending",
+  "confidence": "medium",
   "pendingRefs": ["T18"],
   "note": {
     "zh-TW": "台灣證券信用交易用語。教材的追繳門檻與補繳期限可能和現行規定不同，上線前要查現行條文（T18）；追繳門檻是參數。",

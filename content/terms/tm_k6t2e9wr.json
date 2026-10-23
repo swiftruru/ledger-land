@@ -5,7 +5,7 @@
   "status": "draft",
   "category": "account",
   "label": {
-    "zh-TW": "支付利息",
+    "zh-TW": "利息費用",
     "en": "Finance costs"
   },
   "teacherLabel": "支付利息",
@@ -13,6 +13,7 @@
   "ifrsEnglish": "Finance costs",
   "aliases": {
     "zh-TW": [
+      "支付利息",
       "財務成本"
     ],
     "en": [
@@ -28,8 +29,8 @@
   ],
   "ifrsBasis": "IAS 1.82(b)",
   "note": {
-    "zh-TW": "教材的列名「支付利息」直譯自日文支払利息，指的是費用；現行用語是利息費用，報表列名是財務成本。T11 回覆後再定主要顯示。",
-    "en": "The course line name is a direct translation of the Japanese for interest expense; the current term is interest expense and the statement line is finance costs. The main display will be settled after T11."
+    "zh-TW": "課程的列名「支付利息」直譯自日文支払利息，指的是費用而不是付現；網站主要顯示改用現行用語「利息費用」，課程原字收進別名，報表列名是財務成本（設計說明見 T11）。",
+    "en": "The course line name is a direct translation of the Japanese for interest expense and means the expense, not the cash paid; the site shows the current term interest expense, keeps the course wording as an alias, and the statement line is finance costs (see the design note T11)."
   },
   "definition": {
     "zh-TW": "借款在本期產生的利息費用，不論是否已經付現。實際付出的利息另外列在現金流量表的利息支出。",

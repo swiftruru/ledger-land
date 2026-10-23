@@ -13,8 +13,8 @@
   "confidence": "high",
   "pendingRefs": ["T24", "T28"],
   "note": {
-    "zh-TW": "參考值待確認（T24）；流動負債為 0 時的呈現待確認（T28），網站顯示 N/A。",
-    "en": "The reference value (T24) and the presentation when current liabilities are nil (T28) are pending; the site shows N/A."
+    "zh-TW": "課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）；流動負債為 0 時網站顯示 N/A，不顯示無限大（設計說明見 T28）。",
+    "en": "The course threshold is shown only as a course reference value and is not scored (see the design note T24); when current liabilities are nil the site shows N/A rather than infinity (see the design note T28)."
   },
   "definition": {
     "zh-TW": "流動資產相對於流動負債的倍數，看一年內能變現的資產夠不夠還一年內到期的債務。數值越高，短期償債能力越強。",

@@ -108,24 +108,24 @@
     "teacherCell": "L15",
     "labels": {
       "teacher": {
-        "zh-TW": "短期放貨",
+        "zh-TW": "短期放款",
         "en": "Short-term loans receivable"
       },
       "currentTw": null,
       "ifrsEn": "Short-term loans receivable",
       "aliases": {
-        "zh-TW": ["短期放款", "短期放貸"],
+        "zh-TW": ["短期放貨", "短期放貸"],
         "en": ["Loans receivable"]
       }
     },
     "termRef": "tm_3sy1gk7c",
-    "flags": ["unused", "japanese"],
+    "flags": ["unused", "japanese", "typo_fixed"],
     "ifrsTreatment": null,
     "cashFlow": {
       "indirect": "via_cash_tag",
       "defaultActivity": "investing"
     },
-    "pendingRefs": ["T09"]
+    "pendingRefs": []
   },
   {
     "id": "prepaid_expenses",
@@ -1351,13 +1351,13 @@
     "teacherCell": "R27",
     "labels": {
       "teacher": {
-        "zh-TW": "支付利息",
+        "zh-TW": "利息費用",
         "en": "Finance costs"
       },
       "currentTw": "利息費用",
       "ifrsEn": "Finance costs",
       "aliases": {
-        "zh-TW": ["財務成本"],
+        "zh-TW": ["支付利息", "財務成本"],
         "en": ["Interest expense"]
       }
     },

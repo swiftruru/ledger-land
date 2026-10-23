@@ -87,6 +87,5 @@
     "en": "The course treats start-up costs as spending that benefits the next few years, so it records a deferred asset and amortises it year by year, with the cash shown under investing activities. IFRS takes a different view: IAS 38.69 requires such costs to be expensed when incurred, and the cash is shown under operating activities. The two treatments give different profit for the period and different cash flows by activity."
   },
   "termRefs": ["tm_d9f3g7cs", "tm_c4sh8k2p", "tm_hz08w4k5", "tm_xen3p30x"],
-  "pendingRefs": ["T04", "T30"],
-  "entryQuestionBlockedBy": ["T04"]
+  "pendingRefs": ["T04", "T30"]
 }

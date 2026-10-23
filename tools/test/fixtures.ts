@@ -57,6 +57,13 @@ export const templateEntries: Entry[] = defaultTemplates.map((t) => ({
 }));
 export const storyEntry: Entry = { file: 'content/stories/story_q7m2v9.json', data: limeLeafStory as unknown as Record<string, unknown> };
 
+/** 自編的 blocked 範本：複製攤銷範本並加上 entryQuestionBlockedBy，驗證 acct.entryBlocked 與 schema 層的擋法（內建範本已不帶這個欄位） */
+const amortise = defaultTemplates.find((t) => t.id === 'tpl.amortise_org_costs')!;
+export const blockedTemplateEntry: Entry = {
+  file: 'packages/core/data/templates/test_blocked_amortise.json',
+  data: { ...amortise, id: 'tpl.test_blocked_amortise', pendingRefs: ['T99'], entryQuestionBlockedBy: ['T99'] } as unknown as Record<string, unknown>,
+};
+
 /** 04 第 17.2 節：賣出全部存貨的交易影響題 */
 export const q172 = {
   id: 'q_tx7h2c9d',
@@ -217,17 +224,18 @@ export const qJournalExpectedEntries = [
 ];
 
 /** 把題目放進引用自洽的 bundle：名詞、章節、核心範本、自編故事 */
-export function bundleWith(questions: Record<string, unknown>[], extra: Partial<Record<'terms' | 'chapters' | 'stories', Entry[]>> = {}) {
+export function bundleWith(questions: Record<string, unknown>[], extra: Partial<Record<'terms' | 'chapters' | 'stories' | 'templates', Entry[]>> = {}) {
   // 題目、核心範本與故事步驟引用的名詞都要存在（ref.term），所以照引用產生最小的名詞卡
   const termIds = new Set<string>();
+  const templates = [...templateEntries, ...(extra.templates ?? [])];
   for (const q of questions) for (const t of (q.termRefs as string[]) ?? []) termIds.add(t);
-  for (const t of templateEntries) for (const ref of t.data.termRefs as string[]) termIds.add(ref);
+  for (const t of templates) for (const ref of t.data.termRefs as string[]) termIds.add(ref);
   for (const s of [storyEntry, ...(extra.stories ?? [])])
     for (const step of s.data.steps as { termRefs: string[] }[]) for (const ref of step.termRefs) termIds.add(ref);
   return {
     terms: [...[...termIds].map(term), ...(extra.terms ?? [])],
     chapters: [chapter('ch_n3f8q1', 1), chapter('ch_x4d9p2', 2), chapter('ch_e4j7r2', 3, 'extension'), ...(extra.chapters ?? [])],
-    templates: templateEntries,
+    templates,
     stories: [storyEntry, ...(extra.stories ?? [])],
     questions: questions.map((q) => ({ file: `content/questions/${String(q.id)}.json`, data: q })),
   };

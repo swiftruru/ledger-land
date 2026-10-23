@@ -370,11 +370,11 @@
         "cell": "R27",
         "kind": "accounts",
         "label": {
-          "zh-TW": "支付利息",
+          "zh-TW": "利息費用",
           "en": "Finance costs"
         },
         "aliases": {
-          "zh-TW": ["利息費用", "財務成本"],
+          "zh-TW": ["支付利息", "財務成本"],
           "en": ["Interest expense"]
         },
         "termRef": "tm_k6t2e9wr",
@@ -589,15 +589,16 @@
         "cell": "L15",
         "kind": "accounts",
         "label": {
-          "zh-TW": "短期放貨",
+          "zh-TW": "短期放款",
           "en": "Short-term loans receivable"
         },
         "aliases": {
-          "zh-TW": ["短期放款"],
+          "zh-TW": ["短期放貨", "短期放貸"],
           "en": ["Loans receivable"]
         },
         "termRef": "tm_3sy1gk7c",
-        "pendingRefs": ["T09"],
+        "pendingRefs": [],
+        "flags": ["unused", "japanese", "typo_fixed"],
         "accounts": ["short_term_loans_receivable"],
         "measure": "balance"
       },
@@ -1353,11 +1354,11 @@
         "cell": "H13",
         "kind": "noncash_addback",
         "label": {
-          "zh-TW": "支付利息(+)",
+          "zh-TW": "利息費用(+)",
           "en": "Interest expense (+)"
         },
         "aliases": {
-          "zh-TW": ["利息費用(+)"],
+          "zh-TW": ["支付利息(+)"],
           "en": []
         },
         "termRef": "tm_dsfjhrfw",
@@ -1541,11 +1542,11 @@
         "cell": "H21",
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "利息支出(-)",
+          "zh-TW": "支付利息(-)",
           "en": "Interest paid (-)"
         },
         "aliases": {
-          "zh-TW": ["支付之利息(-)"],
+          "zh-TW": ["利息支出(-)", "支付之利息(-)", "支付之利息"],
           "en": []
         },
         "termRef": "tm_y7a34vmk",

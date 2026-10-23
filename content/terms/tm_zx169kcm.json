@@ -10,11 +10,11 @@
   "ifrsEnglish": "Deposits received",
   "aliases": { "zh-TW": ["存入保證金", "代收款"], "en": [] },
   "flags": ["japanese", "unused"],
-  "confidence": "pending",
+  "confidence": "medium",
   "pendingRefs": ["T15"],
   "note": {
-    "zh-TW": "模板列在流動負債，性質教材沒有說明；台灣實務對照存入保證金（多屬非流動）或代收款，等老師確認（T15）。",
-    "en": "The template lists it under current liabilities without defining it; in Taiwanese practice it maps to guarantee deposits received (usually non-current) or collections on behalf of others, pending the teacher (T15)."
+    "zh-TW": "模板列在流動負債，性質教材沒有說明；台灣實務對照存入保證金（多屬非流動）或代收款，網站依課程模板列流動負債（設計說明見 T15）。",
+    "en": "The template lists it under current liabilities without defining it; in Taiwanese practice it maps to guarantee deposits received (usually non-current) or collections on behalf of others, the site follows the course template and lists it under current liabilities (see the design note T15)."
   },
   "definition": {
     "zh-TW": "從客戶或他人收到、將來要退還的保證金。它是負債，因為這筆錢終究要還；本課的故事沒有用到。",

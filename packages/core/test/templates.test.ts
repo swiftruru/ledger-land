@@ -92,8 +92,17 @@ describe('compileTemplates：21 個內建範本', () => {
     expect(sell.preconditions[0]?.ast.valueType).toBe('bool');
     expect(sell.lines.map((l) => l.ast.valueType)).toEqual(['int', 'int', 'int', 'int']);
     expect(sell.pendingRefs).toEqual([]);
-    expect(tpl('tpl.inventory_count').entryQuestionBlockedBy).toEqual(['T06']);
     expect(sell.source).toBe(defaultTemplates.find((t) => t.id === sell.id));
+  });
+
+  it('內建範本都沒有 entryQuestionBlockedBy（14 的 T 系列決定，2026-10-23）；機制仍在：自編範本帶 T99 會被編譯保留，缺省為空陣列', () => {
+    expect([...templates.values()].filter((t) => t.entryQuestionBlockedBy.length > 0).map((t) => t.id)).toEqual([]);
+    const blocked = unwrap(compileTemplate(raw({ pendingRefs: ['T99'], entryQuestionBlockedBy: ['T99'] }), chart));
+    expect(blocked.entryQuestionBlockedBy).toEqual(['T99']);
+    expect(blocked.pendingRefs).toEqual(['T99']);
+    const plain = unwrap(compileTemplate(raw({}), chart));
+    expect(plain.entryQuestionBlockedBy).toEqual([]);
+    expect(plain.pendingRefs).toEqual([]);
   });
 
   it('每個範本以預設參數在兩套政策下實例化都借貸平衡、通過分錄驗證（或本筆無影響）', () => {

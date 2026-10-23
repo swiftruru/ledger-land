@@ -278,15 +278,13 @@ describe('templates/*.json（04 第 7 節的建置期檢查）', () => {
     }
   });
 
-  it('依 04 的指定：設立費、盤點與攤銷帶 pendingRefs 與 entryQuestionBlockedBy；還款範本只有 pendingRefs', () => {
+  it('依 04 與 14 的指定：設立費、盤點、攤銷與還款範本帶 pendingRefs（設計說明的編號）；T 系列已決定，沒有範本帶 entryQuestionBlockedBy', () => {
     const byId = new Map(defaultTemplates.map((t) => [t.id, t]));
     expect(byId.get('tpl.pay_org_costs')?.pendingRefs).toEqual(['T04', 'T30']);
-    expect(byId.get('tpl.pay_org_costs')?.entryQuestionBlockedBy).toEqual(['T04']);
-    expect(byId.get('tpl.inventory_count')?.entryQuestionBlockedBy).toEqual(['T06']);
+    expect(byId.get('tpl.inventory_count')?.pendingRefs).toEqual(['T06']);
     expect(byId.get('tpl.amortise_org_costs')?.pendingRefs).toEqual(['T04', 'T05', 'T12']);
-    expect(byId.get('tpl.amortise_org_costs')?.entryQuestionBlockedBy).toEqual(['T04', 'T05']);
     expect(byId.get('tpl.repay_all_short_term_loans_with_interest')?.pendingRefs).toEqual(['T11']);
-    expect(byId.get('tpl.repay_all_short_term_loans_with_interest')?.entryQuestionBlockedBy).toBeUndefined();
+    for (const t of defaultTemplates) expect(t.entryQuestionBlockedBy, t.id).toBeUndefined();
     const count = byId.get('tpl.inventory_count')!;
     expect(count.params.map((p) => p.name)).toEqual(['countedAmount']);
     expect(count.derived.map((d) => d.expr)).toEqual(['max(param.countedAmount - balance(inventory), 0)', 'max(balance(inventory) - param.countedAmount, 0)']);
@@ -316,6 +314,17 @@ describe('layouts/teacher@1.json（04 第 11 節）', () => {
       expect(Object.keys(l).slice(0, 5)).toEqual(['id', 'cell', 'kind', 'label', 'aliases']);
       if (l.termRef) expect(l.termRef).toMatch(TERM_ID_RE);
       for (const p of l.pendingRefs ?? []) expect(p).toMatch(/^T\d{2}$/);
+    }
+  });
+
+  it('每一列的別名不重複、不和主要顯示相同、沒有空白', () => {
+    for (const l of allLines) {
+      for (const lang of ['zh-TW', 'en'] as const) {
+        const aliases = l.aliases[lang];
+        expect(new Set(aliases).size, `${l.id} ${lang}`).toBe(aliases.length);
+        expect(aliases, `${l.id} ${lang}`).not.toContain(l.label[lang]);
+        for (const a of aliases) expect(a.trim(), `${l.id} ${lang}`).toBe(a);
+      }
     }
   });
 
@@ -515,8 +524,19 @@ describe('layouts/teacher@1.json（04 第 11 節）', () => {
     expect(h23?.label['zh-TW']).toBe('營業活動的現金流量總計');
     expect(h23?.aliases['zh-TW']).toContain('營業活動的現金流量統計');
     expect(byId.get('cf_payables_increase')?.label['zh-TW']).toBe('應付帳款增加(+)');
-    expect(byId.get('cf_interest_paid')?.label['zh-TW']).toBe('利息支出(-)');
+    // T11（2026-10-23 決定）：三列的主要顯示改為清楚的寫法，課程原字收進別名
+    expect(byId.get('cf_interest_paid')?.label['zh-TW']).toBe('支付利息(-)');
+    expect(byId.get('cf_interest_paid')?.aliases['zh-TW']).toContain('利息支出(-)');
     expect(byId.get('cf_interest_paid')?.pendingRefs).toContain('T11');
+    expect(byId.get('cf_interest_expense_addback')?.label['zh-TW']).toBe('利息費用(+)');
+    expect(byId.get('cf_interest_expense_addback')?.aliases['zh-TW']).toContain('支付利息(+)');
+    expect(byId.get('is_interest_expense')?.label['zh-TW']).toBe('利息費用');
+    expect(byId.get('is_interest_expense')?.aliases['zh-TW']).toContain('支付利息');
+    // T09（2026-10-23 決定）：主要顯示改用修正寫法，原字收進別名並帶 typo_fixed
+    expect(byId.get('bs_short_term_loans_receivable')?.label['zh-TW']).toBe('短期放款');
+    expect(byId.get('bs_short_term_loans_receivable')?.aliases['zh-TW']).toContain('短期放貨');
+    expect(byId.get('bs_short_term_loans_receivable')?.flags).toContain('typo_fixed');
+    expect(byId.get('bs_short_term_loans_receivable')?.pendingRefs).toEqual([]);
   });
 
   it('直接法：營業活動由現金標籤加總，六個營業類 kind 都有對應列，小計與合計勾稽到間接法', () => {

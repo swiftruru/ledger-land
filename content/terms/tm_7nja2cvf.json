@@ -10,7 +10,7 @@
   "ifrsEnglish": null,
   "aliases": { "zh-TW": [], "en": [] },
   "flags": ["japanese", "not_ifrs_line", "ifrs_treatment_differs", "unused"],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": ["T04"],
   "ifrsBasis": "IAS 38.57",
   "note": {
