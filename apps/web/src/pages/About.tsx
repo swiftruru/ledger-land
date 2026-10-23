@@ -18,6 +18,11 @@ export default function About() {
           會計樂園是一個公開、開源、手機優先的會計入門學習網站：用闖關題目與報表實驗室，從一家小店的帳開始認識資產、負債、股東權益與三大財務報表，中英雙語，可離線使用。
         </Trans>
       </p>
+      <p>
+        <Link to={localePath(locale, '/design/')}>
+          <Trans id="about.design">關於系統設計</Trans>
+        </Link>
+      </p>
       <h2>
         <Trans id="about.license.title">授權</Trans>
       </h2>
