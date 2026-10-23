@@ -10,7 +10,7 @@ import { Banner, Button } from '@ledgerland/web-ui';
 import type { RouteHandle } from '../app/router.tsx';
 import { environmentKind } from '../lib/env.ts';
 import { nowIso } from '../lib/progress/app-info.ts';
-import { afterFirstPaint } from '../lib/idle.ts';
+import { whenIdle } from '../lib/idle.ts';
 import { getProgressStore } from '../lib/progress/index.ts';
 import { refreshPersisted } from '../lib/progress/persist.ts';
 import { useStorageStatus } from '../lib/progress/status.ts';
@@ -57,8 +57,8 @@ export function useBackupReminder(): BackupReminderStateHook {
       return;
     }
     let alive = true;
-    // 進度資料庫等頁面內容繪製送出後再開（06 第 8.2 節，見 idle.ts），提醒晚幾百毫秒出現沒有關係
-    const cancel = afterFirstPaint(() => {
+    // 進度資料庫等第一次閒置再開（06 第 8.2 節）：這個元件會插在內容上方，不能再多等 afterFirstPaint 的 400ms，否則會在使用者開始捲動後才把內容往下推，提醒晚幾百毫秒出現沒有關係
+    const cancel = whenIdle(() => {
       isReminderDue(persisted).then(
         (v) => alive && setDue(v),
         () => alive && setDue(false),
