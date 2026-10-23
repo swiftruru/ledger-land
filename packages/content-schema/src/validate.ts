@@ -4,6 +4,8 @@ import { LOCALE_CODES, type Locale } from '@ledgerland/i18n';
 import { z } from 'zod';
 import { Chapter } from './chapter.ts';
 import { EVENT_ID_RE, PLACEHOLDER_TYPES, RATIO_REF_RE, idPattern, parsePlaceholders, placeholderKey } from './common.ts';
+import { LEVEL_MAX_JUDGMENT, LEVEL_MAX_SCORED, LEVEL_MIN_SCORED, Level } from './level.ts';
+import { type Objective, ObjectiveFile } from './objective.ts';
 import { Question, questionScope } from './question.ts';
 import { Story } from './story.ts';
 import { TransactionTemplate } from './template.ts';
@@ -21,12 +23,25 @@ export interface ContentBundle {
   templates?: ContentEntry[];
   stories?: ContentEntry[];
   questions?: ContentEntry[];
+  /** M2 起選填：學習目標（一章一檔，data 是 { chapterId, items: Objective[] }）與關卡（一關一檔）。省略時不檢查 objectiveId 與 levelIds 的引用 */
+  objectives?: ContentEntry[];
+  levels?: ContentEntry[];
 }
 
 export interface ContentIssue {
   file: string;
   path: string;
   message: string;
+}
+
+/** 已發布的題目在關卡裡怎麼計數（08 第 5.1 節 struct.levelSize）：計分題、judgment、其餘暫不計分的不算 */
+export function levelSizeIssue(questions: { type: string; scored: boolean; pendingRefs?: string[] }[]): string | null {
+  const scored = questions.filter((q) => q.scored && !(q.pendingRefs && q.pendingRefs.length > 0)).length;
+  const judgment = questions.filter((q) => q.type === 'judgment').length;
+  if (scored < LEVEL_MIN_SCORED || scored > LEVEL_MAX_SCORED)
+    return `關卡要有 ${LEVEL_MIN_SCORED} 到 ${LEVEL_MAX_SCORED} 題計分題，現在有 ${scored} 題（暫不計分的題目不算）`;
+  if (judgment > LEVEL_MAX_JUDGMENT) return `關卡最多附 ${LEVEL_MAX_JUDGMENT} 題不計分的 judgment，現在有 ${judgment} 題`;
+  return null;
 }
 
 /** 佔位符的作用範圍（05 第 10.1 節）：undefined 的集合代表這類內容沒有這種來源可引用 */
@@ -166,16 +181,24 @@ function requireEnEverywhere(file: string, value: unknown, path: string[], out: 
   for (const k of keys) requireEnEverywhere(file, obj[k], [...path, k], out);
 }
 
-function parseAll<T>(entries: ContentEntry[] | undefined, schema: z.ZodType<T>, issues: ContentIssue[], label: string): { file: string; data: T }[] {
+function parseAll<T>(
+  entries: ContentEntry[] | undefined,
+  schema: z.ZodType<T>,
+  issues: ContentIssue[],
+  label: string,
+  hasId = true,
+): { file: string; data: T }[] {
   const out: { file: string; data: T }[] = [];
   const ids = new Set<string>();
   for (const e of entries ?? []) {
     const r = schema.safeParse(e.data);
     issues.push(...zodIssues(e.file, r));
     if (!r.success) continue;
-    const id = (r.data as { id: string }).id;
-    if (ids.has(id)) issues.push({ file: e.file, path: 'id', message: `${label}ID 重複：${id}` });
-    ids.add(id);
+    if (hasId) {
+      const id = (r.data as { id: string }).id;
+      if (ids.has(id)) issues.push({ file: e.file, path: 'id', message: `${label}ID 重複：${id}` });
+      ids.add(id);
+    }
     out.push({ file: e.file, data: r.data });
   }
   return out;
@@ -188,6 +211,20 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   const templates = parseAll(bundle.templates, TransactionTemplate, issues, '範本 ');
   const stories = parseAll(bundle.stories, Story, issues, '故事 ');
   const questions = parseAll(bundle.questions, Question, issues, '題目 ');
+  const objectiveFiles = parseAll(bundle.objectives, ObjectiveFile, issues, '學習目標檔 ', false);
+  const levels = parseAll(bundle.levels, Level, issues, '關卡 ');
+  // 學習目標攤平成一筆一項（path 前綴 items.<i>），ID 全站唯一
+  const objectives: { file: string; path: string; data: Objective }[] = [];
+  {
+    const ids = new Set<string>();
+    for (const f of objectiveFiles)
+      f.data.items.forEach((o, i) => {
+        const path = `items.${i}`;
+        if (ids.has(o.id)) issues.push({ file: f.file, path: `${path}.id`, message: `學習目標 ID 重複：${o.id}` });
+        ids.add(o.id);
+        objectives.push({ file: f.file, path, data: o });
+      });
+  }
 
   const termIds = new Set(terms.map((t) => t.data.id));
   const chapterIds = new Set(chapters.map((c) => c.data.id));
@@ -196,16 +233,49 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   const storyIds = new Set(stories.map((s) => s.data.id));
   const stepOwner = new Map<string, string>();
   const questionIds = new Set(questions.map((q) => q.data.id));
+  const questionById = new Map(questions.map((q) => [q.data.id, q.data]));
+  const objectiveById = new Map(objectives.map((o) => [o.data.id, o.data]));
+  const levelById = new Map(levels.map((l) => [l.data.id, l.data]));
   const ctx: CheckContext = { termIds };
   const checkTemplateRef = bundle.templates !== undefined;
+  const checkObjectiveRef = bundle.objectives !== undefined;
+  const checkLevelRef = bundle.levels !== undefined;
+
+  // 全站 ID 不得跨實體重複（struct.duplicateId）
+  {
+    const owner = new Map<string, string>();
+    const all: { id: string; file: string; path: string; kind: string }[] = [
+      ...terms.map((x) => ({ id: x.data.id, file: x.file, path: 'id', kind: '名詞' })),
+      ...chapters.map((x) => ({ id: x.data.id, file: x.file, path: 'id', kind: '章節' })),
+      ...stories.map((x) => ({ id: x.data.id, file: x.file, path: 'id', kind: '故事' })),
+      ...questions.map((x) => ({ id: x.data.id, file: x.file, path: 'id', kind: '題目' })),
+      ...objectives.map((x) => ({ id: x.data.id, file: x.file, path: `${x.path}.id`, kind: '學習目標' })),
+      ...levels.map((x) => ({ id: x.data.id, file: x.file, path: 'id', kind: '關卡' })),
+    ];
+    for (const x of all) {
+      const prev = owner.get(x.id);
+      if (prev !== undefined && prev !== x.kind) issues.push({ file: x.file, path: x.path, message: `${x.kind} ID ${x.id} 已被${prev}使用（全站 ID 不重複）` });
+      owner.set(x.id, x.kind);
+    }
+  }
 
   // 佔位符（結構失敗的檔案只檢查語法與跨語言，不檢查作用範圍）
-  const parsedFiles = new Set([...terms, ...chapters, ...templates, ...stories, ...questions].map((x) => x.file));
-  for (const e of [...bundle.terms, ...bundle.chapters, ...(bundle.templates ?? []), ...(bundle.stories ?? []), ...(bundle.questions ?? [])]) {
+  const parsedFiles = new Set([...terms, ...chapters, ...templates, ...stories, ...questions, ...objectiveFiles, ...levels].map((x) => x.file));
+  for (const e of [
+    ...bundle.terms,
+    ...bundle.chapters,
+    ...(bundle.templates ?? []),
+    ...(bundle.stories ?? []),
+    ...(bundle.questions ?? []),
+    ...(bundle.objectives ?? []),
+    ...(bundle.levels ?? []),
+  ]) {
     if (!parsedFiles.has(e.file)) checkPlaceholders(e.file, e.data, [], issues, ctx);
   }
   for (const t of terms) checkPlaceholders(t.file, t.data, [], issues, ctx, () => NO_SCOPE);
   for (const c of chapters) checkPlaceholders(c.file, c.data, [], issues, ctx, () => NO_SCOPE);
+  for (const f of objectiveFiles) checkPlaceholders(f.file, f.data, [], issues, ctx, () => NO_SCOPE);
+  for (const l of levels) checkPlaceholders(l.file, l.data, [], issues, ctx, () => NO_SCOPE);
   for (const t of templates) {
     const templateScope: PlaceholderScope = {
       kind: 'template',
@@ -240,6 +310,70 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   for (const c of chapters) {
     for (const ref of c.data.termRefs ?? []) need(c.file, 'termRefs', termIds.has(ref), `引用不存在的名詞 ${ref}`);
     for (const pre of c.data.prerequisites ?? []) need(c.file, 'prerequisites', chapterIds.has(pre), `引用不存在的章節 ${pre}`);
+    for (const link of c.data.chapterEndLinks ?? []) {
+      need(c.file, 'chapterEndLinks', storyIds.has(link.story), `引用不存在的故事 ${link.story}`);
+      if (storyIds.has(link.story)) need(c.file, 'chapterEndLinks', stepOwner.get(link.step) === link.story, `步驟 ${link.step} 不屬於故事 ${link.story}`);
+    }
+    if (new Set(c.data.objectiveIds).size !== c.data.objectiveIds.length) issues.push({ file: c.file, path: 'objectiveIds', message: 'objectiveIds 不得重複' });
+    if (new Set(c.data.levelIds).size !== c.data.levelIds.length) issues.push({ file: c.file, path: 'levelIds', message: 'levelIds 不得重複' });
+    if (checkObjectiveRef)
+      for (const id of c.data.objectiveIds) {
+        const o = objectiveById.get(id);
+        if (o === undefined) issues.push({ file: c.file, path: 'objectiveIds', message: `引用不存在的學習目標 ${id}` });
+        else if (o.chapterId !== c.data.id)
+          issues.push({ file: c.file, path: 'objectiveIds', message: `學習目標 ${id} 屬於章節 ${o.chapterId}，不是 ${c.data.id}` });
+        else if (c.data.status === 'published' && o.status !== 'published')
+          issues.push({ file: c.file, path: 'objectiveIds', message: `已發布的章節只能列已發布的學習目標，${id} 是 ${o.status}` });
+      }
+    if (checkLevelRef)
+      for (const id of c.data.levelIds) {
+        const l = levelById.get(id);
+        if (l === undefined) issues.push({ file: c.file, path: 'levelIds', message: `引用不存在的關卡 ${id}` });
+        else if (l.chapterId !== c.data.id) issues.push({ file: c.file, path: 'levelIds', message: `關卡 ${id} 屬於章節 ${l.chapterId}，不是 ${c.data.id}` });
+        else if (c.data.status === 'published' && l.status !== 'published')
+          issues.push({ file: c.file, path: 'levelIds', message: `已發布的章節只能列已發布的關卡，${id} 是 ${l.status}` });
+      }
+  }
+  for (const o of objectives) {
+    const d = o.data;
+    need(o.file, `${o.path}.chapterId`, chapterIds.has(d.chapterId), `引用不存在的章節 ${d.chapterId}`);
+    for (const ref of d.termRefs ?? []) need(o.file, `${o.path}.termRefs`, termIds.has(ref), `引用不存在的名詞 ${ref}`);
+    if (d.supersededBy) need(o.file, `${o.path}.supersededBy`, objectiveById.has(d.supersededBy), `引用不存在的學習目標 ${d.supersededBy}`);
+    (d.labRefs ?? []).forEach((ref, j) => {
+      need(o.file, `${o.path}.labRefs.${j}.story`, storyIds.has(ref.story), `引用不存在的故事 ${ref.story}`);
+      if (storyIds.has(ref.story))
+        need(o.file, `${o.path}.labRefs.${j}.step`, stepOwner.get(ref.step) === ref.story, `步驟 ${ref.step} 不屬於故事 ${ref.story}`);
+    });
+  }
+  for (const l of levels) {
+    const d = l.data;
+    need(l.file, 'chapterId', chapterIds.has(d.chapterId), `引用不存在的章節 ${d.chapterId}`);
+    if (d.supersededBy) need(l.file, 'supersededBy', levelById.has(d.supersededBy), `引用不存在的關卡 ${d.supersededBy}`);
+    if (checkObjectiveRef)
+      for (const id of d.objectiveIds ?? []) {
+        const o = objectiveById.get(id);
+        if (o === undefined) issues.push({ file: l.file, path: 'objectiveIds', message: `引用不存在的學習目標 ${id}` });
+        else if (o.chapterId !== d.chapterId)
+          issues.push({ file: l.file, path: 'objectiveIds', message: `學習目標 ${id} 屬於章節 ${o.chapterId}，不是 ${d.chapterId}` });
+      }
+    const members: { type: string; scored: boolean; pendingRefs?: string[] }[] = [];
+    d.questionIds.forEach((id, j) => {
+      const q = questionById.get(id);
+      if (q === undefined) {
+        issues.push({ file: l.file, path: `questionIds.${j}`, message: `引用不存在的題目 ${id}` });
+        return;
+      }
+      if (q.chapterId !== d.chapterId)
+        issues.push({ file: l.file, path: `questionIds.${j}`, message: `題目 ${id} 屬於章節 ${q.chapterId}，關卡屬於 ${d.chapterId}` });
+      if (d.status === 'published' && q.status !== 'published')
+        issues.push({ file: l.file, path: `questionIds.${j}`, message: `已發布的關卡只能列已發布的題目，${id} 是 ${q.status}` });
+      members.push({ type: q.type, scored: q.scored, pendingRefs: q.pendingRefs });
+    });
+    // struct.levelSize 只對已發布的關卡強制（草稿由 content:check 以警告提醒）
+    if (d.status === 'published' && members.length === d.questionIds.length) {
+      const msg = levelSizeIssue(members);
+      if (msg !== null) issues.push({ file: l.file, path: 'questionIds', message: msg });
+    }
   }
   for (const t of templates) {
     for (const ref of t.data.termRefs) need(t.file, 'termRefs', termIds.has(ref), `引用不存在的名詞 ${ref}`);
@@ -262,6 +396,22 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
     const d = q.data;
     need(q.file, 'chapterId', chapterIds.has(d.chapterId), `引用不存在的章節 ${d.chapterId}`);
     for (const ref of d.termRefs) need(q.file, 'termRefs', termIds.has(ref), `引用不存在的名詞 ${ref}`);
+    if (checkObjectiveRef) {
+      const o = objectiveById.get(d.objectiveId);
+      if (o === undefined) issues.push({ file: q.file, path: 'objectiveId', message: `引用不存在的學習目標 ${d.objectiveId}` });
+      else {
+        if (o.chapterId !== d.chapterId)
+          issues.push({ file: q.file, path: 'objectiveId', message: `學習目標 ${d.objectiveId} 屬於章節 ${o.chapterId}，題目屬於 ${d.chapterId}` });
+        if (d.status === 'published' && o.status !== 'published')
+          issues.push({ file: q.file, path: 'objectiveId', message: `已發布的題目只能對應已發布的學習目標，${d.objectiveId} 是 ${o.status}` });
+        const mcIds = new Set((o.misconceptions ?? []).map((m) => m.id));
+        const checkMc = (path: string, id: string | undefined) => {
+          if (id !== undefined && !mcIds.has(id)) issues.push({ file: q.file, path, message: `學習目標 ${o.id} 沒有迷思 ${id}` });
+        };
+        if ('options' in d) d.options.forEach((opt, i) => checkMc(`options.${i}.misconceptionId`, 'misconceptionId' in opt ? opt.misconceptionId : undefined));
+        if (d.type === 'true_false') checkMc('misconceptionId', d.misconceptionId);
+      }
+    }
     if (d.supersededBy) need(q.file, 'supersededBy', questionIds.has(d.supersededBy), `引用不存在的題目 ${d.supersededBy}`);
     if (d.labRef) {
       need(q.file, 'labRef.story', storyIds.has(d.labRef.story), `引用不存在的故事 ${d.labRef.story}`);
@@ -317,7 +467,8 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
       requireEn(`chapter ${c.data.id}`, 'title.en', c.data.title);
       requireEn(`chapter ${c.data.id}`, 'summary.en', c.data.summary);
     }
-  for (const x of [...templates, ...stories, ...questions]) if (x.data.status === 'published') requireEnEverywhere(x.file, x.data, [], issues);
+  for (const x of [...templates, ...stories, ...questions, ...levels]) if (x.data.status === 'published') requireEnEverywhere(x.file, x.data, [], issues);
+  for (const o of objectives) if (o.data.status === 'published') requireEnEverywhere(o.file, o.data, o.path.split('.'), issues);
 
   // 章節順序不重複
   const orders = chapters.map((c) => c.data.order);

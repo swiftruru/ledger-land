@@ -10,4 +10,6 @@ export * from './ratio.ts';
 export * from './scenario.ts';
 export * from './story.ts';
 export * from './question.ts';
-export { validateBundle, type ContentBundle, type ContentIssue } from './validate.ts';
+export * from './objective.ts';
+export * from './level.ts';
+export { validateBundle, levelSizeIssue, type ContentBundle, type ContentEntry, type ContentIssue } from './validate.ts';

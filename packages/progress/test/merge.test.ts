@@ -1,0 +1,138 @@
+// 06 第 4.6 節合併表：每一列一例（含去重與衝突）、覆蓋模式、importHistory
+import { describe, expect, it } from 'vitest';
+import { type ImportOptions, mergeData, mergeSnapshots, replaceSnapshot } from '../src/index.ts';
+import {
+  DEVICE_A,
+  DEVICE_B,
+  LV1,
+  LV2,
+  Q1,
+  Q2,
+  STORY1,
+  STEP1,
+  STEP2,
+  T0,
+  T1,
+  T2,
+  T3,
+  TERM1,
+  attempt,
+  data,
+  labState,
+  level,
+  review,
+  sandbox,
+  setting,
+  snapshot,
+  unlock,
+} from './fixtures.ts';
+
+const opts: ImportOptions = {
+  mode: 'merge',
+  settings: false,
+  importedAt: T3,
+  source: { deviceId: DEVICE_B, origin: 'https://example.test', mode: 'browser', exportedAt: T2 },
+};
+
+describe('合併規則', () => {
+  it('attempts：依（題目、rev、作答時間、deviceId）取聯集去重；同鍵不同 attemptId 取較小者', () => {
+    const shared = attempt({ attemptId: 'a_000000000002', questionId: Q1, answeredAt: T0 });
+    const sameKeyOtherId = { ...shared, attemptId: 'a_000000000001' };
+    const a = data({ attempts: [shared, attempt({ attemptId: 'a_000000000003', questionId: Q2, answeredAt: T1 })] });
+    const b = data({ attempts: [sameKeyOtherId, attempt({ attemptId: 'a_000000000004', questionId: Q1, answeredAt: T0, deviceId: DEVICE_B })] });
+    const m = mergeData(a, b, { settings: false });
+    expect(m.attempts.map((x) => x.attemptId)).toEqual(['a_000000000001', 'a_000000000004', 'a_000000000003']);
+  });
+  it('levelProgress：stars 與 bestScore 取最大、firstCompletedAt 最早、lastPlayedAt 最晚；沒有 firstCompletedAt 的一邊不影響', () => {
+    const a = data({
+      levelProgress: [
+        level({ levelId: LV1, stars: 1, bestScore: 0.6, firstCompletedAt: T2, lastPlayedAt: T2 }),
+        { levelId: LV2, stars: 0, bestScore: 0, lastPlayedAt: T0 },
+      ],
+    });
+    const b = data({
+      levelProgress: [
+        level({ levelId: LV1, stars: 3, bestScore: 0.4, firstCompletedAt: T1, lastPlayedAt: T1 }),
+        level({ levelId: LV2, stars: 2, bestScore: 0.8, firstCompletedAt: T3, lastPlayedAt: T3 }),
+      ],
+    });
+    const m = mergeData(a, b, { settings: false });
+    expect(m.levelProgress).toEqual([
+      { levelId: LV1, stars: 3, bestScore: 0.6, firstCompletedAt: T1, lastPlayedAt: T2 },
+      { levelId: LV2, stars: 2, bestScore: 0.8, firstCompletedAt: T3, lastPlayedAt: T3 },
+    ]);
+  });
+  it('reviewQueue：同題取最後作答者；rev 高者優先；wrongCount 由合併後的 attempts 重算', () => {
+    const attempts = [
+      attempt({ attemptId: 'a_000000000011', questionId: Q1, answeredAt: T0, correct: false }),
+      attempt({ attemptId: 'a_000000000012', questionId: Q1, answeredAt: T1, correct: false, deviceId: DEVICE_B }),
+      attempt({ attemptId: 'a_000000000013', questionId: Q2, answeredAt: T1, correct: true }),
+    ];
+    const a = data({
+      attempts: attempts.slice(0, 1),
+      reviewQueue: [
+        review({ questionId: Q1, lastAnsweredAt: T2, box: 2, lastResult: 'correct', wrongCount: 9 }),
+        review({ questionId: Q2, rev: 1, lastAnsweredAt: T3 }),
+      ],
+    });
+    const b = data({
+      attempts: attempts.slice(1),
+      reviewQueue: [review({ questionId: Q1, lastAnsweredAt: T1, box: 1 }), review({ questionId: Q2, rev: 2, lastAnsweredAt: T0, status: 'question_updated' })],
+    });
+    const m = mergeData(a, b, { settings: false });
+    expect(m.reviewQueue).toEqual([
+      { ...review({ questionId: Q2, rev: 2, lastAnsweredAt: T0, status: 'question_updated' }), wrongCount: 0 },
+      { ...review({ questionId: Q1, lastAnsweredAt: T2, box: 2, lastResult: 'correct' }), wrongCount: 2 },
+    ]);
+  });
+  it('unlocks：聯集，unlockedAt 取最早', () => {
+    const a = data({ unlocks: [unlock(`term:${TERM1}`, T2)] });
+    const b = data({ unlocks: [unlock(`term:${TERM1}`, T1), unlock('badge:b1', T3)] });
+    expect(mergeData(a, b, { settings: false }).unlocks).toEqual([unlock('badge:b1', T3), unlock(`term:${TERM1}`, T1)]);
+  });
+  it('labState：同故事取 updatedAt 較晚者', () => {
+    const a = data({ labState: [labState({ stepId: STEP1, updatedAt: T1 })] });
+    const b = data({ labState: [labState({ stepId: STEP2, updatedAt: T2 })] });
+    expect(mergeData(a, b, { settings: false }).labState).toEqual([{ storyId: STORY1, stepId: STEP2, updatedAt: T2 }]);
+    expect(mergeData(b, a, { settings: false }).labState).toEqual([{ storyId: STORY1, stepId: STEP2, updatedAt: T2 }]);
+  });
+  it('labSandbox：整筆取 updatedAt 較晚者，overrides 不逐項合併', () => {
+    const older = sandbox({ updatedAt: T1, overrides: [{ stepId: STEP2, eventId: 'e1', param: 'amount', value: 1 }] });
+    const newer = sandbox({ updatedAt: T2, overrides: [] });
+    expect(mergeData(data({ labSandbox: [older] }), data({ labSandbox: [newer] }), { settings: false }).labSandbox).toEqual([newer]);
+  });
+  it('settings：預設不匯入；勾選時以來源覆蓋同鍵', () => {
+    const a = data({ settings: [setting('locale', 'zh-TW'), setting('timerEnabled', false)] });
+    const b = data({ settings: [setting('locale', 'en', T2)] });
+    expect(mergeData(a, b, { settings: false }).settings).toEqual([setting('locale', 'zh-TW'), setting('timerEnabled', false)]);
+    expect(mergeData(a, b, { settings: true }).settings).toEqual([setting('locale', 'en', T2), setting('timerEnabled', false)]);
+  });
+  it('mergeSnapshots：meta.deviceId 保留本機、importHistory 加一筆；errors 與 snapshots 不動', () => {
+    const current = snapshot({ errors: [{ at: T0, route: '/play/', message: 'x', appVersion: '0.2.0', contentVersion: 3 }] });
+    const incoming = data({ attempts: [attempt({ questionId: Q1, answeredAt: T0, deviceId: DEVICE_B })] });
+    const m = mergeSnapshots(current, incoming, opts);
+    expect(m.meta.deviceId).toBe(DEVICE_A);
+    expect(m.meta.importHistory).toEqual([
+      { importedAt: T3, mode: 'merge', sourceDeviceId: DEVICE_B, sourceOrigin: 'https://example.test', sourceMode: 'browser', exportedAt: T2, attempts: 1 },
+    ]);
+    expect(m.errors).toHaveLength(1);
+    expect(m.attempts).toHaveLength(1);
+  });
+});
+
+describe('覆蓋模式', () => {
+  it('除了設定之外全部取代；deviceId 保留、importHistory 記 replace', () => {
+    const current = snapshot({
+      attempts: [attempt({ questionId: Q1, answeredAt: T0 })],
+      unlocks: [unlock('badge:old', T0)],
+      settings: [setting('locale', 'zh-TW')],
+    });
+    const incoming = data({ attempts: [attempt({ questionId: Q2, answeredAt: T1, deviceId: DEVICE_B })], settings: [setting('locale', 'en')] });
+    const r = replaceSnapshot(current, incoming, { ...opts, mode: 'replace' });
+    expect(r.attempts.map((a) => a.questionId)).toEqual([Q2]);
+    expect(r.unlocks).toEqual([]);
+    expect(r.settings).toEqual([setting('locale', 'zh-TW')]);
+    expect(r.meta.deviceId).toBe(DEVICE_A);
+    expect(r.meta.importHistory[0]?.mode).toBe('replace');
+  });
+});

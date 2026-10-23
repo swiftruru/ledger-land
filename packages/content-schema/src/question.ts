@@ -25,8 +25,16 @@ export const ScoringMode = z.enum(['any_correct', 'all_correct']);
 export type ScoringMode = z.infer<typeof ScoringMode>;
 export const StatementCode = z.enum(['is', 'bs', 'cf']);
 
+/** 選項（03 第 2.8 節）：short 是給 {{option:o_xxxx}} 引用的簡短版；pin: "last" 讓「以上皆是」這類選項固定在最後，不參與打散 */
 export const ChoiceOption = z
-  .object({ id: idSchema('option'), text: Markup, feedback: Markup, misconceptionId: idSchema('misconception').optional() })
+  .object({
+    id: idSchema('option'),
+    text: Markup,
+    short: Markup.optional(),
+    feedback: Markup,
+    misconceptionId: idSchema('misconception').optional(),
+    pin: z.literal('last').optional(),
+  })
   .strict()
   .meta({ id: 'ChoiceOption' });
 export type ChoiceOption = z.infer<typeof ChoiceOption>;
@@ -103,8 +111,16 @@ export const ClassifyQuestion = base
     correctCategories: z.record(idSchema('item'), z.string().regex(/^[a-z][a-z0-9_]*$/)).optional(),
   })
   .strict();
+/** 交易影響題的計分（03 第 2.4 節）：預設全部 target 都對才算對（allOrNothing），可改為逐 target 計分（perTarget） */
+export const TransactionEffectScoring = z.enum(['allOrNothing', 'perTarget']);
+export type TransactionEffectScoring = z.infer<typeof TransactionEffectScoring>;
 export const TransactionEffectQuestion = base
-  .extend({ type: z.literal('transaction_effect'), scenario: Scenario, choices: z.array(Direction).min(1).optional() })
+  .extend({
+    type: z.literal('transaction_effect'),
+    scenario: Scenario,
+    choices: z.array(Direction).min(1).optional(),
+    scoring: TransactionEffectScoring.optional(),
+  })
   .strict();
 export const FiveStepFillQuestion = base.extend({ type: z.literal('five_step_fill'), scenario: Scenario, openCells: z.array(LineId).min(1) }).strict();
 export const RatioNumericQuestion = base
@@ -162,7 +178,11 @@ export const Question = QuestionUnion.superRefine((q, ctx) => {
   if (q.pendingRefs && q.pendingRefs.length > 0 && q.scored) {
     ctx.addIssue({ code: 'custom', path: ['scored'], message: 'pendingRefs 非空的題目暫不計分，scored 必須是 false' });
   }
-  if ('options' in q) uniqueIds(q.options, ctx, 'options', '選項');
+  if ('options' in q) {
+    uniqueIds(q.options, ctx, 'options', '選項');
+    const pinned = q.options.filter((o) => 'pin' in o && o.pin === 'last');
+    if (pinned.length > 1) ctx.addIssue({ code: 'custom', path: ['options'], message: '最多只能有一個選項 pin 在最後' });
+  }
   switch (q.type) {
     case 'single_choice':
     case 'pick_statement':

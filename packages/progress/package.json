@@ -1,0 +1,20 @@
+{
+  "name": "@ledgerland/progress",
+  "version": "0.0.0",
+  "private": true,
+  "description": "進度（06 第 4 節）：進度資料模型與 Zod schema、儲存介面與記憶體實作、由作答紀錄推導關卡成績、資料版本升級、備份檔與文字備份碼、匯入合併規則、作答工作階段；純 TypeScript，不碰 DOM、IndexedDB、Date 與 Math.random",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ledgerland/content-schema": "workspace:*",
+    "@ledgerland/quiz": "workspace:*",
+    "zod": "4.6.5"
+  }
+}

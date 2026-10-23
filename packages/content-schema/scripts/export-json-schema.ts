@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { Account } from '../src/account.ts';
 import { Chapter } from '../src/chapter.ts';
 import { Layout } from '../src/layout.ts';
+import { Level } from '../src/level.ts';
+import { ObjectiveFile } from '../src/objective.ts';
 import { PolicyDefinition } from '../src/policy.ts';
 import { Question } from '../src/question.ts';
 import { RatioDefinition } from '../src/ratio.ts';
@@ -23,6 +25,8 @@ const targets = {
   'ratio.schema.json': RatioDefinition,
   'story.schema.json': Story,
   'question.schema.json': Question,
+  'objective.schema.json': ObjectiveFile,
+  'level.schema.json': Level,
 } as const;
 const check = process.argv.includes('--check');
 let bad = 0;

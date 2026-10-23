@@ -1,0 +1,21 @@
+{
+  "name": "@ledgerland/quiz",
+  "version": "0.0.0",
+  "private": true,
+  "description": "判分與遊戲化規則（03 第 2 節、04 第 2 節）：各題型作答格式、判分（含數字題容許誤差、多正解題、分錄題）、固定種子的選項打散、星星門檻、錯題本的 Leitner 盒子；純 TypeScript，不含 UI 與儲存",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ledgerland/content-schema": "workspace:*",
+    "@ledgerland/core": "workspace:*",
+    "@ledgerland/i18n": "workspace:*",
+    "zod": "4.6.5"
+  }
+}
