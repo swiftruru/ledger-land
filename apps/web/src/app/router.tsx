@@ -22,10 +22,12 @@ function buildRoutes(locale: Locale): RouteObject[] {
     prefetch?.();
     return { Component: (await load()).default };
   };
-  // 名詞頁在載入頁面 chunk 的同時就開始讀快照（失敗由頁面自己處理，這裡只吞掉）
-  const prefetchTerms = () => {
-    for (const l of ['zh-TW', 'en'] as const) void loadTerms(l).catch(() => {});
+  // 名詞頁在載入頁面 chunk 的同時就開始讀快照（失敗由頁面自己處理，這裡只吞掉）。
+  // 名詞列表只用目前語言；名詞卡與作答頁要同時顯示另一種語言的名稱，兩份都先讀（另一份約 9 KB gzip，列表頁不該跟它搶第二波的頻寬）
+  const prefetchTerms = (locales: readonly Locale[] = ['zh-TW', 'en']) => {
+    for (const l of locales) void loadTerms(l).catch(() => {});
   };
+  const prefetchCurrentTerms = () => prefetchTerms([locale]);
   // 闖關地圖與章節頁：各章的章節快照（17 第 5.1 節）也在載入頁面 chunk 的同時開始讀，少一個往返
   const prefetchChapters = () => {
     void loadManifest()
@@ -53,7 +55,7 @@ function buildRoutes(locale: Locale): RouteObject[] {
     },
     { path: 'lab', Component: Placeholder, handle: { kind: 'lab' } },
     { path: 'review', lazy: lazyPage(() => import('../pages/Review.tsx')), handle: { noindex: true } satisfies RouteHandle },
-    { path: 'terms', lazy: lazyPage(() => import('../pages/Terms.tsx'), prefetchTerms) },
+    { path: 'terms', lazy: lazyPage(() => import('../pages/Terms.tsx'), prefetchCurrentTerms) },
     { path: 'terms/:termId', lazy: lazyPage(() => import('../pages/Term.tsx'), prefetchTerms) },
     { path: 'me', Component: Me, handle: { noindex: true } satisfies RouteHandle },
     { path: 'me/settings', lazy: lazyPage(() => import('../pages/Settings.tsx')), handle: { noindex: true } satisfies RouteHandle },
