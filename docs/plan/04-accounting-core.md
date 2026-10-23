@@ -1,6 +1,6 @@
 # 04 會計核心資料模型與內容資料格式
 
-這份文件定義 `packages/core` 的資料模型、計算規則與對外 API，以及題目、名詞、交易範本與故事的資料格式。會計核心以複式分錄為唯一的會計事實來源，三表、財務指標、五步驟勾稽、交易影響與題目答案全部由分錄推導，和 UI 無關，可以完整測試。教材沒有明說、或和現行準則不同的處理，一律標上待確認編號，不自行假設。正式故事依 D2 使用老師的情境與金額，但本文件的範例與 repo 內的測試一律用自編的公司（青檸文具社）與金額，只有第 10 節為了說明 IFRS 對照的差距，引用了正式故事的推算結果。
+這份文件定義 `packages/core` 的資料模型、計算規則與對外 API，以及題目、名詞、交易範本與故事的資料格式。會計核心以複式分錄為唯一的會計事實來源，三表、財務指標、五步驟勾稽、交易影響與題目答案全部由分錄推導，和 UI 無關，可以完整測試。教材沒有明說、或和現行準則不同的處理，一律標上 14 的 T 系列編號；2026-10-23 起這些編號指向已寫下理由的設計決定（14 第 2 節），畫面顯示「設計說明」而不是「待確認」，計分不受影響。正式故事依 D2 使用老師的情境與金額，但本文件的範例與 repo 內的測試一律用自編的公司（青檸文具社）與金額，只有第 10 節為了說明 IFRS 對照的差距，引用了正式故事的推算結果。
 
 ## 確定要做
 
@@ -27,7 +27,7 @@
 - 追蹤深度採 A 完整公式樹與來源分錄（已決定 D10(c)，評估三）：核心從 M1 起輸出追蹤樹，任一報表數字可以一層一層展開到公式、科目，最底層列出來源步驟、事件與分錄行；來源分錄放在可展開的分錄層。畫面在 M4b 實作（第 6.4 節）。
 - 中英兩種介面都用教材版面，非 IFRS 項目在兩種介面都加標記（中文「非 IFRS 項目」、英文「Not an IFRS line item」，字串放在 05 的 catalog），可隨時切到 IFRS 對照；英文拼字用英式，美式拼法列為英文搜尋別名（已決定 D11，評估六、第 16.3 節）。
 - 新增多正解題型 `multi_choice`（已決定 D12，評估五）：`correctOptionIds` 至少兩個，必填 `scoringMode`（`any_correct` 或 `all_correct`），不給部分分數；`scoringMode` 與 `correctOptionIds` 列入 `answerHash`，改動任一個都是答案改版；M2 與單選題共用元件實作（第 16.2、17.10 節）。
-- W01 到 W15 全部採用（已決定 D13，評估七）：科目表與版面的顯示字照 W 系列修改，教材原字一律保留為可搜尋的別名；「短期放貨」不在 W 系列內，仍等【待確認 T09】；牽涉 T 系列的列名維持教材原字（第 4、11 節）。
+- W01 到 W15 全部採用（已決定 D13，評估七）：科目表與版面的顯示字照 W 系列修改，教材原字一律保留為可搜尋的別名；「短期放貨」已決定（2026-10-23，【待確認 T09】）比照 W 系列以「短期放款」為主要顯示、原字為別名並帶 `typo_fixed`；利息三列依【待確認 T11】的決定改為清楚的寫法、教材原字為別名（第 4、11 節）。
 - 內容狀態只有 `draft`、`published`、`retired`，不設 review（已決定 D10(g)，第 7、16.2 節）。
 
 ## 需評估
@@ -71,7 +71,7 @@ C 的風險與對策：
 對核心與資料格式的影響：
 - 三個選項的核心都一樣，M1 不增加工作。`effects` 是「科目變動」那一步的主要內容；展開「看分錄與 T 字帳」時，畫面取同一步的 `PostedStep.entries` 與 `buildTAccounts` 的結果（第 2、6.5 節）。
 - validator 只允許 `journal_entry` 題目屬於 `scope: "extension"`、`examScope: "not_in_exam"` 的「借貸與分錄」延伸章（章節欄位見 08 第 3.3 節，規則對應 08 的 `ans.journalScope`）；主線章節出現分錄題時建置失敗。
-- 第 5 筆設立費、第 16 筆盤盈、第 17 筆攤銷的範本帶 `entryQuestionBlockedBy`，老師確認前不能用來出分錄題（第 14 節）。
+- `entryQuestionBlockedBy` 機制保留，但 2026-10-23 起沒有範本使用：第 5 筆設立費、第 16 筆盤盈、第 17 筆攤銷已依【待確認 T04】【待確認 T05】【待確認 T06】的決定處理，可以出分錄題；只有日後真正懸而未決的做法才填（第 14 節）。
 - 延伸章的教學卡要說明內帳的永續盤存分錄（借記存貨）和教材版面「本期進貨、期末存貨」的對應（第 5.2 節）。
 
 ### 評估三：「這個數字從哪裡來」的追蹤深度（已決定 D10(c)）
@@ -141,7 +141,7 @@ C 的風險與對策：
 
 ### 評估七：W 系列建議在科目表與版面上的落點（已決定 D13）
 
-已決定（D13，2026-10-20）：A，W01 到 W15 全部採用；教材原字一律保留為可搜尋的別名。「短期放貨」不在 W 系列內，仍等老師回覆【待確認 T09】，維持教材原字為主要顯示。
+已決定（D13，2026-10-20）：A，W01 到 W15 全部採用；教材原字一律保留為可搜尋的別名。「短期放貨」不在 W 系列內；已決定（2026-10-23，【待確認 T09】）比照 W 系列以修正寫法「短期放款」為主要顯示，原字為別名並帶 `typo_fixed`。
 
 核心是資料驅動的，科目名稱、別名與列名都是資料，四個選項在核心的成本相同，差別只在畫面上看到的字。選項代號與內容和 [14 待確認](14-open-questions.md) 的 D13 相同。
 
@@ -175,7 +175,7 @@ W 系列在本文件的落點：
 | W15 | 不在核心（`judgment` 題與名詞卡標「老師觀點」，見 08） | 核心無變化 |
 
 不在 W 系列內、但和顯示字有關的處理：
-- 「短期放貨」仍等 T09；模板「營業利益佔時收資本比率」的「時收」依 12 的處理隨 D13 A 改為「實收」，是否仍屬現行年報指標仍等【待確認 T23】。
+- 「短期放貨」依 T09 的決定（2026-10-23）改為「短期放款」；模板「營業利益佔時收資本比率」的「時收」依 12 的處理隨 D13 A 改為「實收」，是否仍屬現行年報指標依【待確認 T23】的決定在 M3 出題前查證。
 - 牽涉 T 系列的列名（H13、H21 依 T11；H15 依 T12、T15）維持教材原字為主要顯示，建議寫法先列為別名，等老師回覆後再改。
 - 現行財報用語（例如「營業活動之淨現金流量」「支付之股利」）依 W07 的原則只當別名，不取代教材原字。
 
@@ -292,7 +292,7 @@ type Section =
 type AccountFlag =
   | 'japanese'               // 日式科目或日式分類
   | 'old_name'               // IFRS 之前的舊稱
-  | 'typo_fixed'             // 教材原文疑似誤植；W 系列涵蓋的項目依 D13 A 以修正寫法為主要顯示、原字列為別名；短期放貨不在 W 系列內，仍等 T09，維持原字為主要顯示。T09 回覆前短期放貨不帶這個旗標，只帶 pendingRefs
+  | 'typo_fixed'             // 教材原文疑似誤植；W 系列涵蓋的項目依 D13 A 以修正寫法為主要顯示、原字列為別名；短期放貨不在 W 系列內，但依 T09 的決定（2026-10-23）同樣以修正寫法「短期放款」為主要顯示並帶這個旗標
   | 'unused'                 // 本課故事未用，實驗室預設隱藏
   | 'not_ifrs_line'          // IFRS 沒有或禁止的列
   | 'ifrs_treatment_differs' // 不只是用語不同，IFRS 的處理會改變金額或分類
@@ -320,7 +320,7 @@ interface Account {
   flags: AccountFlag[];
   ifrsTreatment: { note: LocalizedText; amountImpact: LocalizedText } | null; // 有 ifrs_treatment_differs 時必填
   cashFlow: { indirect: IndirectRule; defaultActivity: 'operating' | 'investing' | 'financing' | null };
-  pendingRefs: string[];              // 例如 ['T04', 'T05']
+  pendingRefs: string[];              // 例如 ['T04', 'T05']；相關設計決定的編號（14 的 T 系列），畫面顯示「設計說明」，不影響計分
 }
 ```
 
@@ -337,7 +337,7 @@ interface Account {
 | `cash` | 現金及約當現金 | 同 | Cash and cash equivalents | 資產／流動資產 | 借 | 流動 | |
 | `accounts_receivable` | 應收帳款 | 應收帳款淨額；別名：銷貨債權（日式） | Trade receivables（別名：Trade and other receivables） | 資產／流動資產 | 借 | 流動 | |
 | `inventory` | 存貨 | 同 | Inventories | 資產／流動資產 | 借 | 流動 | |
-| `short_term_loans_receivable` | 短期放貨（修正寫法仍等【待確認 T09】；不在 W 系列內） | 別名：短期放款；一般公司多列其他應收款 | Short-term loans receivable（別名：Loans receivable） | 資產／流動資產 | 借 | 流動 | |
+| `short_term_loans_receivable` | 短期放款（已決定【待確認 T09】，2026-10-23；教材原字「短期放貨」為別名並帶 `typo_fixed`） | 別名：短期放貨；一般公司多列其他應收款 | Short-term loans receivable（別名：Loans receivable） | 資產／流動資產 | 借 | 流動 | |
 | `machinery_equipment` | 機器設備 | 不動產、廠房及設備（機器設備）；別名：固定資產（舊稱，W07） | Property, plant and equipment | 資產／非流動資產 | 借 | 非流動 | |
 | `accumulated_depreciation_machinery` | 累計折舊－機器設備（模板無此列） | 累計折舊 | Accumulated depreciation | 資產／非流動資產 | 貸 | 非流動 | `machinery_equipment` |
 | `intangible_assets` | 無形資產 | 同 | Intangible assets | 資產／非流動資產 | 借 | 非流動 | |
@@ -846,8 +846,8 @@ interface TransactionTemplate {
   lines: LineSpec[];
   explanation: LocalizedText;
   termRefs: string[];
-  pendingRefs?: string[];            // 例如 ['T06']，畫面顯示待確認標記
-  entryQuestionBlockedBy?: string[]; // 例如 ['T04']；非空時不得用這個範本在延伸章出分錄題（第 14 節）
+  pendingRefs?: string[];            // 例如 ['T06']；相關設計決定的編號（14 的 T 系列），畫面顯示「設計說明」，不影響計分
+  entryQuestionBlockedBy?: string[]; // 例如 ['T04']；非空時不得用這個範本在延伸章出分錄題（第 14 節）。機制保留，2026-10-23 起沒有範本使用
 }
 
 interface ParamSpec {
@@ -881,7 +881,7 @@ interface LineSpec {
 }
 ```
 
-欄位名稱與 08 第 3.8 節一致（`title`、`summary`、`explanation`、陣列形式的 `params` 與 `derived`、`preconditions`、`lines`、`termRefs`、`pendingRefs`、`entryQuestionBlockedBy`）；08 第 3.8 節只列管理上的意義，型別與語意以本節為準。「其他政策的替代分錄行」一律寫成每一行的 `policyWhen`，不另設範本層級的欄位。`pendingRefs` 與 `entryQuestionBlockedBy` 並存、用途不同：前者讓實驗室顯示「待確認」標記，後者阻擋用這個範本出分錄題（第 14 節）。
+欄位名稱與 08 第 3.8 節一致（`title`、`summary`、`explanation`、陣列形式的 `params` 與 `derived`、`preconditions`、`lines`、`termRefs`、`pendingRefs`、`entryQuestionBlockedBy`）；08 第 3.8 節只列管理上的意義，型別與語意以本節為準。「其他政策的替代分錄行」一律寫成每一行的 `policyWhen`，不另設範本層級的欄位。`pendingRefs` 與 `entryQuestionBlockedBy` 並存、用途不同：前者是相關設計決定的編號（14 的 T 系列），讓實驗室顯示「設計說明」而不是「待確認」，不影響計分；後者阻擋用這個範本出分錄題（第 14 節）。已決定（2026-10-23）：T 系列已全部依專業判斷決定，所以沒有範本帶 `entryQuestionBlockedBy`；機制保留給日後真正懸而未決的做法。
 
 建置期檢查（`content:compile`）：
 - 所有運算式都能解析，引用的參數、推導值、科目都存在，型別正確，`derived` 沒有循環引用。
@@ -999,7 +999,7 @@ interface StoryEvent {
   id: string;                    // 步驟內唯一，寫成 'e1'、'e2'；佔位符與追蹤用它引用參數與推導值
   template: string;
   params: Record<string, number>;
-  pendingRefs?: string[];        // 選填，列出 T 編號：這個事件的處理待老師確認，實驗室顯示待確認標記；與範本層級的 entryQuestionBlockedBy（阻擋出分錄題）用途不同
+  pendingRefs?: string[];        // 選填，列出 T 編號：這個事件的處理有設計決定（14 第 2 節），實驗室顯示「設計說明」；與範本層級的 entryQuestionBlockedBy（阻擋出分錄題）用途不同
 }
 
 interface Checkpoint { ref: string; value: number }  // 'e1.amount'（推導值）或線 ID，例如 'cf_depreciation'
@@ -1007,7 +1007,7 @@ interface Checkpoint { ref: string; value: number }  // 'e1.amount'（推導值�
 
 `labRef` 一律用步驟 ID，不用索引；故事插入步驟或日後調整金額都不會指錯。步驟 ID 全站唯一，`labRef` 另帶故事 ID 方便載入，寫成 `{ "story": "story_q7m2v9", "step": "st_h8q3z6" }`（與 08 第 3.6 節相同）；validator 檢查步驟屬於該故事。
 
-`chapterLinks` 每筆寫成 `{ "chapter": "ch_n3f8q1" }` 或 `{ "chapter": "ch_n3f8q1", "level": "lv_6d2q9w4h" }`，與 03 第 3.2 節、08 第 3.9 節的形狀相同；有 `level` 時章末卡直接連到該關，沒有時連到章節頁，validator 檢查關卡屬於該章。故事事件的形狀是 `{ id, template, params, pendingRefs? }`：`pendingRefs` 選填，用來標出這個故事裡的事件待老師確認；範本層級的 `entryQuestionBlockedBy` 則決定能不能用這個範本出分錄題，兩者用途不同。
+`chapterLinks` 每筆寫成 `{ "chapter": "ch_n3f8q1" }` 或 `{ "chapter": "ch_n3f8q1", "level": "lv_6d2q9w4h" }`，與 03 第 3.2 節、08 第 3.9 節的形狀相同；有 `level` 時章末卡直接連到該關，沒有時連到章節頁，validator 檢查關卡屬於該章。故事事件的形狀是 `{ id, template, params, pendingRefs? }`：`pendingRefs` 選填，用來標出這個故事裡的事件有哪些設計決定（畫面顯示「設計說明」，2026-10-23 起不再是「待老師確認」）；範本層級的 `entryQuestionBlockedBy` 則決定能不能用這個範本出分錄題，兩者用途不同。
 
 已決定（D10(b)，2026-10-20）：C，連續故事為主線，每一步另有「單獨練習」入口，沿用故事在該步之前的狀態。資料上不另存一份練習用的故事：單獨練習的起點寫成第 15 節的 `scenario.opening`，`{ "storyRef": "<故事 ID>", "afterStep": "<前一步的 ID>" }`，事件取該步的 `events`；第一步沒有前一步，起點是全部為 0 的期初 `{ "balances": {} }`。所以練習的起點和連續故事在同一步看到的狀態相同，核心的過帳與報表 API 都不用改。入口的路由見 02（故事步驟頁中文為 `/lab/story/<storyId>/<stepId>/`，英文在前面加 `/en/`）。未採用的選項：A 只有連續故事（從中間開始需要說明前情）、B 只有獨立情境（失去故事感，累計概念難呈現）、D 另寫一套獨立情境（路由與資料兩套，內容與測試量最大）。
 
@@ -1035,7 +1035,7 @@ interface Checkpoint { ref: string; value: number }  // 'e1.amount'（推導值�
 | 第 12 筆 收回部分帳款 | `tpl.collect_receivables` | 無 | 金額固定；超過帳上應收帳款時由第 6.3 節的餘額規則擋下（錯誤碼 `balance.negative`，見第 6.6 節）【待確認 T08】；正式故事依 13 的建議處理並在交易卡加註 |
 | 第 15 筆 還清短期借款並付息 | `tpl.repay_all_short_term_loans_with_interest` | 本金＝`balance(short_term_borrowings)` | 利息固定。也可以拆成「還本」「付息」兩個事件放在同一步，分錄與報表結果相同；本文件用單一範本示範一筆付款拆成兩種現金流量活動（第 17.8 節） |
 | 第 16 筆 盤點 | `tpl.inventory_count` | 差額＝`countedAmount` 減帳上存貨 | 盤點後金額固定【待確認 T06】 |
-| 第 17 筆 折舊與攤銷 | `tpl.depreciation_straight_line`、`tpl.amortise_org_costs` | `round(cost ÷ 年數)`，並以帳面淨額為上限 | 年數固定；攤銷年數【待確認 T04】；折舊採直線法、無殘值、提列一整年的假設待老師確認（未編號，見 14 第 5.1 節） |
+| 第 17 筆 折舊與攤銷 | `tpl.depreciation_straight_line`、`tpl.amortise_org_costs` | `round(cost ÷ 年數)`，並以帳面淨額為上限 | 年數固定；攤銷年數【待確認 T04】；折舊採直線法、無殘值、提列一整年的假設已決定採用（2026-10-23，見 14 第 5.1 節） |
 
 其他步驟（成立、進貨、借款、各項費用、所得稅）都是固定金額。所得稅照故事設定的金額直接付現（借 所得稅費用／貸 現金），不由稅率推算【待確認 T10】。
 
@@ -1172,7 +1172,7 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 | R23 | `is_sga_total` | 銷管費用小計 | R18 到 R22 合計 |
 | R24 | `is_operating_income` | 2. 營業利益 | 公式 |
 | R25 | `is_non_operating_income` | 營業外收入 | `non_operating_income` 發生額 |
-| R27 | `is_interest_expense` | 支付利息（現行用語：利息費用） | `interest_expense` 發生額 |
+| R27 | `is_interest_expense` | 支付利息（主要顯示「利息費用」，已決定【待確認 T11】，2026-10-23；教材原字為別名） | `interest_expense` 發生額 |
 | R28 | `is_amortisation` | 攤銷遞延資產 | `amortisation_deferred_assets` 發生額 |
 | R29 | `is_non_operating_expense_total` | 營業外支出小計 | R27＋R28 |
 | R30 | `is_ordinary_income` | 3. 經常利益 | 公式 |
@@ -1197,7 +1197,7 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 | L12 | `bs_cash` | 現金及約當現金 | `cash` 餘額 |
 | L13 | `bs_accounts_receivable` | 應收帳款 | 餘額 |
 | L14 | `bs_inventory` | 存貨 | 餘額（＝R14） |
-| L15 | `bs_short_term_loans_receivable` | 短期放貨（修正寫法「短期放款」仍等【待確認 T09】，不在 W 系列內） | 餘額 |
+| L15 | `bs_short_term_loans_receivable` | 短期放貨（主要顯示「短期放款」，已決定【待確認 T09】，2026-10-23；原字為別名） | 餘額 |
 | 模板無 | `bs_current_assets` | 流動資產合計 | L12 到 L15 |
 | L19 | `bs_machinery_net` | 機器設備 | 成本減累計折舊（W02） |
 | 模板無 | `bs_ppe_gross` | 不動產、廠房及設備毛額 | 機器設備成本；只給 `slides03` 版指標使用 |
@@ -1231,7 +1231,7 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 | H10 | | 營業活動的現金流量 | 同 | 分組標題 | | 不可入帳 |
 | H11 | `cf_pretax_income` | 稅前淨利 | 同 | ＝`is_pretax_income`（同一視窗） | 可正可負 | 步驟②（勾稽點 A） |
 | H12 | `cf_depreciation` | 折舊費用(+) | 同 | ＝`depreciation_expense` 發生額 | 大於等於 0 | 若 T12 決定攤銷併入本列，另加 `amortisation_deferred_assets` |
-| H13 | `cf_interest_expense_addback` | 支付利息(+) | 同（別名：利息費用(+)；T11 回覆後再定主要顯示） | ＝`interest_expense` 發生額（加回費用，不是付現） | 大於等於 0 | 【待確認 T11】 |
+| H13 | `cf_interest_expense_addback` | 支付利息(+) | 利息費用(+)（已決定【待確認 T11】，2026-10-23；教材原字為別名） | ＝`interest_expense` 發生額（加回費用，不是付現） | 大於等於 0 | 【待確認 T11】 |
 | H14 | `cf_other_noncash_losses` | 其他非現金損失增加(+) | 同 | ＝`amortisation_deferred_assets` 發生額（預設）＋標記為非現金的損失 | 大於等於 0 | 攤銷加回列【待確認 T12】，攤銷的分類【待確認 T05】 |
 | H15 | `cf_receivables_increase` | 銷貨債權增加(-) | 同，加「日式」標記（別名：應收帳款增加(-)；T12、T15 回覆後再定主要顯示） | Δ應收帳款大於 0 時填 －Δ，否則 0 | 小於等於 0 | 與 H17 擇一【待確認 T12】【待確認 T15】 |
 | H16 | `cf_inventory_increase` | 存貨增加(-) | 同 | ＝ －Δ存貨 | 增加為負；減少以正數填同列並加註 | 盤盈、盤損都在這一列抵銷，不需另設非現金利益列 |
@@ -1239,7 +1239,7 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 | H18 | `cf_payables_increase` | 應付賬款增加(+) | 應付帳款增加(+)（W03；原字列為別名） | ＝ ＋Δ應付帳款 | 減少以負數填同列並加註 | |
 | H19 | `cf_other_liabilities_increase` | 其他負債增加(+) | 同 | ＝ ＋Δ（營業性的其他流動負債：保證金、其他應付款、預收收入） | 減少以負數填同列 | **必須排除**應付所得稅、應付利息、短期與長期借款、應付股利，否則會和 H21、H22、籌資活動重複；保證金的性質【待確認 T15】 |
 | H20 | `cf_operating_subtotal` | 小計 | 同（別名：營運產生之現金） | H11 到 H19 合計 | | 必須等於直接法的同名小計 |
-| H21 | `cf_interest_paid` | 利息支出(-) | 同（別名：支付之利息(-)；T11 回覆後再定主要顯示） | ＝ －Σ 現金行 `interest_paid`（政策為 `operating` 時） | 小於等於 0 | 【待確認 T11】 |
+| H21 | `cf_interest_paid` | 利息支出(-) | 支付利息(-)（已決定【待確認 T11】，2026-10-23；教材原字為別名） | ＝ －Σ 現金行 `interest_paid`（政策為 `operating` 時） | 小於等於 0 | 【待確認 T11】 |
 | H22 | `cf_income_tax_paid` | 支付所得稅(-) | 同 | ＝ －Σ 現金行 `income_tax_paid` | 小於等於 0 | 【待確認 T10】 |
 | H23 | `cf_operating_total` | 營業活動的現金流量統計 | 營業活動的現金流量總計（W08；別名：原字、營業活動之淨現金流量） | H20＋H21＋H22 | | 必須等於直接法的營業活動合計 |
 | H24 | | （空白列） | | | | |
@@ -1430,7 +1430,7 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 }
 ```
 
-H18 示範 W03（已決定 D13 A）：修正寫法是主要顯示，教材原字放在 `aliases` 供搜尋，並帶 `flags: ["typo_fixed"]`；H21 示範牽涉 T11 的列：維持教材原字為主要顯示，建議寫法先列為別名，並帶 `pendingRefs` 讓畫面顯示待確認標記。
+H18 示範 W03（已決定 D13 A）：修正寫法是主要顯示，教材原字放在 `aliases` 供搜尋，並帶 `flags: ["typo_fixed"]`；H21 示範牽涉 T11 的列：這個範例保留決定前的寫法（教材原字為主要顯示、建議寫法為別名）作為紀錄；依【待確認 T11】的決定（2026-10-23），實作資料改為「支付利息(-)」為主要顯示、原字為別名，`pendingRefs` 只用來讓畫面顯示設計說明。
 
 ### 11.7 匯出成老師的 Excel 格式
 
@@ -1612,7 +1612,7 @@ L16「每張股票面額」不是指標，是 EPS 的輸入值，在核心裡是
 1. 答案取決於某個指標的數值、方向或狀態的計分題，**必須**填 `ratioRef`；validator 檢查該版本存在。純觀念題可以只用 `termRefs`，但建議也填，讓解說自動帶出公式。
 2. 計分一律用題目指定的版本，並以 `teacher@1` 的報表計算。學生在實驗室切換顯示版本或切到 IFRS 對照（D10(f)），都不影響任何計分；IFRS 對照中的指標以 `ifrs@1` 的報表代入同一組公式，畫面標示「IFRS 對照，不計分」。
 3. 解說自動帶出所用版本的公式與 Excel 格（若有）。
-4. 各情境的預設版本建議如下，全部待老師確認：實驗室與依第二部分改寫的題目用 `excel`；依 0-3 改寫的計算題用 `slides03`；依 0-2 改寫的題目用 `slides02` 或 `dupont`；損益結構題用 `slides01`【待確認 T21】【待確認 T22】【待確認 T27】。
+4. 各情境的預設版本如下（已決定 T21、T22、T27，2026-10-23）：實驗室與依第二部分改寫的題目用 `excel`；依 0-3 改寫的計算題用 `slides03`；依 0-2 改寫的題目用 `slides02` 或 `dupont`；損益結構題用 `slides01`【待確認 T21】【待確認 T22】【待確認 T27】。
 
 ### 12.8 指標資料範例
 
@@ -1758,9 +1758,9 @@ function fiveStepCheck(st: Statements, learnerInputs?: Partial<Record<string, Mo
 3. 以 `(accountId, side, amount)` 的多重集合比對；相等就算對。
 4. 因此接受「一筆複合分錄」或「拆成多筆」，也不看行的順序。
 5. 回饋列出缺少或多出的 `(科目, 方向)`，不給部分分數（題型 UX 依 03）。已決定（2026-10-20）：第 1 到 4 點的分錄比對由核心提供；計分與回饋由 `packages/quiz` 的 `scoreJournalEntry` 呼叫它完成（第 2 節），規則不變。分錄比對的函式名稱為示意（第 2 節）。
-6. 涉及待確認做法的事件（第 5 筆設立費、第 16 筆盤盈、第 17 筆攤銷）在老師確認前不出分錄題：這些範本的 `entryQuestionBlockedBy` 分別填 T04、T06、T04 與 T05，validator 拒絕用它們出分錄題；老師確認後移除該欄位即可。只影響列名的待確認（例如 T11）放在範本的 `pendingRefs`，只在實驗室顯示標記，不擋分錄題。題目層級的 `pendingRefs` 是另一回事：它表示「這一題的答案可能因待確認事項而改變」，非空時這一題暫不計分。兩者並存、用途不同，與 08 第 3.6、3.8 節與 5.4 節的 `acct.entryBlocked` 一致。
+6. `entryQuestionBlockedBy` 的機制：範本帶這個欄位時 validator 拒絕用它出分錄題。原本第 5 筆設立費、第 16 筆盤盈、第 17 筆攤銷的範本分別填 T04、T06、T04 與 T05；已決定（2026-10-23）這三項依 14 的設計決定處理（課程政策資本化與攤銷、盤盈沖減營業成本），範本移除這個欄位，可以出分錄題；機制保留給日後真正懸而未決的做法。範本的 `pendingRefs`（例如 T11）只是相關設計決定的編號，在實驗室顯示「設計說明」，不擋分錄題。題目層級的 `pendingRefs` 是另一回事：它表示「這一題的答案可能因真正懸而未決的事項而改變」，非空時這一題暫不計分；目前沒有這種題目。兩者並存、用途不同，與 08 第 3.6、3.8 節與 5.4 節的 `acct.entryBlocked` 一致。
 7. 內帳採永續盤存，所以核心的分錄全部是標準分錄，沒有「借 存貨／貸 期末存貨」這類只為填表存在的調整行，可以直接展示給學生。延伸章的教學卡要說明進貨分錄「借 存貨」和教材版面「本期進貨、期末存貨」的對應（第 5.2 節）；實驗室的「看分錄與 T 字帳」顯示的也是同一組分錄（第 6.5 節）。
-8. 分錄題不列入期中考範圍；題目層級 `pendingRefs` 非空時同樣不計分（第 16.2 節）。
+8. 分錄題不列入期中考範圍；題目層級 `pendingRefs` 非空時同樣不計分（第 16.2 節；機制保留，目前沒有這種題目）。
 
 下例是自編的「還清短期借款 900,000 並付利息 27,000」。兩種寫法合併後都是同一個多重集合，都算對：
 
@@ -1850,7 +1850,7 @@ ledger 的幣別與 scale 不在 `scenario` 裡：引用故事時沿用故事的
 5. 解析佔位符的值（`vars.<名稱>` 題目自帶的數字、`e1.price` 這類事件參數與推導值、`expected.<targetId>.<欄位>` 核心算出的答案），並檢查中英文使用的佔位符集合相同（見 05）。
 6. 數字型單選題若用 `distractorExprs` 定義干擾選項（選用，見 08），編譯後依顯示位數四捨五入，不得和正解或彼此相同。
 7. 分類題的正解由科目表的 `element`、`current`、`cashFlow.defaultActivity` 或指標登錄檔的 `category` 推導；作者若有填，必須一致；抵銷科目要在項目上標 `allowContra` 才能出題（與 08 第 3.6 節、5.4 節的 `acct.classifyDerived` 相同）。
-8. 分錄題（D1）：檢查題目屬於「借貸與分錄」延伸章、事件用到的範本沒有 `entryQuestionBlockedBy`；把核心產生的分錄合併同科目、同方向的行，寫進 `compiled.expectedEntries`（第 14 節、第 17.11 節）。多正解題（D12）：檢查第 16.2 節的 `multi_choice` 規則。
+8. 分錄題（D1）：檢查題目屬於「借貸與分錄」延伸章、事件用到的範本沒有 `entryQuestionBlockedBy`（2026-10-23 起沒有範本帶這個欄位，檢查仍保留）；把核心產生的分錄合併同科目、同方向的行，寫進 `compiled.expectedEntries`（第 14 節、第 17.11 節）。多正解題（D12）：檢查第 16.2 節的 `multi_choice` 規則。
 9. 把答案寫進發布快照，計算 `answerHash`，與 `published.lock.json` 比對。
 
 選擇在建置時算答案、而不是在學生端即時算，理由是：答案固定且可稽核；核心改版造成答案改變時能在 CI 被抓到；學生端不需要為了出題而重播故事。
@@ -1942,7 +1942,7 @@ interface QuestionBase {
   explanation: LocalizedText;       // 用 {{option:o_xxxx}} 引用選項
   hint?: LocalizedText;
   display?: { statements?: ('is' | 'bs' | 'cf')[]; scenario?: 'self' };
-  pendingRefs?: string[];           // 題目層級的待確認：答案可能因待確認事項而改變，非空時這一題暫不計分
+  pendingRefs?: string[];           // 題目層級的待確認：答案可能因真正懸而未決的事項而改變，非空時這一題暫不計分；機制保留，2026-10-23 起沒有這種題目
   supersededBy?: string;            // 只用於發布後的合併
 }
 
@@ -2019,7 +2019,7 @@ interface JudgmentQuestion extends QuestionBase {
   scored: false;
   options: { id: string; text: LocalizedText; upside: LocalizedText; downside: LocalizedText }[];  // 3 個
   viewpoint: LocalizedText;         // 原創撰寫的解說觀點
-  attribution: 'site';              // 能否以老師名義標示【待確認 T37】
+  attribution: 'site';              // 固定為 site（已決定【待確認 T37】，2026-10-23：不以老師名義標示）
 }
 interface JournalEntryQuestion extends QuestionBase {
   type: 'journal_entry';            // chapterId 必須是「借貸與分錄」延伸章（scope: extension，D1）
@@ -2063,7 +2063,7 @@ interface Term {
   aliases: { 'zh-TW': string[]; en: string[] };
   flags: TermFlag[];                // 可為空陣列；前六種與第 4.1 節的科目旗標同名
   confidence: 'high' | 'medium' | 'pending';
-  pendingRefs: string[];            // 可為空陣列；confidence 為 pending 時至少一個 T 系列編號，可同時列多個
+  pendingRefs: string[];            // 相關設計決定的編號（14 的 T 系列），可為空陣列；confidence 為 pending 時至少一個編號。2026-10-23 起 T 系列已全部決定，名詞不再因 T 系列而 pending，pendingRefs 只用來連到設計說明
   ifrsBasis?: string;               // 例如 'IAS 1'；IFRS 18 生效後據此找出要更新的名詞
   note?: LocalizedText;             // 用語本身的說明，例如教材異寫的原因
   // 名詞卡內容
@@ -2563,7 +2563,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 }
 ```
 
-依 08 第 3.7 節，`ifrsNote` 只在旗標含 `not_ifrs_line` 或 `ifrs_treatment_differs`，或 `ifrsEnglish` 為 null 時必填。這個名詞只有 `japanese` 旗標，而且有 IFRS 英文，所以是選填；這裡仍然填，是因為利息的現金流量分類正是 T11 要問的事。`pendingRefs` 是陣列，老師回覆其中一項後只移除那一個編號，其他仍在等待的編號不受影響。
+依 08 第 3.7 節，`ifrsNote` 只在旗標含 `not_ifrs_line` 或 `ifrs_treatment_differs`，或 `ifrsEnglish` 為 null 時必填。這個名詞只有 `japanese` 旗標，而且有 IFRS 英文，所以是選填；這裡仍然填，是因為利息的現金流量分類正是 T11 的設計決定要說明的事。`pendingRefs` 是陣列，列出相關設計決定的編號；畫面顯示「設計說明」（2026-10-23 起不再是「待確認」），老師的回饋改變其中一項時，只調整那一個編號對應的資料。
 
 ### 17.7 交易範本：以現金賣出全部存貨
 
@@ -2730,7 +2730,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 
 用 `cost()` 而不是 `balance()` 當分子，攤銷後帳面減少也不會讓下一年的攤銷額改變；用 `min()` 以帳面淨額為上限，自由實驗把設備或設立費改得很小時，也不會攤過頭變成負數。兩個事件在同一步依序過帳，`effects` 在步驟層級合併；本筆變動檢視中，稅前淨利（H11）減少 120,000，H12 增加 90,000、H14 增加 30,000，營業活動淨額不變。步驟的 `chapterLinks` 列出這一步結束時建議練習的闖關區章節（第 9.1 節），這裡連到 17.5 那一題所在的章節；沒有填 `level`，所以章末卡連到章節頁。
 
-`e2` 帶事件層級的 `pendingRefs`（第 9.1 節的選填欄位），讓實驗室在這一步標出設立費攤銷的資本化、損益表分類與間接法加回列都待老師確認（T04、T05、T12）。它只是標記，不影響過帳；能不能用這個範本出分錄題，仍由範本層級的 `entryQuestionBlockedBy` 決定。切到 IFRS 對照（`ifrs@1`）時，`e2` 的兩行都被 `policyWhen` 篩掉，這個事件「本筆無影響」，`e1` 的折舊照常過帳（第 10.3 節）。
+`e2` 帶事件層級的 `pendingRefs`（第 9.1 節的選填欄位），讓實驗室在這一步標出設立費攤銷的資本化、損益表分類與間接法加回列各有設計決定（T04、T05、T12），畫面顯示「設計說明」。它只是標記，不影響過帳；能不能用這個範本出分錄題，仍由範本層級的 `entryQuestionBlockedBy` 決定。切到 IFRS 對照（`ifrs@1`）時，`e2` 的兩行都被 `policyWhen` 篩掉，這個事件「本筆無影響」，`e1` 的折舊照常過帳（第 10.3 節）。
 
 ### 17.10 多正解題的兩種判分方式
 
@@ -2974,7 +2974,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 - 不使用 snapshot，測試程式與期望值檔不寫入任何教材數字（正式故事的金額只存在內容資料中）。期望值在執行時從 `references/02-excel-statements/` 讀出。
 - 老師的 xlsx 由 openpyxl 存檔，公式格沒有快取的計算值。測試讀出輸入格與公式字串，用一個只支援 `SUM`、`IFERROR`、四則運算與跨工作表參照的極小公式求值器重算，再與核心結果以完整精度比對；與解答 PDF 或投影片比對時，依各來源印出的位數四捨五入後再比。xlsx 讀取方式依 08 的函式庫決定（不使用 npm 上有已知漏洞的 xlsx 0.18.5），需要先確認能讀出公式字串（見第 20 節）；如果選用的函式庫讀不到，退路是在本機用一支只讀不寫的轉換腳本先把公式字串匯出成 JSON，同樣不進 repo。已決定（2026-10-23）：M1 採用自製讀取器（只用 node 內建的 zip 解壓與 XML 解析，放在 `packages/core/test/local/`，見 [14 待確認事項](14-open-questions.md) 第 5.3 節），不使用 SheetJS，也不需要退路的轉換腳本。
 - D2 已決定正式故事用老師的情境與金額（老師已同意公開），所以正式故事資料本身就在 repo 的內容裡；本機測試直接重播正式故事，再與 `references/` 中的老師 Excel 逐格比對，不需要另一份本機故事資料。repo 內的測試程式不寫入任何老師的金額；CI 對正式故事只跑性質測試（第 18 節的表）。
-- M1 的完成標準分兩級：第 1 到 3 筆「已對老師 Excel 驗證」；第 4 到 18 筆「性質測試通過，標示為推論，待老師確認」【待確認 T33】。第 16 筆之後的資產負債表示意可以當部分檢查點，但有一筆來源不明的差額【待確認 T36】。
+- M1 的完成標準分兩級：第 1 到 3 筆「已對老師 Excel 驗證」；第 4 到 18 筆「性質測試通過，標示為依課程情境推算」（【待確認 T33】的決定，2026-10-23）。第 16 筆之後的資產負債表示意可以當部分檢查點，但有一筆來源不明的差額【待確認 T36】。
 
 ## 19. 與其他文件的介面
 
