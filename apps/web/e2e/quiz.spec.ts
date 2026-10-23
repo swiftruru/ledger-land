@@ -303,6 +303,33 @@ test.describe('作答流程（純鍵盤）', () => {
     await expect(feedbackTitle(page)).toHaveText('再想想');
     await expect(page.getByText('已放進錯題本')).toBeVisible();
     await expect(page.getByText('正確答案，你沒有選')).toBeVisible();
+    // 回饋是先顯示的，寫進錯題本的交易可能還在進行；等那一筆真的在資料庫裡再跳頁，不然導航會中斷交易，下面改到期日時就找不到它
+    await waitForProgressDb(page, ['reviewQueue']);
+    await expect
+      .poll(
+        () =>
+          page.evaluate(
+            () =>
+              new Promise<boolean>((resolve) => {
+                const req = indexedDB.open('ledgerland');
+                req.onerror = () => resolve(false);
+                req.onsuccess = () => {
+                  const db = req.result;
+                  const get = db.transaction('reviewQueue').objectStore('reviewQueue').get('q_g1ze90s7');
+                  get.onsuccess = () => {
+                    db.close();
+                    resolve(get.result !== undefined);
+                  };
+                  get.onerror = () => {
+                    db.close();
+                    resolve(false);
+                  };
+                };
+              }),
+          ),
+        { timeout: 10_000 },
+      )
+      .toBe(true);
     // 錯題本：盒子 1 明天才到期，今天是空的
     await page.goto('/review/');
     await waitForApp(page);
@@ -324,11 +351,16 @@ test.describe('作答流程（純鍵盤）', () => {
         const store = tx.objectStore('reviewQueue');
         const get = store.get('q_g1ze90s7');
         get.onsuccess = () => {
-          const entry = get.result as Record<string, unknown>;
+          const entry = get.result as Record<string, unknown> | undefined;
+          if (entry === undefined) {
+            reject(new Error('reviewQueue 裡沒有 q_g1ze90s7'));
+            return;
+          }
           store.put({ ...entry, dueAt: today });
         };
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error ?? new Error('transaction aborted'));
       });
       db.close();
     });
