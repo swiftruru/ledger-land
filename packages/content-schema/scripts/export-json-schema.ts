@@ -2,19 +2,33 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
+import { Account } from '../src/account.ts';
 import { Chapter } from '../src/chapter.ts';
+import { Layout } from '../src/layout.ts';
+import { PolicyDefinition } from '../src/policy.ts';
+import { Question } from '../src/question.ts';
+import { RatioDefinition } from '../src/ratio.ts';
+import { Story } from '../src/story.ts';
+import { TransactionTemplate } from '../src/template.ts';
 import { Term } from '../src/term.ts';
 
 const outDir = fileURLToPath(new URL('../../../schemas/', import.meta.url));
 const targets = {
   'term.schema.json': Term,
   'chapter.schema.json': Chapter,
+  'account.schema.json': Account,
+  'template.schema.json': TransactionTemplate,
+  'policy.schema.json': PolicyDefinition,
+  'layout.schema.json': Layout,
+  'ratio.schema.json': RatioDefinition,
+  'story.schema.json': Story,
+  'question.schema.json': Question,
 } as const;
 const check = process.argv.includes('--check');
 let bad = 0;
 mkdirSync(outDir, { recursive: true });
 for (const [name, schema] of Object.entries(targets)) {
-  const json = z.toJSONSchema(schema, { target: 'draft-7', unrepresentable: 'any', io: 'input' });
+  const json = z.toJSONSchema(schema, { target: 'draft-7', unrepresentable: 'any', io: 'input', reused: 'ref' });
   const text = JSON.stringify({ $comment: '由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。', ...json }, null, 2) + '\n';
   const path = `${outDir}${name}`;
   if (check) {

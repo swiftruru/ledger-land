@@ -1,0 +1,94 @@
+{
+  "id": "tpl.sell_all_inventory_cash",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "以現金賣出全部存貨",
+    "en": "Sell all inventory for cash"
+  },
+  "summary": {
+    "zh-TW": "把帳上全部存貨（成本 {{money:derived.costOfAllInventory}}）以現金 {{money:param.price}} 賣出。",
+    "en": "Sell all inventory on the books (cost {{money:derived.costOfAllInventory}}) for {{money:param.price}} in cash."
+  },
+  "params": [
+    {
+      "name": "price",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 1000000,
+      "label": {
+        "zh-TW": "售價（收到的現金）",
+        "en": "Selling price (cash received)"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [
+    {
+      "name": "costOfAllInventory",
+      "type": "money",
+      "expr": "balance(inventory)",
+      "label": {
+        "zh-TW": "全部存貨的帳上成本",
+        "en": "Carrying amount of all inventory"
+      }
+    },
+    {
+      "name": "grossProfit",
+      "type": "money",
+      "expr": "param.price - derived.costOfAllInventory",
+      "label": {
+        "zh-TW": "這筆交易的毛利",
+        "en": "Gross profit on this sale"
+      }
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "has_inventory",
+      "expr": "balance(inventory) > 0",
+      "message": {
+        "zh-TW": "帳上沒有存貨可以賣出，請先進貨。",
+        "en": "There is no inventory on the books to sell. Purchase some inventory first."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "cash",
+      "side": "debit",
+      "amount": "param.price",
+      "cf": {
+        "activity": "operating",
+        "kind": "receipts_from_customers"
+      }
+    },
+    {
+      "id": "l2",
+      "account": "revenue",
+      "side": "credit",
+      "amount": "param.price"
+    },
+    {
+      "id": "l3",
+      "account": "cost_of_goods_sold",
+      "side": "debit",
+      "amount": "derived.costOfAllInventory"
+    },
+    {
+      "id": "l4",
+      "account": "inventory",
+      "side": "credit",
+      "amount": "derived.costOfAllInventory",
+      "tag": "cost_of_sale"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "賣出全部存貨時，收入用售價記錄，成本則是帳上存貨的金額，兩者相減就是毛利。成本不是自己填的數字，而是讀帳上的存貨餘額，所以前面進貨金額改了，這裡的成本也會跟著變。",
+    "en": "When all inventory is sold, revenue is recorded at the selling price and the cost is the amount of inventory on the books; the difference is the gross profit. The cost is not typed in but read from the inventory balance, so if an earlier purchase changes, this cost changes too."
+  },
+  "termRefs": ["tm_v3n8q2ye", "tm_g5c2m8tw", "tm_n7v3k8pq", "tm_g8p4w1rz"]
+}

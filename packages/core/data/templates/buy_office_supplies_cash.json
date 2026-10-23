@@ -1,0 +1,90 @@
+{
+  "id": "tpl.buy_office_supplies_cash",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "以現金購買事務用品",
+    "en": "Buy office supplies for cash"
+  },
+  "summary": {
+    "zh-TW": "以現金 {{money:param.amount}} 購買事務用品，依教材做法全額列為當期費用。",
+    "en": "Buy office supplies for {{money:param.amount}} in cash; following the course, the whole amount is expensed at once."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 30000,
+      "label": {
+        "zh-TW": "購買金額",
+        "en": "Amount paid"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= param.amount",
+      "message": {
+        "zh-TW": "帳上現金不夠付這筆款項。",
+        "en": "There is not enough cash on the books for this payment."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "office_supplies_expense",
+      "side": "debit",
+      "amount": "param.amount",
+      "policyWhen": {
+        "officeSupplies": "expense_on_purchase"
+      }
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "payments_for_operating_expenses"
+      },
+      "policyWhen": {
+        "officeSupplies": "expense_on_purchase"
+      }
+    },
+    {
+      "id": "l3",
+      "account": "supplies_on_hand",
+      "side": "debit",
+      "amount": "param.amount",
+      "policyWhen": {
+        "officeSupplies": "asset_then_expense"
+      }
+    },
+    {
+      "id": "l4",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "payments_for_operating_expenses"
+      },
+      "policyWhen": {
+        "officeSupplies": "asset_then_expense"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "文具、紙張這類用品金額小、很快用完，教材直接在購買時列為事務用品費，現金同時減少。實務上如果期末還有大量沒用完的用品，可以先記成用品盤存這項資產，用掉多少再轉成費用；這是延伸做法，故事裡不採用。",
+    "en": "Stationery and similar supplies are small in amount and used up quickly, so the course records them as office supplies expense when they are bought, and cash falls by the same amount. In practice, if a large stock of unused supplies remains at period end, it can first be recorded as supplies on hand and expensed as it is used; this alternative is not used in the story."
+  },
+  "termRefs": ["tm_24scevxv", "tm_c4sh8k2p", "tm_rp85wtm7"]
+}

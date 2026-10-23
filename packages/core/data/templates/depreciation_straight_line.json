@@ -1,0 +1,68 @@
+{
+  "id": "tpl.depreciation_straight_line",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "提列設備折舊（直線法）",
+    "en": "Depreciate equipment (straight-line method)"
+  },
+  "summary": {
+    "zh-TW": "依 {{number:param.usefulLifeYears}} 年的耐用年限，把設備成本平均分攤到每一年，本期提列折舊 {{money:derived.amount}}。",
+    "en": "Spread the cost of the equipment evenly over a useful life of {{number:param.usefulLifeYears}} years; this period's depreciation is {{money:derived.amount}}."
+  },
+  "params": [
+    {
+      "name": "usefulLifeYears",
+      "type": "years",
+      "min": 1,
+      "max": 50,
+      "default": 5,
+      "label": {
+        "zh-TW": "耐用年限（年）",
+        "en": "Useful life (years)"
+      },
+      "monotonic": "decreasing"
+    }
+  ],
+  "derived": [
+    {
+      "name": "amount",
+      "type": "money",
+      "expr": "min(round(cost(machinery_equipment) / param.usefulLifeYears), balance(machinery_equipment) - balance(accumulated_depreciation_machinery))",
+      "label": {
+        "zh-TW": "本期折舊金額",
+        "en": "Depreciation for the period"
+      }
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "has_equipment",
+      "expr": "balance(machinery_equipment) - balance(accumulated_depreciation_machinery) > 0",
+      "message": {
+        "zh-TW": "帳上沒有可以折舊的設備。",
+        "en": "There is no equipment on the books to depreciate."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "depreciation_expense",
+      "side": "debit",
+      "amount": "derived.amount"
+    },
+    {
+      "id": "l2",
+      "account": "accumulated_depreciation_machinery",
+      "side": "credit",
+      "amount": "derived.amount"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "設備的成本不是在買的那一年一次扣掉，而是分攤到使用的每一年，這就是折舊。直線法把成本平均分給每一年；分母用取得成本，所以每年金額相同，並以帳面淨額為上限，不會攤過頭。折舊不用付現金，間接法會把它加回稅前淨利。網站內部用累計折舊記錄已攤掉的部分，報表上只顯示淨額。",
+    "en": "The cost of equipment is not deducted all at once in the year of purchase but spread over the years it is used: that is depreciation. The straight-line method gives each year an equal share; the divisor is the original cost, so the amount is the same every year, capped at the remaining carrying amount so it never goes too far. No cash is paid, so the indirect method adds it back to profit before tax. Internally the site keeps the written-off part in accumulated depreciation and shows only the net amount on the statement."
+  },
+  "termRefs": ["tm_d4p7x2mv", "tm_a8d5c1pz", "tm_gt8g4afe"]
+}

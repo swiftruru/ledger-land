@@ -4,18 +4,127 @@
   "type": "object",
   "properties": {
     "rev": {
+      "$ref": "#/definitions/__schema0"
+    },
+    "revKind": {
+      "$ref": "#/definitions/__schema1"
+    },
+    "status": {
+      "$ref": "#/definitions/__schema2"
+    },
+    "supersededBy": {
+      "$ref": "#/definitions/__schema3"
+    },
+    "retiredNote": {
+      "$ref": "#/definitions/__schema4"
+    },
+    "authorNotes": {
+      "$ref": "#/definitions/__schema7"
+    },
+    "updatedAt": {
+      "$ref": "#/definitions/__schema8"
+    },
+    "id": {
+      "$ref": "#/definitions/__schema9"
+    },
+    "category": {
+      "$ref": "#/definitions/__schema10"
+    },
+    "label": {
+      "$ref": "#/definitions/LocalizedText"
+    },
+    "teacherLabel": {
+      "$ref": "#/definitions/__schema11"
+    },
+    "currentTwLabel": {
+      "$ref": "#/definitions/__schema12"
+    },
+    "ifrsEnglish": {
+      "$ref": "#/definitions/__schema13"
+    },
+    "aliases": {
+      "$ref": "#/definitions/__schema14"
+    },
+    "enUsVariant": {
+      "$ref": "#/definitions/__schema15"
+    },
+    "flags": {
+      "$ref": "#/definitions/__schema16"
+    },
+    "confidence": {
+      "$ref": "#/definitions/__schema17"
+    },
+    "pendingRefs": {
+      "$ref": "#/definitions/__schema18"
+    },
+    "ifrsBasis": {
+      "$ref": "#/definitions/__schema19"
+    },
+    "note": {
+      "$ref": "#/definitions/__schema20"
+    },
+    "definition": {
+      "$ref": "#/definitions/LocalizedText"
+    },
+    "example": {
+      "$ref": "#/definitions/__schema21"
+    },
+    "misconception": {
+      "$ref": "#/definitions/__schema22"
+    },
+    "formula": {
+      "$ref": "#/definitions/__schema23"
+    },
+    "ifrsNote": {
+      "$ref": "#/definitions/__schema24"
+    },
+    "accountRef": {
+      "$ref": "#/definitions/__schema25"
+    },
+    "ratioRef": {
+      "$ref": "#/definitions/__schema26"
+    },
+    "related": {
+      "$ref": "#/definitions/__schema27"
+    },
+    "labRefs": {
+      "$ref": "#/definitions/__schema28"
+    },
+    "unlock": {
+      "$ref": "#/definitions/__schema29"
+    }
+  },
+  "required": [
+    "rev",
+    "revKind",
+    "status",
+    "id",
+    "category",
+    "label",
+    "teacherLabel",
+    "currentTwLabel",
+    "ifrsEnglish",
+    "aliases",
+    "flags",
+    "confidence",
+    "pendingRefs",
+    "definition"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "__schema0": {
       "type": "integer",
       "minimum": 1,
       "maximum": 9007199254740991
     },
-    "revKind": {
+    "__schema1": {
       "type": "string",
       "enum": [
         "text",
         "answer"
       ]
     },
-    "status": {
+    "__schema2": {
       "type": "string",
       "enum": [
         "draft",
@@ -23,19 +132,24 @@
         "retired"
       ]
     },
-    "supersededBy": {
+    "__schema3": {
       "type": "string"
     },
-    "retiredNote": {
+    "__schema4": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
+        }
+      ]
+    },
+    "LocalizedText": {
       "type": "object",
       "properties": {
         "zh-TW": {
-          "type": "string",
-          "minLength": 1
+          "$ref": "#/definitions/__schema5"
         },
         "en": {
-          "type": "string",
-          "minLength": 1
+          "$ref": "#/definitions/__schema6"
         }
       },
       "required": [
@@ -43,19 +157,27 @@
       ],
       "additionalProperties": false
     },
-    "authorNotes": {
+    "__schema5": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema6": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema7": {
       "type": "string"
     },
-    "updatedAt": {
+    "__schema8": {
       "type": "string",
       "format": "date-time",
       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
     },
-    "id": {
+    "__schema9": {
       "type": "string",
       "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
     },
-    "category": {
+    "__schema10": {
       "type": "string",
       "enum": [
         "statement",
@@ -66,28 +188,11 @@
         "other"
       ]
     },
-    "label": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
-    },
-    "teacherLabel": {
+    "__schema11": {
       "type": "string",
       "minLength": 1
     },
-    "currentTwLabel": {
+    "__schema12": {
       "anyOf": [
         {
           "type": "string",
@@ -98,7 +203,7 @@
         }
       ]
     },
-    "ifrsEnglish": {
+    "__schema13": {
       "anyOf": [
         {
           "type": "string",
@@ -109,7 +214,7 @@
         }
       ]
     },
-    "aliases": {
+    "__schema14": {
       "type": "object",
       "properties": {
         "zh-TW": {
@@ -131,10 +236,10 @@
       ],
       "additionalProperties": false
     },
-    "enUsVariant": {
+    "__schema15": {
       "type": "string"
     },
-    "flags": {
+    "__schema16": {
       "type": "array",
       "items": {
         "type": "string",
@@ -149,7 +254,7 @@
         ]
       }
     },
-    "confidence": {
+    "__schema17": {
       "type": "string",
       "enum": [
         "high",
@@ -157,132 +262,65 @@
         "pending"
       ]
     },
-    "pendingRefs": {
+    "__schema18": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^T\\d{2}$"
       }
     },
-    "ifrsBasis": {
+    "__schema19": {
       "type": "string"
     },
-    "note": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
+    "__schema20": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
         }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
+      ]
     },
-    "definition": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
+    "__schema21": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
         }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
+      ]
     },
-    "example": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
+    "__schema22": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
         }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
+      ]
     },
-    "misconception": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
+    "__schema23": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
         }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
+      ]
     },
-    "formula": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
+    "__schema24": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
         }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
+      ]
     },
-    "ifrsNote": {
-      "type": "object",
-      "properties": {
-        "zh-TW": {
-          "type": "string",
-          "minLength": 1
-        },
-        "en": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [
-        "zh-TW"
-      ],
-      "additionalProperties": false
-    },
-    "accountRef": {
+    "__schema25": {
       "type": "string"
     },
-    "ratioRef": {
+    "__schema26": {
       "type": "string"
     },
-    "related": {
+    "__schema27": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
       }
     },
-    "labRefs": {
+    "__schema28": {
       "type": "array",
       "items": {
         "type": "object",
@@ -303,7 +341,7 @@
         "additionalProperties": false
       }
     },
-    "unlock": {
+    "__schema29": {
       "type": "object",
       "properties": {
         "levelId": {
@@ -316,22 +354,5 @@
       ],
       "additionalProperties": false
     }
-  },
-  "required": [
-    "rev",
-    "revKind",
-    "status",
-    "id",
-    "category",
-    "label",
-    "teacherLabel",
-    "currentTwLabel",
-    "ifrsEnglish",
-    "aliases",
-    "flags",
-    "confidence",
-    "pendingRefs",
-    "definition"
-  ],
-  "additionalProperties": false
+  }
 }

@@ -1,0 +1,67 @@
+{
+  "id": "tpl.amortise_org_costs",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "攤銷設立費",
+    "en": "Amortise start-up costs"
+  },
+  "summary": {
+    "zh-TW": "把列為遞延資產的設立費依 {{number:param.years}} 年平均攤銷，本期攤銷 {{money:derived.amount}}，直接減少設立費的帳面金額。",
+    "en": "Amortise the start-up costs held as a deferred asset evenly over {{number:param.years}} years; this period's amortisation is {{money:derived.amount}}, deducted directly from the carrying amount."
+  },
+  "params": [
+    {
+      "name": "years",
+      "type": "years",
+      "min": 1,
+      "max": 50,
+      "default": 5,
+      "label": {
+        "zh-TW": "攤銷年數",
+        "en": "Amortisation period (years)"
+      },
+      "monotonic": "decreasing"
+    }
+  ],
+  "derived": [
+    {
+      "name": "amount",
+      "type": "money",
+      "expr": "min(round(cost(deferred_organisation_costs) / param.years), balance(deferred_organisation_costs))",
+      "label": {
+        "zh-TW": "本期攤銷金額",
+        "en": "Amortisation for the period"
+      }
+    }
+  ],
+  "preconditions": [],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "amortisation_deferred_assets",
+      "side": "debit",
+      "amount": "derived.amount",
+      "policyWhen": {
+        "orgCosts": "capitalise_amortise"
+      }
+    },
+    {
+      "id": "l2",
+      "account": "deferred_organisation_costs",
+      "side": "credit",
+      "amount": "derived.amount",
+      "policyWhen": {
+        "orgCosts": "capitalise_amortise"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "教材把設立費當成遞延資產，再分年攤銷成費用；分母用原始成本，所以每年金額相同，並以剩餘帳面金額為上限。教材不另設累計攤銷，攤銷直接減少設立費的帳面金額，列在營業外支出的攤銷遞延資產。攤銷不用付現金，間接法會加回。改用 IFRS 時設立費早已費用化，這一步「本筆無影響」。",
+    "en": "The course holds start-up costs as a deferred asset and amortises them year by year; the divisor is the original cost, so the amount is the same each year, capped at the remaining carrying amount. There is no separate accumulated amortisation account: the amortisation is deducted directly from the deferred asset and shown under non-operating expenses as amortisation of deferred assets. No cash is paid, so the indirect method adds it back. Under IFRS the costs were expensed at the start, so this step has no effect."
+  },
+  "termRefs": ["tm_a2m7z4tf", "tm_d9f3g7cs"],
+  "pendingRefs": ["T04", "T05", "T12"],
+  "entryQuestionBlockedBy": ["T04", "T05"]
+}

@@ -1,0 +1,2161 @@
+{
+  "id": "teacher@1",
+  "options": {
+    "amortisationSection": "non_operating",
+    "amortisationAddBack": "H14",
+    "showOrdinaryIncome": true,
+    "showExtraordinaryRows": true,
+    "showExtensionRows": "when_nonzero",
+    "excelExportClosingInventorySign": "negative"
+  },
+  "statements": {
+    "income_statement": [
+      {
+        "id": "is_revenue",
+        "cell": "R10",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "營業收入",
+          "en": "Revenue"
+        },
+        "aliases": {
+          "zh-TW": ["營收", "銷貨淨額"],
+          "en": ["Sales", "Net sales"]
+        },
+        "termRef": "tm_v3n8q2ye",
+        "accounts": ["revenue"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_cogs_group",
+        "cell": "R11",
+        "kind": "group",
+        "label": {
+          "zh-TW": "營業成本",
+          "en": "Cost of sales"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_g5c2m8tw",
+        "children": ["is_opening_inventory", "is_purchases", "is_inventory_overage_excluded", "is_closing_inventory"]
+      },
+      {
+        "id": "is_opening_inventory",
+        "cell": "R12",
+        "kind": "inventory_opening",
+        "label": {
+          "zh-TW": "期初存貨",
+          "en": "Opening inventories"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_v6j2k8sr"
+      },
+      {
+        "id": "is_purchases",
+        "cell": "R13",
+        "kind": "inventory_purchases",
+        "label": {
+          "zh-TW": "本期進貨",
+          "en": "Purchases"
+        },
+        "aliases": {
+          "zh-TW": ["進貨"],
+          "en": []
+        },
+        "termRef": "tm_p7h3c5xq",
+        "pendingRefs": ["T27"]
+      },
+      {
+        "id": "is_inventory_overage_excluded",
+        "cell": null,
+        "kind": "inventory_overage",
+        "label": {
+          "zh-TW": "存貨盤盈",
+          "en": "Inventory count surplus"
+        },
+        "aliases": {
+          "zh-TW": ["盤盈"],
+          "en": ["Stocktake gain"]
+        },
+        "pendingRefs": ["T06"],
+        "flags": ["not_in_template"],
+        "appliesWhen": {
+          "inventoryOverage": ["non_operating_income", "extraordinary_gain"]
+        }
+      },
+      {
+        "id": "is_closing_inventory",
+        "cell": "R14",
+        "kind": "inventory_closing",
+        "label": {
+          "zh-TW": "期末存貨(-)",
+          "en": "Closing inventories (-)"
+        },
+        "aliases": {
+          "zh-TW": ["期末存貨"],
+          "en": []
+        },
+        "termRef": "tm_q4k9v2nd",
+        "pendingRefs": ["T07"],
+        "display": "positive_subtracted"
+      },
+      {
+        "id": "is_cogs",
+        "cell": "R15",
+        "kind": "formula",
+        "label": {
+          "zh-TW": "營業成本小計",
+          "en": "Cost of sales (subtotal)"
+        },
+        "aliases": {
+          "zh-TW": ["營業成本", "銷貨成本"],
+          "en": ["Cost of sales", "Cost of goods sold"]
+        },
+        "termRef": "tm_g5c2m8tw",
+        "expr": "line.is_opening_inventory + line.is_purchases + line.is_inventory_overage_excluded - line.is_closing_inventory",
+        "invariant": "equals_account_activity:cost_of_goods_sold"
+      },
+      {
+        "id": "is_gross_profit",
+        "cell": "R16",
+        "kind": "formula",
+        "label": {
+          "zh-TW": "營業毛利",
+          "en": "Gross profit"
+        },
+        "aliases": {
+          "zh-TW": ["毛利", "營業毛利（毛損）"],
+          "en": ["Gross margin"]
+        },
+        "termRef": "tm_g8p4w1rz",
+        "expr": "line.is_revenue - line.is_cogs",
+        "level": 1
+      },
+      {
+        "id": "is_sga_group",
+        "cell": "R17",
+        "kind": "group",
+        "label": {
+          "zh-TW": "銷管費用",
+          "en": "Distribution costs and administrative expenses"
+        },
+        "aliases": {
+          "zh-TW": ["營業費用", "銷售及管理費用"],
+          "en": ["Operating expenses", "Selling, general and administrative expenses"]
+        },
+        "termRef": "tm_kyjfrraq",
+        "flags": ["japanese"],
+        "children": [
+          "is_directors_remuneration",
+          "is_outsourcing_expense",
+          "is_packing_freight_expense",
+          "is_office_supplies_expense",
+          "is_depreciation_expense",
+          "is_organisation_costs_expense",
+          "is_research_development_expense",
+          "is_marketing_expense"
+        ]
+      },
+      {
+        "id": "is_directors_remuneration",
+        "cell": "R18",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "董監事酬勞",
+          "en": "Remuneration of directors and supervisors"
+        },
+        "aliases": {
+          "zh-TW": ["董事酬勞"],
+          "en": ["Directors' remuneration"]
+        },
+        "termRef": "tm_q5srzxb2",
+        "accounts": ["directors_remuneration"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_outsourcing_expense",
+        "cell": "R19",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "外包費用",
+          "en": "Outsourcing expenses"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_r3nvm8jy",
+        "accounts": ["outsourcing_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_packing_freight_expense",
+        "cell": "R20",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "包裝運送費",
+          "en": "Packing and delivery expenses"
+        },
+        "aliases": {
+          "zh-TW": ["運費"],
+          "en": ["Freight-out"]
+        },
+        "termRef": "tm_dxr5anv4",
+        "accounts": ["packing_freight_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_office_supplies_expense",
+        "cell": "R21",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "事務用品費",
+          "en": "Office supplies expense"
+        },
+        "aliases": {
+          "zh-TW": ["文具用品"],
+          "en": []
+        },
+        "termRef": "tm_24scevxv",
+        "accounts": ["office_supplies_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_depreciation_expense",
+        "cell": "R22",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "折舊費用",
+          "en": "Depreciation expense"
+        },
+        "aliases": {
+          "zh-TW": ["折舊"],
+          "en": ["Depreciation"]
+        },
+        "termRef": "tm_d4p7x2mv",
+        "pendingRefs": ["T05"],
+        "accounts": ["depreciation_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_organisation_costs_expense",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "設立費（費用化）",
+          "en": "Start-up costs (expensed)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_hz08w4k5",
+        "pendingRefs": ["T04"],
+        "extension": true,
+        "accounts": ["organisation_costs_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_research_development_expense",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "研究發展費用",
+          "en": "Research and development expenses"
+        },
+        "aliases": {
+          "zh-TW": ["研發費用"],
+          "en": ["R&D expenses"]
+        },
+        "termRef": "tm_avgpa43e",
+        "extension": true,
+        "accounts": ["research_development_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_marketing_expense",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "行銷費用",
+          "en": "Marketing expenses"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_k1tghpyd",
+        "extension": true,
+        "accounts": ["marketing_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_sga_total",
+        "cell": "R23",
+        "kind": "total",
+        "label": {
+          "zh-TW": "銷管費用小計",
+          "en": "Total distribution costs and administrative expenses"
+        },
+        "aliases": {
+          "zh-TW": ["營業費用"],
+          "en": ["Operating expenses"]
+        },
+        "termRef": "tm_d90d8jeh",
+        "sum": [
+          "is_directors_remuneration",
+          "is_outsourcing_expense",
+          "is_packing_freight_expense",
+          "is_office_supplies_expense",
+          "is_depreciation_expense",
+          "is_organisation_costs_expense",
+          "is_research_development_expense",
+          "is_marketing_expense"
+        ]
+      },
+      {
+        "id": "is_operating_income",
+        "cell": "R24",
+        "kind": "formula",
+        "label": {
+          "zh-TW": "營業利益",
+          "en": "Operating profit"
+        },
+        "aliases": {
+          "zh-TW": ["營業淨利", "營業利益（損失）"],
+          "en": ["Operating income"]
+        },
+        "termRef": "tm_z3vbt800",
+        "expr": "line.is_gross_profit - line.is_sga_total",
+        "level": 2
+      },
+      {
+        "id": "is_non_operating_income",
+        "cell": "R25",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "營業外收入",
+          "en": "Non-operating income"
+        },
+        "aliases": {
+          "zh-TW": ["其他收入"],
+          "en": ["Other income"]
+        },
+        "termRef": "tm_6nmfxa10",
+        "accounts": ["non_operating_income"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_non_operating_expense_group",
+        "cell": "R26",
+        "kind": "group",
+        "label": {
+          "zh-TW": "營業外支出",
+          "en": "Non-operating expenses"
+        },
+        "aliases": {
+          "zh-TW": ["業外支出"],
+          "en": ["Finance costs and other losses"]
+        },
+        "termRef": "tm_gvrw06p3",
+        "children": ["is_interest_expense", "is_amortisation"]
+      },
+      {
+        "id": "is_interest_expense",
+        "cell": "R27",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "支付利息",
+          "en": "Finance costs"
+        },
+        "aliases": {
+          "zh-TW": ["利息費用", "財務成本"],
+          "en": ["Interest expense"]
+        },
+        "termRef": "tm_k6t2e9wr",
+        "pendingRefs": ["T11"],
+        "flags": ["japanese"],
+        "accounts": ["interest_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_amortisation",
+        "cell": "R28",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "攤銷遞延資產",
+          "en": "Amortisation of deferred assets"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_a2m7z4tf",
+        "pendingRefs": ["T04", "T05"],
+        "flags": ["not_ifrs_line"],
+        "accounts": ["amortisation_deferred_assets"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_non_operating_expense_total",
+        "cell": "R29",
+        "kind": "total",
+        "label": {
+          "zh-TW": "營業外支出小計",
+          "en": "Total non-operating expenses"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_q80jb3g6",
+        "sum": ["is_interest_expense", "is_amortisation"]
+      },
+      {
+        "id": "is_ordinary_income",
+        "cell": "R30",
+        "kind": "formula",
+        "label": {
+          "zh-TW": "經常利益",
+          "en": "Ordinary profit"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_9hg0gb2b",
+        "pendingRefs": ["T01", "T03"],
+        "flags": ["not_ifrs_line", "japanese"],
+        "expr": "line.is_operating_income + line.is_non_operating_income - line.is_non_operating_expense_total",
+        "level": 3
+      },
+      {
+        "id": "is_extraordinary_gains",
+        "cell": "R31",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "非常利益",
+          "en": "Extraordinary gains"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_kqwv1rjs",
+        "pendingRefs": ["T02"],
+        "flags": ["not_ifrs_line"],
+        "accounts": ["extraordinary_gains"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_extraordinary_losses",
+        "cell": "R32",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "非常損失",
+          "en": "Extraordinary losses"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_jbt23kpz",
+        "pendingRefs": ["T02"],
+        "flags": ["not_ifrs_line"],
+        "accounts": ["extraordinary_losses"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_pretax_income",
+        "cell": "R33",
+        "kind": "formula",
+        "label": {
+          "zh-TW": "稅前淨利",
+          "en": "Profit before tax"
+        },
+        "aliases": {
+          "zh-TW": ["稅前利益", "稅前純益", "稅前淨利（淨損）"],
+          "en": ["Pre-tax profit"]
+        },
+        "termRef": "tm_z971merj",
+        "expr": "line.is_ordinary_income + line.is_extraordinary_gains - line.is_extraordinary_losses",
+        "level": 4
+      },
+      {
+        "id": "is_income_tax_expense",
+        "cell": "R34",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "所得稅費用",
+          "en": "Income tax expense"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_3qfqnrmm",
+        "pendingRefs": ["T10"],
+        "accounts": ["income_tax_expense"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_net_income",
+        "cell": "R35",
+        "kind": "formula",
+        "label": {
+          "zh-TW": "本期淨利",
+          "en": "Profit for the period"
+        },
+        "aliases": {
+          "zh-TW": ["稅後淨利", "稅後純益", "淨利", "本期淨利（淨損）"],
+          "en": ["Net income", "Net profit"]
+        },
+        "termRef": "tm_n4e8t2jy",
+        "expr": "line.is_pretax_income - line.is_income_tax_expense",
+        "level": 5
+      }
+    ],
+    "balance_sheet": [
+      {
+        "id": "bs_current_assets_group",
+        "cell": "K11",
+        "kind": "group",
+        "label": {
+          "zh-TW": "流動資產",
+          "en": "Current assets"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_k52yxb68",
+        "children": ["bs_cash", "bs_accounts_receivable", "bs_inventory", "bs_short_term_loans_receivable", "bs_prepaid_expenses", "bs_supplies_on_hand"]
+      },
+      {
+        "id": "bs_cash",
+        "cell": "L12",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "現金及約當現金",
+          "en": "Cash and cash equivalents"
+        },
+        "aliases": {
+          "zh-TW": ["現金"],
+          "en": ["Cash"]
+        },
+        "termRef": "tm_c4sh8k2p",
+        "accounts": ["cash"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_accounts_receivable",
+        "cell": "L13",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "應收帳款",
+          "en": "Trade receivables"
+        },
+        "aliases": {
+          "zh-TW": ["銷貨債權", "應收帳款淨額"],
+          "en": ["Accounts receivable"]
+        },
+        "termRef": "tm_r7x2c9fa",
+        "accounts": ["accounts_receivable"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_inventory",
+        "cell": "L14",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "存貨",
+          "en": "Inventories"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": ["Inventory"]
+        },
+        "termRef": "tm_n7v3k8pq",
+        "accounts": ["inventory"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_short_term_loans_receivable",
+        "cell": "L15",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "短期放貨",
+          "en": "Short-term loans receivable"
+        },
+        "aliases": {
+          "zh-TW": ["短期放款"],
+          "en": ["Loans receivable"]
+        },
+        "termRef": "tm_3sy1gk7c",
+        "pendingRefs": ["T09"],
+        "accounts": ["short_term_loans_receivable"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_prepaid_expenses",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "預付費用",
+          "en": "Prepayments"
+        },
+        "aliases": {
+          "zh-TW": ["預付款項"],
+          "en": ["Prepaid expenses"]
+        },
+        "termRef": "tm_5xm3qcz9",
+        "extension": true,
+        "accounts": ["prepaid_expenses"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_supplies_on_hand",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "用品盤存",
+          "en": "Supplies on hand"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_rp85wtm7",
+        "extension": true,
+        "accounts": ["supplies_on_hand"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_current_assets",
+        "cell": null,
+        "kind": "total",
+        "label": {
+          "zh-TW": "流動資產合計",
+          "en": "Total current assets"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_k52yxb68",
+        "flags": ["not_in_template"],
+        "sum": ["bs_cash", "bs_accounts_receivable", "bs_inventory", "bs_short_term_loans_receivable", "bs_prepaid_expenses", "bs_supplies_on_hand"]
+      },
+      {
+        "id": "bs_noncurrent_assets_group",
+        "cell": "K17",
+        "kind": "group",
+        "label": {
+          "zh-TW": "非流動資產",
+          "en": "Non-current assets"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_93mhtb4s",
+        "children": ["bs_fixed_assets_group", "bs_intangible_assets", "bs_investments_other", "bs_deferred_assets_group"]
+      },
+      {
+        "id": "bs_fixed_assets_group",
+        "cell": "L18",
+        "kind": "group",
+        "label": {
+          "zh-TW": "固定資產",
+          "en": "Property, plant and equipment"
+        },
+        "aliases": {
+          "zh-TW": ["不動產、廠房及設備"],
+          "en": ["Fixed assets"]
+        },
+        "termRef": "tm_12gxceqy",
+        "flags": ["old_name"],
+        "children": ["bs_machinery_net", "bs_office_equipment"]
+      },
+      {
+        "id": "bs_machinery_net",
+        "cell": "L19",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "機器設備",
+          "en": "Machinery and equipment"
+        },
+        "aliases": {
+          "zh-TW": ["機器設備淨額", "固定資產"],
+          "en": ["Machinery and equipment, net", "Fixed assets"]
+        },
+        "termRef": "tm_gt8g4afe",
+        "accounts": ["machinery_equipment", "accumulated_depreciation_machinery"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_ppe_gross",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "不動產廠房設備毛額",
+          "en": "Gross carrying amount of property, plant and equipment"
+        },
+        "aliases": {
+          "zh-TW": ["固定資產毛額", "不動產、廠房及設備毛額"],
+          "en": []
+        },
+        "termRef": "tm_5y5wj6f4",
+        "flags": ["not_in_template"],
+        "hidden": true,
+        "accounts": ["machinery_equipment", "office_equipment"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_office_equipment",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "辦公設備",
+          "en": "Office equipment"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_njqd0f5g",
+        "extension": true,
+        "accounts": ["office_equipment"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_intangible_assets",
+        "cell": "L20",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "無形資產",
+          "en": "Intangible assets"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_wqn6nph9",
+        "accounts": ["intangible_assets"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_investments_other",
+        "cell": "L21",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "投資其他資產",
+          "en": "Investments and other assets"
+        },
+        "aliases": {
+          "zh-TW": ["長期投資"],
+          "en": ["Long-term investments"]
+        },
+        "termRef": "tm_yw1wvkkd",
+        "pendingRefs": ["T15"],
+        "flags": ["japanese"],
+        "accounts": ["investments_other_assets"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_deferred_assets_group",
+        "cell": "L23",
+        "kind": "group",
+        "label": {
+          "zh-TW": "遞延資產",
+          "en": "Deferred assets"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": ["Deferred charges"]
+        },
+        "termRef": "tm_8g81jkmp",
+        "pendingRefs": ["T04"],
+        "flags": ["japanese", "not_ifrs_line"],
+        "children": ["bs_deferred_org_costs", "bs_deferred_dev_costs"]
+      },
+      {
+        "id": "bs_deferred_org_costs",
+        "cell": "L24",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "設立費",
+          "en": "Start-up costs"
+        },
+        "aliases": {
+          "zh-TW": ["開辦費"],
+          "en": ["Organisation costs"]
+        },
+        "termRef": "tm_d9f3g7cs",
+        "pendingRefs": ["T04", "T30"],
+        "flags": ["japanese", "not_ifrs_line"],
+        "accounts": ["deferred_organisation_costs"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_deferred_dev_costs",
+        "cell": "L25",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "開發費",
+          "en": "Development costs"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_7nja2cvf",
+        "pendingRefs": ["T04"],
+        "flags": ["japanese", "not_ifrs_line"],
+        "accounts": ["deferred_development_costs"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_total_assets",
+        "cell": "L29",
+        "kind": "total",
+        "label": {
+          "zh-TW": "資產總計",
+          "en": "Total assets"
+        },
+        "aliases": {
+          "zh-TW": ["資產統計", "資產總額"],
+          "en": []
+        },
+        "termRef": "tm_t7a3s6wb",
+        "flags": ["typo_fixed"],
+        "sum": [
+          "bs_current_assets",
+          "bs_machinery_net",
+          "bs_office_equipment",
+          "bs_intangible_assets",
+          "bs_investments_other",
+          "bs_deferred_org_costs",
+          "bs_deferred_dev_costs"
+        ]
+      },
+      {
+        "id": "bs_current_liabilities_group",
+        "cell": "N11",
+        "kind": "group",
+        "label": {
+          "zh-TW": "流動負債",
+          "en": "Current liabilities"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_c2y9b5ex",
+        "children": [
+          "bs_accounts_payable",
+          "bs_short_term_borrowings",
+          "bs_income_tax_payable",
+          "bs_deposits_received",
+          "bs_interest_payable",
+          "bs_other_payables",
+          "bs_contract_liabilities",
+          "bs_dividends_payable"
+        ]
+      },
+      {
+        "id": "bs_accounts_payable",
+        "cell": "N12",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "應付帳款",
+          "en": "Trade payables"
+        },
+        "aliases": {
+          "zh-TW": ["應付賬款", "應付貨款"],
+          "en": ["Accounts payable"]
+        },
+        "termRef": "tm_a3p9y6kc",
+        "flags": ["typo_fixed"],
+        "accounts": ["accounts_payable"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_short_term_borrowings",
+        "cell": "N13",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "短期借款",
+          "en": "Short-term borrowings"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_s5b8r3hd",
+        "pendingRefs": ["T30"],
+        "accounts": ["short_term_borrowings"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_income_tax_payable",
+        "cell": "N14",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "應付所得稅",
+          "en": "Current tax liabilities"
+        },
+        "aliases": {
+          "zh-TW": ["本期所得稅負債"],
+          "en": ["Income tax payable"]
+        },
+        "termRef": "tm_kgv20zg0",
+        "pendingRefs": ["T10", "T36"],
+        "accounts": ["income_tax_payable"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_deposits_received",
+        "cell": "N15",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "保證金",
+          "en": "Deposits received"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_zx169kcm",
+        "pendingRefs": ["T15"],
+        "flags": ["japanese"],
+        "accounts": ["deposits_received"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_interest_payable",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "應付利息",
+          "en": "Interest payable"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_hg8c967a",
+        "extension": true,
+        "accounts": ["interest_payable"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_other_payables",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "其他應付款",
+          "en": "Other payables"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_bgtgsvhr",
+        "extension": true,
+        "accounts": ["other_payables"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_contract_liabilities",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "預收收入",
+          "en": "Contract liabilities"
+        },
+        "aliases": {
+          "zh-TW": ["合約負債"],
+          "en": ["Unearned revenue"]
+        },
+        "termRef": "tm_bcs4fvmn",
+        "extension": true,
+        "accounts": ["contract_liabilities"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_dividends_payable",
+        "cell": null,
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "應付股利",
+          "en": "Dividends payable"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_4kwp1jdw",
+        "extension": true,
+        "accounts": ["dividends_payable"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_current_liabilities",
+        "cell": null,
+        "kind": "total",
+        "label": {
+          "zh-TW": "流動負債合計",
+          "en": "Total current liabilities"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_c2y9b5ex",
+        "flags": ["not_in_template"],
+        "sum": [
+          "bs_accounts_payable",
+          "bs_short_term_borrowings",
+          "bs_income_tax_payable",
+          "bs_deposits_received",
+          "bs_interest_payable",
+          "bs_other_payables",
+          "bs_contract_liabilities",
+          "bs_dividends_payable"
+        ]
+      },
+      {
+        "id": "bs_noncurrent_liabilities_group",
+        "cell": "N16",
+        "kind": "group",
+        "label": {
+          "zh-TW": "非流動負債",
+          "en": "Non-current liabilities"
+        },
+        "aliases": {
+          "zh-TW": ["長期負債"],
+          "en": ["Long-term liabilities"]
+        },
+        "termRef": "tm_adqjyfqg",
+        "children": ["bs_long_term_borrowings"]
+      },
+      {
+        "id": "bs_long_term_borrowings",
+        "cell": "N17",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "長期借款",
+          "en": "Long-term borrowings"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_gcp2zeys",
+        "accounts": ["long_term_borrowings"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_noncurrent_liabilities",
+        "cell": null,
+        "kind": "total",
+        "label": {
+          "zh-TW": "非流動負債合計",
+          "en": "Total non-current liabilities"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_adqjyfqg",
+        "flags": ["not_in_template"],
+        "sum": ["bs_long_term_borrowings"]
+      },
+      {
+        "id": "bs_total_liabilities",
+        "cell": null,
+        "kind": "total",
+        "label": {
+          "zh-TW": "負債總額",
+          "en": "Total liabilities"
+        },
+        "aliases": {
+          "zh-TW": ["負債總計"],
+          "en": []
+        },
+        "termRef": "tm_fwys72qx",
+        "flags": ["not_in_template"],
+        "sum": ["bs_current_liabilities", "bs_noncurrent_liabilities"]
+      },
+      {
+        "id": "bs_equity_group",
+        "cell": "N19",
+        "kind": "group",
+        "label": {
+          "zh-TW": "股東權益",
+          "en": "Equity"
+        },
+        "aliases": {
+          "zh-TW": ["權益", "業主權益"],
+          "en": ["Owners' equity", "Shareholders' equity"]
+        },
+        "termRef": "tm_x3n8v5tc",
+        "flags": ["old_name"],
+        "children": ["bs_share_capital", "bs_capital_surplus", "bs_retained_earnings_group", "bs_valuation_adjustments", "bs_share_subscription_rights"]
+      },
+      {
+        "id": "bs_share_capital",
+        "cell": "N21",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "股本",
+          "en": "Share capital"
+        },
+        "aliases": {
+          "zh-TW": ["普通股股本", "實收資本"],
+          "en": ["Paid-in capital"]
+        },
+        "termRef": "tm_5e3py55a",
+        "accounts": ["share_capital"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_capital_surplus",
+        "cell": "N22",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "資本公積",
+          "en": "Capital surplus"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_yka0razf",
+        "pendingRefs": ["T16"],
+        "accounts": ["capital_surplus"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_retained_earnings_group",
+        "cell": "N23",
+        "kind": "group",
+        "label": {
+          "zh-TW": "保留盈餘",
+          "en": "Retained earnings"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_zz4bj51z",
+        "children": ["bs_legal_reserve", "bs_special_reserve", "bs_retained_earnings"]
+      },
+      {
+        "id": "bs_legal_reserve",
+        "cell": "N24",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "法定盈餘公積",
+          "en": "Legal reserve"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_3bd0kmwn",
+        "accounts": ["legal_reserve"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_special_reserve",
+        "cell": "N25",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "特別盈餘公積",
+          "en": "Special reserve"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_j5778msk",
+        "accounts": ["special_reserve"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_retained_earnings",
+        "cell": "N26",
+        "kind": "retained_earnings",
+        "label": {
+          "zh-TW": "未分配盈餘",
+          "en": "Unappropriated retained earnings"
+        },
+        "aliases": {
+          "zh-TW": ["累積盈餘", "未分配盈餘（待彌補虧損）"],
+          "en": ["Retained earnings"]
+        },
+        "termRef": "tm_4c6v99nn",
+        "account": "retained_earnings",
+        "netIncomeLine": "is_net_income"
+      },
+      {
+        "id": "bs_valuation_adjustments",
+        "cell": "N27",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "評價及換算差額",
+          "en": "Other components of equity"
+        },
+        "aliases": {
+          "zh-TW": ["其他權益"],
+          "en": ["Valuation and translation adjustments"]
+        },
+        "termRef": "tm_zmxytm7w",
+        "pendingRefs": ["T15"],
+        "flags": ["japanese"],
+        "accounts": ["valuation_translation_adjustments"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_share_subscription_rights",
+        "cell": "N28",
+        "kind": "accounts",
+        "label": {
+          "zh-TW": "新股預約申購權",
+          "en": "Share options and warrants"
+        },
+        "aliases": {
+          "zh-TW": ["認股權"],
+          "en": ["Share subscription rights"]
+        },
+        "termRef": "tm_752w5xzd",
+        "pendingRefs": ["T15"],
+        "flags": ["japanese"],
+        "accounts": ["share_subscription_rights"],
+        "measure": "balance"
+      },
+      {
+        "id": "bs_total_equity",
+        "cell": null,
+        "kind": "total",
+        "label": {
+          "zh-TW": "股東權益總額",
+          "en": "Total equity"
+        },
+        "aliases": {
+          "zh-TW": ["權益總額", "權益總計"],
+          "en": []
+        },
+        "termRef": "tm_y37ymj9w",
+        "flags": ["not_in_template"],
+        "sum": [
+          "bs_share_capital",
+          "bs_capital_surplus",
+          "bs_legal_reserve",
+          "bs_special_reserve",
+          "bs_retained_earnings",
+          "bs_valuation_adjustments",
+          "bs_share_subscription_rights"
+        ]
+      },
+      {
+        "id": "bs_total_liabilities_equity",
+        "cell": "N29",
+        "kind": "total",
+        "label": {
+          "zh-TW": "負債及股東權益總計",
+          "en": "Total liabilities and equity"
+        },
+        "aliases": {
+          "zh-TW": ["負債及股東權益統計", "負債及權益總計"],
+          "en": []
+        },
+        "termRef": "tm_ec80jjev",
+        "flags": ["old_name", "typo_fixed"],
+        "invariant": "equals_line:bs_total_assets",
+        "sum": ["bs_total_liabilities", "bs_total_equity"]
+      }
+    ],
+    "cash_flow_indirect": [
+      {
+        "id": "cf_operating_group",
+        "cell": "H10",
+        "kind": "group",
+        "label": {
+          "zh-TW": "營業活動的現金流量",
+          "en": "Cash flows from operating activities"
+        },
+        "aliases": {
+          "zh-TW": ["營業活動之現金流量", "營業活動現金流量"],
+          "en": []
+        },
+        "termRef": "tm_p2a7c5vk",
+        "children": [
+          "cf_pretax_income",
+          "cf_depreciation",
+          "cf_interest_expense_addback",
+          "cf_other_noncash_losses",
+          "cf_receivables_increase",
+          "cf_inventory_increase",
+          "cf_receivables_decrease",
+          "cf_payables_increase",
+          "cf_other_liabilities_increase",
+          "cf_other_operating_assets_increase",
+          "cf_noncash_gains",
+          "cf_operating_subtotal",
+          "cf_interest_paid",
+          "cf_income_tax_paid",
+          "cf_operating_total"
+        ]
+      },
+      {
+        "id": "cf_pretax_income",
+        "cell": "H11",
+        "kind": "link",
+        "label": {
+          "zh-TW": "稅前淨利",
+          "en": "Profit before tax"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_z971merj",
+        "from": "is_pretax_income",
+        "check": "step2"
+      },
+      {
+        "id": "cf_depreciation",
+        "cell": "H12",
+        "kind": "noncash_addback",
+        "label": {
+          "zh-TW": "折舊費用(+)",
+          "en": "Depreciation (+)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_85pkjrv0",
+        "pendingRefs": ["T12"],
+        "accounts": ["depreciation_expense"],
+        "sign": "add"
+      },
+      {
+        "id": "cf_interest_expense_addback",
+        "cell": "H13",
+        "kind": "noncash_addback",
+        "label": {
+          "zh-TW": "支付利息(+)",
+          "en": "Interest expense (+)"
+        },
+        "aliases": {
+          "zh-TW": ["利息費用(+)"],
+          "en": []
+        },
+        "termRef": "tm_dsfjhrfw",
+        "pendingRefs": ["T11"],
+        "flags": ["japanese"],
+        "accounts": ["interest_expense"],
+        "sign": "add"
+      },
+      {
+        "id": "cf_other_noncash_losses",
+        "cell": "H14",
+        "kind": "noncash_addback",
+        "label": {
+          "zh-TW": "其他非現金損失增加(+)",
+          "en": "Other non-cash expenses and losses (+)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": ["Other non-cash losses (+)"]
+        },
+        "termRef": "tm_gcgcmf3y",
+        "pendingRefs": ["T05", "T12"],
+        "accounts": ["amortisation_deferred_assets"],
+        "sign": "add"
+      },
+      {
+        "id": "cf_receivables_increase",
+        "cell": "H15",
+        "kind": "working_capital",
+        "label": {
+          "zh-TW": "銷貨債權增加(-)",
+          "en": "Increase in trade receivables (-)"
+        },
+        "aliases": {
+          "zh-TW": ["應收帳款增加(-)"],
+          "en": ["Increase in accounts receivable (-)"]
+        },
+        "termRef": "tm_873r9bx9",
+        "pendingRefs": ["T12", "T15"],
+        "flags": ["japanese"],
+        "accounts": ["accounts_receivable"],
+        "sign": "negate_change",
+        "only": "increase"
+      },
+      {
+        "id": "cf_inventory_increase",
+        "cell": "H16",
+        "kind": "working_capital",
+        "label": {
+          "zh-TW": "存貨增加(-)",
+          "en": "Increase in inventories (-)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_bpt2kp5c",
+        "pendingRefs": ["T12"],
+        "accounts": ["inventory"],
+        "sign": "negate_change",
+        "oppositeSignNote": "template_has_no_decrease_row"
+      },
+      {
+        "id": "cf_receivables_decrease",
+        "cell": "H17",
+        "kind": "working_capital",
+        "label": {
+          "zh-TW": "應收帳款減少(+)",
+          "en": "Decrease in trade receivables (+)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_4dgfgxmt",
+        "pendingRefs": ["T12"],
+        "accounts": ["accounts_receivable"],
+        "sign": "negate_change",
+        "only": "decrease"
+      },
+      {
+        "id": "cf_payables_increase",
+        "cell": "H18",
+        "kind": "working_capital",
+        "label": {
+          "zh-TW": "應付帳款增加(+)",
+          "en": "Increase in trade payables (+)"
+        },
+        "aliases": {
+          "zh-TW": ["應付賬款增加(+)"],
+          "en": ["Increase in accounts payable (+)"]
+        },
+        "termRef": "tm_dc0p0nrv",
+        "pendingRefs": ["T12"],
+        "flags": ["typo_fixed"],
+        "accounts": ["accounts_payable"],
+        "sign": "change",
+        "oppositeSignNote": "template_has_no_decrease_row"
+      },
+      {
+        "id": "cf_other_liabilities_increase",
+        "cell": "H19",
+        "kind": "working_capital",
+        "label": {
+          "zh-TW": "其他負債增加(+)",
+          "en": "Increase in other operating liabilities (+)"
+        },
+        "aliases": {
+          "zh-TW": ["其他營業負債增加（減少）"],
+          "en": ["Increase in other liabilities (+)"]
+        },
+        "termRef": "tm_z5kjkvhc",
+        "pendingRefs": ["T12", "T15"],
+        "accounts": ["deposits_received", "other_payables", "contract_liabilities"],
+        "sign": "change",
+        "oppositeSignNote": "template_has_no_decrease_row",
+        "excludeAccounts": ["income_tax_payable", "interest_payable", "short_term_borrowings", "long_term_borrowings", "dividends_payable"]
+      },
+      {
+        "id": "cf_other_operating_assets_increase",
+        "cell": null,
+        "kind": "working_capital",
+        "label": {
+          "zh-TW": "其他營業資產增加(-)",
+          "en": "Increase in other operating assets (-)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "extension": true,
+        "accounts": ["prepaid_expenses", "supplies_on_hand"],
+        "sign": "negate_change"
+      },
+      {
+        "id": "cf_noncash_gains",
+        "cell": null,
+        "kind": "noncash_addback",
+        "label": {
+          "zh-TW": "非現金利益減除(-)",
+          "en": "Non-cash gains deducted (-)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "extension": true,
+        "accounts": [],
+        "sign": "subtract"
+      },
+      {
+        "id": "cf_operating_subtotal",
+        "cell": "H20",
+        "kind": "total",
+        "label": {
+          "zh-TW": "小計",
+          "en": "Cash generated from operations"
+        },
+        "aliases": {
+          "zh-TW": ["營運產生之現金"],
+          "en": ["Subtotal"]
+        },
+        "termRef": "tm_mcjk5sza",
+        "invariant": "equals_line:dc_cash_generated_from_operations",
+        "sum": [
+          "cf_pretax_income",
+          "cf_depreciation",
+          "cf_interest_expense_addback",
+          "cf_other_noncash_losses",
+          "cf_receivables_increase",
+          "cf_inventory_increase",
+          "cf_receivables_decrease",
+          "cf_payables_increase",
+          "cf_other_liabilities_increase",
+          "cf_other_operating_assets_increase",
+          "cf_noncash_gains"
+        ]
+      },
+      {
+        "id": "cf_interest_paid",
+        "cell": "H21",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "利息支出(-)",
+          "en": "Interest paid (-)"
+        },
+        "aliases": {
+          "zh-TW": ["支付之利息(-)"],
+          "en": []
+        },
+        "termRef": "tm_y7a34vmk",
+        "pendingRefs": ["T11"],
+        "sign": "outflow_negative",
+        "activity": "operating",
+        "cfKinds": ["interest_paid"]
+      },
+      {
+        "id": "cf_income_tax_paid",
+        "cell": "H22",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "支付所得稅(-)",
+          "en": "Income taxes paid (-)"
+        },
+        "aliases": {
+          "zh-TW": ["支付之所得稅(-)"],
+          "en": []
+        },
+        "termRef": "tm_w60nbtch",
+        "pendingRefs": ["T10"],
+        "sign": "outflow_negative",
+        "activity": "operating",
+        "cfKinds": ["income_tax_paid"]
+      },
+      {
+        "id": "cf_operating_total",
+        "cell": "H23",
+        "kind": "total",
+        "label": {
+          "zh-TW": "營業活動的現金流量總計",
+          "en": "Net cash from operating activities"
+        },
+        "aliases": {
+          "zh-TW": ["營業活動的現金流量統計", "營業活動之淨現金流量", "營業活動淨現金流量"],
+          "en": ["Net cash from (used in) operating activities"]
+        },
+        "termRef": "tm_e61ht6yh",
+        "flags": ["typo_fixed"],
+        "invariant": "equals_line:dc_operating_total",
+        "sum": ["cf_operating_subtotal", "cf_interest_paid", "cf_income_tax_paid"]
+      },
+      {
+        "id": "cf_investing_group",
+        "cell": "H25",
+        "kind": "group",
+        "label": {
+          "zh-TW": "投資活動的現金流量",
+          "en": "Cash flows from investing activities"
+        },
+        "aliases": {
+          "zh-TW": ["投資活動之現金流量"],
+          "en": []
+        },
+        "termRef": "tm_9hrfpqem",
+        "children": ["cf_capex", "cf_loans_advanced", "cf_other_investing", "cf_loans_collected", "cf_disposal_proceeds", "cf_investing_total"]
+      },
+      {
+        "id": "cf_capex",
+        "cell": "H26",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "取得非流動資產(-)",
+          "en": "Payments to acquire non-current assets (-)"
+        },
+        "aliases": {
+          "zh-TW": ["資本支出"],
+          "en": ["Capital expenditure"]
+        },
+        "termRef": "tm_xen3p30x",
+        "pendingRefs": ["T30"],
+        "sign": "outflow_negative",
+        "activity": "investing",
+        "cfKinds": ["capex"]
+      },
+      {
+        "id": "cf_loans_advanced",
+        "cell": "H27",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "放貸支出(-)",
+          "en": "Loans advanced to other parties (-)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": ["Loans advanced (-)"]
+        },
+        "termRef": "tm_wqc6rnsx",
+        "pendingRefs": ["T09"],
+        "sign": "outflow_negative",
+        "activity": "investing",
+        "cfKinds": ["loans_advanced"]
+      },
+      {
+        "id": "cf_other_investing",
+        "cell": "H28",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "其他投資支出(-)",
+          "en": "Other payments for investing activities (-)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": ["Other investing payments (-)"]
+        },
+        "termRef": "tm_8125v6e0",
+        "sign": "outflow_negative",
+        "activity": "investing",
+        "cfKinds": ["other_investing_payments"]
+      },
+      {
+        "id": "cf_loans_collected",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "收回放款(+)",
+          "en": "Receipts from repayment of loans made to other parties (+)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": ["Receipts from repayment of loans (+)"]
+        },
+        "termRef": "tm_tgfsn0x3",
+        "extension": true,
+        "sign": "inflow_positive",
+        "activity": "investing",
+        "cfKinds": ["loans_collected"]
+      },
+      {
+        "id": "cf_disposal_proceeds",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "處分資產收入(+)",
+          "en": "Proceeds from disposal of non-current assets (+)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_z2c2sbg4",
+        "extension": true,
+        "sign": "inflow_positive",
+        "activity": "investing",
+        "cfKinds": ["disposal_proceeds"]
+      },
+      {
+        "id": "cf_investing_total",
+        "cell": "H29",
+        "kind": "total",
+        "label": {
+          "zh-TW": "投資活動的現金流量總計(-)",
+          "en": "Net cash used in investing activities (-)"
+        },
+        "aliases": {
+          "zh-TW": ["投資活動的現金流量統計(-)", "投資活動之淨現金流量"],
+          "en": ["Net cash from (used in) investing activities"]
+        },
+        "termRef": "tm_fkpb3evq",
+        "flags": ["typo_fixed"],
+        "sum": ["cf_capex", "cf_loans_advanced", "cf_other_investing", "cf_loans_collected", "cf_disposal_proceeds"]
+      },
+      {
+        "id": "cf_financing_group",
+        "cell": "H31",
+        "kind": "group",
+        "label": {
+          "zh-TW": "籌資活動的現金流量",
+          "en": "Cash flows from financing activities"
+        },
+        "aliases": {
+          "zh-TW": ["籌資活動之現金流量"],
+          "en": []
+        },
+        "termRef": "tm_f9a4c6md",
+        "children": [
+          "cf_st_borrowing_proceeds",
+          "cf_st_borrowing_repayment",
+          "cf_share_issue",
+          "cf_dividends_paid",
+          "cf_lt_borrowing_proceeds",
+          "cf_lt_borrowing_repayment",
+          "cf_financing_total"
+        ]
+      },
+      {
+        "id": "cf_st_borrowing_proceeds",
+        "cell": "H32",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "短期借款收入(+)",
+          "en": "Proceeds from short-term borrowings (+)"
+        },
+        "aliases": {
+          "zh-TW": ["短期借款增加"],
+          "en": []
+        },
+        "termRef": "tm_s0b4f89c",
+        "sign": "inflow_positive",
+        "activity": "financing",
+        "cfKinds": ["st_borrowing_proceeds"]
+      },
+      {
+        "id": "cf_st_borrowing_repayment",
+        "cell": "H33",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "短期借款返還(-)",
+          "en": "Repayment of short-term borrowings (-)"
+        },
+        "aliases": {
+          "zh-TW": ["短期借款減少"],
+          "en": []
+        },
+        "termRef": "tm_vgf3h5z9",
+        "sign": "outflow_negative",
+        "activity": "financing",
+        "cfKinds": ["st_borrowing_repayment"]
+      },
+      {
+        "id": "cf_share_issue",
+        "cell": "H34",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "發行股票收入(+)",
+          "en": "Proceeds from issuing shares (+)"
+        },
+        "aliases": {
+          "zh-TW": ["現金增資"],
+          "en": []
+        },
+        "termRef": "tm_4n517fc3",
+        "sign": "inflow_positive",
+        "activity": "financing",
+        "cfKinds": ["share_issue"]
+      },
+      {
+        "id": "cf_dividends_paid",
+        "cell": "H35",
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "支付股息(-)",
+          "en": "Dividends paid (-)"
+        },
+        "aliases": {
+          "zh-TW": ["支付之股利(-)", "發放現金股利"],
+          "en": []
+        },
+        "termRef": "tm_zqzrfgfn",
+        "sign": "outflow_negative",
+        "activity": "financing",
+        "cfKinds": ["dividends_paid"]
+      },
+      {
+        "id": "cf_lt_borrowing_proceeds",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "長期借款收入(+)",
+          "en": "Proceeds from long-term borrowings (+)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_fk8yqnyt",
+        "extension": true,
+        "sign": "inflow_positive",
+        "activity": "financing",
+        "cfKinds": ["lt_borrowing_proceeds"]
+      },
+      {
+        "id": "cf_lt_borrowing_repayment",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "長期借款返還(-)",
+          "en": "Repayment of long-term borrowings (-)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_tfmnrp7r",
+        "extension": true,
+        "sign": "outflow_negative",
+        "activity": "financing",
+        "cfKinds": ["lt_borrowing_repayment"]
+      },
+      {
+        "id": "cf_financing_total",
+        "cell": "H36",
+        "kind": "total",
+        "label": {
+          "zh-TW": "籌資活動的現金流量總計",
+          "en": "Net cash from financing activities"
+        },
+        "aliases": {
+          "zh-TW": ["籌資活動的現金流量統計", "籌資活動之淨現金流量"],
+          "en": ["Net cash from (used in) financing activities"]
+        },
+        "termRef": "tm_vk8v09cy",
+        "flags": ["typo_fixed"],
+        "sum": [
+          "cf_st_borrowing_proceeds",
+          "cf_st_borrowing_repayment",
+          "cf_share_issue",
+          "cf_dividends_paid",
+          "cf_lt_borrowing_proceeds",
+          "cf_lt_borrowing_repayment"
+        ]
+      },
+      {
+        "id": "cf_cash_group",
+        "cell": "H38",
+        "kind": "group",
+        "label": {
+          "zh-TW": "現金流量",
+          "en": "Cash flows"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_5aryzkn3",
+        "children": ["cf_net_change", "cf_cash_begin", "cf_cash_end"]
+      },
+      {
+        "id": "cf_net_change",
+        "cell": "H39",
+        "kind": "formula",
+        "label": {
+          "zh-TW": "現金及約當現金增減額",
+          "en": "Net increase (decrease) in cash and cash equivalents"
+        },
+        "aliases": {
+          "zh-TW": ["本期現金及約當現金增加（減少）數", "現金及約當現金淨變動"],
+          "en": []
+        },
+        "termRef": "tm_x6gmpvm5",
+        "expr": "line.cf_operating_total + line.cf_investing_total + line.cf_financing_total",
+        "invariant": "equals_cash_change"
+      },
+      {
+        "id": "cf_cash_begin",
+        "cell": "H40",
+        "kind": "balance_begin",
+        "label": {
+          "zh-TW": "期初現金及約當現金餘額",
+          "en": "Cash and cash equivalents at the beginning of the period"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_z2c8f7d6",
+        "account": "cash"
+      },
+      {
+        "id": "cf_cash_end",
+        "cell": "H41",
+        "kind": "balance_end",
+        "label": {
+          "zh-TW": "期末現金及約當現金餘額",
+          "en": "Cash and cash equivalents at the end of the period"
+        },
+        "aliases": {
+          "zh-TW": ["期末現金餘額"],
+          "en": []
+        },
+        "termRef": "tm_12k2yq6k",
+        "from": ["cf_net_change", "cf_cash_begin"],
+        "check": "step3",
+        "account": "cash"
+      }
+    ],
+    "cash_flow_direct": [
+      {
+        "id": "dc_operating_group",
+        "cell": null,
+        "kind": "group",
+        "label": {
+          "zh-TW": "營業活動的現金流量（直接法）",
+          "en": "Cash flows from operating activities (direct method)"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_p2a7c5vk",
+        "flags": ["not_in_template"],
+        "children": [
+          "dc_receipts_from_customers",
+          "dc_payments_to_suppliers",
+          "dc_payments_for_operating_expenses",
+          "dc_other_operating_receipts",
+          "dc_cash_generated_from_operations",
+          "dc_interest_paid",
+          "dc_income_tax_paid",
+          "dc_operating_total"
+        ]
+      },
+      {
+        "id": "dc_receipts_from_customers",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "自客戶收取之現金",
+          "en": "Cash receipts from customers"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "sign": "inflow_positive",
+        "activity": "operating",
+        "cfKinds": ["receipts_from_customers"]
+      },
+      {
+        "id": "dc_payments_to_suppliers",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "支付供應商之現金",
+          "en": "Cash paid to suppliers"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "sign": "outflow_negative",
+        "activity": "operating",
+        "cfKinds": ["payments_to_suppliers"]
+      },
+      {
+        "id": "dc_payments_for_operating_expenses",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "支付營業費用之現金",
+          "en": "Cash paid for operating expenses"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "sign": "outflow_negative",
+        "activity": "operating",
+        "cfKinds": ["payments_for_operating_expenses"]
+      },
+      {
+        "id": "dc_other_operating_receipts",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "其他營業收現",
+          "en": "Other operating receipts"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "sign": "inflow_positive",
+        "activity": "operating",
+        "cfKinds": ["other_operating_receipts"]
+      },
+      {
+        "id": "dc_cash_generated_from_operations",
+        "cell": null,
+        "kind": "total",
+        "label": {
+          "zh-TW": "小計",
+          "en": "Cash generated from operations"
+        },
+        "aliases": {
+          "zh-TW": ["營運產生之現金"],
+          "en": ["Subtotal"]
+        },
+        "termRef": "tm_mcjk5sza",
+        "invariant": "equals_line:cf_operating_subtotal",
+        "sum": ["dc_receipts_from_customers", "dc_payments_to_suppliers", "dc_payments_for_operating_expenses", "dc_other_operating_receipts"]
+      },
+      {
+        "id": "dc_interest_paid",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "支付之利息",
+          "en": "Interest paid"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_y7a34vmk",
+        "pendingRefs": ["T11"],
+        "sign": "outflow_negative",
+        "activity": "operating",
+        "cfKinds": ["interest_paid"]
+      },
+      {
+        "id": "dc_income_tax_paid",
+        "cell": null,
+        "kind": "cash_tag",
+        "label": {
+          "zh-TW": "支付之所得稅",
+          "en": "Income taxes paid"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_w60nbtch",
+        "sign": "outflow_negative",
+        "activity": "operating",
+        "cfKinds": ["income_tax_paid"]
+      },
+      {
+        "id": "dc_operating_total",
+        "cell": null,
+        "kind": "total",
+        "label": {
+          "zh-TW": "營業活動之淨現金流量",
+          "en": "Net cash from operating activities"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_e61ht6yh",
+        "invariant": "equals_line:cf_operating_total",
+        "sum": ["dc_cash_generated_from_operations", "dc_interest_paid", "dc_income_tax_paid"]
+      },
+      {
+        "id": "dc_investing_total",
+        "cell": null,
+        "kind": "link",
+        "label": {
+          "zh-TW": "投資活動之淨現金流量",
+          "en": "Net cash used in investing activities"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_fkpb3evq",
+        "from": "cf_investing_total"
+      },
+      {
+        "id": "dc_financing_total",
+        "cell": null,
+        "kind": "link",
+        "label": {
+          "zh-TW": "籌資活動之淨現金流量",
+          "en": "Net cash from financing activities"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_vk8v09cy",
+        "from": "cf_financing_total"
+      },
+      {
+        "id": "dc_net_change",
+        "cell": null,
+        "kind": "formula",
+        "label": {
+          "zh-TW": "現金及約當現金增減額",
+          "en": "Net increase (decrease) in cash and cash equivalents"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_x6gmpvm5",
+        "expr": "line.dc_operating_total + line.dc_investing_total + line.dc_financing_total",
+        "invariant": "equals_line:cf_net_change"
+      },
+      {
+        "id": "dc_cash_begin",
+        "cell": null,
+        "kind": "link",
+        "label": {
+          "zh-TW": "期初現金及約當現金餘額",
+          "en": "Cash and cash equivalents at the beginning of the period"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_z2c8f7d6",
+        "from": "cf_cash_begin"
+      },
+      {
+        "id": "dc_cash_end",
+        "cell": null,
+        "kind": "link",
+        "label": {
+          "zh-TW": "期末現金及約當現金餘額",
+          "en": "Cash and cash equivalents at the end of the period"
+        },
+        "aliases": {
+          "zh-TW": [],
+          "en": []
+        },
+        "termRef": "tm_12k2yq6k",
+        "from": "cf_cash_end"
+      }
+    ]
+  }
+}

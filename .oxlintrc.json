@@ -42,7 +42,7 @@
   ],
   "overrides": [
     {
-      "files": ["packages/tokens/src/**", "packages/i18n/src/**", "packages/content-schema/src/**"],
+      "files": ["packages/tokens/src/**", "packages/i18n/src/**", "packages/content-schema/src/**", "packages/core/src/**"],
       "rules": {
         "no-restricted-imports": [
           "error",

@@ -1,0 +1,63 @@
+{
+  "id": "tpl.pay_dividends_cash",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "以現金發放股利",
+    "en": "Pay a cash dividend"
+  },
+  "summary": {
+    "zh-TW": "從未分配盈餘發放現金股利 {{money:param.amount}} 給股東。",
+    "en": "Distribute {{money:param.amount}} of unappropriated retained earnings to shareholders as a cash dividend."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 200000,
+      "label": {
+        "zh-TW": "股利金額",
+        "en": "Dividend amount"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= param.amount",
+      "message": {
+        "zh-TW": "帳上現金不夠付這筆款項。",
+        "en": "There is not enough cash on the books for this payment."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "retained_earnings",
+      "side": "debit",
+      "amount": "param.amount",
+      "tag": "dividend"
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "financing",
+        "kind": "dividends_paid"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "股利是把賺到的盈餘分給股東，不是費用，所以不影響本期淨利；它直接減少未分配盈餘，現金也同時減少。現金流量表把它列在籌資活動的支付股息。",
+    "en": "A dividend distributes earnings to shareholders; it is not an expense, so profit for the period is unaffected. It reduces unappropriated retained earnings directly, and cash falls by the same amount. The statement of cash flows shows it under financing activities as dividends paid."
+  },
+  "termRefs": ["tm_4c6v99nn", "tm_c4sh8k2p", "tm_zqzrfgfn"]
+}

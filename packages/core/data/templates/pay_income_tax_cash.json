@@ -1,0 +1,78 @@
+{
+  "id": "tpl.pay_income_tax_cash",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "以現金繳納所得稅",
+    "en": "Pay income tax in cash"
+  },
+  "summary": {
+    "zh-TW": "以設定的金額 {{money:param.amount}} 認列所得稅費用，並直接以現金繳納。",
+    "en": "Recognise income tax expense of {{money:param.amount}}, the amount set by the story, and pay it in cash straight away."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 400000,
+      "label": {
+        "zh-TW": "所得稅金額",
+        "en": "Income tax amount"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "income_tax_expense",
+      "side": "debit",
+      "amount": "param.amount",
+      "policyWhen": {
+        "incomeTax": "cash_direct"
+      }
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "income_tax_paid"
+      },
+      "policyWhen": {
+        "incomeTax": "cash_direct"
+      }
+    },
+    {
+      "id": "l3",
+      "account": "income_tax_expense",
+      "side": "debit",
+      "amount": "param.amount",
+      "policyWhen": {
+        "incomeTax": "accrue_then_pay"
+      }
+    },
+    {
+      "id": "l4",
+      "account": "income_tax_payable",
+      "side": "credit",
+      "amount": "param.amount",
+      "policyWhen": {
+        "incomeTax": "accrue_then_pay"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "所得稅是稅前淨利之後才扣的費用，扣掉它就是本期淨利。教材的故事直接以設定的金額付現，所以現金減少、所得稅費用增加，付出的現金列在營業活動的支付所得稅。實務上公司通常先估列應付所得稅、之後再繳納，網站用政策開關保留這種做法。金額不由稅率推算。",
+    "en": "Income tax is deducted after profit before tax to arrive at profit for the period. In the course's story the amount set by the story is paid in cash at once, so cash falls and income tax expense rises, and the cash paid appears under operating activities as income taxes paid. In practice companies usually accrue a tax liability first and pay later; the site keeps that treatment as a policy switch. The amount is not derived from a tax rate."
+  },
+  "termRefs": ["tm_3qfqnrmm", "tm_c4sh8k2p", "tm_kgv20zg0"],
+  "pendingRefs": ["T10"]
+}

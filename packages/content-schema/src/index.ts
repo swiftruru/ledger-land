@@ -1,4 +1,13 @@
 export * from './common.ts';
 export * from './term.ts';
 export * from './chapter.ts';
+export * from './expr.ts';
+export * from './account.ts';
+export * from './policy.ts';
+export * from './template.ts';
+export * from './layout.ts';
+export * from './ratio.ts';
+export * from './scenario.ts';
+export * from './story.ts';
+export * from './question.ts';
 export { validateBundle, type ContentBundle, type ContentIssue } from './validate.ts';

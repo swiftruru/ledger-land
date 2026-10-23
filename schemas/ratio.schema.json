@@ -1,0 +1,338 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/definitions/SemanticId"
+    },
+    "termRef": {
+      "$ref": "#/definitions/__schema0"
+    },
+    "category": {
+      "$ref": "#/definitions/__schema1"
+    },
+    "framework": {
+      "$ref": "#/definitions/__schema2"
+    },
+    "versions": {
+      "$ref": "#/definitions/__schema3"
+    },
+    "pendingRefs": {
+      "$ref": "#/definitions/__schema16"
+    }
+  },
+  "required": [
+    "id",
+    "termRef",
+    "category",
+    "framework",
+    "versions",
+    "pendingRefs"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "SemanticId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "__schema0": {
+      "type": "string",
+      "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+    },
+    "__schema1": {
+      "type": "string",
+      "enum": [
+        "financial_structure",
+        "solvency",
+        "activity",
+        "profitability",
+        "cash_flow",
+        "leverage",
+        "dupont",
+        "department",
+        "market",
+        "income_structure"
+      ]
+    },
+    "__schema2": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "input",
+            "transform",
+            "output"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "__schema3": {
+      "type": "object",
+      "properties": {
+        "excel": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/RatioVersion"
+            }
+          ]
+        },
+        "slides03": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/RatioVersion"
+            }
+          ]
+        },
+        "slides02": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/RatioVersion"
+            }
+          ]
+        },
+        "dupont": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/RatioVersion"
+            }
+          ]
+        },
+        "slides01": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/RatioVersion"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "RatioVersion": {
+      "type": "object",
+      "properties": {
+        "numerator": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "denominator": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "expr": {
+          "$ref": "#/definitions/__schema6"
+        },
+        "unit": {
+          "$ref": "#/definitions/RatioUnit"
+        },
+        "displayDecimals": {
+          "$ref": "#/definitions/__schema7"
+        },
+        "excel": {
+          "$ref": "#/definitions/__schema8"
+        },
+        "naWhen": {
+          "$ref": "#/definitions/__schema9"
+        },
+        "notMeaningfulWhen": {
+          "$ref": "#/definitions/__schema10"
+        },
+        "notMeaningfulBase": {
+          "$ref": "#/definitions/__schema11"
+        },
+        "flags": {
+          "$ref": "#/definitions/__schema12"
+        },
+        "inputs": {
+          "$ref": "#/definitions/__schema13"
+        }
+      },
+      "required": [
+        "unit",
+        "displayDecimals",
+        "naWhen",
+        "notMeaningfulWhen",
+        "flags"
+      ],
+      "additionalProperties": false
+    },
+    "__schema4": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Expr"
+        }
+      ]
+    },
+    "Expr": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^[A-Za-z0-9_.()+\\-*/<>=!&| ,]+$"
+    },
+    "__schema5": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Expr"
+        }
+      ]
+    },
+    "__schema6": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Expr"
+        }
+      ]
+    },
+    "RatioUnit": {
+      "type": "string",
+      "enum": [
+        "percent",
+        "turnover",
+        "days",
+        "multiple",
+        "currency_per_share",
+        "currency"
+      ]
+    },
+    "__schema7": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 6
+    },
+    "__schema8": {
+      "type": "object",
+      "properties": {
+        "cell": {
+          "type": "string",
+          "minLength": 1
+        },
+        "formula": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iferror": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cell",
+        "formula",
+        "format",
+        "iferror"
+      ],
+      "additionalProperties": false
+    },
+    "__schema9": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "denominator_zero",
+          "chained_source_na_or_zero",
+          "chained_source_na",
+          "missing_input"
+        ]
+      }
+    },
+    "__schema10": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "denominator_negative",
+          "base_not_positive"
+        ]
+      }
+    },
+    "__schema11": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Expr"
+        }
+      ]
+    },
+    "__schema12": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "end_of_period_balance",
+          "single_period_approx",
+          "excel_approximation",
+          "website_fix",
+          "website_definition"
+        ]
+      }
+    },
+    "__schema13": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "default": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "label": {
+            "$ref": "#/definitions/LocalizedText"
+          },
+          "pendingRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/PendingRef"
+            }
+          }
+        },
+        "required": [
+          "default",
+          "label"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "LocalizedText": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "$ref": "#/definitions/__schema14"
+        },
+        "en": {
+          "$ref": "#/definitions/__schema15"
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "__schema14": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema15": {
+      "type": "string",
+      "minLength": 1
+    },
+    "PendingRef": {
+      "type": "string",
+      "pattern": "^T\\d{2}$"
+    },
+    "__schema16": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PendingRef"
+      }
+    }
+  }
+}

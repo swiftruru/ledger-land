@@ -1,0 +1,496 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "rev": {
+      "$ref": "#/definitions/__schema0"
+    },
+    "revKind": {
+      "$ref": "#/definitions/__schema1"
+    },
+    "status": {
+      "$ref": "#/definitions/__schema2"
+    },
+    "supersededBy": {
+      "$ref": "#/definitions/__schema3"
+    },
+    "retiredNote": {
+      "$ref": "#/definitions/__schema4"
+    },
+    "authorNotes": {
+      "$ref": "#/definitions/__schema7"
+    },
+    "updatedAt": {
+      "$ref": "#/definitions/__schema8"
+    },
+    "id": {
+      "$ref": "#/definitions/TemplateId"
+    },
+    "title": {
+      "$ref": "#/definitions/LocalizedText"
+    },
+    "summary": {
+      "$ref": "#/definitions/LocalizedText"
+    },
+    "params": {
+      "$ref": "#/definitions/__schema9"
+    },
+    "derived": {
+      "$ref": "#/definitions/__schema15"
+    },
+    "preconditions": {
+      "$ref": "#/definitions/__schema16"
+    },
+    "lines": {
+      "$ref": "#/definitions/__schema17"
+    },
+    "explanation": {
+      "$ref": "#/definitions/LocalizedText"
+    },
+    "termRefs": {
+      "$ref": "#/definitions/__schema29"
+    },
+    "pendingRefs": {
+      "$ref": "#/definitions/__schema30"
+    },
+    "entryQuestionBlockedBy": {
+      "$ref": "#/definitions/__schema31"
+    }
+  },
+  "required": [
+    "rev",
+    "revKind",
+    "status",
+    "id",
+    "title",
+    "summary",
+    "params",
+    "derived",
+    "preconditions",
+    "lines",
+    "explanation",
+    "termRefs"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "__schema0": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "__schema1": {
+      "type": "string",
+      "enum": [
+        "text",
+        "answer"
+      ]
+    },
+    "__schema2": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "retired"
+      ]
+    },
+    "__schema3": {
+      "type": "string"
+    },
+    "__schema4": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
+        }
+      ]
+    },
+    "LocalizedText": {
+      "type": "object",
+      "properties": {
+        "zh-TW": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "en": {
+          "$ref": "#/definitions/__schema6"
+        }
+      },
+      "required": [
+        "zh-TW"
+      ],
+      "additionalProperties": false
+    },
+    "__schema5": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema6": {
+      "type": "string",
+      "minLength": 1
+    },
+    "__schema7": {
+      "type": "string"
+    },
+    "__schema8": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "TemplateId": {
+      "type": "string",
+      "pattern": "^tpl\\.[a-z][a-z0-9_]*$"
+    },
+    "__schema9": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/definitions/Name"
+          },
+          "type": {
+            "$ref": "#/definitions/__schema10"
+          },
+          "min": {
+            "$ref": "#/definitions/__schema11"
+          },
+          "max": {
+            "$ref": "#/definitions/__schema12"
+          },
+          "default": {
+            "$ref": "#/definitions/__schema13"
+          },
+          "label": {
+            "$ref": "#/definitions/LocalizedText"
+          },
+          "monotonic": {
+            "$ref": "#/definitions/__schema14"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "min",
+          "max",
+          "default",
+          "label"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Name": {
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9_]{0,63}$"
+    },
+    "__schema10": {
+      "type": "string",
+      "enum": [
+        "money",
+        "count",
+        "rate",
+        "years"
+      ]
+    },
+    "__schema11": {
+      "type": "number"
+    },
+    "__schema12": {
+      "type": "number"
+    },
+    "__schema13": {
+      "type": "number"
+    },
+    "__schema14": {
+      "type": "string",
+      "enum": [
+        "increasing",
+        "decreasing",
+        "none"
+      ]
+    },
+    "__schema15": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/definitions/Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "money",
+              "number"
+            ]
+          },
+          "expr": {
+            "$ref": "#/definitions/Expr"
+          },
+          "label": {
+            "$ref": "#/definitions/LocalizedText"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "expr",
+          "label"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Expr": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^[A-Za-z0-9_.()+\\-*/<>=!&| ,]+$"
+    },
+    "__schema16": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/definitions/SemanticId"
+          },
+          "expr": {
+            "$ref": "#/definitions/Expr"
+          },
+          "message": {
+            "$ref": "#/definitions/LocalizedText"
+          }
+        },
+        "required": [
+          "id",
+          "expr",
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "SemanticId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "__schema17": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LineSpec"
+      }
+    },
+    "LineSpec": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "account": {
+          "$ref": "#/definitions/SemanticId"
+        },
+        "side": {
+          "$ref": "#/definitions/Side"
+        },
+        "amount": {
+          "$ref": "#/definitions/Expr"
+        },
+        "cf": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "tag": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "policyWhen": {
+          "$ref": "#/definitions/__schema21"
+        },
+        "memo": {
+          "$ref": "#/definitions/__schema28"
+        }
+      },
+      "required": [
+        "id",
+        "account",
+        "side",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "__schema18": {
+      "type": "string",
+      "pattern": "^l[1-9]\\d*$"
+    },
+    "Side": {
+      "type": "string",
+      "enum": [
+        "debit",
+        "credit"
+      ]
+    },
+    "__schema19": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/CashFlowTag"
+        }
+      ]
+    },
+    "CashFlowTag": {
+      "type": "object",
+      "properties": {
+        "activity": {
+          "$ref": "#/definitions/CashFlowActivity"
+        },
+        "kind": {
+          "$ref": "#/definitions/CashFlowKind"
+        }
+      },
+      "required": [
+        "activity",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "CashFlowActivity": {
+      "type": "string",
+      "enum": [
+        "operating",
+        "investing",
+        "financing"
+      ]
+    },
+    "CashFlowKind": {
+      "type": "string",
+      "enum": [
+        "receipts_from_customers",
+        "payments_to_suppliers",
+        "payments_for_operating_expenses",
+        "interest_paid",
+        "income_tax_paid",
+        "other_operating_receipts",
+        "capex",
+        "loans_advanced",
+        "loans_collected",
+        "other_investing_payments",
+        "disposal_proceeds",
+        "st_borrowing_proceeds",
+        "st_borrowing_repayment",
+        "lt_borrowing_proceeds",
+        "lt_borrowing_repayment",
+        "share_issue",
+        "dividends_paid"
+      ]
+    },
+    "__schema20": {
+      "type": "string",
+      "enum": [
+        "purchase",
+        "cost_of_sale",
+        "count_overage",
+        "count_shortage",
+        "dividend",
+        "reserve_appropriation"
+      ]
+    },
+    "__schema21": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/PolicyWhen"
+        }
+      ]
+    },
+    "PolicyWhen": {
+      "type": "object",
+      "properties": {
+        "orgCosts": {
+          "$ref": "#/definitions/__schema22"
+        },
+        "inventoryOverage": {
+          "$ref": "#/definitions/__schema23"
+        },
+        "inventoryShortage": {
+          "$ref": "#/definitions/__schema24"
+        },
+        "incomeTax": {
+          "$ref": "#/definitions/__schema25"
+        },
+        "interestPaidActivity": {
+          "$ref": "#/definitions/__schema26"
+        },
+        "officeSupplies": {
+          "$ref": "#/definitions/__schema27"
+        }
+      },
+      "additionalProperties": false
+    },
+    "__schema22": {
+      "type": "string",
+      "enum": [
+        "capitalise_amortise",
+        "expense"
+      ]
+    },
+    "__schema23": {
+      "type": "string",
+      "enum": [
+        "reduce_cogs",
+        "non_operating_income",
+        "extraordinary_gain"
+      ]
+    },
+    "__schema24": {
+      "type": "string",
+      "enum": [
+        "increase_cogs"
+      ]
+    },
+    "__schema25": {
+      "type": "string",
+      "enum": [
+        "cash_direct",
+        "accrue_then_pay"
+      ]
+    },
+    "__schema26": {
+      "type": "string",
+      "enum": [
+        "operating",
+        "financing"
+      ]
+    },
+    "__schema27": {
+      "type": "string",
+      "enum": [
+        "expense_on_purchase",
+        "asset_then_expense"
+      ]
+    },
+    "__schema28": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/LocalizedText"
+        }
+      ]
+    },
+    "__schema29": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+      }
+    },
+    "__schema30": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PendingRef"
+      }
+    },
+    "PendingRef": {
+      "type": "string",
+      "pattern": "^T\\d{2}$"
+    },
+    "__schema31": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PendingRef"
+      }
+    }
+  }
+}

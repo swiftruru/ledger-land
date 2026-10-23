@@ -1,0 +1,50 @@
+{
+  "id": "tpl.purchase_inventory_credit",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "賒購商品",
+    "en": "Purchase inventory on credit"
+  },
+  "summary": {
+    "zh-TW": "向供應商賒購商品 {{money:param.amount}}，貨先收、款後付，先記應付帳款。",
+    "en": "Buy goods worth {{money:param.amount}} from a supplier on credit: the goods arrive now, payment comes later, so trade payables are recorded."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 1500000,
+      "label": {
+        "zh-TW": "賒購金額",
+        "en": "Purchase amount on credit"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "inventory",
+      "side": "debit",
+      "amount": "param.amount",
+      "tag": "purchase"
+    },
+    {
+      "id": "l2",
+      "account": "accounts_payable",
+      "side": "credit",
+      "amount": "param.amount"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "賒購時現金還沒付出去，存貨先增加，同時多了一筆對供應商的應付帳款。因為沒有動到現金，現金流量表這一步沒有變化；等日後付款時，才會出現在營業活動。",
+    "en": "With a credit purchase no cash is paid yet: inventory rises and a trade payable to the supplier is recorded. Because cash is untouched, nothing appears on the statement of cash flows at this step; the payment shows up under operating activities when it is made later."
+  },
+  "termRefs": ["tm_n7v3k8pq", "tm_a3p9y6kc"]
+}

@@ -1,0 +1,62 @@
+{
+  "id": "tpl.buy_equipment_cash",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "以現金購買設備",
+    "en": "Buy equipment for cash"
+  },
+  "summary": {
+    "zh-TW": "以現金 {{money:param.amount}} 購買電腦設備，教材歸入機器設備。",
+    "en": "Buy computer equipment for {{money:param.amount}} in cash; the course records it under machinery and equipment."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 300000,
+      "label": {
+        "zh-TW": "設備成本（付出的現金）",
+        "en": "Cost of the equipment (cash paid)"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= param.amount",
+      "message": {
+        "zh-TW": "帳上現金不夠付這筆款項。",
+        "en": "There is not enough cash on the books for this payment."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "machinery_equipment",
+      "side": "debit",
+      "amount": "param.amount"
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "investing",
+        "kind": "capex"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "設備會用好幾年，所以不是當期的費用，而是一項非流動資產；現金減少、機器設備增加，資產總額不變。付出的現金列在投資活動的取得非流動資產。之後每年提列折舊，才把成本分攤到使用的期間。",
+    "en": "The equipment will be used for several years, so it is a non-current asset rather than an expense of the period: cash falls and machinery and equipment rises, leaving total assets unchanged. The cash paid appears under investing activities as payments to acquire non-current assets. Depreciation later spreads the cost over the years of use."
+  },
+  "termRefs": ["tm_gt8g4afe", "tm_c4sh8k2p", "tm_xen3p30x"]
+}

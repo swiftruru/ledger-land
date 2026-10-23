@@ -1,0 +1,108 @@
+{
+  "id": "tpl.inventory_count",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "期末盤點存貨",
+    "en": "Count inventory at period end"
+  },
+  "summary": {
+    "zh-TW": "盤點後存貨為 {{money:param.countedAmount}}；與帳上的差額依盤盈或盤損入帳。",
+    "en": "The physical count puts inventory at {{money:param.countedAmount}}; the difference from the books is recorded as a surplus or a shortage."
+  },
+  "params": [
+    {
+      "name": "countedAmount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 100000,
+      "label": {
+        "zh-TW": "盤點後的存貨金額",
+        "en": "Inventory per physical count"
+      },
+      "monotonic": "none"
+    }
+  ],
+  "derived": [
+    {
+      "name": "overage",
+      "type": "money",
+      "expr": "max(param.countedAmount - balance(inventory), 0)",
+      "label": {
+        "zh-TW": "盤盈（盤點多於帳上的金額）",
+        "en": "Surplus (count above the books)"
+      }
+    },
+    {
+      "name": "shortage",
+      "type": "money",
+      "expr": "max(balance(inventory) - param.countedAmount, 0)",
+      "label": {
+        "zh-TW": "盤損（盤點少於帳上的金額）",
+        "en": "Shortage (count below the books)"
+      }
+    }
+  ],
+  "preconditions": [],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "inventory",
+      "side": "debit",
+      "amount": "derived.overage",
+      "tag": "count_overage"
+    },
+    {
+      "id": "l2",
+      "account": "cost_of_goods_sold",
+      "side": "credit",
+      "amount": "derived.overage",
+      "policyWhen": {
+        "inventoryOverage": "reduce_cogs"
+      }
+    },
+    {
+      "id": "l3",
+      "account": "non_operating_income",
+      "side": "credit",
+      "amount": "derived.overage",
+      "policyWhen": {
+        "inventoryOverage": "non_operating_income"
+      }
+    },
+    {
+      "id": "l4",
+      "account": "extraordinary_gains",
+      "side": "credit",
+      "amount": "derived.overage",
+      "policyWhen": {
+        "inventoryOverage": "extraordinary_gain"
+      }
+    },
+    {
+      "id": "l5",
+      "account": "cost_of_goods_sold",
+      "side": "debit",
+      "amount": "derived.shortage",
+      "policyWhen": {
+        "inventoryShortage": "increase_cogs"
+      }
+    },
+    {
+      "id": "l6",
+      "account": "inventory",
+      "side": "credit",
+      "amount": "derived.shortage",
+      "tag": "count_shortage"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "盤點是用實際數出來的存貨金額修正帳上的數字。盤點比帳上多，就把存貨調高，差額預設沖減營業成本；比帳上少，就把存貨調低，差額計入營業成本。盤盈要不要改列營業外收入或非常利益，教材沒有明說，網站用政策開關保留這兩種做法。盤點不動到現金，所以現金流量表上只有存貨變動那一列會改變。",
+    "en": "A physical count corrects the books to the inventory actually on hand. If the count is above the books, inventory is raised and by default the difference reduces cost of sales; if it is below, inventory is lowered and the difference is added to cost of sales. The course does not say whether a surplus should instead be non-operating income or an extraordinary gain, so the site keeps both as policy switches. No cash moves, so only the inventory change line on the statement of cash flows is affected."
+  },
+  "termRefs": ["tm_n7v3k8pq", "tm_g5c2m8tw", "tm_6nmfxa10", "tm_kqwv1rjs"],
+  "pendingRefs": ["T06"],
+  "entryQuestionBlockedBy": ["T06"]
+}

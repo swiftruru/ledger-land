@@ -1,0 +1,124 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/definitions/__schema0"
+    },
+    "switches": {
+      "$ref": "#/definitions/PolicySwitches"
+    },
+    "enabledAccounts": {
+      "$ref": "#/definitions/__schema7"
+    },
+    "disabledAccounts": {
+      "$ref": "#/definitions/__schema8"
+    }
+  },
+  "required": [
+    "id",
+    "switches",
+    "disabledAccounts"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "__schema0": {
+      "type": "string",
+      "enum": [
+        "teacher@1",
+        "ifrs@1"
+      ]
+    },
+    "PolicySwitches": {
+      "type": "object",
+      "properties": {
+        "orgCosts": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "inventoryOverage": {
+          "$ref": "#/definitions/__schema2"
+        },
+        "inventoryShortage": {
+          "$ref": "#/definitions/__schema3"
+        },
+        "incomeTax": {
+          "$ref": "#/definitions/__schema4"
+        },
+        "interestPaidActivity": {
+          "$ref": "#/definitions/__schema5"
+        },
+        "officeSupplies": {
+          "$ref": "#/definitions/__schema6"
+        }
+      },
+      "required": [
+        "orgCosts",
+        "inventoryOverage",
+        "inventoryShortage",
+        "incomeTax",
+        "interestPaidActivity",
+        "officeSupplies"
+      ],
+      "additionalProperties": false
+    },
+    "__schema1": {
+      "type": "string",
+      "enum": [
+        "capitalise_amortise",
+        "expense"
+      ]
+    },
+    "__schema2": {
+      "type": "string",
+      "enum": [
+        "reduce_cogs",
+        "non_operating_income",
+        "extraordinary_gain"
+      ]
+    },
+    "__schema3": {
+      "type": "string",
+      "enum": [
+        "increase_cogs"
+      ]
+    },
+    "__schema4": {
+      "type": "string",
+      "enum": [
+        "cash_direct",
+        "accrue_then_pay"
+      ]
+    },
+    "__schema5": {
+      "type": "string",
+      "enum": [
+        "operating",
+        "financing"
+      ]
+    },
+    "__schema6": {
+      "type": "string",
+      "enum": [
+        "expense_on_purchase",
+        "asset_then_expense"
+      ]
+    },
+    "__schema7": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SemanticId"
+      }
+    },
+    "SemanticId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "__schema8": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SemanticId"
+      }
+    }
+  }
+}

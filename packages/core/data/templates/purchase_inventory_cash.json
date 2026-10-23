@@ -1,0 +1,63 @@
+{
+  "id": "tpl.purchase_inventory_cash",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "以現金進貨",
+    "en": "Purchase inventory for cash"
+  },
+  "summary": {
+    "zh-TW": "以現金 {{money:param.amount}} 買進商品，先放在存貨裡，等賣出時才變成成本。",
+    "en": "Buy goods for {{money:param.amount}} in cash; they are held as inventory and become cost only when sold."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 500000,
+      "label": {
+        "zh-TW": "進貨金額",
+        "en": "Purchase amount"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= param.amount",
+      "message": {
+        "zh-TW": "帳上現金不夠付這筆款項。",
+        "en": "There is not enough cash on the books for this payment."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "inventory",
+      "side": "debit",
+      "amount": "param.amount",
+      "tag": "purchase"
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "payments_to_suppliers"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "買進來還沒賣出去的商品是存貨，屬於流動資產，不是費用；現金減少、存貨增加，獲利不變。這一筆在損益表的本期進貨列出現，付出的現金列在營業活動。",
+    "en": "Goods bought but not yet sold are inventory, a current asset, not an expense: cash falls and inventory rises, and profit is unchanged. The amount appears as purchases on the income statement, and the cash paid is an operating activity."
+  },
+  "termRefs": ["tm_n7v3k8pq", "tm_c4sh8k2p"]
+}

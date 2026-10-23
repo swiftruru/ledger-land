@@ -1,0 +1,92 @@
+{
+  "id": "tpl.pay_org_costs",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "title": {
+    "zh-TW": "以現金支付設立費",
+    "en": "Pay start-up costs in cash"
+  },
+  "summary": {
+    "zh-TW": "以現金 {{money:param.amount}} 支付公司設立的相關費用，教材列為遞延資產，之後分年攤銷。",
+    "en": "Pay {{money:param.amount}} in cash for the costs of setting up the company; the course records it as a deferred asset to be amortised over several years."
+  },
+  "params": [
+    {
+      "name": "amount",
+      "type": "money",
+      "min": 0,
+      "max": 999999999999,
+      "default": 120000,
+      "label": {
+        "zh-TW": "設立費金額",
+        "en": "Start-up costs paid"
+      },
+      "monotonic": "increasing"
+    }
+  ],
+  "derived": [],
+  "preconditions": [
+    {
+      "id": "enough_cash",
+      "expr": "balance(cash) >= param.amount",
+      "message": {
+        "zh-TW": "帳上現金不夠付這筆款項。",
+        "en": "There is not enough cash on the books for this payment."
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "l1",
+      "account": "deferred_organisation_costs",
+      "side": "debit",
+      "amount": "param.amount",
+      "policyWhen": {
+        "orgCosts": "capitalise_amortise"
+      }
+    },
+    {
+      "id": "l2",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "investing",
+        "kind": "capex"
+      },
+      "policyWhen": {
+        "orgCosts": "capitalise_amortise"
+      }
+    },
+    {
+      "id": "l3",
+      "account": "organisation_costs_expense",
+      "side": "debit",
+      "amount": "param.amount",
+      "policyWhen": {
+        "orgCosts": "expense"
+      }
+    },
+    {
+      "id": "l4",
+      "account": "cash",
+      "side": "credit",
+      "amount": "param.amount",
+      "cf": {
+        "activity": "operating",
+        "kind": "payments_for_operating_expenses"
+      },
+      "policyWhen": {
+        "orgCosts": "expense"
+      }
+    }
+  ],
+  "explanation": {
+    "zh-TW": "教材把設立費當成一項會在未來幾年發揮效益的支出，先記成遞延資產，再分年攤銷成費用，付出的現金列在投資活動。IFRS 的做法不同：IAS 38.69 規定這類支出在發生時就全部列為費用，現金也改列營業活動。兩種做法會讓當期利潤與各活動的現金流量不一樣。",
+    "en": "The course treats start-up costs as spending that benefits the next few years, so it records a deferred asset and amortises it year by year, with the cash shown under investing activities. IFRS takes a different view: IAS 38.69 requires such costs to be expensed when incurred, and the cash is shown under operating activities. The two treatments give different profit for the period and different cash flows by activity."
+  },
+  "termRefs": ["tm_d9f3g7cs", "tm_c4sh8k2p", "tm_hz08w4k5", "tm_xen3p30x"],
+  "pendingRefs": ["T04", "T30"],
+  "entryQuestionBlockedBy": ["T04"]
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "teacher@1",
+    "switches": {
+      "orgCosts": "capitalise_amortise",
+      "inventoryOverage": "reduce_cogs",
+      "inventoryShortage": "increase_cogs",
+      "incomeTax": "cash_direct",
+      "interestPaidActivity": "operating",
+      "officeSupplies": "expense_on_purchase"
+    },
+    "disabledAccounts": ["organisation_costs_expense"]
+  },
+  {
+    "id": "ifrs@1",
+    "switches": {
+      "orgCosts": "expense",
+      "inventoryOverage": "reduce_cogs",
+      "inventoryShortage": "increase_cogs",
+      "incomeTax": "cash_direct",
+      "interestPaidActivity": "operating",
+      "officeSupplies": "expense_on_purchase"
+    },
+    "disabledAccounts": ["deferred_organisation_costs", "amortisation_deferred_assets", "extraordinary_gains", "extraordinary_losses"],
+    "enabledAccounts": ["organisation_costs_expense"]
+  }
+]
