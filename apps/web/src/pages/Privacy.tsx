@@ -44,8 +44,9 @@ export default function Privacy() {
       </h2>
       <p>
         <Trans id="privacy.camera.body">
-          只有在你按下「掃描課堂 QR」時才要求相機權限；影像只在這台裝置上解讀
-          QR，不錄影、不截圖、不上傳，離開掃描畫面就關閉相機。（這個功能在之後的里程碑加入。）
+          只有在你按下「掃描課堂 QR」裡的「開始掃描」時才要求相機權限，網站載入時與掃碼開啟的頁面都不會要求。相機只用來辨識課堂
+          QR：影像只在這台裝置上處理，不錄影、不截圖、不上傳，也不保存掃到的內容；辨識完成、按取消、離開掃描畫面或 App
+          退到背景時都會立刻關閉相機。只接受本站的關卡、章節與故事步驟網址，其他網址不會開啟。
         </Trans>
       </p>
       <h2>
@@ -78,7 +79,7 @@ export default function Privacy() {
         </a>
       </p>
       <p className="ll-muted ll-small">
-        <Trans id="privacy.updated">最後更新：2026 年 10 月 22 日</Trans>
+        <Trans id="privacy.updated">最後更新：2026 年 10 月 23 日</Trans>
       </p>
     </>
   );

@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Navigate, Outlet, useLocation, useMatches, useNavigate } from 'react-router';
 import { getLocale, localeFromPath, normalizePath } from '@ledgerland/i18n';
 import { site } from '../../site.config.ts';
+import { Banners } from '../components/Banners.tsx';
 import { EphemeralNotice } from '../components/EphemeralNotice.tsx';
 import { LocaleSuggest } from '../components/LocaleSuggest.tsx';
 import { RefractFilter } from '../components/RefractFilter.tsx';
@@ -86,6 +87,7 @@ export function Root() {
     <>
       <div className="ll-topbar" />
       <main id="main" tabIndex={-1} aria-label={t({ id: 'shell.main', message: '主要內容' })}>
+        <Banners />
         <EphemeralNotice />
         <LocaleSuggest />
         <Outlet />

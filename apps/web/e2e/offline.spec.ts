@@ -16,7 +16,7 @@ test.describe('離線與統計（06 第 3、8.3 節；10 M0b 完成標準）', (
     // 名詞頁沒有語言切換開關（05 第 8.2 節的位置清單），離線時直接開中文網址
     await page.goto('/terms/tm_h6p2k9wd/');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('負債');
-    await page.goto('/level/lv_k7m2q9xd/');
+    await page.goto('/level/lv_h2zx7srx/');
     await expect(page.getByRole('button', { name: '確認答案' })).toBeVisible();
     await context.setOffline(false);
   });

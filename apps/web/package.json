@@ -8,6 +8,8 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
     "dev": "vite",
+    "content:drafts": "LL_INCLUDE_DRAFTS=1 node ../../tools/content-build.mjs",
+    "e2e:build": "LL_INCLUDE_DRAFTS=1 node ../../tools/content-build.mjs && pnpm build",
     "build": "vite build && node ../../tools/postbuild.mjs",
     "preview": "vite preview --port 4173 --strictPort",
     "cf:dev": "wrangler dev --port 8787",
@@ -18,16 +20,22 @@
   },
   "dependencies": {
     "@ledgerland/content-schema": "workspace:*",
+    "@ledgerland/core": "workspace:*",
     "@ledgerland/i18n": "workspace:*",
+    "@ledgerland/progress": "workspace:*",
+    "@ledgerland/quiz": "workspace:*",
     "@ledgerland/tokens": "workspace:*",
     "@ledgerland/web-ui": "workspace:*",
     "@lingui/core": "6.9.0",
     "@lingui/react": "6.9.0",
+    "@zxing/library": "0.23.0",
+    "idb": "8.0.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-router": "8.4.0",
     "web-vitals": "6.2.3",
     "workbox-window": "7.4.1",
+    "zod": "4.6.5",
     "zustand": "5.0.15"
   },
   "devDependencies": {

@@ -1,0 +1,187 @@
+/* 闖關地圖頁（17 第 2、6、7、8 節）：由 Play 頁 import，隨地圖 chunk 一起載入。只用 tokens。
+   章節區段在 DOM 裡第 1 章在前，視覺用 column-reverse 反轉（評估一採 A）；每章 content-visibility: auto 分段渲染。 */
+.qm-page {
+  /* 頁面本身不留 main 的左右內距以外的空間；路線置中、最大 480px（評估五） */
+  --qm-width: min(100%, 480px);
+}
+.qm-hud {
+  position: sticky;
+  top: 0;
+  z-index: var(--ll-z-sticky);
+  margin: calc(-1 * var(--ll-space-4)) calc(-1 * var(--ll-space-4)) 0;
+  padding: var(--ll-space-2) var(--ll-space-4);
+  background: var(--ll-bg);
+  box-shadow: 0 1px 0 var(--ll-border);
+}
+.qm-toolbar {
+  position: fixed;
+  right: max(var(--ll-space-4), env(safe-area-inset-right, 0px));
+  bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--ll-space-4));
+  z-index: var(--ll-z-sticky);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ll-space-2);
+}
+@media (min-width: 1024px) {
+  .qm-toolbar {
+    bottom: var(--ll-space-6);
+  }
+}
+.qm-map {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  width: var(--qm-width);
+  margin: var(--ll-space-4) auto 0;
+}
+.qm-ch {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  content-visibility: auto;
+}
+.qm-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.qm-scene__stars {
+  display: none;
+}
+html[data-theme='dark'] .qm-scene__stars {
+  display: block;
+}
+.qm-route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.qm-route__seg {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.qm-route__seg--walked {
+  stroke: var(--ll-accent);
+}
+.qm-route__seg--ahead {
+  stroke: var(--ll-border-strong);
+  stroke-dasharray: 2 18;
+}
+.qm-ch__banner {
+  position: absolute;
+  right: var(--ll-space-2);
+  bottom: var(--ll-space-2);
+  left: var(--ll-space-2);
+  height: calc(120px - var(--ll-space-2) * 2);
+}
+.qm-ch__nodes {
+  position: absolute;
+  right: 0;
+  bottom: 120px;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.qm-ch__end {
+  position: absolute;
+  top: var(--ll-space-2);
+  right: 0;
+  left: 0;
+  height: calc(160px - var(--ll-space-2));
+}
+.qm-gap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+}
+.qm-gap__sea {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.qm-gap__text {
+  position: relative;
+  max-width: 280px;
+  margin: 0;
+  padding: var(--ll-space-2) var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-card-ring);
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+.qm-marker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  will-change: transform;
+}
+.qm-marker.is-hidden {
+  visibility: hidden;
+}
+/* 清單檢視：章節折疊區段 */
+.qm-list {
+  width: var(--qm-width);
+  margin: var(--ll-space-4) auto 0;
+}
+.qm-list__chapter {
+  margin-bottom: var(--ll-space-3);
+}
+.qm-list__chapter summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  min-height: var(--ll-target-min);
+  padding: var(--ll-space-2) var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-card-ring);
+  cursor: pointer;
+  font-weight: 600;
+}
+.qm-list__chapter summary .ll-badge {
+  margin-left: auto;
+}
+.qm-levels {
+  display: grid;
+  gap: var(--ll-space-2);
+  margin: var(--ll-space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+/* 章節頁 */
+.qm-chapter__summary {
+  margin: 0 0 var(--ll-space-3);
+}
+.qm-chapter__objectives {
+  margin: 0;
+  padding-left: 1.2em;
+}
+/* 強制色彩：場景隱藏，只留路線、節點與文字 */
+@media (forced-colors: active) {
+  .qm-scene,
+  .qm-gap__sea {
+    display: none;
+  }
+  .qm-route__seg--walked {
+    stroke: Highlight;
+  }
+  .qm-route__seg--ahead {
+    stroke: CanvasText;
+  }
+}

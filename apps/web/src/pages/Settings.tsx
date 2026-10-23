@@ -2,6 +2,7 @@ import { Trans } from '@lingui/react/macro';
 import { Card } from '@ledgerland/web-ui';
 import { AppearanceSetting } from '../components/AppearanceSetting.tsx';
 import { LangSwitch } from '../components/LangSwitch.tsx';
+import { ProtectProgress } from '../components/ProtectProgress.tsx';
 
 export default function Settings() {
   return (
@@ -17,6 +18,9 @@ export default function Settings() {
       </Card>
       <Card as="section">
         <AppearanceSetting />
+      </Card>
+      <Card as="section">
+        <ProtectProgress />
       </Card>
     </>
   );

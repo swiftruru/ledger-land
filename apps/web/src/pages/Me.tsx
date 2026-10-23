@@ -25,6 +25,11 @@ export function Me() {
             </Link>
           </li>
           <li>
+            <Link to={localePath(locale, '/me/backup/')}>
+              <Trans id="me.backup">備份</Trans>
+            </Link>
+          </li>
+          <li>
             <Link to={localePath(locale, '/privacy/')}>
               <Trans id="me.privacy">隱私說明</Trans>
             </Link>

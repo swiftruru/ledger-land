@@ -1,0 +1,18 @@
+/* App 內掃描課堂 QR 的相機畫面（06 第 4.9 節）：隨 QrScanner 的 chunk 載入；尺寸與圓角都用 tokens 的變數 */
+.qm-scan {
+  display: grid;
+  gap: var(--ll-space-3);
+}
+.qm-scan__viewport {
+  overflow: hidden;
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+  aspect-ratio: 4 / 3;
+  max-height: 60vh;
+}
+.qm-scan__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
