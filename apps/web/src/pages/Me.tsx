@@ -34,6 +34,11 @@ export function Me() {
               <Trans id="me.about">關於與授權</Trans>
             </Link>
           </li>
+          <li>
+            <Link to={localePath(locale, '/design/')}>
+              <Trans id="me.design">關於系統設計</Trans>
+            </Link>
+          </li>
         </ul>
       </Card>
       <p className="ll-muted ll-small">
