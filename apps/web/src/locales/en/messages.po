@@ -220,12 +220,6 @@ msgstr "What is stored"
 msgid "me.progressLater"
 msgstr "Progress, badges and backups arrive in later milestones."
 
-#. 第一次快取完成、可以離線使用時的一次性提示
-#. js-lingui-explicit-id
-#: src/components/UpdatePrompt.tsx
-msgid "sw.offlineReady"
-msgstr "Ready to use offline."
-
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.copied"
@@ -455,7 +449,6 @@ msgstr "Camera"
 
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
-#: src/components/UpdatePrompt.tsx
 msgid "common.ok"
 msgstr "Got it"
 

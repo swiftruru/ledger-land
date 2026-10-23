@@ -101,6 +101,7 @@ export default function Debug() {
       installing: reg?.installing?.state ?? null,
       lastCheck: swState.lastCheck,
       error: swState.error,
+      offlineReady: swState.offlineReady,
       tabbar: getTabbar()?.state() ?? null,
     });
     setContent(

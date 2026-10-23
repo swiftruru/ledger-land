@@ -1,4 +1,4 @@
-// prompt 模式的更新提示（06 第 3.3 節）：絕不自動 skipWaiting；作答頁不顯示提示，只記下「有更新」；第一次可以離線時提示一次（06 第 3.2 節）
+// prompt 模式的更新提示（06 第 3.3 節）：絕不自動 skipWaiting；作答頁不顯示提示，只記下「有更新」。第一次可以離線時不再跳提示（使用者 2026-10-23 決定，06 第 3.2 節），離線就緒的狀態只在 debug 頁顯示
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 import { useMatches } from 'react-router';
@@ -9,18 +9,25 @@ import type { RouteHandle } from '../app/router.tsx';
 const HOUR = 60 * 60 * 1000;
 const VISIBLE_THROTTLE = 30 * 60 * 1000;
 
-export const swState: { registration: ServiceWorkerRegistration | null; swUrl: string | null; lastCheck: number | null; error: string | null } = {
+export const swState: {
+  registration: ServiceWorkerRegistration | null;
+  swUrl: string | null;
+  lastCheck: number | null;
+  error: string | null;
+  offlineReady: boolean;
+} = {
   registration: null,
   swUrl: null,
   lastCheck: null,
   error: null,
+  offlineReady: false,
 };
 
 export function UpdatePrompt() {
   const [dismissed, setDismissed] = useState(false);
   const {
     needRefresh: [needRefresh, setNeedRefresh],
-    offlineReady: [offlineReady, setOfflineReady],
+    offlineReady: [offlineReady],
     updateServiceWorker,
   } = useRegisterSW({
     onRegisterError(e) {
@@ -52,23 +59,10 @@ export function UpdatePrompt() {
   useEffect(() => {
     if (!needRefresh) setDismissed(false);
   }, [needRefresh]);
+  useEffect(() => {
+    swState.offlineReady = offlineReady;
+  }, [offlineReady]);
 
-  if (offlineReady && !needRefresh && !blocked) {
-    return (
-      <Card className="ll-update" role="status">
-        <p>
-          <Trans id="sw.offlineReady" comment="第一次快取完成、可以離線使用時的一次性提示">
-            已經可以離線使用了。
-          </Trans>
-        </p>
-        <div className="ll-row">
-          <Button onClick={() => setOfflineReady(false)}>
-            <Trans id="common.ok">知道了</Trans>
-          </Button>
-        </div>
-      </Card>
-    );
-  }
   if (!needRefresh || blocked || dismissed) return null;
   return (
     <Card className="ll-update" role="status">
