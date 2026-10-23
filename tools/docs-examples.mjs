@@ -1,10 +1,23 @@
 // docs:examples（08 第 5.8 節、10 M0b 完成標準）：抽出 docs/ 中所有 ```json 程式碼區塊（```jsonc 的節錄不抽），全部要能解析；
 // 依 id 前綴或形狀選出對應的 Zod schema 驗證（名詞 tm_、章節 ch_ 加 order、題目 q_ 加 type、故事 story_、步驟 st_、
-// 範本 tpl.、指標含 versions、科目含 element 與 normalSide、版面含 statements、政策含 switches）。只存在本機的 01、13、15 不在範圍內。
+// 學習目標 obj_ 加 statement、關卡 lv_ 加 questionIds、範本 tpl.、指標含 versions、科目含 element 與 normalSide、版面含 statements、政策含 switches）。只存在本機的 01、13、15 不在範圍內。
 // 失敗時列出檔案、行號、欄位與原因；改文件還是改 schema 由維護者決定。
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { Account, Chapter, Layout, PolicyDefinition, Question, RatioDefinition, Story, StoryStep, Term, TransactionTemplate } from '@ledgerland/content-schema';
+import {
+  Account,
+  Chapter,
+  Layout,
+  Level,
+  Objective,
+  PolicyDefinition,
+  Question,
+  RatioDefinition,
+  Story,
+  StoryStep,
+  Term,
+  TransactionTemplate,
+} from '@ledgerland/content-schema';
 import { ROOT, fail, walk } from './lib/fs.mjs';
 
 /** 依 id 前綴或形狀選 schema；選不到就回傳 null（例如編譯後的快照、設定檔） */
@@ -14,6 +27,8 @@ function pickSchema(data) {
   if (id.startsWith('tm_')) return { name: 'Term', schema: Term };
   if (id.startsWith('ch_') && 'order' in data) return { name: 'Chapter', schema: Chapter };
   if (id.startsWith('q_') && 'type' in data) return { name: 'Question', schema: Question };
+  if (id.startsWith('obj_') && 'statement' in data) return { name: 'Objective', schema: Objective };
+  if (id.startsWith('lv_') && 'questionIds' in data) return { name: 'Level', schema: Level };
   if (id.startsWith('story_')) return { name: 'Story', schema: Story };
   if (id.startsWith('st_')) return { name: 'StoryStep', schema: StoryStep };
   if (id.startsWith('tpl.')) return { name: 'TransactionTemplate', schema: TransactionTemplate };

@@ -1,7 +1,8 @@
 // 會計與答案規則（08 第 5.4 節 acct.*、第 5.5 節的 ans.expectedMatchesCore、ans.notMeaningful、ans.acceptStatus、ans.ratioNumericFields）：
 // 全部呼叫 packages/core，不另寫會計邏輯。這個模組不讀檔也不列印，content-check.mjs 與 content-lock.mjs 負責讀檔與輸出，tools/test 直接呼叫。
 // 故事只做性質檢查：訊息只寫規則、列、步驟與事件，不印任何金額（D2）。
-import { Chapter, Question, Story, Term, TransactionTemplate } from '@ledgerland/content-schema';
+// acct.pendingBlocked：pendingRefs 自 2026-10-23 起是「相關設計決定的編號」（14 的 T 系列都已決定），只有 open-refs.json 仍列為開放的編號才警告。
+import { Chapter, Level, ObjectiveFile, Question, Story, Term, TransactionTemplate } from '@ledgerland/content-schema';
 import {
   SCENARIO_STEP_ID,
   buildChart,
@@ -26,13 +27,47 @@ import {
   verifyTraceTree,
 } from '@ledgerland/core';
 import { integer as fcInteger, record as fcRecord, sample as fcSample } from 'fast-check';
+import openRefsFile from './open-refs.json' with { type: 'json' };
 
 /**
  * @typedef {{ rule: string; file: string; path: string; message: string; severity: 'error' | 'warning' }} RuleIssue
- * @typedef {{ file: string; data: any }} Parsed
- * @typedef {{ terms: Parsed[]; chapters: Parsed[]; templates: Parsed[]; stories: Parsed[]; questions: Parsed[] }} ParsedBundle
- * @typedef {{ expected?: Record<string, unknown>; values?: Record<string, number>; expectedEntries?: readonly unknown[]; ratio?: unknown; categories?: Record<string, string> }} CompiledQuestion
+ * @typedef {{ file: string; data: any; path?: string }} Parsed 學習目標攤平後 path 是檔內位置（items.<i>），其餘沒有 path
+ * @typedef {{ terms: Parsed[]; chapters: Parsed[]; templates: Parsed[]; stories: Parsed[]; questions: Parsed[]; objectives: Parsed[]; levels: Parsed[] }} ParsedBundle
+ * @typedef {{ id: string; label: { 'zh-TW': string; en: string }; value: number; level?: number; total?: boolean; heading?: boolean }} CompiledLine
+ *   pick_line 題在 after 狀態（cumulative）下該報表的可見列：label 是版面的雙語 label（快照依語系展開），value 是核心算出的金額
+ * @typedef {{ expected?: Record<string, unknown>; values?: Record<string, number>; expectedEntries?: readonly unknown[]; ratio?: unknown; categories?: Record<string, string>; lines?: CompiledLine[] }} CompiledQuestion
  */
+
+/** 仍開放的 14 編號（tools/lib/open-refs.json）；目前為空，T 系列已全部決定 */
+export const DEFAULT_OPEN_REFS = /** @type {readonly string[]} */ (openRefsFile.open);
+
+/** pendingRefs 裡仍開放（還沒有決定）的編號 */
+export function openPendingRefs(pendingRefs, openRefs) {
+  return (pendingRefs ?? []).filter((ref) => openRefs.includes(ref));
+}
+
+/** pick_line 題的 statement 代號對應版面的報表 ID（與 apps/web 的 STATEMENT_ID 相同） */
+export const STATEMENT_ID = Object.freeze({ is: 'income_statement', bs: 'balance_sheet', cf: 'cash_flow_indirect' });
+
+/**
+ * pick_line 的迷你報表：該報表在 after 狀態的可見列（hidden、未啟用的延伸列與政策列由核心的 visible 判斷），帶金額與雙語 label
+ * @param {import('@ledgerland/core').Statements} statements
+ * @param {'is' | 'bs' | 'cf'} code
+ * @returns {CompiledLine[]}
+ */
+export function statementLines(statements, code) {
+  const rows = statements.statements[STATEMENT_ID[code]] ?? [];
+  return rows
+    .filter((r) => r.visible)
+    .map((r) => ({
+      id: r.id,
+      label: { 'zh-TW': r.label['zh-TW'], en: r.label.en },
+      value: r.value,
+      ...(r.level === null ? {} : { level: r.level }),
+      ...(r.kind === 'total' || r.kind === 'formula' || r.kind === 'balance_end' ? { total: true } : {}),
+      ...(r.kind === 'group' ? { heading: true } : {}),
+    }));
+}
 
 /** 隨機抽樣的預設：固定種子，相同內容每次抽到同一組參數 */
 export const DEFAULT_SEED = 20261023;
@@ -48,6 +83,13 @@ function parseEntries(entries, schema) {
   return out;
 }
 
+/** 學習目標一章一檔，攤平成一筆一項；file 仍是檔案路徑，path 記下 items.<i> */
+function parseObjectives(entries) {
+  const out = [];
+  for (const f of parseEntries(entries, ObjectiveFile)) f.data.items.forEach((o, i) => out.push({ file: f.file, path: `items.${i}`, data: o }));
+  return out;
+}
+
 /** @returns {ParsedBundle} */
 export function parseBundle(bundle) {
   return {
@@ -56,6 +98,8 @@ export function parseBundle(bundle) {
     templates: parseEntries(bundle.templates, TransactionTemplate),
     stories: parseEntries(bundle.stories, Story),
     questions: parseEntries(bundle.questions, Question),
+    objectives: parseObjectives(bundle.objectives),
+    levels: parseEntries(bundle.levels, Level),
   };
 }
 
@@ -367,7 +411,7 @@ function checkRatioStatus(entry, q, result, issues) {
  * 一題的會計與答案檢查；回傳核心算出的答案（給 answerHash 與快照），任何錯誤回傳 null。
  * @returns {CompiledQuestion | null}
  */
-function checkQuestion(entry, ctx, stories, templatesById, registry, issues) {
+function checkQuestion(entry, ctx, stories, templatesById, registry, issues, openRefs) {
   const q = entry.data;
   /** @type {CompiledQuestion} */
   const compiled = {};
@@ -392,13 +436,14 @@ function checkQuestion(entry, ctx, stories, templatesById, registry, issues) {
         );
         failed = true;
       }
-      if (q.scored && (tpl.pendingRefs?.length ?? 0) > 0)
+      const open = q.scored ? openPendingRefs(tpl.pendingRefs, openRefs) : [];
+      if (open.length > 0)
         issues.push(
           warning(
             'acct.pendingBlocked',
             entry.file,
             `${path}.events.${j}.template`,
-            `計分題用到帶 pendingRefs（${tpl.pendingRefs.join('、')}）的範本 ${ev.template}，審稿者要確認正解不受影響`,
+            `計分題用到的範本 ${ev.template} 的 pendingRefs 含尚未決定的編號（${open.join('、')}，見 tools/lib/open-refs.json），審稿者要確認正解不受影響`,
           ),
         );
     });
@@ -441,6 +486,10 @@ function checkQuestion(entry, ctx, stories, templatesById, registry, issues) {
       }
     }
     if (q.type === 'journal_entry') compiled.expectedEntries = expectedJournalEntries(r.value);
+    if (q.type === 'pick_line') {
+      const after = buildStatements(r.value.run, { kind: 'cumulative', to: SCENARIO_STEP_ID }, ctx.layout, ctx.policy);
+      compiled.lines = statementLines(after, q.statement);
+    }
     if (q.type === 'ratio_numeric') {
       const run = r.value.run;
       const after = buildStatements(run, { kind: 'cumulative', to: SCENARIO_STEP_ID }, ctx.layout, ctx.policy);
@@ -497,12 +546,13 @@ function warning(rule, file, path, message) {
 /**
  * 跑全部會計與答案規則。
  * @param {ParsedBundle} parsed
- * @param {{ seed?: number; samples?: number }} [options]
+ * @param {{ seed?: number; samples?: number; openRefs?: readonly string[] }} [options] openRefs：仍開放的 14 編號，預設讀 tools/lib/open-refs.json
  * @returns {{ issues: RuleIssue[]; compiled: Map<string, CompiledQuestion>; stats: { combos: number; skipped: number; storiesReplayed: number; templates: number } }}
  */
 export function runAccountingChecks(parsed, options = {}) {
   const seed = options.seed ?? DEFAULT_SEED;
   const samples = options.samples ?? DEFAULT_SAMPLES;
+  const openRefs = options.openRefs ?? DEFAULT_OPEN_REFS;
   /** @type {RuleIssue[]} */
   const issues = [];
   const { compiled: compiledTemplates, contexts, stats } = checkTemplates(parsed, issues, { seed, samples });
@@ -514,9 +564,21 @@ export function runAccountingChecks(parsed, options = {}) {
     const stories = new Map(parsed.stories.map((s) => [s.data.id, s.data]));
     const templatesById = new Map(parsed.templates.map((t) => [t.data.id, t.data]));
     const registry = defaultRatioRegistry();
+    const objectivesById = new Map(parsed.objectives.map((o) => [o.data.id, o.data]));
     for (const q of parsed.questions) {
-      const c = checkQuestion(q, teacher, stories, templatesById, registry, issues);
+      const c = checkQuestion(q, teacher, stories, templatesById, registry, issues, openRefs);
       if (c !== null) compiled.set(q.data.id, c);
+      const objective = objectivesById.get(q.data.objectiveId);
+      const open = q.data.scored && q.data.status === 'published' ? openPendingRefs(objective?.pendingRefs, openRefs) : [];
+      if (open.length > 0)
+        issues.push(
+          warning(
+            'acct.pendingBlocked',
+            q.file,
+            'objectiveId',
+            `計分題的學習目標 ${q.data.objectiveId} 的 pendingRefs 含尚未決定的編號（${open.join('、')}，見 tools/lib/open-refs.json），審稿者要確認正解不受影響`,
+          ),
+        );
     }
   }
   return { issues, compiled, stats: { ...stats, storiesReplayed, templates: compiledTemplates.size } };

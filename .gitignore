@@ -53,3 +53,6 @@ docs/plan/15-ai-workflow.md
 
 # 內容管線的建置輸出（tools/content-build.mjs 產生到 apps/web/public/content/，Vite 複製進 dist/），不 commit
 apps/web/public/content/
+
+# Vitest Browser Mode 的附件與失敗截圖（M2，2026-10-23）
+.vitest/

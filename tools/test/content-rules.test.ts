@@ -2,7 +2,7 @@
 // 用 04 第 17 節的範例搭配核心的自編故事；不含老師的金額。
 import { describe, expect, it } from 'vitest';
 import { validateBundle } from '@ledgerland/content-schema';
-import { hasErrors, parseBundle, runAccountingChecks } from '../lib/content-rules.mjs';
+import { DEFAULT_OPEN_REFS, hasErrors, openPendingRefs, parseBundle, runAccountingChecks } from '../lib/content-rules.mjs';
 import {
   blockedTemplateEntry,
   bundleWith,
@@ -18,10 +18,12 @@ import {
 } from './fixtures.ts';
 
 const FAST = { samples: 2 };
-const run = (questions: Record<string, unknown>[], extra?: Parameters<typeof bundleWith>[1]) => {
+/** 測試用：把 T04 與 T11 當成仍開放的編號（正式的 tools/lib/open-refs.json 目前為空） */
+const OPEN = ['T04', 'T11'];
+const run = (questions: Record<string, unknown>[], extra?: Parameters<typeof bundleWith>[1], options: Record<string, unknown> = {}) => {
   const bundle = bundleWith(questions, extra);
   const schema = validateBundle(bundle);
-  const acct = runAccountingChecks(parseBundle(bundle), FAST);
+  const acct = runAccountingChecks(parseBundle(bundle), { ...FAST, ...options });
   return { schema, acct, rules: acct.issues.map((i) => i.rule), errors: acct.issues.filter((i) => i.severity === 'error') };
 };
 
@@ -105,28 +107,78 @@ describe('04 第 17.11 節的分錄題（acct.entryBlocked）', () => {
     expect(hit[0]!.message).toContain('T99');
     // schema 層（validateBundle）也擋
     expect(r.schema.some((i) => i.path === 'scenario.events.0.template' && i.message.includes('entryQuestionBlockedBy'))).toBe(true);
-    // 同一題改用內建的攤銷範本就不再被擋（T04、T05 已決定），只剩 pendingRefs 的警告
-    const builtIn = run([
-      {
-        ...qJournal,
-        scenario: {
-          ...qJournal.scenario,
-          opening: { storyRef: 'story_q7m2v9', afterStep: 'st_f4g5h6' },
-          events: [{ ...events[0]!, template: 'tpl.amortise_org_costs' }],
+    // 同一題改用內建的攤銷範本就不再被擋（T04、T05 已決定）；把 T04 當成仍開放時只剩 pendingRefs 的警告
+    const builtIn = run(
+      [
+        {
+          ...qJournal,
+          scenario: {
+            ...qJournal.scenario,
+            opening: { storyRef: 'story_q7m2v9', afterStep: 'st_f4g5h6' },
+            events: [{ ...events[0]!, template: 'tpl.amortise_org_costs' }],
+          },
         },
-      },
-    ]);
+      ],
+      undefined,
+      { openRefs: OPEN },
+    );
     expect(builtIn.errors.filter((i) => i.rule === 'acct.entryBlocked')).toEqual([]);
     expect(builtIn.schema.some((i) => i.message.includes('entryQuestionBlockedBy'))).toBe(false);
     expect(builtIn.acct.issues.some((i) => i.rule === 'acct.pendingBlocked' && i.message.includes('T04'))).toBe(true);
   });
 
-  it('計分題用到只帶 pendingRefs 的範本只警告（acct.pendingBlocked），不擋', () => {
-    const r = run([qJournal]);
+  it('acct.pendingBlocked 只看仍開放的編號：範本的 pendingRefs 列有 open-refs 裡的編號才警告，不擋', () => {
+    const r = run([qJournal], undefined, { openRefs: OPEN });
     const warn = r.acct.issues.filter((i) => i.rule === 'acct.pendingBlocked');
     expect(warn).toHaveLength(1);
     expect(warn[0]!.severity).toBe('warning');
     expect(warn[0]!.message).toContain('T11');
+    expect(warn[0]!.message).not.toContain('T04');
+    // 只開放不相干的編號：不警告
+    expect(run([qJournal], undefined, { openRefs: ['T99'] }).rules).not.toContain('acct.pendingBlocked');
+  });
+
+  it('預設的 open-refs.json 目前為空（T 系列已全部決定）：pendingRefs 不再產生 acct.pendingBlocked 警告', () => {
+    expect(DEFAULT_OPEN_REFS).toEqual([]);
+    expect(openPendingRefs(['T04', 'T11'], DEFAULT_OPEN_REFS)).toEqual([]);
+    expect(openPendingRefs(['T04', 'T11'], ['T11', 'D03'])).toEqual(['T11']);
+    expect(openPendingRefs(undefined, ['T11'])).toEqual([]);
+    const r = run([qJournal]);
+    expect(r.rules).not.toContain('acct.pendingBlocked');
+  });
+
+  it('學習目標的 pendingRefs 列有仍開放的編號時，已發布的計分題在 objectiveId 警告', () => {
+    const bundle = bundleWith([qJournal]);
+    const objectives = [
+      {
+        file: 'content/objectives/ch_e4j7r2.json',
+        data: {
+          chapterId: 'ch_e4j7r2',
+          items: [
+            {
+              id: 'obj_9wr3e6',
+              rev: 1,
+              revKind: 'text',
+              status: 'published',
+              chapterId: 'ch_e4j7r2',
+              order: 1,
+              statement: { 'zh-TW': '目標', en: 'Objective' },
+              skill: 'identify',
+              plannedQuestions: 1,
+              pendingRefs: ['T04'],
+            },
+          ],
+        },
+      },
+    ];
+    const parsed = parseBundle({ ...bundle, objectives, levels: [] });
+    const withOpen = runAccountingChecks(parsed, { ...FAST, openRefs: ['T04'] }).issues.filter(
+      (i) => i.rule === 'acct.pendingBlocked' && i.path === 'objectiveId',
+    );
+    expect(withOpen).toHaveLength(1);
+    expect(withOpen[0]!.message).toContain('obj_9wr3e6');
+    const closed = runAccountingChecks(parsed, FAST).issues.filter((i) => i.rule === 'acct.pendingBlocked');
+    expect(closed).toEqual([]);
   });
 });
 

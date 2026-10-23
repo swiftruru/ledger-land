@@ -10,5 +10,5 @@
     "strict": false,
     "strictNullChecks": true
   },
-  "include": ["*.mjs", "lib/**/*.mjs"]
+  "include": ["*.mjs", "lib/**/*.mjs", "local/**/*.mjs"]
 }

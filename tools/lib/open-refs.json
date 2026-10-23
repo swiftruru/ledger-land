@@ -1,0 +1,4 @@
+{
+  "$comment": "仍然開放（還沒有決定）的 14 編號清單。pendingRefs 自 2026-10-23 起是「相關設計決定的編號」，不代表懸而未決；只有列在這裡的編號才會讓 content:check 對計分題發出 acct.pendingBlocked 警告。某條 T 或 D 在 docs/plan/14-open-questions.md 決定後就從這裡移除；目前為空。",
+  "open": []
+}
