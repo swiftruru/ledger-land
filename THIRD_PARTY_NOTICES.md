@@ -44,6 +44,8 @@
 | @types/trusted-types | 2.0.7 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/trusted-types |
 | @types/yargs | 17.0.35 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs |
 | @types/yargs-parser | 21.0.3 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs-parser |
+| @zxing/library | 0.23.0 | Apache-2.0 | https://zxing-js.github.io/library/ |
+| @zxing/text-encoding | 0.9.0 | (Unlicense OR Apache-2.0)（採用 Apache-2.0） | https://github.com/inexorabletash/text-encoding |
 | ansi-styles | 4.3.0, 5.2.0 | MIT | https://github.com/chalk/ansi-styles#readme |
 | baseline-browser-mapping | 2.11.27 | Apache-2.0 | https://github.com/web-platform-dx/baseline-browser-mapping#readme |
 | browserslist | 4.29.3 | MIT | https://github.com/browserslist/browserslist#readme |
@@ -59,6 +61,7 @@
 | escalade | 3.2.0 | MIT | https://github.com/lukeed/escalade#readme |
 | gensync | 1.0.0-beta.2 | MIT | https://github.com/loganfsmyth/gensync |
 | has-flag | 4.0.0 | MIT | https://github.com/sindresorhus/has-flag#readme |
+| idb | 8.0.4 | ISC | https://github.com/jakearchibald/idb#readme |
 | jest-get-type | 29.6.3 | MIT | https://github.com/jestjs/jest#readme |
 | jest-validate | 29.7.0 | MIT | https://github.com/jestjs/jest#readme |
 | jiti | 2.7.0 | MIT | https://github.com/unjs/jiti#readme |
@@ -82,6 +85,7 @@
 | scheduler | 0.28.0 | MIT | https://react.dev/ |
 | semver | 6.3.1 | ISC | https://github.com/npm/node-semver#readme |
 | supports-color | 7.2.0, 10.2.2 | MIT | https://github.com/chalk/supports-color#readme |
+| ts-custom-error | 3.3.1 | MIT | https://github.com/adriengibrat/ts-custom-error#readme |
 | undici-types | 7.24.6 | MIT | https://undici.nodejs.org |
 | update-browserslist-db | 1.3.4 | MIT | https://github.com/browserslist/update-db#readme |
 | use-sync-external-store | 1.7.0 | MIT | https://github.com/react/react#readme |

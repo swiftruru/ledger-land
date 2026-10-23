@@ -1,6 +1,11 @@
 {
   "json.schemas": [
     { "fileMatch": ["content/terms/*.json"], "url": "./schemas/term.schema.json" },
-    { "fileMatch": ["content/chapters/*.json"], "url": "./schemas/chapter.schema.json" }
+    { "fileMatch": ["content/chapters/*.json"], "url": "./schemas/chapter.schema.json" },
+    { "fileMatch": ["content/objectives/*.json"], "url": "./schemas/objective.schema.json" },
+    { "fileMatch": ["content/levels/*.json"], "url": "./schemas/level.schema.json" },
+    { "fileMatch": ["content/questions/**/*.json"], "url": "./schemas/question.schema.json" },
+    { "fileMatch": ["content/stories/*.json"], "url": "./schemas/story.schema.json" },
+    { "fileMatch": ["packages/core/data/templates/*.json"], "url": "./schemas/template.schema.json" }
   ]
 }

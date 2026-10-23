@@ -42,7 +42,14 @@
   ],
   "overrides": [
     {
-      "files": ["packages/tokens/src/**", "packages/i18n/src/**", "packages/content-schema/src/**", "packages/core/src/**"],
+      "files": [
+        "packages/tokens/src/**",
+        "packages/i18n/src/**",
+        "packages/content-schema/src/**",
+        "packages/core/src/**",
+        "packages/quiz/src/**",
+        "packages/progress/src/**"
+      ],
       "rules": {
         "no-restricted-imports": [
           "error",

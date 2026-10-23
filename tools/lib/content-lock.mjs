@@ -8,11 +8,11 @@ export const LOCK_VERSION = 1;
 export const LOCK_COMMENT =
   '已發布內容的比對基準（08 第 4.4 節）。items 依 kind 與 id 排序；answerHash 是答案改版欄位加核心算出的答案的 canonical JSON 的 SHA-256；optionIds 只增不減，removedOptionIds 記下曾經發布後被移除的選項 ID（不得再次使用）。由 pnpm content:lock --write 產生，請勿手改。';
 
-/** @typedef {'term' | 'chapter' | 'template' | 'story' | 'question'} LockKind */
+/** @typedef {'term' | 'chapter' | 'objective' | 'level' | 'template' | 'story' | 'question'} LockKind */
 /** @typedef {{ id: string; kind: LockKind; rev: number; revKind: 'text' | 'answer'; answerRev: number; status: 'published' | 'retired'; answerHash?: string; optionIds: string[]; removedOptionIds?: string[]; supersededBy?: string }} LockItem */
 /** @typedef {{ lockVersion: number; contentVersion: number; items: LockItem[] }} Lock */
 
-const KIND_ORDER = ['term', 'chapter', 'template', 'story', 'question'];
+const KIND_ORDER = ['term', 'chapter', 'objective', 'level', 'template', 'story', 'question'];
 const sorted = (xs) => [...xs].sort();
 
 function pick(obj, keys) {
@@ -27,7 +27,8 @@ function stripExpected(scenario) {
 }
 
 /**
- * 答案改版欄位（08 第 4.2 節）連同核心算出的答案（04 第 15.3 節）；純文字欄位與核心版本號都不納入。名詞沒有 answerHash。
+ * 答案改版欄位（08 第 4.2 節）連同核心算出的答案（04 第 15.3 節）；純文字欄位與核心版本號都不納入。名詞與學習目標沒有 answerHash；
+ * 章節看 levelIds、關卡看 questionIds（出題順序）。
  * @param {LockKind} kind
  * @param {any} d
  * @param {import('./content-rules.mjs').CompiledQuestion | undefined} [compiled]
@@ -35,9 +36,12 @@ function stripExpected(scenario) {
 export function answerFields(kind, d, compiled) {
   switch (kind) {
     case 'term':
+    case 'objective':
       return undefined;
     case 'chapter':
       return { levelIds: d.levelIds };
+    case 'level':
+      return { questionIds: d.questionIds };
     case 'template':
       return {
         params: d.params.map((p) => pick(p, ['name', 'type', 'min', 'max', 'default'])),
@@ -85,7 +89,7 @@ function questionAnswerFields(q, c) {
         categories: c.categories ?? q.correctCategories ?? {},
       };
     case 'transaction_effect':
-      return { ...base, scenario: stripExpected(q.scenario), ...pick(q, ['choices']), expected: c.expected };
+      return { ...base, scenario: stripExpected(q.scenario), ...pick(q, ['choices', 'scoring']), expected: c.expected };
     case 'five_step_fill':
       return { ...base, scenario: stripExpected(q.scenario), openCells: q.openCells, expected: c.expected };
     case 'ratio_numeric': {
@@ -138,6 +142,8 @@ export function currentLockItems(parsed, compiled) {
   const lists = [
     ['term', parsed.terms],
     ['chapter', parsed.chapters],
+    ['objective', parsed.objectives ?? []],
+    ['level', parsed.levels ?? []],
     ['template', parsed.templates],
     ['story', parsed.stories],
     ['question', parsed.questions],
@@ -173,6 +179,8 @@ export function allEntityIds(parsed) {
   const lists = [
     ['term', parsed.terms],
     ['chapter', parsed.chapters],
+    ['objective', parsed.objectives ?? []],
+    ['level', parsed.levels ?? []],
     ['template', parsed.templates],
     ['story', parsed.stories],
     ['question', parsed.questions],

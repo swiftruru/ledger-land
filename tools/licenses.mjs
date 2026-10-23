@@ -52,20 +52,32 @@ function run(args) {
 function flatten(json) {
   const out = [];
   for (const [license, pkgs] of Object.entries(json))
-    for (const p of pkgs) out.push({ name: p.name, versions: p.versions ?? [p.version], license, homepage: p.homepage ?? '', author: p.author ?? '' });
+    for (const p of pkgs)
+      out.push({ name: p.name, versions: p.versions ?? [p.version], license, notice: license, homepage: p.homepage ?? '', author: p.author ?? '' });
   return out.toSorted((a, b) => a.name.localeCompare(b.name));
+}
+/** SPDX 的 OR 表達式（例如 `(Unlicense OR Apache-2.0)`）：任一成員在白名單內就採用該成員（依白名單順序取第一個）；不是 OR 表達式時回傳原字串 */
+function chooseLicense(license, allow) {
+  const inner = license.trim().replace(/^\((.*)\)$/, '$1');
+  if (!/\sOR\s/.test(inner) || /\sAND\s/.test(inner)) return allow.includes(license) ? license : undefined;
+  const members = inner.split(/\sOR\s/).map((m) => m.trim());
+  return allow.find((a) => members.includes(a));
 }
 const prod = flatten(run('--prod --filter @ledgerland/web...')).filter((p) => !SKIP.includes(p.name));
 const all = flatten(run(''));
 let ok = true;
-for (const p of prod)
-  if (!PROD_ALLOW.includes(p.license) && PROD_PACKAGE_ALLOW[p.name] !== p.license) {
+for (const p of prod) {
+  const chosen = chooseLicense(p.license, PROD_ALLOW);
+  if (chosen === undefined && PROD_PACKAGE_ALLOW[p.name] !== p.license) {
     fail(`licenses：執行期套件 ${p.name}（${p.license}）不在白名單內，請人工審查`);
     ok = false;
   }
+  // notices 註明採用哪一個授權（OR 表達式只需遵守其中一個）
+  p.notice = chosen !== undefined && chosen !== p.license ? `${p.license}（採用 ${chosen}）` : p.license;
+}
 for (const p of all) {
   if (p.name.startsWith('@ledgerland/') || p.name === 'ledger-land' || SKIP.includes(p.name)) continue;
-  if (!DEV_ALLOW.includes(p.license) && !PROD_ALLOW.includes(p.license)) {
+  if (chooseLicense(p.license, DEV_ALLOW) === undefined) {
     fail(`licenses：開發套件 ${p.name}（${p.license}）不在白名單內，請人工審查`);
     ok = false;
   }
@@ -78,7 +90,7 @@ const lines = [
   '',
   '| 套件 | 版本 | 授權 | 首頁 |',
   '| --- | --- | --- | --- |',
-  ...prod.filter((p) => !p.name.startsWith('@ledgerland/')).map((p) => `| ${p.name} | ${p.versions.join(', ')} | ${p.license} | ${p.homepage} |`),
+  ...prod.filter((p) => !p.name.startsWith('@ledgerland/')).map((p) => `| ${p.name} | ${p.versions.join(', ')} | ${p.notice} | ${p.homepage} |`),
   '',
   '## 不經套件管理的項目',
   '',

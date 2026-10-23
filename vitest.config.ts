@@ -32,8 +32,21 @@ export default defineConfig({
             'packages/i18n/test/**/*.test.ts',
             'packages/content-schema/test/**/*.test.ts',
             'packages/core/test/**/*.test.ts',
+            'packages/progress/test/**/*.test.ts',
+            'packages/quiz/test/**/*.test.ts',
             'tools/test/**/*.test.ts',
           ],
+          exclude: ['**/*.local.test.ts'],
+        },
+      },
+      // apps/web 的儲存層（IndexedDB 實作、persist、備份碼、作答工作階段 store）：Node 環境加 fake-indexeddb（06 第 4.3 節）
+      {
+        define: { __LL_APP_VERSION__: JSON.stringify('0.0.0+test'), __LL_BUILT_AT__: JSON.stringify('test') },
+        test: {
+          name: 'web',
+          environment: 'node',
+          setupFiles: ['apps/web/test/setup.ts'],
+          include: ['apps/web/test/**/*.test.ts'],
           exclude: ['**/*.local.test.ts'],
         },
       },

@@ -1,6 +1,6 @@
 // Lighthouse 13 CLI（06 第 8.2 節、09 第 10.2 節）：對重現 Workers 行為的本機伺服器（apps/web 的 wrangler dev）跑固定網址，
 // 每個網址 runs 次取中位數，以 metric 做 assertion；記錄 benchmarkIndex。統計腳本照正式方式載入但指向 stub 端點（?ll-analytics=stub）。
-// 用法：node tools/perf.mjs [--base http://127.0.0.1:8787] [--runs 5] [--out .local-reports/perf]
+// 用法：node tools/perf.mjs [--base http://127.0.0.1:8787] [--runs 5] [--out .local-reports/perf] [--only home,terms]
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -50,7 +50,10 @@ const median = (xs) => {
 };
 const summary = [];
 try {
+  // --only home,terms：只量這幾個名稱（本機找效能回歸用；CI 不帶）
+  const only = args.only ? new Set(String(args.only).split(',')) : null;
   for (const u of cfg.urls) {
+    if (only && !only.has(u.name)) continue;
     const url = `${base}${u.path}?ll-analytics=${cfg.analytics.mode}`;
     const results = [];
     for (let i = 1; i <= runs; i++) {
@@ -101,7 +104,8 @@ try {
       benchmarkIndex: Math.round(median(results.map((r) => r.benchmarkIndex))),
     };
     summary.push(m);
-    const a = cfg.assertions;
+    // 個別網址可以覆寫門檻（urls.json 的 urls[].assertions，M2 的地圖與作答頁 LCP 暫放寬到 3000ms，見 14 第 5 節）
+    const a = { ...cfg.assertions, ...(u.assertions ?? {}) };
     if (m.performance < a['categories.performance'].min) fail(`perf：${u.name} 效能 ${m.performance} 低於 ${a['categories.performance'].min}`);
     if (m.accessibility < a['categories.accessibility'].min) fail(`perf：${u.name} 無障礙 ${m.accessibility} 低於 ${a['categories.accessibility'].min}`);
     if (m.lcpMs > a['largest-contentful-paint'].maxMs) fail(`perf：${u.name} LCP ${m.lcpMs}ms 超過 ${a['largest-contentful-paint'].maxMs}ms`);
