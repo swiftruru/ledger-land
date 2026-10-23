@@ -6,7 +6,7 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { Link, useMatches } from 'react-router';
 import { localePath } from '@ledgerland/i18n';
 import { Banner, Button } from '@ledgerland/web-ui';
-import { afterFirstPaint } from '../lib/idle.ts';
+import { whenIdle } from '../lib/idle.ts';
 import { getProgressStore } from '../lib/progress/index.ts';
 import { useLocale } from '../lib/useLocale.ts';
 import { useSessionFlag } from './useSessionFlag.ts';
@@ -21,8 +21,8 @@ function useInstallGuideSeen(): boolean {
   const [seen, setSeen] = useState(false);
   useEffect(() => {
     let alive = true;
-    // 進度資料庫等頁面內容繪製送出後再開（06 第 8.2 節，見 idle.ts）
-    const cancel = afterFirstPaint(() => {
+    // 進度資料庫等第一次閒置再開（06 第 8.2 節）：這個元件會插在內容上方，不能再多等 afterFirstPaint 的 400ms，否則會在使用者開始捲動後才把內容往下推
+    const cancel = whenIdle(() => {
       getProgressStore()
         .then((s) => s.getSetting(INSTALL_GUIDE_SEEN_SETTING))
         .then(
