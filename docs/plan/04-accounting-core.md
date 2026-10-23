@@ -217,7 +217,7 @@ packages/core/
 
 已決定（2026-10-20）：判分移到 `packages/quiz`。多正解題判分 `scoreMultiChoice`、數字題比對（含 N/A 與位數規則）與分錄題計分 `scoreJournalEntry` 從原本 `core` 的 `scoring/` 移到 `packages/quiz`；核心只保留分錄的正規化比對（第 14 節第 1 到 4 點：解析別名、合併同科目同方向的行、移除金額為 0 的行、多重集合比對），屬於會計知識；`scoreJournalEntry` 呼叫它。判分規則本身不變（第 12.5、14、16.2 節），只是位置改變。選擇題與數字題的判分、星星、錯題本都不放在 `packages/core`。
 
-分錄比對的函式與型別名稱為示意（例如 `compareEntries`、`EntryComparison`），M1 實作時定案。
+分錄比對的函式與型別名稱原為示意（例如 `compareEntries`、`EntryComparison`），M1 實作時已定案（見本節末「M1 實作時定案的名稱」）。
 
 已決定（2026-10-20）：`packages/core` 的內部依賴只有 `packages/content-schema` 與 `packages/i18n`（原名 `i18n-config`）；`packages/quiz` 依賴 `core`、`content-schema`、`i18n`。依賴方向與各套件的範圍以 09 為準。
 
@@ -254,6 +254,16 @@ function scoreMultiChoice(selected: readonly string[], q: MultiChoiceSpec): bool
 function scoreJournalEntry(submitted: EntryLine[][], expected: EntryLine[][], chart: Chart): EntryScore;  // 呼叫 core 的分錄比對
 ```
 
+**M1 實作時定案的名稱**（2026-10-23；上面的列表保留規劃時的簽名作為對照，以程式為準）：
+
+- `validateEntry` 回傳 `CoreError[]`（空陣列表示通過），不再包成 `Result`。
+- 分錄比對是 `compareEntries(submitted, expected, chart, options)` 與 `normaliseEntries`。
+- `buildStatements(run, window, layout, policy)`，多帶 `policy`。
+- `computeRatio(ratioRef, measures, inputs?, registry?, options?)`：`measures` 是以線 ID 為鍵的 `MeasureMap`，`avg` 需要的期初值由 `options.opening` 提供。
+- `fiveStepCheck(st, learnerInputs?)`。
+- `replayStory(story, overrides, ctx)` 與 `allowedRange(story, overrides, target, ctx)`。
+- 錯誤訊息的 key 慣例是 `core.error.<錯誤碼>`；`lab.*` 的介面字串由 UI 對應，不在核心。
+
 `CoreContext` 帶著科目表、已編譯的範本與認列政策。IFRS 對照（D10(f)）不另設 API：呼叫端把 `ctx.policy` 換成 `ifrs@1` 重新呼叫 `replayStory`（沿用同一組自由實驗覆寫），再以 `ifrs@1` 版面呼叫 `buildStatements`、`computeRatio` 與 `traceLine`。計分相關的函式只用在 `teacher@1` 的結果上（第 15.1 節）。
 
 `packages/core` 的 `exports` 直接指向原始碼，不另外 build（見 09）。型別以 `packages/content-schema` 的 Zod schema 為準，本文件的 TypeScript 型別是說明用的對照。
@@ -282,7 +292,7 @@ type Section =
 type AccountFlag =
   | 'japanese'               // 日式科目或日式分類
   | 'old_name'               // IFRS 之前的舊稱
-  | 'typo_fixed'             // 教材原文疑似誤植；W 系列涵蓋的項目依 D13 A 以修正寫法為主要顯示、原字列為別名；短期放貨不在 W 系列內，仍等 T09，維持原字為主要顯示
+  | 'typo_fixed'             // 教材原文疑似誤植；W 系列涵蓋的項目依 D13 A 以修正寫法為主要顯示、原字列為別名；短期放貨不在 W 系列內，仍等 T09，維持原字為主要顯示。T09 回覆前短期放貨不帶這個旗標，只帶 pendingRefs
   | 'unused'                 // 本課故事未用，實驗室預設隱藏
   | 'not_ifrs_line'          // IFRS 沒有或禁止的列
   | 'ifrs_treatment_differs' // 不只是用語不同，IFRS 的處理會改變金額或分類
@@ -371,7 +381,7 @@ interface Account {
 | `cash` | L12、H40、H41 | 現金本身；每條現金行必須有現金流量標籤 | 不適用 | | 幾乎每一筆 | |
 | `accounts_receivable` | L13 | 淨增加填 H15（負）；淨減少填 H17（正） | 營業 | `japanese`（別名銷貨債權） | 第 10、12 筆 | T08、T12、T15 |
 | `inventory` | L14；R12、R14 由餘額推導 | H16：增加為負，減少以正數填同列並加註 | 營業 | | 第 6、7、9、10、16 筆 | T06、T07 |
-| `short_term_loans_receivable` | L15 | 付現 `loans_advanced` 填 H27；收回用延伸列 | 投資 | `typo_fixed`、`unused` | 未用 | T09 |
+| `short_term_loans_receivable` | L15 | 付現 `loans_advanced` 填 H27；收回用延伸列 | 投資 | `japanese`、`unused`（T09 回覆前不帶 `typo_fixed`） | 未用 | T09 |
 | `machinery_equipment` | L19（顯示淨額） | 付現 `capex` 填 H26 | 投資 | | 第 3 筆（電腦設備，教材歸入此科目） | W02 |
 | `accumulated_depreciation_machinery` | 併入 L19 淨額 | 不直接對應；折舊經 H12 加回 | 不適用（抵銷科目，不出現金流量分類題） | `not_in_template` | 第 17 筆 | W02 |
 | `intangible_assets` | L20 | 付現 `capex` 填 H26 | 投資 | `unused` | 未用 | |
@@ -726,7 +736,7 @@ interface SourceRef {
 
 ### 6.5 effects
 
-`effects` 是「影響哪些科目」的白話資料來源。D1 已決定 (b)：實驗室「科目變動」那一步以 `effects` 為主要內容；「看分錄與 T 字帳」預設收合，展開時顯示同一步的 `PostedStep.entries` 與 `buildTAccounts` 的結果（本節末）。`effects` 也給 07 的 `aria-live` 播報使用。每一步依科目合併；排序依科目表 `order`。文字由內容資料中的片語樣板產生，核心只做佔位符替換，不寫死任何語言。片語樣板裡的 `{{money:amount}}` 是核心替每一筆 effect 提供的區域值（同一筆 effect 的 `amount` 欄位）。佔位符依作用範圍檢查（第 16.1 節，與 05 第 10.1 節相同）：`amount` 只屬於核心的 effects 片語樣板；題目、故事與名詞等一般內容只能用 `vars.`、`<eventId>.`、`expected.<targetId>.` 與數字常值；交易範本的 `summary` 與 `explanation` 另可用 `param.`、`derived.`。
+`effects` 是「影響哪些科目」的白話資料來源。D1 已決定 (b)：實驗室「科目變動」那一步以 `effects` 為主要內容；「看分錄與 T 字帳」預設收合，展開時顯示同一步的 `PostedStep.entries` 與 `buildTAccounts` 的結果（本節末）。`effects` 也給 07 的 `aria-live` 播報使用。每一步依科目合併；排序依科目表 `order`。文字由內容資料中的片語樣板產生，核心只做佔位符替換，不寫死任何語言。片語樣板裡的 `{{money:amount}}` 是核心替每一筆 effect 提供的區域值（同一筆 effect 的 `amount` 欄位）。核心輸出的 `text` 只代入名詞佔位符，`{{money:amount}}` 保留給 UI 以 `effect.amount` 格式化；`direction` 除了 `increase`、`decrease` 之外另有 `unchanged`（同一步同科目進出相抵）。佔位符依作用範圍檢查（第 16.1 節，與 05 第 10.1 節相同）：`amount` 只屬於核心的 effects 片語樣板；題目、故事與名詞等一般內容只能用 `vars.`、`<eventId>.`、`expected.<targetId>.` 與數字常值；交易範本的 `summary` 與 `explanation` 另可用 `param.`、`derived.`。
 
 ```json
 {
@@ -1066,6 +1076,8 @@ interface LayoutOptions {
 | `orgCosts` | `capitalise_amortise`：設立費列遞延資產，依年數直線攤銷、直接減少帳面；付現列 H26 | `expense`：依 IAS 38.69 發生時列營業費用（`organisation_costs_expense`），付現列營業活動，之後不攤銷 | `capitalise_amortise`、`expense` | 稅前淨利、資產、各活動金額、允當比率 | T04、T30 |
 | `amortisationSection`（版面） | `non_operating`：攤銷遞延資產列營業外支出；折舊列銷管費用 | 不適用（沒有攤銷遞延資產） | `non_operating`、`operating` | 營業利益、DOL、DFL、營業利益佔實收資本比率 | T05 |
 | `amortisationAddBack`（版面） | H14 | 不適用 | H14、H12 | 只影響間接法哪一列 | T12 |
+
+M1 的版面以列資料為準，`amortisationSection` 與 `amortisationAddBack` 這兩個選項只作記錄，切換時要同時改列資料（`is_amortisation` 所在的分組、`cf_depreciation` 與 `cf_other_noncash_losses` 的科目清單；`packages/core/test/data.test.ts` 有測試守住一致性）。
 | `inventoryOverage` | `reduce_cogs` | `reduce_cogs`（沿用教材口徑；`ifrs@1` 不允許 `extraordinary_gain`） | `reduce_cogs`、`non_operating_income`、`extraordinary_gain` | 毛利、營業利益、存貨週轉率與平均銷貨日數、DOL、DFL、營業利益佔實收資本比率；列非常利益時另影響經常利益；稅前淨利不變 | T06 |
 | `incomeTax` | `cash_direct` | `cash_direct`（兩邊都沿用故事設定的金額） | `cash_direct`、`accrue_then_pay` | 應付所得稅、H22 的時點 | T10、T36 |
 | `interestPaidActivity` | `operating`（H21） | `operating`（IAS 7 目前允許營業或籌資，沿用教材以免混入第二個差異） | `operating`、`financing` | 營業與籌資活動金額 | T11 |
@@ -1082,7 +1094,7 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 
 切換的做法：實驗室以 `ctx.policy = ifrs@1` 重播同一個故事與同一組自由實驗覆寫，再以 `ifrs@1` 版面產生三表、指標與追蹤樹（第 2 節）。範本以每一行的 `policyWhen` 選出 `ifrs@1` 的分錄行，例如第 5 筆設立費的範本（節錄，其他欄位見第 7 節）：
 
-```json
+```jsonc
 {
   "id": "tpl.pay_org_costs",
   "lines": [
@@ -1292,7 +1304,9 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 
 ### 11.6 版面資料範例（節錄）
 
-```json
+節錄只列兩張表、每張表只列幾列；完整形狀以 `packages/content-schema` 的 `Layout`（`LayoutLine` 以 `kind` 區分，每列都有 `label` 與 `aliases`）與 `packages/core/data/layouts/teacher@1.json` 為準，所以這一段不經 `docs:examples` 驗證。
+
+```jsonc
 {
   "id": "teacher@1",
   "options": {
@@ -1305,26 +1319,83 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
   },
   "statements": {
     "income_statement": [
-      { "id": "is_revenue", "cell": "R10", "kind": "accounts", "accounts": ["revenue"], "termRef": "tm_v3n8q2ye" },
-      { "id": "is_opening_inventory", "cell": "R12", "kind": "inventory_opening", "termRef": "tm_v6j2k8sr" },
-      { "id": "is_purchases", "cell": "R13", "kind": "inventory_purchases", "termRef": "tm_p7h3c5xq" },
-      { "id": "is_closing_inventory", "cell": "R14", "kind": "inventory_closing", "display": "positive_subtracted", "termRef": "tm_q4k9v2nd" },
+      {
+        "id": "is_revenue",
+        "cell": "R10",
+        "kind": "accounts",
+        "label": { "zh-TW": "營業收入", "en": "Revenue" },
+        "aliases": { "zh-TW": ["營收", "銷貨淨額"], "en": ["Sales", "Net sales"] },
+        "termRef": "tm_v3n8q2ye",
+        "accounts": ["revenue"],
+        "measure": "activity"
+      },
+      {
+        "id": "is_opening_inventory",
+        "cell": "R12",
+        "kind": "inventory_opening",
+        "label": { "zh-TW": "期初存貨", "en": "Opening inventories" },
+        "aliases": { "zh-TW": [], "en": [] },
+        "termRef": "tm_v6j2k8sr"
+      },
+      {
+        "id": "is_purchases",
+        "cell": "R13",
+        "kind": "inventory_purchases",
+        "label": { "zh-TW": "本期進貨", "en": "Purchases" },
+        "aliases": { "zh-TW": ["進貨"], "en": [] },
+        "termRef": "tm_p7h3c5xq",
+        "pendingRefs": ["T27"]
+      },
+      {
+        "id": "is_closing_inventory",
+        "cell": "R14",
+        "kind": "inventory_closing",
+        "label": { "zh-TW": "期末存貨(-)", "en": "Closing inventories (-)" },
+        "aliases": { "zh-TW": ["期末存貨"], "en": [] },
+        "termRef": "tm_q4k9v2nd",
+        "pendingRefs": ["T07"],
+        "display": "positive_subtracted"
+      },
       {
         "id": "is_cogs",
         "cell": "R15",
         "kind": "formula",
-        "expr": "line.is_opening_inventory + line.is_purchases - line.is_closing_inventory",
-        "invariant": "equals_account_activity:cost_of_goods_sold",
-        "termRef": "tm_g5c2m8tw"
+        "label": { "zh-TW": "營業成本小計", "en": "Cost of sales (subtotal)" },
+        "aliases": { "zh-TW": ["營業成本", "銷貨成本"], "en": ["Cost of sales", "Cost of goods sold"] },
+        "termRef": "tm_g5c2m8tw",
+        "expr": "line.is_opening_inventory + line.is_purchases + line.is_inventory_overage_excluded - line.is_closing_inventory",
+        "invariant": "equals_account_activity:cost_of_goods_sold"
       },
-      { "id": "is_gross_profit", "cell": "R16", "kind": "formula", "expr": "line.is_revenue - line.is_cogs", "level": 1, "termRef": "tm_g8p4w1rz" }
+      {
+        "id": "is_gross_profit",
+        "cell": "R16",
+        "kind": "formula",
+        "label": { "zh-TW": "營業毛利", "en": "Gross profit" },
+        "aliases": { "zh-TW": ["毛利", "營業毛利（毛損）"], "en": ["Gross margin"] },
+        "termRef": "tm_g8p4w1rz",
+        "expr": "line.is_revenue - line.is_cogs",
+        "level": 1
+      }
     ],
     "cash_flow_indirect": [
-      { "id": "cf_pretax_income", "cell": "H11", "kind": "link", "from": "is_pretax_income", "check": "step2" },
+      {
+        "id": "cf_pretax_income",
+        "cell": "H11",
+        "kind": "link",
+        "label": { "zh-TW": "稅前淨利", "en": "Profit before tax" },
+        "aliases": { "zh-TW": [], "en": [] },
+        "termRef": "tm_z971merj",
+        "from": "is_pretax_income",
+        "check": "step2"
+      },
       {
         "id": "cf_inventory_increase",
         "cell": "H16",
         "kind": "working_capital",
+        "label": { "zh-TW": "存貨增加(-)", "en": "Increase in inventories (-)" },
+        "aliases": { "zh-TW": [], "en": [] },
+        "termRef": "tm_bpt2kp5c",
+        "pendingRefs": ["T12"],
         "accounts": ["inventory"],
         "sign": "negate_change",
         "oppositeSignNote": "template_has_no_decrease_row"
@@ -1333,28 +1404,33 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
         "id": "cf_payables_increase",
         "cell": "H18",
         "kind": "working_capital",
+        "label": { "zh-TW": "應付帳款增加(+)", "en": "Increase in trade payables (+)" },
+        "aliases": { "zh-TW": ["應付賬款增加(+)"], "en": ["Increase in accounts payable (+)"] },
+        "termRef": "tm_dc0p0nrv",
+        "pendingRefs": ["T12"],
+        "flags": ["typo_fixed"],
         "accounts": ["accounts_payable"],
         "sign": "change",
-        "oppositeSignNote": "template_has_no_decrease_row",
-        "label": { "zh-TW": "應付帳款增加(+)", "en": "Increase in trade payables (+)" },
-        "aliases": { "zh-TW": ["應付賬款增加(+)"], "en": [] }
+        "oppositeSignNote": "template_has_no_decrease_row"
       },
       {
         "id": "cf_interest_paid",
         "cell": "H21",
         "kind": "cash_tag",
-        "cfKind": "interest_paid",
-        "sign": "outflow_negative",
         "label": { "zh-TW": "利息支出(-)", "en": "Interest paid (-)" },
         "aliases": { "zh-TW": ["支付之利息(-)"], "en": [] },
-        "pendingRefs": ["T11"]
+        "termRef": "tm_y7a34vmk",
+        "pendingRefs": ["T11"],
+        "activity": "operating",
+        "cfKinds": ["interest_paid"],
+        "sign": "outflow_negative"
       }
     ]
   }
 }
 ```
 
-H18 示範 W03（已決定 D13 A）：修正寫法是主要顯示，教材原字放在 `aliases` 供搜尋；H21 示範牽涉 T11 的列：維持教材原字為主要顯示，建議寫法先列為別名，並帶 `pendingRefs` 讓畫面顯示待確認標記。
+H18 示範 W03（已決定 D13 A）：修正寫法是主要顯示，教材原字放在 `aliases` 供搜尋，並帶 `flags: ["typo_fixed"]`；H21 示範牽涉 T11 的列：維持教材原字為主要顯示，建議寫法先列為別名，並帶 `pendingRefs` 讓畫面顯示待確認標記。
 
 ### 11.7 匯出成老師的 Excel 格式
 
@@ -1629,7 +1705,7 @@ function fiveStepCheck(st: Statements, learnerInputs?: Partial<Record<string, Mo
 | ⑤ | D | 資產總計 L29 | 負債及股東權益總計 N29 | |
 
 - 主鍵是步驟編號；字母依多數頁的用法只當顯示別名【待確認 T13】。核心不強制填表順序【待確認 T14】。
-- 勾稽練習：`learnerInputs` 預設只開放 H11、L12、N26 三格（闖關區 `five_step_fill` 題型的 `openCells` 預設值相同），其餘由核心帶入；進階模式再開放期末存貨與現金流量調整列。學生填的值會參與重算（例如 L29、N29、H41），所以錯一格可能讓後面的勾稽點也不平，這和 Excel 的行為一致；畫面依 `firstFailedStep` 先提示第一個不平的點。
+- 勾稽練習：`learnerInputs` 預設只開放 H11、L12、N26 三格（闖關區 `five_step_fill` 題型的 `openCells` 預設值相同），其餘由核心帶入；進階模式再開放期末存貨與現金流量調整列。學生填的值會參與重算（例如 L29、N29、H41），所以錯一格可能讓後面的勾稽點也不平，這和 Excel 的行為一致；畫面依 `firstFailedStep` 先提示第一個不平的點。進階模式學生填錯期末存貨時，H11 連動重算會使 H41 也變動，`firstFailedStep` 可能是 3 而不是 5，這和 Excel 的行為一致。
 - 核心自己算出的報表，四個勾稽點的差額一定都是 0，這也是性質測試的一部分。
 
 勾稽練習的結果範例（自編故事第 7 筆之後，學生把 N26 誤填成營業毛利 480,000）：
@@ -2846,9 +2922,9 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
   "compiled": {
     "values": { "e1.interest": 27000, "e1.principal": 900000, "e1.totalPaid": 927000 },
     "expectedEntries": [
+      { "account": "cash", "side": "credit", "amount": 927000 },
       { "account": "short_term_borrowings", "side": "debit", "amount": 900000 },
-      { "account": "interest_expense", "side": "debit", "amount": 27000 },
-      { "account": "cash", "side": "credit", "amount": 927000 }
+      { "account": "interest_expense", "side": "debit", "amount": 27000 }
     ],
     "policy": "teacher@1",
     "layout": "teacher@1"
@@ -2856,7 +2932,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 }
 ```
 
-核對：自編故事第 12 步之後短期借款餘額是第 8 步借入的 900,000，現金 4,214,000 足夠支付 927,000，前置條件成立。這個範本沒有 `entryQuestionBlockedBy`，所以可以出分錄題；若改用第 17 筆的 `tpl.amortise_org_costs`，validator 會因為它帶 `entryQuestionBlockedBy: ["T04", "T05"]` 而拒絕。`accountChoices` 另外放了兩個不相關的科目當干擾；學生若輸入別名（例如「利息費用」），會先解析成 `interest_expense` 再比對。
+核對：自編故事第 12 步之後短期借款餘額是第 8 步借入的 900,000，現金 4,214,000 足夠支付 927,000，前置條件成立。`expectedEntries` 是核心依科目表順序輸出的（現金在前），比對不看順序。這個範本沒有 `entryQuestionBlockedBy`，所以可以出分錄題；若改用第 17 筆的 `tpl.amortise_org_costs`，validator 會因為它帶 `entryQuestionBlockedBy: ["T04", "T05"]` 而拒絕。`accountChoices` 另外放了兩個不相關的科目當干擾；學生若輸入別名（例如「利息費用」），會先解析成 `interest_expense` 再比對。
 
 ## 18. 測試策略
 
@@ -2896,7 +2972,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 
 - 檔名 `*.local.test.ts`。Vitest 設定在 `references/` 不存在時自動排除這些檔案；CI 沒有 `references/`，所以永遠不會執行。
 - 不使用 snapshot，測試程式與期望值檔不寫入任何教材數字（正式故事的金額只存在內容資料中）。期望值在執行時從 `references/02-excel-statements/` 讀出。
-- 老師的 xlsx 由 openpyxl 存檔，公式格沒有快取的計算值。測試讀出輸入格與公式字串，用一個只支援 `SUM`、`IFERROR`、四則運算與跨工作表參照的極小公式求值器重算，再與核心結果以完整精度比對；與解答 PDF 或投影片比對時，依各來源印出的位數四捨五入後再比。xlsx 讀取方式依 08 的函式庫決定（不使用 npm 上有已知漏洞的 xlsx 0.18.5），需要先確認能讀出公式字串（見第 20 節）；如果選用的函式庫讀不到，退路是在本機用一支只讀不寫的轉換腳本先把公式字串匯出成 JSON，同樣不進 repo。
+- 老師的 xlsx 由 openpyxl 存檔，公式格沒有快取的計算值。測試讀出輸入格與公式字串，用一個只支援 `SUM`、`IFERROR`、四則運算與跨工作表參照的極小公式求值器重算，再與核心結果以完整精度比對；與解答 PDF 或投影片比對時，依各來源印出的位數四捨五入後再比。xlsx 讀取方式依 08 的函式庫決定（不使用 npm 上有已知漏洞的 xlsx 0.18.5），需要先確認能讀出公式字串（見第 20 節）；如果選用的函式庫讀不到，退路是在本機用一支只讀不寫的轉換腳本先把公式字串匯出成 JSON，同樣不進 repo。已決定（2026-10-23）：M1 採用自製讀取器（只用 node 內建的 zip 解壓與 XML 解析，放在 `packages/core/test/local/`，見 [14 待確認事項](14-open-questions.md) 第 5.3 節），不使用 SheetJS，也不需要退路的轉換腳本。
 - D2 已決定正式故事用老師的情境與金額（老師已同意公開），所以正式故事資料本身就在 repo 的內容裡；本機測試直接重播正式故事，再與 `references/` 中的老師 Excel 逐格比對，不需要另一份本機故事資料。repo 內的測試程式不寫入任何老師的金額；CI 對正式故事只跑性質測試（第 18 節的表）。
 - M1 的完成標準分兩級：第 1 到 3 筆「已對老師 Excel 驗證」；第 4 到 18 筆「性質測試通過，標示為推論，待老師確認」【待確認 T33】。第 16 筆之後的資產負債表示意可以當部分檢查點，但有一筆來源不明的差額【待確認 T36】。
 
@@ -2928,7 +3004,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 
 待實測：
 
-6. M1 本機測試開始前，確認選用的 xlsx 讀取方式能取得公式字串與輸入值（老師的檔案沒有快取的計算值）；讀不到時改用第 18.3 節的本機轉換腳本。
+6. M1 本機測試開始前，確認選用的 xlsx 讀取方式能取得公式字串與輸入值（老師的檔案沒有快取的計算值）；讀不到時改用第 18.3 節的本機轉換腳本。已完成（2026-10-23）：採用自製讀取器，不使用 SheetJS，也不需要轉換腳本（第 18.3 節、14 第 5.3 節）。
 
 跨文件需要同步（不是待確認，列在這裡方便統一審稿）：
 

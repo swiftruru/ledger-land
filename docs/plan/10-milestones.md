@@ -93,7 +93,7 @@ D 系列都已決定（2026-10-20），所以下表把「依據的決定」和�
 | --- | --- | --- | --- | --- | --- |
 | M0a 技術驗證 | 驗證會影響架構的技術假設，產出 go / no-go 報告 | data mode 加 `/en/` 前綴的最小專案、Cloudflare 預覽部署、PWA 離線與更新、玻璃 Tab bar（含 iOS 17）與減少動態、儲存隔離、QR 開啟位置、iOS 拖放、安裝外觀 | D4（預覽主機）、D5、D8 | 實機清單（iOS 17、26、27 與中低階 Android）、Cloudflare 帳號與預覽部署前的 `wrangler login`；試作程式的存放位置已決定（`prototypes/m0a/`） | 已完成（2026-10-22，建議 go；報告在本機 `prototypes/m0a/REPORT.md`；實機項目全部通過；缺漏只剩沒有硬體的 Android 與 iOS 26、17 實機） |
 | M0b 基礎建設 | 讓之後每個里程碑都在同一套工具與品質閘門下進行 | repo 初始化（含 01、13 的排除規則）、monorepo 骨架（根目錄 workspace、`apps/web`、`packages/tokens`、`packages/i18n`、`packages/content-schema`、`packages/web-ui`）、隔離環境、依賴方向檢查、工具鏈、CI、Cloudflare 部署（`apps/web/wrangler.jsonc`）、語系架構、design tokens、PWA 殼層、內容 pipeline 與 Term、Chapter 最小 schema、授權檔、流量統計、debug 頁 | D3、D4、D6、D7、D8、D9（Tab 名稱） | M0a 的 go 決定；統計服務的查證結果；致謝文字請老師看過；第一次正式部署前的 API token 與 GitHub secrets | 已完成（2026-10-22；報告在 [docs/reports/m0b.md](../reports/m0b.md)；完成標準全部達成，正式網域 `ledgerland.swift.moe` 已由 CI 部署；留給 M1、M2 的事見報告第 9 節） |
-| M1 會計核心 | 會計核心成為唯一的資料來源 | 建立 `packages/core`；科目表、交易範本、故事資料、教材版面三表、間接法現金流量表、指標登錄檔與狀態、五步驟檢查、effects、題目與範本 schema（含 `multi_choice`、`journal_entry`，放在 `packages/content-schema`） | D1、D2、D10(c)、D10(f)、D12、D13 | 建議先寄出 T 系列清單 | 未開始 |
+| M1 會計核心 | 會計核心成為唯一的資料來源 | 建立 `packages/core`；科目表、交易範本、故事資料、教材版面三表、間接法現金流量表、指標登錄檔與狀態、五步驟檢查、effects、題目與範本 schema（含 `multi_choice`、`journal_entry`，放在 `packages/content-schema`） | D1、D2、D10(c)、D10(f)、D12、D13 | 建議先寄出 T 系列清單 | 進行中（2026-10-23 開工） |
 | M2 闖關區 MVP | 第一個可以給學生試用的版本 | `packages/quiz`、`packages/progress`、主要題型（含 `multi_choice`）、回饋與名詞卡、錯題本、進度、星星、IndexedDB 與 migration、完整的進度保護、關卡代號入口、App 內掃描 QR、前 2 到 3 章的中英原創內容 | D1、D4（正式網域）、D9、D10(a)、D11（拼字）、D12、D13 | QR 解碼器選型；試用的對象與規模 | 未開始 |
 | M3 闖關區完整 | 涵蓋期中考範圍 | 第一部分全部章節、其餘題型、「借貸與分錄」延伸章（`journal_entry`）、名詞圖鑑、徽章、完整安裝圖解 | D1 | T32 等內容相關確認 | 未開始 |
 | M4a 報表實驗室：故事與動畫 | 用逐步動畫呈現交易如何流進三表與指標 | 故事模式與單獨練習、動畫、預測、自由實驗、勾稽練習、指標面板 | D1、D2、D9（故事公司）、D10(b)、D11（報表版面） | 故事公司名稱的提案與確認；T08、T29、T33、T35 | 未開始 |
@@ -337,6 +337,8 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 
 **交付物**：`packages/core`（含測試）、科目表與 18 種交易範本的資料、故事資料、題目與範本的 schema（在 `packages/content-schema`）與 JSON Schema、M1 回報（本機驗證結果只寫摘要，不附與老師 Excel 逐格比對的明細）。
 
+覆蓋率門檻已決定（2026-10-23）：陳述式與行 90%、分支 85%、函式 90%（只量 `packages/core/src`，`pnpm test:coverage` 低於門檻就失敗）。
+
 **完成標準**（分兩級）：
 
 第一級，故事第 1 到 3 筆「已對老師 Excel 驗證」：
@@ -359,13 +361,13 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 - [ ] 受控運算式的 parser 拒絕白名單以外的語法；程式碼中沒有 `eval` 與 `new Function`（CI 檢查）。
 - [ ] 題目與範本的 schema 已輸出 JSON Schema；`content:check` 能用核心算出計算型題目的答案，並擋下和核心不一致的作者答案。
 - [ ] [04 會計核心](04-accounting-core.md) 與 [08 題庫與後台](08-content-admin.md) 的題目、交易範本、故事 JSON 範例都通過 `docs:examples` 的 schema 驗證；不一致時，以 schema 為準修正文件，並寫進回報。
-- [ ] `packages/core` 的測試覆蓋率達到門檻（門檻數字在 M1 開工時提出，建議不低於 90% 的敘述覆蓋率）。
+- [ ] `packages/core` 的測試覆蓋率達到門檻（門檻數字在 M1 開工時提出，建議不低於 90% 的陳述式覆蓋率）。
 - [ ] 停下回報。
 
 **開工前必須先決定**：
 
 - D 系列都已決定：D13（W01 到 W15 全部採用，科目表照範圍第 1 項建立主要顯示與別名）、D2（故事資料用老師的情境與金額，範圍第 10 項）、D12 與 D1（`multi_choice`、`journal_entry` 的 schema，範圍第 8 項）、D10(c)（M1 輸出 `sources`，M4b 直接使用）、D10(f)（M1 只保留 `policy` 欄位與 `policyWhen`）。
-- 仍待處理（建議）：T 系列清單已經寄出（不必等到回覆）。影響核心的編號見第 5 節。含老師金額的故事資料（範圍第 10 項）第一次 push 之前，建議再向老師確認一次同意的範圍（【待確認 T34】的其餘部分，見 11 第 2 節第 20 列）；commit 與 push 一律先徵求你的同意。
+- 仍待處理（建議）：T 系列清單尚未寄出（2026-10-23 確認），建議在 M1 期間寄出（不必等到回覆）。影響核心的編號見第 5 節。含老師金額的故事資料（範圍第 10 項）第一次 push 之前，建議再向老師確認一次同意的範圍（【待確認 T34】的其餘部分，見 11 第 2 節第 20 列）；commit 與 push 一律先徵求你的同意。
 
 **主要風險**：
 
@@ -777,7 +779,7 @@ T 系列的時程見第 5 節。
 
 - M0a 需要的實機清單（iOS 17、iOS 26、iOS 27 的 iPhone 機型，中低階 Android 機型）與 Cloudflare 帳號，需要你準備或提供。
 - M0a 試作程式的存放位置：已決定（2026-10-20），`prototypes/m0a/`，以 `.gitignore` 排除。
-- M1 的測試覆蓋率門檻、TBT 門檻、precache 體積預算等數字，要在對應里程碑開工時提出，由你確認。
+- M1 的測試覆蓋率門檻、TBT 門檻、precache 體積預算等數字，要在對應里程碑開工時提出，由你確認。覆蓋率門檻已決定（2026-10-23，第 8 節）；TBT 與 precache 體積等介面門檻仍在對應里程碑開工時提出。
 - M2 試用的對象與規模（同班同學、幾位志願者），會影響進度保護與 App 內掃描 QR 的急迫程度。
 - App 內掃描 QR 的 JS 解碼器選型（M2 開工前查證），以及主畫面 App 的相機權限是否每次啟動都要重新詢問（未查證，需要實機確認）。
 - M7 後台的子網域（獨立 origin），以及 M6 的瀏覽器匯入頁若比 M7 先做時要放在哪裡。
