@@ -58,6 +58,42 @@ export default defineConfig({
   build: {
     cssMinify: 'lightningcss',
     sourcemap: false,
+    rolldownOptions: {
+      output: {
+        // Rolldown 會把殼層入口與懶載入頁面共用的模組各自拆成小 chunk（M2 加了多個懶載入頁面後首次載入變成 17 個請求，
+        // Lighthouse 模擬節流下 LCP 從 2.2 秒變 3.2 秒）；把入口靜態可達的模組（$initial）合成一個 chunk，首次載入的 JS 總量不變但只剩兩個請求（06 第 8.2 節）
+        codeSplitting: {
+          // 群組會連同被抓到的模組的依賴一起抓（includeDependenciesRecursively 預設 true；關掉它會讓入口拆成三個檔並出現循環的 chunk，不採用），
+          // 所以先宣告的群組先把共用的依賴拿走：zod 與進度 runtime 各自一個 chunk；quiz 群組用 entriesAware 把「只有作答頁用」與「地圖也用」的模組分開
+          groups: [
+            { name: 'app', tags: ['$initial'], priority: 3 },
+            { name: 'zod', test: /[\\/]node_modules[\\/](\.pnpm[\\/][^\\/]+[\\/]node_modules[\\/])?zod[\\/]/, priority: 2 },
+            // 進度 runtime：@ledgerland/progress、idb、lib/progress 的執行期；地圖、章節與首頁延後開庫只等這個與 zod
+            {
+              name: 'progress',
+              test: /[\\/](packages[\\/]progress[\\/]src|apps[\\/]web[\\/]src[\\/]lib[\\/]progress|node_modules[\\/](\.pnpm[\\/][^\\/]+[\\/]node_modules[\\/])?idb)[\\/]/,
+              priority: 2,
+            },
+            // 只有作答頁（關卡、錯題本）才需要的模組：quiz 判分、core、content-schema 的題目 schema、web-ui 的題目元件與 features/quiz
+            {
+              name: 'quiz',
+              test: (id: string) =>
+                /[\\/](packages[\\/](quiz|core|content-schema)[\\/]src|apps[\\/]web[\\/]src[\\/]features[\\/]quiz)[\\/]/.test(id)
+                  ? !/[\\/](packages[\\/]quiz[\\/]src[\\/](stars|review|index)|packages[\\/]content-schema[\\/]src[\\/](common|index)|features[\\/]quiz[\\/]session-cache)\.ts$/.test(
+                      id,
+                    )
+                  : /[\\/]packages[\\/]web-ui[\\/]src[\\/]components[\\/](ChoiceGroup|ClassifyBoard|ImpactPicker|PickLine|PickStatement|TrueFalse|NumberInput|FeedbackPanel|QuestionCard)\./.test(
+                      id,
+                    ),
+              entriesAware: true,
+              priority: 2,
+            },
+            // 其餘懶載入頁面共用的模組（地圖資料、共用元件）合成一個 chunk，作答頁的第二波請求從 15 個變成少數幾個（06 第 8.2 節）
+            { name: 'shared', minShareCount: 2, priority: 1 },
+          ],
+        },
+      },
+    },
   },
   plugins: [
     shell(),

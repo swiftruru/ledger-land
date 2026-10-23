@@ -2,7 +2,21 @@
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const PAGES = ['/', '/level/lv_k7m2q9xd/', '/terms/', '/terms/tm_r4w8n2qe/', '/me/', '/me/settings/', '/privacy/', '/about/', '/design/'];
+const PAGES = [
+  '/',
+  '/play/',
+  '/play/?ll-fixture=quest',
+  '/chapter/ch_fx0001/?ll-fixture=quest',
+  '/level/lv_h2zx7srx/',
+  '/review/',
+  '/terms/',
+  '/terms/tm_r4w8n2qe/',
+  '/me/',
+  '/me/settings/',
+  '/privacy/',
+  '/about/',
+  '/design/',
+];
 const THEMES = ['light', 'dark'] as const;
 
 test.skip(({ browserName }) => browserName !== 'chromium', 'axe 只在 Chromium 專案跑一次');
@@ -10,7 +24,7 @@ test.skip(({ browserName }) => browserName !== 'chromium', 'axe 只在 Chromium 
 for (const theme of THEMES) {
   for (const path of PAGES) {
     for (const prefix of ['', '/en']) {
-      const url = `${prefix}${path}?ll-theme=${theme}`;
+      const url = `${prefix}${path}${path.includes('?') ? '&' : '?'}ll-theme=${theme}`;
       test(`axe ${theme} ${prefix || '/zh-TW'} ${path}`, async ({ page }) => {
         await page.goto(url);
         await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

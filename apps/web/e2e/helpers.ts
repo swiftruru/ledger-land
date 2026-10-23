@@ -26,3 +26,33 @@ export async function waitForSw(page: Page): Promise<void> {
 export async function waitForApp(page: Page): Promise<void> {
   await page.locator('main h1').first().waitFor();
 }
+
+/** 等 App 把進度資料庫的結構建好（App 在第一次繪製送出之後約半秒才開啟資料庫，apps/web/src/lib/idle.ts）：
+ * 測試要直接讀寫 IndexedDB 之前先等這一步，否則測試自己 open 會建出沒有 object store 的空資料庫，App 之後開到空資料庫就退成記憶體模式。
+ * 資料庫還不存在時不 open（避免搶先建立）。注意 page.waitForFunction 不會等 async 函式回傳的 Promise（Promise 物件本身就是 truthy，會立刻結束），
+ * 所以這裡用 page.evaluate 輪詢。 */
+export async function waitForProgressDb(page: Page, stores: readonly string[] = ['settings']): Promise<void> {
+  const deadline = Date.now() + 30_000;
+  for (;;) {
+    const ok = await page.evaluate(
+      async ({ db, stores }) => {
+        if (!(await indexedDB.databases()).some((d) => d.name === db)) return false;
+        return new Promise<boolean>((resolve) => {
+          const req = indexedDB.open(db);
+          req.onerror = () => resolve(false);
+          req.onblocked = () => resolve(false);
+          req.onsuccess = () => {
+            const conn = req.result;
+            const ok = stores.every((s) => conn.objectStoreNames.contains(s));
+            conn.close();
+            resolve(ok);
+          };
+        });
+      },
+      { db: 'ledgerland', stores: [...stores] },
+    );
+    if (ok) return;
+    if (Date.now() > deadline) throw new Error('waitForProgressDb：30 秒內 App 沒有建好進度資料庫');
+    await page.waitForTimeout(50);
+  }
+}

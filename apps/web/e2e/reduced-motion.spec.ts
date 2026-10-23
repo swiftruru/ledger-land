@@ -8,7 +8,7 @@ test('減少動態：切換 Tab 時鏡片沒有進行中的動畫，捲動時不
   const state = await page.evaluate(() => document.getElementById('ll-tabbar')?.className ?? '');
   expect(state).not.toContain('is-moving');
   expect(state).not.toContain('is-lifted');
-  await page.goto('/level/lv_k7m2q9xd/');
+  await page.goto('/level/lv_h2zx7srx/');
   await page.evaluate(() => window.scrollTo(0, 600));
   await page.waitForTimeout(300);
   await page.evaluate(() => window.scrollTo(0, 900));

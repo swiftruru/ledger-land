@@ -14,7 +14,7 @@ test.skip(!!process.env.LL_E2E_BASE_URL, '對遠端預覽網址跑時無法改�
 test('作答中不出現更新提示，回到首頁才出現；按稍後不重新載入', async ({ page }) => {
   const original = readFileSync(SW_PATH, 'utf8');
   try {
-    await page.goto('/level/lv_k7m2q9xd/');
+    await page.goto('/level/lv_h2zx7srx/');
     await waitForSw(page);
     writeFileSync(SW_PATH, `${original}\n// v2 ${Date.now()}\n`);
     await page.evaluate(async () => {

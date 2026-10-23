@@ -106,7 +106,13 @@ export default function Debug() {
     });
     setContent(
       await loadManifest().then(
-        (m) => ({ contentVersion: m.contentVersion, builtAt: m.builtAt, gitCommit: m.gitCommit, locales: m.locales }),
+        (m) => ({
+          contentVersion: m.contentVersion,
+          builtAt: m.builtAt,
+          gitCommit: m.gitCommit,
+          includesDrafts: m.includesDrafts === true,
+          locales: m.locales,
+        }),
         (e: unknown) => ({ error: String(e) }),
       ),
     );

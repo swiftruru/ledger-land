@@ -193,3 +193,41 @@ input:not([type]) {
     padding-bottom: var(--ll-space-8);
   }
 }
+/* 備份頁與儲存提示（06 第 4.6 節、第 9.1 節） */
+.ll-storage-banner p {
+  margin: 0 0 var(--ll-space-2);
+}
+.ll-field {
+  display: block;
+  margin: var(--ll-space-3) 0;
+}
+.ll-field > span {
+  display: block;
+  margin-bottom: var(--ll-space-1);
+}
+.ll-check {
+  display: block;
+  margin: var(--ll-space-3) 0;
+  min-height: var(--ll-target-min);
+  line-height: var(--ll-target-min);
+}
+.ll-code {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  font-family: ui-monospace, monospace;
+  word-break: break-all;
+  padding: 8px 12px;
+  border-radius: var(--ll-radius-sm);
+  border: 1px solid var(--ll-border-strong);
+  background: var(--ll-surface);
+  color: var(--ll-text);
+}
+.ll-preview {
+  margin-top: var(--ll-space-3);
+}
+.ll-advanced summary {
+  cursor: pointer;
+  min-height: var(--ll-target-min);
+  line-height: var(--ll-target-min);
+}

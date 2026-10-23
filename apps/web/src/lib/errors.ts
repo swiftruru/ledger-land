@@ -1,109 +1,51 @@
-// 本機錯誤紀錄（06 第 9.2 節）：IndexedDB 的 errors store 環狀保留最近 50 筆；IndexedDB 不能用時改存在記憶體。沒有任何遠端回報。
-// 完整的 IndexedDB 儲存層（進度、設定）在 M2 以 idb 加入；這裡先用原生 API 開一個獨立的小資料庫。
-const DB = 'll-errors';
-const STORE = 'errors';
-const LIMIT = 50;
+// 本機錯誤紀錄（06 第 9.2 節）：寫進進度資料庫的 errors store，環狀保留最近 50 筆（由 ProgressStore 實作負責）；
+// IndexedDB 不能用時 getProgressStore() 回傳的是記憶體實作，紀錄自然只留在記憶體。沒有任何遠端回報。
+// M0b 的獨立 ll-errors 資料庫已併入，啟動時刪除（lib/progress/index.ts）。
+import type { ErrorRecord } from '@ledgerland/progress';
+import { appVersion, getContentVersion, nowIso, setContentVersion } from './progress/app-info.ts';
+import { getProgressStore } from './progress/index.ts';
 
-export interface ErrorEntry {
-  at: string;
-  route: string;
-  message: string;
-  stack: string;
-  appVersion: string;
-  contentVersion: number | null;
-}
+export type ErrorEntry = ErrorRecord;
+export { setContentVersion };
 
-const memory: ErrorEntry[] = [];
-let dbPromise: Promise<IDBDatabase | null> | null = null;
-let contentVersion: number | null = null;
-export const setContentVersion = (v: number | null) => {
-  contentVersion = v;
-};
+const MESSAGE_MAX_LENGTH = 500;
+/** 與 @ledgerland/progress 的 ERROR_STACK_MAX_LENGTH 相同；寫成常數是為了不把 progress 套件拉進首次載入的 chunk */
+const STACK_MAX_LENGTH = 2000;
 
-function open(): Promise<IDBDatabase | null> {
-  if (dbPromise) return dbPromise;
-  dbPromise = new Promise((resolve) => {
-    try {
-      const req = indexedDB.open(DB, 1);
-      req.onupgradeneeded = () => req.result.createObjectStore(STORE, { autoIncrement: true });
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => resolve(null);
-      req.onblocked = () => resolve(null);
-    } catch {
-      resolve(null);
-    }
-  });
-  return dbPromise;
+export function buildErrorRecord(message: string, stack: string, route: string): ErrorRecord {
+  const record: ErrorRecord = {
+    at: nowIso(),
+    route,
+    message: message.slice(0, MESSAGE_MAX_LENGTH),
+    appVersion: appVersion(),
+    contentVersion: getContentVersion(),
+  };
+  return stack === '' ? record : { ...record, stack: stack.slice(0, STACK_MAX_LENGTH) };
 }
 
 export async function logError(message: string, stack = '', route = location.pathname): Promise<void> {
-  const entry: ErrorEntry = {
-    at: new Date().toISOString(),
-    route,
-    message: message.slice(0, 500),
-    stack: stack.slice(0, 2000),
-    appVersion: __LL_APP_VERSION__,
-    contentVersion,
-  };
-  const db = await open();
-  if (!db) {
-    memory.push(entry);
-    if (memory.length > LIMIT) memory.splice(0, memory.length - LIMIT);
-    return;
+  try {
+    const store = await getProgressStore();
+    await store.appendError(buildErrorRecord(message, stack, route));
+  } catch {
+    /* 連紀錄都寫不進去時放棄，不能再丟出錯誤造成循環 */
   }
-  await new Promise<void>((resolve) => {
-    try {
-      const tx = db.transaction(STORE, 'readwrite');
-      const store = tx.objectStore(STORE);
-      store.add(entry);
-      const countReq = store.count();
-      countReq.onsuccess = () => {
-        const extra = countReq.result - LIMIT;
-        if (extra > 0) {
-          const cursor = store.openCursor();
-          let removed = 0;
-          cursor.onsuccess = () => {
-            const c = cursor.result;
-            if (c && removed < extra) {
-              c.delete();
-              removed++;
-              c.continue();
-            }
-          };
-        }
-      };
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => resolve();
-    } catch {
-      resolve();
-    }
-  });
 }
 
 export async function listErrors(): Promise<ErrorEntry[]> {
-  const db = await open();
-  if (!db) return [...memory];
-  return new Promise((resolve) => {
-    try {
-      const req = db.transaction(STORE, 'readonly').objectStore(STORE).getAll();
-      req.onsuccess = () => resolve(req.result as ErrorEntry[]);
-      req.onerror = () => resolve([...memory]);
-    } catch {
-      resolve([...memory]);
-    }
-  });
+  try {
+    return await (await getProgressStore()).listErrors();
+  } catch {
+    return [];
+  }
 }
 
 export async function clearErrors(): Promise<void> {
-  memory.length = 0;
-  const db = await open();
-  if (!db) return;
-  await new Promise<void>((resolve) => {
-    const tx = db.transaction(STORE, 'readwrite');
-    tx.objectStore(STORE).clear();
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => resolve();
-  });
+  try {
+    await (await getProgressStore()).clearErrors();
+  } catch {
+    /* 忽略 */
+  }
 }
 
 /** 全域的錯誤與未處理的 Promise 都寫進紀錄；統計腳本的失敗不在這裡（analytics.ts 自己吞掉） */
