@@ -1,0 +1,38 @@
+{
+  "id": "tm_2f3fqvmq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": {
+    "zh-TW": "銷售及管理費用率",
+    "en": "Selling, general and administrative expense ratio"
+  },
+  "teacherLabel": "銷售及管理費用率",
+  "currentTwLabel": "銷售及管理費用率",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "銷管費用率"
+    ],
+    "en": [
+      "SG&A ratio"
+    ]
+  },
+  "flags": [],
+  "confidence": "medium",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "「銷管費用」的名稱說明見該列。",
+    "en": "See the distribution costs and administrative expenses card for the naming."
+  },
+  "definition": {
+    "zh-TW": "銷管費用占營業收入的比例，看做每一份生意要花多少日常開支。數值越低表示營運越精簡。",
+    "en": "Distribution and administrative expenses as a share of revenue: the everyday cost of winning each unit of business. Lower means leaner operations."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "sga_ratio@slides01"
+}

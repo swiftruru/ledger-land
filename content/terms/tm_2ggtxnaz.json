@@ -1,0 +1,25 @@
+{
+  "id": "tm_2ggtxnaz",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "權益倍數", "en": "Equity multiplier" },
+  "teacherLabel": "權益倍數",
+  "currentTwLabel": "權益倍數",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T38"],
+  "note": { "zh-TW": "與負債比率的關係待確認（T38）。", "en": "The relationship with the debt ratio is pending (T38)." },
+  "definition": {
+    "zh-TW": "資產總計是權益的幾倍，看公司用股東的錢撐起多大的資產。倍數越高表示借的錢越多；它和負債比率是同一件事的兩種看法。",
+    "en": "Total assets as a multiple of equity: how large an asset base the shareholders' money supports. A higher multiple means more borrowing; it and the debt ratio are two views of the same thing."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "equity_multiplier@slides02"
+}

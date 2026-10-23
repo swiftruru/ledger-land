@@ -1,0 +1,19 @@
+{
+  "id": "tm_x6gmpvm5",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "現金及約當現金增減額", "en": "Net increase (decrease) in cash and cash equivalents" },
+  "teacherLabel": "現金及約當現金增減額",
+  "currentTwLabel": "本期現金及約當現金增加（減少）數",
+  "ifrsEnglish": "Net increase (decrease) in cash and cash equivalents",
+  "aliases": { "zh-TW": ["本期現金及約當現金增加（減少）數", "現金及約當現金淨變動"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "三大活動現金流量的合計，也就是這段期間現金總共增加或減少了多少。它必須等於帳上現金的實際變動。",
+    "en": "The three activity totals added together: how much cash rose or fell over the period. It must equal the actual movement in the cash account."
+  }
+}

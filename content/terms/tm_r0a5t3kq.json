@@ -1,0 +1,28 @@
+{
+  "id": "tm_r0a5t3kq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "資產報酬率（ROA）", "en": "Return on assets (ROA)" },
+  "teacherLabel": "資產報酬率（ROA）",
+  "currentTwLabel": "資產報酬率（ROA）",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["資產報酬率", "ROA"], "en": [] },
+  "flags": [],
+  "confidence": "pending",
+  "pendingRefs": ["T21"],
+  "note": {
+    "zh-TW": "教材有四種寫法（指標登錄檔分為 excel、slides03、slides02、dupont 四個版本），計分口徑待確認（T21）。",
+    "en": "The course gives four versions (excel, slides03, slides02 and dupont in the ratio registry); the scoring basis is pending (T21)."
+  },
+  "definition": {
+    "zh-TW": "公司用全部資產賺到多少獲利，看資產運用的整體報酬。數值越高表示每一份資產賺得越多。",
+    "en": "How much profit the company earns on all its assets: the overall return on asset use. Higher means each unit of assets earns more."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "roa@excel"
+}

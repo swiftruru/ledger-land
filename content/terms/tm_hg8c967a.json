@@ -1,0 +1,24 @@
+{
+  "id": "tm_hg8c967a",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "應付利息", "en": "Interest payable" },
+  "teacherLabel": "應付利息",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Interest payable",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "網站補充的延伸科目，老師的模板沒有這一列；不列入期中考範圍。",
+    "en": "An extension account added by the site; the teacher's template has no such line and it is outside the mid-term scope."
+  },
+  "definition": {
+    "zh-TW": "已經發生、還沒付出去的利息。它是流動負債；間接法的「其他負債增加」不可以把它算進去，否則會和利息支出列重複。",
+    "en": "Interest that has accrued but has not yet been paid. A current liability; it must be kept out of the increase in other liabilities line in the indirect method, or it would double count the interest paid line."
+  },
+  "accountRef": "interest_payable"
+}

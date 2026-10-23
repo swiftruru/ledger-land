@@ -1,0 +1,24 @@
+{
+  "id": "tm_vpzcjk6n",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "RD intensity", "en": "R&D intensity" },
+  "teacherLabel": "RD intensity",
+  "currentTwLabel": "RD intensity",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["研發密度"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "研究發展費用占營業收入的比例，看公司把多少生意的錢投回研發。數值越高表示越重視研發，常見於科技業。",
+    "en": "Research and development expense as a share of revenue: how much of the business is ploughed back into R&D. Higher means a stronger research focus, typical of technology companies."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "rd_intensity@slides02"
+}

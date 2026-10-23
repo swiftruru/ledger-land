@@ -1,0 +1,234 @@
+{
+  "id": "story_ywv2dy",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "authorNotes": "授權：故事情境與金額經陳彥宏老師授權使用，不在 CC BY-SA 授權內；敘述文字為網站原創。公司名稱「初陽貿易」與 First Light Trading 為暫定（D9：正式名稱在 M4a 開工前由規劃者提案、使用者確認）。分組標題：第 1 到 5 筆原標題「公司建立」照用；第 6 到 7 筆原標題「成本會計」暫改為「現金買賣」，第 8 到 10 筆原標題「財務會計」暫改為「賒購賒銷與借款」【待確認 T29】；第 11 到 12 筆「還款與收款作業」與第 13 到 18 筆「經營費用（包含人事費用）」照用。分組不是 schema 欄位，寫在各組第一步的敘述裡自然帶到。推定事項：第 5 筆的付款方式原文沒寫，推定付現（T30）；第 8 筆借款原文沒寫期限，依第 15 筆償還短期借款推定為短期（T30）；第 12 筆原文寫收回應付帳款，疑似誤植，網站改寫為收回應收帳款，待老師確認（T08）；第 3 筆的電腦設備依課程做法歸入機器設備（W02）；第 2 筆事務用品全額費用化（W01）。第 1 到 3 步已於 2026-10-23 對老師 Excel 驗證通過（excel_verified），第 4 到 18 步為推論（inferred）。chapterLinks 與 stakeholders 待 M4a 補。",
+  "title": { "zh-TW": "初陽貿易的第一年", "en": "First Light Trading, year one" },
+  "origin": "teacher",
+  "company": { "name": { "zh-TW": "初陽貿易", "en": "First Light Trading" } },
+  "ledger": { "currency": "TWD", "scale": 0 },
+  "policy": "teacher@1",
+  "layout": "teacher@1",
+  "steps": [
+    {
+      "id": "st_9htcrg",
+      "order": 1,
+      "title": { "zh-TW": "成立公司，股東出資", "en": "Founding the company with share capital" },
+      "narrative": {
+        "zh-TW": "公司建立的第一步：創辦人拿出自己的存款，投入 {{money:e1.amount}} 成立初陽貿易，這筆錢成為公司的股本。從這一刻起公司有了自己的帳，第一筆資產就是存進銀行的現金。",
+        "en": "Setting up the company starts here: the founder draws {{money:e1.amount}} from personal savings to found First Light Trading, and that money becomes the company's share capital. From this moment the company keeps its own books, and its first asset is the cash in the bank."
+      },
+      "events": [{ "id": "e1", "template": "tpl.issue_shares_cash", "params": { "amount": 3000000 } }],
+      "termRefs": ["tm_c4sh8k2p", "tm_5e3py55a", "tm_4n517fc3"],
+      "verification": "excel_verified"
+    },
+    {
+      "id": "st_wwj5e5",
+      "order": 2,
+      "title": { "zh-TW": "購買辦公事務用品", "en": "Buying office supplies" },
+      "narrative": {
+        "zh-TW": "辦公室總要有筆、紙和基本用品，公司用現金買了 {{money:e1.amount}} 的事務用品。這些東西很快就會用完，所以整筆當成費用，不記成資產。",
+        "en": "An office needs pens, paper and the basics, so the company pays {{money:e1.amount}} in cash for office supplies. They will be used up quickly, so the whole amount is treated as an expense rather than an asset."
+      },
+      "events": [{ "id": "e1", "template": "tpl.buy_office_supplies_cash", "params": { "amount": 50000 } }],
+      "termRefs": ["tm_24scevxv", "tm_c4sh8k2p", "tm_rp85wtm7"],
+      "verification": "excel_verified"
+    },
+    {
+      "id": "st_v77z53",
+      "order": 3,
+      "title": { "zh-TW": "購入電腦設備", "en": "Buying computer equipment" },
+      "narrative": {
+        "zh-TW": "接著用現金購入一組電腦設備，付了 {{money:e1.amount}}。這組設備會用上好幾年，所以記成資產；依課程的做法，電腦設備歸入機器設備這個科目。",
+        "en": "Next the company buys a set of computer equipment for {{money:e1.amount}} in cash. The equipment will serve for several years, so it is recorded as an asset; following the course's classification, computer equipment sits under machinery and equipment."
+      },
+      "events": [{ "id": "e1", "template": "tpl.buy_equipment_cash", "params": { "amount": 500000 } }],
+      "termRefs": ["tm_gt8g4afe", "tm_c4sh8k2p", "tm_xen3p30x"],
+      "verification": "excel_verified"
+    },
+    {
+      "id": "st_84jzxr",
+      "order": 4,
+      "title": { "zh-TW": "網頁製作外包", "en": "Outsourcing the website" },
+      "narrative": {
+        "zh-TW": "公司需要一個網站，但沒有自己的工程師，於是把網頁製作外包出去，以現金支付外包費 {{money:e1.amount}}。網站上線後，就能開始對外做生意。",
+        "en": "The company needs a website but has no developers of its own, so the work is outsourced and the fee of {{money:e1.amount}} is paid in cash. Once the site is live, the company can start trading."
+      },
+      "events": [{ "id": "e1", "template": "tpl.pay_outsourcing_cash", "params": { "amount": 200000 } }],
+      "termRefs": ["tm_r3nvm8jy", "tm_c4sh8k2p"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_yj3yex",
+      "order": 5,
+      "title": { "zh-TW": "支付公司設立費", "en": "Paying the start-up costs" },
+      "narrative": {
+        "zh-TW": "登記、公證與各種設立手續的費用合計 {{money:e1.amount}}，這裡視為以現金付清。這筆設立費先記成遞延資產，之後分年攤銷；公司建立的階段到此告一段落。",
+        "en": "Registration, notarisation and the other formalities of setting up cost {{money:e1.amount}} in total, treated here as paid in cash. The start-up costs are first recorded as a deferred asset to be amortised over the coming years, and with that the set-up phase is complete."
+      },
+      "events": [{ "id": "e1", "template": "tpl.pay_org_costs", "params": { "amount": 300000 }, "pendingRefs": ["T04", "T30"] }],
+      "termRefs": ["tm_d9f3g7cs", "tm_c4sh8k2p", "tm_hz08w4k5", "tm_xen3p30x"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_g4h3hx",
+      "order": 6,
+      "title": { "zh-TW": "現金進貨", "en": "Buying goods for cash" },
+      "narrative": {
+        "zh-TW": "營業正式開始，先從現金買賣談起。公司用現金向供應商買進第一批要銷售的商品，進貨成本 {{money:e1.amount}}；這批貨在賣出之前都算存貨。",
+        "en": "Trading begins, starting with cash deals. The company pays {{money:e1.amount}} in cash to a supplier for its first batch of goods for resale; until they are sold, the goods count as inventory."
+      },
+      "events": [{ "id": "e1", "template": "tpl.purchase_inventory_cash", "params": { "amount": 1500000 } }],
+      "termRefs": ["tm_n7v3k8pq", "tm_c4sh8k2p"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_98tppx",
+      "order": 7,
+      "title": { "zh-TW": "現金賣出全部商品", "en": "Selling all the goods for cash" },
+      "narrative": {
+        "zh-TW": "商品很快就全部賣出，客戶當場付現，公司收到 {{money:e1.price}} 的現金。帳上要同時記兩件事：收入進來了，而成本 {{money:e1.costOfAllInventory}} 的存貨也離開了公司，兩者的差額 {{money:e1.grossProfit}} 就是這批貨的毛利。",
+        "en": "The goods sell out quickly and the customers pay on the spot, so the company receives {{money:e1.price}} in cash. Two things are recorded at once: revenue comes in, and inventory costing {{money:e1.costOfAllInventory}} leaves the company; the difference of {{money:e1.grossProfit}} is the gross profit on the batch."
+      },
+      "events": [{ "id": "e1", "template": "tpl.sell_all_inventory_cash", "params": { "price": 3000000 } }],
+      "termRefs": ["tm_v3n8q2ye", "tm_g5c2m8tw", "tm_n7v3k8pq", "tm_g8p4w1rz"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_skx6ss",
+      "order": 8,
+      "title": { "zh-TW": "借入經營資金", "en": "Borrowing working capital" },
+      "narrative": {
+        "zh-TW": "銷售成績不錯，公司決定擴大規模；這一組交易談的是賒購賒銷與借款。公司先向銀行借入 {{money:e1.amount}} 的經營資金，這裡視為一年內要償還的短期借款。",
+        "en": "Sales are going well and the company decides to scale up; this group of transactions covers buying and selling on credit, and borrowing. First it borrows {{money:e1.amount}} of working capital from the bank, treated here as a short-term loan to be repaid within a year."
+      },
+      "events": [{ "id": "e1", "template": "tpl.borrow_short_term", "params": { "amount": 5000000 }, "pendingRefs": ["T30"] }],
+      "termRefs": ["tm_c4sh8k2p", "tm_s5b8r3hd", "tm_f9a4c6md"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_p6m0q7",
+      "order": 9,
+      "title": { "zh-TW": "賒購商品", "en": "Buying goods on credit" },
+      "narrative": {
+        "zh-TW": "這次進貨的量大得多，供應商同意先出貨、之後再收款，公司以賒購方式買進 {{money:e1.amount}} 的商品。貨到了，錢還沒付，帳上多了一筆應付帳款。",
+        "en": "This order is far larger, and the supplier agrees to deliver first and be paid later, so the company buys {{money:e1.amount}} of goods on credit. The goods have arrived but nothing has been paid yet, so the books now show a trade payable."
+      },
+      "events": [{ "id": "e1", "template": "tpl.purchase_inventory_credit", "params": { "amount": 7500000 } }],
+      "termRefs": ["tm_n7v3k8pq", "tm_a3p9y6kc"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_aw2j4t",
+      "order": 10,
+      "title": { "zh-TW": "賒銷全部商品", "en": "Selling all the goods on credit" },
+      "narrative": {
+        "zh-TW": "公司也把同樣的條件給客戶：整批商品以 {{money:e1.price}} 賒銷出去，客戶之後再付款。收入現在就可以認列，成本 {{money:e1.costOfAllInventory}} 的存貨轉成銷貨成本，毛利是 {{money:e1.grossProfit}}；不過手上的現金一塊錢也沒增加，增加的是應收帳款。",
+        "en": "The company offers its customers the same terms: the whole batch is sold on credit for {{money:e1.price}}, to be paid later. Revenue is recognised now, inventory costing {{money:e1.costOfAllInventory}} becomes cost of sales, and the gross profit is {{money:e1.grossProfit}}; yet not a single dollar of cash has come in, only a trade receivable."
+      },
+      "events": [{ "id": "e1", "template": "tpl.sell_all_inventory_credit", "params": { "price": 15000000 } }],
+      "termRefs": ["tm_r7x2c9fa", "tm_v3n8q2ye", "tm_g5c2m8tw", "tm_n7v3k8pq"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_yksbqh",
+      "order": 11,
+      "title": { "zh-TW": "付清應付帳款", "en": "Paying the supplier in full" },
+      "narrative": {
+        "zh-TW": "接下來是還款與收款作業。供應商的付款期限到了，公司把欠的貨款 {{money:e1.amount}} 一次付清，應付帳款歸零，現金也減少同樣的數目。",
+        "en": "Now for settling debts and collecting what is owed. The supplier's payment date arrives and the company pays the full {{money:e1.amount}} it owes; trade payables fall to zero and cash goes down by the same amount."
+      },
+      "events": [{ "id": "e1", "template": "tpl.pay_all_payables", "params": {} }],
+      "termRefs": ["tm_a3p9y6kc", "tm_c4sh8k2p"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_q5rssq",
+      "order": 12,
+      "title": { "zh-TW": "收回部分應收帳款", "en": "Collecting part of the receivables" },
+      "narrative": {
+        "zh-TW": "客戶匯來了一部分貨款，公司收到 {{money:e1.amount}} 的現金，剩下的之後再收。應收帳款減少、現金增加，這一步不會產生新的收入，因為收入在賒銷時就已經認列了。",
+        "en": "The customer transfers part of what it owes and the company collects {{money:e1.amount}} in cash, with the remainder to follow. Receivables fall and cash rises, but no new revenue arises here: it was already recognised when the goods were sold on credit."
+      },
+      "events": [{ "id": "e1", "template": "tpl.collect_receivables", "params": { "amount": 10000000 }, "pendingRefs": ["T08"] }],
+      "termRefs": ["tm_c4sh8k2p", "tm_r7x2c9fa"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_qvewz8",
+      "order": 13,
+      "title": { "zh-TW": "支付董監事酬勞", "en": "Paying the directors" },
+      "narrative": {
+        "zh-TW": "最後一組是經營費用，人事費用也算在內。公司依章程以現金支付董監事酬勞 {{money:e1.amount}}，這是經營公司必要的人事支出，當期就認列為費用。",
+        "en": "The final group covers operating expenses, including the cost of people. The company pays its directors and supervisors {{money:e1.amount}} in cash as the articles provide; it is a necessary staffing cost of running the business and is expensed in the current period."
+      },
+      "events": [{ "id": "e1", "template": "tpl.pay_directors_remuneration_cash", "params": { "amount": 500000 } }],
+      "termRefs": ["tm_q5srzxb2", "tm_c4sh8k2p"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_vf8115",
+      "order": 14,
+      "title": { "zh-TW": "付清商品寄送費", "en": "Paying the delivery costs" },
+      "narrative": {
+        "zh-TW": "賣出去的商品都要包裝和寄送，這一年的寄送費用累積下來一次付清，共 {{money:e1.amount}}。這類支出和銷售直接相關，屬於營業費用。",
+        "en": "Every item sold has to be packed and shipped, and the year's delivery costs are settled in one payment of {{money:e1.amount}}. Spending like this goes hand in hand with selling and belongs to operating expenses."
+      },
+      "events": [{ "id": "e1", "template": "tpl.pay_packing_freight_cash", "params": { "amount": 1000000 } }],
+      "termRefs": ["tm_dxr5anv4", "tm_c4sh8k2p"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_a13q1h",
+      "order": 15,
+      "title": { "zh-TW": "償還借款並付利息", "en": "Repaying the loan with interest" },
+      "narrative": {
+        "zh-TW": "借款到期，公司把本金 {{money:e1.principal}} 全數還給銀行，並支付這段期間的利息 {{money:e1.interest}}，合計付出 {{money:e1.totalPaid}}。還本金只是負債減少，利息才是這筆借款真正的成本。",
+        "en": "The loan falls due and the company repays the principal of {{money:e1.principal}} in full, together with {{money:e1.interest}} of interest for the period, paying {{money:e1.totalPaid}} altogether. Repaying the principal merely reduces a liability; the interest is the real cost of borrowing."
+      },
+      "events": [{ "id": "e1", "template": "tpl.repay_all_short_term_loans_with_interest", "params": { "interest": 500000 }, "pendingRefs": ["T11"] }],
+      "termRefs": ["tm_s5b8r3hd", "tm_k6t2e9wr", "tm_f9a4c6md", "tm_p2a7c5vk"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_21tzes",
+      "order": 16,
+      "title": { "zh-TW": "年底盤點存貨", "en": "Year-end stocktake" },
+      "narrative": {
+        "zh-TW": "年底盤點倉庫時，發現實際的存貨比帳上多，盤點後的存貨金額是 {{money:e1.countedAmount}}。多出來的 {{money:e1.overage}} 要補進帳裡，把存貨調整成實際的數字。",
+        "en": "At the year-end stocktake the warehouse holds more goods than the books show, and inventory after the count stands at {{money:e1.countedAmount}}. The surplus of {{money:e1.overage}} is added to the books so that inventory matches the actual figure."
+      },
+      "events": [{ "id": "e1", "template": "tpl.inventory_count", "params": { "countedAmount": 1000000 }, "pendingRefs": ["T06"] }],
+      "termRefs": ["tm_n7v3k8pq", "tm_g5c2m8tw", "tm_6nmfxa10", "tm_kqwv1rjs"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_j6185k",
+      "order": 17,
+      "title": { "zh-TW": "年底調整：折舊與攤銷", "en": "Year-end adjustments: depreciation and amortisation" },
+      "narrative": {
+        "zh-TW": "年底結帳前有兩件調整要做。電腦設備預計使用 {{number:e1.usefulLifeYears}} 年，公司用直線法提列這一年的折舊 {{money:e1.amount}}；當初記成遞延資產的設立費也分 {{number:e2.years}} 年攤銷，今年攤掉 {{money:e2.amount}}。這兩筆都是沒有現金流出的費用。",
+        "en": "Two adjustments are needed before the year is closed. The computer equipment is expected to last {{number:e1.usefulLifeYears}} years, so the company records this year's straight-line depreciation of {{money:e1.amount}}; the start-up costs recorded earlier as a deferred asset are amortised over {{number:e2.years}} years, with {{money:e2.amount}} written off this year. Neither expense involves any cash leaving the company."
+      },
+      "events": [
+        { "id": "e1", "template": "tpl.depreciation_straight_line", "params": { "usefulLifeYears": 5 } },
+        { "id": "e2", "template": "tpl.amortise_org_costs", "params": { "years": 5 }, "pendingRefs": ["T04", "T05", "T12"] }
+      ],
+      "termRefs": ["tm_d4p7x2mv", "tm_a8d5c1pz", "tm_gt8g4afe", "tm_a2m7z4tf", "tm_d9f3g7cs"],
+      "verification": "inferred"
+    },
+    {
+      "id": "st_v3bgwb",
+      "order": 18,
+      "title": { "zh-TW": "繳納所得稅", "en": "Paying income tax" },
+      "narrative": {
+        "zh-TW": "一年下來公司有獲利，就要繳所得稅。公司以現金繳納 {{money:e1.amount}} 的所得稅，這是初陽貿易第一年的最後一筆交易，接下來就可以編製財務報表了。",
+        "en": "The company has made a profit over the year, so income tax is due. It pays {{money:e1.amount}} of income tax in cash, the last transaction of First Light Trading's first year; the financial statements can now be prepared."
+      },
+      "events": [{ "id": "e1", "template": "tpl.pay_income_tax_cash", "params": { "amount": 3000000 }, "pendingRefs": ["T10"] }],
+      "termRefs": ["tm_3qfqnrmm", "tm_c4sh8k2p", "tm_kgv20zg0"],
+      "verification": "inferred"
+    }
+  ]
+}

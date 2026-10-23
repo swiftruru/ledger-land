@@ -1,0 +1,28 @@
+{
+  "id": "tm_tspyazrx",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "營運槓桿度", "en": "Degree of operating leverage (DOL)" },
+  "teacherLabel": "營運槓桿度",
+  "currentTwLabel": "營運槓桿度",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["營業槓桿", "經營槓桿"], "en": ["Operating leverage"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T20", "T26"],
+  "note": {
+    "zh-TW": "以百分比變動解讀（T20）；模板以營業毛利近似邊際貢獻（T26）。",
+    "en": "Read as a ratio of percentage changes (T20); the template approximates contribution margin with gross profit (T26)."
+  },
+  "definition": {
+    "zh-TW": "營業收入變動一些時，營業利益會放大變動多少倍。固定成本越高，槓桿度越大：景氣好時獲利放大，景氣差時也跌得更兇。",
+    "en": "How many times more operating profit moves when revenue moves. More fixed costs mean a higher degree: profit rises faster in good times and falls faster in bad ones."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "dol@excel"
+}

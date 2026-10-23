@@ -1,0 +1,25 @@
+{
+  "id": "tm_arb3vgk7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "現金轉換循環", "en": "Cash conversion cycle" },
+  "teacherLabel": "現金轉換循環",
+  "currentTwLabel": "現金轉換循環",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": { "zh-TW": "教材只有概念；公式（營運週期減平均付款天數）是網站補充定義。", "en": "The course gives only the idea; the formula (operating cycle less days payable) is a site supplement." },
+  "definition": {
+    "zh-TW": "營運週期再扣掉平均付款天數，也就是公司自己的錢被壓在營運裡多少天。天數越短越輕鬆，甚至可能是負的。",
+    "en": "The operating cycle less days payable: how many days the company's own cash is tied up in operations. Shorter is easier, and it can even be negative."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "cash_conversion_cycle@slides03"
+}

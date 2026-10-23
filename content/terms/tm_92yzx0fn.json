@@ -1,0 +1,24 @@
+{
+  "id": "tm_92yzx0fn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "純益率", "en": "Net profit margin" },
+  "teacherLabel": "純益率",
+  "currentTwLabel": "純益率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["淨利率", "稅後淨利率"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "營業收入裡最後留下多少本期淨利。數值越高表示每一筆生意扣掉所有成本、費用與稅之後剩得越多。",
+    "en": "How much of revenue is left as profit for the period. Higher means more of each sale survives all costs, expenses and tax."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "net_profit_margin@excel"
+}

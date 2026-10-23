@@ -1,0 +1,24 @@
+{
+  "id": "tm_555a7d2s",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "現金流量比率", "en": "Cash flow ratio" },
+  "teacherLabel": "現金流量比率",
+  "currentTwLabel": "現金流量比率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "營業活動淨現金流量相對於流動負債的比率，看本業一年賺進的現金能還多少短期債務。數值越高，短期償債的壓力越小。",
+    "en": "Net cash from operating activities relative to current liabilities: how much of the short-term debt a year's operating cash could repay. Higher means less pressure on short-term repayment."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "cash_flow_ratio@excel"
+}

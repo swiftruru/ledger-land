@@ -1,0 +1,24 @@
+{
+  "id": "tm_zn4nbxtb",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "營業成本率", "en": "Cost of sales ratio" },
+  "teacherLabel": "營業成本率",
+  "currentTwLabel": "營業成本率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["成本率"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "營業成本占營業收入的比例，和毛利率是一體兩面。數值越低表示商品的賺頭越大。",
+    "en": "Cost of sales as a share of revenue, the mirror image of the gross profit margin. Lower means more margin in the goods."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "cost_ratio@slides01"
+}

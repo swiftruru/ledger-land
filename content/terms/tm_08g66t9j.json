@@ -1,0 +1,28 @@
+{
+  "id": "tm_08g66t9j",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "存貨週轉率", "en": "Inventory turnover" },
+  "teacherLabel": "存貨週轉率",
+  "currentTwLabel": "存貨週轉率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T06"],
+  "note": {
+    "zh-TW": "模板用期末存貨近似平均存貨；數值受盤盈處理影響（T06）。",
+    "en": "The template approximates average inventories with the closing balance; the result depends on how the count surplus is treated (T06)."
+  },
+  "definition": {
+    "zh-TW": "存貨在一年裡賣光再補貨幾次。次數越多表示商品賣得越快、壓在倉庫裡的錢越少。",
+    "en": "How many times a year inventory is sold out and replenished. More turns mean goods sell faster and less money sits in the warehouse."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "inventory_turnover@excel"
+}

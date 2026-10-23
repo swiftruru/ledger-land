@@ -1,0 +1,34 @@
+{
+  "id": "tm_4c6v99nn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "未分配盈餘",
+    "en": "Unappropriated retained earnings"
+  },
+  "teacherLabel": "未分配盈餘",
+  "currentTwLabel": "未分配盈餘（待彌補虧損）",
+  "ifrsEnglish": "Unappropriated retained earnings (accumulated deficit)",
+  "aliases": {
+    "zh-TW": [
+      "累積盈餘"
+    ],
+    "en": [
+      "Retained earnings"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "核心的勾稽檢核用完整公式（期初未分配盈餘加本期淨利減股利與提列的公積），畫面寫「增加額」並註明前提。",
+    "en": "The core reconciliation uses the full formula (opening balance plus profit for the period less dividends and reserves set aside); the screen says increase and states the assumption."
+  },
+  "definition": {
+    "zh-TW": "公司歷年賺到、還沒分給股東也沒提撥成公積的盈餘。本期淨利經由這一列流進資產負債表，讓三張報表接得起來。",
+    "en": "Profits earned over the years that have not been distributed or set aside as reserves. Profit for the period flows into the statement of financial position through this line, which is what links the statements together."
+  },
+  "accountRef": "retained_earnings"
+}

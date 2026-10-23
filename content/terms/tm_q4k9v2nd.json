@@ -1,0 +1,23 @@
+{
+  "id": "tm_q4k9v2nd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "期末存貨(-)", "en": "Closing inventories (-)" },
+  "teacherLabel": "期末存貨(-)",
+  "currentTwLabel": "期末存貨",
+  "ifrsEnglish": "Closing inventories",
+  "aliases": { "zh-TW": ["期末存貨"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T07"],
+  "note": {
+    "zh-TW": "模板要求輸入負數（T07）；網站以正數顯示並標示為減項，匯出 Excel 時再轉成負數。",
+    "en": "The template expects a negative entry (T07); the site shows a positive amount marked as a deduction and converts it when exporting to Excel."
+  },
+  "definition": {
+    "zh-TW": "期末還沒賣出去的存貨成本。因為沒賣出去，不能算進營業成本，所以在模板裡用減項呈現；它的金額和資產負債表的存貨相同。",
+    "en": "The cost of inventories still unsold at the period end. Because they were not sold they are excluded from cost of sales, so the template shows them as a deduction; the amount equals inventories on the statement of financial position."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "tm_zmxytm7w",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "評價及換算差額",
+    "en": "Other components of equity"
+  },
+  "teacherLabel": "評價及換算差額",
+  "currentTwLabel": "其他權益",
+  "ifrsEnglish": "Other components of equity",
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Valuation and translation adjustments"
+    ]
+  },
+  "flags": [
+    "japanese",
+    "unused"
+  ],
+  "confidence": "pending",
+  "pendingRefs": [
+    "T15"
+  ],
+  "note": {
+    "zh-TW": "直譯自日文的評価・換算差額等；台灣現行報表稱其他權益，對照等老師確認（T15）。",
+    "en": "A direct translation of the Japanese equity caption; current Taiwanese statements call it other components of equity, and the mapping awaits the teacher (T15)."
+  },
+  "definition": {
+    "zh-TW": "模板裡放資產評價與外幣換算差額的權益項目。本課未用。",
+    "en": "A template equity item for revaluation and currency translation differences. Not used in this course."
+  },
+  "accountRef": "valuation_translation_adjustments"
+}

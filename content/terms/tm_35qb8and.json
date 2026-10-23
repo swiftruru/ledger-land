@@ -1,0 +1,40 @@
+{
+  "id": "tm_35qb8and",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": {
+    "zh-TW": "現金流量允當比率",
+    "en": "Cash flow adequacy ratio"
+  },
+  "teacherLabel": "現金流量允當比率",
+  "currentTwLabel": "現金流量允當比率",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "允當比率",
+      "淨現金流量允當比率",
+      "現金流量允當比例"
+    ],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [
+    "T24"
+  ],
+  "note": {
+    "zh-TW": "年報用最近五年合計；模板只算單期。教材口徑標「單期近似」，有多期資料時改用五年合計；分母為 0 一律 N/A。",
+    "en": "Annual reports use the latest five years in total; the template uses one period. The course version is marked as a single-period approximation and switches to the five-year total when the data exist; a zero denominator always gives N/A."
+  },
+  "definition": {
+    "zh-TW": "營業活動產生的現金，能不能支應資本支出、存貨增加與現金股利這三項需要。數值越高表示本業的現金越夠用。",
+    "en": "Whether cash from operating activities covers capital expenditure, inventory growth and cash dividends. Higher means operating cash is more sufficient."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "cash_flow_adequacy@excel"
+}

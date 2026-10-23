@@ -1,0 +1,34 @@
+{
+  "id": "tm_mcjk5sza",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "小計",
+    "en": "Cash generated from operations"
+  },
+  "teacherLabel": "小計",
+  "currentTwLabel": "營運產生之現金流入（流出）",
+  "ifrsEnglish": "Cash generated from operations",
+  "aliases": {
+    "zh-TW": [
+      "營運產生之現金"
+    ],
+    "en": [
+      "Subtotal"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7",
+  "note": {
+    "zh-TW": "模板只寫「小計」，網站照教材顯示；IAS 7 釋例的名稱「營運產生之現金」列為別名，直接法版面的同一列共用這張名詞卡。",
+    "en": "The template only says subtotal and the site follows it; the IAS 7 illustrative name, cash generated from operations, is kept as an alias, and the direct-method line shares this card."
+  },
+  "definition": {
+    "zh-TW": "稅前淨利經過非現金項目與營運資金變動調整後的小計，是在扣掉利息與所得稅付現之前，本業實際產生的現金。間接法與直接法在這一列必須相等。",
+    "en": "The subtotal after adjusting profit before tax for non-cash items and working capital changes: the cash the business generated before interest and tax payments. The indirect and direct methods must agree on this line."
+  }
+}

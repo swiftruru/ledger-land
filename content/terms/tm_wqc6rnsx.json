@@ -1,0 +1,36 @@
+{
+  "id": "tm_wqc6rnsx",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "放貸支出(-)",
+    "en": "Loans advanced to other parties (-)"
+  },
+  "teacherLabel": "放貸支出(-)",
+  "currentTwLabel": "資金貸與",
+  "ifrsEnglish": "Loans advanced to other parties",
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Loans advanced (-)"
+    ]
+  },
+  "flags": [
+    "unused"
+  ],
+  "confidence": "high",
+  "pendingRefs": [
+    "T09"
+  ],
+  "ifrsBasis": "IAS 7.16(e)",
+  "note": {
+    "zh-TW": "對應資產負債表的短期放貨（T09）；公司資金貸與他人受公司法第 15 條限制。",
+    "en": "Corresponds to short-term loans receivable on the statement of financial position (T09); lending company funds to others is restricted by Article 15 of the Company Act."
+  },
+  "definition": {
+    "zh-TW": "公司把錢借給別人時付出的現金。本課的故事沒有用到。",
+    "en": "Cash paid out when the company lends money to others. The course story does not use it."
+  }
+}

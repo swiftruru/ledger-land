@@ -1,0 +1,48 @@
+{
+  "id": "tm_d9f3g7cs",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "設立費",
+    "en": "Start-up costs"
+  },
+  "teacherLabel": "設立費",
+  "currentTwLabel": null,
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "開辦費"
+    ],
+    "en": [
+      "Establishment costs",
+      "Organisation costs"
+    ]
+  },
+  "flags": [
+    "japanese",
+    "not_ifrs_line",
+    "ifrs_treatment_differs"
+  ],
+  "confidence": "pending",
+  "pendingRefs": [
+    "T04",
+    "T05",
+    "T30"
+  ],
+  "ifrsBasis": "IAS 38.69",
+  "note": {
+    "zh-TW": "現行用語是開辦費，英文舊譯 organisation costs 列為別名。老師確認前不出分錄題。",
+    "en": "The current Taiwanese term is 開辦費 (start-up costs); the older English organisation costs is kept as an alias. No journal entry questions are set until the teacher confirms."
+  },
+  "definition": {
+    "zh-TW": "公司成立時付出的登記、顧問等開辦支出。教材把它先列為資產，再分幾年攤銷成費用；現行做法是付出當年就全部列為費用。",
+    "en": "Registration, advisory and similar costs of setting up the company. The course records them as an asset and amortises them over several years; current practice expenses them in the year they are paid."
+  },
+  "ifrsNote": {
+    "zh-TW": "IAS 38.69 規定開辦活動的支出在發生時就認列為費用，不能列為資產；改用 IFRS 時當期費用增加、之後各期不再攤銷，付出的現金也由投資活動改列營業活動。",
+    "en": "IAS 38.69 requires expenditure on start-up activities to be recognised as an expense when incurred, so it is never an asset. Under IFRS the expense is higher in the year of payment, there is no later amortisation, and the cash paid moves from investing to operating activities."
+  },
+  "accountRef": "deferred_organisation_costs"
+}

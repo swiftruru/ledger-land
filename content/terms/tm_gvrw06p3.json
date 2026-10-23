@@ -1,0 +1,19 @@
+{
+  "id": "tm_gvrw06p3",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "營業外支出", "en": "Non-operating expenses" },
+  "teacherLabel": "營業外支出",
+  "currentTwLabel": "財務成本、其他利益及損失",
+  "ifrsEnglish": "Non-operating expenses",
+  "aliases": { "zh-TW": ["業外支出"], "en": ["Finance costs and other losses"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "本業以外的支出，例如借款的利息與遞延資產的攤銷。模板的分組標題；台灣報表把這些項目分成財務成本與其他利益及損失。",
+    "en": "Costs that arise outside the main business, such as interest on borrowings and amortisation of deferred assets. A template group heading; Taiwanese statements split these into finance costs and other gains and losses."
+  }
+}

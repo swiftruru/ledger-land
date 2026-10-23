@@ -1,0 +1,25 @@
+{
+  "id": "tm_gkmknxh4",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "財務槓桿度", "en": "Degree of financial leverage (DFL)" },
+  "teacherLabel": "財務槓桿度",
+  "currentTwLabel": "財務槓桿度",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["財務槓桿"], "en": ["Financial leverage"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T20"],
+  "note": { "zh-TW": "以百分比變動解讀（T20）。", "en": "Read as a ratio of percentage changes (T20)." },
+  "definition": {
+    "zh-TW": "營業利益變動一些時，稅前淨利會放大變動多少倍。利息負擔越重，槓桿度越大，表示借錢經營放大了股東的獲利與風險。",
+    "en": "How many times more profit before tax moves when operating profit moves. A heavier interest burden means a higher degree: borrowing magnifies both the shareholders' gains and their risk."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "dfl@excel"
+}

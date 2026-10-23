@@ -1,0 +1,46 @@
+{
+  "id": "tm_0k8vegyr",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": {
+    "zh-TW": "權益報酬率（ROE）",
+    "en": "Return on equity (ROE)"
+  },
+  "teacherLabel": "權益報酬率（ROE）",
+  "currentTwLabel": "權益報酬率",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "歸屬於母公司業主之權益報酬率（CIAS）",
+      "股東權益報酬率",
+      "權益報酬率",
+      "ROE",
+      "CIAS"
+    ],
+    "en": [
+      "Return on equity attributable to owners of the parent"
+    ]
+  },
+  "flags": [
+    "simplified"
+  ],
+  "confidence": "pending",
+  "pendingRefs": [
+    "T22"
+  ],
+  "note": {
+    "zh-TW": "模板標題是「歸屬於母公司業主之權益報酬率」，教材另以 CIAS 代稱（不是通用縮寫）；0-2 簡化為 Profit÷E，介面加「簡化」標記。名稱與計分口徑待確認（T22）。",
+    "en": "The template heading is return on equity attributable to owners of the parent, and the course also uses the non-standard abbreviation CIAS; the 0-2 slides simplify it to Profit over E with a simplified marker. The name and scoring basis are pending (T22)."
+  },
+  "definition": {
+    "zh-TW": "股東投入的權益賺到多少獲利，是股東最關心的報酬率。數值越高表示股東的錢用得越有效率；杜邦分析把它拆成純益率、總資產週轉率與權益倍數。",
+    "en": "How much profit the shareholders' equity earns: the return shareholders care about most. Higher means their money works harder; the DuPont analysis splits it into net profit margin, total asset turnover and the equity multiplier."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "roe@excel"
+}

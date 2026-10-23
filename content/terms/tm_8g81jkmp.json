@@ -1,0 +1,25 @@
+{
+  "id": "tm_8g81jkmp",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "遞延資產", "en": "Deferred assets" },
+  "teacherLabel": "遞延資產",
+  "currentTwLabel": null,
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": ["Deferred charges"] },
+  "flags": ["japanese", "not_ifrs_line", "ifrs_treatment_differs"],
+  "confidence": "pending",
+  "pendingRefs": ["T04"],
+  "ifrsBasis": "IAS 38",
+  "note": { "zh-TW": "日本基準的繰延資産；台灣現行報表沒有這一類。", "en": "The Japanese GAAP deferred assets; current Taiwanese statements have no such category." },
+  "definition": {
+    "zh-TW": "教材把設立費、開發費等已經付了錢、但想分幾年認列為費用的支出，先放在這一組資產裡。模板的分組標題。",
+    "en": "The course places costs that have been paid but are to be expensed over several years, such as start-up and development costs, in this asset group. A template group heading."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 沒有遞延資產這一類：設立費依 IAS 38.69 在發生時費用化，開發支出只有符合 IAS 38.57 條件的部分才列為無形資產。",
+    "en": "IFRS has no deferred asset category: start-up costs are expensed when incurred under IAS 38.69, and development costs are capitalised as intangible assets only when the IAS 38.57 conditions are met."
+  }
+}

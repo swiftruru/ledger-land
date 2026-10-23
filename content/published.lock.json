@@ -1,6 +1,254 @@
 {
-  "$comment": "已發布內容的比對基準（08 第 4.4 節）。M0b 只記錄 ID 與 rev；完整的 lock 規則（已發布 ID 不得消失、rev 只能遞增）在 M1 的 content:lock 實作。",
+  "$comment": "已發布內容的比對基準（08 第 4.4 節）。items 依 kind 與 id 排序；answerHash 是答案改版欄位加核心算出的答案的 canonical JSON 的 SHA-256；optionIds 只增不減，removedOptionIds 記下曾經發布後被移除的選項 ID（不得再次使用）。由 pnpm content:lock --write 產生，請勿手改。",
+  "lockVersion": 1,
   "contentVersion": 1,
-  "terms": { "tm_r4w8n2qe": 1, "tm_h6p2k9wd": 1, "tm_x3n8v5tc": 1 },
-  "chapters": { "ch_c5f8w2": 1 }
+  "items": [
+    {
+      "id": "tm_h6p2k9wd",
+      "kind": "term",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "tm_r4w8n2qe",
+      "kind": "term",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "tm_x3n8v5tc",
+      "kind": "term",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "ch_c5f8w2",
+      "kind": "chapter",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:9eb39e70f3fd4ded6bd42536af5f02d717ab0af7ac10ee7a7dea9efa3a7479a3",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.amortise_org_costs",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:83b9249bfeb4c6fb28b27448f6b77b828c2d5415a0ef7d0467a2987ecef844dc",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.borrow_short_term",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:70c4840789ce28d7206aca82ab9add3e32f9375bd2f10279040e896410725617",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.buy_equipment_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:b85ce58cc6dfe7dcc9340145d3d79e32e13b3cab91d8a3aded11a4aa4da3793b",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.buy_office_supplies_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:cacaf4f4f310664c0c193d0c934dfa24a28cb90b76b285319bf52d8109702fb1",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.collect_receivables",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:b6b064126a605cedeef6bc63932b9bf5e5868895eceb42c0292dd35144ca6424",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.depreciation_straight_line",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:d2a32327909138d7174f2ffdb3d87704a528b7d61e36a8b821a804aa510dbf6f",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.inventory_count",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:37ff4ee97f63cefd43af32b78170e124bed8fd7186b5e94921e8fe29fe297ed3",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.issue_shares_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:7831c962d99cf90d5e7cbeda5dff43aaa91f3d042913dde2ee20c22d4b9b5973",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.pay_all_payables",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:3c0aab69594a82055cb283adab63460b132d1c554968a95e11667bec0c0d0f0a",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.pay_directors_remuneration_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:afd6496cdecc26e15b03ba0fca1eebfa0d4825ec94a348b06bd95e7a7dd04456",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.pay_dividends_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:394e5f320f3beaae99a1c1f37a40ae1718dd7b3952ba5bb79c8df28a0551a366",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.pay_income_tax_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:ecf43e66994beebec415bf50f9b2bdce66ce3d07cf5a3d25760f4f01a97d9d6c",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.pay_income_tax_payable",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:c8296e8add74d100b0edb929e378d24ce65ec9f024e9f3d8c22fa17340dcae1c",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.pay_org_costs",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:13ca75ad7ceafc7caf8847580bf133acc3ca04f8690cef5a8c551351485005a2",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.pay_outsourcing_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:c488672d880f7fa87c18b4a1e6b9bf95b9881ff2b1485b2112fd447a865a8f32",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.pay_packing_freight_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:1bf51c8834fee6c52ab118bd6259909f65f330774641da6e4385dadb03f4be74",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.purchase_inventory_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:26fedd31a9bd67c57c753955de1bd3324817a6e9c13110fb417d24c6b1406608",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.purchase_inventory_credit",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:92aa0a9d58c0a311b459db6d40fd1e2dad4559161f6ca64cab64c12bfabb832d",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.repay_all_short_term_loans_with_interest",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:027b1fa33b094c5156f70bae6ec5ca948fb455f406c1311baea04d3ab6a7ca47",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.sell_all_inventory_cash",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:bdfbdf1e416005bc0e1cb45b42fe7c952a07ae2256ff68359c10369d37627c25",
+      "optionIds": []
+    },
+    {
+      "id": "tpl.sell_all_inventory_credit",
+      "kind": "template",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:509e12a6651075d09e944d5d775ec94f9f7229c4ebce6f1b1fe3a06798265269",
+      "optionIds": []
+    }
+  ]
 }

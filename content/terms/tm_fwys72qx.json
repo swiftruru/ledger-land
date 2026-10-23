@@ -1,0 +1,19 @@
+{
+  "id": "tm_fwys72qx",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "負債總額", "en": "Total liabilities" },
+  "teacherLabel": "負債總額",
+  "currentTwLabel": "負債總計",
+  "ifrsEnglish": "Total liabilities",
+  "aliases": { "zh-TW": ["負債總計"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "流動負債與非流動負債的合計，也就是公司欠別人的全部金額。它是負債比率的分子。",
+    "en": "Current plus non-current liabilities: everything the company owes. It is the numerator of the debt ratio."
+  }
+}

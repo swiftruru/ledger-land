@@ -1,0 +1,24 @@
+{
+  "id": "tm_1c1g4a7q",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "營業利益率", "en": "Operating profit margin" },
+  "teacherLabel": "營業利益率",
+  "currentTwLabel": "營業利益率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": ["Operating margin"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "營業利益占營業收入的比例，看本業扣掉銷管費用後還剩多少。數值越高表示本業的獲利能力越強。",
+    "en": "Operating profit as a share of revenue: what is left of the core business after distribution and administrative expenses. Higher means a more profitable core business."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "operating_margin@slides01"
+}

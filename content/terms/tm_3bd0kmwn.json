@@ -1,0 +1,20 @@
+{
+  "id": "tm_3bd0kmwn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "法定盈餘公積", "en": "Legal reserve" },
+  "teacherLabel": "法定盈餘公積",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Legal reserve",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": ["unused"],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "公司法規定從每年盈餘中提撥、不能隨便發出去的公積。它仍然屬於權益，只是把一部分盈餘留在公司裡；本課未用。",
+    "en": "A reserve that company law requires to be set aside from each year's profit and that cannot be freely distributed. It remains part of equity; it simply keeps part of the profit inside the company. Not used in this course."
+  },
+  "accountRef": "legal_reserve"
+}

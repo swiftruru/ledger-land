@@ -1,0 +1,37 @@
+{
+  "id": "tm_gt8g4afe",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "機器設備",
+    "en": "Machinery and equipment"
+  },
+  "teacherLabel": "機器設備",
+  "currentTwLabel": "不動產、廠房及設備（機器設備）",
+  "ifrsEnglish": "Machinery and equipment",
+  "aliases": {
+    "zh-TW": [
+      "固定資產",
+      "電腦設備"
+    ],
+    "en": [
+      "Fixed assets",
+      "Computer equipment"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 16",
+  "note": {
+    "zh-TW": "故事裡的電腦設備依教材歸入機器設備；現行報表把它放在不動產、廠房及設備之下，模板位置顯示扣除累計折舊後的淨額。",
+    "en": "The computers in the story are classed as machinery and equipment, following the course; current statements place them under property, plant and equipment, and the template position shows the amount net of accumulated depreciation."
+  },
+  "definition": {
+    "zh-TW": "公司買來長期使用、用來做生意的設備。它以成本入帳，之後每年提列折舊，報表上顯示扣掉累計折舊後的淨額。",
+    "en": "Equipment bought for long-term use in the business. It is recorded at cost, depreciated each year and shown net of accumulated depreciation on the statement."
+  },
+  "accountRef": "machinery_equipment"
+}

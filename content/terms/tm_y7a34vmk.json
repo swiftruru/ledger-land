@@ -1,0 +1,24 @@
+{
+  "id": "tm_y7a34vmk",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "利息支出(-)", "en": "Interest paid (-)" },
+  "teacherLabel": "利息支出(-)",
+  "currentTwLabel": "支付之利息",
+  "ifrsEnglish": "Interest paid",
+  "aliases": { "zh-TW": ["支付之利息(-)", "支付之利息"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T11"],
+  "ifrsBasis": "IAS 7.31",
+  "note": {
+    "zh-TW": "T11 回覆後再定主要顯示。現行 IAS 7 允許列營業或籌資，教材列營業；IFRS 18 修正 IAS 7 後一般企業改列籌資活動。",
+    "en": "The main display will be settled after T11. Current IAS 7 allows operating or financing and the course uses operating; after the IFRS 18 amendments most entities will classify it as financing."
+  },
+  "definition": {
+    "zh-TW": "本期實際付出去的利息現金。它和損益表的利息費用不同：費用是本期發生的，這裡是真的付了錢。",
+    "en": "The interest actually paid in cash during the period. It differs from interest expense on the income statement: the expense is what accrued, this line is what was paid."
+  }
+}

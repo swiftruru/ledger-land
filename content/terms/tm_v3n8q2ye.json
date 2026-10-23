@@ -1,0 +1,40 @@
+{
+  "id": "tm_v3n8q2ye",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "營業收入",
+    "en": "Revenue"
+  },
+  "teacherLabel": "營業收入",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Revenue",
+  "aliases": {
+    "zh-TW": [
+      "營收",
+      "銷貨收入",
+      "銷貨淨額",
+      "營業收入淨額"
+    ],
+    "en": [
+      "Sales",
+      "Net sales",
+      "Turnover"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IFRS 15",
+  "note": {
+    "zh-TW": "0-2 以 TR 代表；名詞卡的說明寫成「本期認列（賣出）的生意」，不等於收現。",
+    "en": "Represented by TR in the 0-2 slides; the card describes it as the business recognised (sold) in the period, which is not the same as cash received."
+  },
+  "definition": {
+    "zh-TW": "本期賣出商品或提供服務所認列的金額，也就是這段期間做成的生意。它不等於收到的現金：賒銷也算收入。",
+    "en": "The amount recognised for goods sold or services provided in the period, in other words the business done. It is not the same as cash received: credit sales count too."
+  },
+  "accountRef": "revenue"
+}

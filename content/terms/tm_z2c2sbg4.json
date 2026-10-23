@@ -1,0 +1,24 @@
+{
+  "id": "tm_z2c2sbg4",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "處分資產收入(+)", "en": "Proceeds from disposal of non-current assets (+)" },
+  "teacherLabel": "處分資產收入(+)",
+  "currentTwLabel": "處分不動產、廠房及設備",
+  "ifrsEnglish": "Proceeds from disposal of non-current assets",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7.16(b)",
+  "note": {
+    "zh-TW": "網站補充的延伸列，模板沒有；金額不為零時才顯示，並標「模板無此列」。",
+    "en": "An extension row added by the site. The template has no such line; it is shown only when the amount is not nil, marked as absent from the template."
+  },
+  "definition": {
+    "zh-TW": "賣掉設備等長期資產時收到的現金。處分的利益或損失留在損益表，這裡記的是收到的全部價款。",
+    "en": "Cash received when equipment or another long-term asset is sold. Any gain or loss stays in the income statement; this line records the full proceeds."
+  }
+}

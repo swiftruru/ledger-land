@@ -1,0 +1,24 @@
+{
+  "id": "tm_jx267rna",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "整體槓桿度", "en": "Degree of total leverage (DTL)" },
+  "teacherLabel": "整體槓桿度",
+  "currentTwLabel": "整體槓桿度",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["綜合槓桿度"], "en": ["Total leverage"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "營運槓桿度乘以財務槓桿度，看營業收入變動時稅前淨利總共會放大多少倍。倍數越高，獲利對景氣越敏感。",
+    "en": "The degree of operating leverage multiplied by the degree of financial leverage: how many times more profit before tax moves when revenue moves. A higher degree means profit is more sensitive to the business cycle."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "total_leverage@slides03"
+}

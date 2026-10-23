@@ -1,0 +1,26 @@
+{
+  "id": "tm_baexgs31",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "有效稅率", "en": "Effective tax rate" },
+  "teacherLabel": "有效稅率",
+  "currentTwLabel": "有效稅率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T10"],
+  "ifrsBasis": "IAS 12.86",
+  "note": { "zh-TW": "與法定稅率不符時提示屬教學設定（T10）。", "en": "When it differs from the statutory rate the site notes that the rate is a teaching assumption (T10)." },
+  "definition": {
+    "zh-TW": "所得稅費用占稅前淨利的比例，也就是公司實際負擔的稅率。它和法定稅率不一定相同。",
+    "en": "Income tax expense as a share of profit before tax: the tax rate the company actually bears. It need not equal the statutory rate."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不把它當成報表列；IAS 12.86 在附註揭露中稱它為平均有效稅率。",
+    "en": "IFRS does not treat it as a statement line; IAS 12.86 calls it the average effective tax rate in the note disclosures."
+  },
+  "ratioRef": "effective_tax_rate@slides01"
+}

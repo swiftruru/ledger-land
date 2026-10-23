@@ -1,0 +1,20 @@
+{
+  "id": "tm_dxr5anv4",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "包裝運送費", "en": "Packing and delivery expenses" },
+  "teacherLabel": "包裝運送費",
+  "currentTwLabel": "運費",
+  "ifrsEnglish": "Packing and delivery expenses",
+  "aliases": { "zh-TW": [], "en": ["Packing and freight-out expense", "Freight-out"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "把商品包裝並送到客戶手上的費用。它是銷售相關的費用，屬於銷管費用；進貨時的運費則計入存貨成本，不放這裡。",
+    "en": "The cost of packing goods and delivering them to customers. It is a selling cost within distribution and administrative expenses; freight on purchases goes into inventory cost instead."
+  },
+  "accountRef": "packing_freight_expense"
+}

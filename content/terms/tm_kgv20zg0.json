@@ -1,0 +1,21 @@
+{
+  "id": "tm_kgv20zg0",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "應付所得稅", "en": "Current tax liabilities" },
+  "teacherLabel": "應付所得稅",
+  "currentTwLabel": "本期所得稅負債",
+  "ifrsEnglish": "Current tax liabilities",
+  "aliases": { "zh-TW": [], "en": ["Income tax payable"] },
+  "flags": ["unused"],
+  "confidence": "high",
+  "pendingRefs": ["T10", "T36"],
+  "ifrsBasis": "IAS 12",
+  "definition": {
+    "zh-TW": "已經算出來、但還沒繳給國稅局的所得稅。只有在所得稅先估列、之後才付款的情境才會出現；本課故事在付現當期就認列費用。",
+    "en": "Income tax that has been computed but not yet paid to the tax authority. It appears only when tax is accrued first and paid later; in the course story the tax is paid and expensed in the same period."
+  },
+  "accountRef": "income_tax_payable"
+}

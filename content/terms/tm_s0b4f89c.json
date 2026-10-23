@@ -1,0 +1,20 @@
+{
+  "id": "tm_s0b4f89c",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "短期借款收入(+)", "en": "Proceeds from short-term borrowings (+)" },
+  "teacherLabel": "短期借款收入(+)",
+  "currentTwLabel": "短期借款增加",
+  "ifrsEnglish": "Proceeds from short-term borrowings",
+  "aliases": { "zh-TW": ["短期借款增加"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7.17(c)",
+  "definition": {
+    "zh-TW": "向銀行或他人借入短期款項時收到的現金。它讓現金與負債同時增加，不是收入。",
+    "en": "Cash received when the company takes out short-term borrowings. It raises cash and liabilities together; it is not revenue."
+  }
+}

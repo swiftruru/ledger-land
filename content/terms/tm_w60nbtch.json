@@ -1,0 +1,20 @@
+{
+  "id": "tm_w60nbtch",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "支付所得稅(-)", "en": "Income taxes paid (-)" },
+  "teacherLabel": "支付所得稅(-)",
+  "currentTwLabel": "支付之所得稅",
+  "ifrsEnglish": "Income taxes paid",
+  "aliases": { "zh-TW": ["支付之所得稅(-)", "支付之所得稅"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T10"],
+  "ifrsBasis": "IAS 7.35",
+  "definition": {
+    "zh-TW": "本期實際繳出去的所得稅現金。因為教材從稅前淨利起算，所得稅費用沒有經過上面的調整列，只有實際繳的稅出現在這裡。",
+    "en": "Income tax actually paid in cash during the period. Because the course starts from profit before tax, the tax expense does not pass through the adjustment lines above; only the tax paid appears here."
+  }
+}

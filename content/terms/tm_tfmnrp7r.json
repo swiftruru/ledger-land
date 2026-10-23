@@ -1,0 +1,20 @@
+{
+  "id": "tm_tfmnrp7r",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "長期借款返還(-)", "en": "Repayment of long-term borrowings (-)" },
+  "teacherLabel": "長期借款返還(-)",
+  "currentTwLabel": "償還長期借款",
+  "ifrsEnglish": "Repayment of long-term borrowings",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "網站補充的延伸列，模板沒有；金額不為零時才顯示，並標「模板無此列」。",
+    "en": "An extension row added by the site. The template has no such line; it is shown only when the amount is not nil, marked as absent from the template."
+  },
+  "definition": { "zh-TW": "償還長期借款本金時付出的現金。", "en": "Cash paid to repay the principal of long-term borrowings." }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "tm_5aryzkn3",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "現金流量", "en": "Cash flows" },
+  "teacherLabel": "現金流量",
+  "currentTwLabel": "現金流量",
+  "ifrsEnglish": "Cash flows",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "模板最後一段的標題，底下是三大活動合計後的現金增減額，以及期初與期末的現金餘額。",
+    "en": "The heading of the template's final section, which shows the net change in cash from the three activities together with the opening and closing cash balances."
+  }
+}

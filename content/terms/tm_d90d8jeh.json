@@ -1,0 +1,19 @@
+{
+  "id": "tm_d90d8jeh",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "銷管費用小計", "en": "Total distribution costs and administrative expenses" },
+  "teacherLabel": "銷管費用小計",
+  "currentTwLabel": "銷管費用小計",
+  "ifrsEnglish": "Total distribution costs and administrative expenses",
+  "aliases": { "zh-TW": ["營業費用"], "en": ["Operating expenses"] },
+  "flags": [],
+  "confidence": "medium",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "銷管費用各項的合計。營業毛利減掉它就是營業利益。",
+    "en": "The sum of all distribution and administrative expense lines. Gross profit less this subtotal gives operating profit."
+  }
+}

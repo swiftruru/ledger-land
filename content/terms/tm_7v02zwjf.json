@@ -1,0 +1,24 @@
+{
+  "id": "tm_7v02zwjf",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "營運週期", "en": "Operating cycle" },
+  "teacherLabel": "營運週期",
+  "currentTwLabel": "營運週期",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["營業週期"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "從進貨到賣出再到收回現金，平均要經過幾天，等於平均銷貨日數加平均收現日數。天數越短表示生意轉得越快。",
+    "en": "The average number of days from buying stock to selling it and collecting the cash: days inventory plus days sales outstanding. A shorter cycle means the business turns over faster."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "operating_cycle@slides03"
+}

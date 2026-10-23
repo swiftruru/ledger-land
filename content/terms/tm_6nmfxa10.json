@@ -1,0 +1,24 @@
+{
+  "id": "tm_6nmfxa10",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "營業外收入", "en": "Non-operating income" },
+  "teacherLabel": "營業外收入",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Non-operating income",
+  "aliases": { "zh-TW": ["其他收入", "利息收入"], "en": ["Other income"] },
+  "flags": ["unused"],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "模板的營業外收入包含利息收入、處分利益等，範圍比台灣報表的「其他收入」廣。",
+    "en": "The template line covers interest income, disposal gains and similar items, so it is broader than the other income line in Taiwanese statements."
+  },
+  "definition": {
+    "zh-TW": "本業以外的收入，例如利息收入或處分資產的利益。模板裡是可以輸入的一列；本課的故事沒有用到。",
+    "en": "Income from outside the main business, such as interest income or gains on disposal of assets. An input line in the template; the course story does not use it."
+  },
+  "accountRef": "non_operating_income"
+}

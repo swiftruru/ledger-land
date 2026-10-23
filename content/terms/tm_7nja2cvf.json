@@ -1,0 +1,29 @@
+{
+  "id": "tm_7nja2cvf",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "開發費", "en": "Development costs" },
+  "teacherLabel": "開發費",
+  "currentTwLabel": null,
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": ["japanese", "not_ifrs_line", "ifrs_treatment_differs", "unused"],
+  "confidence": "pending",
+  "pendingRefs": ["T04"],
+  "ifrsBasis": "IAS 38.57",
+  "note": {
+    "zh-TW": "日本基準的開發費（新技術、新市場等）與 IAS 38 的開發階段不同義，不要和研發費用混在一起。",
+    "en": "The Japanese GAAP development costs (new technology, new markets and so on) are not the same as the IAS 38 development phase, so do not confuse them with research and development expenses."
+  },
+  "definition": {
+    "zh-TW": "為了開發新技術或新市場付出的支出，教材依日本做法先列為遞延資產再攤銷。本課的故事沒有用到。",
+    "en": "Spending on developing new technology or new markets, which the course carries as a deferred asset and amortises, following Japanese practice. The course story does not use it."
+  },
+  "ifrsNote": {
+    "zh-TW": "IAS 38.57 只允許符合六項條件的開發階段支出列為無形資產，研究階段與不符合條件的開發支出都在發生時列為費用。",
+    "en": "IAS 38.57 allows development expenditure to be capitalised as an intangible asset only when six conditions are met; research costs and development costs that do not qualify are expensed when incurred."
+  },
+  "accountRef": "deferred_development_costs"
+}

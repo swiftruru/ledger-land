@@ -1,0 +1,28 @@
+{
+  "id": "tm_9e1rb64c",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "負債比率", "en": "Debt ratio" },
+  "teacherLabel": "負債比率",
+  "currentTwLabel": "負債比率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["負債占比", "負債佔資產比率", "負債比例", "負債占資產比率"], "en": ["Liabilities to assets ratio"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T24", "T38"],
+  "note": {
+    "zh-TW": "模板寫「負債比例」；年報的財務分析稱負債占資產比率。參考值待確認（T24），與權益倍數的對照待確認（T38）。",
+    "en": "The template says debt proportion; annual reports call it the liabilities to assets ratio. The reference value (T24) and the link with the equity multiplier (T38) are pending."
+  },
+  "definition": {
+    "zh-TW": "負債總額占資產總計的比率，衡量公司的資產有多少是靠借來的錢撐起來的。數值越高，財務風險越大；越低表示靠股東的錢比較多。",
+    "en": "Total liabilities as a share of total assets: how much of the company's assets are funded by borrowed money. A higher value means more financial risk; a lower value means more of the funding comes from shareholders."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "debt_ratio@excel"
+}

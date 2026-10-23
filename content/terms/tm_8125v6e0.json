@@ -1,0 +1,29 @@
+{
+  "id": "tm_8125v6e0",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "其他投資支出(-)",
+    "en": "Other payments for investing activities (-)"
+  },
+  "teacherLabel": "其他投資支出(-)",
+  "currentTwLabel": "其他投資支出(-)",
+  "ifrsEnglish": "Other payments for investing activities",
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Other investing payments (-)"
+    ]
+  },
+  "flags": [
+    "unused"
+  ],
+  "confidence": "medium",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "前面兩列放不下的其他投資類付現，例如取得長期投資。本課的故事沒有用到。",
+    "en": "Other investing payments that do not fit the two lines above, such as buying long-term investments. The course story does not use it."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "tm_wqn6nph9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "無形資產", "en": "Intangible assets" },
+  "teacherLabel": "無形資產",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Intangible assets",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": ["unused"],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 38",
+  "definition": {
+    "zh-TW": "沒有實體形狀、但能長期替公司帶來效益的資產，例如商標、專利與軟體。本課的故事沒有用到。",
+    "en": "Assets without physical form that benefit the business over several years, such as trademarks, patents and software. The course story does not use this account."
+  },
+  "accountRef": "intangible_assets"
+}

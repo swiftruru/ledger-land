@@ -1,0 +1,24 @@
+{
+  "id": "tm_gysqtps0",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "平均收現日數", "en": "Average collection period" },
+  "teacherLabel": "平均收現日數",
+  "currentTwLabel": "平均收現日數",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": ["Days sales outstanding"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "從賒銷到收到錢平均要等幾天，用一年的天數除以應收款項週轉率算出。天數越少表示收款越快。",
+    "en": "The average number of days between a credit sale and its collection, found by dividing the days in a year by receivables turnover. Fewer days mean faster collection."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "days_sales_outstanding@excel"
+}

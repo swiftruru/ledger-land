@@ -1,0 +1,23 @@
+{
+  "id": "tm_873r9bx9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "銷貨債權增加(-)", "en": "Increase in trade receivables (-)" },
+  "teacherLabel": "銷貨債權增加(-)",
+  "currentTwLabel": "應收帳款（增加）減少",
+  "ifrsEnglish": "Increase in trade receivables",
+  "aliases": { "zh-TW": ["應收帳款增加(-)"], "en": ["Increase in accounts receivable (-)"] },
+  "flags": ["japanese"],
+  "confidence": "high",
+  "pendingRefs": ["T12", "T15"],
+  "note": {
+    "zh-TW": "「銷貨債權」直譯自日文売上債権，就是應收帳款；台灣報表每個科目只有一行淨變動。T12、T15 回覆後再定主要顯示。",
+    "en": "The Japanese-style label means trade receivables; Taiwanese statements show one net-change line per account. The main display will be settled after T12 and T15."
+  },
+  "definition": {
+    "zh-TW": "應收帳款增加表示有些銷貨還沒收到錢，收入裡有一部分不是現金，所以要從稅前淨利減掉。",
+    "en": "When receivables rise, part of the revenue has not yet been collected, so that amount is deducted from profit before tax."
+  }
+}

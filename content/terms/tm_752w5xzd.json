@@ -1,0 +1,39 @@
+{
+  "id": "tm_752w5xzd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "新股預約申購權",
+    "en": "Share options and warrants"
+  },
+  "teacherLabel": "新股預約申購權",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Share options and warrants",
+  "aliases": {
+    "zh-TW": [
+      "認股權"
+    ],
+    "en": [
+      "Share subscription rights"
+    ]
+  },
+  "flags": [
+    "japanese",
+    "unused"
+  ],
+  "confidence": "pending",
+  "pendingRefs": [
+    "T15"
+  ],
+  "note": {
+    "zh-TW": "直譯自日文的新株予約権；台灣多列在資本公積之下的認股權，對照等老師確認（T15）。",
+    "en": "A direct translation of the Japanese share subscription rights; in Taiwan they are usually shown under capital surplus, and the mapping awaits the teacher (T15)."
+  },
+  "definition": {
+    "zh-TW": "持有人有權依約定價格認購新股的權利，在行使之前列在權益。本課未用。",
+    "en": "Rights that allow the holder to subscribe for new shares at an agreed price, shown in equity until they are exercised. Not used in this course."
+  },
+  "accountRef": "share_subscription_rights"
+}

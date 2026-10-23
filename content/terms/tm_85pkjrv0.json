@@ -1,0 +1,20 @@
+{
+  "id": "tm_85pkjrv0",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "折舊費用(+)", "en": "Depreciation (+)" },
+  "teacherLabel": "折舊費用(+)",
+  "currentTwLabel": "折舊費用",
+  "ifrsEnglish": "Depreciation",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T12"],
+  "ifrsBasis": "IAS 7.20",
+  "definition": {
+    "zh-TW": "間接法的加回列。折舊是費用卻沒有付出現金，所以從稅前淨利往現金調整時要把它加回來。",
+    "en": "An add-back line in the indirect method. Depreciation is an expense with no cash payment, so it is added back when moving from profit before tax to cash."
+  }
+}

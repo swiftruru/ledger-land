@@ -1,0 +1,28 @@
+{
+  "id": "tm_bkqw8c59",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "稅前利益佔實收資本比率", "en": "Profit before tax to paid-in capital ratio" },
+  "teacherLabel": "稅前利益佔實收資本比率",
+  "currentTwLabel": "稅前純益占實收資本額比率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["稅前利益占實收資本比率", "稅前純益占實收資本額比率"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "「佔」照教材，「占」的寫法收進別名。",
+    "en": "The course uses one of the two interchangeable characters for the word share; the other spelling is kept as an alias."
+  },
+  "definition": {
+    "zh-TW": "稅前淨利相對於股東實收資本的比率，看股東投入的本錢賺回多少稅前獲利。數值越高表示資本的獲利能力越強。",
+    "en": "Profit before tax relative to the shareholders' paid-in capital: how much pre-tax profit the capital contributed has earned. Higher means the capital is more profitable."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "pretax_to_paid_in_capital@excel"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "tm_4n517fc3",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "發行股票收入(+)", "en": "Proceeds from issuing shares (+)" },
+  "teacherLabel": "發行股票收入(+)",
+  "currentTwLabel": "現金增資",
+  "ifrsEnglish": "Proceeds from issuing shares",
+  "aliases": { "zh-TW": ["現金增資"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7.17(a)",
+  "definition": {
+    "zh-TW": "股東投入資本、公司發行股票時收到的現金。故事第一筆成立公司的現金就從這裡進來；含股本與溢價兩部分。",
+    "en": "Cash received when shareholders put in capital and the company issues shares. In the story the cash that founds the company comes in here; it covers both par value and any premium."
+  }
+}

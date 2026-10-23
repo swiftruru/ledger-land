@@ -1,0 +1,39 @@
+{
+  "id": "tm_a3p9y6kc",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "應付帳款",
+    "en": "Trade payables"
+  },
+  "teacherLabel": "應付帳款",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Trade payables",
+  "aliases": {
+    "zh-TW": [
+      "應付賬款",
+      "應付貨款"
+    ],
+    "en": [
+      "Accounts payable",
+      "Trade and other payables"
+    ]
+  },
+  "flags": [
+    "typo_fixed"
+  ],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.54(k)",
+  "note": {
+    "zh-TW": "教材部分頁面與模板寫作「應付賬款」或「應付貨款」；介面統一寫「應付帳款」，原字列為別名。",
+    "en": "Some course pages and the template write this term with a variant character or as goods payable; the interface uses one spelling and keeps the originals as aliases."
+  },
+  "definition": {
+    "zh-TW": "向供應商賒購、約定之後才付的貨款。在付清之前它是流動負債；付款時這筆負債和現金一起減少。",
+    "en": "Amounts owed to suppliers for goods bought on credit. It stays a current liability until it is settled, when both the liability and cash go down."
+  },
+  "accountRef": "accounts_payable"
+}

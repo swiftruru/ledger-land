@@ -1,0 +1,36 @@
+{
+  "id": "tm_12gxceqy",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "固定資產",
+    "en": "Property, plant and equipment"
+  },
+  "teacherLabel": "固定資產",
+  "currentTwLabel": "不動產、廠房及設備",
+  "ifrsEnglish": "Property, plant and equipment",
+  "aliases": {
+    "zh-TW": [
+      "不動產、廠房及設備"
+    ],
+    "en": [
+      "Fixed assets"
+    ]
+  },
+  "flags": [
+    "old_name"
+  ],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 16",
+  "note": {
+    "zh-TW": "IFRS 導入前的台灣用語；照教材顯示並加「舊稱」標記，現行名稱列為別名。",
+    "en": "The pre-IFRS Taiwanese term; shown as the course writes it with an old-name marker, and the current name is kept as an alias."
+  },
+  "definition": {
+    "zh-TW": "模板裡放機器設備等長期使用實體資產的分組標題，不可入帳。現行報表稱為不動產、廠房及設備。",
+    "en": "The template group heading for equipment and other physical assets held for long-term use; it cannot be posted to. Current statements say property, plant and equipment."
+  }
+}

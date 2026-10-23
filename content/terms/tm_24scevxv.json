@@ -1,0 +1,30 @@
+{
+  "id": "tm_24scevxv",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "事務用品費",
+    "en": "Office supplies expense"
+  },
+  "teacherLabel": "事務用品費",
+  "currentTwLabel": "文具用品",
+  "ifrsEnglish": "Office supplies expense",
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "期末若有大量沒用完的用品，實務上可以列為資產；本課金額小，直接列費用。",
+    "en": "In practice a large stock of unused supplies at period end can be recorded as an asset; the course expenses them directly because the amounts are small."
+  },
+  "definition": {
+    "zh-TW": "買紙張、文具等事務用品的支出。本課在買進時就全部列為費用。",
+    "en": "Spending on paper, stationery and similar office supplies. The course expenses them when they are bought."
+  },
+  "accountRef": "office_supplies_expense"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "tm_g5c2m8tw",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "營業成本", "en": "Cost of sales" },
+  "teacherLabel": "營業成本",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Cost of sales",
+  "aliases": { "zh-TW": ["銷貨成本"], "en": ["Cost of goods sold"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T06"],
+  "ifrsBasis": "IAS 1.103",
+  "definition": {
+    "zh-TW": "本期賣出的商品原本的進貨成本。模板用期初存貨加本期進貨再減期末存貨算出來，營業收入減掉它就是營業毛利。",
+    "en": "The purchase cost of the goods sold during the period. The template derives it as opening inventories plus purchases less closing inventories, and revenue less this amount is gross profit."
+  },
+  "accountRef": "cost_of_goods_sold"
+}

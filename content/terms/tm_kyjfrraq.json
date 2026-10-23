@@ -1,0 +1,38 @@
+{
+  "id": "tm_kyjfrraq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "銷管費用",
+    "en": "Distribution costs and administrative expenses"
+  },
+  "teacherLabel": "銷管費用",
+  "currentTwLabel": "營業費用",
+  "ifrsEnglish": "Distribution costs and administrative expenses",
+  "aliases": {
+    "zh-TW": [
+      "營業費用",
+      "銷售及管理費用"
+    ],
+    "en": [
+      "Operating expenses",
+      "Selling, general and administrative expenses"
+    ]
+  },
+  "flags": [
+    "japanese"
+  ],
+  "confidence": "medium",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.103",
+  "note": {
+    "zh-TW": "直譯自日文的販売費及び一般管理費；保留「銷管費用」為主要顯示，別名「營業費用」。台灣報表按功能別分成推銷、管理、研究發展三類。",
+    "en": "A direct translation of the Japanese selling, general and administrative expenses; the course wording stays as the main display with operating expenses as an alias. Taiwanese statements split it by function into distribution, administrative and research and development."
+  },
+  "definition": {
+    "zh-TW": "做生意時除了進貨成本以外的日常開支，例如董監事酬勞、運費與折舊。它是模板的分組標題，不可入帳。",
+    "en": "The everyday costs of running the business other than the cost of goods, such as directors' pay, delivery and depreciation. A template group heading that cannot be posted to."
+  }
+}
