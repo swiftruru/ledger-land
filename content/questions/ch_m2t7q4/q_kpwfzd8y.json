@@ -1,0 +1,38 @@
+{
+  "id": "q_kpwfzd8y",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_1kbk22",
+  "difficulty": 3,
+  "tags": [
+    "linkage",
+    "profit_vs_cash"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_x6gmpvm5",
+    "tm_05t9wphy"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "如果風行腳踏車行這一期的本期淨利是正的，現金流量表上的「現金及約當現金增減額」也一定是正的。",
+    "en": "If Breeze Bicycles' profit for the period is positive, the \"net increase (decrease) in cash and cash equivalents\" on its statement of cash flows must be positive too."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "利益為正時現金常常也會增加，但不是一定。只要賒銷的錢還沒收到，或是這期買了昂貴的設備、還了借款，現金就可能反而減少。",
+    "en": "Cash often rises when profit is positive, but not always. If credit sales have not been collected, or expensive equipment was bought or a loan repaid this period, cash can fall even so."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。利益與現金的變動走不同的路：一個看賺到，一個看收到與付出。",
+    "en": "Correct. Profit and the change in cash take different routes: one is about earning, the other about receiving and paying."
+  },
+  "misconceptionId": "mc_naxf",
+  "explanation": {
+    "zh-TW": "兩個數字之間有連動，但不是相等：現金流量表的營業活動從稅前淨利出發，再調整還沒收到、還沒付出的部分，然後還要加上投資與籌資活動。所以利益為正、現金減少，完全有可能。",
+    "en": "The two figures are linked but not equal: operating activities on the statement of cash flows start from profit before tax, then adjust for amounts not yet received or paid, and investing and financing activities are added on top. A positive profit with falling cash is entirely possible."
+  }
+}

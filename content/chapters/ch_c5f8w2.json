@@ -1,7 +1,7 @@
 {
   "id": "ch_c5f8w2",
-  "rev": 1,
-  "revKind": "text",
+  "rev": 2,
+  "revKind": "answer",
   "status": "published",
   "order": 1,
   "scope": "core",
@@ -11,8 +11,8 @@
     "zh-TW": "從一家剛開張的小咖啡店出發，認識資產、負債與股東權益，以及它們之間永遠成立的關係。",
     "en": "Starting from a newly opened coffee shop, meet assets, liabilities and equity, and the relationship between them that always holds."
   },
-  "objectiveIds": [],
-  "levelIds": [],
+  "objectiveIds": ["obj_erqmw9", "obj_y3ykhc", "obj_39p0w4", "obj_nd6s2j"],
+  "levelIds": ["lv_h2zx7srx", "lv_r2ctekx1", "lv_k51ne1k1"],
   "badge": { "icon": "storefront", "title": { "zh-TW": "開店了", "en": "Open for business" } },
-  "termRefs": ["tm_r4w8n2qe", "tm_h6p2k9wd", "tm_x3n8v5tc"]
+  "termRefs": ["tm_r4w8n2qe", "tm_h6p2k9wd", "tm_x3n8v5tc", "tm_cfghjxzq"]
 }

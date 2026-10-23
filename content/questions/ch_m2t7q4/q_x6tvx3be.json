@@ -1,0 +1,81 @@
+{
+  "id": "q_x6tvx3be",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_jey1mk",
+  "difficulty": 2,
+  "tags": [
+    "three_statements",
+    "cash_flow"
+  ],
+  "termRefs": [
+    "tm_67e7f0mn",
+    "tm_p2a7c5vk",
+    "tm_f9a4c6md"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "下列哪些事情會出現在風行腳踏車行的現金流量表上？",
+    "en": "Which of the following would appear on Breeze Bicycles' statement of cash flows?"
+  },
+  "options": [
+    {
+      "id": "o_ap76",
+      "text": {
+        "zh-TW": "客人付現買走一台公路車",
+        "en": "A customer pays cash for a road bike"
+      },
+      "feedback": {
+        "zh-TW": "會出現。收到現金，屬於營業活動。",
+        "en": "It appears. Cash was received, under operating activities."
+      }
+    },
+    {
+      "id": "o_h13r",
+      "text": {
+        "zh-TW": "車行用現金還清一筆銀行借款",
+        "en": "The shop repays a bank loan in cash"
+      },
+      "feedback": {
+        "zh-TW": "會出現。付出現金，屬於籌資活動。",
+        "en": "It appears. Cash was paid out, under financing activities."
+      }
+    },
+    {
+      "id": "o_26d5",
+      "text": {
+        "zh-TW": "客人賒帳買走一台公路車，月底才付款",
+        "en": "A customer takes a road bike on credit and will pay at month end"
+      },
+      "feedback": {
+        "zh-TW": "這個月不會出現。收入已經賺到，但一毛現金都還沒進來；等收款時才會出現。",
+        "en": "Not this month. The revenue has been earned, but no cash has arrived yet; it appears only when the customer pays."
+      },
+      "misconceptionId": "mc_7hx8"
+    },
+    {
+      "id": "o_z21y",
+      "text": {
+        "zh-TW": "阿凱估計倉庫裡的舊車架今年少值了一些錢",
+        "en": "Kai estimates that the old frames in the warehouse are worth a little less this year"
+      },
+      "feedback": {
+        "zh-TW": "不會出現。這只是帳面金額的調整，沒有任何現金進出。",
+        "en": "It does not appear. This only adjusts a carrying amount; no cash moves."
+      },
+      "misconceptionId": "mc_7hx8"
+    }
+  ],
+  "correctOptionIds": [
+    "o_ap76",
+    "o_h13r"
+  ],
+  "scoringMode": "all_correct",
+  "explanation": {
+    "zh-TW": "現金流量表只記真的收到或付出的錢。{{option:o_ap76}}收到現金、{{option:o_h13r}}付出現金，都會出現；{{option:o_26d5}}還沒收款，{{option:o_z21y}}沒有現金進出，都不會出現。",
+    "en": "The statement of cash flows records only cash actually received or paid. {{option:o_ap76}} receives cash and {{option:o_h13r}} pays cash, so both appear; {{option:o_26d5}} has not been collected yet and {{option:o_z21y}} moves no cash, so neither appears."
+  }
+}

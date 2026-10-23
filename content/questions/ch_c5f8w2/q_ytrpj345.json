@@ -1,0 +1,83 @@
+{
+  "id": "q_ytrpj345",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_nd6s2j",
+  "difficulty": 3,
+  "tags": [
+    "sceptic",
+    "judgment"
+  ],
+  "termRefs": [
+    "tm_sf72dfsv",
+    "tm_tkj8x3a7",
+    "tm_67e7f0mn"
+  ],
+  "scored": false,
+  "type": "judgment",
+  "vars": {
+    "profit": 60000
+  },
+  "prompt": {
+    "zh-TW": "阿凱考慮入股小山咖啡。小晴給他三張報表，上面顯示這個月賺了 {{money:vars.profit}}。阿凱只有時間先細看一張表，你會建議他從哪一張看起？三個選擇都說得通，重點是你最在意什麼。",
+    "en": "Kai is thinking about investing in Hillside Coffee. Ching gives him the three statements, which show a profit of {{money:vars.profit}} this month. Kai only has time to study one statement closely first. Which would you suggest he start with? All three can make sense; what matters is what you care about most."
+  },
+  "options": [
+    {
+      "id": "o_x5re",
+      "text": {
+        "zh-TW": "先看損益表，確認這個月是怎麼賺到的",
+        "en": "Start with the income statement, to see how the profit was made"
+      },
+      "upside": {
+        "zh-TW": "能看出利益來自賣咖啡，還是來自一次性的收入；也能看出成本和費用的結構。",
+        "en": "Shows whether the profit came from selling coffee or from a one-off item, and how costs and expenses are structured."
+      },
+      "downside": {
+        "zh-TW": "看不到現金夠不夠付帳，也看不到店欠了多少錢。",
+        "en": "Says nothing about whether there is enough cash to pay the bills, or how much the shop owes."
+      }
+    },
+    {
+      "id": "o_acna",
+      "text": {
+        "zh-TW": "先看資產負債表，確認店擁有什麼、欠多少",
+        "en": "Start with the balance sheet, to see what the shop owns and owes"
+      },
+      "upside": {
+        "zh-TW": "一眼看出負債佔多少、股東權益有多厚；入股等於買下其中一部分，這張表最直接。",
+        "en": "Shows at a glance how large the debts are and how much equity there is; buying a stake means buying part of this statement."
+      },
+      "downside": {
+        "zh-TW": "它是某一天的快照，看不出這個月的經營是好是壞。",
+        "en": "It is a snapshot of one day and does not show whether this month's trading went well or badly."
+      }
+    },
+    {
+      "id": "o_qm6r",
+      "text": {
+        "zh-TW": "先看現金流量表，確認錢是不是真的進來了",
+        "en": "Start with the statement of cash flows, to check whether the money really came in"
+      },
+      "upside": {
+        "zh-TW": "利益可以靠賒銷做出來，現金騙不了人；能看出營業本身有沒有帶進現金。",
+        "en": "Profit can be produced by credit sales, but cash cannot be faked; it shows whether the business itself brings in cash."
+      },
+      "downside": {
+        "zh-TW": "現金多也可能是借來的；單看這張表，分不出賺錢和借錢。",
+        "en": "Plenty of cash may simply be borrowed; this statement alone cannot tell earning from borrowing."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "三張表各回答一個問題，沒有哪一張能單獨說出全貌。如果你最怕「利益是假的」，先看現金流量表；最怕「店欠太多錢」，先看資產負債表；最想知道「生意本身好不好」，先看損益表。真正的讀法是三張一起看，並在表與表之間互相對照。",
+    "en": "Each statement answers one question, and none tells the whole story on its own. If your biggest worry is that the profit is not real, start with the statement of cash flows; if it is that the shop owes too much, start with the balance sheet; if you most want to know whether the business itself is good, start with the income statement. The real method is to read all three and cross-check between them."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

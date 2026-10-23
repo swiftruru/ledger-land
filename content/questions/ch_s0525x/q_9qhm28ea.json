@@ -1,0 +1,65 @@
+{
+  "id": "q_9qhm28ea",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_0zw0yb",
+  "difficulty": 1,
+  "tags": [
+    "five_levels",
+    "gross_profit"
+  ],
+  "termRefs": [
+    "tm_g8p4w1rz",
+    "tm_v3n8q2ye",
+    "tm_g5c2m8tw"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "佩佩的「日暮文具社」這個月賣出一批筆記本。從損益表最上面的營業收入出發，扣掉哪一項之後，得到的第一層利益是營業毛利？",
+    "en": "Pei's shop Sunset Stationery sold a batch of notebooks this month. Starting from revenue at the top of the income statement, what is deducted to reach the first profit level, gross profit?"
+  },
+  "options": [
+    {
+      "id": "o_yxqy",
+      "text": {
+        "zh-TW": "營業成本：賣出去那些筆記本的進貨成本",
+        "en": "Cost of sales: the cost of the notebooks that were sold"
+      },
+      "feedback": {
+        "zh-TW": "答對了。收入減掉賣出商品本身的成本，就是營業毛利。",
+        "en": "Nice work. Revenue less the cost of the goods sold is gross profit."
+      }
+    },
+    {
+      "id": "o_e3jy",
+      "text": {
+        "zh-TW": "營業成本加上店員薪水、運費等所有費用",
+        "en": "Cost of sales plus all expenses such as staff wages and delivery"
+      },
+      "feedback": {
+        "zh-TW": "你知道薪水與運費也要扣，這點沒錯，只是那是下一層。營業毛利只扣商品本身的成本，薪水與運費要到營業利益那一層才扣。",
+        "en": "You know that wages and delivery have to be deducted too, and that is right; they just belong to the next level. Gross profit deducts only the cost of the goods themselves; wages and delivery are deducted at operating profit."
+      },
+      "misconceptionId": "mc_9k7x"
+    },
+    {
+      "id": "o_9gt4",
+      "text": {
+        "zh-TW": "所得稅費用",
+        "en": "Income tax expense"
+      },
+      "feedback": {
+        "zh-TW": "所得稅確實是損益表上會扣的項目，這點沒錯。不過它在最後一層才扣：從稅前淨利扣掉所得稅才得到本期淨利。",
+        "en": "Income tax is indeed deducted on the income statement, that much is right. But it comes at the very last level: profit before tax less income tax gives profit for the period."
+      }
+    }
+  ],
+  "correctOptionId": "o_yxqy",
+  "explanation": {
+    "zh-TW": "五層利益從上往下，每一層只扣一類東西。第一層營業毛利＝營業收入－營業成本，所以是{{option:o_yxqy}}。{{option:o_e3jy}}多扣了下一層的銷管費用，{{option:o_9gt4}}則跳到了最後一層。",
+    "en": "Each of the five levels deducts one kind of item. The first level, gross profit = revenue less cost of sales, so {{option:o_yxqy}} is right. {{option:o_e3jy}} also deducts the next level's distribution costs and administrative expenses, and {{option:o_9gt4}} jumps to the last level."
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "tm_cfghjxzq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": {
+    "zh-TW": "會計恆等式",
+    "en": "Accounting equation"
+  },
+  "teacherLabel": "會計恆等式",
+  "currentTwLabel": "會計方程式",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "會計方程式",
+      "資產等於負債加股東權益"
+    ],
+    "en": [
+      "Balance sheet equation"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "資產＝負債＋股東權益。式子右邊列的是左邊這些資產的錢從哪裡來：向別人借的算負債，股東投入與歷年留下的算股東權益。任何一筆交易記完之後，這條式子一定還是成立。",
+    "en": "Assets = liabilities + equity. The right-hand side shows where the money for the assets on the left came from: what was borrowed from others is liabilities, and what the shareholders put in or left in over the years is equity. After any transaction is recorded, the equation still holds."
+  },
+  "ifrsNote": {
+    "zh-TW": "這不是 IFRS 的名詞，而是編製財務狀況表的基本關係；IFRS 的觀念架構分別定義資產、負債與權益。",
+    "en": "This is not an IFRS term but the basic relationship behind the statement of financial position; the IFRS Conceptual Framework defines assets, liabilities and equity separately."
+  },
+  "related": [
+    "tm_r4w8n2qe",
+    "tm_h6p2k9wd",
+    "tm_x3n8v5tc",
+    "tm_sf72dfsv"
+  ]
+}

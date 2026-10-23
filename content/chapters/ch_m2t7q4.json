@@ -2,16 +2,43 @@
   "id": "ch_m2t7q4",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "order": 2,
   "scope": "core",
   "examScope": "unconfirmed",
-  "title": { "zh-TW": "錢從哪裡來，到哪裡去" },
-  "summary": {
-    "zh-TW": "跟著小店的每一筆交易，看資產、負債與股東權益怎麼一起變動。"
+  "title": {
+    "zh-TW": "三表地圖",
+    "en": "A map of the three statements"
   },
-  "objectiveIds": [],
-  "levelIds": [],
-  "prerequisites": ["ch_c5f8w2"],
-  "termRefs": ["tm_r4w8n2qe"]
+  "summary": {
+    "zh-TW": "跟著一家腳踏車行和一家花坊，認識損益表、資產負債表與現金流量表各自回答的問題，學會在情境裡選對報表，並看懂「賺到」與「收到」為什麼不一樣。",
+    "en": "Follow a bicycle shop and a florist to learn which question each of the income statement, balance sheet and statement of cash flows answers, how to pick the right statement in a given situation, and why earning and receiving are not the same thing."
+  },
+  "objectiveIds": [
+    "obj_jey1mk",
+    "obj_bwx8x2",
+    "obj_nqw4e9",
+    "obj_1kbk22"
+  ],
+  "levelIds": [
+    "lv_4gy4e5h4",
+    "lv_kfcqkmya",
+    "lv_z7zx7re1"
+  ],
+  "prerequisites": [
+    "ch_c5f8w2"
+  ],
+  "badge": {
+    "icon": "map-trifold",
+    "title": {
+      "zh-TW": "看懂地圖",
+      "en": "Map reader"
+    }
+  },
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_67e7f0mn",
+    "tm_05t9wphy"
+  ]
 }

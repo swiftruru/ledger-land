@@ -1,0 +1,68 @@
+{
+  "id": "q_53wgztcw",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vqayt8",
+  "difficulty": 2,
+  "tags": [
+    "expense_vs_asset",
+    "equipment"
+  ],
+  "termRefs": [
+    "tm_gt8g4afe",
+    "tm_d4p7x2mv",
+    "tm_r4w8n2qe"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "price": 240000
+  },
+  "prompt": {
+    "zh-TW": "晨光補習班用現金 {{money:vars.price}} 買了一批可以用四年的教室桌椅。這個月的損益表上，這筆錢怎麼呈現？",
+    "en": "Morning Light Tutoring pays {{money:vars.price}} in cash for classroom desks and chairs that will last four years. How does this money appear on this month's income statement?"
+  },
+  "options": [
+    {
+      "id": "o_skvz",
+      "text": {
+        "zh-TW": "不會整筆出現；桌椅記成資產，之後每期只提列一小部分折舊費用",
+        "en": "Not as a whole; the furniture is recorded as an asset, and only a small depreciation expense appears each period"
+      },
+      "feedback": {
+        "zh-TW": "答對了。能用四年的東西，成本要分攤到四年，而不是一次扣光。",
+        "en": "Nice work. Something that lasts four years has its cost spread over four years rather than deducted all at once."
+      }
+    },
+    {
+      "id": "o_khpa",
+      "text": {
+        "zh-TW": "整筆 {{money:vars.price}} 列為這個月的費用",
+        "en": "The full {{money:vars.price}} is this month's expense"
+      },
+      "feedback": {
+        "zh-TW": "錢確實是這個月付的，這點沒錯。但桌椅這個月只用了一點點；整筆當費用會讓這個月看起來大虧、之後三年多卻免費用桌椅，不合理。",
+        "en": "The cash was indeed paid this month, that much is right. But the furniture was only used a little this month; expensing it all would make this month look like a big loss and the next three years look free, which is not reasonable."
+      },
+      "misconceptionId": "mc_dwv6"
+    },
+    {
+      "id": "o_m9dh",
+      "text": {
+        "zh-TW": "列為營業成本，因為是為了上課才買的",
+        "en": "As cost of sales, because it was bought for teaching"
+      },
+      "feedback": {
+        "zh-TW": "桌椅確實是為了上課才買的，這點沒錯。但營業成本是賣出商品本身的成本；桌椅不是拿來賣的，而是拿來用好幾年的設備。",
+        "en": "The furniture was indeed bought for teaching, that much is right. But cost of sales is the cost of goods that were sold; the furniture is not for sale but equipment to be used for years."
+      }
+    }
+  ],
+  "correctOptionId": "o_skvz",
+  "explanation": {
+    "zh-TW": "會用很多年的東西是資產，成本透過折舊分期變成費用，所以{{option:o_skvz}}正確。{{option:o_khpa}}把付現的時點當成費用的時點；{{option:o_m9dh}}混淆了設備和商品。",
+    "en": "Something used over many years is an asset, and its cost becomes an expense gradually through depreciation, so {{option:o_skvz}} is right. {{option:o_khpa}} uses the moment of payment as the moment of expense, and {{option:o_m9dh}} confuses equipment with goods for sale."
+  }
+}

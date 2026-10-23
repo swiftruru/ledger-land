@@ -1,0 +1,69 @@
+{
+  "id": "q_xh96tsnn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_y3ykhc",
+  "difficulty": 2,
+  "tags": [
+    "equation"
+  ],
+  "termRefs": [
+    "tm_cfghjxzq",
+    "tm_t7a3s6wb",
+    "tm_fwys72qx"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "assets": 1250000,
+    "liabilities": 450000
+  },
+  "prompt": {
+    "zh-TW": "小山咖啡月底的資產總計是 {{money:vars.assets}}，負債總額是 {{money:vars.liabilities}}。不用看其他資料，你能確定什麼？",
+    "en": "At month end Hillside Coffee has total assets of {{money:vars.assets}} and total liabilities of {{money:vars.liabilities}}. Without looking at anything else, what can you be sure of?"
+  },
+  "options": [
+    {
+      "id": "o_gspv",
+      "text": {
+        "zh-TW": "股東權益總額是資產總計減負債總額",
+        "en": "Total equity equals total assets less total liabilities"
+      },
+      "feedback": {
+        "zh-TW": "答對了。資產＝負債＋股東權益，所以股東權益就是資產減負債。",
+        "en": "Correct. Assets = liabilities + equity, so equity is simply assets less liabilities."
+      }
+    },
+    {
+      "id": "o_0848",
+      "text": {
+        "zh-TW": "這個月賺了資產總計減負債總額的錢",
+        "en": "The shop earned total assets less total liabilities this month"
+      },
+      "feedback": {
+        "zh-TW": "你算出的差額是股東權益，這點沒錯。不過股東權益包含小晴出的股本，不全是這個月賺的；賺了多少要看損益表。",
+        "en": "The difference you worked out is equity, which is right. But equity includes the capital Ching put in, not just this month's earnings; how much was earned is a question for the income statement."
+      },
+      "misconceptionId": "mc_mekj"
+    },
+    {
+      "id": "o_erkz",
+      "text": {
+        "zh-TW": "帳上的現金至少有資產總計減負債總額",
+        "en": "There is at least total assets less total liabilities in cash"
+      },
+      "feedback": {
+        "zh-TW": "資產總計包含存貨與設備，不是只有現金；光看這兩個數字，無法知道現金有多少。",
+        "en": "Total assets include inventory and equipment, not just cash, so these two figures alone say nothing about how much cash there is."
+      },
+      "misconceptionId": "mc_vqv2"
+    }
+  ],
+  "correctOptionId": "o_gspv",
+  "explanation": {
+    "zh-TW": "會計恆等式可以移項：股東權益＝資產－負債，所以{{option:o_gspv}}一定成立。{{option:o_0848}}把股東權益和這個月的利益混在一起；{{option:o_erkz}}把資產總計和現金混在一起。",
+    "en": "The accounting equation can be rearranged: equity = assets less liabilities, so {{option:o_gspv}} must be true. {{option:o_0848}} confuses equity with this month's profit, and {{option:o_erkz}} confuses total assets with cash."
+  }
+}

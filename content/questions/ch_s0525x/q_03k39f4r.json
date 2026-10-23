@@ -1,0 +1,81 @@
+{
+  "id": "q_03k39f4r",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vfc2zz",
+  "difficulty": 3,
+  "tags": [
+    "non_operating",
+    "recurring"
+  ],
+  "termRefs": [
+    "tm_z3vbt800",
+    "tm_6nmfxa10",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "大東想知道河岸麵包坊「本業」今年到底做得好不好。下列哪一種看法說得通？",
+    "en": "Tung wants to know how well Riverside Bakery's core business actually did this year. Which of these views makes sense?"
+  },
+  "options": [
+    {
+      "id": "o_e3dm",
+      "text": {
+        "zh-TW": "看營業利益，因為它只包含賣麵包的收入、成本與銷管費用",
+        "en": "Look at operating profit, because it includes only bread sales, their cost and distribution costs and administrative expenses"
+      },
+      "feedback": {
+        "zh-TW": "說得通。營業利益就是為了回答「本業賺不賺」而設的那一層。",
+        "en": "That works. Operating profit is the level designed to answer whether the core business earns money."
+      }
+    },
+    {
+      "id": "o_kbb2",
+      "text": {
+        "zh-TW": "看營業毛利，因為它說明麵包本身賣得划不划算",
+        "en": "Look at gross profit, because it shows whether the bread itself sells at a worthwhile margin"
+      },
+      "feedback": {
+        "zh-TW": "也說得通。營業毛利回答的是「產品本身」賺不賺，是本業的第一道關卡。",
+        "en": "That also works. Gross profit asks whether the product itself makes money, the first test of the core business."
+      }
+    },
+    {
+      "id": "o_fv74",
+      "text": {
+        "zh-TW": "看本期淨利，再把供應商付的違約金也算成本業的成績",
+        "en": "Look at profit for the period, and count the supplier's penalty payment as part of the core business"
+      },
+      "feedback": {
+        "zh-TW": "本期淨利確實是最後留下來的數字，這點沒錯。但違約金是一次性的業外收益，把它算進本業會高估今年的經營成果。",
+        "en": "Profit for the period is indeed the figure finally kept, that much is right. But the penalty is a one-off gain outside the core business; counting it would overstate this year's trading result."
+      },
+      "misconceptionId": "mc_etqs"
+    },
+    {
+      "id": "o_q2th",
+      "text": {
+        "zh-TW": "看營業收入，收入越高本業就做得越好",
+        "en": "Look at revenue; the higher it is, the better the core business did"
+      },
+      "feedback": {
+        "zh-TW": "收入成長確實值得高興，這點沒錯。不過收入高不代表賺錢：如果麵粉和人事費漲得更兇，收入再高也可能虧損。",
+        "en": "Growing revenue is indeed good news, that much is right. But high revenue does not mean profit: if flour and staff costs rose even faster, the business could lose money however high the revenue."
+      },
+      "misconceptionId": "mc_w3wz"
+    }
+  ],
+  "correctOptionIds": [
+    "o_e3dm",
+    "o_kbb2"
+  ],
+  "scoringMode": "any_correct",
+  "explanation": {
+    "zh-TW": "本業的成績要看還沒混進業外項目的那幾層：{{option:o_e3dm}}與{{option:o_kbb2}}都是，差別只在有沒有扣掉營業費用，所以選哪一個都說得通。{{option:o_fv74}}混進了一次性的業外收益，{{option:o_q2th}}只看收入不看成本。",
+    "en": "The core business is judged at the levels before non-operating items enter: both {{option:o_e3dm}} and {{option:o_kbb2}} qualify, differing only in whether operating expenses have been deducted, so either is reasonable. {{option:o_fv74}} mixes in a one-off non-operating gain, and {{option:o_q2th}} looks at revenue without costs."
+  }
+}

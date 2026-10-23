@@ -1,0 +1,106 @@
+{
+  "id": "q_qdx4hce5",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_0zw0yb",
+  "difficulty": 1,
+  "tags": [
+    "five_levels",
+    "pick_line"
+  ],
+  "termRefs": [
+    "tm_g8p4w1rz",
+    "tm_v3n8q2ye",
+    "tm_g5c2m8tw"
+  ],
+  "scored": true,
+  "type": "pick_line",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 200000,
+        "inventory": 120000,
+        "share_capital": 320000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_cash",
+        "params": {
+          "price": 190000
+        }
+      },
+      {
+        "id": "e2",
+        "template": "tpl.purchase_inventory_cash",
+        "params": {
+          "amount": 150000
+        }
+      },
+      {
+        "id": "e3",
+        "template": "tpl.pay_packing_freight_cash",
+        "params": {
+          "amount": 15000
+        }
+      },
+      {
+        "id": "e4",
+        "template": "tpl.pay_outsourcing_cash",
+        "params": {
+          "amount": 20000
+        }
+      },
+      {
+        "id": "e5",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 100000
+        }
+      },
+      {
+        "id": "e6",
+        "template": "tpl.repay_all_short_term_loans_with_interest",
+        "params": {
+          "interest": 3000
+        }
+      },
+      {
+        "id": "e7",
+        "template": "tpl.pay_income_tax_cash",
+        "params": {
+          "amount": 6000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": []
+  },
+  "statement": "is",
+  "correctLines": [
+    "is_gross_profit"
+  ],
+  "feedbackByLine": {
+    "is_operating_income": {
+      "zh-TW": "營業利益還多扣了銷管費用小計，再往上一列。",
+      "en": "Operating profit also deducts total distribution costs and administrative expenses; look one level higher."
+    },
+    "is_cogs": {
+      "zh-TW": "這是被扣掉的營業成本小計本身，不是扣完之後的結果。",
+      "en": "This is the cost of sales subtotal being deducted, not the result after deducting it."
+    }
+  },
+  "prompt": {
+    "zh-TW": "這是日暮文具社的損益表。請點出「營業收入減營業成本小計」得到的那一列。",
+    "en": "Here is Sunset Stationery's income statement. Tap the line that results from revenue less total cost of sales."
+  },
+  "explanation": {
+    "zh-TW": "營業毛利是五層利益的第一層：營業收入減營業成本小計。它告訴你商品本身賺不賺錢，還沒考慮店的其他開支。",
+    "en": "Gross profit is the first of the five levels: revenue less the cost of sales subtotal. It tells you whether the goods themselves make money, before the shop's other costs are considered."
+  }
+}

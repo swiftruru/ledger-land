@@ -1,0 +1,81 @@
+{
+  "id": "q_7fk1xpbm",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_0zw0yb",
+  "difficulty": 2,
+  "tags": [
+    "five_levels",
+    "sga"
+  ],
+  "termRefs": [
+    "tm_kyjfrraq",
+    "tm_z3vbt800",
+    "tm_g8p4w1rz"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "從營業毛利走到營業利益，中間扣掉的是銷管費用。下列哪些項目屬於日暮文具社的銷管費用？",
+    "en": "Between gross profit and operating profit, distribution costs and administrative expenses are deducted. Which of the following count as Sunset Stationery's distribution costs and administrative expenses?"
+  },
+  "options": [
+    {
+      "id": "o_kv3y",
+      "text": {
+        "zh-TW": "把訂單寄給客戶的包裝運送費",
+        "en": "Packing and delivery costs for sending orders to customers"
+      },
+      "feedback": {
+        "zh-TW": "是銷管費用。這是為了把東西賣出去而花的錢。",
+        "en": "Yes. This is money spent to get the goods sold, so it sits among distribution costs and administrative expenses."
+      }
+    },
+    {
+      "id": "o_z1wh",
+      "text": {
+        "zh-TW": "店裡用掉的影印紙與文具等事務用品費",
+        "en": "Office supplies such as copier paper used in the shop"
+      },
+      "feedback": {
+        "zh-TW": "是銷管費用。這是日常營運的開支。",
+        "en": "Yes. It is a cost of day-to-day running."
+      }
+    },
+    {
+      "id": "o_cxht",
+      "text": {
+        "zh-TW": "賣出去那些筆記本的進貨成本",
+        "en": "The cost of the notebooks that were sold"
+      },
+      "feedback": {
+        "zh-TW": "這確實是賣筆記本會發生的成本，這點沒錯。不過它是營業成本，在算營業毛利時就已經扣掉了，不會再算進銷管費用。",
+        "en": "This is indeed a cost of selling notebooks, that much is right. But it is cost of sales, already deducted when gross profit was worked out, so it is not counted again among distribution costs and administrative expenses."
+      },
+      "misconceptionId": "mc_9k7x"
+    },
+    {
+      "id": "o_kxxt",
+      "text": {
+        "zh-TW": "付給銀行的借款利息",
+        "en": "Interest paid to the bank on a loan"
+      },
+      "feedback": {
+        "zh-TW": "利息確實是一筆要付的錢，這點沒錯。不過它是借錢的代價，不是經營本業的開支，歸在營業外支出，要在營業利益之後才扣。",
+        "en": "Interest is indeed money that has to be paid, that much is right. But it is the price of borrowing, not a cost of running the core business, so it sits under non-operating expenses and is deducted after operating profit."
+      },
+      "misconceptionId": "mc_t8fm"
+    }
+  ],
+  "correctOptionIds": [
+    "o_kv3y",
+    "o_z1wh"
+  ],
+  "scoringMode": "all_correct",
+  "explanation": {
+    "zh-TW": "銷管費用是為了經營本業而發生、但不是商品本身成本的開支。{{option:o_kv3y}}與{{option:o_z1wh}}都是；{{option:o_cxht}}屬於營業成本（上一層），{{option:o_kxxt}}屬於營業外支出（下一層）。",
+    "en": "Distribution costs and administrative expenses are costs of running the core business that are not the cost of the goods themselves. {{option:o_kv3y}} and {{option:o_z1wh}} qualify; {{option:o_cxht}} is cost of sales (the level above) and {{option:o_kxxt}} is a non-operating expense (the level below)."
+  }
+}

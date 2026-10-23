@@ -1,0 +1,72 @@
+{
+  "id": "q_cgsmf8b1",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_hz3wcr",
+  "difficulty": 2,
+  "tags": [
+    "cost_of_sales",
+    "formula"
+  ],
+  "termRefs": [
+    "tm_v6j2k8sr",
+    "tm_p7h3c5xq",
+    "tm_q4k9v2nd",
+    "tm_g5c2m8tw"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "opening": 60000,
+    "purchases": 300000,
+    "closing": 90000
+  },
+  "prompt": {
+    "zh-TW": "日暮文具社這個月期初存貨 {{money:vars.opening}}，本期進貨 {{money:vars.purchases}}，月底盤點的期末存貨 {{money:vars.closing}}。這個月的營業成本該怎麼算？",
+    "en": "Sunset Stationery started the month with inventory of {{money:vars.opening}}, bought {{money:vars.purchases}} of goods during the month, and counted closing inventory of {{money:vars.closing}} at month end. How is this month's cost of sales worked out?"
+  },
+  "options": [
+    {
+      "id": "o_dv06",
+      "text": {
+        "zh-TW": "期初存貨加本期進貨，再減期末存貨",
+        "en": "Opening inventory plus purchases, less closing inventory"
+      },
+      "feedback": {
+        "zh-TW": "答對了。手上曾經有的貨，減掉還沒賣出的，就是賣出去的成本。",
+        "en": "Nice work. Everything that was available, less what is still unsold, is the cost of what was sold."
+      }
+    },
+    {
+      "id": "o_1yqj",
+      "text": {
+        "zh-TW": "本期進貨的金額就是營業成本",
+        "en": "Cost of sales is simply the amount purchased this period"
+      },
+      "feedback": {
+        "zh-TW": "你抓到了進貨和成本有關，這沒錯。不過期初本來就有的貨也可能賣掉了，而這期進的貨也可能還沒賣完，所以不能只看進貨。",
+        "en": "You spotted that purchases relate to cost, which is right. But goods held at the start may also have been sold, and some of this period's purchases may still be unsold, so purchases alone will not do."
+      },
+      "misconceptionId": "mc_8nbp"
+    },
+    {
+      "id": "o_j1ry",
+      "text": {
+        "zh-TW": "期初存貨加本期進貨，再加期末存貨",
+        "en": "Opening inventory plus purchases, plus closing inventory"
+      },
+      "feedback": {
+        "zh-TW": "期末存貨是還沒賣掉的貨，不能算進這期的成本，要減掉而不是加上。",
+        "en": "Closing inventory is still unsold and cannot be part of this period's cost; it is deducted, not added."
+      },
+      "misconceptionId": "mc_ek03"
+    }
+  ],
+  "correctOptionId": "o_dv06",
+  "explanation": {
+    "zh-TW": "營業成本＝期初存貨＋本期進貨－期末存貨，也就是{{option:o_dv06}}。{{option:o_1yqj}}忽略了期初與期末的存貨，{{option:o_j1ry}}把還沒賣掉的貨也算成本。損益表的「期末存貨(-)」那一列，就是這個減法。",
+    "en": "Cost of sales = opening inventory + purchases less closing inventory, which is {{option:o_dv06}}. {{option:o_1yqj}} ignores opening and closing inventory, and {{option:o_j1ry}} treats unsold goods as cost. The \"closing inventories (-)\" line on the income statement is exactly this subtraction."
+  }
+}

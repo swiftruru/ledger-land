@@ -1,0 +1,22 @@
+{
+  "id": "lv_14xjcbk8",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "order": 2,
+  "title": {
+    "zh-TW": "收入與營業成本",
+    "en": "Revenue and cost of sales"
+  },
+  "objectiveIds": [
+    "obj_hz3wcr"
+  ],
+  "questionIds": [
+    "q_khpt2x4j",
+    "q_xh6z62yf",
+    "q_cgsmf8b1",
+    "q_7dtt2qgx",
+    "q_9fhmrxf9"
+  ]
+}

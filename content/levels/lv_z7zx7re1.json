@@ -1,0 +1,25 @@
+{
+  "id": "lv_z7zx7re1",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "order": 3,
+  "title": {
+    "zh-TW": "綜合挑戰：表與表之間",
+    "en": "Challenge: between the statements"
+  },
+  "objectiveIds": [
+    "obj_bwx8x2",
+    "obj_nqw4e9",
+    "obj_1kbk22"
+  ],
+  "questionIds": [
+    "q_hcgqc0me",
+    "q_06cjtf6n",
+    "q_505pkdwn",
+    "q_458chw78",
+    "q_kpwfzd8y",
+    "q_02539p7z"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "q_2115anwd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_0zw0yb",
+  "difficulty": 2,
+  "tags": [
+    "five_levels",
+    "sga"
+  ],
+  "termRefs": [
+    "tm_dxr5anv4",
+    "tm_d90d8jeh",
+    "tm_z3vbt800",
+    "tm_g8p4w1rz"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 180000,
+        "share_capital": 180000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.pay_packing_freight_cash",
+        "params": {
+          "amount": 24000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "is_gross_profit",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "is_sga_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_operating_income",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "河岸麵包坊用現金 {{money:e1.amount}} 付了這個月把麵包送到各家咖啡店的包裝運送費。這筆支出之後，下面四個數字各會怎麼變？",
+    "en": "Riverside Bakery pays {{money:e1.amount}} in cash for this month's packing and delivery of bread to cafés. After this payment, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "包裝運送費是銷管費用，所以銷管費用小計增加 {{money:e1.amount}}，營業利益減少同樣的金額；營業毛利不受影響，因為它只看收入減營業成本。現金當然也減少了 {{money:e1.amount}}。",
+    "en": "Packing and delivery is a distribution cost, so the subtotal rises by {{money:e1.amount}} and operating profit falls by the same amount. Gross profit is untouched, because it only looks at revenue less cost of sales. Cash, of course, also falls by {{money:e1.amount}}."
+  }
+}

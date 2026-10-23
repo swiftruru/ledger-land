@@ -1,0 +1,25 @@
+{
+  "id": "lv_cy9yzrq2",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "order": 4,
+  "title": {
+    "zh-TW": "綜合挑戰：讀懂五層利益",
+    "en": "Challenge: reading the five levels"
+  },
+  "objectiveIds": [
+    "obj_0zw0yb",
+    "obj_vqayt8",
+    "obj_vfc2zz"
+  ],
+  "questionIds": [
+    "q_2115anwd",
+    "q_wswww6ex",
+    "q_03k39f4r",
+    "q_b60d2nr8",
+    "q_e3dq06k0",
+    "q_s72e8ym0"
+  ]
+}

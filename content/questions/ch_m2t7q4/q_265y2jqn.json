@@ -1,0 +1,65 @@
+{
+  "id": "q_265y2jqn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_jey1mk",
+  "difficulty": 2,
+  "tags": [
+    "three_statements",
+    "period_vs_point"
+  ],
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "風行腳踏車行的損益表標題寫著「某年 1 月 1 日至 12 月 31 日」，資產負債表標題卻只寫「某年 12 月 31 日」。為什麼兩張表的標題不一樣？",
+    "en": "Breeze Bicycles' income statement is headed \"1 January to 31 December\", but its balance sheet is headed only \"31 December\". Why are the two headings different?"
+  },
+  "options": [
+    {
+      "id": "o_0h1j",
+      "text": {
+        "zh-TW": "損益表累計一段期間的收入與費用，資產負債表只描述某一天的狀況",
+        "en": "The income statement accumulates a period's revenue and expenses, while the balance sheet describes one day"
+      },
+      "feedback": {
+        "zh-TW": "答對了。一張像一段影片，一張像一張照片。",
+        "en": "That's right. One is like a video of the period, the other like a photograph of one day."
+      }
+    },
+    {
+      "id": "o_v8ta",
+      "text": {
+        "zh-TW": "資產負債表的標題漏寫了起始日期",
+        "en": "The balance sheet heading is missing the start date"
+      },
+      "feedback": {
+        "zh-TW": "你注意到兩張表的日期寫法不同，觀察得很仔細。不過不是漏寫：資產負債表本來就只有一個日期，因為它列的是那一天擁有多少、欠多少。",
+        "en": "You noticed that the two headings are written differently, which is careful reading. But nothing is missing: a balance sheet has only one date because it lists what is owned and owed on that day."
+      },
+      "misconceptionId": "mc_s6mx"
+    },
+    {
+      "id": "o_s3sy",
+      "text": {
+        "zh-TW": "兩張表其實都是描述 12 月 31 日那一天",
+        "en": "Both statements really describe 31 December"
+      },
+      "feedback": {
+        "zh-TW": "資產負債表確實是描述 12 月 31 日那一天，這一半說對了。但損益表不是：利益不是一天賺出來的，而是一整年累計的結果。",
+        "en": "The balance sheet does describe 31 December, so that half is right. But the income statement does not: profit is not earned in one day; it accumulates over the whole year."
+      },
+      "misconceptionId": "mc_s6mx"
+    }
+  ],
+  "correctOptionId": "o_0h1j",
+  "explanation": {
+    "zh-TW": "損益表是「期間」的報表，資產負債表是「時點」的報表，標題就透露了這個差別，所以{{option:o_0h1j}}正確。",
+    "en": "The income statement is a period statement and the balance sheet a point-in-time statement; the headings give that difference away, so {{option:o_0h1j}} is right."
+  }
+}

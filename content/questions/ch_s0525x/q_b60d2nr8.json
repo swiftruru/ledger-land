@@ -1,0 +1,41 @@
+{
+  "id": "q_b60d2nr8",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vqayt8",
+  "difficulty": 3,
+  "tags": [
+    "expense_vs_asset",
+    "purchase"
+  ],
+  "termRefs": [
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw",
+    "tm_p7h3c5xq"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "vars": {
+    "purchase": 180000
+  },
+  "statement": {
+    "zh-TW": "河岸麵包坊這個月賒購了 {{money:vars.purchase}} 的麵粉，還沒用掉。這筆進貨對這個月的損益表沒有影響。",
+    "en": "Riverside Bakery bought {{money:vars.purchase}} of flour on credit this month and has not used it yet. The purchase has no effect on this month's income statement."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。麵粉還沒用掉，它是資產負債表上的存貨；要等做成麵包賣出去，成本才會進損益表。",
+    "en": "That's right. The flour has not been used, so it is inventories on the balance sheet; its cost reaches the income statement only when it is baked into bread and sold."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你想到進了貨就該有費用，這個直覺很多人都有。不過麵粉還在倉庫，它是資產負債表上的存貨；要等做成麵包賣出去，成本才會出現在損益表。",
+    "en": "Feeling that a purchase should create an expense is a very common instinct. But the flour is still in the storeroom, so it is inventories on the balance sheet; its cost reaches the income statement only when it is baked into bread and sold."
+  },
+  "misconceptionId": "mc_5tqs",
+  "explanation": {
+    "zh-TW": "進貨影響的是資產負債表：存貨增加、應付帳款增加。損益表只在商品賣出時才認列營業成本。付不付錢決定的是現金與應付帳款，不是成本的時點。",
+    "en": "A purchase affects the balance sheet: inventories rise and trade payables rise. The income statement recognises cost of sales only when the goods are sold. Whether cash has been paid decides cash and payables, not the timing of the cost."
+  }
+}

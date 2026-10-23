@@ -1,0 +1,56 @@
+{
+  "id": "q_x0kw6x7w",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vqayt8",
+  "difficulty": 1,
+  "tags": [
+    "expense_vs_asset",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_r4w8n2qe",
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw",
+    "tm_gt8g4afe"
+  ],
+  "scored": true,
+  "type": "classify",
+  "prompt": {
+    "zh-TW": "佩佩在整理日暮文具社的帳目。下面這些項目，哪些是這一期的費用、哪些其實是資產？也有收入混在裡面。把每張卡片放進正確的格子。",
+    "en": "Pei is sorting Sunset Stationery's books. Which of these items are this period's expenses, and which are really assets? There is revenue mixed in too. Put each card in the right box."
+  },
+  "dimension": "element",
+  "items": [
+    {
+      "id": "it_e334",
+      "account": "inventory"
+    },
+    {
+      "id": "it_r6f8",
+      "account": "cost_of_goods_sold"
+    },
+    {
+      "id": "it_hrb1",
+      "account": "machinery_equipment"
+    },
+    {
+      "id": "it_84j5",
+      "account": "depreciation_expense"
+    },
+    {
+      "id": "it_wvpz",
+      "account": "packing_freight_expense"
+    },
+    {
+      "id": "it_gf9r",
+      "account": "revenue"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "存貨與機器設備（像店裡的影印機）是還能帶來好處的資源，放資產；營業成本、折舊費用、包裝運送費是這一期用掉的部分，放費用；營業收入是賺到的錢，放收入。買進來的東西不會馬上變費用，要等用掉或賣掉。",
+    "en": "Inventories and machinery and equipment (such as the shop's photocopier) are resources that will still bring benefits, so they are assets; cost of sales, depreciation and packing and delivery costs are what was used up this period, so they are expenses; revenue is what was earned. Something bought does not become an expense at once; only once it is used up or sold."
+  }
+}

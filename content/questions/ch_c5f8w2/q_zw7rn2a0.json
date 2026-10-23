@@ -1,0 +1,65 @@
+{
+  "id": "q_zw7rn2a0",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_39p0w4",
+  "difficulty": 1,
+  "tags": [
+    "records_to_statements"
+  ],
+  "termRefs": [
+    "tm_sf72dfsv",
+    "tm_tkj8x3a7",
+    "tm_67e7f0mn"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "小晴每天把小山咖啡的每一筆進貨、賣出與付款記下來，月底整理出三張報表。這些交易紀錄和報表上的數字是什麼關係？",
+    "en": "Every day Ching writes down each purchase, sale and payment at Hillside Coffee, and at month end she prepares three statements. How are those transaction records related to the figures on the statements?"
+  },
+  "options": [
+    {
+      "id": "o_br3g",
+      "text": {
+        "zh-TW": "報表上的每個數字，都是把這些交易紀錄加總整理出來的",
+        "en": "Every figure on the statements is a total built up from those transaction records"
+      },
+      "feedback": {
+        "zh-TW": "答對了。先有一筆一筆的交易紀錄，報表上的數字才整理得出來。",
+        "en": "That's right. The transaction records come first; the figures on the statements are built from them."
+      }
+    },
+    {
+      "id": "o_vbse",
+      "text": {
+        "zh-TW": "先畫好三張報表，再把每筆交易填進表裡",
+        "en": "The three statements are drawn up first, then each transaction is filled into them"
+      },
+      "feedback": {
+        "zh-TW": "你抓到了交易和報表有關係，這點沒錯。只是順序想反了：報表上的每個數字都是從交易紀錄加總來的，不是先有表格再把數字填進去。",
+        "en": "You have seen that transactions and statements are linked, and that much is right. Only the order is reversed: every figure on a statement is a total of recorded transactions; the figures are not filled into a ready-made form."
+      },
+      "misconceptionId": "mc_7xv8"
+    },
+    {
+      "id": "o_3hxk",
+      "text": {
+        "zh-TW": "兩者沒有關係，報表的數字由老闆自己決定",
+        "en": "They are unrelated; the owner decides the figures on the statements"
+      },
+      "feedback": {
+        "zh-TW": "如果數字能隨意決定，報表就沒有人敢相信了。報表的數字必須能追回每一筆交易。",
+        "en": "If the figures could be chosen freely, nobody could trust the statements. Every figure must trace back to recorded transactions."
+      },
+      "misconceptionId": "mc_n6zm"
+    }
+  ],
+  "correctOptionId": "o_br3g",
+  "explanation": {
+    "zh-TW": "會計的流程是：發生交易、記錄下來、加總整理、產出報表。所以{{option:o_br3g}}是對的；{{option:o_vbse}}把順序倒過來，{{option:o_3hxk}}則切斷了報表和交易的連結。",
+    "en": "The accounting process runs: transactions happen, they are recorded, the records are totalled and organised, and the statements come out. So {{option:o_br3g}} is right; {{option:o_vbse}} reverses the order, and {{option:o_3hxk}} cuts the link between statements and transactions."
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "q_505pkdwn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_nqw4e9",
+  "difficulty": 3,
+  "tags": [
+    "accrual",
+    "collection",
+    "cash_flow"
+  ],
+  "termRefs": [
+    "tm_r7x2c9fa",
+    "tm_c4sh8k2p",
+    "tm_e61ht6yh"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 60000,
+        "accounts_receivable": 95000,
+        "share_capital": 155000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.collect_receivables",
+        "params": {
+          "amount": 95000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_accounts_receivable",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "is_revenue",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "飯店付清了上個月欠晴川花坊的 {{money:e1.amount}}。這筆收款之後，下面四個數字各會怎麼變？",
+    "en": "The hotel pays the {{money:e1.amount}} it owed Clearwater Florist from last month. After this collection, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金增加 {{money:e1.amount}}、應收帳款減少同樣的金額；營業收入不變，因為上個月就認列過了。收到的錢來自本業，所以營業活動的現金流量增加。",
+    "en": "Cash rises by {{money:e1.amount}} and trade receivables fall by the same amount; revenue is unchanged because it was recognised last month. The cash comes from the core business, so operating cash flow rises."
+  },
+  "hint": {
+    "zh-TW": "賒銷時已經認列過收入了嗎？",
+    "en": "Was the revenue already recognised at the time of the credit sale?"
+  }
+}

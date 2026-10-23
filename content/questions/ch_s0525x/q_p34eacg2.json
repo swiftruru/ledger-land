@@ -1,0 +1,38 @@
+{
+  "id": "q_p34eacg2",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_0zw0yb",
+  "difficulty": 2,
+  "tags": [
+    "five_levels",
+    "interest"
+  ],
+  "termRefs": [
+    "tm_z3vbt800",
+    "tm_k6t2e9wr",
+    "tm_gvrw06p3"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "日暮文具社付給銀行的利息，會在算營業利益之前就扣掉。",
+    "en": "The interest Sunset Stationery pays its bank is deducted before operating profit is worked out."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "利息確實是一筆支出，這點沒錯。不過它是借錢的代價，和賣文具的本業無關，所以放在營業外支出，在營業利益之後才扣。",
+    "en": "Interest is indeed a cost, you are right about that. But it is the price of borrowing and has nothing to do with selling stationery, so it sits under non-operating expenses and is deducted after operating profit."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。營業利益只反映本業；利息是借錢的代價，歸在營業外支出，從營業利益往下走到經常利益時才扣。",
+    "en": "That's right. Operating profit reflects only the core business; interest is the price of borrowing and belongs under non-operating expenses, deducted on the way from operating profit to ordinary profit."
+  },
+  "misconceptionId": "mc_t8fm",
+  "explanation": {
+    "zh-TW": "營業利益回答「本業賺不賺」，所以只扣營業成本與銷管費用。利息、攤銷這類業外項目要到下一層：營業利益加營業外收入、減營業外支出，得到經常利益。",
+    "en": "Operating profit answers whether the core business earns money, so it deducts only cost of sales and distribution costs and administrative expenses. Non-operating items such as interest and amortisation come at the next level: operating profit plus non-operating income less non-operating expenses gives ordinary profit."
+  }
+}

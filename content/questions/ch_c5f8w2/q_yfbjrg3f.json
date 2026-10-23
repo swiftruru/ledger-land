@@ -1,0 +1,36 @@
+{
+  "id": "q_yfbjrg3f",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_y3ykhc",
+  "difficulty": 1,
+  "tags": [
+    "equation"
+  ],
+  "termRefs": [
+    "tm_cfghjxzq",
+    "tm_t7a3s6wb",
+    "tm_ec80jjev"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "不管小山咖啡做了多少筆交易，資產負債表上「資產總計」永遠等於「負債及股東權益總計」。",
+    "en": "No matter how many transactions Hillside Coffee makes, total assets on the balance sheet always equal total liabilities and equity."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。每一項資產的錢不是借來的就是股東的，所以兩邊一定相等；記帳時每筆交易也都同時動到兩邊或同一邊的兩個項目。",
+    "en": "Correct. Every asset was funded either by borrowing or by the owners, so the two sides must be equal; each transaction is recorded so that the equation keeps holding."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你可能覺得交易一多，帳就會「對不起來」。其實會計恆等式不是碰巧成立的：每一筆交易記下來時，就是照「資產＝負債＋股東權益」記的，所以不管多少筆，兩邊都相等。",
+    "en": "You may think that with many transactions the books will drift apart. The equation does not hold by chance: each transaction is recorded in a way that keeps assets = liabilities + equity, so the two sides stay equal however many there are."
+  },
+  "explanation": {
+    "zh-TW": "會計恆等式是記帳的規則，不是結果。每一筆交易都同時記在兩個地方，兩邊才會永遠相等；如果真的對不起來，代表有一筆交易記錯了。",
+    "en": "The accounting equation is a rule of bookkeeping, not a coincidence. Every transaction is recorded in two places at once, so the two sides always agree; if they do not, a transaction has been recorded wrongly."
+  }
+}

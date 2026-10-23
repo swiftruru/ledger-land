@@ -1,0 +1,64 @@
+{
+  "id": "q_e6x32tbk",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_jey1mk",
+  "difficulty": 1,
+  "tags": [
+    "three_statements"
+  ],
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_67e7f0mn"
+  ],
+  "scored": true,
+  "type": "pick_statement",
+  "prompt": {
+    "zh-TW": "年底盤點時，阿凱想知道「此刻車行有多少存貨、設備，還欠供應商多少錢」。該看哪一張報表？",
+    "en": "At the year-end stocktake, Kai wants to know how much inventory and equipment the shop has right now, and how much it still owes suppliers. Which statement should he look at?"
+  },
+  "options": [
+    {
+      "id": "o_qmqc",
+      "text": {
+        "zh-TW": "損益表",
+        "en": "Income statement"
+      },
+      "feedback": {
+        "zh-TW": "損益表列的是一段期間的收入與費用，不會列出存貨有多少、欠供應商多少。",
+        "en": "The income statement lists a period's revenue and expenses; it does not show how much inventory there is or what is owed to suppliers."
+      },
+      "misconceptionId": "mc_s6mx"
+    },
+    {
+      "id": "o_7q96",
+      "text": {
+        "zh-TW": "資產負債表",
+        "en": "Balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "答對了。資產負債表是某一天的快照：資產在一邊，負債與股東權益在另一邊。",
+        "en": "Correct. The balance sheet is a snapshot of one day: assets on one side, liabilities and equity on the other."
+      }
+    },
+    {
+      "id": "o_4fg3",
+      "text": {
+        "zh-TW": "現金流量表",
+        "en": "Statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "現金流量表只追蹤現金的進出，存貨與欠款的餘額不在這裡。",
+        "en": "The statement of cash flows only tracks cash movements; inventory and amounts owed are not shown there."
+      }
+    }
+  ],
+  "correctOptionId": "o_7q96",
+  "explanation": {
+    "zh-TW": "「某一天擁有多少、欠多少」是資產負債表的問題，所以選{{option:o_7q96}}。存貨與設備在資產那一邊，欠供應商的錢在負債那一邊。",
+    "en": "\"What is owned and owed on a given day\" is the balance sheet's question, so {{option:o_7q96}} is right. Inventory and equipment sit on the asset side, and the amount owed to suppliers on the liability side."
+  }
+}

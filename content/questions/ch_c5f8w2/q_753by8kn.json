@@ -1,0 +1,81 @@
+{
+  "id": "q_753by8kn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_erqmw9",
+  "difficulty": 2,
+  "tags": [
+    "elements",
+    "liabilities"
+  ],
+  "termRefs": [
+    "tm_h6p2k9wd",
+    "tm_a3p9y6kc",
+    "tm_s5b8r3hd"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "月底，小山咖啡的帳上有下面幾個項目。哪些是負債，也就是店將來要付給別人的錢？",
+    "en": "At month end, Hillside Coffee has the items below in its books. Which of them are liabilities, that is, money the shop will have to pay to others?"
+  },
+  "options": [
+    {
+      "id": "o_h5sv",
+      "text": {
+        "zh-TW": "還沒付給豆商的進貨款",
+        "en": "The bean supplier's invoice that has not been paid yet"
+      },
+      "feedback": {
+        "zh-TW": "是負債。貨已經收到、錢還沒付，這就是應付帳款。",
+        "en": "A liability. The beans have arrived but the money has not been paid, so this is a trade payable."
+      }
+    },
+    {
+      "id": "o_yzk9",
+      "text": {
+        "zh-TW": "向銀行借、一年內要還的款項",
+        "en": "A bank loan that must be repaid within a year"
+      },
+      "feedback": {
+        "zh-TW": "是負債。短期借款要在一年內還給銀行。",
+        "en": "A liability. Short-term borrowings must be repaid to the bank within a year."
+      }
+    },
+    {
+      "id": "o_per2",
+      "text": {
+        "zh-TW": "小晴投入的股本",
+        "en": "The share capital Ching put in"
+      },
+      "feedback": {
+        "zh-TW": "不是負債。股本是股東自己出的錢，店不必償還，屬於股東權益。",
+        "en": "Not a liability. Share capital is the owner's own money and does not have to be repaid, so it is equity."
+      },
+      "misconceptionId": "mc_8ef5"
+    },
+    {
+      "id": "o_7n4m",
+      "text": {
+        "zh-TW": "架上還沒賣出的咖啡豆",
+        "en": "The coffee beans still on the shelf"
+      },
+      "feedback": {
+        "zh-TW": "不是負債。豆子是店擁有的存貨，屬於資產。",
+        "en": "Not a liability. The beans are inventory the shop owns, so they are an asset."
+      },
+      "misconceptionId": "mc_fjnf"
+    }
+  ],
+  "correctOptionIds": [
+    "o_h5sv",
+    "o_yzk9"
+  ],
+  "scoringMode": "all_correct",
+  "explanation": {
+    "zh-TW": "負債的判斷標準是「將來要付給別人」。{{option:o_h5sv}}與{{option:o_yzk9}}都是店欠別人的錢，所以都是負債。{{option:o_per2}}不必償還，是股東權益；{{option:o_7n4m}}是店擁有的東西，是資產。",
+    "en": "The test for a liability is \"will have to be paid to someone else\". {{option:o_h5sv}} and {{option:o_yzk9}} are both owed by the shop, so both are liabilities. {{option:o_per2}} never has to be repaid, so it is equity; {{option:o_7n4m}} is something the shop owns, so it is an asset."
+  }
+}

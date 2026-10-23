@@ -1,0 +1,41 @@
+{
+  "id": "q_n2dyehqx",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_jey1mk",
+  "difficulty": 2,
+  "tags": [
+    "three_statements",
+    "profit_vs_cash"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_c4sh8k2p",
+    "tm_05t9wphy"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "vars": {
+    "profit": 240000
+  },
+  "statement": {
+    "zh-TW": "風行腳踏車行今年的本期淨利是 {{money:vars.profit}}，所以年底戶頭裡的現金一定比年初多 {{money:vars.profit}}。",
+    "en": "Breeze Bicycles made a profit of {{money:vars.profit}} this year, so the cash in its account at year end must be {{money:vars.profit}} more than at the start of the year."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "利益和現金常常一起增加，這個直覺有道理。不過利益包含還沒收到的賒銷，現金的變化又包含買設備、借款這些不影響利益的事，所以兩個數字通常不一樣。",
+    "en": "Profit and cash often rise together, so the instinct is understandable. But profit includes credit sales not yet collected, while cash movements include equipment purchases and loans that do not affect profit, so the two figures usually differ."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。本期淨利來自損益表，現金增減來自現金流量表，兩者走不同的路。",
+    "en": "Correct. Profit for the period comes from the income statement and the change in cash from the statement of cash flows; they take different routes."
+  },
+  "misconceptionId": "mc_7hx8",
+  "explanation": {
+    "zh-TW": "利益是「賺到」的概念，現金是「收到」的概念。賒銷讓利益先增加；買車架、還貸款讓現金減少卻不動利益。要知道現金變了多少，看現金流量表最後幾列。",
+    "en": "Profit is about earning; cash is about receiving. A credit sale raises profit first; buying frames or repaying a loan lowers cash without touching profit. To see how cash changed, read the last lines of the statement of cash flows."
+  }
+}

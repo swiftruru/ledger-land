@@ -1,0 +1,47 @@
+{
+  "id": "ch_s0525x",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "order": 3,
+  "scope": "core",
+  "examScope": "unconfirmed",
+  "title": {
+    "zh-TW": "損益表：五層利益",
+    "en": "The income statement: five levels of profit"
+  },
+  "summary": {
+    "zh-TW": "從一家文具社、一家補習班和一家麵包坊的帳，一層一層看懂損益表：營業毛利、營業利益、經常利益、稅前淨利到本期淨利，營業成本怎麼算，以及哪些收益不算本業。",
+    "en": "Through the books of a stationery shop, a tutoring centre and a bakery, read the income statement level by level: gross profit, operating profit, ordinary profit, profit before tax and profit for the period, how cost of sales is worked out, and which gains do not belong to the core business."
+  },
+  "objectiveIds": [
+    "obj_0zw0yb",
+    "obj_vqayt8",
+    "obj_hz3wcr",
+    "obj_vfc2zz"
+  ],
+  "levelIds": [
+    "lv_trx6q1xb",
+    "lv_14xjcbk8",
+    "lv_enjpm9th",
+    "lv_cy9yzrq2"
+  ],
+  "prerequisites": [
+    "ch_m2t7q4"
+  ],
+  "badge": {
+    "icon": "stairs",
+    "title": {
+      "zh-TW": "五層樓",
+      "en": "Five floors up"
+    }
+  },
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_g8p4w1rz",
+    "tm_z3vbt800",
+    "tm_z971merj",
+    "tm_n4e8t2jy",
+    "tm_g5c2m8tw"
+  ]
+}

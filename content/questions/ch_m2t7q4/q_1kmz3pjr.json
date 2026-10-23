@@ -1,0 +1,41 @@
+{
+  "id": "q_1kmz3pjr",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_nqw4e9",
+  "difficulty": 2,
+  "tags": [
+    "accrual",
+    "collection"
+  ],
+  "termRefs": [
+    "tm_r7x2c9fa",
+    "tm_v3n8q2ye",
+    "tm_c4sh8k2p"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "vars": {
+    "amount": 48000
+  },
+  "statement": {
+    "zh-TW": "上個月晴川花坊替一對新人布置婚禮，當時已經認列了 {{money:vars.amount}} 的營業收入，貨款約定下個月再收。這個月新人付清了這筆錢。收到錢時，花坊的營業收入會再增加 {{money:vars.amount}}。",
+    "en": "Last month Clearwater Florist decorated a wedding for a couple and recognised {{money:vars.amount}} of revenue at the time, with payment agreed for the following month. This month the couple paid in full. When the money arrives, the florist's revenue rises by another {{money:vars.amount}}."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "收到錢確實是好事，但這筆收入上個月完成服務時就認列過了。這次只是應收帳款變成現金，收入不會再算一次。",
+    "en": "Receiving the money is good news, but this revenue was already recognised last month when the service was completed. This time a receivable simply turns into cash; the revenue is not counted again."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。收款只是把應收帳款換成現金，兩個都是資產，損益表完全不動。",
+    "en": "That's right. Collecting the money swaps a receivable for cash, both of which are assets; the income statement does not move at all."
+  },
+  "misconceptionId": "mc_2ny7",
+  "explanation": {
+    "zh-TW": "同一筆生意只認列一次收入。賒銷時收入增加、應收帳款增加；收款時應收帳款減少、現金增加。如果收款時再記一次收入，這筆生意就被算了兩次。",
+    "en": "One job yields revenue only once. At the credit sale, revenue and receivables rise; at collection, receivables fall and cash rises. Recording revenue again at collection would count the same job twice."
+  }
+}

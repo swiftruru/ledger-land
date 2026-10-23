@@ -1,0 +1,22 @@
+{
+  "id": "lv_trx6q1xb",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "order": 1,
+  "title": {
+    "zh-TW": "五層利益的階梯",
+    "en": "The five steps of profit"
+  },
+  "objectiveIds": [
+    "obj_0zw0yb"
+  ],
+  "questionIds": [
+    "q_9qhm28ea",
+    "q_qdx4hce5",
+    "q_51chxfz2",
+    "q_p34eacg2",
+    "q_7fk1xpbm"
+  ]
+}

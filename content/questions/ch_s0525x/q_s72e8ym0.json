@@ -1,0 +1,83 @@
+{
+  "id": "q_s72e8ym0",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vfc2zz",
+  "difficulty": 3,
+  "tags": [
+    "judgment",
+    "one_off"
+  ],
+  "termRefs": [
+    "tm_z3vbt800",
+    "tm_6nmfxa10",
+    "tm_n4e8t2jy"
+  ],
+  "scored": false,
+  "type": "judgment",
+  "vars": {
+    "rent": 60000
+  },
+  "prompt": {
+    "zh-TW": "河岸麵包坊今年的本期淨利比去年高，不過多出來的部分主要是把閒置的二樓短租給劇組拍片一週收到的 {{money:vars.rent}} 租金；本業的營業利益其實比去年略低。大東要用今年的數字決定明年的員工獎金與進貨量，他可以怎麼用這個數字？三種做法都說得通，重點是你覺得哪一種最穩當。",
+    "en": "Riverside Bakery's profit for the period is higher than last year's, but most of the increase is {{money:vars.rent}} of rent from letting the unused first floor to a film crew for a week; operating profit from the core business is actually slightly below last year. Tung has to use this year's figures to set next year's staff bonuses and purchasing volume. How might he use the figure? All three can make sense; what matters is which you think is the most sound."
+  },
+  "options": [
+    {
+      "id": "o_vmnw",
+      "text": {
+        "zh-TW": "照本期淨利的成長幅度，把明年的獎金與進貨量一起往上調",
+        "en": "Raise next year's bonuses and purchasing volume in line with the growth in profit for the period"
+      },
+      "upside": {
+        "zh-TW": "數字最直接，員工也最有感；今年確實留下了比去年多的錢。",
+        "en": "It is the most direct figure and the one staff will feel most; the year really did leave more money behind than last year."
+      },
+      "downside": {
+        "zh-TW": "多出來的錢來自一次性的租金，明年不會再有；獎金和進貨量一旦調高，本業略退步的壓力會更大。",
+        "en": "The extra money came from one-off rent that will not recur; once bonuses and purchasing are raised, the slight slip in the core business will bite harder."
+      }
+    },
+    {
+      "id": "o_mk41",
+      "text": {
+        "zh-TW": "只用營業利益來訂明年的獎金與進貨量，租金收入另外存起來備用",
+        "en": "Set next year's bonuses and purchasing volume on operating profit only, and put the rent aside as a reserve"
+      },
+      "upside": {
+        "zh-TW": "獎金和進貨量跟著本業走，明年不會因為少了一筆租金而突然付不出來；一次性的錢可以留作修設備或應急。",
+        "en": "Bonuses and purchasing follow the core business, so next year will not be caught short when the rent is gone; the one-off money can be kept for repairs or emergencies."
+      },
+      "downside": {
+        "zh-TW": "員工看到今年淨利成長卻沒加到獎金，需要多花時間解釋；本業略退步也會直接反映在獎金上。",
+        "en": "Staff will see profit grow without a bigger bonus and will need an explanation; the slight slip in the core business shows up directly in their pay."
+      }
+    },
+    {
+      "id": "o_mba8",
+      "text": {
+        "zh-TW": "先不用今年的數字，等明年看過一季的成績再決定",
+        "en": "Do not use this year's figures at all; wait for a quarter of next year's results before deciding"
+      },
+      "upside": {
+        "zh-TW": "不會被今年的一次性收益誤導，決定會建立在新一年的實際表現上。",
+        "en": "Avoids being misled by this year's one-off gain; the decision rests on the new year's actual performance."
+      },
+      "downside": {
+        "zh-TW": "進貨要提早備料、員工也在等答案，拖到明年才動會錯過時機；其實今年的報表已經給得出答案，只要分層看。",
+        "en": "Stock has to be ordered ahead and staff are waiting for an answer, so delaying until next year misses the moment; and this year's statement already holds the answer, if read level by level."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "損益表分成五層，就是為了讓人分開看本業、業外與稅。拿數字做決定時，先問這筆錢明年還會不會有：本業的營業利益是會重複的，一次性的租金不是。獎金和進貨量這種每年都要付、每年都要備的事，應該跟著會重複的數字走；一次性的錢另外規劃。三種做法都沒有錯，但把本期淨利整個當成常態，是最容易在明年出問題的一種。",
+    "en": "The income statement is split into five levels precisely so that the core business, non-operating items and tax can be viewed separately. Before using a figure for a decision, ask whether that money will come again next year: operating profit from the core business repeats, one-off rent does not. Bonuses and purchasing are paid and planned every year, so they should follow the figures that repeat; one-off money deserves its own plan. None of the three is wrong, but treating the whole profit for the period as the norm is the one most likely to cause trouble next year."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "tm_05t9wphy",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": {
+    "zh-TW": "權責發生制",
+    "en": "Accrual basis"
+  },
+  "teacherLabel": "權責發生制",
+  "currentTwLabel": "應計基礎",
+  "ifrsEnglish": "Accrual basis of accounting",
+  "aliases": {
+    "zh-TW": [
+      "應計基礎",
+      "應計制"
+    ],
+    "en": [
+      "Accrual accounting"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.27",
+  "definition": {
+    "zh-TW": "收入在「賺到」的時候認列、費用在「發生」的時候認列，而不是等到錢真的收到或付出。所以損益表的利益與現金流量表的現金，常常不是同一個數字。",
+    "en": "Revenue is recognised when it is earned and expenses when they are incurred, not when the cash is received or paid. That is why profit on the income statement and cash on the statement of cash flows are often different figures."
+  },
+  "misconception": {
+    "zh-TW": "「有賺錢」不等於「有現金」：賒銷讓收入增加，但現金一毛都還沒進來。",
+    "en": "\"Making a profit\" is not the same as \"having cash\": a credit sale raises revenue while no cash has arrived yet."
+  },
+  "related": [
+    "tm_tkj8x3a7",
+    "tm_67e7f0mn",
+    "tm_r7x2c9fa"
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "id": "q_e3dq06k0",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_0zw0yb",
+  "difficulty": 2,
+  "tags": [
+    "five_levels",
+    "pick_line"
+  ],
+  "termRefs": [
+    "tm_z3vbt800",
+    "tm_d90d8jeh",
+    "tm_g8p4w1rz"
+  ],
+  "scored": true,
+  "type": "pick_line",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 200000,
+        "inventory": 120000,
+        "share_capital": 320000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_cash",
+        "params": {
+          "price": 190000
+        }
+      },
+      {
+        "id": "e2",
+        "template": "tpl.purchase_inventory_cash",
+        "params": {
+          "amount": 150000
+        }
+      },
+      {
+        "id": "e3",
+        "template": "tpl.pay_packing_freight_cash",
+        "params": {
+          "amount": 15000
+        }
+      },
+      {
+        "id": "e4",
+        "template": "tpl.pay_outsourcing_cash",
+        "params": {
+          "amount": 20000
+        }
+      },
+      {
+        "id": "e5",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 100000
+        }
+      },
+      {
+        "id": "e6",
+        "template": "tpl.repay_all_short_term_loans_with_interest",
+        "params": {
+          "interest": 3000
+        }
+      },
+      {
+        "id": "e7",
+        "template": "tpl.pay_income_tax_cash",
+        "params": {
+          "amount": 6000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": []
+  },
+  "statement": "is",
+  "correctLines": [
+    "is_operating_income"
+  ],
+  "feedbackByLine": {
+    "is_gross_profit": {
+      "zh-TW": "營業毛利還沒扣銷管費用，再往下走一層。",
+      "en": "Gross profit is before distribution costs and administrative expenses; go one level further down."
+    },
+    "is_ordinary_income": {
+      "zh-TW": "經常利益已經把營業外收支也算進去了，往上一層才是只看本業的數字。",
+      "en": "Ordinary profit already includes non-operating items; the level above is the one that looks only at the core business."
+    }
+  },
+  "prompt": {
+    "zh-TW": "日暮文具社想知道「本業賺了多少」。請在損益表上點出營業毛利扣掉銷管費用小計之後的那一列。",
+    "en": "Sunset Stationery wants to know how much the core business earned. Tap the line on the income statement that results from gross profit less total distribution costs and administrative expenses."
+  },
+  "explanation": {
+    "zh-TW": "營業利益＝營業毛利－銷管費用小計，是五層利益的第二層，回答「本業賺不賺」。再往下的經常利益才加減業外收支。",
+    "en": "Operating profit = gross profit less total distribution costs and administrative expenses, the second of the five levels, and it answers whether the core business earns money. Only the next level, ordinary profit, brings in non-operating items."
+  }
+}

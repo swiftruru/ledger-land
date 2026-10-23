@@ -1,0 +1,81 @@
+{
+  "id": "q_xh6z62yf",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_hz3wcr",
+  "difficulty": 2,
+  "tags": [
+    "cost_of_sales",
+    "sale"
+  ],
+  "termRefs": [
+    "tm_v3n8q2ye",
+    "tm_g5c2m8tw",
+    "tm_g8p4w1rz",
+    "tm_n7v3k8pq"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 100000,
+        "inventory": 140000,
+        "share_capital": 240000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_cash",
+        "params": {
+          "price": 210000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "is_revenue",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "is_cogs",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "is_gross_profit",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_inventory",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "開學前，日暮文具社把倉庫裡全部的庫存以現金 {{money:e1.price}} 一次賣給附近的補習班。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "Before term starts, Sunset Stationery sells its entire stock to a nearby tutoring centre for {{money:e1.price}} in cash. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "營業收入增加 {{money:e1.price}}；賣出的商品成本 {{money:e1.costOfAllInventory}} 從存貨轉到營業成本，所以營業成本小計增加、存貨減少。兩者的差額 {{money:e1.grossProfit}} 就是這批貨賺到的營業毛利。",
+    "en": "Revenue rises by {{money:e1.price}}; the cost of the goods sold, {{money:e1.costOfAllInventory}}, moves from inventory into cost of sales, so the cost of sales subtotal rises and inventory falls. The difference, {{money:e1.grossProfit}}, is the gross profit earned on the batch."
+  }
+}

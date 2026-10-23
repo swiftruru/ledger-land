@@ -1,0 +1,200 @@
+{
+  "chapterId": "ch_s0525x",
+  "items": [
+    {
+      "id": "obj_0zw0yb",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_s0525x",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能依序說出五層利益（營業毛利、營業利益、經常利益、稅前淨利、本期淨利），以及每一層之間加上或扣除的項目",
+        "en": "Name the five profit levels in order (gross profit, operating profit, ordinary profit, profit before tax, profit for the period) and say what is added or deducted between each pair"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_9k7x",
+          "text": {
+            "zh-TW": "以為營業毛利已經扣掉人事與運費等銷管費用",
+            "en": "Thinking gross profit is already after staff, delivery and other distribution costs and administrative expenses"
+          }
+        },
+        {
+          "id": "mc_t8fm",
+          "text": {
+            "zh-TW": "把利息費用算進營業利益之前的費用",
+            "en": "Deducting interest expense before operating profit"
+          }
+        },
+        {
+          "id": "mc_8gw8",
+          "text": {
+            "zh-TW": "以為稅前淨利已經扣掉所得稅",
+            "en": "Thinking profit before tax is already after income tax"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "pick_line",
+        "single_choice",
+        "true_false",
+        "multi_choice"
+      ],
+      "termRefs": [
+        "tm_g8p4w1rz",
+        "tm_z3vbt800",
+        "tm_9hg0gb2b",
+        "tm_z971merj",
+        "tm_n4e8t2jy"
+      ]
+    },
+    {
+      "id": "obj_vqayt8",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_s0525x",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能把收入、成本、費用與業外項目放到損益表正確的列，並分辨費用與資產的差別",
+        "en": "Place revenue, cost of sales, expenses and non-operating items on the right lines of the income statement, and tell an expense from an asset"
+      },
+      "skill": "classify",
+      "misconceptions": [
+        {
+          "id": "mc_5tqs",
+          "text": {
+            "zh-TW": "把進貨當成當期的費用，而不是存貨",
+            "en": "Treating a purchase of goods as this period's expense rather than inventory"
+          }
+        },
+        {
+          "id": "mc_dwv6",
+          "text": {
+            "zh-TW": "把買設備的錢當成當期的費用",
+            "en": "Treating the cost of equipment as this period's expense"
+          }
+        },
+        {
+          "id": "mc_bm3a",
+          "text": {
+            "zh-TW": "把利息費用放進銷管費用",
+            "en": "Putting interest expense among distribution costs and administrative expenses"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "classify",
+        "single_choice",
+        "pick_line"
+      ],
+      "termRefs": [
+        "tm_g5c2m8tw",
+        "tm_kyjfrraq",
+        "tm_gvrw06p3",
+        "tm_k6t2e9wr"
+      ]
+    },
+    {
+      "id": "obj_hz3wcr",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_s0525x",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能用期初存貨、本期進貨與期末存貨說明營業成本怎麼算，並說出期末存貨與資產負債表的連動",
+        "en": "Use opening inventory, purchases and closing inventory to explain how cost of sales is worked out, and say how closing inventory links to the balance sheet"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_8nbp",
+          "text": {
+            "zh-TW": "以為本期進貨多少，營業成本就是多少",
+            "en": "Thinking cost of sales simply equals this period's purchases"
+          }
+        },
+        {
+          "id": "mc_ek03",
+          "text": {
+            "zh-TW": "以為期末沒賣完的存貨也算進這期的成本",
+            "en": "Thinking unsold closing inventory is also part of this period's cost"
+          }
+        },
+        {
+          "id": "mc_ez5a",
+          "text": {
+            "zh-TW": "以為進貨會讓營業毛利下降",
+            "en": "Thinking that buying goods lowers gross profit"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "transaction_effect",
+        "pick_line",
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_v6j2k8sr",
+        "tm_p7h3c5xq",
+        "tm_q4k9v2nd",
+        "tm_g5c2m8tw",
+        "tm_n7v3k8pq"
+      ]
+    },
+    {
+      "id": "obj_vfc2zz",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_s0525x",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能判斷一筆收益或支出屬於本業還是業外、經常還是一次性，以及收入該在哪一期認列",
+        "en": "Judge whether an item of income or expense belongs to the core business or outside it, whether it is recurring or one-off, and in which period revenue should be recognised"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_w3wz",
+          "text": {
+            "zh-TW": "以為公司收到的任何收益都算營業收入",
+            "en": "Thinking any income the company receives counts as revenue"
+          }
+        },
+        {
+          "id": "mc_etqs",
+          "text": {
+            "zh-TW": "把一次性的收益當成每年都會有的經營成果",
+            "en": "Treating a one-off gain as a recurring result of the business"
+          }
+        },
+        {
+          "id": "mc_60qb",
+          "text": {
+            "zh-TW": "把客戶預付的錢當成已經賺到的收入",
+            "en": "Treating money received in advance from customers as revenue already earned"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "multi_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_v3n8q2ye",
+        "tm_6nmfxa10",
+        "tm_05t9wphy"
+      ]
+    }
+  ]
+}

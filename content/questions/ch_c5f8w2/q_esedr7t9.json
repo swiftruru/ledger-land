@@ -1,0 +1,77 @@
+{
+  "id": "q_esedr7t9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_y3ykhc",
+  "difficulty": 2,
+  "tags": [
+    "equation",
+    "inventory"
+  ],
+  "termRefs": [
+    "tm_c4sh8k2p",
+    "tm_n7v3k8pq",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 400000,
+        "share_capital": 400000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.purchase_inventory_cash",
+        "params": {
+          "amount": 36000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_inventory",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_total_assets",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "小山咖啡用現金 {{money:e1.amount}} 向豆商買進一批咖啡豆。這筆交易之後，下面三個數字各會怎麼變？",
+    "en": "Hillside Coffee pays {{money:e1.amount}} in cash to its supplier for a batch of coffee beans. After this transaction, how does each of the three figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金減少 {{money:e1.amount}}，存貨增加同樣的金額：一項資產換成另一項資產，資產總計不變。很多人以為花錢之後資產總計一定變少，其實錢只是換了一種形式。",
+    "en": "Cash falls by {{money:e1.amount}} and inventory rises by the same amount: one asset is swapped for another, so total assets stay the same. Many people expect total assets to fall whenever cash is spent, but the money has simply changed form."
+  },
+  "hint": {
+    "zh-TW": "想一想：豆子是不是也是資產？",
+    "en": "Ask yourself: are the beans an asset too?"
+  }
+}

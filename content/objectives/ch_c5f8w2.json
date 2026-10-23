@@ -1,0 +1,207 @@
+{
+  "chapterId": "ch_c5f8w2",
+  "items": [
+    {
+      "id": "obj_erqmw9",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_c5f8w2",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能把一家小店帳上的項目分成資產、負債與股東權益，並說出每一類代表什麼",
+        "en": "Classify the items in a small shop's books as assets, liabilities or equity, and say what each class represents"
+      },
+      "skill": "classify",
+      "misconceptions": [
+        {
+          "id": "mc_fjnf",
+          "text": {
+            "zh-TW": "以為只有現金才算資產，存貨與設備不算",
+            "en": "Thinking that only cash counts as an asset, not inventory or equipment"
+          }
+        },
+        {
+          "id": "mc_drhv",
+          "text": {
+            "zh-TW": "把向銀行借來的錢當成公司自己的錢（股東權益）",
+            "en": "Treating money borrowed from the bank as the company's own money (equity)"
+          }
+        },
+        {
+          "id": "mc_8ef5",
+          "text": {
+            "zh-TW": "把股東出的資金當成公司欠股東的債",
+            "en": "Treating the owners' capital as a debt the company owes them"
+          }
+        },
+        {
+          "id": "mc_5841",
+          "text": {
+            "zh-TW": "把營業收入當成資產",
+            "en": "Treating revenue as an asset"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "classify",
+        "single_choice",
+        "true_false",
+        "multi_choice"
+      ],
+      "termRefs": [
+        "tm_r4w8n2qe",
+        "tm_h6p2k9wd",
+        "tm_x3n8v5tc"
+      ]
+    },
+    {
+      "id": "obj_y3ykhc",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_c5f8w2",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能用會計恆等式（資產＝負債＋股東權益）判斷一筆交易之後哪些項目變動、帳是否仍然平衡",
+        "en": "Use the accounting equation (assets = liabilities + equity) to work out which items change after a transaction and whether the books still balance"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_p1hw",
+          "text": {
+            "zh-TW": "以為花錢買東西之後資產總計一定變少",
+            "en": "Thinking that total assets must fall whenever cash is spent"
+          }
+        },
+        {
+          "id": "mc_cw9g",
+          "text": {
+            "zh-TW": "以為借到錢之後股東權益變多",
+            "en": "Thinking that borrowing money increases equity"
+          }
+        },
+        {
+          "id": "mc_rs0d",
+          "text": {
+            "zh-TW": "以為一筆交易只會動到一個項目",
+            "en": "Thinking that a transaction changes only one item"
+          }
+        },
+        {
+          "id": "mc_mekj",
+          "text": {
+            "zh-TW": "把股東權益總額當成這一期賺到的錢",
+            "en": "Treating total equity as the profit earned this period"
+          }
+        },
+        {
+          "id": "mc_vqv2",
+          "text": {
+            "zh-TW": "把資產總計當成帳上的現金",
+            "en": "Treating total assets as the cash on hand"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "transaction_effect",
+        "true_false",
+        "single_choice",
+        "multi_choice"
+      ],
+      "termRefs": [
+        "tm_cfghjxzq",
+        "tm_t7a3s6wb",
+        "tm_ec80jjev"
+      ]
+    },
+    {
+      "id": "obj_39p0w4",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_c5f8w2",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能說明報表上的每個數字都來自交易紀錄，並從數字倒推公司做過哪一類交易",
+        "en": "Explain that every figure on the statements comes from recorded transactions, and infer from a figure what kind of transaction the company must have made"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_7xv8",
+          "text": {
+            "zh-TW": "以為先有報表，再把交易填進去",
+            "en": "Thinking that the statements come first and transactions are filled in afterwards"
+          }
+        },
+        {
+          "id": "mc_20c1",
+          "text": {
+            "zh-TW": "看到帳上現金變多就以為公司一定有賺錢",
+            "en": "Assuming the company must have made a profit because cash went up"
+          }
+        },
+        {
+          "id": "mc_n6zm",
+          "text": {
+            "zh-TW": "以為報表上的數字查不出來源",
+            "en": "Thinking that figures on the statements cannot be traced back to anything"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "transaction_effect"
+      ],
+      "termRefs": [
+        "tm_sf72dfsv",
+        "tm_c4sh8k2p"
+      ]
+    },
+    {
+      "id": "obj_nd6s2j",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_c5f8w2",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能像一個會追問的讀者，說出讀一張報表時該問的問題",
+        "en": "Read a statement like a reader who keeps asking questions, and say what to ask when reading one"
+      },
+      "skill": "judge",
+      "misconceptions": [
+        {
+          "id": "mc_xqfm",
+          "text": {
+            "zh-TW": "以為報表上的數字一定正確、不必追問",
+            "en": "Assuming the figures on a statement must be right and need no questioning"
+          }
+        },
+        {
+          "id": "mc_1ppe",
+          "text": {
+            "zh-TW": "只看本期淨利，不看錢從哪裡來",
+            "en": "Looking only at profit and not at where the money came from"
+          }
+        }
+      ],
+      "plannedQuestions": 3,
+      "suggestedTypes": [
+        "single_choice",
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_sf72dfsv",
+        "tm_tkj8x3a7",
+        "tm_67e7f0mn"
+      ]
+    }
+  ]
+}

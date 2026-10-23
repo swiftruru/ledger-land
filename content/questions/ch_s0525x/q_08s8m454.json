@@ -1,0 +1,106 @@
+{
+  "id": "q_08s8m454",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vqayt8",
+  "difficulty": 2,
+  "tags": [
+    "non_operating",
+    "pick_line"
+  ],
+  "termRefs": [
+    "tm_k6t2e9wr",
+    "tm_gvrw06p3",
+    "tm_kyjfrraq"
+  ],
+  "scored": true,
+  "type": "pick_line",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 200000,
+        "inventory": 120000,
+        "share_capital": 320000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_cash",
+        "params": {
+          "price": 190000
+        }
+      },
+      {
+        "id": "e2",
+        "template": "tpl.purchase_inventory_cash",
+        "params": {
+          "amount": 150000
+        }
+      },
+      {
+        "id": "e3",
+        "template": "tpl.pay_packing_freight_cash",
+        "params": {
+          "amount": 15000
+        }
+      },
+      {
+        "id": "e4",
+        "template": "tpl.pay_outsourcing_cash",
+        "params": {
+          "amount": 20000
+        }
+      },
+      {
+        "id": "e5",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 100000
+        }
+      },
+      {
+        "id": "e6",
+        "template": "tpl.repay_all_short_term_loans_with_interest",
+        "params": {
+          "interest": 3000
+        }
+      },
+      {
+        "id": "e7",
+        "template": "tpl.pay_income_tax_cash",
+        "params": {
+          "amount": 6000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": []
+  },
+  "statement": "is",
+  "correctLines": [
+    "is_interest_expense"
+  ],
+  "feedbackByLine": {
+    "is_sga_total": {
+      "zh-TW": "利息不是為了賣文具而發生的開支，所以不在銷管費用裡。",
+      "en": "Interest is not a cost of selling stationery, so it is not among distribution costs and administrative expenses."
+    },
+    "is_non_operating_expense_total": {
+      "zh-TW": "很接近了：這是營業外支出的小計，利息費用是它上面的明細列。",
+      "en": "Very close: this is the subtotal of non-operating expenses; interest expense is the detail line above it."
+    }
+  },
+  "prompt": {
+    "zh-TW": "日暮文具社這一期付了銀行利息。請在損益表上點出利息費用出現的那一列。",
+    "en": "Sunset Stationery paid bank interest this period. Tap the line on the income statement where interest expense appears."
+  },
+  "explanation": {
+    "zh-TW": "利息是借錢的代價，和本業無關，所以放在營業外支出底下。它在營業利益之後才扣，不會影響營業利益。",
+    "en": "Interest is the price of borrowing and unrelated to the core business, so it sits under non-operating expenses. It is deducted after operating profit and does not affect it."
+  }
+}

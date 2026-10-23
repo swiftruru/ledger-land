@@ -1,0 +1,70 @@
+{
+  "id": "q_hcgqc0me",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_1kbk22",
+  "difficulty": 2,
+  "tags": [
+    "linkage",
+    "cash"
+  ],
+  "termRefs": [
+    "tm_12k2yq6k",
+    "tm_c4sh8k2p",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "pick_line",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 90000,
+        "inventory": 40000,
+        "share_capital": 130000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_cash",
+        "params": {
+          "price": 65000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": []
+  },
+  "statement": "bs",
+  "correctLines": [
+    "bs_cash"
+  ],
+  "feedbackByLine": {
+    "bs_total_assets": {
+      "zh-TW": "資產總計確實也包含現金，這點沒錯。但它還加上了存貨和設備，所以比現金大得多。",
+      "en": "Total assets do include cash, that much is right. But they also add inventories and equipment, so the figure is much larger than cash."
+    },
+    "bs_retained_earnings": {
+      "zh-TW": "未分配盈餘連到的是損益表的本期淨利，不是現金流量表的期末現金。",
+      "en": "Unappropriated retained earnings link to profit for the period on the income statement, not to closing cash on the statement of cash flows."
+    }
+  },
+  "prompt": {
+    "zh-TW": "風行腳踏車行這一期的現金流量表最後一列是「期末現金及約當現金餘額」。這個數字會原封不動地出現在資產負債表的哪一列？請在資產負債表上點出來。",
+    "en": "The last line of Breeze Bicycles' statement of cash flows for the period is \"cash and cash equivalents at the end of the period\". On which line of the balance sheet does the very same figure appear? Tap that line on the balance sheet."
+  },
+  "explanation": {
+    "zh-TW": "現金流量表從期初現金出發，加上三類活動的現金流量，算到期末現金；這個期末現金就是資產負債表第一列的現金及約當現金。兩張表在這裡握手。",
+    "en": "The statement of cash flows starts from opening cash, adds the cash flows of the three activities and arrives at closing cash; that closing cash is the cash and cash equivalents line at the top of the balance sheet. The two statements shake hands here."
+  },
+  "display": {
+    "statements": [
+      "cf",
+      "bs"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "q_9fhmrxf9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_hz3wcr",
+  "difficulty": 2,
+  "tags": [
+    "cost_of_sales",
+    "gross_profit"
+  ],
+  "termRefs": [
+    "tm_g8p4w1rz",
+    "tm_p7h3c5xq",
+    "tm_n7v3k8pq"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "日暮文具社這個月多進了很多貨但還沒賣出，所以這個月的營業毛利會下降。",
+    "en": "Sunset Stationery bought a lot of extra goods this month but has not sold them yet, so this month's gross profit will fall."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "進貨確實讓「本期進貨」那一列變大，這點沒錯。但還沒賣出的貨會留在「期末存貨」被減回去，營業成本不變，營業毛利也就不變。",
+    "en": "Purchases do make the \"purchases\" line larger, you are right about that. But the unsold goods stay in \"closing inventory\" and are deducted back, so cost of sales does not change and neither does gross profit."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。沒賣出的貨是存貨，不是成本；營業毛利只跟賣出去的部分有關。",
+    "en": "Correct. Unsold goods are inventory, not cost; gross profit depends only on what was sold."
+  },
+  "misconceptionId": "mc_ez5a",
+  "explanation": {
+    "zh-TW": "營業毛利＝營業收入－營業成本，而營業成本只算賣出去的貨。進了貨還沒賣，只是存貨變多、現金或應付帳款變動，損益表的五層利益一層都不動。",
+    "en": "Gross profit = revenue less cost of sales, and cost of sales counts only goods that were sold. Buying goods that remain unsold only raises inventory and changes cash or payables; none of the five profit levels moves."
+  }
+}

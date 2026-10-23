@@ -1,0 +1,42 @@
+{
+  "id": "q_rv5zx8qv",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vfc2zz",
+  "difficulty": 2,
+  "tags": [
+    "accrual",
+    "vouchers"
+  ],
+  "termRefs": [
+    "tm_05t9wphy",
+    "tm_v3n8q2ye",
+    "tm_bcs4fvmn"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "vars": {
+    "sold": 60000,
+    "redeemed": 14000
+  },
+  "statement": {
+    "zh-TW": "河岸麵包坊這個月推出麵包禮券，一共賣出 {{money:vars.sold}}，到月底只有 {{money:vars.redeemed}} 的禮券被拿來換麵包。這個月的損益表可以認列 {{money:vars.sold}} 的營業收入。",
+    "en": "This month Riverside Bakery launched bread vouchers and sold {{money:vars.sold}} of them; by month end only {{money:vars.redeemed}} worth had been exchanged for bread. This month's income statement can recognise {{money:vars.sold}} of revenue."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "錢確實全部收到了，這點沒錯。但收入要在客人拿到麵包時才算賺到：這個月賺到的只有已兌換的 {{money:vars.redeemed}}，還沒兌換的禮券是麵包坊欠客人的，要記成預收收入。",
+    "en": "All the money has indeed been received, that much is right. But revenue is earned only when the customer gets the bread: this month's revenue is just the {{money:vars.redeemed}} redeemed, and the unredeemed vouchers are what the bakery owes its customers, recorded as contract liabilities."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。這個月能認列的營業收入是已兌換的 {{money:vars.redeemed}}；其餘的禮券等客人來換麵包時，才一張一張變成收入。",
+    "en": "That's right. This month's revenue is the {{money:vars.redeemed}} already redeemed; the rest of the vouchers become revenue one by one as customers exchange them for bread."
+  },
+  "misconceptionId": "mc_60qb",
+  "explanation": {
+    "zh-TW": "權責發生制看的是麵包交出去了沒，不是錢收到了沒。賒銷是「賺到但沒收到」，預售禮券則是「收到但還沒賺到」，兩種情況現金和收入都不同步。",
+    "en": "The accrual basis asks whether the bread has been handed over, not whether the cash has arrived. A credit sale is \"earned but not received\"; a pre-sold voucher is \"received but not yet earned\". In both cases cash and revenue are out of step."
+  }
+}
