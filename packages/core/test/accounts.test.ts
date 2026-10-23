@@ -160,12 +160,18 @@ describe('accounts.json 的完整性（04 第 4.2、4.3、4.5 節）', () => {
     }
   });
 
-  it('D13 A：修正寫法是主要顯示，教材原字收進別名；短期放貨維持原字（T09）', () => {
+  it('D13 A 與 T09：修正寫法是主要顯示，教材原字收進別名並帶 typo_fixed；T11：利息費用為主要顯示，支付利息為別名', () => {
     expect(chart.byId.get('accounts_payable')?.labels.aliases['zh-TW']).toContain('應付賬款');
     expect(chart.byId.get('accounts_payable')?.labels.teacher['zh-TW']).toBe('應付帳款');
     const loans = chart.byId.get('short_term_loans_receivable')!;
-    expect(loans.labels.teacher['zh-TW']).toBe('短期放貨');
-    expect(loans.pendingRefs).toContain('T09');
+    expect(loans.labels.teacher['zh-TW']).toBe('短期放款');
+    expect(loans.labels.aliases['zh-TW']).toContain('短期放貨');
+    expect(loans.flags).toContain('typo_fixed');
+    expect(loans.pendingRefs).toEqual([]);
+    const interest = chart.byId.get('interest_expense')!;
+    expect(interest.labels.teacher['zh-TW']).toBe('利息費用');
+    expect(interest.labels.aliases['zh-TW']).toContain('支付利息');
+    expect(interest.pendingRefs).toEqual(['T11']);
   });
 
   it('文字規則：沒有破折號，英文用英式拼字', () => {

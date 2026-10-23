@@ -13,8 +13,8 @@
   "confidence": "high",
   "pendingRefs": ["T24", "T38"],
   "note": {
-    "zh-TW": "模板寫「負債比例」；年報的財務分析稱負債占資產比率。參考值待確認（T24），與權益倍數的對照待確認（T38）。",
-    "en": "The template says debt proportion; annual reports call it the liabilities to assets ratio. The reference value (T24) and the link with the equity multiplier (T38) are pending."
+    "zh-TW": "模板寫「負債比例」；年報的財務分析稱負債占資產比率。課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）；與權益倍數的換算關係在解說中補上（設計說明見 T38）。",
+    "en": "The template says debt proportion; annual reports call it the liabilities to assets ratio. The course threshold is shown only as a course reference value and is not scored (see the design note T24); the conversion to the equity multiplier is given in the explanation (see the design note T38)."
   },
   "definition": {
     "zh-TW": "負債總額占資產總計的比率，衡量公司的資產有多少是靠借來的錢撐起來的。數值越高，財務風險越大；越低表示靠股東的錢比較多。",

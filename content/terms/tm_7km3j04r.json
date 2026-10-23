@@ -10,11 +10,11 @@
   "ifrsEnglish": null,
   "aliases": { "zh-TW": ["營業利益佔時收資本比率", "營業利益占實收資本比率"], "en": [] },
   "flags": ["typo_fixed"],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": ["T23"],
   "note": {
-    "zh-TW": "模板「時收」應為「實收」，顯示修正寫法，模板原文列為別名；是否仍屬現行年報指標待確認（T23），暫標「延伸指標」。",
-    "en": "The template label contains a typo for paid-in; the corrected wording is shown and the original kept as an alias. Whether it is still a current annual report ratio is pending (T23), so it is marked as an extension ratio for now."
+    "zh-TW": "模板「時收」應為「實收」，顯示修正寫法，模板原文列為別名；依 14 的決定列為「延伸指標」，是否仍屬現行年報指標在出題前查證（設計說明見 T23）。",
+    "en": "The template label contains a typo for paid-in; the corrected wording is shown and the original kept as an alias. It is marked as an extension ratio by decision; whether it is still a current annual report ratio is checked before questions are written (see the design note T23)."
   },
   "definition": {
     "zh-TW": "營業利益相對於股東實收資本的比率，只看本業賺回多少本錢。數值越高表示本業的獲利能力越強。",

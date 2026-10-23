@@ -4,17 +4,17 @@
   "revKind": "text",
   "status": "draft",
   "category": "statement",
-  "label": { "zh-TW": "支付利息(+)", "en": "Interest expense (+)" },
+  "label": { "zh-TW": "利息費用(+)", "en": "Interest expense (+)" },
   "teacherLabel": "支付利息(+)",
   "currentTwLabel": "利息費用",
   "ifrsEnglish": "Interest expense",
-  "aliases": { "zh-TW": ["利息費用(+)"], "en": [] },
+  "aliases": { "zh-TW": ["支付利息(+)"], "en": [] },
   "flags": ["japanese"],
   "confidence": "high",
   "pendingRefs": ["T11"],
   "note": {
-    "zh-TW": "列名直譯自日文支払利息；T11 回覆後再定主要顯示，建議寫法「利息費用(+)」先列為別名。",
-    "en": "The label is a direct translation of the Japanese for interest expense; the main display will be settled after T11, and the suggested wording is kept as an alias for now."
+    "zh-TW": "課程的列名「支付利息(+)」直譯自日文支払利息；網站主要顯示改為「利息費用(+)」，課程原字收進別名（設計說明見 T11）。",
+    "en": "The course label is a direct translation of the Japanese for interest expense; the site shows interest expense (+) and keeps the course wording as an alias (see the design note T11)."
   },
   "definition": {
     "zh-TW": "間接法的加回列：先把本期的利息費用加回稅前淨利，再在下面的利息支出列扣掉實際付出的利息。這裡指的是費用，不是付現。",

@@ -10,7 +10,7 @@
   "ifrsEnglish": null,
   "aliases": { "zh-TW": ["資本公積占股本比率"], "en": [] },
   "flags": [],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": ["T17"],
   "note": { "zh-TW": "老師自訂的比率，非標準指標（T17），不計分。", "en": "A teacher-defined ratio rather than a standard one (T17); not scored." },
   "definition": { "zh-TW": "資本公積相對於股本的比率，看股東投入超過面額的部分有多少。", "en": "Capital surplus relative to share capital: how much the shareholders contributed above par value." },

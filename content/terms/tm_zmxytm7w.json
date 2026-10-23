@@ -21,13 +21,13 @@
     "japanese",
     "unused"
   ],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": [
     "T15"
   ],
   "note": {
-    "zh-TW": "直譯自日文的評価・換算差額等；台灣現行報表稱其他權益，對照等老師確認（T15）。",
-    "en": "A direct translation of the Japanese equity caption; current Taiwanese statements call it other components of equity, and the mapping awaits the teacher (T15)."
+    "zh-TW": "直譯自日文的評価・換算差額等；台灣現行報表稱其他權益，網站維持課程名稱為主要顯示並加現行對照（設計說明見 T15）。",
+    "en": "A direct translation of the Japanese equity caption; current Taiwanese statements call it other components of equity, and the site keeps the course name as the main display with the current caption alongside (see the design note T15)."
   },
   "definition": {
     "zh-TW": "模板裡放資產評價與外幣換算差額的權益項目。本課未用。",

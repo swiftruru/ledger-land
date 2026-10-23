@@ -24,8 +24,8 @@
     "T12"
   ],
   "note": {
-    "zh-TW": "攤銷遞延資產的加回列預設放在這裡（T12）；攤銷的分類另待確認（T05）。",
-    "en": "The add-back for amortisation of deferred assets goes here by default (T12); its classification is also pending (T05)."
+    "zh-TW": "攤銷遞延資產的加回列預設放在這裡（T12）；攤銷在損益表列營業外支出（設計說明見 T05）。",
+    "en": "The add-back for amortisation of deferred assets goes here by default (T12); on the income statement the amortisation is shown under non-operating expenses (see the design note T05)."
   },
   "definition": {
     "zh-TW": "折舊以外、沒有付現的費用或損失的加回列，例如遞延資產的攤銷。這些項目減少了利潤卻沒有減少現金，所以要加回。",

@@ -3,7 +3,19 @@
 import { describe, expect, it } from 'vitest';
 import { validateBundle } from '@ledgerland/content-schema';
 import { hasErrors, parseBundle, runAccountingChecks } from '../lib/content-rules.mjs';
-import { bundleWith, q172, q172Expected, q172Values, qCurrentRatioNa, qJournal, qJournalExpectedEntries, qMulti, qRoa, storyEntry } from './fixtures.ts';
+import {
+  blockedTemplateEntry,
+  bundleWith,
+  q172,
+  q172Expected,
+  q172Values,
+  qCurrentRatioNa,
+  qJournal,
+  qJournalExpectedEntries,
+  qMulti,
+  qRoa,
+  storyEntry,
+} from './fixtures.ts';
 
 const FAST = { samples: 2 };
 const run = (questions: Record<string, unknown>[], extra?: Parameters<typeof bundleWith>[1]) => {
@@ -82,15 +94,31 @@ describe('04 第 17.11 節的分錄題（acct.entryBlocked）', () => {
     expect(byAccount(r.acct.compiled.get('q_y3m7k2dw')?.expectedEntries)).toEqual(byAccount(qJournalExpectedEntries));
   });
 
-  it('用帶 entryQuestionBlockedBy 的範本（tpl.amortise_org_costs）被擋', () => {
-    const events = [{ id: 'e1', template: 'tpl.amortise_org_costs', params: { years: 5 } }];
-    const r = run([{ ...qJournal, scenario: { ...qJournal.scenario, opening: { storyRef: 'story_q7m2v9', afterStep: 'st_f4g5h6' }, events } }]);
+  it('用帶 entryQuestionBlockedBy 的自編範本（tpl.test_blocked_amortise，T99）被擋；內建範本都不帶這個欄位', () => {
+    const events = [{ id: 'e1', template: 'tpl.test_blocked_amortise', params: { years: 5 } }];
+    const r = run([{ ...qJournal, scenario: { ...qJournal.scenario, opening: { storyRef: 'story_q7m2v9', afterStep: 'st_f4g5h6' }, events } }], {
+      templates: [blockedTemplateEntry],
+    });
     const hit = r.errors.filter((i) => i.rule === 'acct.entryBlocked');
     expect(hit).toHaveLength(1);
     expect(hit[0]!.path).toBe('scenario.events.0.template');
-    expect(hit[0]!.message).toContain('T04');
+    expect(hit[0]!.message).toContain('T99');
     // schema 層（validateBundle）也擋
     expect(r.schema.some((i) => i.path === 'scenario.events.0.template' && i.message.includes('entryQuestionBlockedBy'))).toBe(true);
+    // 同一題改用內建的攤銷範本就不再被擋（T04、T05 已決定），只剩 pendingRefs 的警告
+    const builtIn = run([
+      {
+        ...qJournal,
+        scenario: {
+          ...qJournal.scenario,
+          opening: { storyRef: 'story_q7m2v9', afterStep: 'st_f4g5h6' },
+          events: [{ ...events[0]!, template: 'tpl.amortise_org_costs' }],
+        },
+      },
+    ]);
+    expect(builtIn.errors.filter((i) => i.rule === 'acct.entryBlocked')).toEqual([]);
+    expect(builtIn.schema.some((i) => i.message.includes('entryQuestionBlockedBy'))).toBe(false);
+    expect(builtIn.acct.issues.some((i) => i.rule === 'acct.pendingBlocked' && i.message.includes('T04'))).toBe(true);
   });
 
   it('計分題用到只帶 pendingRefs 的範本只警告（acct.pendingBlocked），不擋', () => {

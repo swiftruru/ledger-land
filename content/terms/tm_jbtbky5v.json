@@ -12,7 +12,7 @@
   "flags": [],
   "confidence": "high",
   "pendingRefs": ["T24", "T25"],
-  "note": { "zh-TW": "模板分子的符號問題（T25）；參考值待確認（T24）。", "en": "The sign issue in the template numerator (T25) and the reference value (T24) are pending." },
+  "note": { "zh-TW": "模板分子的符號問題由網站修正，分子扣除股利（設計說明見 T25）；課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）。", "en": "The site corrects the sign issue in the template numerator by deducting dividends (see the design note T25); the course threshold is shown only as a course reference value and is not scored (see the design note T24)." },
   "definition": {
     "zh-TW": "營業活動的現金扣掉股利後，有多少比例重新投入公司的資產（毛額固定資產、長期投資、其他資產與營運資金）。數值越高表示公司把賺到的現金留下來擴充。",
     "en": "The share of operating cash, after dividends, that is reinvested in the company's assets (gross fixed assets, long-term investments, other assets and working capital). Higher means more of the cash earned is kept to grow the business."

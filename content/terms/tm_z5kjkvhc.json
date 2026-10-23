@@ -26,8 +26,8 @@
     "T15"
   ],
   "note": {
-    "zh-TW": "保證金的性質待確認（T15）；減少時以負數填同一列（T12）。",
-    "en": "The nature of deposits received is pending (T15); a decrease is entered as a negative on the same line (T12)."
+    "zh-TW": "保證金依課程模板列流動負債，歸入這一列（設計說明見 T15）；減少時以負數填同一列（T12）。",
+    "en": "Deposits received follow the course template as a current liability and belong on this line (see the design note T15); a decrease is entered as a negative on the same line (T12)."
   },
   "definition": {
     "zh-TW": "保證金、預收收入等營業性的其他負債增加時的加回列。應付所得稅、應付利息、借款與應付股利不能放在這裡，否則會和其他列重複計算。",

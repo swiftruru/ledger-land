@@ -10,11 +10,11 @@
   "ifrsEnglish": "Capital surplus",
   "aliases": { "zh-TW": [], "en": ["Share premium", "Additional paid-in capital"] },
   "flags": ["unused"],
-  "confidence": "pending",
+  "confidence": "medium",
   "pendingRefs": ["T16"],
   "note": {
-    "zh-TW": "台灣用語，IFRS 沒有單一對應名詞；教材列出的來源與用途等老師確認（T16）。",
-    "en": "A Taiwanese term with no single IFRS equivalent; the sources and uses listed in the course await the teacher (T16)."
+    "zh-TW": "台灣用語，IFRS 沒有單一對應名詞；教材列出的來源與用途標「舊制分類」，教學以現行公司法與 IFRS 為主（設計說明見 T16）。",
+    "en": "A Taiwanese term with no single IFRS equivalent; the sources and uses listed in the course are marked as the older classification, and teaching follows the current Company Act and IFRS (see the design note T16)."
   },
   "definition": {
     "zh-TW": "股東投入超過股票面額的部分，以及其他不是來自營業的權益增加。本課的故事沒有用到。",

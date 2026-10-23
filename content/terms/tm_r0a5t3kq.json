@@ -10,11 +10,11 @@
   "ifrsEnglish": null,
   "aliases": { "zh-TW": ["資產報酬率", "ROA"], "en": [] },
   "flags": [],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": ["T21"],
   "note": {
-    "zh-TW": "教材有四種寫法（指標登錄檔分為 excel、slides03、slides02、dupont 四個版本），計分口徑待確認（T21）。",
-    "en": "The course gives four versions (excel, slides03, slides02 and dupont in the ratio registry); the scoring basis is pending (T21)."
+    "zh-TW": "教材有四種寫法（指標登錄檔分為 excel、slides03、slides02、dupont 四個版本），計分看題目指定的版本（設計說明見 T21）。",
+    "en": "The course gives four versions (excel, slides03, slides02 and dupont in the ratio registry); scoring uses the version the question specifies (see the design note T21)."
   },
   "definition": {
     "zh-TW": "公司用全部資產賺到多少獲利，看資產運用的整體報酬。數值越高表示每一份資產賺得越多。",

@@ -10,7 +10,7 @@
   "ifrsEnglish": null,
   "aliases": { "zh-TW": [], "en": ["Ordinary income"] },
   "flags": ["not_ifrs_line", "japanese"],
-  "confidence": "pending",
+  "confidence": "high",
   "pendingRefs": ["T01", "T03"],
   "ifrsBasis": "IAS 1.87",
   "note": {

@@ -13,8 +13,8 @@
   "confidence": "high",
   "pendingRefs": ["T24"],
   "note": {
-    "zh-TW": "教材英文寫 interest guarantee，不是通用說法，列為別名；參考值待確認（T24）。",
-    "en": "The course's English term interest guarantee is not standard usage and is kept as an alias; the reference value is pending (T24)."
+    "zh-TW": "教材英文寫 interest guarantee，不是通用說法，列為別名；課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）。",
+    "en": "The course's English term interest guarantee is not standard usage and is kept as an alias; the course threshold is shown only as a course reference value and is not scored (see the design note T24)."
   },
   "definition": {
     "zh-TW": "扣利息與所得稅前的獲利是利息費用的幾倍，看公司賺的錢夠不夠付利息。倍數越高，付息越沒有壓力。",

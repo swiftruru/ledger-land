@@ -26,13 +26,13 @@
   "flags": [
     "simplified"
   ],
-  "confidence": "pending",
+  "confidence": "medium",
   "pendingRefs": [
     "T22"
   ],
   "note": {
-    "zh-TW": "模板標題是「歸屬於母公司業主之權益報酬率」，教材另以 CIAS 代稱（不是通用縮寫）；0-2 簡化為 Profit÷E，介面加「簡化」標記。名稱與計分口徑待確認（T22）。",
-    "en": "The template heading is return on equity attributable to owners of the parent, and the course also uses the non-standard abbreviation CIAS; the 0-2 slides simplify it to Profit over E with a simplified marker. The name and scoring basis are pending (T22)."
+    "zh-TW": "模板標題是「歸屬於母公司業主之權益報酬率」，教材另以 CIAS 代稱（不是通用縮寫）；0-2 簡化為 Profit÷E，介面加「簡化」標記。名稱與計分口徑依 14 的決定處理：顯示通用名稱，計分看題目指定的版本（設計說明見 T22）。",
+    "en": "The template heading is return on equity attributable to owners of the parent, and the course also uses the non-standard abbreviation CIAS; the 0-2 slides simplify it to Profit over E with a simplified marker. The name and scoring basis follow the decision in 14: the common name is shown and scoring uses the version the question specifies (see the design note T22)."
   },
   "definition": {
     "zh-TW": "股東投入的權益賺到多少獲利，是股東最關心的報酬率。數值越高表示股東的錢用得越有效率；杜邦分析把它拆成純益率、總資產週轉率與權益倍數。",
