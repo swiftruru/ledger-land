@@ -22,6 +22,11 @@ msgstr "The issue page of the GitHub repository"
 msgid "term.ifrsEnglish"
 msgstr "IFRS term"
 
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.why.3"
+msgstr "That is how LedgerLand began. It is not meant to replace the course; it is more like an exercise book you can leaf through and press."
+
 #. 首頁大標題，站名
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
@@ -42,6 +47,11 @@ msgstr "What we do not do"
 #: src/pages/Privacy.tsx
 msgid "privacy.not.body"
 msgstr "No sign in, no collection of names or student numbers, no cookies, and your answers never leave your device. Apart from the analytics script described below, no third party scripts, fonts or images are loaded."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.languages.1"
+msgstr "Chinese is the language of the classroom; English is the language of the standards. Every line in the statements and every term has both forms, and they come from the same data, not two translations kept apart. When you switch language, the question you are working on does not disappear."
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -89,6 +99,16 @@ msgid "debug.storage"
 msgstr "Storage"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.languages.title"
+msgstr "Two languages"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.open.title"
+msgstr "Why it is public"
+
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.updated"
 msgstr "Last updated: 22 October 2026"
@@ -123,6 +143,11 @@ msgstr "Glossary"
 #: src/pages/Terms.tsx
 msgid "terms.title"
 msgstr "Glossary"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.2"
+msgstr "The only thing taken directly is the setting and the amounts of the company in the story, because they are the same figures used in class, which makes comparing easiest. This was done with the teacher's consent and is set out in the licence notes."
 
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
@@ -166,6 +191,11 @@ msgid "settings.flavor.violet"
 msgstr "Night sky"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.mobile.1"
+msgstr "Most people will open it on a phone, perhaps on the train, perhaps before sleep. So every page is designed for a small screen first, and once added to the home screen it keeps working without a network."
+
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.delete.title"
 msgstr "How to delete"
@@ -174,6 +204,11 @@ msgstr "How to delete"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.hint"
 msgstr "If you have turned on “Reduce Transparency” on your iPhone, the web page cannot read that setting; choose “Reduce transparency” here. Refraction only works in desktop Chromium browsers."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.open.2"
+msgstr "If you find something wrong, or have a better way of putting it, please tell me. This site will keep being mended, slowly."
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -196,11 +231,51 @@ msgstr "Ready to use offline."
 msgid "debug.copied"
 msgstr "Copied"
 
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.unsaid.2"
+msgstr "Later I felt that was too fine a grain, and too much of an imposition. As long as the treatment follows generally accepted accounting principles, the rest is for me to judge, and to write down the reasons. The teacher knows about this project and will keep an eye on the content; if there is a different view, it can simply be changed. Every choice of this kind is made a setting you can switch, not a rule written in stone."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.statements.title"
+msgstr "Reading the statements backwards"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.layout.3"
+msgstr "I do not want to take sides; I only want to put the differences where they can be seen."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.layout.2"
+msgstr "What I have done is put the two side by side: the statements are shown in the course layout, with a mark beside the items that do not exist in the current International Financial Reporting Standards, and you can open each one to see what is done today. In the lab you can also switch the whole set over to the standards version and see, for the same transactions, where the numbers differ under the two sets of rules."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.play.2"
+msgstr "I would like it to feel more like a walk, where a wrong turn means you simply go back and try again, rather than an exam to race through. The stars only record where you have been."
+
 #. 「我的」頁面標題
 #. js-lingui-explicit-id
 #: src/pages/Me.tsx
 msgid "me.title"
 msgstr "Me"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.statements.2"
+msgstr "So the main path here follows the same order. Debits, credits and journal entries have not gone away; they just sit a little further back, ready for when you want to know where the numbers come from."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.1"
+msgstr "All the questions, explanations and term cards have been written afresh; they are not textbook questions with the numbers swapped. The course material is a map, not an answer book."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.mobile.title"
+msgstr "Phone first, and it works offline"
 
 #. js-lingui-explicit-id
 #: src/pages/NotFound.tsx
@@ -233,6 +308,16 @@ msgid "term.teacherLabel"
 msgstr "Course wording"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.unsaid.1"
+msgstr "There are places where the course material is not explicit, such as whether start-up costs should be capitalised, where to record inventory found in surplus at stocktake, or which kind of activity interest paid belongs to. At first I made a long list of questions and meant to ask the teacher one by one."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.source.title"
+msgstr "One source for every number"
+
+#. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.numbers"
 msgstr "Number formats"
@@ -241,6 +326,11 @@ msgstr "Number formats"
 #: src/components/UpdatePrompt.tsx
 msgid "sw.update"
 msgstr "Update"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.why.1"
+msgstr "Halfway through the accounting course, I noticed that what stayed with me was not which account goes where, but the way the teacher told the story of one small company from beginning to end: money comes in to set it up, a computer is bought, a batch of goods arrives, it is sold, the company borrows, then pays it back. The three statements grew slowly out of these small things."
 
 #. js-lingui-explicit-id
 #: src/components/UpdatePrompt.tsx
@@ -262,6 +352,16 @@ msgstr "This site uses Cloudflare Web Analytics (provided and stored by Cloudfla
 #: src/pages/About.tsx
 msgid "about.license.materials"
 msgstr "This site’s licences do not cover the teacher’s course materials (slides, spreadsheets, questions, answers); the site does not include or distribute them."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.play.title"
+msgstr "No lives, no leaderboard"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.progress.2"
+msgstr "No tracking, no cookies. Only a visitor count that does not know who you are, so that I know whether anyone has come by."
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -289,6 +389,11 @@ msgid "settings.theme.light"
 msgstr "Light"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.colours.1"
+msgstr "The light theme is the colour of paper, and there are three dark ones: night sky, berry and wine. There is no particular reason, except that they are easier on the eyes after a while, and when you are reading at night it is nice to pick one you like."
+
+#. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.errors.clear"
 msgstr "Clear"
@@ -302,6 +407,11 @@ msgstr "Clearing browser data, or the browser clearing data after a long period 
 #: src/pages/Level.tsx
 msgid "level.demo.inputLabel"
 msgstr "Test amount input"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.why.title"
+msgstr "Why I wanted to make this"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -355,6 +465,11 @@ msgid "about.license.code"
 msgstr "Code: MIT licence."
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.open.1"
+msgstr "The code and the original content are both public. Partly because I think something made for learning ought to show how it was made; partly as a reminder to myself that every choice I write down should bear being read by others."
+
+#. js-lingui-explicit-id
 #: src/components/UpdatePrompt.tsx
 msgid "sw.later"
 msgstr "Later"
@@ -363,6 +478,11 @@ msgstr "Later"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.flavor.wine"
 msgstr "Red wine"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.progress.1"
+msgstr "The site needs no account. Your progress lives on your own phone or computer; when you change devices you can export a backup, and when you want it gone, you can clear it."
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -379,6 +499,21 @@ msgstr "The site has been updated"
 #: src/components/RouteError.tsx
 msgid "error.updated.body"
 msgstr "The site has been updated. Reload to continue; your progress has been saved."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.source.1"
+msgstr "Every number on this site, including balances, the three statements, the financial ratios and the answers to questions, is calculated from the same set of journal entries. No number is written in by hand anywhere else."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.unsaid.title"
+msgstr "The parts the teacher did not say"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.statements.1"
+msgstr "The teacher starts from the statements and then goes back to the transactions, rather than learning debits and credits before journal entries. I like this order, because it is closer to how most people come to know a company: see the result first, then ask why."
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -437,6 +572,16 @@ msgid "lang.label"
 msgstr "Language"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.layout.1"
+msgstr "The statement format used in the course has a few names that the current standards no longer use, such as ordinary profit, extraordinary gains and losses, and deferred assets. I have not removed them, because that is what you see in class."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.layout.title"
+msgstr "The course's layout, the current standards"
+
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.loss.title"
 msgstr "When data may be lost"
@@ -452,9 +597,19 @@ msgid "debug.hint"
 msgstr "This page only shows information on this device and sends nothing. Whether to share “Copy everything” with anyone is up to you."
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.unsaid.3"
+msgstr "Those choices, and the reasons for them, will be added to this page over time."
+
+#. js-lingui-explicit-id
 #: src/components/RouteError.tsx
 msgid "error.generic.body"
 msgstr "This page cannot be shown right now. You can go back to the home page, or take a screenshot of this screen to report it to us."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.footer"
+msgstr "This page will take shape alongside the system."
 
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
@@ -476,6 +631,21 @@ msgstr "There is no page at this address. The address may be mistyped, or the co
 #: src/pages/Home.tsx
 msgid "home.build.body"
 msgstr "This is the shell site of the foundations stage (M0b): the tab bar, language switch, appearance settings, sample glossary data and the demo question page are ready to try. Quest levels and the Statement Lab arrive in later milestones."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.source.2"
+msgstr "The reason is simple: if something is ever calculated wrongly, it is wrong in one place, and one fix is enough. It also means that when you change an amount in the lab, every statement after it changes with it, with no corner still holding the old number."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.progress.title"
+msgstr "Your progress stays in your hands"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.why.2"
+msgstr "I thought then that if this process could be turned into something you can play with by hand, letting the numbers run on their own, letting people see the trace each transaction leaves in the statements, perhaps accounting would feel less like a pile of rules to memorise."
 
 #. js-lingui-explicit-id
 #: src/components/RouteError.tsx
@@ -503,9 +673,29 @@ msgid "play.title"
 msgstr "Quest"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.play.1"
+msgstr "The quest area looks like a game, but there is no countdown, no stamina, and no rank to compete for. The levels do not lock you out either."
+
+#. js-lingui-explicit-id
 #: src/pages/Placeholder.tsx
 msgid "play.placeholder"
 msgstr "The quest map and levels arrive in later milestones."
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.design"
+msgstr "About the design"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.title"
+msgstr "About the design"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.design"
+msgstr "About the design"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -536,3 +726,13 @@ msgstr "Privacy"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.frost"
 msgstr "Frosted"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.title"
+msgstr "The questions are my own"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.colours.title"
+msgstr "Colours"

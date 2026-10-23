@@ -22,6 +22,11 @@ msgstr "GitHub repo 的 issue 頁面"
 msgid "term.ifrsEnglish"
 msgstr "IFRS 英文"
 
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.why.3"
+msgstr "LedgerLand 就是這樣開始的。它不是要取代課程，比較像一本可以翻、可以按的練習簿。"
+
 #. 首頁大標題，站名
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
@@ -42,6 +47,11 @@ msgstr "不做哪些事"
 #: src/pages/Privacy.tsx
 msgid "privacy.not.body"
 msgstr "不登入、不收集姓名或學號、不寫入 cookie、不把作答資料送出裝置；除了下面的流量統計腳本，不載入任何第三方腳本、字型或圖片。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.languages.1"
+msgstr "中文是課堂的語言，英文是準則的語言。報表的每一列、每一個名詞，都同時有兩種寫法，而且是同一份資料，不是兩份各自維護的翻譯。切換語言的時候，你正在做的題目不會消失。"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -89,6 +99,16 @@ msgid "debug.storage"
 msgstr "儲存"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.languages.title"
+msgstr "兩種語言"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.open.title"
+msgstr "公開的理由"
+
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.updated"
 msgstr "最後更新：2026 年 10 月 22 日"
@@ -123,6 +143,11 @@ msgstr "名詞圖鑑"
 #: src/pages/Terms.tsx
 msgid "terms.title"
 msgstr "名詞圖鑑"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.2"
+msgstr "唯一直接沿用的是故事裡那家公司的情境和金額，因為它和課堂上用的是同一組數字，對照起來最方便。這部分經過老師同意，也在授權說明裡寫清楚了。"
 
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
@@ -166,6 +191,11 @@ msgid "settings.flavor.violet"
 msgstr "夜空"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.mobile.1"
+msgstr "大多數人會在手機上打開它，可能在捷運上，可能在睡前。所以每一頁都先為小螢幕設計，加到主畫面之後，沒有網路也能繼續用。"
+
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.delete.title"
 msgstr "如何刪除"
@@ -174,6 +204,11 @@ msgstr "如何刪除"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.hint"
 msgstr "如果你在 iPhone 開了「降低透明度」，網頁讀不到這個設定，請在這裡選「降低透明度」。折射只在電腦版的 Chromium 瀏覽器有效。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.open.2"
+msgstr "如果你發現哪裡不對，或者有更好的說法，歡迎告訴我。這個網站會一直慢慢修。"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -196,11 +231,51 @@ msgstr "已經可以離線使用了。"
 msgid "debug.copied"
 msgstr "已複製"
 
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.unsaid.2"
+msgstr "後來覺得這樣太細了，也太打擾。只要做法符合一般公認的會計原則，剩下的就由我判斷，把理由寫下來。老師知道這個專案，會幫忙留意內容；有不一樣的意見，再改就好。每一個這樣的選擇，都做成可以切換的設定，不是寫死的規則。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.statements.title"
+msgstr "從報表倒著看"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.layout.3"
+msgstr "我不想替哪一邊選邊，只想把差異放在看得見的地方。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.layout.2"
+msgstr "我做的是把兩邊並排：報表照課程的版面顯示，旁邊標出哪些項目在現行的國際財務報導準則裡沒有，點開可以看到現在的做法是什麼。實驗室裡也可以整套切換成準則的版本，看看同一組交易在兩種規則下，數字差在哪裡。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.play.2"
+msgstr "我希望它比較像散步，走錯了可以回頭再走一次，而不是一場要衝過的考試。星星只是記錄你來過哪裡。"
+
 #. 「我的」頁面標題
 #. js-lingui-explicit-id
 #: src/pages/Me.tsx
 msgid "me.title"
 msgstr "我的"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.statements.2"
+msgstr "所以這裡的主線也是這樣。借貸和分錄沒有消失，只是放在後面一點的地方，等你想知道「數字從哪裡來」的時候再打開。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.1"
+msgstr "所有的題目、解說、名詞卡都是重新寫過的，不是把課本的題目換個數字。教材是地圖，不是答案本。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.mobile.title"
+msgstr "手機優先，離線也能用"
 
 #. js-lingui-explicit-id
 #: src/pages/NotFound.tsx
@@ -233,6 +308,16 @@ msgid "term.teacherLabel"
 msgstr "教材用語"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.unsaid.1"
+msgstr "教材裡有一些地方沒有明說，例如設立費要不要資本化、盤點多出來的存貨要記在哪裡、付利息算哪一種活動。一開始我列了一長串問題，想一條一條問老師。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.source.title"
+msgstr "數字只有一個來源"
+
+#. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.numbers"
 msgstr "數字格式"
@@ -241,6 +326,11 @@ msgstr "數字格式"
 #: src/components/UpdatePrompt.tsx
 msgid "sw.update"
 msgstr "更新"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.why.1"
+msgstr "會計課上到一半，我發現自己最記得的，不是哪個科目該放哪裡，而是老師把一家小公司的故事從頭講到尾：先拿錢成立，買了一台電腦，進了一批貨，賣掉，借錢，再還錢。三張報表就在這些小事裡慢慢長出來。"
 
 #. js-lingui-explicit-id
 #: src/components/UpdatePrompt.tsx
@@ -262,6 +352,16 @@ msgstr "本站使用 Cloudflare Web Analytics（服務由 Cloudflare 提供與�
 #: src/pages/About.tsx
 msgid "about.license.materials"
 msgstr "本站的授權不涵蓋老師的教材（投影片、Excel、題目、解答）；網站不收錄、不散布這些教材。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.play.title"
+msgstr "沒有生命值，沒有排行榜"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.progress.2"
+msgstr "沒有追蹤，沒有 cookie。只有一個不認得你是誰的訪客計數，讓我知道有沒有人來過。"
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -289,6 +389,11 @@ msgid "settings.theme.light"
 msgstr "淺色"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.colours.1"
+msgstr "淺色是紙的顏色，深色有三種：夜空、莓果、紅酒。沒有特別的理由，只是看久了眼睛舒服一點，而且晚上讀書的時候，想要可以選一個自己喜歡的。"
+
+#. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.errors.clear"
 msgstr "清除"
@@ -302,6 +407,11 @@ msgstr "清除瀏覽器資料，或長時間未使用時瀏覽器主動清除（
 #: src/pages/Level.tsx
 msgid "level.demo.inputLabel"
 msgstr "測試用的金額輸入框"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.why.title"
+msgstr "為什麼想做這個"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -355,6 +465,11 @@ msgid "about.license.code"
 msgstr "程式碼：MIT 授權。"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.open.1"
+msgstr "程式碼和原創的內容都是公開的。一方面是因為我覺得學習的東西本來就該讓人看見怎麼做出來的；另一方面也是提醒自己，寫下的每一個選擇都要經得起別人翻閱。"
+
+#. js-lingui-explicit-id
 #: src/components/UpdatePrompt.tsx
 msgid "sw.later"
 msgstr "稍後"
@@ -363,6 +478,11 @@ msgstr "稍後"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.flavor.wine"
 msgstr "紅酒"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.progress.1"
+msgstr "網站不需要帳號。你的進度存在你自己的手機或電腦裡，想換裝置的時候可以匯出備份，想清掉就清掉。"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -379,6 +499,21 @@ msgstr "網站已更新"
 #: src/components/RouteError.tsx
 msgid "error.updated.body"
 msgstr "網站已更新，重新整理即可繼續。你的進度已經存好。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.source.1"
+msgstr "網站裡所有的數字，包括餘額、三張報表、財務比率、題目的答案，都是從同一組分錄算出來的。沒有任何一個數字是另外手寫上去的。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.unsaid.title"
+msgstr "老師沒有說的部分"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.statements.1"
+msgstr "老師的教法是先看報表，再回頭看交易，而不是先學借貸再學分錄。我喜歡這個順序，因為它跟一般人認識一家公司的方式比較像：先看結果，再問為什麼。"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -437,6 +572,16 @@ msgid "lang.label"
 msgstr "語言"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.layout.1"
+msgstr "課程用的報表格式，有幾個現行準則已經不再使用的名字，像是經常利益、非常損益、遞延資產。我沒有把它們拿掉，因為那是課堂上會看到的樣子。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.layout.title"
+msgstr "課程的版面，現行的準則"
+
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.loss.title"
 msgstr "資料可能消失的情況"
@@ -452,9 +597,19 @@ msgid "debug.hint"
 msgstr "這一頁只在本機顯示資訊，不會送出任何資料；「複製全部結果」由你自己決定要不要貼給別人。"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.unsaid.3"
+msgstr "這一頁後面會慢慢補上那些選擇，以及為什麼。"
+
+#. js-lingui-explicit-id
 #: src/components/RouteError.tsx
 msgid "error.generic.body"
 msgstr "這一頁暫時無法顯示。你可以回到首頁，或先把這個畫面截圖回報給我們。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.footer"
+msgstr "這一頁會跟著系統一起慢慢成形。"
 
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
@@ -476,6 +631,21 @@ msgstr "這個網址沒有對應的頁面，可能是輸入錯誤，或內容已
 #: src/pages/Home.tsx
 msgid "home.build.body"
 msgstr "這是基礎建設階段（M0b）的殼層網站：導覽列、語言切換、外觀設定、名詞圖鑑的範例資料與作答示範頁都已經可以試用；闖關關卡與報表實驗室在之後的里程碑加入。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.source.2"
+msgstr "這樣做的理由很簡單：如果有一天某個地方算錯了，它只會錯在一個地方，改一次就好。也因為這樣，你在實驗室裡改了一筆金額，後面的每一張表都會跟著變，不會有哪個角落還留著舊的數字。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.progress.title"
+msgstr "進度留在你自己的手上"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.why.2"
+msgstr "那時候我想，如果可以把這個過程做成一個可以動手玩的東西，讓數字自己跑，讓人看見每一筆交易在報表裡留下的痕跡，也許會計就不會那麼像一堆要背的規則了。"
 
 #. js-lingui-explicit-id
 #: src/components/RouteError.tsx
@@ -503,9 +673,29 @@ msgid "play.title"
 msgstr "闖關區"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.play.1"
+msgstr "闖關區長得像遊戲，但這裡沒有倒數計時、沒有體力、沒有要跟別人比的名次。關卡也不會鎖住你。"
+
+#. js-lingui-explicit-id
 #: src/pages/Placeholder.tsx
 msgid "play.placeholder"
 msgstr "闖關地圖與關卡會在之後的里程碑加入。"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.design"
+msgstr "關於系統設計"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.title"
+msgstr "關於系統設計"
+
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.design"
+msgstr "關於系統設計"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -536,3 +726,13 @@ msgstr "隱私說明"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.frost"
 msgstr "霧面"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.title"
+msgstr "題目是自己寫的"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.colours.title"
+msgstr "顏色"

@@ -37,6 +37,7 @@ function buildRoutes(locale: Locale): RouteObject[] {
     { path: 'me/settings', lazy: lazyPage(() => import('../pages/Settings.tsx')), handle: { noindex: true } satisfies RouteHandle },
     { path: 'privacy', lazy: lazyPage(() => import('../pages/Privacy.tsx')) },
     { path: 'about', lazy: lazyPage(() => import('../pages/About.tsx')) },
+    { path: 'design', lazy: lazyPage(() => import('../pages/Design.tsx')) },
     { path: 'debug', lazy: lazyPage(() => import('../pages/Debug.tsx')), handle: { noindex: true } satisfies RouteHandle },
     { path: '*', Component: NotFound, handle: { locale, noindex: true } },
   ];

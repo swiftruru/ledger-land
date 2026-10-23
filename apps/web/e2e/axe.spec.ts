@@ -2,7 +2,7 @@
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const PAGES = ['/', '/level/lv_k7m2q9xd/', '/terms/', '/terms/tm_r4w8n2qe/', '/me/', '/me/settings/', '/privacy/', '/about/'];
+const PAGES = ['/', '/level/lv_k7m2q9xd/', '/terms/', '/terms/tm_r4w8n2qe/', '/me/', '/me/settings/', '/privacy/', '/about/', '/design/'];
 const THEMES = ['light', 'dark'] as const;
 
 test.skip(({ browserName }) => browserName !== 'chromium', 'axe 只在 Chromium 專案跑一次');
