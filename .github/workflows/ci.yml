@@ -126,8 +126,9 @@ jobs:
           path: .cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       # PR 只跑 Chromium（desktop-chromium 與 reduced-motion）與 3 次 Lighthouse，push 到 main 才跑三個瀏覽器與 5 次（2026-10-23，縮短 PR 的等待時間）
+      # PR 只裝 Chromium 且不跑 --with-deps：執行器映像已含 Chrome 的系統相依套件，apt 那一步偶爾要十分鐘（2026-10-23 量到）；main 裝三個瀏覽器時才需要
       - name: 安裝 Playwright 瀏覽器（PR 只裝 Chromium）
-        run: pnpm exec playwright install --with-deps ${{ github.event_name == 'pull_request' && 'chromium' || 'chromium webkit firefox' }}
+        run: pnpm exec playwright install ${{ github.event_name == 'pull_request' && 'chromium' || '--with-deps chromium webkit firefox' }}
       - name: E2E（對 apps/web 的 wrangler dev，重現 Workers 的 SPA fallback 與 _headers；PR 只跑 Chromium 專案）
         run: pnpm e2e ${{ github.event_name == 'pull_request' && '--project desktop-chromium --project reduced-motion' || '' }}
       - name: Lighthouse（main 5 次、PR 3 次取中位數；統計腳本指向 stub）

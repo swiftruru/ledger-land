@@ -76,7 +76,8 @@ jobs:
           path: .cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       # 預覽網址只跑 Chromium 專案（2026-10-23，縮短 PR 的等待時間）；三個瀏覽器在 push 到 main 的 ci 跑
-      - run: pnpm exec playwright install --with-deps chromium
+      # 不跑 --with-deps：執行器映像已含 Chrome 的系統相依套件，apt 那一步偶爾要十分鐘（2026-10-23 量到）
+      - run: pnpm exec playwright install chromium
       - name: 對預覽網址跑 E2E（Chromium；全部通過才允許合併與部署）
         run: pnpm e2e --project desktop-chromium --project reduced-motion
         env:
