@@ -40,6 +40,7 @@ const US_SPELLING = [/\bcolor\b/i, /\borganization\b/i, /\banalyze\b/i, /\bcente
 const targets = [
   ...walk(join(ROOT, 'docs'), { ext: ['.md'] }).filter((f) => !/01-materials|13-material-questions|15-ai-workflow/.test(f)),
   ...walk(join(ROOT, 'content'), { ext: ['.json', '.md'] }),
+  ...walk(join(ROOT, 'packages/core/data'), { ext: ['.json'] }),
   join(ROOT, 'README.md'),
   join(ROOT, 'CONTRIBUTING.md'),
   join(ROOT, 'SECURITY.md'),
@@ -87,7 +88,7 @@ for (const f of targets) {
           ok = false;
         }
     }
-    if (/content\/.*\.json$/.test(f) && /"en":\s*"/.test(line)) {
+    if (/(content|packages\/core\/data)\/.*\.json$/.test(f) && /"en":\s*"/.test(line)) {
       for (const re of US_SPELLING)
         if (re.test(line)) {
           fail(`check:tw：${rel}:${i + 1} 英文內容請用英式拼字：${line.trim().slice(0, 80)}`);

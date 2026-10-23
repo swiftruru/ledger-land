@@ -18,9 +18,8 @@ function listUnder(key) {
 function mapUnder(key) {
   const b = blockUnder(key);
   if (!b || b.empty) return {};
-  const m = [null, b.body];
   const out = {};
-  for (const x of m[1].matchAll(/^\s+'?"?([^'":\n]+)'?"?\s*:\s*'?"?([^'"\n]+)'?"?\s*$/gm)) out[x[1].trim()] = x[2].trim();
+  for (const x of b.body.matchAll(/^\s+'?"?([^'":\n]+)'?"?\s*:\s*'?"?([^'"\n]+)'?"?\s*$/gm)) out[x[1].trim()] = x[2].trim();
   return out;
 }
 

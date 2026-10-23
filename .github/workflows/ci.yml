@@ -50,12 +50,14 @@ jobs:
       - run: pnpm check:dom
       - run: pnpm check:tw
       - run: pnpm check:hygiene
+      - run: pnpm check:core
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm typecheck
       - run: pnpm tokens:check
       - run: pnpm schemas:check
       - run: pnpm content:check
+      - run: pnpm content:lock --check
       - run: pnpm docs:examples
       - run: pnpm content:i18n-report
       - name: i18n：抽取後 catalog 不得有未 commit 的變動；complete 語系不得缺字
@@ -64,6 +66,8 @@ jobs:
       - name: 安裝 Playwright 的 WebKit（web-ui 的元件測試在 Browser Mode）
         run: pnpm exec playwright install --with-deps webkit
       - run: pnpm test
+      - name: 覆蓋率（packages/core/src，門檻在 vitest.config.ts）
+        run: pnpm test:coverage
 
   build:
     name: build、postbuild、budget

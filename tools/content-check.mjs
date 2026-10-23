@@ -1,34 +1,53 @@
-// content:check（08 第 5.8 節的 M0b 子集）：讀 content/ 的檔案（ContentAdapter 的 files 實作），交給 packages/content-schema 的 validateBundle，
-// 再比對 published.lock.json（已發布 ID 不得消失、rev 不得倒退）。錯誤訊息一律「檔案、JSON 路徑、訊息」。
-import { loadContentFiles } from './lib/content-files.mjs';
-import { validateBundle } from '@ledgerland/content-schema';
+// content:check（08 第 5.8 節）：讀 content/ 與核心內建範本（ContentAdapter 的 files 實作），交給 packages/content-schema 的 validateBundle
+// （結構、多語系、引用、佔位符），再跑 tools/lib/content-rules.mjs 的會計與答案規則（08 第 5.4、5.5 節，呼叫核心），
+// 最後比對 content/published.lock.json（08 第 5.6 節的八條 id.* 規則，與 content:lock --check 同一套）。
+// 錯誤訊息一律「檔案、JSON 路徑、規則、訊息」；警告不讓指令失敗。這支腳本只負責讀檔與列印，規則都在 lib/。
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { validateBundle } from '@ledgerland/content-schema';
+import { loadContentFiles } from './lib/content-files.mjs';
+import { allEntityIds, checkLock, currentLockItems, normaliseLock } from './lib/content-lock.mjs';
+import { hasErrors, parseBundle, runAccountingChecks } from './lib/content-rules.mjs';
 import { ROOT, fail, readJson } from './lib/fs.mjs';
 
+const started = performance.now();
 const bundle = loadContentFiles();
-const issues = validateBundle(bundle);
-for (const i of issues) fail(`content:check：${i.file} ${i.path}：${i.message}`);
+const schemaIssues = validateBundle(bundle);
+for (const i of schemaIssues) fail(`content:check：${i.file} ${i.path}：${i.message}`);
 
-// lock 檢查（08 第 4.4 節的最小版本）
-const lockPath = join(ROOT, 'content/published.lock.json');
-if (existsSync(lockPath)) {
-  const lock = readJson(lockPath);
-  const current = { terms: new Map(), chapters: new Map() };
-  for (const t of bundle.terms) if (t.data?.status === 'published') current.terms.set(t.data.id, t.data.rev);
-  for (const c of bundle.chapters) if (c.data?.status === 'published') current.chapters.set(c.data.id, c.data.rev);
-  for (const kind of ['terms', 'chapters']) {
-    for (const [id, rev] of Object.entries(lock[kind] ?? {})) {
-      const now = current[kind].get(id);
-      if (now === undefined) {
-        const retired = [...bundle[kind]].some((x) => x.data?.id === id && x.data?.status === 'retired');
-        if (!retired) fail(`content:check：published.lock.json 的 ${kind} ${id} 已發布，但現在既不是 published 也不是 retired（已發布的 ID 不得消失）`);
-      } else if (now < rev) fail(`content:check：${kind} ${id} 的 rev ${now} 比 lock 的 ${rev} 小（rev 只能遞增）`);
-    }
-    for (const [id, rev] of current[kind]) {
-      if (lock[kind]?.[id] === undefined)
-        fail(`content:check：${kind} ${id}（rev ${rev}）是 published 但不在 published.lock.json，請執行 content:lock --write（M1）或手動加入`);
-    }
+const parsed = parseBundle(bundle);
+const acct = runAccountingChecks(parsed);
+let warnings = 0;
+for (const i of acct.issues) {
+  if (i.severity === 'error') fail(`content:check：${i.file} ${i.path}：${i.rule}：${i.message}`);
+  else {
+    warnings++;
+    console.warn(`content:check 警告：${i.file} ${i.path}：${i.rule}：${i.message}`);
   }
 }
-if (!process.exitCode) console.log(`content:check：${bundle.terms.length} 個名詞、${bundle.chapters.length} 個章節通過`);
+
+// lock（08 第 4.4、5.6 節）：只有結構與會計都沒有錯誤時才比對，否則 answerHash 不完整
+const lockPath = join(ROOT, 'content/published.lock.json');
+let lockIssues = 0;
+if (schemaIssues.length === 0 && !hasErrors(acct.issues)) {
+  if (!existsSync(lockPath)) fail('content:check：content/published.lock.json 不存在，請執行 pnpm content:lock --write');
+  else {
+    const files = new Map();
+    for (const list of Object.values(parsed)) for (const x of list) files.set(x.data.id, x.file);
+    const issues = checkLock(normaliseLock(readJson(lockPath)), currentLockItems(parsed, acct.compiled), allEntityIds(parsed), files);
+    lockIssues = issues.length;
+    for (const i of issues) fail(`content:check：${i.file} ${i.path}：${i.rule}：${i.message}`);
+  }
+}
+
+const elapsed = ((performance.now() - started) / 1000).toFixed(1);
+if (process.exitCode) {
+  console.error(
+    `content:check：失敗（結構 ${schemaIssues.length}、會計與答案 ${acct.issues.filter((i) => i.severity === 'error').length}、lock ${lockIssues} 個錯誤；${elapsed} 秒）`,
+  );
+} else {
+  console.log(
+    `content:check：${bundle.terms.length} 個名詞、${bundle.chapters.length} 個章節、${acct.stats.templates} 個範本（${acct.stats.combos} 組參數，前置條件不成立跳過 ${acct.stats.skipped} 組）、` +
+      `${acct.stats.storiesReplayed} 個故事、${bundle.questions.length} 個題目通過，lock 一致${warnings > 0 ? `，${warnings} 個警告` : ''}（${elapsed} 秒）`,
+  );
+}

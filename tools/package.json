@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ledgerland/content-schema": "workspace:*",
+    "@ledgerland/core": "workspace:*",
     "@ledgerland/i18n": "workspace:*",
     "@ledgerland/tokens": "workspace:*",
     "zod": "4.6.5"
