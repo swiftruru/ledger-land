@@ -15,6 +15,14 @@ test.describe('語言切換（05 第 7.5、8 節；10 M0b 完成標準）', () =
     await page.waitForTimeout(300);
     const scrollBefore = await page.evaluate(() => window.scrollY);
     expect(scrollBefore).toBeGreaterThan(100);
+    // 記下畫面最上方的錨點元素與它在視窗裡的位置（useScrollAnchor 就是這樣還原的）。不能只比 scrollY：上方的提示（例如相機預覽的暫存情境提示
+    // 要等 storage.estimate 才插入）可能在切換前後才出現，這時題目留在畫面同一個位置，scrollY 卻會多出提示的高度（CI 的 WebKit 曾差 600 到 740px）
+    const anchorBefore = await page.evaluate(() => {
+      const top = document.querySelector('.ll-topbar')?.getBoundingClientRect().bottom ?? 0;
+      const el = Array.from(document.querySelectorAll<HTMLElement>('[data-ll-anchor]')).find((e) => e.id !== '' && e.getBoundingClientRect().bottom > top);
+      return el ? { id: el.id, top: el.getBoundingClientRect().top } : null;
+    });
+    expect(anchorBefore).not.toBeNull();
     // 用 DOM 的 click 觸發切換：Playwright 的 click 會先把按鈕捲進畫面，捲動位置的斷言就不準（切換開關在頁面上方，捲動 300px 後已在畫面外）
     await page.evaluate(() => document.querySelector<HTMLButtonElement>('.ll-lang [role="radio"][lang="en"]')?.click());
     await expect(page).toHaveURL(/\/en\/level\/lv_h2zx7srx\/$/);
@@ -22,10 +30,12 @@ test.describe('語言切換（05 第 7.5、8 節；10 M0b 完成標準）', () =
     await expect(page.getByRole('button', { name: 'Check answer' })).toBeEnabled();
     await expect(page.getByRole('radio', { name: /^Assets: / })).toBeChecked();
     await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Quest' })).toHaveAttribute('href', '/en/play/');
-    // M2 起以錨點還原（05 第 8.5 節）；兩種語言的文字高度不同，只斷言沒有被重設到頂端且差距在一段文字內
+    // M2 起以錨點還原（05 第 8.5 節）：同一個錨點元素留在畫面裡差不多的位置（兩種語言的文字高度不同，容許一段文字的差距），而且沒有被重設到頂端
     const scrollAfter = await page.evaluate(() => window.scrollY);
     expect(scrollAfter).toBeGreaterThan(100);
-    expect(Math.abs(scrollAfter - scrollBefore)).toBeLessThan(160);
+    const anchorAfterTop = await page.evaluate((id) => document.getElementById(id)?.getBoundingClientRect().top ?? null, anchorBefore!.id);
+    expect(anchorAfterTop).not.toBeNull();
+    expect(Math.abs((anchorAfterTop as number) - anchorBefore!.top)).toBeLessThan(160);
     // replace：沒有多一筆瀏覽紀錄
     const historyLength = await page.evaluate(() => history.length);
     expect(historyLength).toBeLessThanOrEqual(2);
