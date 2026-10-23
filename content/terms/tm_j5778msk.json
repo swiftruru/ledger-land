@@ -1,0 +1,20 @@
+{
+  "id": "tm_j5778msk",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "特別盈餘公積", "en": "Special reserve" },
+  "teacherLabel": "特別盈餘公積",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Special reserve",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": ["unused"],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "依章程或主管機關規定另外提撥的公積，用途比法定盈餘公積更特定。本課未用。",
+    "en": "A reserve set aside under the articles of association or a regulator's rules, for a more specific purpose than the legal reserve. Not used in this course."
+  },
+  "accountRef": "special_reserve"
+}

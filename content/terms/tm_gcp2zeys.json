@@ -1,0 +1,37 @@
+{
+  "id": "tm_gcp2zeys",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "長期借款",
+    "en": "Long-term borrowings"
+  },
+  "teacherLabel": "長期借款",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Long-term borrowings",
+  "aliases": {
+    "zh-TW": [
+      "長期負債",
+      "長期銀行借款"
+    ],
+    "en": [
+      "Long-term loans"
+    ]
+  },
+  "flags": [
+    "unused"
+  ],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "模板的籌資活動沒有長期借款列，網站以延伸列處理；教材部分頁面稱這一類為長期負債（舊稱）。",
+    "en": "The template has no long-term borrowing lines in financing activities, so the site uses extension rows; some course pages call this group long-term liabilities, an older term."
+  },
+  "definition": {
+    "zh-TW": "一年以後才要償還的借款。它是非流動負債；本課的故事沒有用到。",
+    "en": "Borrowings repayable more than a year ahead. A non-current liability; the course story does not use it."
+  },
+  "accountRef": "long_term_borrowings"
+}

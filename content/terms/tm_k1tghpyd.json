@@ -1,0 +1,24 @@
+{
+  "id": "tm_k1tghpyd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "行銷費用", "en": "Marketing expenses" },
+  "teacherLabel": "行銷費用",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Marketing expenses",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "0-2 以 ME 代表；網站補充的延伸科目，給 ME intensity 等指標使用。台灣報表多列在推銷費用。",
+    "en": "Represented by ME in the 0-2 slides; an extension account added by the site for ratios such as marketing expense intensity. Taiwanese statements usually show it under distribution costs."
+  },
+  "definition": {
+    "zh-TW": "廣告、促銷等推廣產品的費用。它屬於銷管費用。",
+    "en": "Advertising, promotion and similar costs of marketing the products. It belongs to distribution and administrative expenses."
+  },
+  "accountRef": "marketing_expense"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "tm_d4p7x2mv",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "折舊費用", "en": "Depreciation expense" },
+  "teacherLabel": "折舊費用",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Depreciation expense",
+  "aliases": { "zh-TW": ["折舊", "攤提折舊"], "en": ["Depreciation"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T05"],
+  "ifrsBasis": "IAS 16",
+  "definition": {
+    "zh-TW": "把設備的成本依使用年限分攤到每一年的費用。它不是付現，所以間接法要把它加回；教材把它列在銷管費用。",
+    "en": "The part of an asset's cost allocated to the current year over its useful life. No cash is paid, so the indirect method adds it back; the course lists it under distribution and administrative expenses."
+  },
+  "accountRef": "depreciation_expense"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "tm_5xm3qcz9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "預付費用", "en": "Prepayments" },
+  "teacherLabel": "預付費用",
+  "currentTwLabel": "預付款項",
+  "ifrsEnglish": "Prepayments",
+  "aliases": { "zh-TW": [], "en": ["Prepaid expenses"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "網站補充的延伸科目，老師的模板沒有這一列；不列入期中考範圍。",
+    "en": "An extension account added by the site; the teacher's template has no such line and it is outside the mid-term scope."
+  },
+  "definition": {
+    "zh-TW": "先付了錢、服務或權利還沒用到的部分，例如預繳的租金或保險費。它先列為流動資產，隨著時間經過再轉成費用。",
+    "en": "Payments made before the related service or right has been used, such as rent or insurance paid in advance. It is a current asset first and becomes an expense as time passes."
+  },
+  "accountRef": "prepaid_expenses"
+}

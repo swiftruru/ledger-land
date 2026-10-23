@@ -1,0 +1,34 @@
+{
+  "id": "tm_t7a3s6wb",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "資產總計",
+    "en": "Total assets"
+  },
+  "teacherLabel": "資產總計",
+  "currentTwLabel": "資產總計",
+  "ifrsEnglish": "Total assets",
+  "aliases": {
+    "zh-TW": [
+      "資產統計",
+      "資產總額"
+    ],
+    "en": []
+  },
+  "flags": [
+    "typo_fixed"
+  ],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "模板原文寫「資產統計」，「統計」是「總計」的用詞錯誤；網站顯示修正寫法，模板原字列為別名。",
+    "en": "The template label uses a wrong word for total; the site shows the corrected wording and keeps the original as a searchable alias."
+  },
+  "definition": {
+    "zh-TW": "公司所有資產加起來的金額。它必須等於負債與股東權益的總計（勾稽點 D），也是負債比率與總資產週轉率的分母。",
+    "en": "The sum of all the company's assets. It must equal total liabilities and equity (check D) and is the denominator of the debt ratio and total asset turnover."
+  }
+}

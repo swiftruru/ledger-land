@@ -1,0 +1,21 @@
+{
+  "id": "tm_c2y9b5ex",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "流動負債", "en": "Current liabilities" },
+  "teacherLabel": "流動負債",
+  "currentTwLabel": "流動負債",
+  "ifrsEnglish": "Current liabilities",
+  "aliases": { "zh-TW": ["流動負債合計"], "en": ["Total current liabilities"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.69",
+  "note": { "zh-TW": "同一張名詞卡也用於「流動負債合計」列。", "en": "The same card serves the total current liabilities line." },
+  "definition": {
+    "zh-TW": "一年內要償還的債務，例如應付帳款、短期借款與應付所得稅。模板的分組標題，也是流動比率與速動比率的分母。",
+    "en": "Obligations due within a year, such as trade payables, short-term borrowings and current tax. A template group heading and the denominator of the current and quick ratios."
+  }
+}

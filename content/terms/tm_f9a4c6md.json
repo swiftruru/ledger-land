@@ -1,0 +1,20 @@
+{
+  "id": "tm_f9a4c6md",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "籌資活動的現金流量", "en": "Cash flows from financing activities" },
+  "teacherLabel": "籌資活動的現金流量",
+  "currentTwLabel": "籌資活動之現金流量",
+  "ifrsEnglish": "Cash flows from financing activities",
+  "aliases": { "zh-TW": ["籌資活動之現金流量", "籌資活動"], "en": ["Financing activities"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7.17",
+  "definition": {
+    "zh-TW": "向股東與銀行拿錢、還錢與發股利的現金流量，也就是改變公司資金來源的活動。模板三大活動的第三段。",
+    "en": "Cash flows from raising money from shareholders and lenders, repaying it and paying dividends: the activities that change how the company is funded. The third activity section of the template."
+  }
+}

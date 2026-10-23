@@ -1,0 +1,24 @@
+{
+  "id": "tm_bgtgsvhr",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "其他應付款", "en": "Other payables" },
+  "teacherLabel": "其他應付款",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Other payables",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "網站補充的延伸科目，老師的模板沒有這一列；不列入期中考範圍。",
+    "en": "An extension account added by the site; the teacher's template has no such line and it is outside the mid-term scope."
+  },
+  "definition": {
+    "zh-TW": "貨款以外、還沒付的各種款項，例如應付的水電費或薪資。它是流動負債，變動時經過間接法的其他負債增加列。",
+    "en": "Unpaid amounts other than trade payables, such as utilities or wages still to be paid. A current liability whose movement passes through the increase in other liabilities line of the indirect method."
+  },
+  "accountRef": "other_payables"
+}

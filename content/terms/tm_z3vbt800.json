@@ -1,0 +1,24 @@
+{
+  "id": "tm_z3vbt800",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "營業利益", "en": "Operating profit" },
+  "teacherLabel": "營業利益",
+  "currentTwLabel": "營業利益（損失）",
+  "ifrsEnglish": "Operating profit",
+  "aliases": { "zh-TW": ["營業淨利", "營業利益（損失）"], "en": ["Operating income"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.85",
+  "note": {
+    "zh-TW": "IAS 1 沒有定義這個小計；IFRS 18 新增的 operating profit or loss 範圍較廣，不完全相同。",
+    "en": "IAS 1 does not define this subtotal; the operating profit or loss introduced by IFRS 18 is broader and not identical."
+  },
+  "definition": {
+    "zh-TW": "營業毛利再減掉銷管費用後的結果，是五層利益的第二層。它代表本業賺了多少，還沒算利息、業外收支與所得稅。",
+    "en": "Gross profit less distribution and administrative expenses, the second of the five profit levels. It shows what the core business earned before interest, non-operating items and tax."
+  }
+}

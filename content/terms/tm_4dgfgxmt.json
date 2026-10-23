@@ -1,0 +1,23 @@
+{
+  "id": "tm_4dgfgxmt",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "應收帳款減少(+)", "en": "Decrease in trade receivables (+)" },
+  "teacherLabel": "應收帳款減少(+)",
+  "currentTwLabel": "應收帳款（增加）減少",
+  "ifrsEnglish": "Decrease in trade receivables",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T12"],
+  "note": {
+    "zh-TW": "和銷貨債權增加(-) 是同一科目的兩個方向，累計報表只會用到其中一列（T12）。",
+    "en": "This and the increase line are two directions of the same account; the cumulative statement uses only one of them (T12)."
+  },
+  "definition": {
+    "zh-TW": "應收帳款減少表示收回了以前賒銷的貨款，這筆現金不在本期收入裡，所以要加回。",
+    "en": "A fall in receivables means earlier credit sales have been collected; that cash is not in the period's revenue, so it is added back."
+  }
+}

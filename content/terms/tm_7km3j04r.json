@@ -1,0 +1,28 @@
+{
+  "id": "tm_7km3j04r",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "營業利益佔實收資本比率", "en": "Operating profit to paid-in capital ratio" },
+  "teacherLabel": "營業利益佔實收資本比率",
+  "currentTwLabel": "營業利益佔實收資本比率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["營業利益佔時收資本比率", "營業利益占實收資本比率"], "en": [] },
+  "flags": ["typo_fixed"],
+  "confidence": "pending",
+  "pendingRefs": ["T23"],
+  "note": {
+    "zh-TW": "模板「時收」應為「實收」，顯示修正寫法，模板原文列為別名；是否仍屬現行年報指標待確認（T23），暫標「延伸指標」。",
+    "en": "The template label contains a typo for paid-in; the corrected wording is shown and the original kept as an alias. Whether it is still a current annual report ratio is pending (T23), so it is marked as an extension ratio for now."
+  },
+  "definition": {
+    "zh-TW": "營業利益相對於股東實收資本的比率，只看本業賺回多少本錢。數值越高表示本業的獲利能力越強。",
+    "en": "Operating profit relative to paid-in capital: how much of the capital the core business earns back. Higher means a more profitable core business."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "operating_income_to_paid_in_capital@excel"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "tm_bcs4fvmn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "預收收入",
+    "en": "Contract liabilities"
+  },
+  "teacherLabel": "預收收入",
+  "currentTwLabel": "合約負債",
+  "ifrsEnglish": "Contract liabilities",
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Unearned revenue"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IFRS 15",
+  "note": {
+    "zh-TW": "教材與網站顯示「預收收入」，現行 IFRS 15 的科目名稱是合約負債，列為別名。網站補充的延伸科目。",
+    "en": "The course and the site show unearned revenue; the current IFRS 15 name, contract liabilities, is kept as an alias. An extension account added by the site."
+  },
+  "definition": {
+    "zh-TW": "客戶先付了錢、公司還沒交貨或提供服務的部分。它是負債，因為公司還欠客戶履約；等到交貨時才轉成收入。",
+    "en": "Money received from customers before the goods or services have been delivered. It is a liability because the business still owes performance, and it becomes revenue when delivery happens."
+  },
+  "accountRef": "contract_liabilities"
+}

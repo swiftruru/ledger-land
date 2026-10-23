@@ -1,0 +1,28 @@
+{
+  "id": "tm_wd3fx6rh",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "本益比（PE）", "en": "Price-to-earnings ratio (P/E ratio)" },
+  "teacherLabel": "本益比（PE）",
+  "currentTwLabel": "本益比（PE）",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["本益比", "PE"], "en": ["P/E ratio", "Price earnings ratio"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "0-2 的投資內容放在延伸區，名詞卡附「非投資建議」聲明。",
+    "en": "The investment material from the 0-2 slides sits in the extension area, and the card carries a not-investment-advice statement."
+  },
+  "definition": {
+    "zh-TW": "股價是每股盈餘的幾倍，也就是市場願意為每一份獲利付多少錢。倍數越高表示市場預期越樂觀或股價越貴；每股盈餘小於或等於零時不適用。",
+    "en": "The share price as a multiple of earnings per share: how much the market pays for each unit of profit. A higher multiple means more optimistic expectations or a dearer share; it does not apply when earnings per share are zero or negative."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義本益比；股價是輸入值，每股盈餘的定義依 IAS 33。",
+    "en": "IFRS does not define the price-to-earnings ratio; the share price is an input and earnings per share follow IAS 33."
+  },
+  "ratioRef": "pe_ratio@slides02"
+}

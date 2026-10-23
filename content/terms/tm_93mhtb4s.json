@@ -1,0 +1,19 @@
+{
+  "id": "tm_93mhtb4s",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "非流動資產", "en": "Non-current assets" },
+  "teacherLabel": "非流動資產",
+  "currentTwLabel": "非流動資產",
+  "ifrsEnglish": "Non-current assets",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "預期使用或持有超過一年的資產，例如設備、無形資產與長期投資。模板的分組標題。",
+    "en": "Assets expected to be used or held for more than a year, such as equipment, intangible assets and long-term investments. A template group heading."
+  }
+}

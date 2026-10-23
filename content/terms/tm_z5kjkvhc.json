@@ -1,0 +1,36 @@
+{
+  "id": "tm_z5kjkvhc",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "其他負債增加(+)",
+    "en": "Increase in other operating liabilities (+)"
+  },
+  "teacherLabel": "其他負債增加(+)",
+  "currentTwLabel": "其他營業負債增加（減少）",
+  "ifrsEnglish": "Increase in other operating liabilities",
+  "aliases": {
+    "zh-TW": [
+      "其他營業負債增加（減少）"
+    ],
+    "en": [
+      "Increase in other liabilities (+)"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [
+    "T12",
+    "T15"
+  ],
+  "note": {
+    "zh-TW": "保證金的性質待確認（T15）；減少時以負數填同一列（T12）。",
+    "en": "The nature of deposits received is pending (T15); a decrease is entered as a negative on the same line (T12)."
+  },
+  "definition": {
+    "zh-TW": "保證金、預收收入等營業性的其他負債增加時的加回列。應付所得稅、應付利息、借款與應付股利不能放在這裡，否則會和其他列重複計算。",
+    "en": "The add-back line for increases in other operating liabilities such as deposits received and contract liabilities. Current tax, interest payable, borrowings and dividends payable must not go here, or they would be double counted."
+  }
+}

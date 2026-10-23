@@ -1,0 +1,31 @@
+{
+  "id": "tm_a8d5c1pz",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "累計折舊（機器設備）",
+    "en": "Accumulated depreciation (machinery and equipment)"
+  },
+  "teacherLabel": "累計折舊（機器設備）",
+  "currentTwLabel": "累計折舊",
+  "ifrsEnglish": "Accumulated depreciation",
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 16",
+  "note": {
+    "zh-TW": "老師的模板沒有這一列，網站內部保留，機器設備的位置顯示淨額。",
+    "en": "The teacher's template has no such line; the site keeps it internally and shows machinery and equipment net."
+  },
+  "definition": {
+    "zh-TW": "設備從買進到現在已經提列的折舊總額。它是機器設備的抵銷科目，成本減掉它就是帳面淨額。",
+    "en": "The total depreciation charged on the equipment since it was bought. It offsets machinery and equipment: cost less this balance is the carrying amount."
+  },
+  "accountRef": "accumulated_depreciation_machinery"
+}

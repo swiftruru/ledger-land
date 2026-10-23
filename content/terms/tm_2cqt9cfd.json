@@ -1,0 +1,37 @@
+{
+  "id": "tm_2cqt9cfd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": {
+    "zh-TW": "總資產週轉率",
+    "en": "Total asset turnover"
+  },
+  "teacherLabel": "總資產週轉率",
+  "currentTwLabel": "總資產週轉率",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "資產週轉率",
+      "營業收入占資產總計比重"
+    ],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "0-2 的簡化版用期末值，計算器統一期間並標示是否年化。",
+    "en": "The 0-2 version uses closing values; the calculator aligns the periods and says whether figures are annualised."
+  },
+  "definition": {
+    "zh-TW": "全部資產能帶出多少營業收入，看資產運用的效率。次數越高表示資產運用越有效率；它也是杜邦分析的中間因子。",
+    "en": "How much revenue all the assets generate: the efficiency of asset use. Higher means the assets are worked harder; it is also the middle factor in the DuPont analysis."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "total_asset_turnover@excel"
+}

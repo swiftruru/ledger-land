@@ -1,0 +1,34 @@
+{
+  "id": "tm_gcgcmf3y",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "其他非現金損失增加(+)",
+    "en": "Other non-cash expenses and losses (+)"
+  },
+  "teacherLabel": "其他非現金損失增加(+)",
+  "currentTwLabel": "其他非現金損失增加(+)",
+  "ifrsEnglish": "Other non-cash expenses and losses",
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Other non-cash losses (+)"
+    ]
+  },
+  "flags": [],
+  "confidence": "medium",
+  "pendingRefs": [
+    "T05",
+    "T12"
+  ],
+  "note": {
+    "zh-TW": "攤銷遞延資產的加回列預設放在這裡（T12）；攤銷的分類另待確認（T05）。",
+    "en": "The add-back for amortisation of deferred assets goes here by default (T12); its classification is also pending (T05)."
+  },
+  "definition": {
+    "zh-TW": "折舊以外、沒有付現的費用或損失的加回列，例如遞延資產的攤銷。這些項目減少了利潤卻沒有減少現金，所以要加回。",
+    "en": "The add-back line for non-cash expenses and losses other than depreciation, such as amortisation of deferred assets. They reduce profit without reducing cash, so they are added back."
+  }
+}

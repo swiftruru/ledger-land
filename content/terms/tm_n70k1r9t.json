@@ -1,0 +1,28 @@
+{
+  "id": "tm_n70k1r9t",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "融資維持率", "en": "Margin maintenance ratio" },
+  "teacherLabel": "融資維持率",
+  "currentTwLabel": "整戶擔保維持率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["整戶擔保維持率"], "en": [] },
+  "flags": [],
+  "confidence": "pending",
+  "pendingRefs": ["T18"],
+  "note": {
+    "zh-TW": "台灣證券信用交易用語。教材的追繳門檻與補繳期限可能和現行規定不同，上線前要查現行條文（T18）；追繳門檻是參數。",
+    "en": "A Taiwanese margin trading term. The course's maintenance threshold and top-up deadline may differ from current rules and must be checked before launch (T18); the threshold is a parameter."
+  },
+  "definition": {
+    "zh-TW": "融資買股票時，擔保品市值相對於融資金額的比率。數值越低表示擔保越不夠，跌到追繳門檻以下會被要求補錢。",
+    "en": "When shares are bought on margin, the market value of the collateral relative to the loan. A lower value means thinner cover; falling below the maintenance threshold triggers a margin call."
+  },
+  "ifrsNote": {
+    "zh-TW": "這不是會計比率，IFRS 沒有對應名詞；它屬於證券信用交易的規定。",
+    "en": "This is not an accounting ratio and IFRS has no corresponding term; it belongs to securities margin trading rules."
+  },
+  "ratioRef": "margin_maintenance@slides02"
+}

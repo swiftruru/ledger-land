@@ -1,0 +1,24 @@
+{
+  "id": "tm_x6e56fqp",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "ME intensity", "en": "Marketing expense intensity" },
+  "teacherLabel": "ME intensity",
+  "currentTwLabel": "ME intensity",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "行銷費用占營業收入的比例，看公司為了做生意要花多少在廣告與促銷上。數值越高表示越依賴行銷。",
+    "en": "Marketing expense as a share of revenue: how much has to be spent on advertising and promotion to win the business. Higher means a heavier reliance on marketing."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "me_intensity@slides02"
+}

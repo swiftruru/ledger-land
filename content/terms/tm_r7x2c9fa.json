@@ -1,0 +1,40 @@
+{
+  "id": "tm_r7x2c9fa",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "應收帳款",
+    "en": "Trade receivables"
+  },
+  "teacherLabel": "應收帳款",
+  "currentTwLabel": "應收帳款淨額",
+  "ifrsEnglish": "Trade receivables",
+  "aliases": {
+    "zh-TW": [
+      "銷貨債權"
+    ],
+    "en": [
+      "Accounts receivable",
+      "Trade and other receivables"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [
+    "T08",
+    "T12",
+    "T15"
+  ],
+  "ifrsBasis": "IAS 1.54(h)",
+  "note": {
+    "zh-TW": "現金流量表模板的「銷貨債權」直譯自日文，指的就是這個科目；IAS 1 的報表大項名稱是 trade and other receivables。",
+    "en": "The template cash flow line uses a Japanese-style name (literally \"sales credits\") for the same account; the IAS 1 line item is trade and other receivables."
+  },
+  "definition": {
+    "zh-TW": "賒銷之後客戶還沒付的貨款。它是流動資產，收到錢時減少；賒銷當下收入已經認列，所以應收帳款增加表示有收入還沒變成現金。",
+    "en": "Amounts customers still owe for goods sold on credit. It is a current asset that falls when the customer pays; revenue is recognised at the sale, so a rise in receivables means some revenue has not yet turned into cash."
+  },
+  "accountRef": "accounts_receivable"
+}

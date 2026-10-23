@@ -1,0 +1,20 @@
+{
+  "id": "tm_9hrfpqem",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "投資活動的現金流量", "en": "Cash flows from investing activities" },
+  "teacherLabel": "投資活動的現金流量",
+  "currentTwLabel": "投資活動之現金流量",
+  "ifrsEnglish": "Cash flows from investing activities",
+  "aliases": { "zh-TW": ["投資活動之現金流量", "投資活動"], "en": ["Investing activities"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7.16",
+  "definition": {
+    "zh-TW": "買賣設備、放款與收回放款等長期資產相關的現金流量。模板三大活動的第二段，本課的設立費也依教材政策放在這裡。",
+    "en": "Cash flows from buying and selling equipment, making and collecting loans and other long-term asset activity. The second activity section of the template; under the course policy start-up costs are placed here too."
+  }
+}

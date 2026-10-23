@@ -1,0 +1,25 @@
+{
+  "id": "tm_avgpa43e",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "研究發展費用", "en": "Research and development expenses" },
+  "teacherLabel": "研究發展費用",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Research and development expenses",
+  "aliases": { "zh-TW": ["研發費用"], "en": ["R&D expenses"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 38",
+  "note": {
+    "zh-TW": "0-2 以 RD 代表；網站補充的延伸科目，給 RD intensity 等指標使用。",
+    "en": "Represented by RD in the 0-2 slides; an extension account added by the site for ratios such as R&D intensity."
+  },
+  "definition": {
+    "zh-TW": "為了研究與開發新產品、新技術所花的費用。研究階段的支出依 IFRS 一律列為費用。",
+    "en": "Spending on researching and developing new products or technology. Under IFRS research-phase costs are always expensed."
+  },
+  "accountRef": "research_development_expense"
+}

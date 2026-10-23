@@ -1,0 +1,28 @@
+{
+  "id": "tm_9hg0gb2b",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "經常利益", "en": "Ordinary profit" },
+  "teacherLabel": "經常利益",
+  "currentTwLabel": null,
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": ["Ordinary income"] },
+  "flags": ["not_ifrs_line", "japanese"],
+  "confidence": "pending",
+  "pendingRefs": ["T01", "T03"],
+  "ifrsBasis": "IAS 1.87",
+  "note": {
+    "zh-TW": "教材五層利益的第 3 層，直譯自日本會計基準的経常利益；教材部分頁面把它和稅前淨利併成一列（T03）。",
+    "en": "Level 3 of the five profit levels, a direct translation of the Japanese GAAP ordinary profit; some course pages merge it with profit before tax (T03)."
+  },
+  "definition": {
+    "zh-TW": "營業利益加上業外收支後的小計。它想呈現公司在平常、會反覆發生的活動裡賺了多少；沒有非常損益時，它和稅前淨利相同。",
+    "en": "The subtotal after adding non-operating income and expenses to operating profit. It is meant to show what the company earns from its regular, recurring activities; when there are no extraordinary items it equals profit before tax."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 與台灣現行報表都沒有這一層。IAS 1.87 禁止把任何收益或費損列為非常項目，所以不需要再區分經常與非經常的損益；IFRS 對照的版面不顯示這一列。",
+    "en": "Neither IFRS nor current Taiwanese statements have this subtotal. IAS 1.87 prohibits presenting any income or expense as extraordinary, so there is no need to separate ordinary from non-ordinary results; the IFRS comparison layout hides this line."
+  }
+}

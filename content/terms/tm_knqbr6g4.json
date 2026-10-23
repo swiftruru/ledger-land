@@ -1,0 +1,38 @@
+{
+  "id": "tm_knqbr6g4",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": {
+    "zh-TW": "每股盈餘（EPS）",
+    "en": "Earnings per share (EPS)"
+  },
+  "teacherLabel": "每股盈餘（EPS）",
+  "currentTwLabel": "每股盈餘（EPS）",
+  "ifrsEnglish": "Earnings per share",
+  "aliases": {
+    "zh-TW": [
+      "每股盈餘",
+      "EPS"
+    ],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 33",
+  "note": {
+    "zh-TW": "模板以股本÷每股面額推算股數；「每張股票面額」顯示為「每股面額」，預設可修改。",
+    "en": "The template estimates the number of shares as share capital divided by par value per share; the par value label is corrected and the default can be changed."
+  },
+  "definition": {
+    "zh-TW": "本期淨利分到每一股有多少。數值越高表示每股賺得越多。",
+    "en": "The profit for the period attributable to each share. Higher means each share earned more."
+  },
+  "ifrsNote": {
+    "zh-TW": "IAS 33 定義每股盈餘：歸屬於母公司普通股股東的淨利除以加權平均流通在外股數；模板用股本推算股數是簡化。",
+    "en": "IAS 33 defines earnings per share as profit attributable to ordinary shareholders of the parent divided by the weighted average number of shares outstanding; estimating the shares from share capital is a template simplification."
+  },
+  "ratioRef": "eps@excel"
+}

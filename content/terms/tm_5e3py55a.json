@@ -1,0 +1,20 @@
+{
+  "id": "tm_5e3py55a",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "股本", "en": "Share capital" },
+  "teacherLabel": "股本",
+  "currentTwLabel": "普通股股本",
+  "ifrsEnglish": "Share capital",
+  "aliases": { "zh-TW": ["實收資本"], "en": ["Issued capital", "Paid-in capital"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "股東投入公司、以股票面額計算的本錢。它是權益的第一個項目，不是公司欠股東的債。",
+    "en": "The capital the shareholders put in, measured at the par value of the shares issued. It is the first item of equity, not a debt owed to the shareholders."
+  },
+  "accountRef": "share_capital"
+}

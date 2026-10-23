@@ -1,0 +1,25 @@
+{
+  "id": "tm_jbt23kpz",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "非常損失", "en": "Extraordinary losses" },
+  "teacherLabel": "非常損失",
+  "currentTwLabel": null,
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": ["not_ifrs_line", "ifrs_treatment_differs", "unused"],
+  "confidence": "pending",
+  "pendingRefs": ["T02"],
+  "ifrsBasis": "IAS 1.87",
+  "definition": {
+    "zh-TW": "教材損益表裡放少見、不會經常發生的損失的一列。現行報表沒有這一列；本課的故事也沒有用到。",
+    "en": "A line in the course income statement for rare, non-recurring losses. Current statements have no such line and the course story does not use it."
+  },
+  "ifrsNote": {
+    "zh-TW": "IAS 1.87 禁止在損益表或附註把任何收益或費損列為非常項目；改用 IFRS 時這類項目併入營業外收支或其他利益及損失，稅前淨利不變。",
+    "en": "IAS 1.87 prohibits presenting any item of income or expense as extraordinary. Under IFRS such items are included in non-operating or other gains and losses, and profit before tax is unchanged."
+  },
+  "accountRef": "extraordinary_losses"
+}

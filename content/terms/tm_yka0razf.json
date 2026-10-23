@@ -1,0 +1,24 @@
+{
+  "id": "tm_yka0razf",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "資本公積", "en": "Capital surplus" },
+  "teacherLabel": "資本公積",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Capital surplus",
+  "aliases": { "zh-TW": [], "en": ["Share premium", "Additional paid-in capital"] },
+  "flags": ["unused"],
+  "confidence": "pending",
+  "pendingRefs": ["T16"],
+  "note": {
+    "zh-TW": "台灣用語，IFRS 沒有單一對應名詞；教材列出的來源與用途等老師確認（T16）。",
+    "en": "A Taiwanese term with no single IFRS equivalent; the sources and uses listed in the course await the teacher (T16)."
+  },
+  "definition": {
+    "zh-TW": "股東投入超過股票面額的部分，以及其他不是來自營業的權益增加。本課的故事沒有用到。",
+    "en": "The part of shareholders' contributions above par value, and other increases in equity that do not come from operations. The course story does not use it."
+  },
+  "accountRef": "capital_surplus"
+}

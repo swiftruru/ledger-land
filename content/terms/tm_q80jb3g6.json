@@ -1,0 +1,19 @@
+{
+  "id": "tm_q80jb3g6",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "營業外支出小計", "en": "Total non-operating expenses" },
+  "teacherLabel": "營業外支出小計",
+  "currentTwLabel": "營業外支出小計",
+  "ifrsEnglish": "Total non-operating expenses",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "營業外支出各項的合計。營業利益加營業外收入、減掉它，就是教材的經常利益。",
+    "en": "The sum of the non-operating expense lines. Operating profit plus non-operating income less this subtotal gives the course's ordinary profit."
+  }
+}

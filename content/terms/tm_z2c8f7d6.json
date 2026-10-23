@@ -1,0 +1,29 @@
+{
+  "id": "tm_z2c8f7d6",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "期初現金及約當現金餘額",
+    "en": "Cash and cash equivalents at the beginning of the period"
+  },
+  "teacherLabel": "期初現金及約當現金餘額",
+  "currentTwLabel": "期初現金及約當現金餘額",
+  "ifrsEnglish": "Cash and cash equivalents at the beginning of the period",
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "教材自成立起累計，恆為 0；實驗室同時顯示累計三表與本筆交易的變動。",
+    "en": "The course runs cumulatively from incorporation, so it is always nil; the lab shows both the cumulative statements and the change from each transaction."
+  },
+  "definition": {
+    "zh-TW": "這段期間開始時的現金餘額。本課的報表自公司成立起累計，所以它永遠是零。",
+    "en": "The cash balance at the start of the period. The course statements run cumulatively from incorporation, so it is always nil."
+  }
+}

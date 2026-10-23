@@ -1,0 +1,39 @@
+{
+  "id": "tm_2s4hterv",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": {
+    "zh-TW": "應收款項週轉率",
+    "en": "Receivables turnover"
+  },
+  "teacherLabel": "應收款項週轉率",
+  "currentTwLabel": "應收款項週轉率",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "應收帳款周轉率",
+      "應收帳款週轉率"
+    ],
+    "en": [
+      "Accounts receivable turnover"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "模板寫「應收帳款周轉率」並用期末餘額；介面統一寫「週轉率」，模板寫法列為別名。",
+    "en": "The template uses a variant character and the closing balance; the interface uses one spelling and keeps the template wording as an alias."
+  },
+  "definition": {
+    "zh-TW": "一年內應收帳款被收回、再重新賒出去幾次。次數越多表示收款越快，賒銷的錢卡在客戶手上的時間越短。",
+    "en": "How many times a year receivables are collected and extended again through new credit sales. More turns mean faster collection and less money tied up with customers."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "ar_turnover@excel"
+}

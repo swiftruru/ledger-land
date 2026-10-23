@@ -1,0 +1,21 @@
+{
+  "id": "tm_zqzrfgfn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "支付股息(-)", "en": "Dividends paid (-)" },
+  "teacherLabel": "支付股息(-)",
+  "currentTwLabel": "發放現金股利",
+  "ifrsEnglish": "Dividends paid",
+  "aliases": { "zh-TW": ["支付之股利(-)", "發放現金股利"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7.34",
+  "note": {
+    "zh-TW": "現行 IAS 7.34 允許列營業或籌資，教材列籌資；IFRS 18 修正 IAS 7 後一般企業一律列籌資活動。",
+    "en": "Current IAS 7.34 allows operating or financing and the course uses financing; after the IFRS 18 amendments most entities must classify it as financing."
+  },
+  "definition": { "zh-TW": "發給股東的現金股利。本課的故事沒有發股利。", "en": "Cash dividends paid to shareholders. The course story pays no dividend." }
+}

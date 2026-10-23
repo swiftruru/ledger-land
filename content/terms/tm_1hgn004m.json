@@ -1,0 +1,24 @@
+{
+  "id": "tm_1hgn004m",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "CE intensity", "en": "Capital expenditure intensity" },
+  "teacherLabel": "CE intensity",
+  "currentTwLabel": "CE intensity",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": ["Capex to revenue"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "資本支出占營業收入的比例，看公司為了做生意要投入多少在設備上。數值越高表示越重資產。",
+    "en": "Capital expenditure as a share of revenue: how much has to be invested in equipment to support the business. Higher means a more asset-heavy business."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "ce_intensity@slides02"
+}

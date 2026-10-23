@@ -1,0 +1,24 @@
+{
+  "id": "tm_k52yxb68",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "流動資產", "en": "Current assets" },
+  "teacherLabel": "流動資產",
+  "currentTwLabel": "流動資產",
+  "ifrsEnglish": "Current assets",
+  "aliases": { "zh-TW": ["流動資產合計"], "en": ["Total current assets"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.66",
+  "note": {
+    "zh-TW": "教材以一年為界；IAS 1.66 另含正常營業週期。同一張名詞卡也用於「流動資產合計」列。",
+    "en": "The course uses one year as the boundary; IAS 1.66 also allows the normal operating cycle. The same card serves the total current assets line."
+  },
+  "definition": {
+    "zh-TW": "預期在一年內會變成現金或用掉的資產，例如現金、應收帳款與存貨。模板的分組標題，也是流動比率的分子。",
+    "en": "Assets expected to be turned into cash or used up within a year, such as cash, trade receivables and inventories. A template group heading and the numerator of the current ratio."
+  }
+}

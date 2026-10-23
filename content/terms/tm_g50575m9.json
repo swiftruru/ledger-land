@@ -1,0 +1,24 @@
+{
+  "id": "tm_g50575m9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "人均營收", "en": "Revenue per employee" },
+  "teacherLabel": "人均營收",
+  "currentTwLabel": "人均營收",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "平均每位員工做出多少營業收入。數值越高表示人力的產出越高；員工人數是輸入值，缺少時顯示 N/A。",
+    "en": "Average revenue generated per employee. Higher means more output per person; the head count is an input, and the ratio shows N/A when it is missing."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "revenue_per_employee@slides02"
+}

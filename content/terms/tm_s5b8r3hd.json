@@ -1,0 +1,20 @@
+{
+  "id": "tm_s5b8r3hd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "短期借款", "en": "Short-term borrowings" },
+  "teacherLabel": "短期借款",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Short-term borrowings",
+  "aliases": { "zh-TW": [], "en": ["Short-term loans"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T30"],
+  "definition": {
+    "zh-TW": "向銀行或他人借、一年內要還的款項。借入時現金與負債同時增加；還本走籌資活動，利息則是費用。",
+    "en": "Money borrowed from a bank or another lender and repayable within a year. Borrowing raises cash and the liability together; repaying the principal is a financing cash flow, and the interest is an expense."
+  },
+  "accountRef": "short_term_borrowings"
+}

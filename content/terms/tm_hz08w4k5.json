@@ -1,0 +1,38 @@
+{
+  "id": "tm_hz08w4k5",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "設立費（費用化）",
+    "en": "Start-up costs (expensed)"
+  },
+  "teacherLabel": "設立費（費用化）",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Start-up costs (expensed)",
+  "aliases": {
+    "zh-TW": [
+      "開辦費用"
+    ],
+    "en": [
+      "Expenditure on start-up activities",
+      "Organisation costs expense"
+    ]
+  },
+  "flags": [],
+  "confidence": "medium",
+  "pendingRefs": [
+    "T04"
+  ],
+  "ifrsBasis": "IAS 38.69",
+  "note": {
+    "zh-TW": "網站補充的延伸科目，術語表沒有獨立的條目；只在 IFRS 對照的版面啟用，教材版面下停用。",
+    "en": "An extension account added by the site; the glossary has no separate entry. It is enabled only in the IFRS comparison layout and disabled under the course layout."
+  },
+  "definition": {
+    "zh-TW": "把設立費在付出當期就全部列為費用時所用的科目。IFRS 對照的損益表把它列在營業費用。",
+    "en": "The account used when start-up costs are expensed in full in the period they are paid. The IFRS comparison income statement shows it under operating expenses."
+  },
+  "accountRef": "organisation_costs_expense"
+}

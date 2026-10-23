@@ -1,0 +1,21 @@
+{
+  "id": "tm_p2a7c5vk",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "營業活動的現金流量", "en": "Cash flows from operating activities" },
+  "teacherLabel": "營業活動的現金流量",
+  "currentTwLabel": "營業活動之現金流量",
+  "ifrsEnglish": "Cash flows from operating activities",
+  "aliases": { "zh-TW": ["營業活動之現金流量", "營業活動現金流量", "營業活動"], "en": ["Operating activities"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7.13",
+  "note": { "zh-TW": "同一張名詞卡也用於直接法版面的營業活動標題。", "en": "The same card serves the operating activities heading of the direct-method layout." },
+  "definition": {
+    "zh-TW": "本業收錢與付錢所產生的現金流量，例如收到貨款、付貨款、付薪資與稅金。模板三大活動的第一段，教材用間接法從稅前淨利調整出來。",
+    "en": "Cash flows from the main business: collecting from customers, paying suppliers, wages and taxes. The first of the three activity sections in the template; the course derives it by the indirect method from profit before tax."
+  }
+}

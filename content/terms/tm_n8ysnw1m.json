@@ -1,0 +1,28 @@
+{
+  "id": "tm_n8ysnw1m",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "速動比率", "en": "Quick ratio" },
+  "teacherLabel": "速動比率",
+  "currentTwLabel": "速動比率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": ["Acid-test ratio"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T24", "T28"],
+  "note": {
+    "zh-TW": "參考值待確認（T24）；流動負債為 0 時的呈現待確認（T28），網站顯示 N/A。",
+    "en": "The reference value (T24) and the presentation when current liabilities are nil (T28) are pending; the site shows N/A."
+  },
+  "definition": {
+    "zh-TW": "扣掉存貨與預付費用後的速動資產，相對於流動負債的倍數，看不靠賣存貨能不能馬上還清短期債務。數值越高，短期償債能力越強。",
+    "en": "Quick assets (current assets less inventories and prepayments) relative to current liabilities: whether short-term debts could be met without selling stock. Higher means stronger short-term solvency."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "quick_ratio@excel"
+}

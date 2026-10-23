@@ -1,0 +1,21 @@
+{
+  "id": "tm_3qfqnrmm",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "所得稅費用", "en": "Income tax expense" },
+  "teacherLabel": "所得稅費用",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Income tax expense",
+  "aliases": { "zh-TW": [], "en": ["Tax expense"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T10"],
+  "ifrsBasis": "IAS 12",
+  "definition": {
+    "zh-TW": "依本期獲利計算、應負擔的所得稅。它是五層利益的最後一道扣除，稅前淨利減掉它就是本期淨利。",
+    "en": "The tax charged on the period's profit. It is the last deduction in the five profit levels: profit before tax less this amount is profit for the period."
+  },
+  "accountRef": "income_tax_expense"
+}

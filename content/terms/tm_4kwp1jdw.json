@@ -1,0 +1,30 @@
+{
+  "id": "tm_4kwp1jdw",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "應付股利",
+    "en": "Dividends payable"
+  },
+  "teacherLabel": "應付股利",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Dividends payable",
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "網站補充的延伸科目，術語表沒有獨立的條目；模板沒有這一列。",
+    "en": "An extension account added by the site; the glossary has no separate entry and the template has no such line."
+  },
+  "definition": {
+    "zh-TW": "股東會決議要發、但還沒付給股東的股利。它和借款一樣不能放進間接法的其他負債增加列，付款時走籌資活動。",
+    "en": "Dividends declared but not yet paid to shareholders. Like borrowings it must be excluded from the increase in other liabilities line of the indirect method; the payment is a financing cash flow."
+  },
+  "accountRef": "dividends_payable"
+}

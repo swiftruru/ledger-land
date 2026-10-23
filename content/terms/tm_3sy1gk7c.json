@@ -1,0 +1,40 @@
+{
+  "id": "tm_3sy1gk7c",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "短期放貨",
+    "en": "Short-term loans receivable"
+  },
+  "teacherLabel": "短期放貨",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Short-term loans receivable",
+  "aliases": {
+    "zh-TW": [
+      "短期放款",
+      "短期放貸"
+    ],
+    "en": [
+      "Loans receivable"
+    ]
+  },
+  "flags": [
+    "unused",
+    "japanese"
+  ],
+  "confidence": "pending",
+  "pendingRefs": [
+    "T09"
+  ],
+  "note": {
+    "zh-TW": "教材原字「短期放貨」疑為「短期放款」的誤植，修正寫法等老師確認（T09）後才改主要顯示；日文原型是短期貸付金。",
+    "en": "The course wording is probably a typo for short-term loans; the main display stays as written until the teacher confirms (T09). The term comes from the Japanese short-term loans receivable."
+  },
+  "definition": {
+    "zh-TW": "公司把錢借給別人、預計一年內收回的債權。它是流動資產，也是速動比率的一項；本課的故事沒有用到。",
+    "en": "Money the business has lent to others and expects to collect within a year. It is a current asset and one of the quick assets; the course story does not use it."
+  },
+  "accountRef": "short_term_loans_receivable"
+}

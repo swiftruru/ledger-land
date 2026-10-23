@@ -1,0 +1,38 @@
+{
+  "id": "tm_e61ht6yh",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "營業活動的現金流量總計",
+    "en": "Net cash from operating activities"
+  },
+  "teacherLabel": "營業活動的現金流量統計",
+  "currentTwLabel": "營業活動之淨現金流入（流出）",
+  "ifrsEnglish": "Net cash from operating activities",
+  "aliases": {
+    "zh-TW": [
+      "營業活動的現金流量統計",
+      "營業活動之淨現金流量",
+      "營業活動淨現金流量",
+      "本業現金流"
+    ],
+    "en": [
+      "Net cash from (used in) operating activities"
+    ]
+  },
+  "flags": [
+    "typo_fixed"
+  ],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "模板原文寫「營業活動的現金流量統計」，「統計」是「總計」的用詞錯誤；網站顯示修正寫法，模板原字列為別名。",
+    "en": "The template label uses a wrong word for total; the site shows the corrected wording and keeps the original as a searchable alias."
+  },
+  "definition": {
+    "zh-TW": "本業在這段期間淨收到（或淨付出）的現金。它是現金流量三項指標的分子，長期為正表示公司本業能自己造血。",
+    "en": "The net cash the main business brought in (or paid out) during the period. It is the numerator of the three cash flow ratios; a persistently positive figure means the business funds itself."
+  }
+}

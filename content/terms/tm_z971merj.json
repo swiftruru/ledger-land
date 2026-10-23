@@ -1,0 +1,36 @@
+{
+  "id": "tm_z971merj",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "稅前淨利",
+    "en": "Profit before tax"
+  },
+  "teacherLabel": "稅前淨利",
+  "currentTwLabel": "稅前淨利（淨損）",
+  "ifrsEnglish": "Profit before tax",
+  "aliases": {
+    "zh-TW": [
+      "稅前利益",
+      "稅前純益",
+      "稅前淨利（淨損）"
+    ],
+    "en": [
+      "Pre-tax profit"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.82",
+  "note": {
+    "zh-TW": "間接法照教材從稅前淨利起算。",
+    "en": "The indirect method starts from this line, as the course does."
+  },
+  "definition": {
+    "zh-TW": "扣所得稅之前的獲利，是五層利益的第四層。它也是間接法現金流量表的起算點，所以損益表與現金流量表的這個數字必須相同（勾稽點 A）。",
+    "en": "Profit before income tax is deducted, the fourth of the five profit levels. It is also the starting point of the indirect-method cash flow statement, so the figure must agree between the two statements (check A)."
+  }
+}

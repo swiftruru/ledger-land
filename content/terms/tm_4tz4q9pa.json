@@ -1,0 +1,24 @@
+{
+  "id": "tm_4tz4q9pa",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "不動產、廠房及設備週轉率", "en": "Property, plant and equipment turnover" },
+  "teacherLabel": "不動產、廠房及設備週轉率",
+  "currentTwLabel": "不動產、廠房及設備週轉率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["不動產廠房及設備週轉率", "固定資產週轉率"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "不動產、廠房及設備的淨額能帶出多少營業收入。次數越高表示設備用得越有效率；重資產產業的數值通常偏低，宜和同業比較。",
+    "en": "How much revenue the property, plant and equipment generates relative to its carrying amount. Higher means the equipment is used more efficiently; asset-heavy industries tend to show low values, so compare within the industry."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "ppe_turnover@excel"
+}

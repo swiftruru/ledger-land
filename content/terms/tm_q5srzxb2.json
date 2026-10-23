@@ -1,0 +1,32 @@
+{
+  "id": "tm_q5srzxb2",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "董監事酬勞",
+    "en": "Remuneration of directors and supervisors"
+  },
+  "teacherLabel": "董監事酬勞",
+  "currentTwLabel": "董事酬勞",
+  "ifrsEnglish": "Remuneration of directors and supervisors",
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Directors' remuneration"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "照教材顯示「董監事酬勞」；現行公司多稱董事酬勞。",
+    "en": "Shown as the course writes it; most companies now say directors' remuneration."
+  },
+  "definition": {
+    "zh-TW": "付給董事與監察人的報酬。它是銷管費用的一項。",
+    "en": "Pay to the company's directors and supervisors. It is one of the distribution and administrative expenses."
+  },
+  "accountRef": "directors_remuneration"
+}

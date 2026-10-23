@@ -1,0 +1,24 @@
+{
+  "id": "tm_fsv83x2z",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "平均銷貨日數", "en": "Average days to sell inventory" },
+  "teacherLabel": "平均銷貨日數",
+  "currentTwLabel": "平均售貨日數",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["平均售貨日數"], "en": ["Days inventory outstanding"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "商品從進貨到賣出平均要放幾天，用一年的天數除以存貨週轉率算出。天數越少表示銷貨越快。",
+    "en": "The average number of days goods stay in stock before being sold, found by dividing the days in a year by inventory turnover. Fewer days mean faster selling."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "days_inventory@excel"
+}

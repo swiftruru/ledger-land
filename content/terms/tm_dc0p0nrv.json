@@ -1,0 +1,37 @@
+{
+  "id": "tm_dc0p0nrv",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "應付帳款增加(+)",
+    "en": "Increase in trade payables (+)"
+  },
+  "teacherLabel": "應付賬款增加(+)",
+  "currentTwLabel": "應付帳款增加（減少）",
+  "ifrsEnglish": "Increase in trade payables",
+  "aliases": {
+    "zh-TW": [
+      "應付賬款增加(+)"
+    ],
+    "en": [
+      "Increase in accounts payable (+)"
+    ]
+  },
+  "flags": [
+    "typo_fixed"
+  ],
+  "confidence": "high",
+  "pendingRefs": [
+    "T12"
+  ],
+  "note": {
+    "zh-TW": "模板原字「應付賬款增加(+)」用了異體字，介面統一寫「帳」，原字列為別名；模板沒有減少列，減少時以負數填同一列（T12）。",
+    "en": "The template spells payables with a variant character; the interface uses one spelling and keeps the original as an alias. There is no decrease line, so a decrease is entered as a negative on the same line (T12)."
+  },
+  "definition": {
+    "zh-TW": "應付帳款增加表示有些進貨還沒付錢，省下的現金要加回稅前淨利。",
+    "en": "A rise in payables means some purchases have not been paid for yet, so the cash saved is added back to profit before tax."
+  }
+}

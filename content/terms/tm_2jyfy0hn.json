@@ -1,0 +1,41 @@
+{
+  "id": "tm_2jyfy0hn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": {
+    "zh-TW": "應付款項週轉率",
+    "en": "Payables turnover"
+  },
+  "teacherLabel": "應付款項週轉率",
+  "currentTwLabel": "應付款項週轉率",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "應付賬款周轉率",
+      "應付帳款週轉率"
+    ],
+    "en": [
+      "Accounts payable turnover"
+    ]
+  },
+  "flags": [],
+  "confidence": "pending",
+  "pendingRefs": [
+    "T27"
+  ],
+  "note": {
+    "zh-TW": "分子用銷貨成本還是本期進貨，教材與模板不同（T27）。介面統一寫「帳」與「週轉率」，模板原字列為別名。",
+    "en": "Whether the numerator is cost of sales or purchases differs between the slides and the template (T27). The interface uses one spelling and keeps the template wording as an alias."
+  },
+  "definition": {
+    "zh-TW": "一年內應付帳款被付清、再重新賒購幾次。次數越多表示付款越快，供應商給的賒帳期越短。",
+    "en": "How many times a year payables are settled and renewed through credit purchases. More turns mean faster payment and shorter credit from suppliers."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "ap_turnover@excel"
+}

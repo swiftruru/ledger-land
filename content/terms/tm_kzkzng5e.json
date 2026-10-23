@@ -1,0 +1,28 @@
+{
+  "id": "tm_kzkzng5e",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "平均付款天數", "en": "Average payment period" },
+  "teacherLabel": "平均付款天數",
+  "currentTwLabel": "平均付款天數",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": ["Days payables outstanding"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "網站補充的名稱：教材以例子換算、沒有命名，年報未列；延伸指標，不計分。",
+    "en": "A name supplied by the site: the course works it out by example without naming it and annual reports do not list it; an extension ratio, not scored."
+  },
+  "definition": {
+    "zh-TW": "從賒購到付清貨款平均要幾天，用一年的天數除以應付款項週轉率算出。天數越多表示供應商給的付款寬限越長。",
+    "en": "The average number of days between a credit purchase and its payment, found by dividing the days in a year by payables turnover. More days mean longer credit from suppliers."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "days_payable@slides03"
+}

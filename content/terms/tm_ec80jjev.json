@@ -1,0 +1,36 @@
+{
+  "id": "tm_ec80jjev",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "負債及股東權益總計",
+    "en": "Total liabilities and equity"
+  },
+  "teacherLabel": "負債及股東權益總計",
+  "currentTwLabel": "負債及權益總計",
+  "ifrsEnglish": "Total liabilities and equity",
+  "aliases": {
+    "zh-TW": [
+      "負債及股東權益統計",
+      "負債及權益總計",
+      "負債與股東權益"
+    ],
+    "en": []
+  },
+  "flags": [
+    "old_name",
+    "typo_fixed"
+  ],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "「股東權益」為舊稱，照教材顯示並加「舊稱」標記；模板原文寫「統計」，網站顯示「總計」，原字列為別名。",
+    "en": "Shareholders' equity is an older term, shown as the course writes it with an old-name marker; the template uses a wrong word for total, which the site corrects and keeps as an alias."
+  },
+  "definition": {
+    "zh-TW": "負債總額加權益總額。依會計恆等式它一定等於資產總計，兩邊對不上就表示某筆交易記錯了。",
+    "en": "Total liabilities plus total equity. By the accounting equation it must equal total assets; if the two sides differ, some transaction has been recorded wrongly."
+  }
+}

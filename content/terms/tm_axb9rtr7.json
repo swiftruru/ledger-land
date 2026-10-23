@@ -1,0 +1,24 @@
+{
+  "id": "tm_axb9rtr7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "毛利率", "en": "Gross profit margin" },
+  "teacherLabel": "毛利率",
+  "currentTwLabel": "毛利率",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["營業毛利率"], "en": ["Gross margin"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "營業毛利占營業收入的比例，看商品本身的賺頭。數值越高表示進貨成本相對越低、定價空間越大。",
+    "en": "Gross profit as a share of revenue: the margin in the goods themselves. Higher means purchase costs are relatively lower and there is more pricing room."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "gross_margin@slides01"
+}

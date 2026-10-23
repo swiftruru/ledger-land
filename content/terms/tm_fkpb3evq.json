@@ -1,0 +1,36 @@
+{
+  "id": "tm_fkpb3evq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "投資活動的現金流量總計(-)",
+    "en": "Net cash used in investing activities (-)"
+  },
+  "teacherLabel": "投資活動的現金流量統計(-)",
+  "currentTwLabel": "投資活動之淨現金流入（流出）",
+  "ifrsEnglish": "Net cash used in investing activities",
+  "aliases": {
+    "zh-TW": [
+      "投資活動的現金流量統計(-)",
+      "投資活動之淨現金流量"
+    ],
+    "en": [
+      "Net cash from (used in) investing activities"
+    ]
+  },
+  "flags": [
+    "typo_fixed"
+  ],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "模板原文寫「投資活動的現金流量統計(-)」，「統計」是「總計」的用詞錯誤；網站顯示修正寫法，模板原字列為別名。",
+    "en": "The template label uses a wrong word for total; the site shows the corrected wording and keeps the original as a searchable alias."
+  },
+  "definition": {
+    "zh-TW": "投資活動各列的合計。成長中的公司通常是淨流出，因為一直在添購設備；模板的列名帶著負號提醒這一點。",
+    "en": "The sum of the investing lines. A growing company usually shows a net outflow because it keeps buying equipment; the template label carries a minus sign as a reminder."
+  }
+}

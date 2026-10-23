@@ -1,0 +1,20 @@
+{
+  "id": "tm_r3nvm8jy",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": { "zh-TW": "外包費用", "en": "Outsourcing expenses" },
+  "teacherLabel": "外包費用",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Outsourcing expenses",
+  "aliases": { "zh-TW": [], "en": ["Outsourcing expense"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "把工作交給外部廠商做所付的費用，例如請人架設網站。它屬於銷管費用。",
+    "en": "Fees paid to outside providers for work done on the company's behalf, such as having a website built. It belongs to distribution and administrative expenses."
+  },
+  "accountRef": "outsourcing_expense"
+}

@@ -1,0 +1,43 @@
+{
+  "id": "tm_a2m7z4tf",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "攤銷遞延資產",
+    "en": "Amortisation of deferred assets"
+  },
+  "teacherLabel": "攤銷遞延資產",
+  "currentTwLabel": null,
+  "ifrsEnglish": null,
+  "enUsVariant": "Amortization of deferred assets",
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [
+    "not_ifrs_line",
+    "ifrs_treatment_differs"
+  ],
+  "confidence": "pending",
+  "pendingRefs": [
+    "T04",
+    "T05",
+    "T12"
+  ],
+  "ifrsBasis": "IAS 38.69",
+  "note": {
+    "zh-TW": "教材列在營業外支出（T05）；間接法的加回列預設放在其他非現金損失增加（T12）。老師確認前不出分錄題。",
+    "en": "The course lists it under non-operating expenses (T05); the indirect-method add-back goes by default to other non-cash losses (T12). No journal entry questions are set until the teacher confirms."
+  },
+  "definition": {
+    "zh-TW": "把先列為資產的設立費等遞延資產，依年限逐年轉成費用的金額。現行報表沒有這一項。",
+    "en": "The yearly charge that moves capitalised start-up costs and other deferred assets into expense over their amortisation period. Current statements have no such item."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 下設立費在發生時就已費用化，沒有可供攤銷的資產，所以不會有這筆費用；改用 IFRS 時之後各期的營業外支出減少，間接法也不再有這筆加回。",
+    "en": "Under IFRS start-up costs are expensed when incurred, so there is no asset to amortise and this expense does not arise; later periods show lower non-operating expenses and the indirect method has no add-back for it."
+  },
+  "accountRef": "amortisation_deferred_assets"
+}

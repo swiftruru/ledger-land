@@ -1,0 +1,20 @@
+{
+  "id": "tm_p7h3c5xq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "本期進貨", "en": "Purchases" },
+  "teacherLabel": "本期進貨",
+  "currentTwLabel": "本期進貨",
+  "ifrsEnglish": "Purchases",
+  "aliases": { "zh-TW": ["進貨"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T27"],
+  "note": { "zh-TW": "模板的應付款項週轉率以它為分子，與教材的銷貨成本不同（T27）。", "en": "The template uses it as the numerator of payables turnover, while the slides use cost of sales (T27)." },
+  "definition": {
+    "zh-TW": "這段期間買進來的商品成本。它加上期初存貨、減掉期末存貨，就是模板上的營業成本。",
+    "en": "The cost of goods bought during the period. Adding opening inventories and deducting closing inventories gives cost of sales on the template."
+  }
+}

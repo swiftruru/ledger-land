@@ -1,0 +1,35 @@
+{
+  "id": "tm_adqjyfqg",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "非流動負債",
+    "en": "Non-current liabilities"
+  },
+  "teacherLabel": "非流動負債",
+  "currentTwLabel": "非流動負債",
+  "ifrsEnglish": "Non-current liabilities",
+  "aliases": {
+    "zh-TW": [
+      "長期負債",
+      "非流動負債合計"
+    ],
+    "en": [
+      "Long-term liabilities",
+      "Total non-current liabilities"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "教材部分頁面與模板註解稱長期負債（舊稱）。同一張名詞卡也用於「非流動負債合計」列。",
+    "en": "Some course pages and template notes say long-term liabilities, an older term. The same card serves the total non-current liabilities line."
+  },
+  "definition": {
+    "zh-TW": "一年以後才需要償還的債務，例如長期借款。模板的分組標題。",
+    "en": "Obligations due more than a year ahead, such as long-term borrowings. A template group heading."
+  }
+}

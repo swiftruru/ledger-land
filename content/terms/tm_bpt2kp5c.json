@@ -1,0 +1,23 @@
+{
+  "id": "tm_bpt2kp5c",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "存貨增加(-)", "en": "Increase in inventories (-)" },
+  "teacherLabel": "存貨增加(-)",
+  "currentTwLabel": "存貨（增加）減少",
+  "ifrsEnglish": "Increase in inventories",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T12"],
+  "note": {
+    "zh-TW": "模板沒有存貨減少列；減少時以反號填在同一列並加註（T12）。",
+    "en": "The template has no inventory decrease line; a decrease is entered on the same line with the opposite sign and a note (T12)."
+  },
+  "definition": {
+    "zh-TW": "存貨增加表示花了錢買貨卻還沒賣出去，這筆支出沒有出現在損益表，所以要從稅前淨利減掉。",
+    "en": "A rise in inventories means cash was spent on goods not yet sold, which the income statement does not show, so the amount is deducted from profit before tax."
+  }
+}

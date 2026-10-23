@@ -1,0 +1,24 @@
+{
+  "id": "tm_jcbwesg8",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": { "zh-TW": "CE turnover", "en": "Capital expenditure turnover" },
+  "teacherLabel": "CE turnover",
+  "currentTwLabel": "CE turnover",
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": [], "en": ["Revenue to capex"] },
+  "flags": [],
+  "confidence": "medium",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "營業收入是資本支出的幾倍，也就是 CE intensity 的倒數。倍數越高表示每一份資本支出帶出越多營收；兩者的資訊相同。",
+    "en": "Revenue as a multiple of capital expenditure, the reciprocal of capex intensity. A higher multiple means each unit of capital spending generates more revenue; the two carry the same information."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "ce_turnover@slides02"
+}

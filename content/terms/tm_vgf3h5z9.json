@@ -1,0 +1,20 @@
+{
+  "id": "tm_vgf3h5z9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "短期借款返還(-)", "en": "Repayment of short-term borrowings (-)" },
+  "teacherLabel": "短期借款返還(-)",
+  "currentTwLabel": "短期借款減少",
+  "ifrsEnglish": "Repayment of short-term borrowings",
+  "aliases": { "zh-TW": ["短期借款減少"], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 7.17(d)",
+  "definition": {
+    "zh-TW": "償還短期借款本金時付出的現金。利息不算在這裡，利息另外列在營業活動的利息支出。",
+    "en": "Cash paid to repay the principal of short-term borrowings. Interest is not included; it appears separately under interest paid in operating activities."
+  }
+}

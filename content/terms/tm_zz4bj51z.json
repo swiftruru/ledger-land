@@ -1,0 +1,19 @@
+{
+  "id": "tm_zz4bj51z",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "保留盈餘", "en": "Retained earnings" },
+  "teacherLabel": "保留盈餘",
+  "currentTwLabel": "保留盈餘",
+  "ifrsEnglish": "Retained earnings",
+  "aliases": { "zh-TW": [], "en": [] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "公司歷年盈餘留在公司裡的部分，包括法定盈餘公積、特別盈餘公積與未分配盈餘。模板的分組標題，不可入帳。",
+    "en": "The part of past profits kept in the company, made up of the legal reserve, special reserve and unappropriated retained earnings. A template group heading that cannot be posted to."
+  }
+}

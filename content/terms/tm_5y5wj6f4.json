@@ -1,0 +1,33 @@
+{
+  "id": "tm_5y5wj6f4",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "不動產廠房設備毛額",
+    "en": "Gross carrying amount of property, plant and equipment"
+  },
+  "teacherLabel": "不動產廠房設備毛額",
+  "currentTwLabel": "不動產、廠房及設備毛額",
+  "ifrsEnglish": "Gross carrying amount of property, plant and equipment",
+  "aliases": {
+    "zh-TW": [
+      "固定資產毛額",
+      "不動產、廠房及設備毛額"
+    ],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 16.73(d)",
+  "note": {
+    "zh-TW": "模板沒有累計折舊列，把淨額當毛額用；網站內部保留累計折舊，兩者在折舊後會不同。",
+    "en": "The template has no accumulated depreciation line and uses the net amount as the gross amount; the site keeps accumulated depreciation, so the two differ once depreciation is charged."
+  },
+  "definition": {
+    "zh-TW": "設備還沒扣掉累計折舊之前的原始成本。模板沒有這一列，只給 slides03 版的現金流量再投資比率當分母使用。",
+    "en": "The original cost of equipment before accumulated depreciation is deducted. The template has no such line; it is used only as the denominator of the slides03 version of the cash reinvestment ratio."
+  }
+}

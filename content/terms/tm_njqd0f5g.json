@@ -1,0 +1,30 @@
+{
+  "id": "tm_njqd0f5g",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "account",
+  "label": {
+    "zh-TW": "辦公設備",
+    "en": "Office equipment"
+  },
+  "teacherLabel": "辦公設備",
+  "currentTwLabel": null,
+  "ifrsEnglish": "Office equipment",
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "medium",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "網站補充的延伸科目；術語表沒有獨立的條目，英文名稱依一般用法。故事的電腦設備依教材記在機器設備。",
+    "en": "An extension account added by the site; the glossary has no separate entry and the English name follows common usage. The computers in the story are recorded under machinery and equipment."
+  },
+  "definition": {
+    "zh-TW": "辦公室用的設備，例如電腦與印表機。只給需要另列辦公設備的延伸題使用。",
+    "en": "Equipment used in the office, such as computers and printers. It is used only in extension exercises that present office equipment separately."
+  },
+  "accountRef": "office_equipment"
+}

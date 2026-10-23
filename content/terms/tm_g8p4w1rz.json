@@ -1,0 +1,20 @@
+{
+  "id": "tm_g8p4w1rz",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": { "zh-TW": "營業毛利", "en": "Gross profit" },
+  "teacherLabel": "營業毛利",
+  "currentTwLabel": "營業毛利（毛損）",
+  "ifrsEnglish": "Gross profit",
+  "aliases": { "zh-TW": ["毛利", "營業毛利（毛損）"], "en": ["Gross margin"] },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.85",
+  "definition": {
+    "zh-TW": "營業收入減掉營業成本後剩下的錢，是五層利益的第一層。它表示商品本身賺不賺錢，還沒扣掉人事、運費等營業上的其他開支。",
+    "en": "Revenue less cost of sales, the first of the five profit levels. It shows whether the goods themselves make money, before staff, delivery and other operating costs are deducted."
+  }
+}

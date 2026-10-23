@@ -1,0 +1,34 @@
+{
+  "id": "tm_j8zg281d",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "ratio",
+  "label": {
+    "zh-TW": "ME leverage",
+    "en": "Marketing leverage"
+  },
+  "teacherLabel": "ME leverage",
+  "currentTwLabel": "ME leverage",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [],
+  "confidence": "medium",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "老師自訂的說法。教材只用文字說明、沒有公式；這一點尚未向老師提出，網站的補充定義標「網站補充定義」，不計分。",
+    "en": "A teacher-defined term. The course describes it in words without a formula; the point has not yet been raised with the teacher, so the site's supplementary definition is labelled as such and not scored."
+  },
+  "definition": {
+    "zh-TW": "行銷投入帶動營業收入成長的效果。網站的補充定義需要兩期資料，單期時顯示 N/A。",
+    "en": "The effect of marketing spending on revenue growth. The site's supplementary definition needs two periods of data and shows N/A for a single period."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  },
+  "ratioRef": "me_leverage@slides02"
+}

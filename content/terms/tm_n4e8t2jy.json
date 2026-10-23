@@ -1,0 +1,38 @@
+{
+  "id": "tm_n4e8t2jy",
+  "rev": 1,
+  "revKind": "text",
+  "status": "draft",
+  "category": "statement",
+  "label": {
+    "zh-TW": "本期淨利",
+    "en": "Profit for the period"
+  },
+  "teacherLabel": "本期淨利",
+  "currentTwLabel": "本期淨利（淨損）",
+  "ifrsEnglish": "Profit for the period",
+  "aliases": {
+    "zh-TW": [
+      "稅後淨利",
+      "稅後純益",
+      "淨利",
+      "本期淨利（淨損）"
+    ],
+    "en": [
+      "Net income",
+      "Net profit"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 1.81A",
+  "note": {
+    "zh-TW": "0-2 以 Profit 代表；計算器統一期間並標示是否年化。英文別名 net income 是美式用語。",
+    "en": "Represented by Profit in the 0-2 slides; the calculator aligns the periods and says whether figures are annualised. The alias net income is American usage."
+  },
+  "definition": {
+    "zh-TW": "稅前淨利再扣掉所得稅費用後，這段期間真正賺到、屬於股東的獲利，是五層利益的最後一層。它會流進資產負債表的未分配盈餘。",
+    "en": "Profit before tax less income tax expense: what the period really earned for the shareholders, the last of the five profit levels. It flows into unappropriated retained earnings on the statement of financial position."
+  }
+}
