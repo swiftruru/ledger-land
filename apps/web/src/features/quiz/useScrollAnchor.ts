@@ -29,24 +29,45 @@ export function restoreScrollAnchor(anchor: ScrollAnchor, root: Document = docum
 }
 
 /** 掛載時依 store 的錨點還原；之後每次捲動（rAF 節流）更新錨點。
- *  頁面高度改變時（上方晚一步插入的提示，例如相機預覽的暫存情境提示要等 storage.estimate 才出現、Safari 分頁提示的關卡代號延後載入）
- *  也重新記錄：錨點的偏移量是「元素在視窗裡的位置」，內容被往下推而沒有捲動時偏移量就過期，切換語言後還原會多出提示的高度
- *  （CI 的 WebKit 曾因此差 744px；06 第 8.2 節）。 */
+ *  掛載後 1.5 秒內頁面高度若改變（上方晚一步插入的提示：相機預覽的暫存情境提示要等 storage.estimate 才出現、Safari 分頁提示的關卡代號延後載入），
+ *  就用同一個錨點再還原一次：還原是冪等的，瀏覽器的 scroll anchoring 已經補償過也不會錯位；而還原的 scrollTo 與插入落在同一個影格時瀏覽器會暫停
+ *  anchoring（CI 的 WebKit 曾因此讓切換語言後的題目位置差 550px，06 第 8.2 節）。使用者一捲動就結束這個視窗，之後高度改變只重新記錄錨點。 */
 export function useScrollAnchor(enabled: boolean, read: () => ScrollAnchor | undefined, write: (anchor: ScrollAnchor | undefined) => void): void {
   useLayoutEffect(() => {
     if (!enabled) return;
     const anchor = read();
-    if (anchor) restoreScrollAnchor(anchor);
+    let restoring = false;
+    const restore = () => {
+      if (!anchor) return;
+      restoring = true;
+      restoreScrollAnchor(anchor);
+      requestAnimationFrame(() => {
+        restoring = false;
+      });
+    };
+    restore();
+    let settleUntil = performance.now() + 1500;
     let raf = 0;
     const capture = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => write(captureScrollAnchor()));
     };
-    window.addEventListener('scroll', capture, { passive: true });
-    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(capture) : null;
+    const onScroll = () => {
+      if (restoring) return;
+      settleUntil = 0;
+      capture();
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    const observer =
+      typeof ResizeObserver === 'function'
+        ? new ResizeObserver(() => {
+            if (anchor && performance.now() < settleUntil) restore();
+            else capture();
+          })
+        : null;
     observer?.observe(document.body);
     return () => {
-      window.removeEventListener('scroll', capture);
+      window.removeEventListener('scroll', onScroll);
       observer?.disconnect();
       cancelAnimationFrame(raf);
     };
