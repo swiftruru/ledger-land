@@ -29,9 +29,10 @@ export function restoreScrollAnchor(anchor: ScrollAnchor, root: Document = docum
 }
 
 /** 掛載時依 store 的錨點還原；之後每次捲動（rAF 節流）更新錨點。
- *  掛載後 1.5 秒內頁面高度若改變（上方晚一步插入的提示：相機預覽的暫存情境提示要等 storage.estimate 才出現、Safari 分頁提示的關卡代號延後載入），
+ *  使用者還沒自己捲動之前，頁面高度若改變（上方晚一步插入的提示：相機預覽的暫存情境提示要等 storage.estimate 才出現、Safari 分頁提示的關卡代號延後載入），
  *  就用同一個錨點再還原一次：還原是冪等的，瀏覽器的 scroll anchoring 已經補償過也不會錯位；而還原的 scrollTo 與插入落在同一個影格時瀏覽器會暫停
- *  anchoring（CI 的 WebKit 曾因此讓切換語言後的題目位置差 550px，06 第 8.2 節）。使用者一捲動就結束這個視窗，之後高度改變只重新記錄錨點。 */
+ *  anchoring，慢的執行器上插入也可能晚好幾秒（CI 的 WebKit 曾因此讓切換語言後的題目位置差 483px，06 第 8.2 節）。不用時間視窗，
+ *  使用者一捲動就只重新記錄錨點。 */
 export function useScrollAnchor(enabled: boolean, read: () => ScrollAnchor | undefined, write: (anchor: ScrollAnchor | undefined) => void): void {
   useLayoutEffect(() => {
     if (!enabled) return;
@@ -46,7 +47,7 @@ export function useScrollAnchor(enabled: boolean, read: () => ScrollAnchor | und
       });
     };
     restore();
-    let settleUntil = performance.now() + 1500;
+    let userScrolled = false;
     let raf = 0;
     const capture = () => {
       cancelAnimationFrame(raf);
@@ -54,14 +55,14 @@ export function useScrollAnchor(enabled: boolean, read: () => ScrollAnchor | und
     };
     const onScroll = () => {
       if (restoring) return;
-      settleUntil = 0;
+      userScrolled = true;
       capture();
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     const observer =
       typeof ResizeObserver === 'function'
         ? new ResizeObserver(() => {
-            if (anchor && performance.now() < settleUntil) restore();
+            if (anchor && !userScrolled) restore();
             else capture();
           })
         : null;
