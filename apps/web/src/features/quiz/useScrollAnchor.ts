@@ -59,11 +59,20 @@ export function useScrollAnchor(enabled: boolean, read: () => ScrollAnchor | und
       capture();
     };
     window.addEventListener('scroll', onScroll, { passive: true });
+    // 版面改變時延到下一個影格再看：瀏覽器自己的 scroll anchoring（Chromium、macOS 與 Linux 的 WebKit 都有）會在同一個影格裡補償，
+    // 若在 ResizeObserver 的回呼裡立刻 scrollTo，會和瀏覽器的補償加兩次（CI 的 Linux WebKit 曾多捲一個提示的高度）；
+    // 下一個影格只在錨點真的偏了才還原，所以不論瀏覽器有沒有補償、順序如何，結果都一樣
     const observer =
       typeof ResizeObserver === 'function'
         ? new ResizeObserver(() => {
-            if (anchor && !userScrolled) restore();
-            else capture();
+            requestAnimationFrame(() => {
+              if (!anchor || userScrolled) {
+                capture();
+                return;
+              }
+              const el = document.getElementById(anchor.elementId);
+              if (el && Math.abs(el.getBoundingClientRect().top - anchor.offset) > 1) restore();
+            });
           })
         : null;
     observer?.observe(document.body);
