@@ -49,7 +49,7 @@ export function EphemeralNotice() {
     setShow(false);
   };
   return (
-    <Banner kind="warning" role="status">
+    <Banner kind="warning" role="status" className="ll-ephemeral-notice">
       <h2 className="ll-notice__title">
         <Trans id="ephemeral.title">這個畫面關掉後，作答進度不會保留</Trans>
       </h2>
