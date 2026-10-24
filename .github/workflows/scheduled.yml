@@ -19,6 +19,8 @@ env:
 jobs:
   weekly:
     runs-on: ubuntu-latest
+    # 執行器卡住時不等預設的 6 小時（2026-10-24 apt 那一步曾卡 40 分鐘）；數字約是正常耗時的三倍
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
