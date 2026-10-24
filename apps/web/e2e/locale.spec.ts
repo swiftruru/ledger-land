@@ -35,7 +35,16 @@ test.describe('語言切換（05 第 7.5、8 節；10 M0b 完成標準）', () =
     expect(scrollAfter).toBeGreaterThan(100);
     const anchorAfterTop = await page.evaluate((id) => document.getElementById(id)?.getBoundingClientRect().top ?? null, anchorBefore!.id);
     expect(anchorAfterTop).not.toBeNull();
-    expect(Math.abs((anchorAfterTop as number) - anchorBefore!.top)).toBeLessThan(160);
+    // 失敗時附上診斷：捲動量、各提示的高度、記錄的錨點（CI 的 WebKit 曾差 483px，本機重現不了時靠這個判斷）
+    const diag = await page.evaluate(() => ({
+      scrollY: window.scrollY,
+      banners: Array.from(document.querySelectorAll('main > .ll-banner, main > .ll-safari-notice, main [role="status"], main [role="note"]')).map(
+        (el) => `${el.className || el.getAttribute('role')}:${Math.round(el.getBoundingClientRect().height)}`,
+      ),
+      anchors: Array.from(document.querySelectorAll<HTMLElement>('[data-ll-anchor]')).map((el) => `${el.id}:${Math.round(el.getBoundingClientRect().top)}`),
+      session: Object.keys(sessionStorage).filter((k) => k.startsWith('ll')),
+    }));
+    expect(Math.abs((anchorAfterTop as number) - anchorBefore!.top), `before=${JSON.stringify(anchorBefore)} after=${JSON.stringify(diag)}`).toBeLessThan(160);
     // replace：沒有多一筆瀏覽紀錄
     const historyLength = await page.evaluate(() => history.length);
     expect(historyLength).toBeLessThanOrEqual(2);

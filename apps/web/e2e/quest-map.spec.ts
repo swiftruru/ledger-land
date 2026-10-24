@@ -29,7 +29,7 @@ test.describe('闖關地圖', () => {
     await expect(current).toHaveCount(1);
     // 關卡名稱來自各章快照，CI 的 Firefox 曾超過預設的 5 秒才載到
     await expect(current).toHaveAttribute('aria-label', /第 1 章第 3 關 股東權益.*建議下一關/, { timeout: 15_000 });
-    await expect.poll(() => inViewport(page, '[aria-current="step"]')).toBe(true);
+    await expect.poll(() => inViewport(page, '[aria-current="step"]'), { timeout: 15_000 }).toBe(true);
     await expect(page.locator('.ll-node__btn').first()).toHaveAttribute('aria-label', /第 1 章第 1 關 認識資產，3 顆星中的 3 顆/);
     await expect(page.getByTestId('map-marker')).toHaveCSS('visibility', 'visible');
     const transform = await page.getByTestId('map-marker').evaluate((el) => (el as HTMLElement).style.transform);
@@ -45,7 +45,7 @@ test.describe('闖關地圖', () => {
 
   test('?chapter= 捲到該章的章節牌', async ({ page }) => {
     await openMap(page, `${MAP}&chapter=ch_fx0002`);
-    await expect.poll(() => inViewport(page, '[data-chapter-id="ch_fx0002"] .qm-ch__banner')).toBe(true);
+    await expect.poll(() => inViewport(page, '[data-chapter-id="ch_fx0002"] .qm-ch__banner'), { timeout: 15_000 }).toBe(true);
   });
 
   test('鍵盤 Tab 依序走節點與章節牌', async ({ page, browserName }) => {
