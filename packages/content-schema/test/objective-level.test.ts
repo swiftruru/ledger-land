@@ -149,7 +149,7 @@ describe('validateBundle 的引用檢查（08 第 5.3 節）', () => {
     status: 'published',
     order: 1,
     scope: 'core',
-    examScope: 'unconfirmed',
+    examScope: 'midterm',
     title: lt('章', 'Chapter'),
     summary: lt('簡介。', 'Summary.'),
     objectiveIds: ['obj_d7q2x5'],
@@ -231,6 +231,32 @@ describe('validateBundle 的引用檢查（08 第 5.3 節）', () => {
     );
     const draftQuestion = bundle({ questions: five.map((q, i) => ({ file: `q${i}`, data: i === 0 ? { ...q, status: 'draft' } : q })) });
     expect(messages(draftQuestion)).toEqual(expect.arrayContaining([expect.stringContaining('已發布的關卡只能列已發布的題目')]));
+  });
+  it('已發布的關卡與題目只能屬於已發布的章節（ref.publishedClosure，finding core-4）', () => {
+    const draftChapter = bundle({
+      chapters: [
+        { file: 'c', data: { ...chapter, status: 'draft' } },
+        { file: 'o', data: other },
+      ],
+    });
+    const issues = validateBundle(draftChapter).filter((i) => i.rule === 'ref.publishedClosure');
+    expect(issues.map((i) => `${i.file} ${i.path}：${i.message}`)).toEqual(
+      expect.arrayContaining([
+        'content/levels/lv_k7m2q9xd.json chapterId：已發布的關卡只能屬於已發布的章節，ch_c5f8w2 是 draft',
+        `content/questions/ch_c5f8w2/${five[0]!.id}.json chapterId：已發布的題目只能屬於已發布的章節，ch_c5f8w2 是 draft`,
+      ]),
+    );
+    expect(issues).toHaveLength(1 + five.length);
+    // 草稿章節裡的草稿關卡與題目不受影響
+    const allDraft = bundle({
+      chapters: [
+        { file: 'c', data: { ...chapter, status: 'draft' } },
+        { file: 'o', data: other },
+      ],
+      levels: [{ file: 'l', data: { ...level, status: 'draft', questionIds: five.map((q) => q.id) } }],
+      questions: five.map((q) => ({ file: `content/questions/ch_c5f8w2/${q.id}.json`, data: { ...q, status: 'draft' } })),
+    });
+    expect(validateBundle(allDraft).filter((i) => i.rule === 'ref.publishedClosure')).toEqual([]);
   });
   it('省略 objectives 與 levels 時不檢查這些引用（M1 的 bundle 仍可用）', () => {
     const b = bundle();

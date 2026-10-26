@@ -3,10 +3,11 @@
 import { LOCALE_CODES, type Locale } from '@ledgerland/i18n';
 import { z } from 'zod';
 import { Chapter } from './chapter.ts';
-import { EVENT_ID_RE, PLACEHOLDER_TYPES, RATIO_REF_RE, idPattern, parsePlaceholders, placeholderKey } from './common.ts';
-import { LEVEL_MAX_JUDGMENT, LEVEL_MAX_SCORED, LEVEL_MIN_SCORED, Level } from './level.ts';
+import { EVENT_ID_RE, RATIO_REF_RE } from './common.ts';
+import { PLACEHOLDER_TYPES, idPattern, parsePlaceholders, placeholderKey } from './ids.ts';
+import { LEVEL_MAX_JUDGMENT, LEVEL_MAX_SCORED, LEVEL_MIN_SCORED, LEVEL_UNSCORED_MAX, LEVEL_UNSCORED_MIN, Level } from './level.ts';
 import { type Objective, ObjectiveFile } from './objective.ts';
-import { Question, questionScope } from './question.ts';
+import { Question, questionScenario, questionScope } from './question.ts';
 import { Story } from './story.ts';
 import { TransactionTemplate } from './template.ts';
 import { Term } from './term.ts';
@@ -32,10 +33,30 @@ export interface ContentIssue {
   file: string;
   path: string;
   message: string;
+  /** 08 第 5 節的規則代號；省略時是 struct.schema、i18n.* 或 ref.*（訊息本身已說明），有代號的規則由 content:check 一起印出 */
+  rule?: string;
 }
 
-/** 已發布的題目在關卡裡怎麼計數（08 第 5.1 節 struct.levelSize）：計分題、judgment、其餘暫不計分的不算 */
-export function levelSizeIssue(questions: { type: string; scored: boolean; pendingRefs?: string[] }[]): string | null {
+/** 全 judgment 的關卡（沒有星星）：至少一題而且每一題都是 judgment。延伸章才允許（levelSizeIssue 的 allowUnscored）；快照以 level.unscored 標示 */
+export function isUnscoredLevel(questions: readonly { type: string }[]): boolean {
+  return questions.length > 0 && questions.every((q) => q.type === 'judgment');
+}
+
+/**
+ * 已發布的題目在關卡裡怎麼計數（08 第 5.1 節 struct.levelSize）：計分題、judgment、其餘暫不計分的不算。
+ * allowUnscored（延伸章的關卡）時另接受「全 judgment」關卡：3 到 6 題、不混計分題（03 第 2.2 節 E03）；主線章節規則不變。
+ */
+export function levelSizeIssue(
+  questions: { type: string; scored: boolean; pendingRefs?: string[] }[],
+  options: { allowUnscored?: boolean } = {},
+): string | null {
+  if (isUnscoredLevel(questions)) {
+    if (!options.allowUnscored)
+      return `全部是 judgment 的關卡只允許在延伸章（scope: extension）；主線關卡要有 ${LEVEL_MIN_SCORED} 到 ${LEVEL_MAX_SCORED} 題計分題`;
+    if (questions.length < LEVEL_UNSCORED_MIN || questions.length > LEVEL_UNSCORED_MAX)
+      return `全部是 judgment 的關卡要有 ${LEVEL_UNSCORED_MIN} 到 ${LEVEL_UNSCORED_MAX} 題，現在有 ${questions.length} 題`;
+    return null;
+  }
   const scored = questions.filter((q) => q.scored && !(q.pendingRefs && q.pendingRefs.length > 0)).length;
   const judgment = questions.filter((q) => q.type === 'judgment').length;
   if (scored < LEVEL_MIN_SCORED || scored > LEVEL_MAX_SCORED)
@@ -231,7 +252,10 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   const chapterById = new Map(chapters.map((c) => [c.data.id, c.data]));
   const templateIds = new Set(templates.map((t) => t.data.id));
   const storyIds = new Set(stories.map((s) => s.data.id));
+  // 步驟 ID 對所屬故事：先登錄全部故事（含草稿）的步驟，章節的 chapterEndLinks、學習目標的 labRefs、題目的 labRef 與 scenario 期初
+  // 才能不分檔案順序地檢查「步驟屬於該故事」；重複的步驟 ID 在下面的故事迴圈回報
   const stepOwner = new Map<string, string>();
+  for (const s of stories) for (const step of s.data.steps) if (!stepOwner.has(step.id)) stepOwner.set(step.id, s.data.id);
   const questionIds = new Set(questions.map((q) => q.data.id));
   const questionById = new Map(questions.map((q) => [q.data.id, q.data]));
   const objectiveById = new Map(objectives.map((o) => [o.data.id, o.data]));
@@ -345,9 +369,16 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
         need(o.file, `${o.path}.labRefs.${j}.step`, stepOwner.get(ref.step) === ref.story, `步驟 ${ref.step} 不屬於故事 ${ref.story}`);
     });
   }
+  // ref.publishedClosure（08 第 5.3 節，finding core-4）：已發布的關卡與題目只能屬於已發布的章節，否則草稿章節的內容會提早進正式快照
+  const closure = (file: string, kind: string, status: string, chapterId: string) => {
+    const ch = chapterById.get(chapterId);
+    if (status === 'published' && ch !== undefined && ch.status !== 'published')
+      issues.push({ file, path: 'chapterId', rule: 'ref.publishedClosure', message: `已發布的${kind}只能屬於已發布的章節，${chapterId} 是 ${ch.status}` });
+  };
   for (const l of levels) {
     const d = l.data;
     need(l.file, 'chapterId', chapterIds.has(d.chapterId), `引用不存在的章節 ${d.chapterId}`);
+    closure(l.file, '關卡', d.status, d.chapterId);
     if (d.supersededBy) need(l.file, 'supersededBy', levelById.has(d.supersededBy), `引用不存在的關卡 ${d.supersededBy}`);
     if (checkObjectiveRef)
       for (const id of d.objectiveIds ?? []) {
@@ -369,10 +400,10 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
         issues.push({ file: l.file, path: `questionIds.${j}`, message: `已發布的關卡只能列已發布的題目，${id} 是 ${q.status}` });
       members.push({ type: q.type, scored: q.scored, pendingRefs: q.pendingRefs });
     });
-    // struct.levelSize 只對已發布的關卡強制（草稿由 content:check 以警告提醒）
+    // struct.levelSize 只對已發布的關卡強制（草稿由 content:check 以警告提醒）；延伸章的關卡可以是全 judgment
     if (d.status === 'published' && members.length === d.questionIds.length) {
-      const msg = levelSizeIssue(members);
-      if (msg !== null) issues.push({ file: l.file, path: 'questionIds', message: msg });
+      const msg = levelSizeIssue(members, { allowUnscored: chapterById.get(d.chapterId)?.scope === 'extension' });
+      if (msg !== null) issues.push({ file: l.file, path: 'questionIds', rule: 'struct.levelSize', message: msg });
     }
   }
   for (const t of templates) {
@@ -383,9 +414,8 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
     if (s.data.supersededBy) need(s.file, 'supersededBy', storyIds.has(s.data.supersededBy), `引用不存在的故事 ${s.data.supersededBy}`);
     s.data.steps.forEach((step, i) => {
       const p = `steps.${i}`;
-      if (stepOwner.has(step.id))
+      if (stepOwner.get(step.id) !== s.data.id)
         issues.push({ file: s.file, path: `${p}.id`, message: `步驟 ID 已在故事 ${stepOwner.get(step.id)} 使用：${step.id}（步驟 ID 全站唯一）` });
-      stepOwner.set(step.id, s.data.id);
       for (const ref of step.termRefs) need(s.file, `${p}.termRefs`, termIds.has(ref), `引用不存在的名詞 ${ref}`);
       for (const link of step.chapterLinks ?? []) need(s.file, `${p}.chapterLinks`, chapterIds.has(link.chapter), `引用不存在的章節 ${link.chapter}`);
       if (checkTemplateRef)
@@ -395,6 +425,7 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   for (const q of questions) {
     const d = q.data;
     need(q.file, 'chapterId', chapterIds.has(d.chapterId), `引用不存在的章節 ${d.chapterId}`);
+    closure(q.file, '題目', d.status, d.chapterId);
     for (const ref of d.termRefs) need(q.file, 'termRefs', termIds.has(ref), `引用不存在的名詞 ${ref}`);
     if (checkObjectiveRef) {
       const o = objectiveById.get(d.objectiveId);
@@ -418,8 +449,7 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
       if (storyIds.has(d.labRef.story))
         need(q.file, 'labRef.step', stepOwner.get(d.labRef.step) === d.labRef.story, `步驟 ${d.labRef.step} 不屬於故事 ${d.labRef.story}`);
     }
-    const scenario = 'scenario' in d ? d.scenario : d.type === 'ratio_numeric' ? d.compute.scenario : undefined;
-    const scenarioPath = d.type === 'ratio_numeric' ? 'compute.scenario' : 'scenario';
+    const { scenario, path: scenarioPath } = questionScenario(d);
     if (scenario) {
       if ('storyRef' in scenario.opening) {
         const { storyRef, afterStep } = scenario.opening;
@@ -441,14 +471,39 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
         });
       }
     }
-    // 分錄題只能放在「借貸與分錄」延伸章（D1）
+    // ans.journalScope（08 第 5.5 節）：分錄題只能放在「借貸與分錄」延伸章（D1）：scope 為 extension 而且 kind 為 journal
     if (d.type === 'journal_entry') {
       const ch = chapterById.get(d.chapterId);
-      if (ch && ch.scope !== 'extension')
+      if (ch && (ch.scope !== 'extension' || ch.kind !== 'journal'))
         issues.push({
           file: q.file,
           path: 'chapterId',
-          message: `journal_entry 只能放在 scope 為 extension 的延伸章，章節 ${d.chapterId} 的 scope 是 ${ch.scope}`,
+          rule: 'ans.journalScope',
+          message:
+            ch.scope !== 'extension'
+              ? `journal_entry 只能放在「借貸與分錄」延伸章（scope: extension 且 kind: journal），章節 ${d.chapterId} 的 scope 是 ${ch.scope}（主線章節不出分錄題，D1）`
+              : `journal_entry 只能放在「借貸與分錄」延伸章（kind: journal），章節 ${d.chapterId} 沒有標 kind: journal`,
+        });
+    }
+  }
+
+  // struct.examScope、struct.chapterKind（08 第 5.1 節）：已發布章節的期中考範圍要決定（T32）；全站只有一章 kind: journal（D1）
+  {
+    const journalChapters = chapters.filter((c) => c.data.kind === 'journal');
+    for (const c of chapters) {
+      if (c.data.status === 'published' && c.data.examScope === 'unconfirmed')
+        issues.push({
+          file: c.file,
+          path: 'examScope',
+          rule: 'struct.examScope',
+          message: '已發布的章節不得是 unconfirmed（M3 起，T32 已決定）：主線章節填 midterm，延伸章填 not_in_exam',
+        });
+      if (c.data.kind === 'journal' && journalChapters.length > 1)
+        issues.push({
+          file: c.file,
+          path: 'kind',
+          rule: 'struct.chapterKind',
+          message: `全站只能有一章 kind: journal（「借貸與分錄」延伸章，D1），現在有 ${journalChapters.length} 章：${journalChapters.map((x) => x.data.id).join('、')}`,
         });
     }
   }

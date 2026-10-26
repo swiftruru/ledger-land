@@ -1,3 +1,4 @@
+export * from './ids.ts';
 export * from './common.ts';
 export * from './term.ts';
 export * from './chapter.ts';
@@ -12,4 +13,4 @@ export * from './story.ts';
 export * from './question.ts';
 export * from './objective.ts';
 export * from './level.ts';
-export { validateBundle, levelSizeIssue, type ContentBundle, type ContentEntry, type ContentIssue } from './validate.ts';
+export { validateBundle, levelSizeIssue, isUnscoredLevel, type ContentBundle, type ContentEntry, type ContentIssue } from './validate.ts';

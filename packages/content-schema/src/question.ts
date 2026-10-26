@@ -63,12 +63,27 @@ const base = Managed.extend({
 });
 export const QuestionBase = base;
 
+/** 指標的量值來源（ratio_numeric 的 compute.measures 與 ratio_interpret 的 ratioTable.measures 共用）：鍵是版面線 ID 或 input.<名稱>，值引用題目的 vars */
+export const MeasuresMap = z.record(z.string().regex(/^([a-z][a-z0-9_]*|input\.[a-z][a-z0-9_]*)$/), z.string().regex(/^vars\.[a-z][A-Za-z0-9_]*$/));
+
+/**
+ * ratio_interpret 畫面上方的指標小表格（08 第 3.6 節，M3）：列出 ratioRefs，數字由核心算（scenario 過帳後的累計報表，或作者 vars 經 measures 給值），
+ * 寫進快照的 compiled.ratios；沒有這個欄位時快照不帶 compiled.ratios，介面不顯示表格。scenario 與 measures 二選一。
+ */
+export const RatioTable = z
+  .object({ ratioRefs: z.array(RatioRef).min(1), scenario: Scenario.optional(), measures: MeasuresMap.optional() })
+  .strict()
+  .meta({ id: 'RatioTable' });
+export type RatioTable = z.infer<typeof RatioTable>;
+
 const singleChoiceLike = base.extend({
   type: z.literal(['single_choice', 'pick_statement', 'ratio_interpret']),
   options: z.array(ChoiceOption).min(3).max(4),
   correctOptionId: idSchema('option'),
   ratioRef: RatioRef.optional(),
   distractorExprs: z.record(idSchema('option'), z.string().min(1).max(300)).optional(),
+  /** 只給 ratio_interpret */
+  ratioTable: RatioTable.optional(),
 });
 
 export const SingleChoiceQuestion = singleChoiceLike.strict();
@@ -130,7 +145,7 @@ export const RatioNumericQuestion = base
       .object({
         ratioRef: RatioRef,
         scenario: Scenario.optional(),
-        measures: z.record(z.string().regex(/^([a-z][a-z0-9_]*|input\.[a-z][a-z0-9_]*)$/), z.string().regex(/^vars\.[a-z][A-Za-z0-9_]*$/)).optional(),
+        measures: MeasuresMap.optional(),
       })
       .strict(),
     answerUnit: RatioUnit,
@@ -190,6 +205,20 @@ export const Question = QuestionUnion.superRefine((q, ctx) => {
       if (!q.options.some((o) => o.id === q.correctOptionId))
         ctx.addIssue({ code: 'custom', path: ['correctOptionId'], message: 'correctOptionId 必須是 options 裡的選項' });
       if (q.type === 'ratio_interpret' && !q.ratioRef) ctx.addIssue({ code: 'custom', path: ['ratioRef'], message: 'ratio_interpret 必須填 ratioRef' });
+      if (q.ratioTable !== undefined) {
+        if (q.type !== 'ratio_interpret')
+          ctx.addIssue({ code: 'custom', path: ['ratioTable'], message: 'ratioTable 只給 ratio_interpret（指標判讀題上方的指標小表格）' });
+        const t = q.ratioTable;
+        if (new Set(t.ratioRefs).size !== t.ratioRefs.length)
+          ctx.addIssue({ code: 'custom', path: ['ratioTable', 'ratioRefs'], message: 'ratioTable.ratioRefs 不得重複' });
+        if ((t.scenario !== undefined) === (t.measures !== undefined))
+          ctx.addIssue({ code: 'custom', path: ['ratioTable'], message: 'ratioTable.scenario 與 ratioTable.measures 二選一' });
+        const vars = q.vars ?? {};
+        for (const [k, v] of Object.entries(t.measures ?? {})) {
+          const name = v.slice('vars.'.length);
+          if (!(name in vars)) ctx.addIssue({ code: 'custom', path: ['ratioTable', 'measures', k], message: `引用未宣告的 vars.${name}` });
+        }
+      }
       for (const k of Object.keys(q.distractorExprs ?? {}))
         if (!q.options.some((o) => o.id === k))
           ctx.addIssue({ code: 'custom', path: ['distractorExprs', k], message: 'distractorExprs 的鍵必須是 options 裡的選項' });
@@ -249,9 +278,17 @@ export const Question = QuestionUnion.superRefine((q, ctx) => {
 export type Question = z.infer<typeof Question>;
 export type QuestionInput = z.input<typeof Question>;
 
+/** 題目的 scenario 放在哪裡：計算題在 scenario、ratio_numeric 在 compute.scenario、ratio_interpret 的指標小表格在 ratioTable.scenario；沒有就 undefined */
+export function questionScenario(q: Question): { scenario: z.infer<typeof Scenario> | undefined; path: string } {
+  if (q.type === 'ratio_numeric') return { scenario: q.compute.scenario, path: 'compute.scenario' };
+  if (q.type === 'ratio_interpret') return { scenario: q.ratioTable?.scenario, path: 'ratioTable.scenario' };
+  if ('scenario' in q) return { scenario: q.scenario, path: 'scenario' };
+  return { scenario: undefined, path: 'scenario' };
+}
+
 /** 題目內可引用的名稱集合，給佔位符的作用範圍檢查用（validate.ts）；沒有 scenario 的題型回傳 undefined，代表沒有事件或 target 可引用 */
 export function questionScope(q: Question): { vars: Set<string>; eventIds?: Set<string>; targetIds?: Set<string>; optionIds: Set<string> } {
-  const scenario = 'scenario' in q ? q.scenario : q.type === 'ratio_numeric' ? q.compute.scenario : undefined;
+  const { scenario } = questionScenario(q);
   const targetIds = scenario ? new Set(scenario.targets.map((t) => t.id)) : q.type === 'ratio_numeric' ? new Set<string>() : undefined;
   if (q.type === 'ratio_numeric') targetIds?.add('answer');
   return {

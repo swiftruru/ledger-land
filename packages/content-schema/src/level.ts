@@ -6,6 +6,9 @@ import { LocalizedText, Managed, idSchema } from './common.ts';
 export const LEVEL_MIN_SCORED = 5;
 export const LEVEL_MAX_SCORED = 8;
 export const LEVEL_MAX_JUDGMENT = 1;
+/** 延伸章的「全 judgment」關卡（03 第 2.2 節 E03 利害關係人觀點）：3 到 6 題、全部不計分的 judgment，沒有星星（快照標 unscored: true） */
+export const LEVEL_UNSCORED_MIN = 3;
+export const LEVEL_UNSCORED_MAX = 6;
 
 export const Level = Managed.extend({
   id: idSchema('level'),

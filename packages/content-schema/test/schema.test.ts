@@ -27,7 +27,7 @@ const chapter = {
   status: 'published',
   order: 1,
   scope: 'core',
-  examScope: 'unconfirmed',
+  examScope: 'midterm',
   title: { 'zh-TW': '會計是什麼', en: 'What accounting is' },
   summary: { 'zh-TW': '從一家小店開始。', en: 'Start from a small shop.' },
   objectiveIds: [],
@@ -60,6 +60,18 @@ describe('Term 與 Chapter', () => {
   it('未知欄位與錯誤的 ID 都失敗', () => {
     expect(Term.safeParse({ ...term, extra: 1 }).success).toBe(false);
     expect(Chapter.safeParse({ ...chapter, id: 'ch_abc' }).success).toBe(false);
+  });
+  it('章節的 scope、examScope 與 kind 要一致：延伸章一律 not_in_exam，kind: journal 只能是延伸章', () => {
+    expect(Chapter.safeParse({ ...chapter, scope: 'extension', examScope: 'not_in_exam', kind: 'journal' }).success).toBe(true);
+    expect(Chapter.safeParse({ ...chapter, scope: 'extension', examScope: 'midterm' }).success).toBe(false);
+    expect(Chapter.safeParse({ ...chapter, scope: 'extension', examScope: 'unconfirmed' }).success).toBe(false);
+    expect(Chapter.safeParse({ ...chapter, kind: 'journal' }).success).toBe(false);
+    expect(Chapter.safeParse({ ...chapter, kind: 'ratio' }).success).toBe(false);
+    // unconfirmed 仍是合法的列舉值（草稿可用）；已發布不得使用由 validateBundle 檢查（struct.examScope）
+    expect(Chapter.safeParse({ ...chapter, status: 'draft', examScope: 'unconfirmed' }).success).toBe(true);
+    expect(
+      validateBundle({ terms: [{ file: 't', data: term }], chapters: [{ file: 'c', data: { ...chapter, examScope: 'unconfirmed' } }] }).map((i) => i.rule),
+    ).toEqual(['struct.examScope']);
   });
 });
 
