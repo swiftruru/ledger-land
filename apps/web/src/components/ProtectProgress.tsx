@@ -2,21 +2,38 @@
 // 文案只能寫「降低機率」，不得寫「安裝後就不會被刪」。Firefox 會跳權限提示，按鈕旁先說明；App 內建瀏覽器不顯示整個區塊。
 // 外觀（站規 2.9）：Button primary md；已保護時停用，旁邊顯示 CheckIcon 加「已開啟」；按下等待時是 busy。
 // 說明句用 Phrased（中文只在詞與詞之間換行，M3 驗收第 6 輪：375 的「定／期匯出備份最保險」）。
+// 被拒絕時不能只說「瀏覽器沒有同意」就停住（2026-10-27 維護者實測）：一般分頁被拒的下一步是加到主畫面、從主畫面開啟再按一次（Safari 依是否
+// 以主畫面 App 開啟決定，06 第 4.5 節），所以附上安裝教學的入口；已經是主畫面 App 仍被拒時才只剩定期備份。
+// 狀態每次進頁都重新問 persisted()，切回這個分頁時也再問一次：主畫面 App 和瀏覽器分頁的儲存是分開的，移除 App 後分頁顯示的仍是分頁自己的狀態。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
-import { Button, CheckIcon, ShieldIcon } from '@ledgerland/web-ui';
+import { Button, CheckIcon, DeviceIcon, ShieldIcon } from '@ledgerland/web-ui';
+import { localePath } from '@ledgerland/i18n';
 import { Phrased } from '../features/me/Phrased.tsx';
-import { isGeckoFirefox, isInAppBrowser } from '../lib/env.ts';
+import { isAppMode, isGeckoFirefox, isInAppBrowser } from '../lib/env.ts';
 import { maybePersist, refreshPersisted, type PersistOutcome } from '../lib/progress/persist.ts';
 import { useStorageStatus } from '../lib/progress/status.ts';
+import { useLocale } from '../lib/useLocale.ts';
 
 export function ProtectProgress() {
   const { t } = useLingui();
+  const locale = useLocale();
   const persisted = useStorageStatus((s) => s.persisted);
   const [outcome, setOutcome] = useState<PersistOutcome | null>(null);
   const [busy, setBusy] = useState(false);
   useEffect(() => {
     void refreshPersisted();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void refreshPersisted();
+    };
+    // 從往返快取（bfcache）回到這一頁時元件不會重新掛載，pageshow 也要問一次
+    const onShow = () => void refreshPersisted();
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('pageshow', onShow);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('pageshow', onShow);
+    };
   }, []);
   if (isInAppBrowser()) return null;
   const run = async () => {
@@ -61,8 +78,14 @@ export function ProtectProgress() {
                 </Trans>
               </span>
             </>
+          ) : outcome === 'denied' && !isAppMode() ? (
+            <Trans id="settings.protect.state.denied.tab" comment="一般瀏覽器分頁被拒：下一步是加到主畫面再試，旁邊有安裝教學的按鈕">
+              瀏覽器還沒有同意。加到主畫面、從主畫面開啟後再按一次，瀏覽器通常就會同意；定期匯出備份最保險。
+            </Trans>
           ) : outcome === 'denied' ? (
-            <Trans id="settings.protect.state.denied">瀏覽器沒有同意，請定期匯出備份。</Trans>
+            <Trans id="settings.protect.state.denied" comment="已經是主畫面 App 仍被拒">
+              瀏覽器沒有同意，請定期匯出備份。
+            </Trans>
           ) : outcome === 'unsupported' ? (
             <Trans id="settings.protect.state.unsupported">這個瀏覽器不支援這項設定，請定期匯出備份。</Trans>
           ) : outcome === 'skipped' ? (
@@ -72,6 +95,15 @@ export function ProtectProgress() {
           ) : null}
         </output>
       </div>
+      {outcome === 'denied' && !isAppMode() && (
+        <div className="ll-row ll-protect__next">
+          <Button variant="secondary" size="sm" icon={<DeviceIcon />} href={localePath(locale, '/install/')} data-testid="protect-install-link">
+            <Trans id="settings.protect.install" comment="被拒後的下一步：連到安裝教學">
+              看安裝教學
+            </Trans>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

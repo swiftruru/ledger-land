@@ -2373,10 +2373,17 @@ msgstr "browser tab"
 msgid "backup.status.persisted"
 msgstr "The browser has agreed to keep your data"
 
+#. 已經是主畫面 App 仍被拒
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.state.denied"
 msgstr "The browser did not agree; please export a backup regularly."
+
+#. 一般瀏覽器分頁被拒：下一步是加到主畫面再試，旁邊有安裝教學的按鈕
+#. js-lingui-explicit-id
+#: src/components/ProtectProgress.tsx
+msgid "settings.protect.state.denied.tab"
+msgstr "The browser has not agreed yet. Add the site to your home screen, open it from there and press again; browsers usually agree then. Exporting a backup regularly is the safest option."
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2543,6 +2550,12 @@ msgstr "Browse the terms"
 #: src/components/InstallPrompt.tsx
 msgid "install.guide.show"
 msgstr "See steps"
+
+#. 被拒後的下一步：連到安裝教學
+#. js-lingui-explicit-id
+#: src/components/ProtectProgress.tsx
+msgid "settings.protect.install"
+msgstr "See the install guide"
 
 #. 結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績，都包在不換行的標籤裡）
 #. js-lingui-explicit-id
