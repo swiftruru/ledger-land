@@ -6,7 +6,7 @@
 
 - **原創政策**：老師教材只當觀念與學習目標的地圖；建立觀念覆蓋表；訂出改寫標準；內容資料不記錄教材頁碼或題號；相似度檢查只在本機執行、結果不 commit；所有內容走審稿清單（第 1 節）。唯一的例外是報表實驗室的故事：已決定（D2，2026-10-20）照老師的情境與金額（老師已同意），敘述文字仍用網站自己的話撰寫，並標示「經陳彥宏老師授權使用」（D6）。
 - **內容模型**：內容放在 `content/`，每種實體一份 Zod schema（放在 `packages/content-schema`），另由 Zod 產生 draft-07 JSON Schema 到 `schemas/`；題目、名詞、交易範本、故事的型別與題型代號以 04 為準，本文件補上管理欄位並定義章節、學習目標、關卡；名詞同時是術語表的唯一來源（第 2、3 節）。
-- **題型範圍**：已決定（D1，2026-10-20）借貸分錄題 `journal_entry` 只用在「借貸與分錄」延伸章（`scope: "extension"`，不列入期中考範圍）；已決定（D12，2026-10-20）新增多正解題型 `multi_choice`，必填判分方式 `scoringMode`（`any_correct` 或 `all_correct`），M2 與單選題共用元件一起實作（3.6 節）。
+- **題型範圍**：已決定（D1，2026-10-20）借貸分錄題 `journal_entry` 只用在「借貸與分錄」延伸章（`scope: "extension"`，章節檔另標 `kind: "journal"`，全站只有一章，不列入期中考範圍；M3 起由 `ans.journalScope` 在 CI 檢查）；已決定（D12，2026-10-20）新增多正解題型 `multi_choice`，必填判分方式 `scoringMode`（`any_correct` 或 `all_correct`），M2 與單選題共用元件一起實作（3.6 節）。
 - **狀態只有三種**：已決定（D10(g)，2026-10-20）不設 review（待審）狀態，只有 `draft`、`published`、`retired`（6.5 節）。
 - **穩定 ID 與改版**：學習內容的 ID 隨機產生，會計核心詞彙（科目、版面列、指標、交易範本等）用語意 ID，兩者都建立後不變、永不重用；每次改版加 `rev` 並標 `revKind`；選項 ID 穩定；`published.lock.json` 是唯一的比對基準；下架用 `retired` 加 `supersededBy`；學習進度以「id 加 rev」記錄（第 4 節）。
 - **自動驗證**：分成結構、多語系、引用、會計（由核心計算）、答案、ID 穩定性、文字風格七組，在本機與 CI 執行，發布前擋下錯誤（第 5 節）。
@@ -266,7 +266,9 @@ content/
 | --- | --- | --- | --- |
 | `order` | integer | 是 | 章節排序；只影響顯示，不影響 ID |
 | `scope` | `core`、`extension` | 是 | 主線或延伸區（本益比、融資、資本公積、利害關係人等）；已決定（D1，2026-10-20）「借貸與分錄」延伸章放 `extension`，`journal_entry` 只能出現在這一章（5.5 節的 `ans.journalScope`） |
-| `examScope` | `midterm`、`not_in_exam`、`unconfirmed` | 是 | 是否屬於期中考範圍；老師回覆前一律 `unconfirmed`【待確認 T32】；「借貸與分錄」延伸章固定為 `not_in_exam`（決定 D1） |
+| `examScope` | `midterm`、`not_in_exam`、`unconfirmed` | 是 | 是否屬於期中考範圍。已決定（【待確認 T32】，2026-10-23）：主線章節（`scope: "core"`，C01 到 C10）填 `midterm`，延伸章（`scope: "extension"`，含「借貸與分錄」）一律 `not_in_exam`（schema 直接擋下其他值）；`unconfirmed` 只給還沒決定的草稿，M3 起已發布章節不得使用（5.1 節 `struct.examScope`）。介面依這個欄位標示「不在期中考範圍」，並一律加註「範圍以老師公告為準」 |
+| `kind` | `journal` | 否 | 延伸章的種類，目前只有 `journal`：「借貸與分錄」延伸章（E04，D1）。只能搭配 `scope: "extension"`，全站只能有一章（5.1 節 `struct.chapterKind`）；`journal_entry` 只能放在這一章（5.5 節 `ans.journalScope`）。其他延伸章（本益比、融資、利害關係人）不填 |
+| `notices` | string[] | 否 | 章節層級的固定聲明，目前只有 `not_investment_advice`：涉及投資的延伸章（本益比與估價、融資與資本公積）在作答頁標「非投資建議」（[11 風險與授權](11-risks-license.md) 第 1 節）。已決定（2026-10-24）：由內容在章節檔標記，快照的章節檔、章節索引與 manifest 的章節摘要都帶這個欄位，介面從快照讀，不在前端寫死章節清單；不得是空陣列、不得重複。改這個欄位屬於文字改版（`revKind: "text"`） |
 | `title` | LocalizedText | 是 | 章名 |
 | `summary` | Markup | 是 | 章節簡介 |
 | `objectiveIds` | string[] | 是 | 依教學順序排列的學習目標 |
@@ -300,7 +302,7 @@ content/
 | `order` | integer | 是 | 章內排序 |
 | `title` | LocalizedText | 是 | 關卡名稱 |
 | `objectiveIds` | string[] | 否 | 本關涵蓋的學習目標 |
-| `questionIds` | string[] | 是 | 5 到 8 題計分題，另可附至多 1 題不計分的 `judgment`；題目必須屬於同一章；作答時依此順序出題，選項另外打散 |
+| `questionIds` | string[] | 是 | 5 到 8 題計分題，另可附至多 1 題不計分的 `judgment`；題目必須屬於同一章；作答時依此順序出題，選項另外打散。例外（M3 起）：延伸章（章節 `scope: "extension"`）的關卡可以是「全 judgment」，3 到 6 題、全部是不計分的 `judgment`、不混計分題（03 第 2.2 節 E03 利害關係人觀點）；這種關卡沒有星星，快照以 `unscored: true` 標示（7.3 節），結果頁與地圖節點不顯示星等，改顯示「已讀完」之類的狀態。主線章節沒有這個例外 |
 | `timerSeconds` | integer | 否 | 建議計時秒數；只在學生自己開啟計時時使用（計時預設關閉） |
 
 星星門檻是全站設定，不放在每一關。QR 深連結使用關卡與章節 ID（見 [02 網站架構](02-site-architecture.md)）：章節是 `/chapter/<chapterId>/`，關卡（作答）是 `/level/<levelId>/`，故事步驟是 `/lab/story/<storyId>/<stepId>/`，所有路徑都帶結尾斜線。關卡不巢狀在章節底下，所以關卡換章節時 QR 連結仍然有效。已決定（D5，2026-10-20）：中文在根路徑，英文版在前面加 `/en/`（例如 `/en/chapter/ch_c5f8w2/`、`/en/level/lv_k7m2q9xd/`、`/en/lab/story/story_k8p3x6/st_r2x9k4/`）；內容 ID 在兩種語言的路徑中相同，作答中切換語言時，作答狀態由路由外的 store 保留（見 02）。
@@ -334,9 +336,9 @@ content/
 | `pick_line` | 點選報表列 | `scenario`（決定畫面上的數字）、`statement`（哪一張表）、`correctLines` | 作者；驗證列存在於版面 | 計分 | 不行 |
 | `classify` | 分類 | `dimension`（`element`、`current`、`cf_activity`、`ratio_category`）、`items`（`{ id, account?, ratio?, text?, allowContra? }`，項目 ID 用 `it_` 前綴；`text` 是 LocalizedText，給不對應科目或指標的自訂文字項目；抵銷科目要標 `allowContra` 才能出題）、`correctCategories`（只給自訂文字項目，鍵是項目 ID，見 04 第 16.2 節） | 以科目或指標為項目時由科目表或指標登錄檔推導，不必填；自訂文字項目由作者在 `correctCategories` 填寫 | 計分 | 可以（項目一列一筆） |
 | `transaction_effect` | 交易影響（上升、下降、不變，或變動金額） | `scenario`（`targets` 的 `measure` 可以是 `direction`、`delta` 或 `value`）、`choices`（`up`、`down`、`unchanged`、`becomes_computable`、`becomes_na` 的子集；只適用於 `direction` 目標，`delta` 與 `value` 目標改用數字輸入）、`scoring`（選填：`allOrNothing` 預設，全部目標都對才算對；`perTarget` 逐目標計分，`attempts.score` 記答對比例；2026-10-23 納入 schema） | 核心 | 計分 | 不行 |
-| `five_step_fill` | 五步驟勾稽填格 | `scenario`、`openCells`（預設三格，見 04） | 核心 | 計分 | 不行 |
+| `five_step_fill` | 五步驟勾稽填格 | `scenario`、`openCells`（預設三格，見 04）；快照另帶 `compiled.cells`（每格線 ID 對情境過帳後的金額，`packages/quiz` 判分的 `expectedCells`，M3 起） | 核心 | 計分 | 不行 |
 | `ratio_numeric` | 指標計算 | `compute`（`ratioRef` 加 `scenario` 或 `measures`）、`answerUnit`、`decimals`、`tolerance`、`acceptStatus` | 核心 | 計分 | 不行 |
-| `ratio_interpret` | 指標判讀 | 同 `single_choice`，另有 `ratioRef` | 作者 | 計分 | 可以 |
+| `ratio_interpret` | 指標判讀 | 同 `single_choice`，另有 `ratioRef`；選填 `ratioTable`（M3 起）：`{ ratioRefs: [...], scenario }` 或 `{ ratioRefs: [...], measures }`，畫面上方的指標小表格，數字由核心算出寫進快照 `compiled.ratios`（每個 `{ ratioRef, status, exact, displayValue }`，順序同 `ratioRefs`）；沒有 `ratioTable` 時快照不帶 `compiled.ratios`，介面不顯示表格 | 作者（正解）；核心（小表格的數字） | 計分 | 可以（`ratioTable` 要用 JSON 維護） |
 | `judgment` | 取捨思辨 | `options`（3 個，每個 `{ id, text, upside, downside }`）、`viewpoint`（解說觀點）、`attribution`（目前固定 `site`） | 沒有標準答案 | 不計分 | 可以 |
 | `journal_entry` | 借貸分錄 | `scenario`、`accountChoices` | 核心 | 計分；已決定（D1，2026-10-20）只出現在「借貸與分錄」延伸章（`scope: "extension"`，不列入期中考範圍） | 不行 |
 | `multi_choice` | 多正解選擇 | `options`（3 到 5 個，每個 `{ id, text, feedback }`，同 `single_choice`）、`correctOptionIds`（正解選項 ID 的陣列，至少 2 個）、`scoringMode`（必填：`any_correct` 或 `all_correct`） | 作者 | 計分；已決定（D12，2026-10-20）：`any_correct` 選中任一正解即答對，`all_correct` 要選出全部正解且沒有錯選才答對；不給部分分數（見下方「`multi_choice` 多正解題」） | 可以（「判分方式」下拉欄，10.2 節） |
@@ -356,6 +358,8 @@ content/
 - `judgment` 的 `attribution` 固定為 `site`（網站觀點，原創撰寫；已決定【待確認 T37】，2026-10-23：不以老師名義標示）。
 - 數字型干擾選項（`distractorExprs`）編譯後依顯示位數四捨五入，不得與正解或彼此相同。
 - `ratio_numeric` 的正解不得是 not_meaningful 狀態；正解為 N/A 時設 `acceptStatus: ["na"]`，作答框固定提供「N/A」按鈕（狀態定義見 04 第 12.6 節）。
+- `measures` 的「公式用到的線」含連鎖指標：公式以 `ratio.<id>.<version>` 引用其他指標時（例如 `pe_ratio@slides02` 的分母是 `ratio.eps.excel`），被引用指標公式的線也要給值（`is_net_income`、`bs_share_capital`），驗證器遞迴展開後再比對缺少與多給；`ratio_numeric` 的 `compute.measures` 與 `ratio_interpret` 的 `ratioTable.measures` 都一樣。
+- `ratio_interpret` 的 `ratioTable`：`ratioRefs` 至少一個、不重複，都要存在於指標登錄檔（`ref.ratio`）；`scenario` 與 `measures` 二選一。用 `scenario` 時每個指標都依過帳後的累計報表計算（需要期初值的指標用情境的期初）；用 `measures` 時鍵是版面線 ID 或 `input.<名稱>`、值引用題目的 `vars`，所有 `ratioRefs` 公式用到的線都要給值、沒用到的不准多給（`ans.ratioTableFields`）。表格只是畫面資料，狀態照實寫（可以是 N/A 或 not_meaningful），正解仍是作者的 `correctOptionId`；題幹可用 `{{money:vars.x}}` 或 `{{money:e1.price}}` 引用同一組數字。改動 `ratioTable` 算答案改版（4.2 節）。
 
 #### `multi_choice` 多正解題（D12）
 
@@ -660,7 +664,7 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 
 | 實體 | `text`（文字改版） | `answer`（答案改版） | 自動偵測 |
 | --- | --- | --- | --- |
-| 題目 | 錯字、措辭、翻譯、解說、回饋 | `correctOptionId`、`correctOptionIds`、`scoringMode`（`multi_choice`，D12）、`correct`、`correctLines`、選項集合、分類項目、`scored`、`scenario`、`compute`（含 `ratioRef`）、`decimals`、`tolerance`、`acceptStatus` | 可以（answerHash） |
+| 題目 | 錯字、措辭、翻譯、解說、回饋 | `correctOptionId`、`correctOptionIds`、`scoringMode`（`multi_choice`，D12）、`correct`、`correctLines`、選項集合、分類項目、`scored`、`scenario`、`compute`（含 `ratioRef`）、`decimals`、`tolerance`、`acceptStatus`、`ratioTable`（`ratio_interpret` 的指標小表格） | 可以（answerHash） |
 | 關卡 | 名稱、計時建議 | 題目組成（`questionIds`） | 可以 |
 | 章節 | 名稱、簡介、徽章 | 關卡組成 | 可以 |
 | 交易範本 | 交易卡與解說文字 | 分錄行、推導值、前置條件、參數預設值與範圍 | 可以 |
@@ -784,10 +788,12 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `struct.filename` | 一筆一檔的實體，檔名必須等於 `id`；題目檔必須放在所屬章節的資料夾 | 錯誤 | 全部 |
 | `struct.idFormat` | 隨機 ID 的前綴與種類相符、字元在 Crockford Base32 小寫字母表內、長度符合 4.1 節；語意 ID 是小寫 snake_case（範本有 `tpl.` 前綴，版本參照以 `@` 連接）；事件 ID 是 `e` 加流水號 | 錯誤 | 全部 |
 | `struct.duplicateId` | 全站 ID 不重複；題目內的選項 ID、項目 ID、事件 ID 不重複；故事步驟內的事件 ID 不重複 | 錯誤 | 全部 |
-| `struct.levelSize` | 關卡有 5 到 8 題計分題，另外至多 1 題不計分的 `judgment`；`pendingRefs` 不是空而暫不計分的題目不算在計分題數內。草稿關卡題數不足時只警告（2026-10-23 補，讓逐題撰寫的章節可以先 commit） | 錯誤（已發布）、警告（草稿） | 全部 |
+| `struct.levelSize` | 關卡有 5 到 8 題計分題，另外至多 1 題不計分的 `judgment`；`pendingRefs` 不是空而暫不計分的題目不算在計分題數內。草稿關卡題數不足時只警告（2026-10-23 補，讓逐題撰寫的章節可以先 commit）。例外（M3 起）：延伸章的關卡可以全部是 `judgment`，此時要 3 到 6 題且不混計分題（3.5 節）；主線章節出現全 judgment 關卡是錯誤 | 錯誤（已發布）、警告（草稿） | 全部 |
 | `struct.optionCount` | `single_choice`、`pick_statement`、`ratio_interpret` 有 3 或 4 個選項；`multi_choice` 有 3 到 5 個；`judgment` 有 3 個 | 錯誤 | 全部 |
 | `struct.unknownField` | 不允許 schema 以外的欄位（避免打錯欄位名稱而被忽略） | 錯誤 | 全部 |
 | `struct.noSourceField` | 不得出現 `source`、`page`、`inspiredBy` 等出處欄位 | 錯誤 | 全部 |
+| `struct.examScope` | 已發布章節的 `examScope` 不得是 `unconfirmed`（M3 起，T32 已決定）：主線填 `midterm`，延伸章填 `not_in_exam`；延伸章填成其他值由 schema 擋下 | 錯誤 | 已發布 |
+| `struct.chapterKind` | `kind: "journal"` 只能用在 `scope: "extension"` 的章節，而且全站只能有一章（「借貸與分錄」延伸章，D1） | 錯誤 | 全部 |
 
 ### 5.2 多語系
 
@@ -812,14 +818,15 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `ref.objective` | `objectiveId` 存在且屬於同一章 | 錯誤 | 全部 |
 | `ref.levelQuestions` | 關卡的題目都存在且屬於同一章 | 錯誤 | 全部 |
 | `ref.term` | `termRefs`、`{{term:tm_id}}`、`related`、科目表的 `termRef` 指向存在的名詞 | 錯誤 | 全部 |
+| `ref.termRefsListed` | 題目文字（題幹、選項、回饋、解說等所有 LocalizedText）裡的 `{{term:tm_id}}`（含 `{{term:tm_id\|plain}}`）必須列在該題的 `termRefs`；作答後的名詞列表、名詞圖鑑的收集與「在哪一關會遇到」都只看 `termRefs`（2026-10-24 加入，`tools/lib/content-text.mjs`） | 錯誤 | 全部 |
 | `ref.placeholderScope` | 數值佔位符的來源符合文字所在的作用範圍（8.1 節：`param.`、`derived.` 只用於交易範本的 `summary` 與 `explanation`，`amount` 只用於核心的 `effects` 片語樣板），而且引用的 `vars`、事件、參數、推導值或 target 都有宣告 | 錯誤 | 全部 |
 | `ref.labStep` | `labRef`、`labRefs`、`chapterEndLinks` 指向存在的故事與步驟，而且步驟屬於該故事 | 錯誤 | 全部 |
 | `ref.ratio` | `ratioRef` 的指標與版本存在於指標登錄檔 | 錯誤 | 全部 |
 | `ref.account` | 範本與 scenario 的科目存在，而且是可入帳的科目（模板的標題列不可入帳） | 錯誤 | 全部 |
 | `ref.template` | scenario 與故事事件引用的範本存在 | 錯誤 | 全部 |
-| `ref.layoutLine` | `pick_line` 的 `correctLines` 與 scenario 的 targets 存在於指定版面 | 錯誤 | 全部 |
+| `ref.layoutLine` | `pick_line` 的 `correctLines`、`five_step_fill` 的 `openCells` 與 scenario 的 targets 存在於指定版面 | 錯誤 | 全部 |
 | `ref.tag` | 標籤存在於 `taxonomy/tags.json` | 錯誤 | 全部 |
-| `ref.publishedClosure` | 已發布的項目只能引用已發布的項目（不能引用草稿） | 錯誤 | 已發布 |
+| `ref.publishedClosure` | 已發布的項目只能引用已發布的項目（不能引用草稿）。例外（M3 起）：章節的 `chapterEndLinks`、學習目標的 `labRefs` 與題目的 `labRef` 引用草稿故事的步驟只警告，因為實驗室的故事到 M4a 才發布；步驟必須存在且屬於該故事（`ref.labStep`），介面在故事發布前不顯示連結 | 錯誤；故事引用為警告 | 已發布 |
 | `ref.superseded` | `supersededBy` 指向同類已發布項目，沒有循環 | 錯誤 | 全部 |
 | `ref.orphan` | 已發布的題目沒有被任何關卡使用 | 警告 | 已發布 |
 
@@ -852,12 +859,14 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `ans.expectedMatchesCore` | 作者在原始資料填的期望值與核心結果一致 | 錯誤 | 全部 |
 | `ans.distractorsDistinct` | 數字型干擾選項在顯示位數下不等於正解，也不彼此相同 | 錯誤 | 全部 |
 | `ans.ratioNumericFields` | `ratio_numeric` 有 `compute.ratioRef`、`answerUnit`、`decimals`；`compute` 的 `scenario` 與 `measures` 二選一，用 `measures` 時公式用到的線都有給值、沒用到的不准多給；`tolerance` 未填時套用 04 第 12.5 節的預設 | 錯誤 | 全部 |
+| `ans.ratioTableFields` | `ratio_interpret` 的 `ratioTable` 用 `measures` 時，所有 `ratioRefs` 公式用到的線都有給值、沒用到的不准多給；`ratioRefs` 都存在於登錄檔（`ref.ratio`） | 錯誤 | 全部 |
 | `ans.notMeaningful` | 數字題的正解不得是 not_meaningful 狀態 | 錯誤 | 全部 |
 | `ans.acceptStatus` | `acceptStatus` 只能是指標狀態中的允許值，且與核心結果一致 | 錯誤 | 全部 |
+| `ans.placeholderResolves` | 題目文字裡的 `money`、`percent`、`number` 佔位符，依快照的 `vars`、`compiled.values` 與 `compiled.expected` 都要解析得到有限數字，否則畫面會留空（2026-10-24 加入，`tools/lib/content-values.mjs`）；`ratio_numeric` 的 `expected.answer.value` 和學習端一樣由 `compiled.ratio.exact` 換成比例推出，正解是 N/A 時不得引用 | 錯誤（草稿為警告） | 全部 |
 | `ans.judgmentUnscored` | `judgment` 一律 `scored: false`，有 `viewpoint`，`attribution` 為 `site`（已決定【待確認 T37】，2026-10-23，固定為網站觀點） | 錯誤 | 全部 |
 | `ans.pendingUnscored` | 題目層級的 `pendingRefs` 不是空的時，`scored` 必須為 false（暫不計分）；`pendingRefs` 只能列已登錄的 T 系列編號（見 [14 待確認事項](14-open-questions.md)）。機制保留，2026-10-23 起 T 系列已全部決定，目前沒有這種題目 | 錯誤 | 全部 |
 | `ans.noLetterRefs` | 解說與回饋不得寫「選項 A」「(B)」之類的字母引用 | 錯誤 | 全部 |
-| `ans.journalScope` | `journal_entry` 只能屬於 `scope` 為 `extension` 的章節，也就是「借貸與分錄」延伸章（D1）；出現在主線章節時回報錯誤 | 錯誤 | 全部 |
+| `ans.journalScope` | `journal_entry` 只能屬於 `scope` 為 `extension` 而且 `kind` 為 `journal` 的章節，也就是「借貸與分錄」延伸章（D1）；出現在主線章節，或沒有標 `kind: "journal"` 的延伸章（例如本益比）時回報錯誤。被 `entryQuestionBlockedBy` 擋下的範本另由 5.4 節的 `acct.entryBlocked` 處理 | 錯誤 | 全部 |
 
 ### 5.6 ID 穩定性
 
@@ -870,7 +879,7 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `style.bannedChars` | 不得出現 em dash（U+2014）、en dash（U+2013）、連續兩個破折號，以及框線字元（U+2500 到 U+257F）；中英文都適用 | 錯誤 | 全部 |
 | `style.twTerms` | 不得出現中國用語（清單見下表），訊息附台灣說法 | 錯誤 | 全部 |
 | `style.rawNumbers` | 可翻譯文字中不得寫死金額或百分比，必須用佔位符（判斷規則見 05）；年份、準則條號這類例外用 `{{raw:...}}`，報表統計使用次數，審稿時逐一確認 | 錯誤 | 全部 |
-| `style.sourceRefs` | 不得出現頁碼樣式（例如「p12」「第 12 頁」）或教材檔名樣式 | 錯誤 | 全部 |
+| `style.sourceRefs` | 不得出現頁碼樣式（例如「p12」「第 12 頁」）或教材檔名樣式。學習端文字另有延伸（2026-10-24 加入）：題目、選項、回饋、解說、名詞卡（`label`、`definition`、`example`、`misconception`、`note`、`formula`、`ifrsNote`）、章節、學習目標、關卡與故事的 LocalizedText 欄位，不得出現內部追蹤編號（T、D、W、V 加一到兩位數字，例如 T24、D10）或教材單元編號（0-1 到 0-3、slides 加數字）；編號只供內部追蹤（[12 術語表](12-glossary.md) 第 16.2 節），寫在 `pendingRefs`、`authorNotes` 或 PR 說明。前後緊鄰英數字的不算，所以「T 字帳」、T-account、金額、條號不受影響；`ratioRef` 的 `@slides03` 這類版本名稱不是 LocalizedText，也不受影響 | 錯誤 | 全部 |
 | `style.rawHtml` | 不得出現 HTML 標籤或不在白名單內的標記 | 錯誤 | 全部 |
 | `style.fullwidthDigits` | zh-TW 文字出現全形數字或英文字母 | 警告 | 全部 |
 | `style.halfwidthPunct` | zh-TW 文字中，中文字之間出現半形逗號、句號、冒號 | 警告 | 全部 |
@@ -906,7 +915,7 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `pnpm content:compile` | 核心算答案、編譯標記、產生快照與 manifest | 是 |
 | `pnpm content:lock --check`、`--write` | 檢查或更新 lock 檔 | 是（只跑 check） |
 | `pnpm content:i18n-report` | 缺翻譯報表（已發布項目強制） | 是 |
-| `pnpm content:coverage` | 觀念覆蓋表的進度報表：每個學習目標的 `plannedQuestions` 對已寫、已發布的題數，以及每個迷思有沒有被干擾選項練到。實際用法（2026-10-23）：`pnpm content:coverage`，在終端機輸出表格；CI 貼 PR 留言留到 M6 | 是（貼在 PR 留言，M6 起） |
+| `pnpm content:coverage` | 觀念覆蓋表的進度報表：每個學習目標的 `plannedQuestions` 對已寫、已發布的題數，以及每個迷思有沒有被干擾選項練到。實際用法（2026-10-23）：`pnpm content:coverage`，在終端機輸出表格；CI 貼 PR 留言留到 M6。加 `--check`（M3 起，10 第 10 節完成標準第一條）時，任一個未下架的學習目標已發布題數少於 `plannedQuestions`（`coverage.planned`），或題目的 `objectiveId` 不存在（`coverage.unassigned`），就逐條列出檔案、`items.<i>.plannedQuestions` 路徑、已發布對預計的題數與建議修正，並以失敗結束；M3 收尾時執行，平時不擋 CI | 是（貼在 PR 留言，M6 起；`--check` 在 M3 收尾執行） |
 | `pnpm schemas:check` | 重新產生 `schemas/*.schema.json`，CI 以 `git diff --exit-code` 比對 | 是 |
 | `pnpm content:preview` | 本機預覽，包含草稿 | 否 |
 | `pnpm content:template` | 由 Zod schema 產生 Excel 範本（M6，D10(d)，10.2 節） | 是（比對範本與 schema 一致） |
@@ -1028,12 +1037,12 @@ interface SourceLocation {
 ### 7.3 建置輸出與 content-manifest
 
 - 交付格式是「帶 hash 檔名的 JSON，執行期以 fetch 載入」，不使用 `import.meta.glob` 把內容編進 JS chunk。理由：內容可以和程式分開更新與快取；Service Worker 依 hash 檔名預先快取（見 06）；日後若要加遠端快照，格式不必改。
-- 依語系、依章節切分：每章一個檔案，名詞、範本、故事各自成檔。zh-TW 與 en 都是 complete 語系，已發布內容在兩種語言都齊全，正式快照的 en 檔案不會有退回；只有含草稿的預覽建置，或日後新增的 beta 語系，才會在該語系的檔案中直接放入 zh-TW 文字並標記退回，學習端不必同時載入兩個語系的檔案。
+- 依語系、依章節切分：每章一個檔案，名詞、範本、故事各自成檔。名詞分兩層（2026-10-24，`schemaVersion` 2）：每個語系一份名詞索引，加上依名詞 ID 分桶的完整內容檔；章節另有每個語系一份章節索引（見本節末）。zh-TW 與 en 都是 complete 語系，已發布內容在兩種語言都齊全，正式快照的 en 檔案不會有退回；只有含草稿的預覽建置，或日後新增的 beta 語系，才會在該語系的檔案中直接放入 zh-TW 文字並標記退回，學習端不必同時載入兩個語系的檔案。
 - 草稿不進正式快照；已下架項目只以墓碑形式出現。
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "contentVersion": 12,
   "builtAt": "2026-11-03T08:00:00Z",
   "gitCommit": "a1b2c3d",
@@ -1045,15 +1054,25 @@ interface SourceLocation {
     {
       "id": "ch_c5f8w2",
       "order": 5,
+      "scope": "core",
+      "examScope": "midterm",
       "files": {
         "zh-TW": "content/zh-TW/ch_c5f8w2.8e41b7.json",
         "en": "content/en/ch_c5f8w2.0c93f2.json"
       }
     }
   ],
-  "terms": {
-    "zh-TW": "content/zh-TW/terms.5d20aa.json",
-    "en": "content/en/terms.71fe03.json"
+  "chapterIndex": {
+    "zh-TW": "content/zh-TW/chapter-index.3f9a21.json",
+    "en": "content/en/chapter-index.b04c6e.json"
+  },
+  "termIndex": {
+    "zh-TW": "content/zh-TW/term-index.5d20aa.json",
+    "en": "content/en/term-index.71fe03.json"
+  },
+  "termDetails": {
+    "zh-TW": { "e": "content/zh-TW/terms-e.c8fd7d.json", "q": "content/zh-TW/terms-q.18b2e0.json" },
+    "en": { "e": "content/en/terms-e.e5755a.json", "q": "content/en/terms-q.6a7d93.json" }
   },
   "templates": {
     "zh-TW": "content/zh-TW/templates.b7d145.json",
@@ -1071,6 +1090,16 @@ interface SourceLocation {
   "tombstones": "content/tombstones.4c8e19.json"
 }
 ```
+
+manifest 的 `chapters[]` 另帶章節的 `scope` 與 `examScope`（延伸章再加 `kind`），地圖與章節列表不必載入章節檔就能標示「不在期中考範圍」與「範圍以老師公告為準」；章節有 `notices` 時也一併帶上（2026-10-24），用代號或 QR 直接進關卡的作答頁只讀 manifest 就能標「非投資建議」；章節檔本身也有同樣的欄位。名詞檔的每個名詞另帶 `firstLevel: { levelId, chapterId }`（M3 起）：依章節 `order`、章節 `levelIds` 與關卡 `questionIds` 的順序，第一個 `termRefs` 含該名詞的已發布關卡，名詞圖鑑用它顯示未解鎖名詞「在哪一關會遇到」（03 第 2.10 節）；沒有任何關卡用到的名詞省略這個欄位，名詞另設 `unlock.levelId` 時以 `unlock` 為準。關卡檔的 `level`、章節檔的 `levels[]` 摘要與 manifest 的 `levels[]` 在「全 judgment」關卡（3.5 節的例外）帶 `unscored: true`，其餘關卡沒有這個欄位；介面據此不算星星、不顯示星等，改顯示已讀完的狀態。題目的 `compiled` 另有 `five_step_fill` 的 `cells`（`openCells` 線 ID 對金額）與 `ratio_interpret` 的 `ratios`（`ratioTable` 的指標，3.6 節）。章節徽章「完成」與「精通」不需要額外資料：定義（章內每關至少一星、每關三星）在 03 第 2.10 節，外觀在章節的 `badge`，判定只用章節檔的 `levelIds` 與學習進度。
+
+名詞與章節的兩層快照（2026-10-24，`schemaVersion` 從 1 改成 2；學習端只接受自己認得的版本，舊程式遇到新快照會顯示「這一頁還沒下載到這台裝置」而不是讀錯欄位）：
+
+- `termIndex`：每個語系一檔，全部名詞但只有 `tools/lib/content-snapshot.mjs` 的 `TERM_INDEX_FIELDS`（`id`、`category`、`label`、`teacherLabel`、`currentTwLabel`、`ifrsEnglish`、兩種語言的 `aliases`、`flags`、`accountRef`、`ratioRef`、`firstLevel`、`unlock`）。作答頁的名詞 chip 與科目、指標名稱，名詞圖鑑的列表、分組與搜尋，名詞卡的標題列都只用這些欄位；十四章 163 個名詞約 10 KB gzip。
+- `termDetails`：完整內容（索引欄位加上定義、例子、常見誤解、公式、IFRS 說明、相關名詞等），依名詞 ID 的最後一個字元分桶（Crockford Base32，最多 32 桶，每桶約 5 個名詞，各 1 到 4 KB gzip），檔名 `terms-<桶>.<雜湊>.json`，manifest 只列有名詞的桶。學習端由 ID 就算得出要讀哪一桶（`apps/web/src/lib/content.ts` 的 `termDetailBucket` 必須和工具的同名函式一致），名詞頁與名詞卡不必先讀索引；打開名詞卡或名詞頁時才讀。
+- `chapterIndex`：每個語系一檔、依 `order` 排列，全部章節的 `CHAPTER_INDEX_FIELDS`（`id`、`order`、`scope`、`examScope`、`kind`、`notices`、`title`、`summary`、`levelIds`、`badge`、`levels` 摘要、`chapterEndLinks`）加上只留 `id`、`order`、`statement` 的學習目標。闖關地圖、章節頁、名詞圖鑑與徽章第一次繪製只讀這一檔（約 8 KB gzip），不再逐章讀十四個章節檔（合計約 23 KB gzip、十四個請求）；每章的章節檔照舊輸出。
+
+拆分的理由是 06 第 8.2 節的 LCP 預算：十二章發布後單一名詞檔漲到 52 KB gzip，作答頁、名詞列表與名詞頁第一次繪製都要等它（14 第 5.2 節）。兩層的檔案都帶內容雜湊、都在 precache，離線照樣能讀。
 
 `contentVersion` 是遞增的整數（6.4 節）；`locales` 的狀態取自 `packages/i18n` 的語系登錄檔，zh-TW 與 en 從 M0b 起都是 `complete`，`beta` 只保留給日後新增的第三種語言。`schemaVersion` 是快照格式的版本；學習端程式只接受自己認得的 schemaVersion，避免日後遠端快照與舊版程式不相容。快照路徑相對於部署的 base path；已決定（D4，2026-10-20）base path 為 `/`，所以正式網址是 `https://ledgerland.swift.moe/content/...`（見 [09 技術選擇](09-tech-stack.md)）。英文介面的 `/en/` 前綴只屬於頁面路由（D5），快照檔案不分路由前綴，兩種語言都讀同一個 manifest。預先快取的體積預算見 06。
 
