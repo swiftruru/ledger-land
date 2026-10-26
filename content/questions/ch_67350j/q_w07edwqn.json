@@ -1,0 +1,31 @@
+{
+  "id": "q_w07edwqn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_wt6czr",
+  "difficulty": 2,
+  "tags": ["five_step", "balance"],
+  "termRefs": ["tm_cfghjxzq", "tm_chbctb2d", "tm_ftp19fkf"],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "只要資產負債表的資產總計等於負債及股東權益總計，就可以確定三張報表全部正確，不必再看其他勾稽點。",
+    "en": "As long as total assets equal total liabilities and equity on the balance sheet, the three statements must all be correct and the other check points need not be looked at."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "左右相等確實是重要的檢查，這點沒錯。不過它只是步驟⑤：如果現金流量表的起點抄錯了層，或是期末現金沒對上資產負債表，資產負債表自己仍然可以左右相等。四個勾稽點各管一條連線，缺一不可。",
+    "en": "Balancing is indeed an important check, that much is right. But it is only step 5: the statement of cash flows can start from the wrong level, or closing cash can fail to match the balance sheet, while the balance sheet itself still balances. Each of the four check points guards one link, and none can be skipped."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。資產負債表左右相等只證明那一張表內部平衡，說不了損益表與現金流量表有沒有接對。",
+    "en": "Correct. A balanced balance sheet only shows that one statement is internally consistent; it says nothing about whether the income statement and the statement of cash flows are linked correctly."
+  },
+  "misconceptionId": "mc_92dj",
+  "explanation": {
+    "zh-TW": "五步驟之所以是五步，就是因為每一步看的連線不同：步驟②看損益表與現金流量表，步驟③看現金流量表與資產負債表，步驟④看損益表與資產負債表，步驟⑤才看資產負債表自己。前面三個不平時，步驟⑤仍有可能剛好平。",
+    "en": "The method has five steps precisely because each looks at a different link: step 2 joins the income statement and the statement of cash flows, step 3 the statement of cash flows and the balance sheet, step 4 the income statement and the balance sheet, and only step 5 looks at the balance sheet on its own. The first three can fail while step 5 still happens to pass."
+  }
+}

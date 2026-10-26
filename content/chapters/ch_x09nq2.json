@@ -1,0 +1,46 @@
+{
+  "id": "ch_x09nq2",
+  "rev": 4,
+  "revKind": "text",
+  "status": "published",
+  "order": 12,
+  "scope": "extension",
+  "examScope": "not_in_exam",
+  "notices": [
+    "not_investment_advice"
+  ],
+  "title": {
+    "zh-TW": "融資與資本公積",
+    "en": "Buying on margin and capital surplus"
+  },
+  "summary": {
+    "zh-TW": "認識股東權益裡的資本公積從哪裡來、依現行規定能怎麼用，再看投資人「融資」買股票的機制：借錢、擔保品、維持率與追繳，以及這些事為什麼不會出現在公司的帳上。本章只出觀念題，是會計觀念練習，不是投資建議。",
+    "en": "Learn where capital surplus in equity comes from and how current rules allow it to be used, then look at how investors buy shares on margin: the loan, the collateral, the maintenance ratio and margin calls, and why none of this appears in the company’s books. This chapter has concept questions only; it is an accounting concept exercise, not investment advice."
+  },
+  "objectiveIds": [
+    "obj_1m58qq",
+    "obj_qrvy9c",
+    "obj_cqxamf"
+  ],
+  "levelIds": [
+    "lv_t28t4kac",
+    "lv_x22zrrnt"
+  ],
+  "prerequisites": [
+    "ch_c5f8w2"
+  ],
+  "badge": {
+    "icon": "bank",
+    "title": {
+      "zh-TW": "看懂​股東權益​與融資",
+      "en": "Equity and margin, decoded"
+    }
+  },
+  "termRefs": [
+    "tm_yka0razf",
+    "tm_5e3py55a",
+    "tm_4c6v99nn",
+    "tm_n70k1r9t",
+    "tm_whmbqrr8"
+  ]
+}

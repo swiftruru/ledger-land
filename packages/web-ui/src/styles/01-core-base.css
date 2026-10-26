@@ -1,0 +1,718 @@
+/* 基礎組：卡片、列、按鈕、橫幅、分段控制。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+.ll-card {
+  background: var(--ll-surface);
+  border: 0;
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  border-radius: var(--ll-radius-lg);
+  padding: var(--ll-space-4);
+  margin: var(--ll-space-3) 0;
+}
+/* 強制色彩下陰影與背景都會消失，卡片要靠框線才看得出邊界（章節頁主卡、名詞圖鑑的進度卡與名詞頁的卡片） */
+@media (forced-colors: active) {
+  .ll-card {
+    border: 1px solid CanvasText;
+  }
+}
+.ll-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+  align-items: center;
+}
+/* ---- 遊戲按鈕 Button（站規 1.2）----
+   五個變體（primary、secondary、back、quiet、danger）、三種尺寸（sm 44、md 48、lg 56 的面高，不含底邊）。
+   primary、secondary、danger 是「代幣」：4px 立體底邊（--ll-btn-depth，和地圖節點同一組），按下時整顆沉 4px、底邊歸零；
+   back、quiet 是平的（頁首與第三層的動作，原則 3）。變體與尺寸只換下面這組私有變數；文字在任何狀態都沒有底線。
+   hand-written 的 class="ll-btn" 等於 secondary md；ll-btn--small 是 sm 的舊名（逐頁替換完成後刪除）。 */
+.ll-btn {
+  --_face: var(--ll-btn-secondary-bg);
+  --_fg: var(--ll-btn-secondary-fg);
+  /* 次要按鈕的圖示：淺色是強調墨色；深色是風味色相（M3 驗收第 5 輪：莓果、紅酒的玫瑰色面裡放紫色圖示是第三種色相）。back、quiet 維持 btn-icon */
+  --_glyph: var(--ll-btn-secondary-icon);
+  --_border: var(--ll-btn-secondary-border);
+  --_ledge: var(--ll-btn-secondary-ledge);
+  --_press: var(--ll-btn-secondary-pressed);
+  --_hover: var(--_face);
+  --_d: var(--ll-btn-depth);
+  --_h: var(--ll-btn-h-md);
+  --_px: 20px;
+  /* 圖示槽：各尺寸的基準 px，文字放大時跟著字級變大（M3 驗收第 2 輪：放大 200% 時 20px 的圖示只剩字的一半大） */
+  --_icon-px: 20px;
+  --_icon: max(var(--_icon-px), 1.15em);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ll-space-2);
+  box-sizing: border-box;
+  min-height: var(--_h);
+  min-width: var(--ll-target-min);
+  max-width: 100%;
+  margin-block-end: var(--ll-btn-depth);
+  /* 左右內距：一般字級是各尺寸的 --_px；文字放大時最多少 4px（200% 時 sm 12、md 16、lg 20），留給換行的標籤（第 8 輪驗收：320 加 200% 的「我是猜的，加入錯題本」差 4px 排成兩行） */
+  padding: 6px calc(var(--_px) - clamp(0px, 0.5em - 10px, 4px));
+  border: 1.5px solid var(--_border);
+  /* 一行時是膠囊（半徑不小於面高的一半）；文字放大 200% 換成三、四行時不變成橢圓，四角維持 1.6em 的圓角（第 8 輪 handoff） */
+  border-radius: max(1.6em, var(--_h) / 2);
+  background: var(--_face);
+  color: var(--_fg);
+  box-shadow: 0 var(--_d) 0 0 var(--_ledge);
+  font: inherit;
+  font-size: var(--ll-type-body-size);
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  transition:
+    transform var(--ll-dur-fast) var(--ll-ease-standard),
+    box-shadow var(--ll-dur-fast) var(--ll-ease-standard),
+    background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+/* 連結形式的按鈕：所有狀態都沒有底線、:visited 不變色 */
+.ll-btn:link,
+.ll-btn:visited,
+.ll-btn:hover,
+.ll-btn:active,
+.ll-btn:focus-visible {
+  color: var(--_fg);
+  text-decoration: none;
+}
+/* 底邊也是按得到的地方：底邊只是陰影，點在上面原本不算點到按鈕；按下沉 4px 時上緣原本的位置也還算在按鈕上（不改元素本身的大小） */
+.ll-btn::after {
+  content: '';
+  position: absolute;
+  /* 左右不超出元素（不然撐滿寬度的按鈕會讓外層多出水平捲動）；往下蓋到底邊為止，正好在 margin-block-end 的範圍內 */
+  inset: -1.5px 0 calc(-1.5px - var(--_d));
+  border-radius: inherit;
+}
+.ll-btn:active::after {
+  inset-block-start: calc(-1.5px - var(--ll-btn-depth));
+}
+.ll-btn svg {
+  flex: none;
+  color: var(--_glyph);
+}
+/* 圖示大小只管元件放進來的圖示槽（手寫的舊按鈕裡直接放的 svg 維持自己的 size，版面不變） */
+.ll-btn__icon > svg,
+.ll-btn > .ll-btn__ext {
+  width: var(--_icon);
+  height: var(--_icon);
+}
+.ll-btn__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--_icon);
+  height: var(--_icon);
+}
+/* 換行時避免最後一行只剩一兩個字：pretty 由全站規則繼承（03-core-utils.css）；不用 balance（標籤盒子不會跟著變窄，前置圖示會離文字太遠） */
+.ll-btn__label {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+/* 有前置圖示的標籤換行時（文字放大 200%）字靠圖示那一側：標籤盒子撐滿剩下的寬度，置中的字會離圖示 30 到 40px（第 8 輪 handoff）；
+   Button 再量最長一行，圖示和標籤一起往中間移（transform，第 8 輪驗收）。一行時盒子本來就貼著字；沒有前置圖示的按鈕換行時照舊置中 */
+.ll-btn__icon + .ll-btn__label {
+  text-align: start;
+}
+.ll-btn__ext {
+  margin-inline-start: -4px;
+}
+
+/* 變體 */
+.ll-btn--primary {
+  --_face: var(--ll-btn-primary-bg);
+  --_fg: var(--ll-btn-primary-fg);
+  --_glyph: var(--ll-btn-primary-fg);
+  --_border: transparent;
+  --_ledge: var(--ll-btn-primary-ledge);
+  --_press: var(--ll-btn-primary-pressed);
+}
+.ll-btn--danger {
+  --_face: var(--ll-btn-danger-bg);
+  --_fg: var(--ll-btn-danger-fg);
+  --_glyph: var(--ll-btn-danger-fg);
+  --_border: var(--ll-btn-danger-fg);
+  --_ledge: var(--ll-btn-danger-ledge);
+  --_press: var(--ll-btn-danger-pressed);
+}
+.ll-btn--back,
+.ll-btn--quiet {
+  --_fg: var(--ll-text);
+  --_glyph: var(--ll-btn-icon);
+  --_border: transparent;
+  --_d: 0px;
+  margin-block-end: 0;
+}
+.ll-btn--back {
+  --_face: var(--ll-chrome-bg);
+  --_hover: color-mix(in oklab, var(--ll-chrome-bg) 50%, var(--ll-chrome-pressed));
+  --_press: var(--ll-chrome-pressed);
+  padding-inline: 12px 16px;
+  --_icon-px: 20px;
+}
+.ll-btn--quiet {
+  --_face: transparent;
+  --_hover: var(--ll-quiet-hover);
+  /* 按下用列的按下色（M3 驗收第 2 輪）：紙質的 secondary-pressed（accent-tint）等於滑過的底，按下去畫面不變 */
+  --_press: var(--ll-row-pressed);
+}
+
+/* 尺寸 */
+.ll-btn--sm,
+.ll-btn--small {
+  --_h: var(--ll-btn-h-sm);
+  --_px: 16px;
+  --_icon-px: 18px;
+  font-size: var(--ll-type-body-sm-size);
+  padding-block: 4px;
+}
+.ll-btn--lg {
+  --_h: var(--ll-btn-h-lg);
+  --_px: 24px;
+  --_icon-px: 24px;
+  font-size: var(--ll-type-title-3-size);
+  font-weight: 700;
+}
+.ll-btn--back.ll-btn--sm {
+  --_icon-px: 20px;
+  padding-inline: 12px 16px;
+}
+/* 只有圖示（BackButton 沒有短字時）：44×44 圓形 */
+.ll-btn--icon-only,
+.ll-btn--back.ll-btn--icon-only {
+  width: var(--ll-target-min);
+  min-width: var(--ll-target-min);
+  padding: 0;
+}
+.ll-btn--block {
+  display: flex;
+  width: 100%;
+}
+.ll-btn--action {
+  min-width: 96px;
+}
+
+/* 滑過（只在有滑鼠的裝置）：浮起 1px、底邊 5px；平的按鈕只換底色 */
+@media (hover: hover) and (pointer: fine) {
+  .ll-btn:not(:disabled, .is-disabled, [aria-disabled='true'], [aria-pressed='true']):hover {
+    transform: translateY(-1px);
+    --_d: calc(var(--ll-btn-depth) + 1px);
+  }
+  .ll-btn:is(.ll-btn--back, .ll-btn--quiet):not(:disabled, .is-disabled, [aria-disabled='true']):hover {
+    transform: none;
+    --_d: 0px;
+    background: var(--_hover);
+  }
+}
+/* 按下（連結也適用）：沉 4px、底邊歸零、面換按下色 */
+.ll-btn:not(:disabled, .is-disabled, [aria-disabled='true']):active {
+  transform: translateY(var(--ll-btn-depth));
+  --_d: 0px;
+  background: var(--_press);
+}
+.ll-btn:is(.ll-btn--back, .ll-btn--quiet):not(:disabled, .is-disabled, [aria-disabled='true']):active {
+  transform: none;
+}
+/* 切換已按下（aria-pressed）：選取底、選取色外框（淺色是強調色；深色隨風味，和分段控制、開關同一個色相）；立體的按鈕底邊剩 2px（看起來半沉） */
+.ll-btn[aria-pressed='true'] {
+  --_face: var(--ll-btn-secondary-pressed);
+  --_border: var(--ll-selected);
+  --_fg: var(--ll-text);
+  --_glyph: var(--ll-btn-secondary-icon);
+}
+.ll-btn[aria-pressed='true']:not(.ll-btn--quiet, .ll-btn--back, .ll-btn--primary, .ll-btn--danger) {
+  --_d: 2px;
+  transform: translateY(2px);
+}
+.ll-btn--quiet[aria-pressed='true'] {
+  border-color: var(--ll-selected);
+}
+/* 鍵盤焦點：outline 多 1px，避開底邊 */
+.ll-btn:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 3px;
+}
+/* 停用：中性灰底、虛線外框（「這裡會有一顆按鈕」）、沒有底邊，不用 opacity */
+.ll-btn:disabled,
+.ll-btn.is-disabled,
+.ll-btn[aria-disabled='true'] {
+  --_face: var(--ll-btn-disabled-bg);
+  --_fg: var(--ll-btn-disabled-fg);
+  --_glyph: var(--ll-btn-disabled-fg);
+  --_d: 0px;
+  border: 1.5px dashed var(--ll-border-strong);
+  background: var(--_face);
+  cursor: not-allowed;
+  transform: none;
+}
+/* 載入中：前置圖示換成 16px 轉圈（顏色和它取代的圖示相同：--_glyph）；沒有前置圖示時轉圈蓋在文字上（文字仍在無障礙樹裡，寬度不變）。
+   quiet 沒有前置圖示時不蓋字（平的按鈕藏了字就只剩一個圈，看不出那裡有按鈕）：轉圈放在文字前面，面換成滑過的底，按鈕形狀還在 */
+.ll-btn[aria-busy='true'] {
+  cursor: progress;
+}
+.ll-btn--quiet[aria-busy='true'] {
+  background: var(--ll-quiet-hover);
+}
+.ll-btn__busy {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--_icon);
+  height: var(--_icon);
+  color: var(--_glyph);
+}
+.ll-btn__busy--over {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+.ll-btn.is-busy-over .ll-btn__label {
+  opacity: 0;
+}
+/* 轉圈：淡色的整圈軌道加一段亮色的弧（M3 驗收第 2 輪：270 度的弧沒有軌道，16 到 20px 時讀起來像字母 C） */
+.ll-btn__spinner {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-top-color: currentColor;
+  border-radius: var(--ll-radius-full);
+  animation: ll-btn-spin var(--ll-dur-slow) linear infinite;
+}
+.ll-btn__dots {
+  display: none;
+  font-weight: 700;
+}
+@keyframes ll-btn-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+/* 減少動態：不位移；滑過改成面上一圈內框，按下只換色、底邊瞬間變 1px；轉圈改成「…」。
+   按鈕的過渡都是 --ll-dur-fast（減少動態時 tokens 是 0ms，不會開始過渡），不用再寫 transition: none */
+@media (prefers-reduced-motion: reduce) {
+  .ll-btn:not(:disabled, .is-disabled, [aria-disabled='true'], [aria-pressed='true']):hover {
+    transform: none;
+    --_d: var(--ll-btn-depth);
+    box-shadow:
+      0 var(--_d) 0 0 var(--_ledge),
+      inset 0 0 0 2px color-mix(in srgb, var(--_fg) 18%, transparent);
+  }
+  .ll-btn:not(:disabled, .is-disabled, [aria-disabled='true']):active {
+    transform: none;
+    --_d: 1px;
+  }
+  .ll-btn:is(.ll-btn--back, .ll-btn--quiet):not(:disabled, .is-disabled, [aria-disabled='true']):active {
+    --_d: 0px;
+  }
+  .ll-btn[aria-pressed='true']:not(.ll-btn--quiet, .ll-btn--back, .ll-btn--primary, .ll-btn--danger) {
+    transform: none;
+  }
+  .ll-btn__spinner {
+    display: none;
+  }
+  .ll-btn__dots {
+    display: inline;
+  }
+}
+html[data-motion='reduced'] .ll-btn:not(:disabled, .is-disabled, [aria-disabled='true'], [aria-pressed='true']):hover {
+  transform: none;
+  --_d: var(--ll-btn-depth);
+  box-shadow:
+    0 var(--_d) 0 0 var(--_ledge),
+    inset 0 0 0 2px color-mix(in srgb, var(--_fg) 18%, transparent);
+}
+html[data-motion='reduced'] .ll-btn:not(:disabled, .is-disabled, [aria-disabled='true']):active {
+  transform: none;
+  --_d: 1px;
+}
+html[data-motion='reduced'] .ll-btn:is(.ll-btn--back, .ll-btn--quiet):not(:disabled, .is-disabled, [aria-disabled='true']):active {
+  --_d: 0px;
+}
+html[data-motion='reduced'] .ll-btn[aria-pressed='true']:not(.ll-btn--quiet, .ll-btn--back, .ll-btn--primary, .ll-btn--danger) {
+  transform: none;
+}
+html[data-motion='reduced'] .ll-btn__spinner {
+  display: none;
+}
+html[data-motion='reduced'] .ll-btn__dots {
+  display: inline;
+}
+/* 增強對比：次要按鈕外框 2px 主要文字色；quiet 加 1px 外框 */
+@media (prefers-contrast: more) {
+  .ll-btn:not(.ll-btn--primary, .ll-btn--danger, .ll-btn--back, .ll-btn--quiet) {
+    --_border: var(--ll-text);
+    border-width: 2px;
+  }
+  .ll-btn--quiet {
+    border: 1px solid var(--ll-border-strong);
+  }
+}
+/* 強制色彩：陰影消失、2px 系統色外框；主按鈕用 Highlight；停用 GrayText；切換已按下外框 4px */
+@media (forced-colors: active) {
+  .ll-btn {
+    box-shadow: none;
+    border: 2px solid ButtonText;
+  }
+  .ll-btn svg {
+    color: currentColor;
+  }
+  .ll-btn:disabled,
+  .ll-btn.is-disabled,
+  .ll-btn[aria-disabled='true'] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+  .ll-btn[aria-pressed='true'] {
+    border-width: 4px;
+  }
+  /* 主按鈕：Chromium 在強制色彩下會在文字後面畫一塊 Canvas 色的底板，HighlightText 的字疊在上面就讀不到（M3 驗收第 1 輪的 blocker）。
+     主按鈕自己決定顏色（forced-color-adjust: none），只用系統色；顏色寫在私有變數裡，連結形式、滑過、按下的規則都跟著用系統色 */
+  .ll-btn--primary {
+    forced-color-adjust: none;
+    --_face: Highlight;
+    --_fg: HighlightText;
+    --_glyph: HighlightText;
+    --_press: Highlight;
+    --_hover: Highlight;
+    --_ledge: transparent;
+    background: Highlight;
+    color: HighlightText;
+    border-color: HighlightText;
+  }
+  .ll-btn--primary svg {
+    color: HighlightText;
+  }
+  .ll-btn--primary:focus-visible {
+    outline-color: Highlight;
+  }
+  .ll-btn--primary:is(:disabled, .is-disabled, [aria-disabled='true']) {
+    --_face: Canvas;
+    --_fg: GrayText;
+    --_glyph: GrayText;
+    --_press: Canvas;
+    background: Canvas;
+    color: GrayText;
+    border: 2px dashed GrayText;
+  }
+  .ll-btn--primary:is(:disabled, .is-disabled, [aria-disabled='true']) svg {
+    color: GrayText;
+  }
+}
+/* 提示橫幅 Banner（站規 1.20、2.17）：左側 20px 圖示（依 kind）、標題、內文 body-sm、動作列；可關閉時右上角 44px 的 X */
+.ll-banner {
+  border-radius: var(--ll-radius-md);
+  padding: var(--ll-space-3) var(--ll-space-4);
+  margin: var(--ll-space-3) 0;
+  background: var(--ll-info-tint);
+  color: var(--ll-info-ink);
+}
+.ll-banner--icon,
+.ll-banner--dismissible {
+  display: grid;
+  align-items: start;
+  column-gap: var(--ll-space-3);
+}
+.ll-banner--icon {
+  grid-template-columns: 20px minmax(0, 1fr);
+}
+.ll-banner--dismissible {
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding-inline-end: var(--ll-space-1);
+}
+.ll-banner--icon.ll-banner--dismissible {
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+}
+.ll-banner__icon {
+  display: inline-flex;
+  /* 和第一行字的中線對齊（body-sm 行高 24） */
+  padding-top: 2px;
+}
+.ll-banner__icon svg {
+  width: 20px;
+  height: 20px;
+}
+/* 內容欄的格線寬度不跟著最長的不斷行字串撐開（M3 收尾第 9 輪：320 寬加 200% 字級時匯入提示卡的「「匯出到 App」，」把欄撐到 225px，
+   延伸到關閉鈕下方的動作列跟著超出卡片 29px、整頁水平捲動）。橫幅本身的格線已是 minmax(0, 1fr)，這一欄不必再寫 min-width: 0 */
+.ll-banner__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ll-space-1);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-banner__title {
+  margin: 0;
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-sm-line);
+  font-weight: 600;
+}
+/* 內文一律 body-sm、主要文字色（M3 驗收第 4 輪：淺色主題的資訊橫幅整段是天藍色的字，讀起來像連結）；只有圖示與標題帶 kind 的墨色。
+   字級寫在內文本身：頁面放進來的 <p> 若有自己的字級規則也會被蓋過（權重 0,1,1） */
+.ll-banner__body,
+.ll-banner__body :where(p, li) {
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-banner__body {
+  color: var(--ll-text);
+}
+.ll-banner__body > :first-child {
+  margin-top: 0;
+}
+.ll-banner__body > :last-child {
+  margin-bottom: 0;
+}
+.ll-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--ll-space-2);
+  margin-top: var(--ll-space-2);
+}
+/* 動作列往右延伸到關閉鈕下方（M3 驗收第 5 輪）：375 寬時文字欄 235px，「加到主畫面」加「之後再說」要 237px，quiet 被擠到下一行像一行粗體字。
+   有標題與內文時第一顆按鈕的上緣離關閉鈕底下至少 26px，延伸 44px 後右緣離橫幅邊 16px（和左側內距相同），375 時 279px 放得下同一列。
+   720 以上的寬橫幅動作列在文字右側，不延伸。320 寬的手機（橫幅 288px）再往左延伸到圖示下方（和 iOS 安裝建議同一個做法），兩顆仍在同一列 */
+@container (max-width: 719.98px) {
+  .ll-banner--dismissible .ll-banner__title ~ .ll-banner__body ~ .ll-banner__actions {
+    margin-inline-end: calc(-1 * var(--ll-target-min));
+  }
+}
+@container (max-width: 319.98px) {
+  .ll-banner--icon.ll-banner--dismissible .ll-banner__title ~ .ll-banner__body ~ .ll-banner__actions {
+    margin-inline-start: calc(-20px - var(--ll-space-3));
+  }
+}
+.ll-banner__close {
+  margin-block: -6px;
+}
+/* 關閉鈕跟著橫幅的字色（第 2 輪驗收）：淺色主題是各 kind 的 ink、深色主題是 text-2，不再是 accent 色的 X；
+   滑過與按下的底是同色 12% 與 18%。IconButton 的規則在後面的 03-core-utils.css，這裡多一個 class 才蓋得過它的字色與底色變數 */
+.ll-banner .ll-banner__close {
+  --_hover: color-mix(in oklab, currentColor 12%, transparent);
+  --_press: color-mix(in oklab, currentColor 18%, transparent);
+  color: inherit;
+}
+/* 標題與內文的換行用全站規則（03-core-utils.css：strict 加 pretty）。第 7 輪拿掉第 6 輪的 keep-all 加 anywhere：
+   分句比一行長時句號被硬斷到下一行；不該拆開的詞由字串包 .ll-nowrap */
+/* 寬的橫幅（容器 720px 以上，例如 1280 時頁首下方約 1040px 寬）：文字很短時動作列放在下一列太空，改到文字右側、靠上。
+   第一行字（標題或內文）、左側圖示與右上角的關閉鈕都和 sm 按鈕的面（44px）同一條中線：字的行高 24，往下 10px；圖示 20，往下 12px。
+   內文很長（例如展開的安裝圖解）時按鈕仍在右上角，不跑到長內容的中間。容器是橫幅本身（inline-size），窄欄、地圖的提示位置與手機維持上下排 */
+.ll-banner {
+  container-type: inline-size;
+}
+@container (min-width: 720px) {
+  .ll-banner__main:has(> .ll-banner__actions) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--ll-space-6);
+    align-items: start;
+  }
+  .ll-banner__main:has(> .ll-banner__actions) > :first-child {
+    padding-top: 10px;
+  }
+  .ll-banner__main > .ll-banner__title,
+  .ll-banner__main > .ll-banner__body {
+    grid-column: 1;
+  }
+  .ll-banner__main > .ll-banner__actions {
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: flex-end;
+    max-width: 360px;
+    margin-top: 0;
+  }
+  .ll-banner__main > .ll-banner__title ~ .ll-banner__body ~ .ll-banner__actions {
+    grid-row: 1 / span 2;
+  }
+  .ll-banner__icon:has(~ .ll-banner__main > .ll-banner__actions) {
+    padding-top: 12px;
+  }
+  .ll-banner__main:has(> .ll-banner__actions) ~ .ll-banner__close {
+    margin-block: 0;
+  }
+}
+@media (forced-colors: active) {
+  .ll-banner {
+    border: 1px solid CanvasText;
+  }
+}
+.ll-banner--warning {
+  background: var(--ll-warning-tint);
+  color: var(--ll-warning-ink);
+}
+.ll-banner--success {
+  background: var(--ll-success-tint);
+  color: var(--ll-success-ink);
+}
+.ll-banner--danger {
+  background: var(--ll-danger-tint);
+  color: var(--ll-danger-ink);
+}
+/* 深色（M3 驗收第 1 輪）：整片青、橙、紅的 tint 加同色的字在夜空、莓果、紅酒上很突兀。改成卡片色只帶 8% 的狀態色、一圈 card-ring，
+   標題 --ll-text、內文 --ll-text-2，只有 20px 圖示保留狀態色（kind 的意思仍由圖示與文字表達）。對比在 tokens 的 contrast.test.ts。
+   第 4 輪：info 的青色 8% 在夜空上是一塊冷調藍灰板（rgb 42 48 57），和紫調的卡片分家；info 的底改成各風味的外框色（comment）12%，
+   像一張稍亮的同色系卡片，青色只留在 20px 的圖示上 */
+html[data-theme='dark'] .ll-banner {
+  --_tone: var(--ll-info-ink);
+  --_face: color-mix(in oklab, var(--ll-border-strong) 12%, var(--ll-surface));
+  background: var(--_face);
+  box-shadow: var(--ll-card-ring);
+  color: var(--ll-text-2);
+}
+html[data-theme='dark'] .ll-banner--warning {
+  --_tone: var(--ll-warning-ink);
+  --_face: color-mix(in oklab, var(--_tone) 8%, var(--ll-surface));
+}
+html[data-theme='dark'] .ll-banner--success {
+  --_tone: var(--ll-success-ink);
+  --_face: color-mix(in oklab, var(--_tone) 8%, var(--ll-surface));
+}
+html[data-theme='dark'] .ll-banner--danger {
+  --_tone: var(--ll-danger-ink);
+  --_face: color-mix(in oklab, var(--_tone) 8%, var(--ll-surface));
+}
+html[data-theme='dark'] .ll-banner__title {
+  color: var(--ll-text);
+}
+html[data-theme='dark'] .ll-banner__body {
+  color: var(--ll-text-2);
+}
+html[data-theme='dark'] .ll-banner__icon {
+  color: var(--_tone);
+}
+/* 分段的軌道：.ll-seg 是共用的外框膠囊（作答組的 ImpactPicker 也用，裡面是 .ll-seg__item，樣式在 04-quiz-types.css）。 */
+.ll-seg {
+  display: inline-flex;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--ll-border-strong);
+  border-radius: calc(var(--ll-target-min) / 2 + 4px);
+  background: var(--ll-surface);
+}
+/* 分段控制 Segmented（.ll-seg--keys，M3 驗收第 2 輪改版）：軌道是 surface-2 加一點內陰影的凹槽，選取段是「浮起的按鍵」，
+   和次要按鈕同一種語言：次要按鈕的面、1px 外框與 2px 底邊，文字 --ll-text 加 700 字重；不再用 accent 細框（和軌道外框疊成兩圈線）。
+   每個選項本身撐滿軌道的高度（觸控目標以元素本身為準，至少 44px）；按鍵是選項裡的 ::before，離軌道邊緣 4px。
+   高度：sm（頁首的語言切換）44px，和 StatChip、返回鈕同高；md（設定頁）48px。
+   一列放不下時（finding foundation-3：英文玻璃效果在 320px 不得讓整頁變寬）元件量過之後加 .ll-seg--stack，改成等寬格子
+   （--ll-seg-cols 欄：四個選項 2×2，否則每列一個）；量到之前用 flex-wrap 換列當保底。 */
+.ll-seg--keys {
+  --_seg-h: var(--ll-btn-h-md);
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-radius: calc(var(--_seg-h) / 2);
+  background: var(--ll-surface-2);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.12);
+}
+.ll-seg--keys.ll-seg--sm {
+  --_seg-h: var(--ll-target-min);
+}
+.ll-seg button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: var(--_seg-h);
+  min-width: 56px;
+  /* 下內距多 2px：按鍵連底邊在選項裡往上偏 1px，文字跟著它置中 */
+  padding: 0 16px 2px;
+  border: 0;
+  border-radius: calc(var(--_seg-h) / 2);
+  background: transparent;
+  color: var(--ll-text-2);
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* 按鍵（選取段，以及滑過、按下時的淡底）：離軌道上、左、右 4px，下面多留 2px 給底邊 */
+.ll-seg button::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 4px 4px 6px;
+  border-radius: var(--ll-radius-full);
+  background: transparent;
+  transition:
+    background-color var(--ll-dur-fast) var(--ll-ease-standard),
+    box-shadow var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-seg--stack {
+  display: grid;
+  grid-template-columns: repeat(var(--ll-seg-cols, 1), minmax(0, 1fr));
+  width: 100%;
+  border-radius: var(--ll-radius-lg);
+}
+.ll-seg--stack button {
+  white-space: normal;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-seg button[aria-checked='false']:hover {
+    color: var(--ll-text);
+  }
+  .ll-seg button[aria-checked='false']:hover::before {
+    background: color-mix(in oklab, var(--ll-btn-secondary-bg) 55%, transparent);
+  }
+}
+.ll-seg button[aria-checked='false']:active::before {
+  background: var(--ll-chrome-pressed);
+}
+.ll-seg button[aria-checked='true'] {
+  color: var(--ll-btn-secondary-fg);
+  font-weight: 700;
+}
+.ll-seg button[aria-checked='true']::before {
+  background: var(--ll-btn-secondary-bg);
+  box-shadow:
+    inset 0 0 0 1px var(--ll-btn-secondary-border),
+    0 2px 0 var(--ll-btn-secondary-ledge);
+}
+.ll-seg--sm button {
+  min-width: 48px;
+  padding-inline: 14px;
+  font-size: var(--ll-type-body-sm-size);
+}
+/* 焦點框畫在按鍵外面（選項本身撐滿軌道，outline 往內縮 1px 才不會被軌道的圓角切到） */
+.ll-seg button:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: -1px;
+}
+/* 減少動態：按鍵底色的過渡是 --ll-dur-fast（tokens 在減少動態時是 0ms），不用另外關 */
+@media (prefers-contrast: more) {
+  .ll-seg--keys {
+    box-shadow: inset 0 0 0 1px var(--ll-border-strong);
+  }
+  .ll-seg button[aria-checked='true']::before {
+    box-shadow:
+      inset 0 0 0 2px var(--ll-text),
+      0 2px 0 var(--ll-text);
+  }
+}
+@media (forced-colors: active) {
+  .ll-seg--keys {
+    border: 1px solid CanvasText;
+  }
+  .ll-seg button[aria-checked='true'] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+  .ll-seg button[aria-checked='true']::before {
+    border: 2px solid Highlight;
+  }
+}

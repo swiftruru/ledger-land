@@ -1,0 +1,84 @@
+{
+  "id": "q_4k762daf",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "judgment",
+  "objectiveId": "obj_mj1tas",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "cross_check",
+    "judgment"
+  ],
+  "termRefs": [
+    "tm_0k8vegyr",
+    "tm_9e1rb64c",
+    "tm_c8r1t4zm",
+    "tm_555a7d2s",
+    "tm_92yzx0fn",
+    "tm_08g66t9j"
+  ],
+  "scored": false,
+  "prompt": {
+    "zh-TW": "阿凱考慮入股初陽貿易，手上有完整的三張報表和一整頁指標，但只有十分鐘。他問你：先看哪一組指標？三個選擇都說得通，重點是你最擔心什麼。",
+    "en": "Kai is considering buying into First Light Trading. He has the three statements and a full page of ratios, but only ten minutes. He asks you which pair of ratios to look at first. All three choices can make sense; what matters is what you are most worried about."
+  },
+  "options": [
+    {
+      "id": "o_p3az",
+      "text": {
+        "zh-TW": "先看 ROE 與負債比率",
+        "en": "Start with ROE and the debt ratio"
+      },
+      "upside": {
+        "zh-TW": "一眼看出股東的錢賺回多少，再用負債比率判斷這個報酬有多少是靠借錢撐出來的。",
+        "en": "Shows at once how much the shareholders’ money earns, and the debt ratio tells how much of that return is propped up by borrowing."
+      },
+      "downside": {
+        "zh-TW": "看不到短期的現金夠不夠付帳；一家 ROE 漂亮的公司也可能下個月付不出薪水。",
+        "en": "Says nothing about whether short-term cash can cover the bills; a company with a handsome ROE can still miss next month’s payroll."
+      }
+    },
+    {
+      "id": "o_3g4z",
+      "text": {
+        "zh-TW": "先看流動比率與現金流量比率",
+        "en": "Start with the current ratio and the cash flow ratio"
+      },
+      "upside": {
+        "zh-TW": "先確認公司活得下去：一年內的債有沒有資產和現金可以對付。入股之後最怕的是公司週轉不靈。",
+        "en": "Confirms first that the company can survive: whether the debts due within a year are matched by assets and cash. The worst outcome after investing is a liquidity crunch."
+      },
+      "downside": {
+        "zh-TW": "活得下去不等於值得投資；這兩個指標說不出公司賺不賺錢、報酬好不好。",
+        "en": "Surviving is not the same as being worth investing in; these two ratios say nothing about whether the company earns a good return."
+      }
+    },
+    {
+      "id": "o_fewm",
+      "text": {
+        "zh-TW": "先看純益率與存貨週轉率",
+        "en": "Start with the net profit margin and inventory turnover"
+      },
+      "upside": {
+        "zh-TW": "直接看生意本身：每一元營收留下多少、貨賣得快不快，最貼近貿易公司的日常經營。",
+        "en": "Looks straight at the business itself: how much of each dollar of revenue is kept and how fast the goods sell, the closest to a trading company’s daily operations."
+      },
+      "downside": {
+        "zh-TW": "看不到資金結構與還債能力；生意好但借太多的公司，一次利率上升就可能出事。",
+        "en": "Says nothing about the funding structure or debt capacity; a good business that has borrowed too much can be undone by a single rise in interest rates."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "沒有一組指標能單獨回答「值不值得入股」。網站的看法是：最擔心公司撐不過明年，就先看流動比率與現金流量比率；公司體質穩定、想知道報酬，就先看 ROE 與負債比率；想了解生意本身，就先看純益率與存貨週轉率。不論先看哪一組，每個指標都要找第二個指標交叉檢查，例如 ROE 高要配負債比率、流動比率高要配速動比率、純益率升要配毛利率。十分鐘不夠看完，但夠你決定下一個小時要追問什麼。",
+    "en": "No single pair of ratios can answer ‘is this worth investing in’. The site’s view: if your biggest worry is whether the company will survive next year, start with the current ratio and the cash flow ratio; if the company looks sound and you want to know the return, start with ROE and the debt ratio; if you want to understand the business itself, start with the net profit margin and inventory turnover. Whichever pair you start with, find a second ratio to cross-check each one, for example ROE against the debt ratio, the current ratio against the quick ratio, a rising net margin against the gross margin. Ten minutes is not enough to finish, but it is enough to decide what to ask in the next hour."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

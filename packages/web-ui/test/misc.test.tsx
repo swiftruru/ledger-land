@@ -1,4 +1,4 @@
-// PickStatement、PickLine、TermSheet、NoteTag、Stars、Switch、Toast、TopBar、Skeleton 的語意檢查
+// PickStatement、PickLine、TermSheet、NoteTag、Stars、Switch、Toast、TopBar 的語意檢查
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { useRef, useState } from 'react';
@@ -12,7 +12,6 @@ import {
   NoteTag,
   PickLine,
   PickStatement,
-  Skeleton,
   Stars,
   Switch,
   TermChip,
@@ -132,6 +131,47 @@ describe('TermSheet 與 NoteTag', () => {
     expect(document.activeElement).toBe(chip.element());
     screen.unmount();
   });
+  it('定義分成好幾段時每段各自是段落，段與段之間有間距（回歸：以前兩段黏成一段）', async () => {
+    i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
+    const screen = await render(
+      <I18nProvider i18n={i18n}>
+        <TermSheet
+          open
+          onClose={() => {}}
+          term={{
+            label: '存出保證金',
+            teacherLabel: '存出保證金',
+            currentTwLabel: null,
+            ifrsEnglish: 'Refundable deposits',
+            definition: (
+              <>
+                <p>第一段。</p>
+                <p>第二段。</p>
+              </>
+            ),
+            flags: [],
+          }}
+        />
+      </I18nProvider>,
+    );
+    const paras = [...document.querySelectorAll<HTMLParagraphElement>('.ll-sheet__definition > p')];
+    expect(paras.map((p) => p.textContent)).toEqual(['第一段。', '第二段。']);
+    expect(getComputedStyle(paras[0]!).marginTop).toBe('0px');
+    expect(parseFloat(getComputedStyle(paras[1]!).marginTop)).toBeGreaterThan(0);
+    expect(paras[1]!.getBoundingClientRect().top).toBeGreaterThan(paras[0]!.getBoundingClientRect().bottom);
+    screen.unmount();
+  });
+  it('期中考範圍的 NoteTag（T32）', async () => {
+    i18n.loadAndActivate({ locale: 'en', messages: await loadWebUiMessages('en') });
+    const screen = await render(
+      <I18nProvider i18n={i18n}>
+        <NoteTag kind="midterm" />
+      </I18nProvider>,
+    );
+    await expect.element(page.getByText('Midterm scope')).toBeInTheDocument();
+    expect(document.querySelector('.ll-notetag--midterm')).not.toBeNull();
+    screen.unmount();
+  });
   it('NoteTag 是按鈕時有完整的可讀名稱', async () => {
     i18n.loadAndActivate({ locale: 'en', messages: await loadWebUiMessages('en') });
     const screen = await render(
@@ -147,7 +187,7 @@ describe('TermSheet 與 NoteTag', () => {
 });
 
 describe('小元件', () => {
-  it('Stars、Switch、Toast、TopBar、Badge、EmptyState、ErrorState、Skeleton 的語意', async () => {
+  it('Stars、Switch、Toast、TopBar、Badge、EmptyState、ErrorState 的語意', async () => {
     i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
     const back = vi.fn<() => void>();
     function Demo() {
@@ -161,7 +201,6 @@ describe('小元件', () => {
           <Badge kind="success">完成</Badge>
           <EmptyState title="錯題本是空的" action={<button type="button">去闖關</button>} />
           <ErrorState title="載入失敗" />
-          <Skeleton lines={2} />
         </I18nProvider>
       );
     }
@@ -180,7 +219,64 @@ describe('小元件', () => {
     expect(document.querySelector('h1.ll-topbar__title')?.getAttribute('tabindex')).toBe('-1');
     await expect.element(page.getByRole('alert')).toHaveTextContent('載入失敗');
     await expect.element(page.getByRole('heading', { name: '錯題本是空的' })).toBeInTheDocument();
-    expect(document.querySelectorAll('.ll-skeleton-lines[aria-hidden="true"] .ll-skeleton').length).toBe(2);
+    screen.unmount();
+  });
+});
+
+describe('TermSheet 的欄位段落', () => {
+  it('用語說明、公式、例子、常見誤解、IFRS 各在自己的標題底下；note 不放在「例子」', async () => {
+    i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
+    const screen = await render(
+      <I18nProvider i18n={i18n}>
+        <TermSheet
+          open
+          onClose={() => {}}
+          term={{
+            label: '融資維持率',
+            teacherLabel: '融資維持率',
+            currentTwLabel: null,
+            ifrsEnglish: null,
+            definition: <p>定義段落。</p>,
+            note: <p>名稱說明段落。</p>,
+            formula: <p>公式段落。</p>,
+            example: <p>例子段落。</p>,
+            misconception: <p>誤解段落。</p>,
+            ifrsNote: <p>IFRS 段落。</p>,
+          }}
+        />
+      </I18nProvider>,
+    );
+    const sections = [...document.querySelectorAll('.ll-sheet__section')].map((s) => [s.querySelector('h3')?.textContent, s.querySelector('p')?.textContent]);
+    expect(sections).toEqual([
+      ['用語說明', '名稱說明段落。'],
+      ['公式', '公式段落。'],
+      ['例子', '例子段落。'],
+      ['常見誤解', '誤解段落。'],
+      ['IFRS 怎麼處理', 'IFRS 段落。'],
+    ]);
+    screen.unmount();
+  });
+});
+
+describe('TermChip 的觸控目標（07 第 8.4 節）', () => {
+  it('獨立的 chip 至少 44×44；行內 chip（ll-chip--inline）依 WCAG 2.5.8 的行內例外維持原高度', async () => {
+    i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
+    const screen = await render(
+      <I18nProvider i18n={i18n}>
+        <div className="ll-row">
+          <TermChip label="存貨" />
+        </div>
+        <p>
+          句子裡的 <TermChip label="現金" className="ll-chip--inline" /> 不放大。
+        </p>
+      </I18nProvider>,
+    );
+    const standalone = page.getByRole('button', { name: '名詞卡：存貨' }).element().getBoundingClientRect();
+    expect(standalone.width).toBeGreaterThanOrEqual(44);
+    expect(standalone.height).toBeGreaterThanOrEqual(44);
+    const inline = page.getByRole('button', { name: '名詞卡：現金' }).element().getBoundingClientRect();
+    expect(inline.height).toBeLessThan(44);
+    expect(inline.height).toBeGreaterThanOrEqual(24);
     screen.unmount();
   });
 });

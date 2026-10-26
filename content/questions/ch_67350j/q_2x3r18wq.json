@@ -1,0 +1,71 @@
+{
+  "id": "q_2x3r18wq",
+  "rev": 4,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_8jjgc4",
+  "difficulty": 2,
+  "tags": [
+    "red_light",
+    "cash"
+  ],
+  "termRefs": [
+    "tm_chbctb2d",
+    "tm_c4sh8k2p",
+    "tm_t7a3s6wb",
+    "tm_4c6v99nn",
+    "tm_67e7f0mn",
+    "tm_ec80jjev",
+    "tm_sf72dfsv",
+    "tm_z971merj"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "阿哲做完勾稽練習，燈號是：步驟②綠、步驟③紅、步驟④綠、步驟⑤紅。最可能填錯的是哪一格？",
+    "en": "Che finishes the reconciliation exercise and the lights read: step 2 green, step 3 red, step 4 green, step 5 red. Which cell is most likely wrong?"
+  },
+  "options": [
+    {
+      "id": "o_9315",
+      "text": {
+        "zh-TW": "填在資產負債表裡的那個現金及約當現金數字",
+        "en": "The cash and cash equivalents figure entered on the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "答對了。現金填錯會讓步驟③對不上現金流量表，而且現金是資產總計的一部分，步驟⑤也會跟著不平。一格錯、兩盞紅燈。",
+        "en": "Correct. A wrong cash figure fails step 3 against the statement of cash flows, and because cash is part of total assets, step 5 fails too. One wrong cell, two red lights."
+      }
+    },
+    {
+      "id": "o_vw8h",
+      "text": {
+        "zh-TW": "現金流量表起算的稅前淨利，以及資產負債表裡的未分配盈餘，兩格都錯",
+        "en": "Both the profit before tax that the statement of cash flows starts from and the unappropriated retained earnings on the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "兩盞紅燈不代表兩個錯。而且這兩格對應的是步驟②與④，它們都是綠燈，表示這兩格沒問題。",
+        "en": "Two red lights do not mean two mistakes. Besides, those two cells belong to steps 2 and 4, which are both green, so they are fine."
+      },
+      "misconceptionId": "mc_7140"
+    },
+    {
+      "id": "o_y1hs",
+      "text": {
+        "zh-TW": "資產負債表右邊最底下那一格，負債加股東權益的總計",
+        "en": "Total liabilities and equity at the bottom right of the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "合計列是公式算出來的，不是你要填的格子；它不平是結果，不是原因。要往上游找那一格被填錯的數字。",
+        "en": "The total line is a formula, not a cell you fill in; its being off is a symptom, not the cause. Look upstream for the cell that was typed wrong."
+      },
+      "misconceptionId": "mc_wea6"
+    }
+  ],
+  "correctOptionId": "o_9315",
+  "explanation": {
+    "zh-TW": "看燈號要先問「哪一格同時牽動這幾盞燈」。{{option:o_9315}}同時出現在步驟③（對現金流量表）與步驟⑤（算進資產總計），兩盞紅燈正好都指向它；步驟②與④綠燈則排除了稅前淨利與未分配盈餘。先修最上游的一格，下游的燈通常會一起變綠。",
+    "en": "Reading the lights starts with asking which single cell feeds all the red ones. {{option:o_9315}} appears in step 3 (against the statement of cash flows) and in step 5 (inside total assets), so both red lights point to it; the green lights at steps 2 and 4 rule out profit before tax and unappropriated retained earnings. Fix the cell furthest upstream and the downstream lights usually turn green with it."
+  }
+}

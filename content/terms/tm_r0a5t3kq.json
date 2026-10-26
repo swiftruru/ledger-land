@@ -2,27 +2,57 @@
   "id": "tm_r0a5t3kq",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "資產報酬率（ROA）", "en": "Return on assets (ROA)" },
+  "label": {
+    "zh-TW": "資產報酬率（ROA）",
+    "en": "Return on assets (ROA)"
+  },
   "teacherLabel": "資產報酬率（ROA）",
   "currentTwLabel": "資產報酬率（ROA）",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["資產報酬率", "ROA"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "資產報酬率",
+      "ROA"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T21"],
+  "pendingRefs": [
+    "T21"
+  ],
   "note": {
-    "zh-TW": "教材有四種寫法（指標登錄檔分為 excel、slides03、slides02、dupont 四個版本），計分看題目指定的版本（設計說明見 T21）。",
-    "en": "The course gives four versions (excel, slides03, slides02 and dupont in the ratio registry); scoring uses the version the question specifies (see the design note T21)."
+    "zh-TW": "課程有四種算法，網站並列為 Excel 口徑、簡化公式口徑、年報公式口徑與杜邦分析口徑，計分看題目指定的口徑。",
+    "en": "The course gives four calculations, which the site shows side by side as ‘Excel formulas’, ‘Simplified formulas’, ‘Annual report formulas’ and ‘DuPont analysis formulas’; scoring uses the version the question specifies."
   },
   "definition": {
-    "zh-TW": "公司用全部資產賺到多少獲利，看資產運用的整體報酬。數值越高表示每一份資產賺得越多。",
-    "en": "How much profit the company earns on all its assets: the overall return on asset use. Higher means each unit of assets earns more."
+    "zh-TW": "公司用全部資產賺回多少本期淨利，也就是每一元資產一段期間內的報酬。\n\n分母是資產總計，也就是負債與權益的合計；資金裡借款與股東投入各占多少，都不會改變分母，所以這個比率比較不受股東出資比例影響。不過分子的本期淨利已經扣掉利息，借款越多，利息越會把它拉低；年報公式口徑把稅後利息加回分子，就是為了排除這個影響。",
+    "en": "How much profit for the period the company earns on all of its assets: the return on each unit of assets over a period.\n\nThe denominator is total assets, that is, liabilities plus equity. Shifting the funding mix between borrowing and owners’ contributions does not change it, so the ratio is less affected by how the assets are financed. The numerator, however, is profit after interest, so heavier borrowing still pulls it down through the interest charge; ‘Annual report formulas’ add after-tax interest back to the numerator to remove that effect."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表，分母來自資產負債表。資產總計為 0 時顯示 N/A。四個口徑並列在指標卡上，實驗室切換版本只改顯示，不影響計分。",
+    "en": "The numerator comes from the income statement and the denominator from the balance sheet. When total assets are zero the result is N/A. All four versions appear on the ratio card; switching versions in the lab changes only the display, not the scoring."
+  },
+  "misconception": {
+    "zh-TW": "以為資產報酬率和權益報酬率一定差不多。沒有負債時兩者相同；負債越多，權益報酬率被槓桿放大得越厲害，兩者差距就越大。",
+    "en": "Expecting return on assets and return on equity to be roughly equal. They coincide only with no liabilities; the more debt there is, the more leverage magnifies return on equity and the wider the gap becomes."
+  },
+  "formula": {
+    "zh-TW": "資產報酬率 ＝ 本期淨利 ÷ 資產總計（Excel 口徑與簡化公式口徑，用期末資產）。年報公式口徑依年報的寫法，分子加回稅後利息、分母用平均資產；杜邦分析口徑拆成純益率 × 總資產週轉率，兩項都用簡化公式，標示「簡化版」。題目會指定用哪一個口徑。",
+    "en": "Return on assets = profit for the period ÷ total assets (‘Excel formulas’ and ‘Simplified formulas’, both on closing assets). ‘Annual report formulas’ follow the annual report wording: after-tax interest is added back to the numerator and average assets are used. ‘DuPont analysis formulas’ break it into net profit margin × total asset turnover, both on the simplified formulas, and are marked as simplified. Each question names the version it uses."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算方式以指標卡列出的口徑為準，題目會指定用哪一個口徑計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation follows the versions listed on the ratio card, and each question states which version it scores against."
   },
-  "ratioRef": "roa@excel"
+  "ratioRef": "roa@excel",
+  "related": [
+    "tm_0k8vegyr",
+    "tm_92yzx0fn",
+    "tm_2cqt9cfd",
+    "tm_t7a3s6wb",
+    "tm_n4e8t2jy"
+  ]
 }

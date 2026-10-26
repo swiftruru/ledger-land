@@ -1,0 +1,83 @@
+{
+  "id": "q_wp9qpbd1",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "judgment",
+  "objectiveId": "obj_ftamqc",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "financial_structure",
+    "judgment"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_8eyx0srs"
+  ],
+  "scored": false,
+  "vars": {
+    "ratio": 0.45
+  },
+  "prompt": {
+    "zh-TW": "綠丘單車行目前的負債比率是 {{percent:vars.ratio}}，離課程參考值還有一點空間。老闆阿哲想開第二家店，資金有三種來源。三個做法都說得通，你會建議哪一個？重點是你怎麼看參考值與風險。",
+    "en": "Green Hill Cycles currently has a debt ratio of {{percent:vars.ratio}}, a little below the course reference value. The owner, Che, wants to open a second shop and has three ways to fund it. All three can make sense; which would you suggest? What matters is how you weigh the reference value against the risk."
+  },
+  "options": [
+    {
+      "id": "o_xjxk",
+      "text": {
+        "zh-TW": "向銀行借一筆長期貸款來開第二家店",
+        "en": "Take out a long-term bank loan to open the second shop"
+      },
+      "upside": {
+        "zh-TW": "不必稀釋阿哲的股權，利息也是固定的；只要新店賺的錢高於利息，股東的報酬會被放大。",
+        "en": "Che keeps his full stake and the interest is fixed; as long as the new shop earns more than the interest, the shareholders’ return is magnified."
+      },
+      "downside": {
+        "zh-TW": "負債比率會明顯上升、接近課程參考值，利息不管生意好壞都要付；一旦新店不如預期，壓力會集中在阿哲身上。",
+        "en": "The debt ratio rises noticeably towards the course reference value and the interest has to be paid whether trade is good or bad; if the new shop disappoints, the pressure lands squarely on Che."
+      }
+    },
+    {
+      "id": "o_r0mv",
+      "text": {
+        "zh-TW": "找一位新股東增資，一起開第二家店",
+        "en": "Bring in a new shareholder and open the second shop together"
+      },
+      "upside": {
+        "zh-TW": "負債比率不升反降，沒有固定的利息負擔；新股東可能也帶來經驗或人脈。",
+        "en": "The debt ratio falls rather than rises and there is no fixed interest burden; the new shareholder may also bring experience or contacts."
+      },
+      "downside": {
+        "zh-TW": "阿哲要分出一部分所有權和未來的利潤，重要決定也要多一個人同意。",
+        "en": "Che gives up part of the ownership and future profits, and important decisions now need one more person’s agreement."
+      }
+    },
+    {
+      "id": "o_bkgp",
+      "text": {
+        "zh-TW": "先不展店，用自己賺的錢慢慢存，存夠了再開",
+        "en": "Do not expand yet; save up from the shop’s own profits and open when there is enough"
+      },
+      "upside": {
+        "zh-TW": "資產結構最穩，不用付利息也不用分股權；也有時間確認第一家店的模式真的站得住。",
+        "en": "The most stable structure: no interest and no shared ownership, and time to confirm the first shop’s model really works."
+      },
+      "downside": {
+        "zh-TW": "可能錯過好的店面或市場時機；對手如果先展店，第二家店的位置可能就沒了。",
+        "en": "It may mean missing a good location or the right moment; if a competitor expands first, the site for the second shop may be gone."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "參考值不是判決書。借款能放大報酬也放大風險，增資最穩但要分享所有權，等待最保守但有機會成本。網站的看法是：先問新店的現金流量有多確定；確定度高、而且借款後的負債比率仍在阿哲睡得著的範圍內，借款合理；確定度低，增資或等待比較穩。不論選哪一個，開店後都要回頭看負債比率、{{term:tm_8eyx0srs|plain}}與現金流量比率有沒有一起變差。",
+    "en": "A reference value is not a verdict. Borrowing magnifies both return and risk; new equity is the steadiest but means sharing ownership; waiting is the most cautious but has an opportunity cost. The site’s view: first ask how certain the new shop’s cash flow is. If it is fairly certain and the debt ratio after borrowing stays at a level Che can sleep with, a loan is reasonable; if it is uncertain, new equity or waiting is safer. Whichever he chooses, he should afterwards check whether the debt ratio, the {{term:tm_8eyx0srs|plain}} and the cash flow ratio are deteriorating together."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

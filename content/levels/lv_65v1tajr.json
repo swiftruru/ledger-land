@@ -1,0 +1,24 @@
+{
+  "id": "lv_65v1tajr",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "order": 1,
+  "title": {
+    "zh-TW": "左邊等於右邊",
+    "en": "Left equals right"
+  },
+  "objectiveIds": [
+    "obj_bt5xpr",
+    "obj_8e479x"
+  ],
+  "questionIds": [
+    "q_zmwm19v5",
+    "q_xxrmk75a",
+    "q_xe82q5n3",
+    "q_n3m3b22h",
+    "q_y45zet08",
+    "q_pqm05hfy"
+  ]
+}

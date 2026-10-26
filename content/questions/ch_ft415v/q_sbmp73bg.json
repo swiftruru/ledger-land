@@ -1,0 +1,42 @@
+{
+  "id": "q_sbmp73bg",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "objectiveId": "obj_6r5ph7",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "leverage"
+  ],
+  "termRefs": [
+    "tm_tspyazrx",
+    "tm_g8p4w1rz",
+    "tm_z3vbt800"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "gp": 1500000,
+    "oi": 500000
+  },
+  "compute": {
+    "ratioRef": "dol@excel",
+    "measures": {
+      "is_gross_profit": "vars.gp",
+      "is_operating_income": "vars.oi"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "青田農產今年營業毛利 {{money:vars.gp}}，營業利益 {{money:vars.oi}}。依課程 Excel 口徑（以營業毛利近似邊際貢獻）計算營運槓桿度，以「倍」作答。",
+    "en": "Green Field Produce had gross profit of {{money:vars.gp}} and operating profit of {{money:vars.oi}} this year. Using the course Excel basis (gross profit as an approximation of contribution margin), what is the degree of operating leverage? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_tspyazrx}}＝{{term:tm_g8p4w1rz}} ÷ {{term:tm_z3vbt800}}（課程近似）。解讀用百分比：營收每變動 {{percent:0.01|digits=0}}，營業利益大約變動（槓桿度 × {{percent:0.01|digits=0}}）。毛利和營業利益差距越大，表示固定費用越多，倍數越高。",
+    "en": "{{term:tm_tspyazrx}} = {{term:tm_g8p4w1rz}} ÷ {{term:tm_z3vbt800}} (course approximation). Read it in percentages: for every {{percent:0.01|digits=0}} change in revenue, operating profit changes by roughly the degree of leverage times {{percent:0.01|digits=0}}. The wider the gap between gross profit and operating profit, the more fixed costs there are and the higher the multiple."
+  }
+}

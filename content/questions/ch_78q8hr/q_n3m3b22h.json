@@ -1,0 +1,69 @@
+{
+  "id": "q_n3m3b22h",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_bt5xpr",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "equation",
+    "pick_line"
+  ],
+  "termRefs": [
+    "tm_t7a3s6wb",
+    "tm_ec80jjev",
+    "tm_fwys72qx",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "pick_line",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 150000,
+        "inventory": 60000,
+        "machinery_equipment": 90000,
+        "accounts_payable": 40000,
+        "short_term_borrowings": 50000,
+        "share_capital": 210000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.purchase_inventory_credit",
+        "params": {
+          "amount": 20000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": []
+  },
+  "statement": "bs",
+  "correctLines": [
+    "bs_total_liabilities_equity"
+  ],
+  "feedbackByLine": {
+    "bs_total_liabilities": {
+      "zh-TW": "負債總額只是右邊的一部分，還要加上股東權益才會等於資產總計。",
+      "en": "Total liabilities are only part of the right side; equity has to be added before it equals total assets."
+    },
+    "bs_total_equity": {
+      "zh-TW": "股東權益總額是資產扣掉負債之後剩下的部分；這家店有負債，所以它比資產總計小，要再加上負債總額才會相等。",
+      "en": "Total equity is what remains after deducting liabilities from assets; this shop has liabilities, so it is smaller than total assets, and only adding total liabilities makes the two equal."
+    }
+  },
+  "prompt": {
+    "zh-TW": "這是小嵐的「月光書店」的{{term:tm_sf72dfsv}}。表的左邊列的是資產，最下面那列「資產總計」永遠會和右邊的哪一列相等？請在表上點出那一列。",
+    "en": "Here is the {{term:tm_sf72dfsv}} of Lan’s shop Moonlight Books. The left side lists the assets; which line on the right is always equal to the bottom line, ‘total assets’? Tap that line on the sheet."
+  },
+  "explanation": {
+    "zh-TW": "資產負債表的右邊說明資產的錢從哪裡來：一部分是欠別人的（負債），一部分是股東的（股東權益）。兩者加總的「負債及股東權益總計」才會等於左邊的{{term:tm_t7a3s6wb}}。",
+    "en": "The right side of the balance sheet shows where the money for the assets came from: partly from others (liabilities) and partly from the shareholders (equity). Only their sum, total liabilities and equity, equals {{term:tm_t7a3s6wb}} on the left."
+  }
+}

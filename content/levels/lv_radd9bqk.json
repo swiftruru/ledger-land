@@ -1,0 +1,22 @@
+{
+  "id": "lv_radd9bqk",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "order": 3,
+  "title": {
+    "zh-TW": "拆回報表找原因",
+    "en": "Trace it back to the statements"
+  },
+  "objectiveIds": [
+    "obj_mj1tas"
+  ],
+  "questionIds": [
+    "q_4fx380br",
+    "q_4jkqb618",
+    "q_1dm4k8kq",
+    "q_q5350vrg",
+    "q_ef1kwzpg"
+  ]
+}

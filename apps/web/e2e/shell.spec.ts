@@ -12,7 +12,8 @@ test.describe('殼層與深層連結（10 M0b 完成標準）', () => {
     await expect(page.getByRole('navigation', { name: '主要導覽' })).toBeVisible();
     await expect(page.getByRole('navigation', { name: '主要導覽' }).getByRole('link')).toHaveCount(5);
     await expect(page.getByRole('link', { name: '首頁' })).toHaveAttribute('aria-current', 'page');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('LedgerLand');
+    // 首頁頁首的站名（站規 2.1）：中文是「會計樂園」
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('會計樂園');
     await assertCsp();
   });
 
@@ -60,6 +61,16 @@ test.describe('殼層與深層連結（10 M0b 完成標準）', () => {
     expect(json.id).toBe('/');
     expect(json.start_url).toBe('/');
     expect(json.scope).toBe('/');
+  });
+
+  test('manifest 連結在第一次繪製後才插入，SVG 圖示寫在 HTML 裡（不另外發請求）', async ({ page, request }) => {
+    const html = await (await request.get('/')).text();
+    expect(html).not.toContain('rel="manifest"');
+    expect(html).toMatch(/<link rel="icon" href="data:image\/svg\+xml,[^"]+" type="image\/svg\+xml"/);
+    await page.goto('/');
+    await waitForApp(page);
+    await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', '/manifest.webmanifest');
+    await expect(page.locator('link[rel="manifest"]')).toHaveCount(1);
   });
 
   test('index.html 沒有 style 屬性，統計腳本不在殼層裡', async ({ request }) => {

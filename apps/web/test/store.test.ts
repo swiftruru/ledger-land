@@ -1,17 +1,28 @@
-// IndexedDBProgressStore（06 第 4.2、4.4、4.6 節）：環狀錯誤、addAttempt 不覆蓋、importAll 合併、設定鏡像、暫停後寫入進佇列、連線中斷的重試
+// IndexedDBProgressStore（06 第 4.2、4.4、4.6 節、14 第 5.2 節）：環狀錯誤、addAttempt 不覆蓋、importAll 合併、設定鏡像、暫停後寫入進佇列、連線中斷的重試、
+// 寫入先留底再開交易（交易沒完成頁面就關閉時留在佇列、下次啟動重放且不重複）
 import { ERRORS_MAX, type ErrorRecord, type JsonValue } from '@ledgerland/progress';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { openProgressDB, type ProgressDB } from '../src/lib/progress/db.ts';
 import { IndexedDBProgressStore, StoreSuspendedError, type IndexedDBStoreHooks } from '../src/lib/progress/indexeddb-store.ts';
 import { PendingQueue, applyPending, replayPending } from '../src/lib/progress/pending.ts';
+import { listFavourites, toggleFavourite } from '../src/features/quiz/favourites.ts';
 import { MemoryStorage, NOW, attempt, badge, freshIndexedDB, level, meta } from './fixtures.ts';
 
 const now = () => NOW;
 const errorRecord = (n: number): ErrorRecord => ({ at: NOW, route: '/x/', message: `錯誤 ${n}`, appVersion: '0.0.0+test', contentVersion: 0 });
 
-async function makeStore(overrides: Partial<IndexedDBStoreHooks> = {}): Promise<{ store: IndexedDBProgressStore; db: ProgressDB; storage: MemoryStorage }> {
+/** 讓下一個交易永遠不完成：模擬頁面在交易 complete 前就被關閉（作答後馬上整頁跳轉、pagehide 後被回收） */
+function hangNextTransaction(db: ProgressDB): void {
+  const never = () => new Promise<never>(() => {});
+  const tx = { store: { getKey: never, get: never, put: never, add: never, delete: never, count: never }, done: never(), objectStore: () => tx.store };
+  vi.spyOn(db, 'transaction').mockImplementationOnce(() => tx as never);
+}
+
+async function makeStore(
+  overrides: Partial<IndexedDBStoreHooks> = {},
+  storage: MemoryStorage = new MemoryStorage(),
+): Promise<{ store: IndexedDBProgressStore; db: ProgressDB; storage: MemoryStorage }> {
   const db = await openProgressDB({ now });
-  const storage = new MemoryStorage();
   const store = new IndexedDBProgressStore(db, {
     now,
     createMeta: () => meta(),
@@ -152,6 +163,24 @@ describe('IndexedDBProgressStore', () => {
     await store.close();
   });
 
+  it('收藏進備份（core-2）：有收藏的資料匯出後在空的資料庫以預設選項（不套用設定）匯入，收藏都在；與本機收藏取聯集', async () => {
+    const { store: source } = await makeStore();
+    await toggleFavourite('q_a1a1a1a1', source, NOW);
+    await toggleFavourite('q_b2b2b2b2', source, NOW);
+    const exported = await source.exportAll();
+    await source.close();
+    freshIndexedDB();
+    const { store: target } = await makeStore();
+    await toggleFavourite('q_c3c3c3c3', target, NOW);
+    const options = { mode: 'merge' as const, settings: false, importedAt: NOW, source: { deviceId: 'd_abcdefgh' } };
+    await target.importAll(exported, options);
+    expect(await listFavourites(target)).toEqual(['q_c3c3c3c3', 'q_a1a1a1a1', 'q_b2b2b2b2']);
+    // 覆蓋模式：收藏改成備份的清單
+    await target.importAll(exported, { ...options, mode: 'replace' });
+    expect(await listFavourites(target)).toEqual(['q_a1a1a1a1', 'q_b2b2b2b2']);
+    await target.close();
+  });
+
   it('rebuildLevelProgress 由 attempts 重新推導並寫回', async () => {
     const { store } = await makeStore();
     await store.addAttempt(attempt(2, { questionId: 'q_a1a1a1a1', correct: true, answeredAt: '2026-10-20T10:00:00Z' }));
@@ -245,5 +274,112 @@ describe('IndexedDBProgressStore', () => {
     expect(reopen).not.toHaveBeenCalled();
     expect(new PendingQueue(storage).list()).toHaveLength(1);
     await store.close();
+  });
+
+  it('寫入在開交易前就同步進 ll:pending，交易 complete 後移除', async () => {
+    const { store, storage } = await makeStore();
+    const queue = new PendingQueue(storage);
+    const writing = store.addAttempt(attempt(1));
+    expect(queue.list().map((o) => o.op)).toEqual(['addAttempt']);
+    await writing;
+    expect(queue.size).toBe(0);
+    const setting = store.setSetting('timerEnabled', true, NOW);
+    expect(queue.list().map((o) => o.op)).toEqual(['setSetting']);
+    await setting;
+    expect(queue.size).toBe(0);
+    expect(await store.listAttempts()).toHaveLength(1);
+    await store.close();
+  });
+
+  it('交易還沒 complete 頁面就關閉：這一筆留在佇列，下次啟動重放一次就落地，再重放也不重複', async () => {
+    const storage = new MemoryStorage();
+    const { store, db } = await makeStore({}, storage);
+    hangNextTransaction(db);
+    void store.addAttempt(attempt(1));
+    hangNextTransaction(db);
+    void store.putReview({
+      questionId: 'q_7f3k2m9x',
+      rev: 1,
+      lastResult: 'wrong',
+      lastAnsweredAt: NOW,
+      box: 1,
+      dueAt: '2026-10-24',
+      wrongCount: 1,
+      status: 'active',
+      addedBy: 'auto',
+    });
+    const queue = new PendingQueue(storage);
+    expect(queue.list().map((o) => o.op)).toEqual(['addAttempt', 'putReview']);
+    // 「下次啟動」：同一個 localStorage、新的連線與 store
+    const { store: next } = await makeStore({}, storage);
+    expect(await next.listAttempts()).toHaveLength(0);
+    expect(await replayPending(next, queue)).toBe(2);
+    expect(await next.listAttempts()).toHaveLength(1);
+    expect(await next.listDueReviews('2026-10-24')).toHaveLength(1);
+    expect(queue.size).toBe(0);
+    // 重放到一半又被關閉的情況：同樣的項目再重放一次，結果相同
+    queue.push({ op: 'addAttempt', value: attempt(1) });
+    expect(await replayPending(next, queue)).toBe(1);
+    expect(await next.listAttempts()).toHaveLength(1);
+    await next.close();
+  });
+
+  it('交易其實已完成但來不及移除：重放不會多一筆', async () => {
+    const storage = new MemoryStorage();
+    const { store } = await makeStore({}, storage);
+    await store.addAttempt(attempt(1));
+    await store.addUnlock(badge());
+    await store.close();
+    const queue = new PendingQueue(storage);
+    queue.push({ op: 'addAttempt', value: attempt(1) });
+    queue.push({ op: 'addUnlock', value: badge() });
+    const { store: next } = await makeStore({}, storage);
+    expect(await replayPending(next, queue)).toBe(2);
+    expect(await next.listAttempts()).toHaveLength(1);
+    expect(await next.listUnlocks()).toHaveLength(1);
+    await next.close();
+  });
+
+  it('進行中的寫入持有 ll:pending:<token> 鎖、記下排入時間；完成或失敗留底後都放掉鎖（失敗的項目給下次啟動的任何分頁重放）', async () => {
+    const held = new Map<string, number>();
+    const locks = {
+      request(name: string, callback: () => Promise<void>) {
+        held.set(name, (held.get(name) ?? 0) + 1);
+        return callback().finally(() => held.set(name, held.get(name)! - 1));
+      },
+    };
+    const storage = new MemoryStorage();
+    const queue = new PendingQueue(storage, undefined, 'tab-a', locks);
+    const settle = () => new Promise((r) => setTimeout(r, 0));
+    const ok = await makeStore({ pending: queue }, storage);
+    const writing = ok.store.addAttempt(attempt(1));
+    expect(queue.entries()[0]!.at).toBe(NOW);
+    expect(held.get('ll:pending:tab-a')).toBe(1);
+    await writing;
+    await settle();
+    expect(held.get('ll:pending:tab-a')).toBe(0);
+    await ok.store.close();
+    const failing = await makeStore({ pending: queue, reopen: () => Promise.reject(new Error('IndexedDB server lost')) }, storage);
+    failing.store.markTerminated();
+    await failing.store.addAttempt(attempt(2));
+    await settle();
+    expect(queue.size).toBe(1);
+    expect(held.get('ll:pending:tab-a')).toBe(0);
+  });
+
+  it('appendError 不先留底（重放會多一筆），只在失敗時進佇列', async () => {
+    const { store, db, storage } = await makeStore();
+    hangNextTransaction(db);
+    void store.appendError(errorRecord(1));
+    expect(new PendingQueue(storage).size).toBe(0);
+  });
+
+  it('沒有佇列（hooks.pending 省略）時行為不變：成功寫入，失敗 throw', async () => {
+    const db = await openProgressDB({ now });
+    const store = new IndexedDBProgressStore(db, { now, createMeta: () => meta(), reopen: () => Promise.reject(new Error('IndexedDB server lost')) });
+    await store.addAttempt(attempt(1));
+    expect(await store.listAttempts()).toHaveLength(1);
+    store.markTerminated();
+    await expect(store.addAttempt(attempt(2))).rejects.toThrow('IndexedDB server lost');
   });
 });

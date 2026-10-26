@@ -3,6 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, fail, readJson } from './lib/fs.mjs';
+import { readLinkExceptions, validateLinkExceptions } from './lib/link-exceptions.mjs';
 
 const yaml = readFileSync(join(ROOT, 'pnpm-workspace.yaml'), 'utf8');
 // 取出某個頂層 key 底下的縮排區塊（到下一個頂層 key 或檔尾為止；JavaScript 沒有 \Z，用 (?![\s\S]) 表示檔尾）
@@ -65,6 +66,18 @@ for (const r of trust.overrides)
     ok = false;
   }
 
+// check:links 的例外清單（站規 4.1）：格式與日期在這裡一併檢查；數量比對與用不到的例外由 check:links 負責
+let linkProblems;
+try {
+  linkProblems = validateLinkExceptions(readLinkExceptions(ROOT));
+} catch (e) {
+  linkProblems = [`tools/link-exceptions.json 無法讀取：${e.message}`];
+}
+for (const p of linkProblems) {
+  fail(`check:exceptions：${p}`);
+  ok = false;
+}
+
 // lockfile 的 typescript 必須是 6.0.3
 const lock = readFileSync(join(ROOT, 'pnpm-lock.yaml'), 'utf8');
 const tsVersions = [...lock.matchAll(/^\s{2}typescript@([0-9.]+):/gm)].map((m) => m[1]);
@@ -72,4 +85,4 @@ if (tsVersions.length === 0 || tsVersions.some((v) => v !== '6.0.3')) {
   fail(`check:exceptions：lockfile 的 typescript 版本是 ${tsVersions.join(', ') || '無'}，必須是 6.0.3`);
   ok = false;
 }
-if (ok) console.log('check:exceptions：例外清單與紀錄一致，沒有過期條目；lockfile 的 typescript 是 6.0.3');
+if (ok) console.log('check:exceptions：例外清單與紀錄一致，沒有過期條目；check:links 的例外清單格式正確；lockfile 的 typescript 是 6.0.3');

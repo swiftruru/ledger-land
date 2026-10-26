@@ -1,0 +1,47 @@
+{
+  "id": "q_96qpbr3p",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "objectiveId": "obj_qr0bbx",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity",
+    "version",
+    "na_vs_zero"
+  ],
+  "termRefs": [
+    "tm_2jyfy0hn",
+    "tm_a3p9y6kc",
+    "tm_p7h3c5xq"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "purchases": 1800000,
+    "ap": 0
+  },
+  "compute": {
+    "ratioRef": "ap_turnover@excel",
+    "measures": {
+      "is_purchases": "vars.purchases",
+      "bs_accounts_payable": "vars.ap"
+    }
+  },
+  "answerUnit": "turnover",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "acceptStatus": [
+    "na"
+  ],
+  "prompt": {
+    "zh-TW": "青田農產向農民進貨一律當場付現，年底應付帳款是 {{money:vars.ap}}；今年本期進貨 {{money:vars.purchases}}。依課程 Excel 版計算應付款項週轉率，以「次」作答；算不出來時請按「N/A」。",
+    "en": "Green Field Produce always pays the farmers it buys from in cash on the spot, so trade payables at year end are {{money:vars.ap}}; purchases this year were {{money:vars.purchases}}. Using the course Excel version, what is the payables turnover? Answer in times; if it cannot be calculated, press ‘N/A’."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_2jyfy0hn}}的分母是{{term:tm_a3p9y6kc}}。分母為零時除法沒有定義，比率不存在，顯示 N/A，不是零；零會是「有應付帳款、但本期進貨剛好是零」的情況。這和課程的計算口徑一致：分母為零一律顯示 N/A。",
+    "en": "The denominator of {{term:tm_2jyfy0hn}} is {{term:tm_a3p9y6kc}}. With a zero denominator the division is undefined, so the ratio does not exist and shows N/A, not zero; zero would be the case of having payables while purchases for the period happen to be zero. This matches the course’s calculation basis: a zero denominator always shows N/A."
+  }
+}

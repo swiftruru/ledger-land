@@ -1,6 +1,6 @@
 {
   "id": "tm_sf72dfsv",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -24,8 +24,8 @@
   "pendingRefs": [],
   "ifrsBasis": "IAS 1.10",
   "definition": {
-    "zh-TW": "列出公司在某一天擁有什麼、這些東西是用誰的錢換來的。左邊是資產；右邊說明資產的來源：欠別人的算負債，屬於股東的算股東權益。兩邊一定相等，因為資產的每一塊錢都有來源。標題只寫一個日期，換一天看，數字就不同。",
-    "en": "Lists what the company owns on a given day and whose money paid for it. Assets sit on the left; the right side explains where they came from: amounts owed to others are liabilities, and what belongs to the shareholders is equity. The two sides always agree, because every dollar of assets has a source. The heading carries a single date; look on a different day and the figures change."
+    "zh-TW": "把公司在報表日控制的資源（資產）和這些資源的資金來源分列兩側；內容都以報表日為準，所以標題只寫一個日期。資金來源有兩種：對債權人負有清償義務的是負債；不必償還、由股東承擔經營成敗的是股東權益。資產的每一塊錢都有來源，兩側合計因此一定相等。IFRS 稱它為財務狀況表。",
+    "en": "Sets out the resources the company controls at the reporting date (assets) alongside the sources of the money behind them; everything in it is stated as at that one date, so the heading carries a single date. The sources come in two kinds: liabilities, which the company is obliged to settle with its creditors, and equity, which need not be repaid and takes the shareholders’ share of the business’s successes and failures. Every dollar of assets has a source, so the two sides always total the same. IFRS calls it the statement of financial position."
   },
   "related": [
     "tm_tkj8x3a7",

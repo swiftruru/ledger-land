@@ -1,0 +1,79 @@
+{
+  "id": "q_dtsptjph",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_7j31n2",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "eps",
+    "pe_ratio"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4",
+    "tm_5e3py55a"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "美玲想算暖木家具的本益比。她手上有股價、營業收入、本期淨利、股本與每股面額五個數字。正確的計算順序是哪一個？",
+    "en": "Mei-ling wants the P/E ratio of Warm Timber Furniture. She has five figures: the share price, revenue, profit for the period, share capital and par value per share. Which order of calculation is right?"
+  },
+  "options": [
+    {
+      "id": "o_a1k4",
+      "text": {
+        "zh-TW": "先用股本除以每股面額算出股數，再用本期淨利除以股數，最後用股價除以這個每股盈餘",
+        "en": "Divide share capital by par value for the share count, divide profit for the period by it, then divide the share price by that earnings per share"
+      },
+      "feedback": {
+        "zh-TW": "答對了。本益比的分母是每股盈餘，而每股盈餘要先有股數；三步缺一不可。",
+        "en": "That is right. The denominator of the P/E ratio is earnings per share, and earnings per share needs the share count first; all three steps are needed."
+      }
+    },
+    {
+      "id": "o_b2m7",
+      "text": {
+        "zh-TW": "直接用本期淨利除以股本金額當作每股盈餘，再拿股價除以它",
+        "en": "Divide profit for the period by the amount of share capital to get earnings per share, then divide the share price by it"
+      },
+      "feedback": {
+        "zh-TW": "你知道本益比是股價除以每股盈餘，這部分對。不過股本是一個金額，不是股數；要先除以每股面額才會變成股數。",
+        "en": "You know the P/E ratio is price divided by earnings per share, which is right. But share capital is an amount, not a number of shares; it has to be divided by par value first."
+      },
+      "misconceptionId": "mc_sh4m"
+    },
+    {
+      "id": "o_c3n9",
+      "text": {
+        "zh-TW": "用股價除以本期淨利，因為兩者都是「這家公司值多少」的數字",
+        "en": "Divide the share price by profit for the period, since both describe what the company is worth"
+      },
+      "feedback": {
+        "zh-TW": "你抓到了「股價和獲利要放在一起看」的想法。但股價是每一股的價格，必須和每一股的盈餘相除，單位才對得上。",
+        "en": "You have the idea that price and profit belong together. But the share price is per share, so it must be divided by the profit per share for the units to match."
+      },
+      "misconceptionId": "mc_g6p3"
+    },
+    {
+      "id": "o_3hv4",
+      "text": {
+        "zh-TW": "先用股本除以每股面額算出股數，再用營業收入除以股數，最後用股價除以這個結果",
+        "en": "Divide share capital by par value for the share count, divide revenue by it, then divide the share price by the result"
+      },
+      "feedback": {
+        "zh-TW": "你知道要先算出股數，這一步對了。但每股盈餘的「盈餘」是本期淨利，也就是收入扣掉所有成本與費用（含所得稅）之後剩下的；營業收入還沒扣掉任何成本，除以股數得到的不是每股盈餘。",
+        "en": "You know the share count comes first, which is right. But the earnings in earnings per share are profit for the period, what is left once all costs and expenses, including income tax, have been deducted; revenue has had nothing deducted, so dividing it by the share count does not give earnings per share."
+      },
+      "misconceptionId": "mc_rev7"
+    }
+  ],
+  "correctOptionId": "o_a1k4",
+  "explanation": {
+    "zh-TW": "{{option:o_a1k4}}是正確順序。{{option:o_b2m7}}把股本金額當成股數，{{option:o_c3n9}}的分子分母單位對不上，{{option:o_3hv4}}把還沒扣成本與費用的營業收入當成盈餘。",
+    "en": "{{option:o_a1k4}} is the right order. {{option:o_b2m7}} treats the amount of share capital as a share count, in {{option:o_c3n9}} the numerator and denominator are in different units, and {{option:o_3hv4}} treats revenue, before any costs and expenses, as earnings."
+  }
+}

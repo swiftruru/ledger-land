@@ -1,6 +1,6 @@
 {
   "id": "tm_tkj8x3a7",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -29,8 +29,8 @@
     "en": "Current Taiwanese statements are titled statement of comprehensive income, which adds other comprehensive income; this course does not cover that part."
   },
   "definition": {
-    "zh-TW": "一段期間的經營成績單。最上面是這段期間賣出商品或服務的營業收入，往下一層一層減掉商品成本、銷管費用、業外收支與所得稅，每減一次就得到一層利益，最後一層是本期淨利。因為算的是一段期間的累計，標題寫的是起訖日期。",
-    "en": "The scorecard for a period of trading. Revenue from the goods or services sold during the period sits at the top; cost of sales, distribution costs and administrative expenses, non-operating items and income tax are then deducted one layer at a time, each deduction producing a profit level, down to profit for the period at the bottom. Because it accumulates a span of time, its heading shows a start date and an end date."
+    "zh-TW": "標題寫著起訖日期的報表，把這段時間入帳的收入與各類費用分組排列。從頂端的營業收入開始，每加減完一組就得到一層利益，課程版面共有五層，最底下那層是本期淨利。比較相鄰兩層差了多少，就知道利潤在哪一段減少最多。",
+    "en": "A statement whose heading gives a start date and an end date; it sorts the revenue and expenses recorded over that span into groups. Starting from revenue at the top, each group added or deducted yields one profit level, five in the course layout, with profit for the period at the bottom. Comparing neighbouring levels shows where along the way profit shrinks the most."
   },
   "related": [
     "tm_sf72dfsv",

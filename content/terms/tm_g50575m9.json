@@ -2,23 +2,46 @@
   "id": "tm_g50575m9",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "人均營收", "en": "Revenue per employee" },
+  "label": {
+    "zh-TW": "人均營收",
+    "en": "Revenue per employee"
+  },
   "teacherLabel": "人均營收",
   "currentTwLabel": "人均營收",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "平均每位員工做出多少營業收入。數值越高表示人力的產出越高；員工人數是輸入值，缺少時顯示 N/A。",
-    "en": "Average revenue generated per employee. Higher means more output per person; the head count is an input, and the ratio shows N/A when it is missing."
+    "zh-TW": "平均每位員工做出多少營業收入。\n\n它可以粗略看出人力的產出效率。人數少、大量外包或高度自動化的公司，這個數字自然偏高，所以最好拿同一家公司前後幾年，或經營方式相近的同業來比。",
+    "en": "How much revenue each employee generates on average.\n\nIt gives a rough view of how productive the workforce is. A company with few staff, heavy outsourcing or a high degree of automation naturally shows a higher figure, so it is best compared across years for the same company, or with peers that operate in a similar way."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表，員工人數要另外輸入；沒有輸入或人數為 0 時顯示 N/A。",
+    "en": "The numerator comes from the income statement and the headcount is entered separately; without it, or when it is zero, the result is N/A."
+  },
+  "misconception": {
+    "zh-TW": "以為人均營收上升，就代表員工變得更有效率。公司把部分工作外包、縮減人力時，分母變小，數字跟著變大，但外包的費用仍要支付，獲利不一定改善；要看獲利請改用純益率或營業利益率。",
+    "en": "Assuming a rise in revenue per employee means staff have become more efficient. When a company outsources work and cuts headcount, the denominator shrinks and the figure goes up, yet the outsourcing still has to be paid for and profit may not improve; for profitability use the net or operating margin."
+  },
+  "formula": {
+    "zh-TW": "人均營收 ＝ 營業收入 ÷ 員工人數。",
+    "en": "Revenue per employee = revenue ÷ number of employees."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "revenue_per_employee@slides02"
+  "ratioRef": "revenue_per_employee@slides02",
+  "related": [
+    "tm_v3n8q2ye",
+    "tm_vpzcjk6n",
+    "tm_x6e56fqp"
+  ]
 }

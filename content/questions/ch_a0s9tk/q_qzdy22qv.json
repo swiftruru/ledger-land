@@ -1,0 +1,61 @@
+{
+  "id": "q_qzdy22qv",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "journal_entry",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_cskmkg",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "journal_entry",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_b9e9vjct",
+    "tm_c4sh8k2p",
+    "tm_s5b8r3hd",
+    "tm_50v66dt7",
+    "tm_k6t2e9wr",
+    "tm_hg8c967a"
+  ],
+  "scored": true,
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 120000,
+        "share_capital": 120000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 600000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": []
+  },
+  "accountChoices": [
+    "cash",
+    "short_term_borrowings",
+    "interest_expense",
+    "share_capital",
+    "accounts_payable"
+  ],
+  "allowAliases": true,
+  "prompt": {
+    "zh-TW": "暖木家具為了備貨，向銀行借了 {{money:e1.amount}}，一年內要還。請寫出借款當天的分錄（利息以後才付）。",
+    "en": "To stock up, Warm Timber Furniture borrows {{money:e1.amount}} from the bank, repayable within a year. Write the entry for the day of the loan (interest is paid later)."
+  },
+  "explanation": {
+    "zh-TW": "借到錢，現金增加，借記現金 {{money:e1.amount}}；欠銀行的錢是負債，增加記貸方，貸記短期借款 {{money:e1.amount}}。這一題最常見的錯是把「借款」記在借方：負債增加要記貸方，「借方」這個字和借錢無關。借款當天還沒有利息費用。利息隨借款期間經過而發生，是那段期間的費用，不必等到付錢那天：期間內付息時記「借 利息費用／貸 現金」；期末還沒付的部分要先估列「借 利息費用／貸 應付利息」，之後付息時再借記應付利息、貸記現金。",
+    "en": "Money comes in, so cash rises: debit cash {{money:e1.amount}}. What is owed to the bank is a liability, which increases on the credit side: credit short-term borrowings {{money:e1.amount}}. The most common slip here is to debit the loan: a liability increase is a credit, and the word debit has nothing to do with borrowing. There is no interest expense on the day of the loan. Interest builds up as the loan period passes and is an expense of that period, not of the day the cash goes out: interest paid during the period is recorded as debit interest expense, credit cash; any interest still unpaid at period end is first accrued as debit interest expense, credit interest payable, and the later payment debits interest payable and credits cash."
+  }
+}

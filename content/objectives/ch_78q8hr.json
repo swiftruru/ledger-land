@@ -1,0 +1,279 @@
+{
+  "chapterId": "ch_78q8hr",
+  "items": [
+    {
+      "id": "obj_bt5xpr",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_78q8hr",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能用會計恆等式（資產＝負債＋股東權益）檢查一張資產負債表是否平衡，並在不平衡時判斷少了哪一邊的數字",
+        "en": "Use the accounting equation (assets = liabilities + equity) to check whether a balance sheet balances, and work out which side is missing a figure when it does not"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_n4p5",
+          "text": {
+            "zh-TW": "以為資產總計要等於負債總額",
+            "en": "Thinking total assets should equal total liabilities"
+          }
+        },
+        {
+          "id": "mc_8dty",
+          "text": {
+            "zh-TW": "以為左右合計相等就代表表上每個數字都對",
+            "en": "Thinking that equal totals on both sides mean every figure on the sheet is right"
+          }
+        },
+        {
+          "id": "mc_bt5k",
+          "text": {
+            "zh-TW": "把資產總計當成公司帳上的現金",
+            "en": "Treating total assets as the cash the company has in the bank"
+          }
+        },
+        {
+          "id": "mc_d6v0",
+          "text": {
+            "zh-TW": "以為花錢買東西之後資產總計一定變少",
+            "en": "Thinking total assets must fall whenever cash is spent"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "pick_line",
+        "transaction_effect"
+      ],
+      "termRefs": [
+        "tm_cfghjxzq",
+        "tm_sf72dfsv",
+        "tm_t7a3s6wb",
+        "tm_ec80jjev"
+      ]
+    },
+    {
+      "id": "obj_8e479x",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_78q8hr",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能把科目分到資產、負債與股東權益，並依一年內會不會變現或到期分出流動與非流動",
+        "en": "Sort accounts into assets, liabilities and equity, and split them into current and non-current by whether they turn into cash or fall due within a year"
+      },
+      "skill": "classify",
+      "misconceptions": [
+        {
+          "id": "mc_1gj2",
+          "text": {
+            "zh-TW": "因為名字裡有「帳款」，就把應付帳款當成資產",
+            "en": "Treating trade payables as an asset because the name sounds like receivables"
+          }
+        },
+        {
+          "id": "mc_cjqm",
+          "text": {
+            "zh-TW": "以為一年後才到期的借款也是流動負債，因為它遲早要還",
+            "en": "Thinking a loan due in more than a year is still a current liability because it must be repaid eventually"
+          }
+        },
+        {
+          "id": "mc_sd88",
+          "text": {
+            "zh-TW": "以為設備可以賣掉變現，所以是流動資產",
+            "en": "Thinking equipment is a current asset because it could be sold for cash"
+          }
+        },
+        {
+          "id": "mc_b9qz",
+          "text": {
+            "zh-TW": "把股本當成公司欠股東的負債",
+            "en": "Treating share capital as a debt the company owes its shareholders"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "classify",
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_k52yxb68",
+        "tm_c2y9b5ex",
+        "tm_93mhtb4s",
+        "tm_adqjyfqg",
+        "tm_5e3py55a"
+      ]
+    },
+    {
+      "id": "obj_qg146a",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_78q8hr",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能說明本期淨利怎麼經由未分配盈餘留在資產負債表上，並判斷一筆交易會不會動到未分配盈餘",
+        "en": "Explain how profit for the period stays on the balance sheet through unappropriated retained earnings, and judge whether a transaction changes it"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_245v",
+          "text": {
+            "zh-TW": "以為本期淨利結帳之後就從帳上消失了",
+            "en": "Thinking profit for the period disappears from the books once the period is closed"
+          }
+        },
+        {
+          "id": "mc_f1e4",
+          "text": {
+            "zh-TW": "以為只要有現金進來，未分配盈餘就會增加",
+            "en": "Thinking any transaction that brings in cash raises unappropriated retained earnings"
+          }
+        },
+        {
+          "id": "mc_k2fj",
+          "text": {
+            "zh-TW": "以為發放現金股利是一筆費用，會讓本期淨利變少",
+            "en": "Thinking a cash dividend is an expense that lowers profit for the period"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "transaction_effect",
+        "pick_line",
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_n4e8t2jy",
+        "tm_4c6v99nn",
+        "tm_y37ymj9w",
+        "tm_tkj8x3a7"
+      ]
+    },
+    {
+      "id": "obj_0x64wz",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_78q8hr",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能分辨股本與未分配盈餘的來源：一個是股東投入的錢，一個是公司自己賺來還沒分出去的錢",
+        "en": "Tell share capital from unappropriated retained earnings by where each comes from: money the shareholders put in, and profit the company earned and has not yet distributed"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_aha5",
+          "text": {
+            "zh-TW": "以為公司賺到的錢會加到股本",
+            "en": "Thinking the profit a company earns is added to share capital"
+          }
+        },
+        {
+          "id": "mc_swd1",
+          "text": {
+            "zh-TW": "以為未分配盈餘是一筆放在銀行、隨時可以領出來的現金",
+            "en": "Thinking unappropriated retained earnings are a pile of cash in the bank ready to be withdrawn"
+          }
+        },
+        {
+          "id": "mc_qntk",
+          "text": {
+            "zh-TW": "以為股東增資會讓未分配盈餘增加",
+            "en": "Thinking a new capital injection from shareholders raises unappropriated retained earnings"
+          }
+        },
+        {
+          "id": "mc_ekyy",
+          "text": {
+            "zh-TW": "以為收回以前的應收帳款是公司新賺到的錢",
+            "en": "Thinking collecting an old receivable is new profit"
+          }
+        }
+      ],
+      "plannedQuestions": 4,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "transaction_effect",
+        "multi_choice"
+      ],
+      "termRefs": [
+        "tm_5e3py55a",
+        "tm_4c6v99nn",
+        "tm_y37ymj9w"
+      ]
+    },
+    {
+      "id": "obj_d6egd4",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_78q8hr",
+      "order": 5,
+      "statement": {
+        "zh-TW": "能算出流動比率，說明它問的是「一年內能變現的資產，夠不夠付一年內到期的帳」，並知道沒有流動負債時顯示 N/A",
+        "en": "Work out the current ratio, explain that it asks whether the assets that turn into cash within a year can cover the bills due within a year, and know that it shows N/A when there are no current liabilities"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_784e",
+          "text": {
+            "zh-TW": "用資產總計除以負債總額當作流動比率",
+            "en": "Using total assets divided by total liabilities as the current ratio"
+          }
+        },
+        {
+          "id": "mc_dehh",
+          "text": {
+            "zh-TW": "以為流動比率越高一定越好",
+            "en": "Thinking a higher current ratio is always better"
+          }
+        },
+        {
+          "id": "mc_jp5v",
+          "text": {
+            "zh-TW": "流動負債為零時把流動比率寫成 0",
+            "en": "Writing the current ratio as 0 when there are no current liabilities"
+          }
+        },
+        {
+          "id": "mc_vzys",
+          "text": {
+            "zh-TW": "以為流動比率高於一倍時，借一筆一年內要還的錢可以把它拉高",
+            "en": "Thinking that, with a current ratio above one, a loan due within a year will raise it"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "single_choice",
+        "transaction_effect"
+      ],
+      "termRefs": [
+        "tm_c8r1t4zm",
+        "tm_k52yxb68",
+        "tm_c2y9b5ex"
+      ],
+      "pendingRefs": [
+        "T24",
+        "T28"
+      ]
+    }
+  ]
+}

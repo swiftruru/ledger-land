@@ -1,6 +1,6 @@
 {
   "id": "tm_bcs4fvmn",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -22,8 +22,8 @@
   "pendingRefs": [],
   "ifrsBasis": "IFRS 15",
   "note": {
-    "zh-TW": "教材與網站顯示「預收收入」，現行 IFRS 15 的科目名稱是合約負債，列為別名。網站補充的延伸科目。",
-    "en": "The course and the site show unearned revenue; the current IFRS 15 name, contract liabilities, is kept as an alias. An extension account added by the site."
+    "zh-TW": "教材與中文介面顯示「預收收入」，現行 IFRS 15 的科目名稱是合約負債（列在現行用語）；英文介面直接用 IFRS 15 的 contract liabilities。網站補充的延伸科目。",
+    "en": "The course and the Chinese interface show 預收收入 (unearned revenue), with the current IFRS 15 name 合約負債 listed as the current term; in English the site uses the IFRS 15 term, contract liabilities, and keeps unearned revenue as an alias. An extension account added by the site."
   },
   "definition": {
     "zh-TW": "客戶先付了錢、公司還沒交貨或提供服務的部分。它是負債，因為公司還欠客戶履約；等到交貨時才轉成收入。",

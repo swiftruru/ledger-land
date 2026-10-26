@@ -1,24 +1,51 @@
 {
   "id": "tm_92yzx0fn",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "純益率", "en": "Net profit margin" },
+  "label": {
+    "zh-TW": "純益率",
+    "en": "Net profit margin"
+  },
   "teacherLabel": "純益率",
   "currentTwLabel": "純益率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["淨利率", "稅後淨利率"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "淨利率",
+      "稅後淨利率"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "營業收入裡最後留下多少本期淨利。數值越高表示每一筆生意扣掉所有成本、費用與稅之後剩得越多。",
-    "en": "How much of revenue is left as profit for the period. Higher means more of each sale survives all costs, expenses and tax."
+    "zh-TW": "每一元營業收入最後留下多少本期淨利。\n\n它是損益表從第一列到最後一列的「存活率」：所有成本、費用、利息、業外損益與所得稅都扣完之後的結果。",
+    "en": "How much profit for the period is left from each unit of revenue.\n\nIt is the survival rate from the first line of the income statement to the last, after every cost, expense, interest charge, non-operating item and tax."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上。它是杜邦分析的第一個因子，乘以總資產週轉率就是資產報酬率。別名包括淨利率與稅後淨利率。",
+    "en": "Both figures are on the income statement. It is the first factor in DuPont analysis: multiplied by total asset turnover it gives return on assets. Other names include net margin and after-tax margin."
+  },
+  "misconception": {
+    "zh-TW": "以為純益率低就表示本業不好。純益率受利息與業外損益影響，本業很好的公司也可能因為負債重、利息多而純益率偏低；要回頭看營業利益率才知道本業的表現。",
+    "en": "Reading a low net margin as a weak core business. The net margin is affected by interest and non-operating items; a company with a strong core business can still show a thin net margin because of heavy debt. Check the operating margin to see the core business itself."
+  },
+  "formula": {
+    "zh-TW": "純益率的算法：本期淨利 ÷ 營業收入。",
+    "en": "Net profit margin = profit for the period ÷ revenue."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "net_profit_margin@excel"
+  "ratioRef": "net_profit_margin@excel",
+  "related": [
+    "tm_n4e8t2jy",
+    "tm_1c1g4a7q",
+    "tm_axb9rtr7",
+    "tm_r0a5t3kq"
+  ]
 }

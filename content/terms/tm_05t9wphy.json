@@ -1,6 +1,6 @@
 {
   "id": "tm_05t9wphy",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "concept",
@@ -30,7 +30,7 @@
   },
   "misconception": {
     "zh-TW": "「有賺錢」不等於「有現金」：賒銷讓收入增加，但現金一毛都還沒進來。",
-    "en": "\"Making a profit\" is not the same as \"having cash\": a credit sale raises revenue while no cash has arrived yet."
+    "en": "‘Making a profit’ is not the same as ‘having cash’: a credit sale raises revenue while no cash has arrived yet."
   },
   "related": [
     "tm_tkj8x3a7",

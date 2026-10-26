@@ -2,23 +2,47 @@
   "id": "tm_x6e56fqp",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "ME intensity", "en": "Marketing expense intensity" },
+  "label": {
+    "zh-TW": "ME intensity",
+    "en": "Marketing expense intensity"
+  },
   "teacherLabel": "ME intensity",
   "currentTwLabel": "ME intensity",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "行銷費用占營業收入的比例，看公司為了做生意要花多少在廣告與促銷上。數值越高表示越依賴行銷。",
-    "en": "Marketing expense as a share of revenue: how much has to be spent on advertising and promotion to win the business. Higher means a heavier reliance on marketing."
+    "zh-TW": "行銷費用占營業收入的比例，也就是公司每做一元生意，花多少錢在廣告與促銷上。\n\n行銷費用通常在發生的當期就認列為費用，帶來的效果卻可能到之後幾期才出現；所以單看一期的比例偏高，不一定表示錢花得沒有效率，拿連續幾期的變化來看會比較可靠。",
+    "en": "Marketing expenses as a share of revenue: how much the company spends on advertising and promotion for each unit of sales.\n\nMarketing spend is usually recognised as an expense in the period it is incurred, while the benefit may only show up in later periods. A high figure in a single period therefore does not necessarily mean the money was wasted; the trend over several periods is a more reliable guide."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上。本課故事沒有行銷費用，所以比率是 0。",
+    "en": "Both figures are on the income statement. The course story has no marketing expense, so the ratio is zero."
+  },
+  "misconception": {
+    "zh-TW": "把行銷費用算進營業成本，再去算毛利率。行銷費用是營業費用，不影響毛利；它影響的是營業利益率。",
+    "en": "Counting marketing expenses in cost of sales and then computing gross margin. Marketing is an operating expense and does not affect gross profit; it affects the operating margin."
+  },
+  "formula": {
+    "zh-TW": "ME intensity ＝ 行銷費用 ÷ 營業收入。",
+    "en": "Marketing expense intensity = marketing expenses ÷ revenue."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；網站依課程的公式計算。",
+    "en": "IFRS does not define financial ratios; the name follows international usage, and the site calculates it with the course formula."
   },
-  "ratioRef": "me_intensity@slides02"
+  "ratioRef": "me_intensity@slides02",
+  "related": [
+    "tm_k1tghpyd",
+    "tm_j8zg281d",
+    "tm_vpzcjk6n",
+    "tm_v3n8q2ye"
+  ]
 }

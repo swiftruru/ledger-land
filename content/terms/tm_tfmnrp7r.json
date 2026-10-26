@@ -2,19 +2,42 @@
   "id": "tm_tfmnrp7r",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "長期借款返還(-)", "en": "Repayment of long-term borrowings (-)" },
+  "label": {
+    "zh-TW": "長期借款返還(-)",
+    "en": "Repayment of long-term borrowings (-)"
+  },
   "teacherLabel": "長期借款返還(-)",
   "currentTwLabel": "償還長期借款",
   "ifrsEnglish": "Repayment of long-term borrowings",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "網站補充的延伸列，模板沒有；金額不為零時才顯示，並標「模板無此列」。",
-    "en": "An extension row added by the site. The template has no such line; it is shown only when the amount is not nil, marked as absent from the template."
+    "zh-TW": "網站補充的延伸列，課程模板沒有；金額不為零時才顯示，並標「模板無此列」。",
+    "en": "An extension line added by the site; the course template has no such line. It is shown only when the amount is non-zero, marked as not in the template."
   },
-  "definition": { "zh-TW": "償還長期借款本金時付出的現金。", "en": "Cash paid to repay the principal of long-term borrowings." }
+  "definition": {
+    "zh-TW": "償還長期借款本金時付出的現金。\n\n這是籌資活動的流出：現金與非流動負債同時減少；利息不在這裡，另外列在支付利息(-)。",
+    "en": "Cash paid to repay the principal of a long-term loan.\n\nIt is a financing outflow: cash and non-current liabilities fall together; the interest is shown separately on interest paid (-)."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表籌資活動區。本課故事沒有長期借款，所以用不到。",
+    "en": "Where it sits: the financing activities section of the statement of cash flows. The course story has no long-term borrowing, so it is not used."
+  },
+  "misconception": {
+    "zh-TW": "把還本金當成費用、以為會讓淨利減少。還本只是把負債和現金一起消掉，不經過損益表；會進損益表的只有利息。",
+    "en": "Treating the principal repayment as an expense that lowers profit. Repaying principal simply cancels a liability against cash and never touches the income statement; only the interest does."
+  },
+  "related": [
+    "tm_gcp2zeys",
+    "tm_fk8yqnyt",
+    "tm_vgf3h5z9",
+    "tm_y7a34vmk"
+  ]
 }

@@ -1,0 +1,71 @@
+{
+  "id": "q_2re6ftpp",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_8jjgc4",
+  "difficulty": 3,
+  "tags": [
+    "red_light",
+    "credit_sale",
+    "accrual"
+  ],
+  "termRefs": [
+    "tm_r7x2c9fa",
+    "tm_c4sh8k2p",
+    "tm_05t9wphy",
+    "tm_chbctb2d"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "sale": 96000
+  },
+  "prompt": {
+    "zh-TW": "青苔書店這一期唯一的交易，是賒銷一批書給補習班，售價 {{money:vars.sale}}，款項還沒收到。小芸填完報表後，步驟②、④、⑤都綠，只有步驟③紅，差額剛好是 {{money:vars.sale}}。她最可能犯了什麼錯？",
+    "en": "Moss Bookshop’s only transaction this period is a credit sale of books to a tutoring centre for {{money:vars.sale}}, not yet collected. After Yun fills in the statements, steps 2, 4 and 5 are green and only step 3 is red, with a difference of exactly {{money:vars.sale}}. What mistake did she most likely make?"
+  },
+  "options": [
+    {
+      "id": "o_pphw",
+      "text": {
+        "zh-TW": "她把這筆賒銷當成已經收到現金：現金多填、應收帳款少填",
+        "en": "She treated the credit sale as cash received, overstating cash and understating trade receivables"
+      },
+      "feedback": {
+        "zh-TW": "答對了。現金多填、應收帳款少填，兩者金額相同，所以資產總計沒變、步驟⑤仍綠。但現金流量表知道錢還沒進來，步驟③就把差額抓出來了。",
+        "en": "Correct. Cash is overstated and receivables understated by the same amount, so total assets are unchanged and step 5 stays green. But the statement of cash flows knows the money has not arrived, and step 3 exposes the difference."
+      }
+    },
+    {
+      "id": "o_sert",
+      "text": {
+        "zh-TW": "她以為錢還沒收到就不能認列收入，所以漏記了這筆銷貨",
+        "en": "She thought revenue could not be recognised before the cash arrived, so she left the sale out"
+      },
+      "feedback": {
+        "zh-TW": "收入沒認列的話，損益表會少這筆 {{money:vars.sale}} 銷貨的毛利，步驟④的未分配盈餘就對不上，不會是綠燈。而且賒銷本來就在賣出時認列收入，不必等收款。",
+        "en": "Had revenue been left out, the income statement would be short of the gross profit on {{money:vars.sale}} and step 4 would not be green. Besides, a credit sale is recognised when the goods are sold, not when the cash comes in."
+      },
+      "misconceptionId": "mc_3jae"
+    },
+    {
+      "id": "o_e983",
+      "text": {
+        "zh-TW": "現金流量表算錯了，應該在營業活動裡把 {{money:vars.sale}} 加進來",
+        "en": "The statement of cash flows is wrong and should include the {{money:vars.sale}} under operating activities"
+      },
+      "feedback": {
+        "zh-TW": "現金流量表只記真的進出的錢。這筆款項還沒收到，所以它在「銷貨債權增加(-)」那一列把賒銷的部分減回去，期末現金不變；系統算的現金流量表是對的，錯的是她填的資產負債表。",
+        "en": "The statement of cash flows records only money that actually moved. Nothing has been collected, so the ‘increase in trade receivables (-)’ line deducts the credit sale and closing cash is unchanged; the system’s statement of cash flows is right, and it is her balance sheet that is wrong."
+      },
+      "misconceptionId": "mc_4v3q"
+    }
+  ],
+  "correctOptionId": "o_pphw",
+  "explanation": {
+    "zh-TW": "{{option:o_pphw}}。賒銷的錢還沒進來，資產負債表上增加的應該是應收帳款而不是現金。把 {{money:vars.sale}} 填到現金，資產總計雖然剛好不變（步驟⑤綠），卻和現金流量表的期末現金差了這個金額（步驟③紅）。這一題也說明為什麼不能只看步驟⑤：左右相等不代表每一格都放對位置。",
+    "en": "{{option:o_pphw}}. The money from a credit sale has not come in, so what should rise on the balance sheet is trade receivables, not cash. Putting the {{money:vars.sale}} into cash leaves total assets unchanged (step 5 green) but makes cash differ from closing cash on the statement of cash flows by that amount (step 3 red). It also shows why step 5 alone is not enough: a balanced sheet does not mean every figure is in the right place."
+  }
+}

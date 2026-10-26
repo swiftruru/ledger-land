@@ -2,7 +2,7 @@
   "id": "tm_gcgcmf3y",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "其他非現金損失增加(+)",
@@ -24,11 +24,25 @@
     "T12"
   ],
   "note": {
-    "zh-TW": "攤銷遞延資產的加回列預設放在這裡（T12）；攤銷在損益表列營業外支出（設計說明見 T05）。",
-    "en": "The add-back for amortisation of deferred assets goes here by default (T12); on the income statement the amortisation is shown under non-operating expenses (see the design note T05)."
+    "zh-TW": "依網站的設計，攤銷遞延資產的加回放在這一列；損益表上的攤銷則照課程版面列在營業外支出。",
+    "en": "By the site’s design, the add-back for amortisation of deferred assets goes on this line; on the income statement the amortisation is shown under non-operating expenses, as in the course layout."
   },
   "definition": {
-    "zh-TW": "折舊以外、沒有付現的費用或損失的加回列，例如遞延資產的攤銷。這些項目減少了利潤卻沒有減少現金，所以要加回。",
-    "en": "The add-back line for non-cash expenses and losses other than depreciation, such as amortisation of deferred assets. They reduce profit without reducing cash, so they are added back."
-  }
+    "zh-TW": "間接法裡的加回項：折舊以外、讓稅前淨利減少，但本身不會再付現的費用或損失。\n\n在課程版面裡，它主要用來加回攤銷遞延資產：設立費的現金在支付當時就已流出，列在投資活動，之後每年的攤銷不再付現。已經認列、只是還沒付款的費用不放這裡：例如還沒付的薪資記在其他應付款，透過營運資金的「其他負債增加(+)」調整。利息費用則在「利息費用(+)」整筆加回，再由「支付利息(-)」扣掉實際付出的現金。",
+    "en": "An add-back in the indirect method: expenses or losses other than depreciation that reduced profit before tax but involve no further cash payment.\n\nIn the course layout it mainly adds back the amortisation of deferred assets: the cash for the start-up costs left the business when they were paid and is shown under investing activities, so the yearly amortisation involves no cash. Expenses already recognised but not yet paid do not go here: unpaid wages, for example, sit in other payables and are adjusted through increase in other operating liabilities (+) in the working capital section. Interest expense is added back in full on interest expense (+), and the cash actually paid is deducted on interest paid (-)."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動區，利息費用(+) 的下一列。故事裡年底攤銷設立費時，損益表的攤銷遞延資產和這一列同時出現，營業活動的現金流量總計不變。",
+    "en": "Where it sits: operating activities in the statement of cash flows, right after interest expense (+). When the story amortises start-up costs at year end, the income statement line and this add-back appear together and net cash from operating activities is unchanged."
+  },
+  "misconception": {
+    "zh-TW": "把實際付現的雜項損失也加回來。只有沒花現金的損失才能加回；付了現金的損失已經真的讓現金減少，加回會高估營業活動的現金。",
+    "en": "Adding back miscellaneous losses that were actually paid in cash. Only non-cash losses qualify; a loss paid in cash has genuinely reduced cash, and adding it back overstates operating cash flow."
+  },
+  "related": [
+    "tm_a2m7z4tf",
+    "tm_85pkjrv0",
+    "tm_dsfjhrfw",
+    "tm_mcjk5sza"
+  ]
 }

@@ -2,7 +2,7 @@
   "id": "tm_wqc6rnsx",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "放貸支出(-)",
@@ -26,11 +26,25 @@
   ],
   "ifrsBasis": "IAS 7.16(e)",
   "note": {
-    "zh-TW": "對應資產負債表的短期放款（課程原字短期放貨，設計說明見 T09）；公司資金貸與他人受公司法第 15 條限制。",
-    "en": "Corresponds to short-term loans receivable on the statement of financial position (see the design note T09); lending company funds to others is restricted by Article 15 of the Company Act."
+    "zh-TW": "對應資產負債表的短期放款（課程原字寫成短期放貨）；公司資金貸與他人受公司法第 15 條限制。",
+    "en": "Corresponds to short-term loans receivable on the balance sheet (the course writes this caption with a miswritten character); lending company funds to others is restricted by Article 15 of the Company Act."
   },
   "definition": {
-    "zh-TW": "公司把錢借給別人時付出的現金。本課的故事沒有用到。",
-    "en": "Cash paid out when the company lends money to others. The course story does not use it."
-  }
+    "zh-TW": "公司把資金借給別人時付出的現金。\n\n這是投資活動的流出：現金減少、短期放款增加；收回時走反向的收回放款(+)。",
+    "en": "Cash paid out when the company lends money to another party.\n\nIt is an investing outflow: cash falls and short-term loans receivable rise; collection reverses it on the receipts from repayment of loans made to other parties (+) line."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表投資活動區的第二列，對應資產負債表的短期放款。本課故事沒有用到，實驗室預設隱藏。",
+    "en": "Where it sits: the second line of investing activities in the statement of cash flows, matching short-term loans receivable on the balance sheet. The course story does not use it, so the lab hides it by default."
+  },
+  "misconception": {
+    "zh-TW": "把放貸和借款搞混，填成籌資活動。借錢給別人是公司拿錢出去投資，屬於投資活動；向別人借錢才是籌資活動。",
+    "en": "Confusing lending with borrowing and entering it under financing. Lending to others is the company putting money out, an investing activity; borrowing from others is financing."
+  },
+  "related": [
+    "tm_3sy1gk7c",
+    "tm_tgfsn0x3",
+    "tm_9hrfpqem",
+    "tm_8125v6e0"
+  ]
 }

@@ -1,0 +1,41 @@
+{
+  "id": "q_7zamv75c",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_9ba3z0",
+  "difficulty": 2,
+  "tags": [
+    "profit_vs_cash",
+    "cash_increase"
+  ],
+  "termRefs": [
+    "tm_x6gmpvm5",
+    "tm_n4e8t2jy",
+    "tm_f9a4c6md"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "vars": {
+    "inc": 200000
+  },
+  "statement": {
+    "zh-TW": "山谷民宿這一期帳上的現金增加了 {{money:vars.inc}}，所以這一期一定有賺錢。",
+    "en": "Valley Guesthouse’s cash rose by {{money:vars.inc}} this period, so the period must have been profitable."
+  },
+  "correct": false,
+  "misconceptionId": "mc_4r2x",
+  "feedbackTrue": {
+    "zh-TW": "現金變多確實是好消息，這點沒錯。不過現金可能來自借款、股東出資或收回以前的帳款，這些都不是這一期的利益；有沒有賺錢要看損益表。",
+    "en": "More cash is indeed good news, that much is right. But the cash may have come from a loan, from shareholders or from collecting old receivables, none of which is this period’s profit; whether the period was profitable is a question for the income statement."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。現金流量表會告訴你這 {{money:vars.inc}} 是營業、投資還是籌資活動帶來的；只有看過來源，才知道它和賺錢有沒有關係。",
+    "en": "That is right. The statement of cash flows shows whether the {{money:vars.inc}} came from operating, investing or financing activities; only once you know the source can you tell whether it has anything to do with profit."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_x6gmpvm5}}是三大活動加起來的結果。一筆借款就能讓現金大增，卻沒有一毛錢是賺來的。要判斷有沒有獲利，看損益表的{{term:tm_n4e8t2jy}}；要判斷錢從哪裡來，看現金流量表。",
+    "en": "The {{term:tm_x6gmpvm5}} is the sum of all three activities. A single loan can send cash soaring without a cent being earned. To judge profit, look at {{term:tm_n4e8t2jy}} on the income statement; to judge where the cash came from, look at the statement of cash flows."
+  }
+}

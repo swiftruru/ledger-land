@@ -1,0 +1,95 @@
+{
+  "id": "q_zvrr08v7",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_f5en1x",
+  "difficulty": 3,
+  "tags": [
+    "five_step_fill",
+    "borrowing",
+    "sga"
+  ],
+  "termRefs": [
+    "tm_s5b8r3hd",
+    "tm_z971merj",
+    "tm_c4sh8k2p",
+    "tm_4c6v99nn",
+    "tm_f9a4c6md"
+  ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_qvewz8"
+  },
+  "scored": true,
+  "type": "five_step_fill",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 180000,
+        "machinery_equipment": 320000,
+        "share_capital": 350000,
+        "retained_earnings": 150000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 250000
+        }
+      },
+      {
+        "id": "e2",
+        "template": "tpl.pay_directors_remuneration_cash",
+        "params": {
+          "amount": 90000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "cf_pretax_income",
+        "measure": "value"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "value"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_retained_earnings",
+        "measure": "value"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_short_term_borrowings",
+        "measure": "value"
+      }
+    ]
+  },
+  "openCells": [
+    "cf_pretax_income",
+    "bs_cash",
+    "bs_retained_earnings"
+  ],
+  "prompt": {
+    "zh-TW": "北風單車行這一期做了兩件事：先向銀行借入 {{money:e1.amount}} 的短期借款，再用現金付了 {{money:e2.amount}} 的董監事酬勞。還沒有任何銷貨。請填出三個開放的格子，讓四盞燈全亮綠。先想清楚：哪一筆會進損益表、哪一筆不會？",
+    "en": "North Wind Cycles did two things this period: it first borrowed {{money:e1.amount}} short-term from the bank, then paid {{money:e2.amount}} in cash as remuneration to its directors and supervisors. There have been no sales yet. Fill in the three open cells so that all four lights turn green. Think first: which of the two reaches the income statement, and which does not?"
+  },
+  "explanation": {
+    "zh-TW": "借款不是收入，只是多了 {{money:expected.t4.after}} 的短期借款與同額的現金；董監事酬勞才是費用。所以稅前淨利是 {{money:expected.t1.after}}，現金流量表的起點照抄（步驟②）。現金一進一出，期末是 {{money:expected.t2.after}}，借款的那一筆在現金流量表上列在籌資活動（步驟③）。未分配盈餘從期初減到 {{money:expected.t3.after}}，減少的金額等於這一期的虧損（步驟④）；借款讓負債與資產同時增加，步驟⑤兩邊仍然相等。",
+    "en": "Borrowing is not revenue; it only adds {{money:expected.t4.after}} of short-term borrowings and the same amount of cash. The directors’ remuneration is the expense. Profit before tax is therefore {{money:expected.t1.after}}, copied straight into the start of the statement of cash flows (step 2). Cash comes in and goes out, ending at {{money:expected.t2.after}}, with the loan shown under financing activities (step 3). Unappropriated retained earnings fall from the opening balance to {{money:expected.t3.after}}, by exactly the loss for the period (step 4); the loan raises liabilities and assets together, so both sides of step 5 still agree."
+  }
+}

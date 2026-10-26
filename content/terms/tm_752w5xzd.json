@@ -2,7 +2,7 @@
   "id": "tm_752w5xzd",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "新股預約申購權",
@@ -28,12 +28,25 @@
     "T15"
   ],
   "note": {
-    "zh-TW": "直譯自日文的新株予約権；台灣多列在資本公積之下的認股權，網站維持課程名稱為主要顯示並加現行對照（設計說明見 T15）。",
-    "en": "A direct translation of the Japanese share subscription rights; in Taiwan they are usually shown under capital surplus, and the site keeps the course name as the main display with the current caption alongside (see the design note T15)."
+    "zh-TW": "直譯自日文的新株予約権；台灣多列在資本公積之下的認股權。這是課程模板沿用的日式科目，網站維持課程名稱為主要顯示並加現行對照。",
+    "en": "A direct translation of the Japanese share subscription rights; in Taiwan they are usually shown under capital surplus. It is a Japanese-style account kept from the course template, and the site keeps the course name as the main display with the current caption alongside."
   },
   "definition": {
-    "zh-TW": "持有人有權依約定價格認購新股的權利，在行使之前列在權益。本課未用。",
-    "en": "Rights that allow the holder to subscribe for new shares at an agreed price, shown in equity until they are exercised. Not used in this course."
+    "zh-TW": "持有人可以在約定條件下向公司認購新股的權利；公司發行這種權利時收到的對價，先放在權益裡。\n\n這是日本會計基準版面的名稱，台灣報表多把這類認股權放在資本公積之下。",
+    "en": "A right that lets the holder subscribe for new shares from the company on agreed terms; the consideration received for issuing such rights is kept in equity.\n\nThe name comes from the Japanese GAAP layout; Taiwanese statements usually present such share options under capital surplus."
   },
-  "accountRef": "share_subscription_rights"
+  "example": {
+    "zh-TW": "位置：課程模板股東權益區的最後一列。本課故事沒有用到，實驗室預設隱藏，展開時標示「本課未使用」。持有人行使權利時，這一列的金額沖轉，連同收到的認股價款，一起記入股本與資本公積。",
+    "en": "Where it sits: the last line of the equity section in the course template. The course story does not use it, so the lab hides it by default and labels it as not used in this course. When holders exercise the rights, the balance on this line is transferred, together with the exercise price received, to share capital and capital surplus."
+  },
+  "misconception": {
+    "zh-TW": "以為它是公司欠持有人的負債。只要是用固定金額換固定股數的權利，就屬於權益工具，列在權益而不是負債。",
+    "en": "Treating it as a liability owed to the holders. A right to exchange a fixed amount of cash for a fixed number of shares is an equity instrument, so it sits in equity rather than in liabilities."
+  },
+  "accountRef": "share_subscription_rights",
+  "related": [
+    "tm_yka0razf",
+    "tm_5e3py55a",
+    "tm_zmxytm7w"
+  ]
 }

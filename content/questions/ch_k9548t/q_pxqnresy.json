@@ -1,0 +1,87 @@
+{
+  "id": "q_pxqnresy",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_k9548t",
+  "objectiveId": "obj_xkyrq9",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "stakeholders",
+    "judgment",
+    "shareholder",
+    "creditor"
+  ],
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_n4e8t2jy",
+    "tm_s5b8r3hd",
+    "tm_4c6v99nn"
+  ],
+  "scored": false,
+  "vars": {
+    "profit": 900000
+  },
+  "prompt": {
+    "zh-TW": "小山咖啡今年賺了 {{money:vars.profit}}。股東會上有人想分股利；往來銀行的承辦人員則希望先看到借款還掉。如果你是負責經營的小晴，會先做哪一件？",
+    "en": "Hillside Coffee made {{money:vars.profit}} this year. At the shareholders’ meeting some want a dividend; the account officer at the company’s bank would rather see the loan repaid first. If you were Ching, who runs the café, which would you do first?"
+  },
+  "options": [
+    {
+      "id": "o_a1c2",
+      "text": {
+        "zh-TW": "配發現金股利給股東",
+        "en": "Pay a cash dividend to shareholders"
+      },
+      "upside": {
+        "zh-TW": "股東出資承擔風險，拿到回報才合理；也讓外界看到公司有能力分配。",
+        "en": "Shareholders bore the risk, so a return is only fair; it also shows outsiders the company can afford to pay out."
+      },
+      "downside": {
+        "zh-TW": "現金流出後週轉變緊；債權人會覺得你把錢分掉了，卻還欠著他們。",
+        "en": "Cash goes out and liquidity tightens; creditors see money handed out while they are still owed."
+      }
+    },
+    {
+      "id": "o_b3d4",
+      "text": {
+        "zh-TW": "先還掉短期借款",
+        "en": "Repay the short-term borrowings first"
+      },
+      "upside": {
+        "zh-TW": "負債比率下降、利息費用減少，債權人安心，下次借錢也比較容易。",
+        "en": "The debt ratio falls, interest expense falls, creditors relax, and the next loan is easier to get."
+      },
+      "downside": {
+        "zh-TW": "股東今年拿不到現金；把低成本的借款提早還掉，可能錯過擴張的機會。",
+        "en": "Shareholders get no cash this year; repaying cheap debt early may forgo an expansion opportunity."
+      }
+    },
+    {
+      "id": "o_c5e6",
+      "text": {
+        "zh-TW": "把盈餘留在公司，換一台產能更大的烘豆機",
+        "en": "Keep the profit in the business and buy a larger coffee roaster"
+      },
+      "upside": {
+        "zh-TW": "盈餘變成更大的產能，長期看股東可能拿到更多。",
+        "en": "Profit turns into more capacity; in the long run shareholders may receive more."
+      },
+      "downside": {
+        "zh-TW": "股東與債權人都要再等；新設備不一定帶來足夠的生意，風險升高。",
+        "en": "Both shareholders and creditors must wait; the new equipment may not bring in enough business, so risk rises."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "股東看的是報酬與成長，債權人看的是本息能不能準時收回；同一筆盈餘，兩邊想要的用法不同。沒有哪一個選擇在所有情況下都對：負債比率高時，先還款比較穩；負債輕、機會明確時，留在公司成長；股東急需回報且現金充裕時，配股利。重點是你能說出自己站在誰的角度、為什麼。",
+    "en": "Shareholders look for return and growth; creditors look for principal and interest paid on time. The same profit has different ideal uses for each. No choice is right in every case: with a high debt ratio, repaying first is safer; with light debt and a clear opportunity, reinvest; when shareholders need a return and cash is ample, pay the dividend. What matters is that you can say whose seat you are in and why."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

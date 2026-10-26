@@ -1,0 +1,47 @@
+{
+  "id": "q_50bacwv4",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "objectiveId": "obj_6f1csw",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "cash_flow"
+  ],
+  "termRefs": [
+    "tm_jbtbky5v",
+    "tm_e61ht6yh",
+    "tm_t7a3s6wb",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ocf": 720000,
+    "dividends": -120000,
+    "assets": 6000000,
+    "cl": 1000000
+  },
+  "compute": {
+    "ratioRef": "cash_reinvestment@excel",
+    "measures": {
+      "cf_operating_total": "vars.ocf",
+      "cf_dividends_paid": "vars.dividends",
+      "bs_total_assets": "vars.assets",
+      "bs_current_liabilities": "vars.cl"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "雲嶺茶莊今年營業活動的現金流量總計 {{money:vars.ocf}}，「支付股息(-)」列是 {{money:vars.dividends}}；年底資產總計 {{money:vars.assets}}，流動負債 {{money:vars.cl}}。依課程 Excel 口徑計算{{term:tm_jbtbky5v|plain}}，以百分比作答。",
+    "en": "Cloud Ridge Tea House had net cash from operating activities of {{money:vars.ocf}} this year and its ‘dividends paid (-)’ line shows {{money:vars.dividends}}; at year end total assets are {{money:vars.assets}} and current liabilities {{money:vars.cl}}. Using the course Excel basis, what is the {{term:tm_jbtbky5v|plain}}? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_jbtbky5v}}的分子是營業活動現金扣掉付出去的股利（網站把股利取正值相減），分母是{{term:tm_t7a3s6wb}}減{{term:tm_c2y9b5ex}}，也就是非流動資產加上營運資金（流動資產減流動負債）。比率回答「本業留下的現金，有多少比例可以再投入公司」。",
+    "en": "The numerator of the {{term:tm_jbtbky5v}} is operating cash less the dividends paid out (the site treats dividends as a positive amount and subtracts it); the denominator is {{term:tm_t7a3s6wb}} less {{term:tm_c2y9b5ex}}, that is, non-current assets plus working capital (current assets less current liabilities). The ratio answers ‘what share of the cash the business keeps can be reinvested’."
+  }
+}

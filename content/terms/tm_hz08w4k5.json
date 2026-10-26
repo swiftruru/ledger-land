@@ -2,7 +2,7 @@
   "id": "tm_hz08w4k5",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "設立費（費用化）",
@@ -27,12 +27,24 @@
   ],
   "ifrsBasis": "IAS 38.69",
   "note": {
-    "zh-TW": "網站補充的延伸科目，術語表沒有獨立的條目；只在 IFRS 對照的版面啟用，教材版面下停用。",
-    "en": "An extension account added by the site; the glossary has no separate entry. It is enabled only in the IFRS comparison layout and disabled under the course layout."
+    "zh-TW": "網站補充的延伸科目，只在 IFRS 對照的版面啟用，教材版面下停用；不列入期中考範圍。",
+    "en": "An extension account added by the site, enabled only in the IFRS comparison layout and disabled under the course layout; it is not in the midterm."
   },
   "definition": {
-    "zh-TW": "把設立費在付出當期就全部列為費用時所用的科目。IFRS 對照的損益表把它列在營業費用。",
-    "en": "The account used when start-up costs are expensed in full in the period they are paid. The IFRS comparison income statement shows it under operating expenses."
+    "zh-TW": "網站補充的 IFRS 對照科目：把公司成立時的開辦支出在發生當期全部列為費用，對應 IFRS 的處理。\n\n課程版面不使用這個科目；在 IFRS 對照的版面中，同一筆設立費改列在這裡，讓你比較兩套做法的差別。",
+    "en": "A site-added account for the IFRS comparison: the costs of setting up the company are expensed in full in the period incurred, in line with IFRS.\n\nThe course layout does not use it; in the IFRS comparison layout the same start-up costs are recorded here, so you can compare the two approaches."
   },
-  "accountRef": "organisation_costs_expense"
+  "example": {
+    "zh-TW": "位置：IFRS 對照版面損益表的營業費用區（課程版面的銷管費用小計，在 IFRS 對照中改稱營業費用）。支付時現金減少、費用增加，營業利益當期減少；現金流量表列營業活動。相對地，教材版面把同一筆錢列為遞延資產並分年攤銷。",
+    "en": "Where it sits: the operating expenses section of the income statement in the IFRS comparison layout (the course layout’s total distribution costs and administrative expenses is called operating expenses there). Paying reduces cash and increases the expense, lowering operating profit in that period; the cash flow is an operating outflow. By contrast, the course layout records the same payment as a deferred asset and amortises it over several years."
+  },
+  "misconception": {
+    "zh-TW": "以為兩種做法最後認列的費用總額不同。總額一樣，稅前淨利的差別只在時間：費用化把全部費用集中在第一年，資本化則分年攤銷；攤銷的年數越多，第一年的利潤看起來越高。營業利益則不只是時間差：課程版面把攤銷列在營業外支出，資本化下這筆支出從頭到尾都不會減少營業利益，費用化則在第一年整筆減少營業利益。",
+    "en": "Assuming the two approaches end up with different total expense. The total is the same, so for profit before tax the difference is one of timing: expensing puts all of it in year one, while capitalising spreads it over several years, and the longer the spread, the higher the first year’s profit appears. Operating profit differs by more than timing: the course layout shows the amortisation under non-operating expenses, so under capitalisation the cost never reduces operating profit, whereas expensing reduces operating profit by the full amount in year one."
+  },
+  "accountRef": "organisation_costs_expense",
+  "related": [
+    "tm_d9f3g7cs",
+    "tm_a2m7z4tf"
+  ]
 }

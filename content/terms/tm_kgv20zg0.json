@@ -2,20 +2,46 @@
   "id": "tm_kgv20zg0",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "應付所得稅", "en": "Current tax liabilities" },
+  "label": {
+    "zh-TW": "應付所得稅",
+    "en": "Current tax liabilities"
+  },
   "teacherLabel": "應付所得稅",
   "currentTwLabel": "本期所得稅負債",
   "ifrsEnglish": "Current tax liabilities",
-  "aliases": { "zh-TW": [], "en": ["Income tax payable"] },
-  "flags": ["unused"],
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Income tax payable"
+    ]
+  },
+  "flags": [
+    "unused"
+  ],
   "confidence": "high",
-  "pendingRefs": ["T10", "T36"],
+  "pendingRefs": [
+    "T10",
+    "T36"
+  ],
   "ifrsBasis": "IAS 12",
   "definition": {
-    "zh-TW": "已經算出來、但還沒繳給國稅局的所得稅。只有在所得稅先估列、之後才付款的情境才會出現；本課故事在付現當期就認列費用。",
-    "en": "Income tax that has been computed but not yet paid to the tax authority. It appears only when tax is accrued first and paid later; in the course story the tax is paid and expensed in the same period."
+    "zh-TW": "本期已經算出來、但還沒繳給國庫的所得稅。\n\n所得稅費用是本期該負擔的金額，應付所得稅是其中還沒付現的部分。",
+    "en": "Income tax for the period that has been determined but not yet paid to the tax authority.\n\nIncome tax expense is the amount the period must bear; current tax liabilities are the part of it still unpaid."
   },
-  "accountRef": "income_tax_payable"
+  "example": {
+    "zh-TW": "位置：資產負債表流動負債。估列時所得稅費用增加、應付所得稅增加；繳稅時現金與應付所得稅一起減少。本課故事的所得稅在發生時直接付現，所以這一列一直是 0。它的變動不列入間接法的「其他負債增加」，因為支付所得稅另有自己的列。",
+    "en": "Where it sits: current liabilities on the balance sheet. Accruing it increases income tax expense and this liability; paying reduces cash and the liability together. In the course story the tax is paid in cash at once, so this line stays at zero. Its movement is excluded from the line for increases in other liabilities in the indirect method, because income taxes paid has its own line."
+  },
+  "misconception": {
+    "zh-TW": "以為所得稅費用一定等於本期付出去的現金。費用看的是本期應負擔的金額，付現的時間可能落在下一期；兩者的差額就是應付所得稅。",
+    "en": "Assuming income tax expense always equals the cash paid in the period. The expense reflects what the period must bear, while payment may fall in the next period; the gap between the two is this liability."
+  },
+  "accountRef": "income_tax_payable",
+  "related": [
+    "tm_3qfqnrmm",
+    "tm_w60nbtch",
+    "tm_baexgs31"
+  ]
 }

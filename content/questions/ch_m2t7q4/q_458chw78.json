@@ -1,6 +1,6 @@
 {
   "id": "q_458chw78",
-  "rev": 1,
+  "rev": 4,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -24,8 +24,12 @@
     {
       "id": "o_53v0",
       "text": {
-        "zh-TW": "現金流量表最後的期末現金，等於資產負債表上的現金",
-        "en": "Closing cash at the bottom of the statement of cash flows equals cash on the balance sheet"
+        "zh-TW": "現金流量表算到最後的期末現金，和資產負債表上的現金是同一個數字",
+        "en": "Closing cash on the statement of cash flows is the cash on the balance sheet"
+      },
+      "short": {
+        "zh-TW": "期末現金相同",
+        "en": "Closing cash matches"
       },
       "feedback": {
         "zh-TW": "說得通。這是現金流量表和資產負債表的連接點。",
@@ -35,12 +39,16 @@
     {
       "id": "o_kc37",
       "text": {
-        "zh-TW": "損益表的本期淨利會流進未分配盈餘，留在資產負債表的股東權益裡",
-        "en": "Profit for the period on the income statement flows into unappropriated retained earnings and stays in equity on the balance sheet"
+        "zh-TW": "本期淨利流進未分配盈餘，留在資產負債表上",
+        "en": "Profit for the period flows into unappropriated retained earnings on the balance sheet"
+      },
+      "short": {
+        "zh-TW": "本期淨利流進未分配盈餘",
+        "en": "Profit flows into retained earnings"
       },
       "feedback": {
         "zh-TW": "說得通。這是損益表和資產負債表的連接點。",
-        "en": "That works too. It is the link between the income statement and the balance sheet."
+        "en": "That works. It is the link between the income statement and the balance sheet."
       }
     },
     {
@@ -49,11 +57,14 @@
         "zh-TW": "損益表的營業收入等於資產負債表的資產總計",
         "en": "Revenue on the income statement equals total assets on the balance sheet"
       },
+      "short": {
+        "zh-TW": "營業收入等於資產總計",
+        "en": "Revenue equals total assets"
+      },
       "feedback": {
         "zh-TW": "你在找兩張表之間的連線，方向是對的。不過這兩個數字沒有這種關係：收入是一段期間賺到的，資產總計是某一天擁有的，通常差很多。",
         "en": "You are looking for a link between two statements, and that is the right idea. But no such relationship exists: revenue is what was earned over a period, total assets is what is owned on a day, and the two usually differ a lot."
-      },
-      "misconceptionId": "mc_naxf"
+      }
     }
   ],
   "correctOptionIds": [

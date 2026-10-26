@@ -2,27 +2,53 @@
   "id": "tm_08g66t9j",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "存貨週轉率", "en": "Inventory turnover" },
+  "label": {
+    "zh-TW": "存貨週轉率",
+    "en": "Inventory turnover"
+  },
   "teacherLabel": "存貨週轉率",
   "currentTwLabel": "存貨週轉率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T06"],
+  "pendingRefs": [
+    "T06"
+  ],
   "note": {
-    "zh-TW": "模板用期末存貨近似平均存貨；數值受盤盈處理影響（T06）。",
-    "en": "The template approximates average inventories with the closing balance; the result depends on how the count surplus is treated (T06)."
+    "zh-TW": "模板用期末存貨近似平均存貨；數值也受存貨盤盈的處理方式影響，網站採沖減營業成本的做法。",
+    "en": "The template approximates average inventories with the closing balance; the result also depends on how a count surplus is treated, and the site deducts it from cost of sales."
   },
   "definition": {
-    "zh-TW": "存貨在一年裡賣光再補貨幾次。次數越多表示商品賣得越快、壓在倉庫裡的錢越少。",
-    "en": "How many times a year inventory is sold out and replenished. More turns mean goods sell faster and less money sits in the warehouse."
+    "zh-TW": "存貨在一段期間內賣光再補貨的次數。\n\n次數越多，表示商品賣得越快、壓在倉庫裡的資金越少；次數變少時，可能是銷售轉弱或進貨過多。",
+    "en": "How many times inventory is sold out and replenished during a period.\n\nMore turns mean goods sell faster and less money is tied up in the warehouse; fewer turns can signal weaker sales or over-buying."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表的營業成本，分母來自資產負債表的存貨，所以要同時看兩張表。期末存貨為 0 時分母不存在，顯示 N/A。故事裡的存貨盤盈沖減營業成本，所以也會影響這個比率。",
+    "en": "The numerator comes from cost of sales on the income statement and the denominator from inventories on the balance sheet, so you need both statements. When closing inventories are zero the denominator does not exist and the result is N/A. The count surplus in the story reduces cost of sales, so it changes this ratio too."
+  },
+  "misconception": {
+    "zh-TW": "用營業收入當分子。存貨是以成本入帳的，分子要用同樣以成本計算的營業成本，否則售價裡的毛利會把週轉次數灌水。",
+    "en": "Using revenue as the numerator. Inventories are carried at cost, so the numerator must also be at cost, meaning cost of sales; using revenue inflates the turns by the gross margin built into selling prices."
+  },
+  "formula": {
+    "zh-TW": "存貨週轉率 ＝ 營業成本 ÷ 存貨。課程版用期末存貨；年報版用期初與期末的平均存貨。",
+    "en": "Inventory turnover = cost of sales ÷ inventories. The course version uses the closing balance; the annual report version uses the average of opening and closing inventories."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "inventory_turnover@excel"
+  "ratioRef": "inventory_turnover@excel",
+  "related": [
+    "tm_fsv83x2z",
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw",
+    "tm_7v02zwjf"
+  ]
 }

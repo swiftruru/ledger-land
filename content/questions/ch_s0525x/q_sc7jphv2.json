@@ -1,6 +1,6 @@
 {
   "id": "q_sc7jphv2",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -22,18 +22,18 @@
   },
   "prompt": {
     "zh-TW": "河岸麵包坊的麵粉供應商這個月延遲交貨，依合約付給麵包坊 {{money:vars.penalty}} 的違約金。這筆收益該怎麼看？",
-    "en": "This month Riverside Bakery's flour supplier delivered late and, under the contract, paid the bakery a penalty of {{money:vars.penalty}}. How should this income be viewed?"
+    "en": "This month Riverside Bakery’s flour supplier delivered late and, under the contract, paid the bakery a penalty of {{money:vars.penalty}}. How should this income be viewed?"
   },
   "options": [
     {
       "id": "o_s0mt",
       "text": {
         "zh-TW": "業外的一次性收益，不算麵包坊本業的成績",
-        "en": "A one-off gain outside the core business, not part of the bakery's trading performance"
+        "en": "A one-off gain outside the core business, not part of the bakery’s trading performance"
       },
       "feedback": {
         "zh-TW": "答對了。麵包坊的本業是賣麵包；違約金是供應商出狀況才有的錢，要和營業收入分開看。",
-        "en": "That's right. The bakery's business is selling bread; the penalty only arrived because the supplier slipped up, so it is kept apart from revenue."
+        "en": "That’s right. The bakery’s business is selling bread; the penalty only arrived because the supplier slipped up, so it is kept apart from revenue."
       }
     },
     {
@@ -64,6 +64,6 @@
   "correctOptionId": "o_s0mt",
   "explanation": {
     "zh-TW": "讀損益表時要問兩件事：這筆是本業還是業外？是經常有還是一次性的？供應商付的違約金兩個答案都是後者，所以是{{option:o_s0mt}}。{{option:o_78gj}}把它混進本業，{{option:o_qvs1}}把它當成常態。",
-    "en": "When reading an income statement, ask two things: is this item from the core business or outside it, and is it recurring or one-off? A supplier's penalty payment is the latter on both counts, so {{option:o_s0mt}} is right. {{option:o_78gj}} mixes it into the core business and {{option:o_qvs1}} treats it as the norm."
+    "en": "When reading an income statement, ask two things: is this item from the core business or outside it, and is it recurring or one-off? A supplier’s penalty payment is the latter on both counts, so {{option:o_s0mt}} is right. {{option:o_78gj}} mixes it into the core business and {{option:o_qvs1}} treats it as the norm."
   }
 }

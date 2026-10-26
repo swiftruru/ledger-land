@@ -1,0 +1,44 @@
+{
+  "id": "q_hczmrwjp",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "objectiveId": "obj_qr0bbx",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "activity",
+    "version"
+  ],
+  "termRefs": [
+    "tm_2jyfy0hn",
+    "tm_g5c2m8tw",
+    "tm_a3p9y6kc",
+    "tm_kzkzng5e"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "cogs": 2920000,
+    "ap": 584000
+  },
+  "compute": {
+    "ratioRef": "ap_turnover@slides03",
+    "measures": {
+      "is_cogs": "vars.cogs",
+      "bs_accounts_payable": "vars.ap"
+    }
+  },
+  "answerUnit": "turnover",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "青田農產今年銷貨成本（營業成本）{{money:vars.cogs}}，年底應付帳款 {{money:vars.ap}}，手邊沒有期初餘額。依年報版公式（分子用銷貨成本，平均餘額以期末餘額近似）計算應付款項週轉率，以「次」作答。",
+    "en": "Green Field Produce had cost of sales of {{money:vars.cogs}} this year and trade payables of {{money:vars.ap}} at year end; no opening balance is available. Using the annual-report formula (cost of sales over the average balance, approximated here by the closing balance), what is the payables turnover? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "年報版的{{term:tm_2jyfy0hn}}＝{{term:tm_g5c2m8tw}} ÷ 平均{{term:tm_a3p9y6kc}}；只有一期資料時用期末餘額近似（題目已說明）。一年的天數除以這個週轉率，就是網站補充的{{term:tm_kzkzng5e}}。",
+    "en": "In the annual-report version, {{term:tm_2jyfy0hn}} = {{term:tm_g5c2m8tw}} ÷ average {{term:tm_a3p9y6kc}}; with only one period of data the closing balance is used as an approximation, as the question states. The days in a year divided by this turnover gives the {{term:tm_kzkzng5e}}, a figure the site adds."
+  }
+}

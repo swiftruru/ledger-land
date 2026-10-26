@@ -1,0 +1,25 @@
+{
+  "id": "lv_r7m2y1mn",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_155y47",
+  "order": 2,
+  "title": {
+    "zh-TW": "倍數的意義與限制",
+    "en": "What a multiple means, and its limits"
+  },
+  "objectiveIds": [
+    "obj_000wkh",
+    "obj_e2942m"
+  ],
+  "questionIds": [
+    "q_v1qtf3r5",
+    "q_mgjbbywg",
+    "q_3chc878r",
+    "q_f8pp6g2j",
+    "q_3q9k480v",
+    "q_p5zzzgtv",
+    "q_3eye58k6"
+  ]
+}

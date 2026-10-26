@@ -1,9 +1,11 @@
-// 每條路由的 ErrorBoundary（06 第 9.1 節）：友善訊息、回到首頁；動態載入失敗（部署後舊 chunk 不存在）時提示重新整理，同一個分頁只自動建議一次。
+// 每條路由的 ErrorBoundary（06 第 9.1 節）：友善訊息、重新整理與回到首頁；動態載入失敗（部署後舊 chunk 不存在）時提示網站已更新，同一個分頁只自動建議一次。
+// 外觀（站規 2.16、2.18）：只有一個 ErrorState（鈴托腮），h1 是標題（換頁焦點）；主動作 primary md「重新整理」帶 RetryIcon、secondary md「回到首頁」帶 HouseIcon。
+// Root 本身出錯時這裡在 LinkProvider 外面，「回到首頁」退回一般的整頁連結，這時重新載入正好是需要的。
 import { Trans } from '@lingui/react/macro';
 import { useEffect } from 'react';
-import { Link, isRouteErrorResponse, useLocation, useRouteError } from 'react-router';
+import { isRouteErrorResponse, useLocation, useRouteError } from 'react-router';
 import { localeFromPath, localePath } from '@ledgerland/i18n';
-import { Banner, Button } from '@ledgerland/web-ui';
+import { Button, ErrorState, HouseIcon, RetryIcon } from '@ledgerland/web-ui';
 import { ContentLoadError } from '../lib/content.ts';
 import { logError } from '../lib/errors.ts';
 
@@ -30,33 +32,38 @@ export function RouteError() {
     window.location.reload();
   };
   return (
-    <>
-      <h1>
-        {chunk ? (
+    <ErrorState
+      className="ll-route-error"
+      data-testid="route-error"
+      titleAs="h1"
+      title={
+        chunk ? (
           <Trans id="error.updated.title" comment="部署後舊頁面載入已不存在的檔案時的標題">
             網站已更新
           </Trans>
         ) : (
           <Trans id="error.generic.title">出了一點問題</Trans>
-        )}
-      </h1>
-      <Banner kind="warning" role="alert">
-        {chunk ? (
-          <Trans id="error.updated.body">網站已更新，重新整理即可繼續。你的進度已經存好。</Trans>
+        )
+      }
+      description={
+        chunk ? (
+          <Trans id="error.updated.hint" comment="網站已更新的說明（標題已經說了「網站已更新」）">
+            重⁠新整⁠理一⁠下就能繼⁠續，你⁠的進⁠度已⁠經⁠存⁠好。
+          </Trans>
         ) : (
-          <Trans id="error.generic.body">這一頁暫時無法顯示。你可以回到首頁，或先把這個畫面截圖回報給我們。</Trans>
-        )}
-      </Banner>
-      <div className="ll-row">
-        {chunk && (
-          <Button variant="primary" onClick={reload}>
-            <Trans id="error.reload">重新整理</Trans>
-          </Button>
-        )}
-        <Link className="ll-btn" to={localePath(locale, '/')}>
+          <Trans id="error.generic.hint" comment="路由錯誤頁的說明；按鈕是「重新整理」與「回到首頁」">
+            這一⁠頁暫⁠時無⁠法顯⁠示。可⁠以重⁠新整⁠理再⁠試一⁠次，或先⁠回⁠到首⁠頁；如⁠果一⁠直出⁠現，請⁠把這⁠個畫⁠面⁠截⁠圖⁠回⁠報給我⁠們。
+          </Trans>
+        )
+      }
+      action={[
+        <Button key="reload" variant="primary" icon={<RetryIcon />} onClick={reload}>
+          <Trans id="error.reload">重新整理</Trans>
+        </Button>,
+        <Button key="home" icon={<HouseIcon />} href={localePath(locale, '/')}>
           <Trans id="error.home">回到首頁</Trans>
-        </Link>
-      </div>
-    </>
+        </Button>,
+      ]}
+    />
   );
 }

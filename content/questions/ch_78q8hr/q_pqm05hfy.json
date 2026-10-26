@@ -1,0 +1,80 @@
+{
+  "id": "q_pqm05hfy",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_bt5xpr",
+  "difficulty": 3,
+  "tags": [
+    "balance_sheet",
+    "equation"
+  ],
+  "termRefs": [
+    "tm_cfghjxzq",
+    "tm_a3p9y6kc",
+    "tm_4c6v99nn"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "gap": 36000
+  },
+  "prompt": {
+    "zh-TW": "小嵐把月光書店的資產負債表加總之後，發現左邊的資產總計比右邊的負債及股東權益總計多了 {{money:vars.gap}}。她確定現金、存貨與設備都點過、金額沒錯。最可能是哪裡出了問題？",
+    "en": "After adding up Moonlight Books’ balance sheet, Lan finds that total assets on the left exceed total liabilities and equity on the right by {{money:vars.gap}}. She is sure the cash, inventories and equipment have all been counted correctly. What is the most likely problem?"
+  },
+  "options": [
+    {
+      "id": "o_cww8",
+      "text": {
+        "zh-TW": "右邊少記了一筆，例如還沒記上的應付帳款",
+        "en": "Something is missing on the right, such as an unrecorded trade payable"
+      },
+      "feedback": {
+        "zh-TW": "答對了。左邊沒錯而兩邊不等，就表示右邊有錢的來源還沒記上；除了應付帳款，也可能是本期淨利還沒結轉進未分配盈餘。",
+        "en": "Nice work. If the left side is right and the two sides differ, some source of funds on the right has not been recorded yet; besides a trade payable, it could be profit for the period not yet carried into unappropriated retained earnings."
+      },
+      "short": {
+        "zh-TW": "右邊少記了一筆",
+        "en": "Something is missing on the right"
+      }
+    },
+    {
+      "id": "o_qav2",
+      "text": {
+        "zh-TW": "直接把資產總計減掉 {{money:vars.gap}}，讓兩邊一樣高",
+        "en": "Simply reduce total assets by {{money:vars.gap}} so that the two sides match"
+      },
+      "feedback": {
+        "zh-TW": "你想讓表平衡，這個方向沒錯。不過小嵐已經確認左邊的資產都沒記錯，硬改數字只會把對的改成錯的；該做的是去找右邊漏了什麼。",
+        "en": "Wanting the sheet to balance is the right instinct. But Lan has already confirmed the assets on the left are correct; forcing the number would turn a right figure into a wrong one. The job is to find what is missing on the right."
+      },
+      "short": {
+        "zh-TW": "直接把資產總計減掉差額",
+        "en": "Simply reduce total assets by the gap"
+      }
+    },
+    {
+      "id": "o_0zw6",
+      "text": {
+        "zh-TW": "不用找，資產總計本來就應該比負債總額多",
+        "en": "Nothing to find; total assets are supposed to exceed total liabilities anyway"
+      },
+      "feedback": {
+        "zh-TW": "資產總計通常確實大於負債總額，這點沒錯。不過要比的不是負債總額，而是負債加股東權益的合計，這個合計一定要和資產總計相等。",
+        "en": "Total assets usually do exceed total liabilities, that much is right. But the comparison is not with total liabilities alone; it is with liabilities plus equity, and that total must equal total assets."
+      },
+      "short": {
+        "zh-TW": "不用找",
+        "en": "Nothing to find"
+      },
+      "misconceptionId": "mc_n4p5"
+    }
+  ],
+  "correctOptionId": "o_cww8",
+  "explanation": {
+    "zh-TW": "{{term:tm_cfghjxzq}}兩邊一定相等。左邊確定沒錯而右邊比較少，就是右邊漏了一個錢的來源，所以答案是{{option:o_cww8}}。{{option:o_qav2}}是把對的數字改錯，選{{option:o_0zw6}}則是把負債總額和負債及股東權益總計搞混了。",
+    "en": "The two sides of the {{term:tm_cfghjxzq}} must be equal. If the left side is certainly right and the right side is smaller, a source of funds is missing on the right, so the answer is {{option:o_cww8}}. {{option:o_qav2}} would turn a correct figure into a wrong one, and choosing {{option:o_0zw6}} confuses total liabilities with total liabilities and equity."
+  }
+}

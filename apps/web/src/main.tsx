@@ -29,12 +29,11 @@ async function start() {
       </I18nProvider>
     </StrictMode>,
   );
-  // 進度資料庫在第一次繪製真的送出之後才開始開啟（runtime 與 zod 的 chunk 約 45 KB，不跟語系訊息搶首次載入的頻寬，也不算進 LCP；06 第 8.2 節的 LCP 預算）；
-  // App 模式啟動時順便呼叫 persist()（06 第 4.5 節的 launch 觸發點）
+  // 進度資料庫和頁面一起開始開啟（維護者 2026-10-26：每一頁都要資料齊了才一次出現，不能先畫版面再補數字；runtime 的 chunk 由殼層依
+  // route-preload.json 的 always 和頁面 chunk 一起預先載入，zod 不在這條路徑上）。App 模式啟動時的 persist()（06 第 4.5 節的 launch 觸發點）仍等第一次繪製之後
+  const store = getProgressStore().catch(() => null);
   afterFirstPaint(() => {
-    void getProgressStore()
-      .then(() => maybePersist('launch'))
-      .catch(() => {});
+    void store.then((s) => s && maybePersist('launch')).catch(() => {});
   });
 }
 

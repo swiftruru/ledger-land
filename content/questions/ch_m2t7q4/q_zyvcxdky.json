@@ -1,0 +1,77 @@
+{
+  "id": "q_zyvcxdky",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_bwx8x2",
+  "difficulty": 2,
+  "tags": [
+    "pick_statement",
+    "cash"
+  ],
+  "termRefs": [
+    "tm_sf72dfsv",
+    "tm_tkj8x3a7",
+    "tm_c4sh8k2p"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "下面三個問題，哪一個最該翻開晴川花坊的資產負債表來回答？",
+    "en": "Which of the following questions is best answered by opening Clearwater Florist’s balance sheet?"
+  },
+  "options": [
+    {
+      "id": "o_q2mh",
+      "text": {
+        "zh-TW": "今天帳上有多少現金、還欠花農多少貨款？",
+        "en": "How much cash is in the account today, and how much is still owed to the growers?"
+      },
+      "short": {
+        "zh-TW": "今天有多少現金、欠花農多少",
+        "en": "How much cash there is and how much is owed today"
+      },
+      "feedback": {
+        "zh-TW": "答對了。「今天有多少、欠多少」是某一天的存量，正是資產負債表的內容。",
+        "en": "Nice work. How much is held and owed today is a stock on a given day, exactly what the balance sheet shows."
+      }
+    },
+    {
+      "id": "o_cjzy",
+      "text": {
+        "zh-TW": "這一季的花禮生意賺了多少？",
+        "en": "How much did the flower-gift business earn this quarter?"
+      },
+      "short": {
+        "zh-TW": "這一季賺了多少",
+        "en": "How much was earned this quarter"
+      },
+      "feedback": {
+        "zh-TW": "這是個重要的問題，這點沒錯。不過「這一季賺了多少」是一段期間的事，要看損益表；資產負債表只有季底那一天的狀況。",
+        "en": "That is an important question, that much is right. But how much was earned this quarter is a matter of a period, which the income statement answers; the balance sheet shows only the position on the last day of the quarter."
+      },
+      "misconceptionId": "mc_3mj1"
+    },
+    {
+      "id": "o_863z",
+      "text": {
+        "zh-TW": "這一季的現金是從哪些活動進來、用到哪裡去？",
+        "en": "Which activities brought cash in this quarter, and where did it go?"
+      },
+      "short": {
+        "zh-TW": "這一季現金怎麼進出",
+        "en": "How cash came in and went out this quarter"
+      },
+      "feedback": {
+        "zh-TW": "這也是現金的問題，這點沒錯。不過它問的是一段期間現金「怎麼流動」，要看現金流量表；資產負債表只告訴你季底剩下多少。",
+        "en": "That is a cash question too, that much is right. But it asks how cash moved over a period, which is the statement of cash flows; the balance sheet only tells you how much is left at quarter end."
+      }
+    }
+  ],
+  "correctOptionId": "o_q2mh",
+  "explanation": {
+    "zh-TW": "先分辨問題問的是「某一天」還是「一段期間」。{{term:tm_sf72dfsv}}回答某一天擁有多少、欠多少，所以該翻它來回答的是{{option:o_q2mh}}這個問題。{{option:o_cjzy}}問的是一段期間的利益，{{option:o_863z}}問的是一段期間的現金流動，各自屬於另外兩張表。",
+    "en": "First decide whether the question is about one day or a period. The {{term:tm_sf72dfsv}} answers what is held and owed on a given day, so it is the statement to open for {{option:o_q2mh}}. {{option:o_cjzy}} asks about profit over a period and {{option:o_863z}} about cash movements over a period; each belongs to one of the other two statements."
+  }
+}

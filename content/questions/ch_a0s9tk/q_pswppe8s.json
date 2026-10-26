@@ -1,0 +1,66 @@
+{
+  "id": "q_pswppe8s",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_trr8qh",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "debit_credit",
+    "equation"
+  ],
+  "termRefs": [
+    "tm_cfghjxzq",
+    "tm_b9e9vjct",
+    "tm_50v66dt7"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "為什麼每一筆分錄的借方金額合計一定等於貸方金額合計？",
+    "en": "Why do the debits in every journal entry always add up to the same total as the credits?"
+  },
+  "options": [
+    {
+      "id": "o_g7h8",
+      "text": {
+        "zh-TW": "因為每筆交易都讓會計恆等式兩邊同額變動，或讓同一邊同額一增一減",
+        "en": "Because every transaction changes both sides of the accounting equation by the same amount, or raises and lowers items on one side by the same amount"
+      },
+      "feedback": {
+        "zh-TW": "答對了。借貸相等不是規定出來的巧合，而是恆等式在每一筆交易上的表現。",
+        "en": "That is right. Equal debits and credits are not an imposed coincidence; they are the accounting equation showing up in every transaction."
+      }
+    },
+    {
+      "id": "o_j9k1",
+      "text": {
+        "zh-TW": "因為每筆交易一定是一個科目增加、另一個科目減少",
+        "en": "Because every transaction must increase one account and decrease another"
+      },
+      "feedback": {
+        "zh-TW": "有些交易確實是一增一減，例如用現金買設備，你舉的這類例子沒錯。但借錢是現金和借款同時增加，兩邊都增加也能平衡；關鍵是等式兩邊的變動相同，不是一增一減。",
+        "en": "Some transactions are indeed one up, one down, such as buying equipment for cash, so that kind of example is right. But borrowing raises both cash and the loan at once, and both increasing still balances; the key is equal change on both sides of the equation, not one up and one down."
+      },
+      "misconceptionId": "mc_1dn3"
+    },
+    {
+      "id": "o_m2n3",
+      "text": {
+        "zh-TW": "因為會計師最後會把差額補到某個科目，讓兩邊一樣",
+        "en": "Because the accountant eventually plugs the difference into some account to make the sides agree"
+      },
+      "feedback": {
+        "zh-TW": "如果兩邊不等，的確表示有地方記錯了，要找出來改正，這個直覺有道理。但正確的分錄從一開始就相等，不需要補差額；補差額反而是掩蓋錯誤。",
+        "en": "If the sides disagree, something was indeed recorded wrongly and must be found and fixed, so the instinct is sound. But a correct entry balances from the start and needs no plug; plugging only hides the error."
+      }
+    }
+  ],
+  "correctOptionId": "o_g7h8",
+  "explanation": {
+    "zh-TW": "{{option:o_g7h8}}說出了借貸平衡的根源。{{option:o_j9k1}}把其中一種情況當成全部；{{option:o_m2n3}}把事後硬湊平衡誤當成原因。",
+    "en": "{{option:o_g7h8}} gives the root of the balance. {{option:o_j9k1}} takes one case for the whole; {{option:o_m2n3}} mistakes forcing the totals to agree after the fact for the cause."
+  }
+}

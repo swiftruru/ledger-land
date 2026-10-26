@@ -3,14 +3,14 @@
   "items": [
     {
       "id": "obj_0zw0yb",
-      "rev": 1,
+      "rev": 4,
       "revKind": "text",
       "status": "published",
       "chapterId": "ch_s0525x",
       "order": 1,
       "statement": {
-        "zh-TW": "能依序說出五層利益（營業毛利、營業利益、經常利益、稅前淨利、本期淨利），以及每一層之間加上或扣除的項目",
-        "en": "Name the five profit levels in order (gross profit, operating profit, ordinary profit, profit before tax, profit for the period) and say what is added or deducted between each pair"
+        "zh-TW": "能依序說出損益表的五層利益：第一層是營業毛利，接著是營業利益與經常利益，再來是稅前淨利，最底下是本期淨利；並說出每一層之間加上或扣除的項目",
+        "en": "List the five profit levels of the income statement in order, from gross profit down through operating profit and ordinary profit to profit before tax and then profit for the period, and say what is added or deducted between each level"
       },
       "skill": "identify",
       "misconceptions": [
@@ -53,7 +53,7 @@
     },
     {
       "id": "obj_vqayt8",
-      "rev": 1,
+      "rev": 2,
       "revKind": "text",
       "status": "published",
       "chapterId": "ch_s0525x",
@@ -68,14 +68,14 @@
           "id": "mc_5tqs",
           "text": {
             "zh-TW": "把進貨當成當期的費用，而不是存貨",
-            "en": "Treating a purchase of goods as this period's expense rather than inventory"
+            "en": "Treating a purchase of goods as this period’s expense rather than inventory"
           }
         },
         {
           "id": "mc_dwv6",
           "text": {
             "zh-TW": "把買設備的錢當成當期的費用",
-            "en": "Treating the cost of equipment as this period's expense"
+            "en": "Treating the cost of equipment as this period’s expense"
           }
         },
         {
@@ -101,7 +101,7 @@
     },
     {
       "id": "obj_hz3wcr",
-      "rev": 1,
+      "rev": 2,
       "revKind": "text",
       "status": "published",
       "chapterId": "ch_s0525x",
@@ -116,14 +116,14 @@
           "id": "mc_8nbp",
           "text": {
             "zh-TW": "以為本期進貨多少，營業成本就是多少",
-            "en": "Thinking cost of sales simply equals this period's purchases"
+            "en": "Thinking cost of sales simply equals this period’s purchases"
           }
         },
         {
           "id": "mc_ek03",
           "text": {
             "zh-TW": "以為期末沒賣完的存貨也算進這期的成本",
-            "en": "Thinking unsold closing inventory is also part of this period's cost"
+            "en": "Thinking unsold closing inventory is also part of this period’s cost"
           }
         },
         {

@@ -11,6 +11,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./map": "./src/map.ts",
+    "./phrase": "./src/components/phrase.ts",
     "./styles.css": "./src/styles.css",
     "./locales/*": "./src/locales/*"
   },

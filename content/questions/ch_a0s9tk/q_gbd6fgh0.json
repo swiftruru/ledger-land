@@ -1,0 +1,71 @@
+{
+  "id": "q_gbd6fgh0",
+  "rev": 4,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_dqxgq8",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "t_account",
+    "statements"
+  ],
+  "termRefs": [
+    "tm_v3n8q2ye",
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_4c6v99nn",
+    "tm_n4e8t2jy"
+  ],
+  "scored": true,
+  "vars": {
+    "rev": 2300000
+  },
+  "prompt": {
+    "zh-TW": "晨光印刷的營業收入 T 字帳在年底有貸方餘額 {{money:vars.rev}}。這個數字會出現在哪裡？",
+    "en": "Morning Light Printing’s revenue T-account shows a credit balance of {{money:vars.rev}} at year end. Where does this figure appear?"
+  },
+  "options": [
+    {
+      "id": "o_a1b2",
+      "text": {
+        "zh-TW": "損益表的營業收入列，之後經由本期淨利併入未分配盈餘",
+        "en": "On the revenue line of the income statement, later reaching unappropriated retained earnings through profit for the period"
+      },
+      "feedback": {
+        "zh-TW": "答對了。收入與費用科目是「這一期」的流量，結算進本期淨利；資產負債表只列結算後的未分配盈餘。",
+        "en": "That is right. Revenue and expense accounts are flows for the period and close into profit for the period; the balance sheet shows only the resulting unappropriated retained earnings."
+      }
+    },
+    {
+      "id": "o_c3d4",
+      "text": {
+        "zh-TW": "跳過損益表，直接在資產負債表的權益那一段多出一列「營業收入」",
+        "en": "Directly in the equity section of the balance sheet, as a line called revenue"
+      },
+      "feedback": {
+        "zh-TW": "你知道收入最後會讓股東權益增加，方向正確。但它不是直接列上去，而是先和成本、費用相抵得到本期淨利，再併進未分配盈餘。",
+        "en": "You are right that revenue ultimately increases equity. But it does not go on directly; it is first netted against costs and expenses to give profit for the period, which is then added to unappropriated retained earnings."
+      },
+      "misconceptionId": "mc_rbs2"
+    },
+    {
+      "id": "o_e5f6",
+      "text": {
+        "zh-TW": "現金流量表最後一列算出的期末現金",
+        "en": "In cash and cash equivalents at the end of the period on the statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "營業收入和現金常常一起動，所以會這樣聯想。但賒銷的收入還沒變成現金；現金流量表看的是現金的進出，不是收入。",
+        "en": "Revenue and cash often move together, hence the association. But revenue from credit sales has not become cash yet; the statement of cash flows tracks cash movements, not revenue."
+      }
+    }
+  ],
+  "correctOptionId": "o_a1b2",
+  "explanation": {
+    "zh-TW": "{{option:o_a1b2}}描述了收入科目餘額的去向。{{option:o_c3d4}}跳過了結算為本期淨利這一步；{{option:o_e5f6}}把收入和現金混為一談。",
+    "en": "{{option:o_a1b2}} describes where a revenue balance goes. {{option:o_c3d4}} skips the step of closing into profit for the period; {{option:o_e5f6}} confuses revenue with cash."
+  }
+}

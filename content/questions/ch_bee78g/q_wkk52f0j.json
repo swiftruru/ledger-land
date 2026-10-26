@@ -1,0 +1,70 @@
+{
+  "id": "q_wkk52f0j",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "single_choice",
+  "objectiveId": "obj_am21nv",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "profitability",
+    "version"
+  ],
+  "termRefs": [
+    "tm_r0a5t3kq",
+    "tm_k6t2e9wr",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "vars": {
+    "excel": 0.08,
+    "annual": 0.09
+  },
+  "prompt": {
+    "zh-TW": "同一家公司的資產報酬率，用課程 Excel 口徑算是 {{percent:vars.excel}}，用年報公式（分子加回稅後利息、分母用平均資產）算是 {{percent:vars.annual}}。哪一個說法正確？",
+    "en": "For the same company, return on assets is {{percent:vars.excel}} on the course Excel basis and {{percent:vars.annual}} under the annual-report formula (after-tax interest added back, average assets as the denominator). Which statement is correct?"
+  },
+  "options": [
+    {
+      "id": "o_62e2",
+      "text": {
+        "zh-TW": "兩個都對，只是公式版本不同；比較時要用同一個版本",
+        "en": "Both are right, just different versions of the formula; comparisons must use the same version"
+      },
+      "feedback": {
+        "zh-TW": "答對了。網站把各版本並列，計分只看題目指定的那一個；和別家公司比較時，雙方要用同一個版本。",
+        "en": "That’s right. The site shows the versions side by side and scores only the one the question names; a comparison with another company must use the same version on both sides."
+      }
+    },
+    {
+      "id": "o_jjnt",
+      "text": {
+        "zh-TW": "一定有一個算錯了，資產報酬率只有一種公式",
+        "en": "One of them must be wrong; there is only one formula for return on assets"
+      },
+      "feedback": {
+        "zh-TW": "你希望指標有唯一的定義，這個期待很合理。不過 ROA 在教科書、年報與課程 Excel 裡確實有不同寫法：分子要不要加回稅後利息、分母用期末還是平均資產。它們都算對，只是版本不同。",
+        "en": "Wanting a single definition is a reasonable wish. But ROA really is written differently in textbooks, annual reports and the course Excel: whether after-tax interest is added back, and whether closing or average assets are used. All are correct; they are simply different versions."
+      },
+      "misconceptionId": "mc_8z3a"
+    },
+    {
+      "id": "o_ra64",
+      "text": {
+        "zh-TW": "年報版比較高，所以公司應該只公布年報版",
+        "en": "The annual-report version is higher, so the company should publish only that one"
+      },
+      "feedback": {
+        "zh-TW": "哪個版本數字高不是選擇的標準。重點是說清楚用的是哪個版本，而且和別人比時要用同一版。",
+        "en": "Which version gives the higher number is not the criterion. What matters is stating which version is used and comparing like with like."
+      }
+    }
+  ],
+  "correctOptionId": "o_62e2",
+  "explanation": {
+    "zh-TW": "{{term:tm_r0a5t3kq}}有好幾個版本，網站用「一個指標、多個版本」處理，不需要選邊。{{option:o_62e2}}說出了正確的用法；{{option:o_jjnt}}以為只有一種公式，{{option:o_ra64}}用數字高低來選版本。",
+    "en": "{{term:tm_r0a5t3kq}} comes in several versions, and the site handles this as one ratio with several versions rather than picking a side. {{option:o_62e2}} states the right practice; {{option:o_jjnt}} assumes a single formula, and {{option:o_ra64}} chooses a version by which number is bigger."
+  }
+}

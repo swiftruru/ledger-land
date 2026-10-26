@@ -1,0 +1,76 @@
+{
+  "id": "q_1btq1e8n",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_8ypaqg",
+  "difficulty": 1,
+  "tags": [
+    "cash_flow_activity",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_f9a4c6md",
+    "tm_p2a7c5vk",
+    "tm_s5b8r3hd"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_skx6ss"
+  },
+  "vars": {
+    "loan": 250000
+  },
+  "prompt": {
+    "zh-TW": "藍鯨水族向銀行借了 {{money:vars.loan}}，錢已經進了帳戶。這筆現金流入在現金流量表上放在哪一類活動？",
+    "en": "Blue Whale Aquatics borrows {{money:vars.loan}} from the bank, and the money is now in the account. Under which activity does this inflow appear on the statement of cash flows?"
+  },
+  "options": [
+    {
+      "id": "o_m7cq",
+      "text": {
+        "zh-TW": "籌資活動，因為錢是向銀行借來的",
+        "en": "Financing activities, because the money was borrowed from the bank"
+      },
+      "short": {
+        "zh-TW": "籌資活動",
+        "en": "Financing activities"
+      },
+      "feedback": {
+        "zh-TW": "答對了。借款是向資金提供者拿錢，屬於籌資活動。",
+        "en": "Nice work. A loan is money from a provider of funds, so it is a financing activity."
+      }
+    },
+    {
+      "id": "o_brw9",
+      "text": {
+        "zh-TW": "營業活動，因為這筆錢會拿來做生意",
+        "en": "Operating activities, because the money will be used to run the business"
+      },
+      "feedback": {
+        "zh-TW": "借來的錢確實會用在生意上，這點沒錯。不過現金流量表問的是這筆錢「怎麼來的」：它是銀行借的，不是賣魚缸賺的，所以放籌資活動。之後拿它去進貨，那筆支出才是營業活動。",
+        "en": "The borrowed money will indeed be used in the business, that much is right. But the statement of cash flows asks how the cash arrived: it came from the bank, not from selling tanks, so it is financing. When it is later spent on stock, that payment is the operating activity."
+      },
+      "misconceptionId": "mc_q1zb"
+    },
+    {
+      "id": "o_4ps9",
+      "text": {
+        "zh-TW": "投資活動，因為是銀行投資這家店",
+        "en": "Investing activities, because the bank is investing in the shop"
+      },
+      "feedback": {
+        "zh-TW": "從銀行的角度這是一筆放款，這點沒錯。不過現金流量表是從店的角度寫的：店的投資活動是指店自己買賣長期資產；向銀行借錢是籌資。",
+        "en": "From the bank’s side it is indeed a loan it makes, that much is right. But the statement is written from the shop’s point of view: the shop’s investing activities are its own purchases and sales of long-term assets; borrowing from the bank is financing."
+      }
+    }
+  ],
+  "correctOptionId": "o_m7cq",
+  "explanation": {
+    "zh-TW": "三大活動依這筆現金收付的性質來分：日常做生意的收付（收貨款、付貨款、付開銷；本課把支付的利息與所得稅也放這裡）是{{term:tm_p2a7c5vk}}，買進或賣出要用好幾年的長期資產是投資活動，向股東或銀行等資金提供者取得資金、償還借款本金與發放股利是{{term:tm_f9a4c6md}}。借款屬於最後一種，所以答案是{{option:o_m7cq}}。",
+    "en": "The three activities are classified by the nature of each receipt or payment: the day-to-day receipts and payments of the business (collecting from customers, paying suppliers, paying expenses; this course also places interest paid and income tax here) are {{term:tm_p2a7c5vk}}, buying or selling long-term assets that will be used for years is investing, and raising funds from shareholders or lenders such as the bank, repaying loan principal and paying dividends are {{term:tm_f9a4c6md}}. A loan is the last kind, so the answer is {{option:o_m7cq}}."
+  }
+}

@@ -2,23 +2,50 @@
   "id": "tm_4tz4q9pa",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "不動產、廠房及設備週轉率", "en": "Property, plant and equipment turnover" },
+  "label": {
+    "zh-TW": "不動產、廠房及設備週轉率",
+    "en": "Property, plant and equipment turnover"
+  },
   "teacherLabel": "不動產、廠房及設備週轉率",
   "currentTwLabel": "不動產、廠房及設備週轉率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["不動產廠房及設備週轉率", "固定資產週轉率"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "不動產廠房及設備週轉率",
+      "固定資產週轉率"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "不動產、廠房及設備的淨額能帶出多少營業收入。次數越高表示設備用得越有效率；重資產產業的數值通常偏低，宜和同業比較。",
-    "en": "How much revenue the property, plant and equipment generates relative to its carrying amount. Higher means the equipment is used more efficiently; asset-heavy industries tend to show low values, so compare within the industry."
+    "zh-TW": "每一元的不動產、廠房及設備在一段期間內做出多少營業收入。\n\n它衡量廠房設備的使用效率：設備閒置或剛大量添購時，這個比率會下降。",
+    "en": "How much revenue each unit of property, plant and equipment generates during a period.\n\nIt measures how productively plant and equipment are used: the ratio falls when capacity sits idle or right after a large purchase."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表，分母來自資產負債表的固定資產區。公司完全沒有設備時分母為 0，顯示 N/A。教材部分頁面稱它為固定資產週轉率，是舊稱。",
+    "en": "The numerator comes from the income statement and the denominator from the fixed assets section of the balance sheet. A company with no equipment has a zero denominator and shows N/A. Some course pages call it fixed asset turnover, an older name."
+  },
+  "misconception": {
+    "zh-TW": "用設備的原始成本當分母。課程版面顯示的是扣掉累計折舊後的淨額，比率要用淨額計算；用毛額會讓老舊設備多的公司看起來效率偏低。",
+    "en": "Using the original cost of the equipment as the denominator. The course layout shows the net amount after accumulated depreciation and the ratio uses that; using gross cost would make companies with older equipment look less efficient."
+  },
+  "formula": {
+    "zh-TW": "不動產、廠房及設備週轉率 ＝ 營業收入 ÷ 不動產、廠房及設備淨額。課程版用期末淨額（課程版面只有機器設備一列）；年報版用平均淨額。",
+    "en": "Property, plant and equipment turnover = revenue ÷ net property, plant and equipment. The course version uses the closing net amount (the course layout has only the machinery line); the annual report version uses the average."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "ppe_turnover@excel"
+  "ratioRef": "ppe_turnover@excel",
+  "related": [
+    "tm_2cqt9cfd",
+    "tm_gt8g4afe",
+    "tm_12gxceqy",
+    "tm_v3n8q2ye"
+  ]
 }

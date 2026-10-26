@@ -1,6 +1,6 @@
 {
   "id": "q_b60d2nr8",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -22,12 +22,12 @@
   },
   "statement": {
     "zh-TW": "河岸麵包坊這個月賒購了 {{money:vars.purchase}} 的麵粉，還沒用掉。這筆進貨對這個月的損益表沒有影響。",
-    "en": "Riverside Bakery bought {{money:vars.purchase}} of flour on credit this month and has not used it yet. The purchase has no effect on this month's income statement."
+    "en": "Riverside Bakery bought {{money:vars.purchase}} of flour on credit this month and has not used it yet. The purchase has no effect on this month’s income statement."
   },
   "correct": true,
   "feedbackTrue": {
     "zh-TW": "答對了。麵粉還沒用掉，它是資產負債表上的存貨；要等做成麵包賣出去，成本才會進損益表。",
-    "en": "That's right. The flour has not been used, so it is inventories on the balance sheet; its cost reaches the income statement only when it is baked into bread and sold."
+    "en": "That’s right. The flour has not been used, so it is inventories on the balance sheet; its cost reaches the income statement only when it is baked into bread and sold."
   },
   "feedbackFalse": {
     "zh-TW": "你想到進了貨就該有費用，這個直覺很多人都有。不過麵粉還在倉庫，它是資產負債表上的存貨；要等做成麵包賣出去，成本才會出現在損益表。",

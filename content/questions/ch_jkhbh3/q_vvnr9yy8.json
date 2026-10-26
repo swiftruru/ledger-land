@@ -1,0 +1,64 @@
+{
+  "id": "q_vvnr9yy8",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_mcdpxx",
+  "difficulty": 1,
+  "tags": [
+    "indirect_method",
+    "pretax"
+  ],
+  "termRefs": [
+    "tm_z971merj",
+    "tm_p2a7c5vk",
+    "tm_tkj8x3a7"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "美琪第一次看山谷民宿的現金流量表（間接法）。營業活動那一段的第一列，是從哪個數字開始往下調整的？",
+    "en": "Mei is reading Valley Guesthouse’s statement of cash flows (indirect method) for the first time. Which figure does the first line of the operating section start from before the adjustments?"
+  },
+  "options": [
+    {
+      "id": "o_te8a",
+      "text": {
+        "zh-TW": "損益表上的稅前淨利",
+        "en": "Profit before tax from the income statement"
+      },
+      "feedback": {
+        "zh-TW": "答對了。間接法從損益表的利益出發，再一步步調整成現金。",
+        "en": "Nice work. The indirect method starts from the profit on the income statement and adjusts it step by step into cash."
+      }
+    },
+    {
+      "id": "o_v70d",
+      "text": {
+        "zh-TW": "損益表上的營業收入",
+        "en": "Revenue from the income statement"
+      },
+      "feedback": {
+        "zh-TW": "你知道起點來自損益表，這點沒錯。不過間接法不是從最上面的收入重算一遍，而是從已經算好的利益出發，只調整利益和現金不同的地方。",
+        "en": "You know the starting point comes from the income statement, which is right. But the indirect method does not recompute everything from revenue at the top; it starts from the profit already worked out and adjusts only where profit and cash differ."
+      }
+    },
+    {
+      "id": "o_3rkf",
+      "text": {
+        "zh-TW": "期初的現金餘額",
+        "en": "The opening cash balance"
+      },
+      "feedback": {
+        "zh-TW": "現金流量表上確實有期初現金這一列，這點沒錯。不過它在表的最下面，用來和現金的增減額加總出期末現金；營業活動那一段是從利益開始調整的。",
+        "en": "The statement does have an opening cash line, that much is right. But it sits at the bottom, where it is added to the net change to give closing cash; the operating section starts its adjustments from profit."
+      }
+    }
+  ],
+  "correctOptionId": "o_te8a",
+  "explanation": {
+    "zh-TW": "間接法的想法是「利益已經算好了，只要修正利益和現金不一樣的地方」。課程模板從{{term:tm_z971merj}}起算，所以答案是{{option:o_te8a}}；若從本期淨利起算，需另加回所得稅費用，最後的營業活動現金流量相同。從{{option:o_v70d}}開始等於從頭重算；{{option:o_3rkf}}放在表的最後面，是用來推出期末現金的。",
+    "en": "The idea of the indirect method is that profit is already worked out, so only the places where profit and cash differ need correcting. This course’s template starts from {{term:tm_z971merj}}, so the answer is {{option:o_te8a}}; if you start from profit for the period instead, income tax expense has to be added back as well, and net cash from operating activities comes out the same. Starting from {{option:o_v70d}} would mean recomputing from the top, and {{option:o_3rkf}} sits at the foot of the statement, where it is used to arrive at closing cash."
+  }
+}

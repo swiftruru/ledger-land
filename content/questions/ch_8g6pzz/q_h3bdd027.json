@@ -1,0 +1,43 @@
+{
+  "id": "q_h3bdd027",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "objectiveId": "obj_fyd5cv",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "cash_flow",
+    "na_vs_zero"
+  ],
+  "termRefs": [
+    "tm_555a7d2s",
+    "tm_e61ht6yh",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ocf": 0,
+    "cl": 900000
+  },
+  "compute": {
+    "ratioRef": "cash_flow_ratio@excel",
+    "measures": {
+      "cf_operating_total": "vars.ocf",
+      "bs_current_liabilities": "vars.cl"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "晨光健身房今年營業活動收到的現金剛好等於付出去的現金，「營業活動的現金流量總計」是 {{money:vars.ocf}}；年底流動負債 {{money:vars.cl}}。現金流量比率是多少？",
+    "en": "This year Morning Light Gym’s operating receipts exactly equalled its operating payments, so net cash from operating activities is {{money:vars.ocf}}; current liabilities at year end are {{money:vars.cl}}. What is the cash flow ratio?"
+  },
+  "explanation": {
+    "zh-TW": "分母存在（{{term:tm_c2y9b5ex}} {{money:vars.cl}}），所以比率算得出來；分子剛好是零，結果就是零。這和分母為零的 N/A 不同：零是「算出來剛好沒有」，N/A 是「根本沒得算」。",
+    "en": "The denominator exists ({{term:tm_c2y9b5ex}} of {{money:vars.cl}}), so the ratio can be calculated; the numerator happens to be zero, so the result is zero. This differs from the N/A of a zero denominator: zero is ‘calculated and there is none’, N/A is ‘nothing to calculate’."
+  }
+}

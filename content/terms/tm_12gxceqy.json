@@ -2,7 +2,7 @@
   "id": "tm_12gxceqy",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "固定資產",
@@ -30,7 +30,22 @@
     "en": "The pre-IFRS Taiwanese term; shown as the course writes it with an old-name marker, and the current name is kept as an alias."
   },
   "definition": {
-    "zh-TW": "模板裡放機器設備等長期使用實體資產的分組標題，不可入帳。現行報表稱為不動產、廠房及設備。",
-    "en": "The template group heading for equipment and other physical assets held for long-term use; it cannot be posted to. Current statements say property, plant and equipment."
-  }
+    "zh-TW": "公司為了長期營業使用而持有的有形資產，例如機器設備、辦公設備、廠房與土地。\n\n這是 IFRS 導入前的台灣用語，現行報表稱為不動產、廠房及設備；課程模板用它當分組標題，底下才是可以入帳的科目。",
+    "en": "Tangible assets the company holds for long-term use in its operations, such as machinery, office equipment, buildings and land.\n\nThis is the pre-IFRS Taiwanese term; current statements say property, plant and equipment. The course template uses it as a group heading, with the postable accounts listed beneath it."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表非流動資產區的分組標題，課程版面底下只有機器設備一列，顯示的是扣掉累計折舊後的淨額。它是分組標題，不能直接入帳。取得時列投資活動的現金流出。",
+    "en": "Where it sits: a group heading within non-current assets on the balance sheet; in the course layout it contains only the machinery and equipment line, shown net of accumulated depreciation. Being a heading, it cannot be posted to directly. Acquisitions appear as investing outflows."
+  },
+  "misconception": {
+    "zh-TW": "以為「固定」表示金額不會變。固定資產每年都會因為折舊而減少帳面金額，「固定」指的是長期持有、不是拿來賣的，和金額是否變動無關。",
+    "en": "Reading fixed as meaning the amount never changes. The carrying amount falls every year through depreciation; fixed refers to assets held for long-term use rather than for sale, not to a constant value."
+  },
+  "related": [
+    "tm_gt8g4afe",
+    "tm_a8d5c1pz",
+    "tm_93mhtb4s",
+    "tm_5y5wj6f4",
+    "tm_4tz4q9pa"
+  ]
 }

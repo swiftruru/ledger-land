@@ -1,0 +1,42 @@
+{
+  "id": "q_2acjgfp8",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_81e8f8",
+  "difficulty": 2,
+  "tags": [
+    "equity_multiplier",
+    "dupont"
+  ],
+  "termRefs": [
+    "tm_2ggtxnaz",
+    "tm_t7a3s6wb",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "totalAssets": 2400000,
+    "totalEquity": 1600000
+  },
+  "compute": {
+    "ratioRef": "equity_multiplier@slides02",
+    "measures": {
+      "bs_total_assets": "vars.totalAssets",
+      "bs_total_equity": "vars.totalEquity"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "晨霧茶行年底的資產總計是 {{money:vars.totalAssets}}，股東權益總額是 {{money:vars.totalEquity}}。權益倍數是多少？以「倍」作答，取到小數點後兩位。",
+    "en": "Morning Mist Tea has total assets of {{money:vars.totalAssets}} and total equity of {{money:vars.totalEquity}} at year end. What is its equity multiplier? Answer in times, with two decimal places."
+  },
+  "explanation": {
+    "zh-TW": "權益倍數 ＝ 資產總計 ÷ 股東權益總額 ＝ {{money:vars.totalAssets}} ÷ {{money:vars.totalEquity}} ＝ {{number:expected.answer.value|digits=2,unit=times}}（簡化版，期末值）。倒過來看，1 ÷ 權益倍數就是股東權益占資產總計的比例，其餘由負債支應；所以倍數越接近 1，負債占的比例越小。它和負債比率描述同一個資本結構、可以互相換算：權益倍數 ＝ 1 ÷（1 － 負債比率），但兩者回答的問句不同。",
+    "en": "Equity multiplier = total assets ÷ total equity = {{money:vars.totalAssets}} ÷ {{money:vars.totalEquity}} = {{number:expected.answer.value|digits=2,unit=times}} (simplified version, closing values). Turned the other way round, 1 ÷ equity multiplier is the share of total assets funded by equity, with the rest funded by liabilities; so the closer the multiplier is to 1, the smaller the share of liabilities. It and the debt ratio describe the same capital structure and convert into each other, equity multiplier = 1 ÷ (1 − debt ratio), but they answer different questions."
+  }
+}

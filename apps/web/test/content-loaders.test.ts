@@ -1,9 +1,19 @@
 // 內容載入（08 第 7.4 節）：loadLevel、loadQuestion、resolveId 的墓碑處理；fetch 以假的 Response 取代，拿到 HTML 視同不存在
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ContentLoadError, findLevelOfQuestion, loadLevel, loadQuestion, resolveId } from '../src/lib/content.ts';
+import {
+  ContentLoadError,
+  findLevelOfQuestion,
+  loadChapterIndex,
+  loadLevel,
+  loadQuestion,
+  loadTermDetail,
+  loadTermIndex,
+  resolveId,
+  termDetailBucket,
+} from '../src/lib/content.ts';
 
 const manifest = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   contentVersion: 1,
   builtAt: '2026-10-23T00:00:00Z',
   gitCommit: 'abc1234',
@@ -26,7 +36,9 @@ const manifest = {
       files: { 'zh-TW': 'content/zh-TW/lv_t3st0001.cccccc.json', en: 'content/en/lv_t3st0001.dddddd.json' },
     },
   ],
-  terms: { 'zh-TW': 'content/zh-TW/terms.eeeeee.json', en: 'content/en/terms.ffffff.json' },
+  chapterIndex: { 'zh-TW': 'content/zh-TW/chapter-index.111111.json', en: 'content/en/chapter-index.222222.json' },
+  termIndex: { 'zh-TW': 'content/zh-TW/term-index.eeeeee.json', en: 'content/en/term-index.ffffff.json' },
+  termDetails: { 'zh-TW': { '1': 'content/zh-TW/terms-1.333333.json' }, en: { '1': 'content/en/terms-1.444444.json' } },
   tombstones: 'content/tombstones.aaaaaa.json',
 };
 const levelFile = {
@@ -38,7 +50,9 @@ const files: Record<string, unknown> = {
   '/content/content-manifest.json': manifest,
   '/content/zh-TW/lv_t3st0001.cccccc.json': levelFile,
   '/content/tombstones.aaaaaa.json': tombstones,
-  '/content/zh-TW/terms.eeeeee.json': [{ id: 'tm_t3st0001', label: '資產' }],
+  '/content/zh-TW/term-index.eeeeee.json': [{ id: 'tm_t3st0001', label: '資產' }],
+  '/content/zh-TW/terms-1.333333.json': [{ id: 'tm_t3st0001', label: '資產', definition: '公司擁有、預期帶來經濟效益的資源' }],
+  '/content/zh-TW/chapter-index.111111.json': [{ id: 'ch_t3st001', order: 1, title: '測試章', levelIds: ['lv_t3st0001'], objectives: [] }],
 };
 
 beforeEach(() => {
@@ -76,5 +90,23 @@ describe('content loaders', () => {
     expect(await resolveId('tm_t3st0001')).toEqual({ status: 'active', kind: 'term' });
     expect(await resolveId('q_r3t1red1', 'en')).toEqual({ status: 'retired', kind: 'question', supersededBy: 'q_s1ng1e01', retiredNote: 'Replaced' });
     expect(await resolveId('q_wh0kn0ws1')).toEqual({ status: 'unknown' });
+  });
+
+  it('名詞兩層：索引一個語系一檔；完整內容依 ID 最後一個字元分桶，不在快照裡的名詞回 undefined，桶檔讀不到丟 ContentLoadError', async () => {
+    expect(termDetailBucket('tm_t3st0001')).toBe('1');
+    expect((await loadTermIndex('zh-TW')).map((t) => t.label)).toEqual(['資產']);
+    expect((await loadTermDetail('tm_t3st0001', 'zh-TW'))?.definition).toBe('公司擁有、預期帶來經濟效益的資源');
+    // 同一桶但快照沒有這個名詞
+    expect(await loadTermDetail('tm_n0n3x1st1', 'zh-TW')).toBeUndefined();
+    // 沒有這一桶
+    expect(await loadTermDetail('tm_n0n3x1stz', 'zh-TW')).toBeUndefined();
+    // en 的桶檔被 SPA fallback 回成 HTML
+    await expect(loadTermDetail('tm_t3st0001', 'en')).rejects.toBeInstanceOf(ContentLoadError);
+    await expect(loadTermIndex('en')).rejects.toMatchObject({ kind: 'missing' });
+  });
+
+  it('章節索引一個語系一檔', async () => {
+    expect((await loadChapterIndex('zh-TW')).map((c) => [c.id, c.title])).toEqual([['ch_t3st001', '測試章']]);
+    await expect(loadChapterIndex('en')).rejects.toBeInstanceOf(ContentLoadError);
   });
 });

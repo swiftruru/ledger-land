@@ -2,7 +2,7 @@
   "id": "tm_a8d5c1pz",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "累計折舊（機器設備）",
@@ -20,12 +20,29 @@
   "pendingRefs": [],
   "ifrsBasis": "IAS 16",
   "note": {
-    "zh-TW": "老師的模板沒有這一列，網站內部保留，機器設備的位置顯示淨額。",
-    "en": "The teacher's template has no such line; the site keeps it internally and shows machinery and equipment net."
+    "zh-TW": "課程模板沒有這一列，網站內部保留，機器設備的位置顯示淨額。",
+    "en": "The course template has no such line; the site keeps it internally and shows machinery and equipment net."
   },
   "definition": {
-    "zh-TW": "設備從買進到現在已經提列的折舊總額。它是機器設備的抵銷科目，成本減掉它就是帳面淨額。",
-    "en": "The total depreciation charged on the equipment since it was bought. It offsets machinery and equipment: cost less this balance is the carrying amount."
+    "zh-TW": "機器設備從取得以來累計提列的折舊總額。它是資產的抵銷科目，用來把設備的成本減成目前的帳面金額。\n\n白話說，它記錄設備「已經用掉多少成本」。",
+    "en": "The total depreciation charged on machinery and equipment since acquisition. It is a contra-asset account that reduces the cost of the equipment to its current carrying amount.\n\nIn plain terms, it records how much of the equipment’s cost has already been used up."
   },
-  "accountRef": "accumulated_depreciation_machinery"
+  "example": {
+    "zh-TW": "位置：資產負債表不另列，課程模板也沒有這一列；網站內部保留它，資產負債表的機器設備顯示成本減累計折舊後的淨額。每年提列折舊時，折舊費用增加、累計折舊增加，機器設備的淨額減少。",
+    "en": "Where it sits: not shown as a separate line on the balance sheet, and the course template has no such line either; the site keeps it internally and shows machinery and equipment on the balance sheet at cost less accumulated depreciation. Each year’s depreciation increases both the expense and this account, and the net amount of machinery falls."
+  },
+  "misconception": {
+    "zh-TW": "以為累計折舊是一筆存起來準備換新設備的現金。它只是成本分攤的紀錄，沒有對應的現金；公司要換設備，仍然得另外籌錢。",
+    "en": "Believing accumulated depreciation is cash set aside to replace the equipment. It is only a record of cost allocation with no cash behind it; the company still has to find the money when replacement is due."
+  },
+  "formula": {
+    "zh-TW": "帳面金額 ＝ 取得成本 － 累計折舊。",
+    "en": "Carrying amount = cost － accumulated depreciation."
+  },
+  "accountRef": "accumulated_depreciation_machinery",
+  "related": [
+    "tm_gt8g4afe",
+    "tm_d4p7x2mv",
+    "tm_5y5wj6f4"
+  ]
 }

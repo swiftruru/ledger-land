@@ -1,0 +1,38 @@
+{
+  "id": "q_gtp6ax6c",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "true_false",
+  "objectiveId": "obj_32ab85",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "profitability"
+  ],
+  "termRefs": [
+    "tm_knqbr6g4",
+    "tm_0k8vegyr",
+    "tm_92yzx0fn"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "綠丘單車行的每股盈餘比星橋物流高很多，光看這一點就可以斷定綠丘單車行比較會賺錢。",
+    "en": "Green Hill Cycles’ earnings per share are much higher than Starbridge Logistics’. That alone is enough to conclude that Green Hill Cycles is the better earner."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "看到每股盈餘差一大截，會覺得差距就是本事，這很自然。不過兩家的淨利可能一模一樣，只是綠丘單車行發行的股數少很多：同一筆淨利分給比較少的股數，每一股分到的就多。要比誰比較會賺錢，得看每一元權益賺多少（ROE）或每一元營收賺多少（純益率）。",
+    "en": "It is natural to read a big gap in EPS as a gap in skill. But the two companies could have exactly the same profit, with Green Hill Cycles simply having far fewer shares: the same profit shared over fewer shares means more for each share. To see which business earns more, look at what each dollar of equity earns (ROE) or what each dollar of revenue earns (net profit margin)."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。每股盈餘是把淨利除以股數，不同公司的股數可以差很多，所以它比較適合追蹤同一家公司逐年的變化。要比兩家公司誰比較會賺錢，改看以權益或營收為分母的 ROE 與純益率。",
+    "en": "Correct. EPS is profit divided by the number of shares, and share counts can differ hugely between companies, so it suits following one company from year to year. To compare how well two companies earn, use ratios with equity or revenue as the denominator: ROE and the net profit margin."
+  },
+  "misconceptionId": "mc_bvjs",
+  "explanation": {
+    "zh-TW": "{{term:tm_knqbr6g4}}回答「每一股分到多少淨利」，受面額與股數影響；{{term:tm_0k8vegyr}}與{{term:tm_92yzx0fn}}才回答「每一元權益或每一元營收賺多少」。",
+    "en": "{{term:tm_knqbr6g4}} answers ‘how much profit belongs to each share’ and depends on par value and share count; {{term:tm_0k8vegyr}} and {{term:tm_92yzx0fn}} answer ‘how much is earned per dollar of equity or revenue’."
+  }
+}

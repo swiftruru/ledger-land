@@ -1,0 +1,46 @@
+{
+  "id": "q_3cpqj632",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "type": "ratio_numeric",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_7j31n2",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "eps",
+    "pe_ratio"
+  ],
+  "termRefs": [
+    "tm_knqbr6g4",
+    "tm_n4e8t2jy",
+    "tm_5e3py55a"
+  ],
+  "scored": true,
+  "vars": {
+    "netIncome": 7680000,
+    "shareCapital": 32000000,
+    "parValue": 10,
+    "sharePrice": 72
+  },
+  "compute": {
+    "ratioRef": "eps@excel",
+    "measures": {
+      "is_net_income": "vars.netIncome",
+      "bs_share_capital": "vars.shareCapital",
+      "input.par_value": "vars.parValue"
+    }
+  },
+  "answerUnit": "currency_per_share",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "星河軟體的股價是 {{money:vars.sharePrice}}。今年本期淨利 {{money:vars.netIncome}}，股本 {{money:vars.shareCapital}}，每股面額 {{money:vars.parValue}}。請算出每股盈餘，取到小數點後兩位。注意：不是每一個數字都用得到。",
+    "en": "Starriver Software trades at {{money:vars.sharePrice}} per share. This year its profit for the period is {{money:vars.netIncome}}, share capital is {{money:vars.shareCapital}} and par value is {{money:vars.parValue}} per share. Work out earnings per share to two decimal places. Note that not every figure is needed."
+  },
+  "explanation": {
+    "zh-TW": "每股盈餘只用損益表與資產負債表的數字：股數 ＝ 股本 ÷ 每股面額，每股盈餘 ＝ 本期淨利 ÷ 股數 ＝ {{number:expected.answer.value|digits=2}}。股價 {{money:vars.sharePrice}} 是市場的數字，要到下一步算本益比時才用得到。",
+    "en": "Earnings per share uses only income statement and balance sheet figures: number of shares = share capital ÷ par value, and earnings per share = profit for the period ÷ number of shares = {{number:expected.answer.value|digits=2}}. The share price of {{money:vars.sharePrice}} is a market figure and is not needed until the next step, the P/E ratio."
+  }
+}

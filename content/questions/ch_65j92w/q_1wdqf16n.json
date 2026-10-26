@@ -1,0 +1,58 @@
+{
+  "id": "q_1wdqf16n",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_2a6vbq",
+  "difficulty": 2,
+  "tags": [
+    "classify",
+    "ratio_category"
+  ],
+  "termRefs": [
+    "tm_0k8vegyr",
+    "tm_92yzx0fn",
+    "tm_2cqt9cfd",
+    "tm_2ggtxnaz",
+    "tm_g50575m9",
+    "tm_vpzcjk6n"
+  ],
+  "scored": true,
+  "type": "classify",
+  "prompt": {
+    "zh-TW": "把這一章出現過的六個指標，放進它們所屬的類別：有的看獲利能力，有的看經營能力，有的看財務結構，也有的是部門指標。",
+    "en": "Sort the six indicators from this chapter into their categories: some measure profitability, some operating efficiency, some financial structure, and some are department indicators."
+  },
+  "dimension": "ratio_category",
+  "items": [
+    {
+      "id": "it_a5vs",
+      "ratio": "roe"
+    },
+    {
+      "id": "it_1p74",
+      "ratio": "net_profit_margin"
+    },
+    {
+      "id": "it_sb40",
+      "ratio": "total_asset_turnover"
+    },
+    {
+      "id": "it_26by",
+      "ratio": "equity_multiplier"
+    },
+    {
+      "id": "it_e745",
+      "ratio": "revenue_per_employee"
+    },
+    {
+      "id": "it_7gch",
+      "ratio": "rd_intensity"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "ROE 與純益率的分子都是本期淨利，看的是獲利能力；資產週轉率看資產帶出多少營收，屬於經營能力；權益倍數描述資產靠多少權益撐起，和負債比率一樣屬於財務結構；人均營收與 RD intensity 把某一種投入和營收相比，是部門指標。同一個 ROE 可以拆成這幾類的因子，所以分類也是在複習杜邦。",
+    "en": "ROE and net profit margin both have profit for the period as their numerator and measure profitability; asset turnover shows how much revenue the assets generate and belongs to operating efficiency; the equity multiplier describes how much equity supports the assets and, like the debt ratio, belongs to financial structure; revenue per employee and R&D intensity relate one input to revenue and are department indicators. Since ROE splits into factors from these categories, sorting them is also a revision of DuPont."
+  }
+}

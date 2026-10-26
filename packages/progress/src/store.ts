@@ -4,24 +4,22 @@
 import { dueToday } from '@ledgerland/quiz';
 import { deriveLevelProgress, type LevelSpec, type DeriveOptions } from './derive.ts';
 import { importSnapshot, type ImportOptions } from './merge.ts';
-import {
-  type Attempt,
-  DB_SCHEMA_VERSION,
-  ERRORS_MAX,
-  type ErrorRecord,
-  type JsonValue,
-  type LabSandbox,
-  type LabState,
-  type LevelProgress,
-  type Meta,
-  type ProgressData,
-  type ProgressSnapshot,
-  type ReviewQueueEntry,
-  type SettingEntry,
-  type SnapshotRecord,
-  type Unlock,
-  emptySnapshot,
-} from './model.ts';
+import { DB_SCHEMA_VERSION, ERRORS_MAX, emptySnapshot } from './model.ts';
+import type {
+  Attempt,
+  ErrorRecord,
+  JsonValue,
+  LabSandbox,
+  LabState,
+  LevelProgress,
+  Meta,
+  ProgressData,
+  ProgressSnapshot,
+  ReviewQueueEntry,
+  SettingEntry,
+  SnapshotRecord,
+  Unlock,
+} from './schemas.ts';
 import { compareIso } from './time.ts';
 import { clonePlain, compareCodeUnits } from './util.ts';
 

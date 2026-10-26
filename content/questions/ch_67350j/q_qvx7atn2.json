@@ -1,0 +1,66 @@
+{
+  "id": "q_qvx7atn2",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_8jjgc4",
+  "difficulty": 2,
+  "tags": [
+    "red_light",
+    "pretax_income"
+  ],
+  "termRefs": [
+    "tm_z971merj",
+    "tm_12k2yq6k",
+    "tm_chbctb2d"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "小芸在勾稽練習裡把現金流量表起算的稅前淨利填成了營業利益；這一期有一筆利息費用，所以營業利益和稅前淨利不同。資產負債表她全部填對。四盞燈會怎麼亮？",
+    "en": "In the reconciliation exercise Yun enters operating profit where the statement of cash flows should start from profit before tax; this period has an interest expense, so operating profit and profit before tax differ. Her balance sheet is entirely correct. What will the four lights show?"
+  },
+  "options": [
+    {
+      "id": "o_3nwk",
+      "text": {
+        "zh-TW": "步驟②紅、步驟③紅、步驟④綠、步驟⑤綠",
+        "en": "Step 2 red, step 3 red, step 4 green, step 5 green"
+      },
+      "feedback": {
+        "zh-TW": "答對了。起點填錯，步驟②直接不平；這個錯會一路往下算到期末現金，所以步驟③也對不上資產負債表。資產負債表本身沒錯，步驟④與⑤都綠。",
+        "en": "Correct. A wrong starting point fails step 2 straight away, and the error flows all the way down to closing cash, so step 3 also disagrees with the balance sheet. The balance sheet itself is right, so steps 4 and 5 stay green."
+      }
+    },
+    {
+      "id": "o_ecx8",
+      "text": {
+        "zh-TW": "只有步驟②紅，其他三盞都綠",
+        "en": "Only step 2 red; the other three green"
+      },
+      "feedback": {
+        "zh-TW": "方向對了一半：步驟②一定紅。但現金流量表是從起點一路加減到期末現金的，起點錯了，算出來的期末現金也會錯，步驟③跟著紅。",
+        "en": "Half right: step 2 is certainly red. But the statement of cash flows adds and subtracts its way from the starting point down to closing cash, so a wrong start produces a wrong closing cash and step 3 turns red too."
+      },
+      "misconceptionId": "mc_s6cm"
+    },
+    {
+      "id": "o_41mj",
+      "text": {
+        "zh-TW": "四盞燈全紅，因為現金流量表錯了就全部都錯",
+        "en": "All four red, because once the statement of cash flows is wrong everything is wrong"
+      },
+      "feedback": {
+        "zh-TW": "步驟④與⑤只看損益表與資產負債表，和現金流量表無關；這兩張表都對，它們就會是綠燈。",
+        "en": "Steps 4 and 5 look only at the income statement and the balance sheet and have nothing to do with the statement of cash flows; with both of those right, they stay green."
+      },
+      "misconceptionId": "mc_4v3q"
+    }
+  ],
+  "correctOptionId": "o_3nwk",
+  "explanation": {
+    "zh-TW": "{{option:o_3nwk}}。現金流量表內部是一條公式鏈：起算的稅前淨利錯了，小計、營業活動總計、期末現金都會跟著錯，所以步驟②與③一起紅；步驟④、⑤不經過現金流量表，維持綠燈。遇到這種組合，先修最上游的起點，下游那盞燈通常會自己變綠。",
+    "en": "{{option:o_3nwk}}. Inside the statement of cash flows the lines form a chain of formulas: a wrong starting profit before tax makes the subtotal, the operating total and closing cash wrong as well, so steps 2 and 3 turn red together; steps 4 and 5 do not pass through the statement of cash flows and stay green. With this pattern, fix the upstream starting point and the downstream light usually turns green by itself."
+  }
+}

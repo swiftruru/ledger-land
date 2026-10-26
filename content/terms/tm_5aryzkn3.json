@@ -2,18 +2,38 @@
   "id": "tm_5aryzkn3",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "現金流量", "en": "Cash flows" },
+  "label": {
+    "zh-TW": "現金流量",
+    "en": "Cash flows"
+  },
   "teacherLabel": "現金流量",
   "currentTwLabel": "現金流量",
   "ifrsEnglish": "Cash flows",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "模板最後一段的標題，底下是三大活動合計後的現金增減額，以及期初與期末的現金餘額。",
-    "en": "The heading of the template's final section, which shows the net change in cash from the three activities together with the opening and closing cash balances."
-  }
+    "zh-TW": "一段期間內現金流入與流出的總稱。\n\n在課程模板裡，它也是現金流量表最後一區的標題，底下把三大活動的結果加總，再接上期初與期末的現金餘額。",
+    "en": "The collective term for cash coming in and going out during a period.\n\nIn the course template it is also the heading of the last section of the statement of cash flows, where the three activities are summed and linked to the opening and closing cash balances."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表最後一區的標題，底下依序列出增減額、期初餘額以及期末餘額三列。最後那個期末餘額，要和資產負債表左上角「現金及約當現金」一列的金額相同，這是五步驟勾稽的步驟③（勾稽點 C）。",
+    "en": "Where it sits: the heading of the final section of the statement of cash flows, followed by three lines: the net change, the opening balance and the closing balance. That closing balance must match the cash and cash equivalents line at the top of the balance sheet, step 3 (check C) of the five-step reconciliation."
+  },
+  "misconception": {
+    "zh-TW": "把現金流量和利潤畫上等號。利潤是權責發生制下的數字，現金流量只記錄實際收付的現金；賺錢的公司可能現金短缺，虧錢的公司也可能現金充裕。",
+    "en": "Equating cash flow with profit. Profit is an accrual figure; cash flow only records cash actually received and paid. A profitable company can run short of cash, and a loss-making one can be flush with it."
+  },
+  "related": [
+    "tm_67e7f0mn",
+    "tm_x6gmpvm5",
+    "tm_z2c8f7d6",
+    "tm_12k2yq6k"
+  ]
 }

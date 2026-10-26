@@ -1,0 +1,11 @@
+{
+  "id": "lv_gtpyj3s8",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "order": 2,
+  "title": { "zh-TW": "填出兩邊的數字", "en": "Fill in both sides" },
+  "objectiveIds": ["obj_pynkwp", "obj_f5en1x"],
+  "questionIds": ["q_59v8fm8w", "q_enbhnf09", "q_60dbvn4v", "q_9zbp1zqg", "q_je69y1ey"]
+}

@@ -1,0 +1,88 @@
+{
+  "id": "q_a9j40q9m",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_m3fgww",
+  "difficulty": 3,
+  "tags": [
+    "roe",
+    "roa",
+    "leverage",
+    "comparison"
+  ],
+  "termRefs": [
+    "tm_0k8vegyr",
+    "tm_r0a5t3kq",
+    "tm_2ggtxnaz",
+    "tm_1ebm48ca"
+  ],
+  "scored": true,
+  "type": "ratio_interpret",
+  "ratioRef": "roe@slides02",
+  "vars": {
+    "netIncome": 160000,
+    "totalAssets": 2000000,
+    "totalEquity": 1000000,
+    "roePeer": 0.16
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "roa@slides02",
+      "roe@slides02",
+      "equity_multiplier@slides02"
+    ],
+    "measures": {
+      "is_net_income": "vars.netIncome",
+      "bs_total_assets": "vars.totalAssets",
+      "bs_total_equity": "vars.totalEquity"
+    }
+  },
+  "prompt": {
+    "zh-TW": "上方表格是山嵐茶行的數字：本期淨利 {{money:vars.netIncome}}，年底資產總計 {{money:vars.totalAssets}}、股東權益總額 {{money:vars.totalEquity}}。同業的溪口茶行完全沒有負債，ROE 與 ROA 都是 {{percent:vars.roePeer}}，和山嵐的 ROE 一樣。下列哪一個解讀正確？",
+    "en": "The table above shows Mountain Haze Tea: profit for the period {{money:vars.netIncome}}, total assets {{money:vars.totalAssets}} and total equity {{money:vars.totalEquity}} at year end. Its peer Creekside Tea has no liabilities at all, so its ROE and ROA are both {{percent:vars.roePeer}}, the same as Mountain Haze’s ROE. Which reading is correct?"
+  },
+  "options": [
+    {
+      "id": "o_r3v0",
+      "text": {
+        "zh-TW": "山嵐的權益倍數是溪口的兩倍，資產有一半靠借來的錢，同樣的 ROE 背後風險比較高",
+        "en": "Mountain Haze’s equity multiplier is twice Creekside’s; half its assets are funded by borrowing, so the same ROE carries more risk"
+      },
+      "feedback": {
+        "zh-TW": "答對了。溪口沒有負債，權益倍數是一倍，ROE 等於 ROA。山嵐要靠兩倍的權益倍數，才把較低的 ROA 放大成同樣的 ROE。",
+        "en": "Correct. Creekside has no liabilities, so its multiplier is one and ROE equals ROA. Mountain Haze needs a multiplier of two to lift its lower ROA to the same ROE."
+      }
+    },
+    {
+      "id": "o_qszc",
+      "text": {
+        "zh-TW": "兩家的經營體質一樣好，因為股東拿到的報酬率相同，怎麼賺到的並不重要",
+        "en": "The two businesses are equally sound, because shareholders earn the same return, and how it was earned does not matter"
+      },
+      "feedback": {
+        "zh-TW": "股東的報酬率相同，來源卻不同：溪口靠資產本身的報酬，山嵐有一半靠槓桿。景氣轉差時，負債多的那一家 ROE 會掉得更快。",
+        "en": "The shareholders’ return is the same, but its source differs: Creekside earns it from the assets themselves, while half of Mountain Haze’s comes from leverage. In a downturn, the more indebted firm’s ROE falls faster."
+      },
+      "misconceptionId": "mc_8780"
+    },
+    {
+      "id": "o_wtey",
+      "text": {
+        "zh-TW": "山嵐比較安全，因為它用比較高的權益倍數，就做到和溪口一樣的 ROE",
+        "en": "Mountain Haze is safer, because it matches Creekside’s ROE with a higher equity multiplier"
+      },
+      "feedback": {
+        "zh-TW": "方向反了。權益倍數高代表負債多，利息與還款壓力都比較大；倍數高是風險的來源，不是安全的證明。",
+        "en": "That is backwards. A higher equity multiplier means more liabilities and heavier interest and repayment pressure; a high multiplier is a source of risk, not proof of safety."
+      },
+      "misconceptionId": "mc_mmcy"
+    }
+  ],
+  "correctOptionId": "o_r3v0",
+  "explanation": {
+    "zh-TW": "{{option:o_r3v0}}。ROE ＝ ROA × 權益倍數，所以溪口的權益倍數是一倍、山嵐是兩倍。同樣的 ROE 可以來自資產本身會賺（高 ROA），也可以來自借得多（高權益倍數）；判讀時一定要把 ROA 和權益倍數拆開看。",
+    "en": "{{option:o_r3v0}}. ROE = ROA × equity multiplier, so Creekside’s multiplier is one and Mountain Haze’s is two. The same ROE can come from assets that earn well (high ROA) or from heavy borrowing (high multiplier); always split ROA and the multiplier apart when reading it."
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "tm_ftp19fkf",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": {
+    "zh-TW": "五步驟勾稽法",
+    "en": "Five-step reconciliation method"
+  },
+  "teacherLabel": "五步驟勾稽法",
+  "currentTwLabel": null,
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "五步驟",
+      "五步驟檢查"
+    ],
+    "en": [
+      "Five-step check",
+      "Five steps"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [
+    "T13"
+  ],
+  "definition": {
+    "zh-TW": "記完一筆交易之後，用固定順序檢查三張報表是否一致。步驟①先看損益表的五層利益（從營業毛利一路到最底下）有沒有照預期變動，這一步只看不比對。步驟②拿損益表的稅前淨利，對照現金流量表最上面起算的數字。步驟③拿現金流量表最後算出的期末現金，對照資產負債表上的現金及約當現金。步驟④核對本期淨利，和未分配盈餘多出來的金額是否相同（前提是這段期間沒有發放股利，也沒有提列公積）。步驟⑤確認資產總計和右邊的負債加股東權益總計一樣大。",
+    "en": "A fixed order for checking that the three statements still agree after a transaction is recorded. Step 1 looks at the five profit levels of the income statement (from gross profit down to the bottom line) to see whether they moved as expected; this step only looks and compares nothing. Step 2 checks that profit before tax on the income statement matches the first figure the statement of cash flows starts from. Step 3 checks that cash and cash equivalents at the end of the period match cash and cash equivalents on the balance sheet. Step 4 checks that profit for the period matches the amount by which unappropriated retained earnings has grown (assuming no dividends and no reserve appropriations in the period). Step 5 checks that total assets match total liabilities and equity."
+  },
+  "example": {
+    "zh-TW": "一家小店賒銷一批商品之後：步驟①營業毛利與其後各層都增加；步驟②兩邊的稅前淨利同樣變大；步驟③現金沒動，兩邊仍相等；步驟④未分配盈餘的增加額等於本期淨利；步驟⑤應收帳款增加、存貨減少，資產總計淨增加的金額和未分配盈餘的增加相同，兩邊仍然相等。",
+    "en": "After a small shop sells goods on credit: in step 1 gross profit and every level below it rise; in step 2 profit before tax grows by the same amount on both statements; in step 3 cash has not moved, so both sides still agree; in step 4 the increase in unappropriated retained earnings equals profit for the period; in step 5 receivables rise and inventories fall, so total assets grow by the same amount as retained earnings and the two sides still agree."
+  },
+  "misconception": {
+    "zh-TW": "把五步驟當成填寫三張報表的順序。它是記完帳之後的檢查順序，報表本身是由分錄推導出來的。",
+    "en": "Treating the five steps as the order for filling in the statements. They are the order for checking after the books are posted; the statements themselves are derived from the entries."
+  },
+  "ifrsNote": {
+    "zh-TW": "這是課程的檢查方法，不是 IFRS 的規定；步驟④的核心檢核用完整公式（期初未分配盈餘＋本期淨利－股利－提列公積）。",
+    "en": "This is the course’s checking method, not an IFRS requirement. The core check for step 4 uses the full formula (opening retained earnings plus profit for the period less dividends and reserve appropriations)."
+  },
+  "related": [
+    "tm_chbctb2d",
+    "tm_g8p4w1rz",
+    "tm_z3vbt800",
+    "tm_z971merj",
+    "tm_n4e8t2jy"
+  ]
+}

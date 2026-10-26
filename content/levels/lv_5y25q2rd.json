@@ -1,0 +1,23 @@
+{
+  "id": "lv_5y25q2rd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_a0s9tk",
+  "order": 1,
+  "title": {
+    "zh-TW": "教學卡：左邊與右邊",
+    "en": "Teaching card: left and right"
+  },
+  "objectiveIds": [
+    "obj_trr8qh"
+  ],
+  "questionIds": [
+    "q_wq0v33d0",
+    "q_a4bjx0vd",
+    "q_pswppe8s",
+    "q_nxxpddvd",
+    "q_ygkss4g0",
+    "q_xe4dg6kz"
+  ]
+}

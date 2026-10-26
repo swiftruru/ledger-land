@@ -1,0 +1,42 @@
+{
+  "id": "q_b9smn7e4",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "objectiveId": "obj_wb2v68",
+  "difficulty": 1,
+  "tags": [
+    "ratio",
+    "financial_structure"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_fwys72qx",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "liabilities": 1368000,
+    "assets": 3600000
+  },
+  "compute": {
+    "ratioRef": "debt_ratio@excel",
+    "measures": {
+      "bs_total_liabilities": "vars.liabilities",
+      "bs_total_assets": "vars.assets"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "綠丘單車行年底的資產負債表上，負債總額 {{money:vars.liabilities}}，資產總計 {{money:vars.assets}}。依課程 Excel 口徑（期末餘額）計算負債比率，以百分比作答。",
+    "en": "On Green Hill Cycles’ year-end balance sheet, total liabilities are {{money:vars.liabilities}} and total assets are {{money:vars.assets}}. Using the course Excel basis (closing balances), what is the debt ratio? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_9e1rb64c}}＝{{term:tm_fwys72qx}} ÷ {{term:tm_t7a3s6wb}}，回答「資產有多大比例是靠負債（欠別人的錢）撐起來的」。分母是資產總計，不是股東權益；把 {{money:vars.liabilities}} 除以 {{money:vars.assets}} 就是答案。",
+    "en": "{{term:tm_9e1rb64c}} = {{term:tm_fwys72qx}} ÷ {{term:tm_t7a3s6wb}}. It answers ‘what share of the assets is funded by liabilities (money owed to others)’. The denominator is total assets, not equity; divide {{money:vars.liabilities}} by {{money:vars.assets}} and you have the answer."
+  }
+}

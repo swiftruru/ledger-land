@@ -1,0 +1,77 @@
+{
+  "id": "q_736bqkm4",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_d6egd4",
+  "difficulty": 1,
+  "tags": [
+    "balance_sheet",
+    "current_ratio"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_k52yxb68",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "衝浪板的供應商考慮讓海風衝浪店改成收貨兩個月後再付款。他先翻開店的資產負債表，算了一下流動比率。他想從這個比率知道什麼？",
+    "en": "A surfboard supplier is thinking of letting Seabreeze Surf pay two months after delivery. He first opens the shop’s balance sheet and works out the current ratio. What does he want this ratio to tell him?"
+  },
+  "options": [
+    {
+      "id": "o_6t6b",
+      "text": {
+        "zh-TW": "一年內能變現的資產，夠不夠付一年內到期的帳",
+        "en": "Whether the assets that turn into cash within a year can cover the bills due within a year"
+      },
+      "short": {
+        "zh-TW": "短期付不付得出帳",
+        "en": "Can the short-term bills be paid"
+      },
+      "feedback": {
+        "zh-TW": "答對了。這個比率把一年內會變現的資產除以一年內到期的債務，看的是短期能不能還得出錢。",
+        "en": "Nice work. This ratio divides the assets that turn into cash within a year by the debts due within a year; it looks at whether the short-term bills can be met."
+      }
+    },
+    {
+      "id": "o_6ka3",
+      "text": {
+        "zh-TW": "公司全部的資產，夠不夠還清所有的負債",
+        "en": "Whether all of the company’s assets are enough to pay off all of its debts"
+      },
+      "short": {
+        "zh-TW": "全部資產夠不夠還全部負債",
+        "en": "All assets against all debts"
+      },
+      "feedback": {
+        "zh-TW": "你知道這是在比「有的」和「欠的」，這點沒錯。不過流動比率只看一年內的兩邊：設備不能拿來付下個月的貨款，三年後的借款也不急著今天還。",
+        "en": "You know this compares what is held with what is owed, which is right. But the current ratio looks only at the one-year horizon on both sides: equipment cannot pay next month’s supplier bill, and a loan due in three years is not pressing today."
+      },
+      "misconceptionId": "mc_784e"
+    },
+    {
+      "id": "o_sfx9",
+      "text": {
+        "zh-TW": "這一期賺到的利益，夠不夠付借款的利息",
+        "en": "Whether this period’s profit is enough to pay the interest on its loans"
+      },
+      "short": {
+        "zh-TW": "利益夠不夠付利息",
+        "en": "Profit against interest"
+      },
+      "feedback": {
+        "zh-TW": "這也是借錢或賒帳給店的人會關心的事，這點沒錯。不過那是另一個指標（利息保障倍數）回答的問題，用的是損益表的數字；流動比率的分子和分母則都是資產負債表上一年內的項目。",
+        "en": "That is also something lenders and suppliers care about, that much is right. But it is answered by a different ratio (times interest earned) using income statement figures; the numerator and denominator of the current ratio are both one-year items from the balance sheet."
+      }
+    }
+  ],
+  "correctOptionId": "o_6t6b",
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}把{{term:tm_k52yxb68}}除以{{term:tm_c2y9b5ex}}，問的是{{option:o_6t6b}}。{{option:o_6ka3}}把一年以上的資產與負債也算進來，{{option:o_sfx9}}則是另一個指標的問題。",
+    "en": "The {{term:tm_c8r1t4zm}} divides {{term:tm_k52yxb68}} by {{term:tm_c2y9b5ex}} and asks {{option:o_6t6b}}. {{option:o_6ka3}} drags in assets and debts beyond one year, and {{option:o_sfx9}} is a question for a different ratio."
+  }
+}

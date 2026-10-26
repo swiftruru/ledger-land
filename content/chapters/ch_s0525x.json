@@ -1,18 +1,18 @@
 {
   "id": "ch_s0525x",
-  "rev": 1,
+  "rev": 4,
   "revKind": "text",
   "status": "published",
   "order": 3,
   "scope": "core",
-  "examScope": "unconfirmed",
+  "examScope": "midterm",
   "title": {
     "zh-TW": "損益表：五層利益",
     "en": "The income statement: five levels of profit"
   },
   "summary": {
-    "zh-TW": "從一家文具社、一家補習班和一家麵包坊的帳，一層一層看懂損益表：營業毛利、營業利益、經常利益、稅前淨利到本期淨利，營業成本怎麼算，以及哪些收益不算本業。",
-    "en": "Through the books of a stationery shop, a tutoring centre and a bakery, read the income statement level by level: gross profit, operating profit, ordinary profit, profit before tax and profit for the period, how cost of sales is worked out, and which gains do not belong to the core business."
+    "zh-TW": "從一家文具社、一家補習班和一家麵包坊的帳，一層一層看懂損益表：先是營業毛利，往下走到營業利益與經常利益，再到稅前淨利，最後是本期淨利；也學會營業成本怎麼算，以及哪些收益不算本業。",
+    "en": "Through the books of a stationery shop, a tutoring centre and a bakery, read the income statement one level at a time: gross profit first, then down through operating profit and ordinary profit to profit before tax, and finally profit for the period; learn too how cost of sales is worked out and which gains do not belong to the core business."
   },
   "objectiveIds": [
     "obj_0zw0yb",

@@ -1,6 +1,6 @@
 {
   "id": "q_51chxfz2",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -97,7 +97,7 @@
   },
   "prompt": {
     "zh-TW": "這是日暮文具社的損益表。請點出「稅前淨利扣掉所得稅費用」之後得到的那一列。",
-    "en": "Here is Sunset Stationery's income statement. Tap the line you reach after deducting income tax expense from profit before tax."
+    "en": "Here is Sunset Stationery’s income statement. Tap the line you reach after deducting income tax expense from profit before tax."
   },
   "explanation": {
     "zh-TW": "本期淨利是五層利益的最後一層：稅前淨利減所得稅費用。這個數字之後會流進未分配盈餘，留在資產負債表的股東權益裡。",

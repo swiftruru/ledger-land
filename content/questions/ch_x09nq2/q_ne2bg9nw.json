@@ -1,0 +1,38 @@
+{
+  "id": "q_ne2bg9nw",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "true_false",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_1m58qq",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "capital_surplus"
+  ],
+  "termRefs": [
+    "tm_yka0razf",
+    "tm_4c6v99nn",
+    "tm_x3n8v5tc"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "資本公積和未分配盈餘都屬於股東權益，但來源不同：前者主要來自股東投入超過面額的部分，後者來自公司歷年賺到、還沒分配的盈餘。",
+    "en": "Capital surplus and unappropriated retained earnings are both equity, but they come from different places: the former mainly from shareholder contributions above par value, the latter from profits earned over the years and not yet distributed."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。同樣在股東權益區，一個是「股東給的」，一個是「公司賺的」；分開列，報表的讀者才知道股東權益是怎麼來的。",
+    "en": "Correct. Both sit in equity, but one was given by shareholders and the other earned by the company; listing them separately tells the reader how equity arose."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你可能覺得兩者都是股東權益，不必分。其實來源不同，法規對用途的限制也不同，所以資產負債表一定分開列。",
+    "en": "You may feel that both are equity and need not be separated. But their sources differ and so do the legal restrictions on their use, which is why the balance sheet always shows them apart."
+  },
+  "misconceptionId": "mc_ern2",
+  "explanation": {
+    "zh-TW": "股東權益區的列是在回答「這些資產的錢從哪裡來」：股本與資本公積來自股東，未分配盈餘來自經營成果。",
+    "en": "The equity lines answer where the money for the assets came from: share capital and capital surplus from shareholders, unappropriated retained earnings from trading results."
+  }
+}

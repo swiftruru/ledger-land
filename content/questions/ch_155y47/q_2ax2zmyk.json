@@ -1,0 +1,39 @@
+{
+  "id": "q_2ax2zmyk",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "true_false",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_000wkh",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "statements"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4",
+    "tm_tkj8x3a7"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "本益比寫在損益表的最後一列，和每股盈餘放在一起。",
+    "en": "The P/E ratio appears on the last line of the income statement, next to earnings per share."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "你記得每股盈餘和本益比有關，這點沒錯。但股價是市場交易出來的數字，不是會計帳產生的；財務報表上有每股盈餘，沒有本益比。",
+    "en": "You remember that earnings per share and the P/E ratio are linked, which is right. But the share price comes from market trading, not from the accounts; the statements show earnings per share, not the P/E ratio."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。損益表會揭露每股盈餘，本益比則要再拿市場的股價來除，是報表以外的計算。",
+    "en": "Correct. The income statement discloses earnings per share; the P/E ratio needs the market share price on top, so it is a calculation outside the statements."
+  },
+  "misconceptionId": "mc_st8f",
+  "explanation": {
+    "zh-TW": "本益比 ＝ 股價 ÷ 每股盈餘。分母來自財務報表，分子來自市場；兩者相除的結果不會出現在任何一張報表上。",
+    "en": "P/E ratio = share price ÷ earnings per share. The denominator comes from the financial statements and the numerator from the market; the result does not appear on any statement."
+  }
+}

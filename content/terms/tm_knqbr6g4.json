@@ -2,7 +2,7 @@
   "id": "tm_knqbr6g4",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
   "label": {
     "zh-TW": "每股盈餘（EPS）",
@@ -24,15 +24,32 @@
   "ifrsBasis": "IAS 33",
   "note": {
     "zh-TW": "模板以股本÷每股面額推算股數；「每張股票面額」顯示為「每股面額」，預設可修改。",
-    "en": "The template estimates the number of shares as share capital divided by par value per share; the par value label is corrected and the default can be changed."
+    "en": "The template estimates the number of shares as share capital divided by par value per share; the course label par value per certificate is shown as par value per share, and the default can be changed."
   },
   "definition": {
-    "zh-TW": "本期淨利分到每一股有多少。數值越高表示每股賺得越多。",
-    "en": "The profit for the period attributable to each share. Higher means each share earned more."
+    "zh-TW": "本期淨利平均分給每一股普通股是多少元。\n\n它把公司的獲利換算成每一股分到的金額，方便股東看自己的持股賺了多少，也是本益比的分母；適合追蹤同一家公司跨年度的變化，各公司的股數不同，拿來跨公司比較要小心。",
+    "en": "How much profit for the period is attributable to each ordinary share.\n\nIt converts the company’s profit into the amount earned on each share, so shareholders can see what their holding has earned, and it is the denominator of the price-to-earnings ratio; it suits tracking one company over the years, but share counts differ between companies, so take care when comparing across companies."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表最後一列，股數由資產負債表的股本推算。股本為 0 或沒有輸入面額時顯示 N/A。課程原字「每張股票面額」其實是每股面額：台灣一張股票是一千股，每張的面額是每股的一千倍，所以網站顯示為每股面額。",
+    "en": "The numerator is the last line of the income statement and the share count is derived from share capital on the balance sheet. When share capital is zero or no par value is entered the result is N/A. The course label says par value per certificate but means per share: one certificate in Taiwan is a thousand shares, so its face value is a thousand times that of one share, and the site shows par value per share."
+  },
+  "misconception": {
+    "zh-TW": "以為每股盈餘高的公司一定比較賺錢。每股盈餘受股數影響，股數少的公司每股盈餘自然高；比較獲利能力要看純益率或權益報酬率，比較價格貴不貴要看本益比。",
+    "en": "Assuming a company with higher earnings per share is more profitable. The figure depends on the share count, so a company with few shares shows a high number; compare profitability with the net margin or return on equity, and price with the price-to-earnings ratio."
+  },
+  "formula": {
+    "zh-TW": "每股盈餘 ＝ 本期淨利 ÷ 流通在外股數。課程模板用股本 ÷ 每股面額推算股數，每股面額預設可修改；正式準則用加權平均流通在外股數。",
+    "en": "Earnings per share = profit for the period ÷ number of shares outstanding. The course template estimates the share count as share capital ÷ par value per share, with an editable default par value; the standard uses the weighted average number of ordinary shares outstanding."
   },
   "ifrsNote": {
-    "zh-TW": "IAS 33 定義每股盈餘：歸屬於母公司普通股股東的淨利除以加權平均流通在外股數；模板用股本推算股數是簡化。",
-    "en": "IAS 33 defines earnings per share as profit attributable to ordinary shareholders of the parent divided by the weighted average number of shares outstanding; estimating the shares from share capital is a template simplification."
+    "zh-TW": "IAS 33 規定每股盈餘的分子是歸屬於母公司普通股股東的本期淨利，分母是加權平均流通在外股數，並要同時揭露稀釋每股盈餘；課程模板用期末股本推算股數，是單期的近似做法。",
+    "en": "IAS 33 defines the numerator as profit attributable to ordinary shareholders of the parent and the denominator as the weighted average number of ordinary shares outstanding, and also requires diluted earnings per share; the course template’s use of closing share capital to derive the share count is a single-period approximation."
   },
-  "ratioRef": "eps@excel"
+  "ratioRef": "eps@excel",
+  "related": [
+    "tm_n4e8t2jy",
+    "tm_5e3py55a",
+    "tm_wd3fx6rh"
+  ]
 }

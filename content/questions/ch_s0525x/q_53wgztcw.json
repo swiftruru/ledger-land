@@ -1,6 +1,6 @@
 {
   "id": "q_53wgztcw",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -22,7 +22,7 @@
   },
   "prompt": {
     "zh-TW": "晨光補習班用現金 {{money:vars.price}} 買了一批可以用四年的教室桌椅。這個月的損益表上，這筆錢怎麼呈現？",
-    "en": "Morning Light Tutoring pays {{money:vars.price}} in cash for classroom desks and chairs that will last four years. How does this money appear on this month's income statement?"
+    "en": "Morning Light Tutoring pays {{money:vars.price}} in cash for classroom desks and chairs that will last four years. How does this money appear on this month’s income statement?"
   },
   "options": [
     {
@@ -40,7 +40,7 @@
       "id": "o_khpa",
       "text": {
         "zh-TW": "整筆 {{money:vars.price}} 列為這個月的費用",
-        "en": "The full {{money:vars.price}} is this month's expense"
+        "en": "The full {{money:vars.price}} is this month’s expense"
       },
       "feedback": {
         "zh-TW": "錢確實是這個月付的，這點沒錯。但桌椅這個月只用了一點點；整筆當費用會讓這個月看起來大虧、之後三年多卻免費用桌椅，不合理。",

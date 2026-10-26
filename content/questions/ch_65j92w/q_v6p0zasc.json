@@ -1,0 +1,68 @@
+{
+  "id": "q_v6p0zasc",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_kse1q6",
+  "difficulty": 2,
+  "tags": [
+    "basic_figures",
+    "equity"
+  ],
+  "termRefs": [
+    "tm_y37ymj9w",
+    "tm_5e3py55a",
+    "tm_4c6v99nn",
+    "tm_2ggtxnaz",
+    "tm_3bd0kmwn",
+    "tm_j5778msk"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "晨霧茶行的資產負債表上，股東權益裡有股本、資本公積、法定盈餘公積與未分配盈餘。算權益倍數（A ÷ E）時，分母的 E 應該用什麼？",
+    "en": "On Morning Mist Tea’s balance sheet, equity consists of share capital, capital surplus, legal reserve and unappropriated retained earnings. When working out the equity multiplier (A ÷ E), what should E be?"
+  },
+  "options": [
+    {
+      "id": "o_y45s",
+      "text": {
+        "zh-TW": "股東權益總額，也就是這幾項全部加起來",
+        "en": "Total equity, that is all of these items added together"
+      },
+      "feedback": {
+        "zh-TW": "答對了。E 是股東在公司裡全部的份，不只出資那一塊，還包括留下來的獲利與公積。課程把 E 簡化成股本、資本公積與未分配盈餘；網站計算時一律用股東權益總額，所以法定盈餘公積也要算進去。介面上的「簡化」標記，是提醒課程版的寫法較窄、而且用期末值，不是網站少算了公積。",
+        "en": "Correct. E is the shareholders’ entire stake, not just the capital they paid in but also the profits and reserves kept in the company. The course simplifies E to share capital, capital surplus and unappropriated retained earnings; the site always calculates with total equity, so the legal reserve counts too. The ‘simplified’ tag in the interface is a reminder that the course’s version is narrower and uses closing values, not a sign that the site leaves reserves out."
+      }
+    },
+    {
+      "id": "o_hwqh",
+      "text": {
+        "zh-TW": "只有股本，因為那才是股東真正拿出來的錢",
+        "en": "Share capital only, because that is the money the shareholders actually put in"
+      },
+      "feedback": {
+        "zh-TW": "股東拿出來的錢確實是股本，但留在公司裡的獲利同樣屬於股東。只用股本會把 E 算得太小、權益倍數算得太大。",
+        "en": "Share capital is indeed what shareholders paid in, but profits kept in the company belong to them too. Using share capital alone makes E too small and the multiplier too large."
+      },
+      "misconceptionId": "mc_m7cx"
+    },
+    {
+      "id": "o_tp2d",
+      "text": {
+        "zh-TW": "資產總計減流動負債",
+        "en": "Total assets less current liabilities"
+      },
+      "feedback": {
+        "zh-TW": "資產減流動負債還包含長期借款這類非流動負債，不是股東的份。E 要從負債及股東權益那一邊的「股東權益總額」直接拿。",
+        "en": "Assets less current liabilities still include non-current liabilities such as long-term loans, which are not the shareholders’ stake. Take E directly from total equity on the liabilities and equity side."
+      }
+    }
+  ],
+  "correctOptionId": "o_y45s",
+  "explanation": {
+    "zh-TW": "{{option:o_y45s}}。權益倍數問的是「股東的錢撐起了幾倍的資產」，股東的錢包含出資（股本、資本公積）與留下來的獲利（法定盈餘公積、特別盈餘公積與未分配盈餘）。課程為了教學把 E 簡化成股本、資本公積與未分配盈餘；網站計算時用股東權益總額，介面上的「簡化」標記是提醒課程版的寫法較窄並用期末值。實際的權益另含法定盈餘公積、特別盈餘公積與其他權益項目。",
+    "en": "{{option:o_y45s}}. The equity multiplier asks how many times over the shareholders’ money supports the assets, and that money includes what they paid in (share capital, capital surplus) and the profits kept back (the legal reserve, the special reserve and unappropriated retained earnings). For teaching, the course simplifies E to share capital, capital surplus and unappropriated retained earnings; the site calculates with total equity, and the ‘simplified’ tag in the interface is a reminder that the course’s version is narrower and uses closing values. Actual equity also includes the legal reserve, special reserve and other equity items."
+  }
+}

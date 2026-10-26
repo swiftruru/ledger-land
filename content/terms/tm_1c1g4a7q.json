@@ -1,24 +1,50 @@
 {
   "id": "tm_1c1g4a7q",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "營業利益率", "en": "Operating profit margin" },
+  "label": {
+    "zh-TW": "營業利益率",
+    "en": "Operating profit margin"
+  },
   "teacherLabel": "營業利益率",
   "currentTwLabel": "營業利益率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": ["Operating margin"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Operating margin"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "營業利益占營業收入的比例，看本業扣掉銷管費用後還剩多少。數值越高表示本業的獲利能力越強。",
-    "en": "Operating profit as a share of revenue: what is left of the core business after distribution and administrative expenses. Higher means a more profitable core business."
+    "zh-TW": "每一元營業收入在扣掉營業成本與銷管費用之後，還留下多少營業利益。\n\n它衡量本業的賺錢效率，不受利息、業外損益與所得稅影響。",
+    "en": "How much operating profit remains from each unit of revenue after cost of sales and operating expenses.\n\nIt measures how efficiently the core business earns, untouched by interest, non-operating items and income tax."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上：分子是第 2 層利益，分母是第一列。營業收入為 0 時顯示 N/A。把它和毛利率放在一起看，差距就是銷管費用占營收的比重。",
+    "en": "Both figures are on the income statement: the numerator is the second profit level and the denominator is the first line. When revenue is zero the result is N/A. Compare it with the gross profit margin: the gap is operating expenses as a share of revenue."
+  },
+  "misconception": {
+    "zh-TW": "把營業利益率和純益率混用。營業利益率停在本業這一層；純益率還要再扣掉利息、業外損益與所得稅，兩者差很多時通常是利息或業外項目很重。",
+    "en": "Using operating margin and net profit margin interchangeably. The operating margin stops at the core business; the net margin goes on to deduct interest, non-operating items and tax. A wide gap usually means heavy interest or non-operating items."
+  },
+  "formula": {
+    "zh-TW": "營業利益率的算法：營業利益 ÷ 營業收入。",
+    "en": "Operating profit margin = operating profit ÷ revenue."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "operating_margin@slides01"
+  "ratioRef": "operating_margin@slides01",
+  "related": [
+    "tm_z3vbt800",
+    "tm_axb9rtr7",
+    "tm_92yzx0fn",
+    "tm_2f3fqvmq"
+  ]
 }

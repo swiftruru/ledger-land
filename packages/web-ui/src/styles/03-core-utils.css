@@ -1,0 +1,118 @@
+/* 基礎組：全站換行規則、只給螢幕閱讀器的文字、圖示按鈕、小按鈕。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* 全站只有這一套換行規則（M3 驗收第 7 輪定案，design-system.md 第 22 節），都是繼承的屬性，元件與頁面不再各寫一套：
+   中文一般斷行（word-break 維持 normal）加 line-break: strict，句號、逗號、頓號不落在行首；text-wrap: pretty 不留孤字。
+   不要用 keep-all 加 overflow-wrap: anywhere：分句比一行長時會在行尾硬斷，把句號斷到下一行（第 6 輪的退步）。
+   英文斷字只在窄容器（11em 以下的 inline-size 容器：320、375 寬加 200% 字級的卡片、選單列、關卡卡片、地圖紙籤）的內文，
+   8 個字母以上的字才斷（前 4 後 3）；一般字級的段落不斷（第 7 輪驗收：375 的「invest-／ment」）。標題、名稱與按鈕只在空格換行
+   （粗體標題中間的連字號讀起來像兩個字），放不下的長字由各自的 overflow-wrap 在行尾斷。備份碼是 break-all，不受影響 */
+html {
+  line-break: strict;
+  text-wrap: pretty;
+}
+@container (max-width: 11em) {
+  :lang(en) {
+    hyphens: auto;
+    hyphenate-limit-chars: 8 4 3;
+  }
+  :is([class*='title'], [class*='name'], .ll-btn),
+  :is([class*='title'], [class*='name'], .ll-btn) * {
+    hyphens: manual;
+  }
+}
+/* 整塊不斷開的詞（會計名詞、介面名稱，例如「作答紀錄」「匯出到 App」）：字串用 Lingui rich text 包成 <span class="ll-nowrap">。
+   只包短詞（中文 6 個字內），320 寬加 200% 字級時才不會撐破版面；整句要依詞換行改用 Phrased（phraseParts） */
+.ll-nowrap {
+  white-space: nowrap;
+}
+/* 已經切好詞的句子（phraseParts 在詞與詞之間放 <wbr>：EmptyState、ErrorState 的字串，apps/web 的 Phrased）：keep-all 只在 <wbr>、
+   標點與空格處換行，標點跟著前一個詞（句號不落在行首）；一個詞比一行還長時才在行尾斷。沒有切詞的文字不要用這個 class */
+.ll-phrased {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+/* 只給螢幕閱讀器的文字；原生 radio 或 checkbox 視覺隱藏時也用它（仍可聚焦，焦點框畫在外層卡片上） */
+.ll-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* 只有圖示的按鈕 IconButton（站規 1.3）：44×44 圓形、圖示 22px，平的（沒有底邊）。
+   quiet：透明，滑過 --ll-quiet-hover、按下 --ll-btn-secondary-pressed；chrome：頁首與 HUD 的 --ll-chrome-bg，按下 --ll-chrome-pressed。
+   手寫 class="ll-iconbtn"（舊寫法）等於 quiet。 */
+.ll-iconbtn {
+  --_face: transparent;
+  --_hover: var(--ll-quiet-hover);
+  --_press: var(--ll-btn-secondary-pressed);
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ll-target-min);
+  min-width: var(--ll-target-min);
+  height: var(--ll-target-min);
+  min-height: var(--ll-target-min);
+  padding: 0;
+  border: 1.5px solid transparent;
+  border-radius: var(--ll-radius-full);
+  background: var(--_face);
+  color: var(--ll-btn-icon);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-iconbtn--chrome {
+  --_face: var(--ll-chrome-bg);
+  --_hover: color-mix(in oklab, var(--ll-chrome-bg) 50%, var(--ll-chrome-pressed));
+  --_press: var(--ll-chrome-pressed);
+  color: var(--ll-text);
+}
+.ll-iconbtn__glyph {
+  display: inline-flex;
+}
+.ll-iconbtn svg {
+  width: 22px;
+  height: 22px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-iconbtn:not(:disabled):hover {
+    background: var(--_hover);
+  }
+}
+.ll-iconbtn:not(:disabled):active {
+  background: var(--_press);
+}
+/* 已按下、已展開：選取底加選取色外框（淺色是強調色；深色隨風味，M3 驗收第 4 輪） */
+.ll-iconbtn[aria-pressed='true'],
+.ll-iconbtn[aria-expanded='true'] {
+  background: var(--ll-btn-secondary-pressed);
+  border-color: var(--ll-selected);
+  color: var(--ll-accent-ink);
+}
+/* 鍵盤焦點：base.css 的全站 :focus-visible（3px、外移 2px），元件不再重寫一次（M3 收尾，省入口 CSS） */
+.ll-iconbtn:disabled {
+  color: var(--ll-btn-disabled-fg);
+  cursor: not-allowed;
+}
+@media (prefers-contrast: more) {
+  .ll-iconbtn {
+    border-color: var(--ll-border-strong);
+  }
+}
+@media (forced-colors: active) {
+  .ll-iconbtn {
+    border-color: ButtonText;
+  }
+  .ll-iconbtn[aria-pressed='true'] {
+    border-width: 3px;
+  }
+}

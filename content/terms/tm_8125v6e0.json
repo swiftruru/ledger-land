@@ -2,7 +2,7 @@
   "id": "tm_8125v6e0",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "其他投資支出(-)",
@@ -23,7 +23,21 @@
   "confidence": "medium",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "前面兩列放不下的其他投資類付現，例如取得長期投資。本課的故事沒有用到。",
-    "en": "Other investing payments that do not fit the two lines above, such as buying long-term investments. The course story does not use it."
-  }
+    "zh-TW": "投資活動裡，不屬於取得非流動資產或放貸的其他現金流出，例如買進長期投資或支付保證金給別人。\n\n課程模板保留這一列給零星的投資支出；本課故事沒有用到。",
+    "en": "Other investing outflows that are neither payments to acquire non-current assets nor loans advanced, such as buying long-term investments or paying a deposit to another party.\n\nThe course template keeps this line for miscellaneous investing payments; the course story does not use it."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表投資活動區的第三列。金額一律是流出，所以列名帶 (-)。實驗室預設隱藏，展開時標示「本課未使用」。",
+    "en": "Where it sits: the third line of investing activities in the statement of cash flows. The amount is always an outflow, hence the (-) in the label. The lab hides it by default and marks it as not used in this course."
+  },
+  "misconception": {
+    "zh-TW": "把不知道怎麼分類的支出全部丟進這一列。本課把付利息、付稅列在營業活動，還借款列在籌資活動；這一列只收真正屬於投資性質的其他流出。",
+    "en": "Dumping any hard-to-classify payment here. In this course interest and tax payments are operating and loan repayments are financing; this line only takes other outflows that are genuinely investing in nature."
+  },
+  "related": [
+    "tm_xen3p30x",
+    "tm_wqc6rnsx",
+    "tm_9hrfpqem",
+    "tm_yw1wvkkd"
+  ]
 }

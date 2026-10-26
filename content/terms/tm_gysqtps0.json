@@ -1,24 +1,50 @@
 {
   "id": "tm_gysqtps0",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "平均收現日數", "en": "Average collection period" },
+  "label": {
+    "zh-TW": "平均收現日數",
+    "en": "Average collection period"
+  },
   "teacherLabel": "平均收現日數",
   "currentTwLabel": "平均收現日數",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": ["Days sales outstanding"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Days sales outstanding"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "從賒銷到收到錢平均要等幾天，用一年的天數除以應收款項週轉率算出。天數越少表示收款越快。",
-    "en": "The average number of days between a credit sale and its collection, found by dividing the days in a year by receivables turnover. Fewer days mean faster collection."
+    "zh-TW": "賒銷出去的貨款，平均要幾天才收得回來。\n\n用一年的天數除以應收款項週轉率，就是平均每收回一次貨款要隔幾天；天數越少，錢回籠得越快。",
+    "en": "How many days, on average, it takes to collect the cash from credit sales.\n\nDividing the days in a year by receivables turnover gives the average wait to collect each round of credit sales; fewer days mean cash comes back sooner."
+  },
+  "example": {
+    "zh-TW": "它由應收款項週轉率換算而來，週轉率是 N/A 或 0 時它也是 N/A。把它和公司給客戶的信用條件比較，就知道客戶有沒有拖款。",
+    "en": "It is derived from receivables turnover and is N/A whenever the turnover is N/A or zero. Compare it with the credit terms offered to customers to see whether they are paying late."
+  },
+  "misconception": {
+    "zh-TW": "以為收現日數不受現金銷售影響。理論上分子只該用賒銷淨額，但本站與年報公式都用全部營業收入；現金銷售占比越高，算出來的天數越短，收款看起來會比實際快，比較時要留意銷售中現金的比例。",
+    "en": "Assuming the collection period is unaffected by cash sales. In principle only net credit sales belong in the calculation, but the site and the annual report formula both use total revenue; the larger the share of cash sales, the shorter the period comes out and the faster collection appears, so watch the cash share of sales when comparing."
+  },
+  "formula": {
+    "zh-TW": "平均收現日數的算法：365 ÷ 應收款項週轉率。",
+    "en": "Average collection period = 365 ÷ receivables turnover."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "days_sales_outstanding@excel"
+  "ratioRef": "days_sales_outstanding@excel",
+  "related": [
+    "tm_2s4hterv",
+    "tm_fsv83x2z",
+    "tm_7v02zwjf",
+    "tm_r7x2c9fa"
+  ]
 }

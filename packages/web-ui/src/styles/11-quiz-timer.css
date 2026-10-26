@@ -1,0 +1,73 @@
+/* 作答組：作答頁的倒數與暫停。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* 作答頁的倒數與暫停（03 第 2.10 節、站規 2.4.1）：一顆浮起的膠囊，時鐘圖示、剩餘時間、「已暫停」小標，右邊是 Button quiet sm 的暫停或繼續；
+   時間到改成 warning 色。根元素 tabIndex=-1（時間到後按「繼續」按鈕消失，焦點移到這裡），鍵盤焦點要看得到。播報區只給螢幕閱讀器 */
+.ll-timer {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--ll-space-1);
+  min-height: var(--ll-target-min);
+  padding-inline-start: 14px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  color: var(--ll-text);
+  font-size: var(--ll-type-body-sm-size);
+  font-variant-numeric: tabular-nums;
+}
+.ll-timer--static {
+  padding-inline-end: 14px;
+}
+.ll-timer:focus {
+  outline: none;
+}
+.ll-timer:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-timer__text {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--ll-target-min);
+}
+.ll-timer__glyph {
+  display: inline-flex;
+  color: var(--ll-accent-ink);
+}
+.ll-timer__glyph svg {
+  width: 18px;
+  height: 18px;
+}
+.ll-timer__value {
+  font-weight: 700;
+}
+.ll-timer--paused .ll-timer__value {
+  color: var(--ll-text-2);
+}
+.ll-timer--expired {
+  background: var(--ll-warning-tint);
+  color: var(--ll-warning-ink);
+}
+.ll-timer--expired .ll-timer__glyph,
+.ll-timer--expired .ll-timer__value {
+  color: var(--ll-warning-ink);
+}
+.ll-timer__paused {
+  padding: 2px 8px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-surface-2);
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-caption-size);
+  font-weight: 600;
+}
+.ll-timer__live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

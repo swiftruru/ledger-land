@@ -1,6 +1,6 @@
 {
   "id": "tm_z971merj",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -26,11 +26,11 @@
   "pendingRefs": [],
   "ifrsBasis": "IAS 1.82",
   "note": {
-    "zh-TW": "間接法照教材從稅前淨利起算。",
-    "en": "The indirect method starts from this line, as the course does."
+    "zh-TW": "本課照課程從稅前淨利起算；若從本期淨利起算，要另外加回所得稅費用。IFRS 18 修正 IAS 7 後，間接法改由營業損益起算（國際上自 {{raw:2027}} 年起生效，台灣自 {{raw:2028}} 會計年度起適用；查證於 {{raw:2026-10-24}}）。",
+    "en": "The indirect method here starts from this line, as the course does; starting from profit for the period instead means adding income tax expense back separately. After the IFRS 18 amendments to IAS 7 the indirect method starts from operating profit or loss instead (effective internationally from {{raw:2027}} and applied in Taiwan from the {{raw:2028}} financial year; checked on {{raw:2026-10-24}})."
   },
   "definition": {
-    "zh-TW": "扣所得稅之前的獲利，是五層利益的第四層。它也是間接法現金流量表的起算點，所以損益表與現金流量表的這個數字必須相同（勾稽點 A）。",
-    "en": "Profit before income tax is deducted, the fourth of the five profit levels. It is also the starting point of the indirect-method cash flow statement, so the figure must agree between the two statements (check A)."
+    "zh-TW": "經常利益再加減非常損益之後、還沒扣所得稅費用的獲利，是五層利益的第四層。網站的間接法從這個數字起算，所得稅改在營業活動的支付所得稅(-) 以實付金額扣除，所以現金流量表起算列的金額必須和損益表的稅前淨利相同，這就是步驟②（勾稽點 A）。",
+    "en": "The profit left once extraordinary items have been added to or deducted from ordinary profit, before income tax expense; the fourth of the five profit levels. The site’s indirect method starts from this figure and deducts the tax actually paid on the income taxes paid (-) line in operating activities, so the starting line of the statement of cash flows must match profit before tax on the income statement: that is step 2 (check A)."
   }
 }

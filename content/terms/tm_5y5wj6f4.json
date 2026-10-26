@@ -2,7 +2,7 @@
   "id": "tm_5y5wj6f4",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "不動產廠房設備毛額",
@@ -27,7 +27,25 @@
     "en": "The template has no accumulated depreciation line and uses the net amount as the gross amount; the site keeps accumulated depreciation, so the two differ once depreciation is charged."
   },
   "definition": {
-    "zh-TW": "設備還沒扣掉累計折舊之前的原始成本。模板沒有這一列，只給 slides03 版的現金流量再投資比率當分母使用。",
-    "en": "The original cost of equipment before accumulated depreciation is deducted. The template has no such line; it is used only as the denominator of the slides03 version of the cash reinvestment ratio."
-  }
+    "zh-TW": "不動產、廠房及設備還沒扣掉累計折舊之前的原始成本總額。\n\n毛額減累計折舊等於淨額；年報版的現金再投資比率分母用的是毛額。",
+    "en": "The original cost of property, plant and equipment before deducting accumulated depreciation.\n\nGross amount less accumulated depreciation equals the net amount; the annual report version of the cash reinvestment ratio uses the gross figure in its denominator."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表不另列這個數字。課程模板沒有累計折舊列，所以模板裡的機器設備金額既當淨額也當毛額用；網站內部保留累計折舊，資產負債表的機器設備顯示淨額，毛額另外存放。折舊之前兩者相同，折舊之後開始不同。",
+    "en": "Where it sits: not shown as a separate line on the balance sheet. The course template has no accumulated depreciation line, so its machinery figure serves as both net and gross; the site keeps accumulated depreciation internally, shows machinery net on the balance sheet and stores the gross amount separately. Before any depreciation the two are equal; afterwards they diverge."
+  },
+  "misconception": {
+    "zh-TW": "以為毛額就是設備現在值多少錢。毛額是歷史成本，和市價無關；它只是用來算折舊和某些比率的基準。",
+    "en": "Taking the gross amount as what the equipment is worth today. It is historical cost, unrelated to market value, and serves only as the base for depreciation and certain ratios."
+  },
+  "formula": {
+    "zh-TW": "不動產廠房設備毛額 ＝ 取得成本合計 ＝ 淨額 ＋ 累計折舊。",
+    "en": "Gross property, plant and equipment = total cost = net amount + accumulated depreciation."
+  },
+  "related": [
+    "tm_a8d5c1pz",
+    "tm_gt8g4afe",
+    "tm_12gxceqy",
+    "tm_jbtbky5v"
+  ]
 }

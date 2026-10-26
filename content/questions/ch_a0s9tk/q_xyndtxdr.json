@@ -1,0 +1,60 @@
+{
+  "id": "q_xyndtxdr",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "journal_entry",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_cskmkg",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "journal_entry",
+    "organisation_costs"
+  ],
+  "termRefs": [
+    "tm_b9e9vjct",
+    "tm_c4sh8k2p",
+    "tm_50v66dt7",
+    "tm_d9f3g7cs",
+    "tm_a2m7z4tf"
+  ],
+  "scored": true,
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 900000,
+        "share_capital": 900000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.pay_org_costs",
+        "params": {
+          "amount": 150000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": []
+  },
+  "accountChoices": [
+    "deferred_organisation_costs",
+    "cash",
+    "amortisation_deferred_assets",
+    "office_supplies_expense",
+    "accounts_payable"
+  ],
+  "allowAliases": true,
+  "prompt": {
+    "zh-TW": "星河軟體剛成立，用現金付了 {{money:e1.amount}} 的設立費（登記、公證等）。依本課程的處理方式，設立費先列為遞延資產、日後分年攤銷。請寫出付款當天的分錄。",
+    "en": "Starriver Software has just been formed and pays {{money:e1.amount}} in cash for start-up costs (registration, notarisation and so on). Under this course’s treatment, start-up costs are first recorded as a deferred asset and amortised over later years. Write the entry for the day of payment."
+  },
+  "explanation": {
+    "zh-TW": "課程的做法：借記設立費（遞延資產）{{money:e1.amount}}，貸記現金 {{money:e1.amount}}；攤銷要到期末才另外記「借 攤銷遞延資產／貸 設立費」。設計說明：現行 IFRS（IAS 38.69(a)）要求設立費在發生時直接費用化，網站日後的 IFRS 對照模式會這樣呈現；本題依課程的做法計分。",
+    "en": "The course treatment: debit start-up costs (a deferred asset) {{money:e1.amount}} and credit cash {{money:e1.amount}}; the amortisation, debit amortisation of deferred assets and credit start-up costs, is a separate entry at period end. Design note: current IFRS (IAS 38.69(a)) requires start-up costs to be expensed as incurred, as the site’s forthcoming IFRS comparison mode will show; this question is scored under the course treatment."
+  }
+}

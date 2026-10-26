@@ -1,0 +1,91 @@
+{
+  "id": "q_0nypdz57",
+  "rev": 4,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_81e8f8",
+  "difficulty": 2,
+  "tags": [
+    "dupont",
+    "roe"
+  ],
+  "termRefs": [
+    "tm_1ebm48ca",
+    "tm_92yzx0fn",
+    "tm_2cqt9cfd",
+    "tm_2ggtxnaz"
+  ],
+  "scored": true,
+  "type": "ratio_interpret",
+  "ratioRef": "roe@dupont",
+  "vars": {
+    "netIncome": 216000,
+    "revenue": 3600000,
+    "totalAssets": 1800000,
+    "totalEquity": 1440000,
+    "peerMargin": 0.08,
+    "peerTurnover": 1.2,
+    "peerMultiplier": 1.6
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "net_profit_margin@slides02",
+      "total_asset_turnover@slides02",
+      "equity_multiplier@slides02",
+      "roe@dupont"
+    ],
+    "measures": {
+      "is_net_income": "vars.netIncome",
+      "is_revenue": "vars.revenue",
+      "bs_total_assets": "vars.totalAssets",
+      "bs_total_equity": "vars.totalEquity"
+    }
+  },
+  "prompt": {
+    "zh-TW": "北風單車行今年的營收是 {{money:vars.revenue}}、本期淨利 {{money:vars.netIncome}}，年底的資產總計 {{money:vars.totalAssets}}、股東權益總額 {{money:vars.totalEquity}}。上方的表格列出算好的三個杜邦因子與 ROE；同業平均的純益率是 {{percent:vars.peerMargin}}、總資產週轉率 {{number:vars.peerTurnover|digits=2,unit=turns}}、權益倍數 {{number:vars.peerMultiplier|digits=2,unit=times}}。下列哪一個解讀正確？",
+    "en": "North Wind Cycles had revenue of {{money:vars.revenue}} and a profit for the period of {{money:vars.netIncome}} this year, with total assets of {{money:vars.totalAssets}} and total equity of {{money:vars.totalEquity}} at year end. The table above shows the three DuPont factors and ROE already worked out; the industry averages are a net profit margin of {{percent:vars.peerMargin}}, total asset turnover of {{number:vars.peerTurnover|digits=2,unit=turns}} and an equity multiplier of {{number:vars.peerMultiplier|digits=2,unit=times}}. Which reading is correct?"
+  },
+  "options": [
+    {
+      "id": "o_4cpt",
+      "text": {
+        "zh-TW": "ROE 等於三個因子相乘；這家店的報酬主要靠資產轉得快，不是靠借款",
+        "en": "ROE equals the three factors multiplied together; the shop’s return comes mainly from turning its assets quickly, not from borrowing"
+      },
+      "feedback": {
+        "zh-TW": "答對了。杜邦是乘法：純益率比同業低，週轉率明顯比同業高，權益倍數也比同業低、借款不多，所以 ROE 主要靠週轉。",
+        "en": "Correct. DuPont is multiplication: the margin is below the industry average, turnover is well above it and the multiplier is below it too, showing little borrowing, so the ROE comes mainly from turnover."
+      }
+    },
+    {
+      "id": "o_g7bq",
+      "text": {
+        "zh-TW": "表格裡的總資產週轉率，是每一元資產替公司賺到多少淨利",
+        "en": "The total asset turnover in the table is how much profit each unit of assets earns for the company"
+      },
+      "feedback": {
+        "zh-TW": "你把週轉率的分子看成了淨利。週轉率的分子是營收：每一元資產帶出多少營收，至於留下多少，要再乘上純益率。",
+        "en": "You read the numerator of turnover as profit. Its numerator is revenue: how much revenue each unit of assets brings in; how much of that is kept depends on the margin."
+      },
+      "misconceptionId": "mc_tfxp"
+    },
+    {
+      "id": "o_2w7n",
+      "text": {
+        "zh-TW": "表格的 ROE 算錯了：三個因子各貢獻一部分報酬，應該相加而不是相乘",
+        "en": "The ROE in the table is wrong: each factor contributes part of the return, so the three should be added, not multiplied"
+      },
+      "feedback": {
+        "zh-TW": "三個因子的單位不同（百分比、次、倍），不能相加。它們是分數連乘，中間的營收與資產會互相約掉，最後只剩淨利除以權益。",
+        "en": "The three factors are in different units (a percentage, a turnover rate and a multiple) and cannot be added. They are fractions multiplied together, with revenue and assets cancelling out to leave profit over equity."
+      },
+      "misconceptionId": "mc_ezat"
+    }
+  ],
+  "correctOptionId": "o_4cpt",
+  "explanation": {
+    "zh-TW": "{{option:o_4cpt}}。杜邦拆解是 ROE ＝ 純益率 × 總資產週轉率 × 權益倍數，三個因子相乘後，營收與資產互相約掉，剩下本期淨利 {{money:vars.netIncome}} 除以權益 {{money:vars.totalEquity}}。和同業比，看哪一個因子最突出，就知道這家公司是靠賺得多、轉得快，還是借得多。",
+    "en": "{{option:o_4cpt}}. The DuPont decomposition is ROE = net profit margin × total asset turnover × equity multiplier; once the three are multiplied, revenue and assets cancel and what remains is profit for the period of {{money:vars.netIncome}} over equity of {{money:vars.totalEquity}}. Whichever factor stands out against the industry average tells you whether the company earns a lot per sale, turns its assets quickly or borrows heavily."
+  }
+}

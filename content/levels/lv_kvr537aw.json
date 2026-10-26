@@ -1,0 +1,23 @@
+{
+  "id": "lv_kvr537aw",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "order": 2,
+  "title": {
+    "zh-TW": "償債能力：還不還得起",
+    "en": "Solvency: can the debts be paid"
+  },
+  "objectiveIds": [
+    "obj_33hdss"
+  ],
+  "questionIds": [
+    "q_vvzmggjk",
+    "q_kgqn45jy",
+    "q_jq98k3hw",
+    "q_ee57bdb6",
+    "q_d3b6e1q3",
+    "q_y7smhncm"
+  ]
+}

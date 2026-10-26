@@ -1,0 +1,42 @@
+{
+  "id": "q_dnqwe133",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_am21nv",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "profitability"
+  ],
+  "termRefs": [
+    "tm_bkqw8c59",
+    "tm_z971merj",
+    "tm_5e3py55a"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "pretax": 450000,
+    "capital": 2500000
+  },
+  "compute": {
+    "ratioRef": "pretax_to_paid_in_capital@excel",
+    "measures": {
+      "is_pretax_income": "vars.pretax",
+      "bs_share_capital": "vars.capital"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "雲嶺茶莊今年稅前淨利 {{money:vars.pretax}}，股本（實收資本）{{money:vars.capital}}。依課程 Excel 口徑計算{{term:tm_bkqw8c59|plain}}，以百分比作答。",
+    "en": "Cloud Ridge Tea House had profit before tax of {{money:vars.pretax}} and share capital (paid-in capital) of {{money:vars.capital}}. Using the course Excel basis, what is the {{term:tm_bkqw8c59|plain}}? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_bkqw8c59}}＝{{term:tm_z971merj}} ÷ {{term:tm_5e3py55a}}。分母是股東當初投入的股本，不含未分配盈餘，所以它是「相對股本的報酬率」，不是資產報酬率，也不等於 ROE。",
+    "en": "{{term:tm_bkqw8c59}} = {{term:tm_z971merj}} ÷ {{term:tm_5e3py55a}}. The denominator is the capital the shareholders originally paid in, excluding retained earnings, so it is a return relative to share capital: not a return on assets, and not the same as ROE."
+  }
+}

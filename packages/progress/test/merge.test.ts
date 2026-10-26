@@ -1,6 +1,6 @@
-// 06 第 4.6 節合併表：每一列一例（含去重與衝突）、覆蓋模式、importHistory
+// 06 第 4.6 節合併表：每一列一例（含去重與衝突）、覆蓋模式、importHistory；收藏（settings 的 favourites）是學習資料，合併時取聯集（core-2）
 import { describe, expect, it } from 'vitest';
-import { type ImportOptions, mergeData, mergeSnapshots, replaceSnapshot } from '../src/index.ts';
+import { FAVOURITES_SETTING_KEY, LEARNING_SETTING_KEYS, type ImportOptions, importSnapshot, mergeData, mergeSnapshots, replaceSnapshot } from '../src/index.ts';
 import {
   DEVICE_A,
   DEVICE_B,
@@ -8,6 +8,7 @@ import {
   LV2,
   Q1,
   Q2,
+  Q3,
   STORY1,
   STEP1,
   STEP2,
@@ -134,5 +135,63 @@ describe('覆蓋模式', () => {
     expect(r.settings).toEqual([setting('locale', 'zh-TW')]);
     expect(r.meta.deviceId).toBe(DEVICE_A);
     expect(r.meta.importHistory[0]?.mode).toBe('replace');
+  });
+});
+
+describe('收藏（settings 的 favourites）：學習資料，不受「也套用語言與計時設定」控制', () => {
+  const fav = (ids: unknown[], at = T1) => setting(FAVOURITES_SETTING_KEY, ids as string[], at);
+  const favOf = (settings: readonly { key: string; value: unknown; updatedAt: string }[]) => settings.find((s) => s.key === FAVOURITES_SETTING_KEY);
+
+  it('LEARNING_SETTING_KEYS 只有 favourites', () => {
+    expect(LEARNING_SETTING_KEYS).toEqual(['favourites']);
+  });
+
+  it('預設選項（settings: false）的合併：兩邊取聯集，本機的順序在前、來源新的接在後面；updatedAt 取較晚', () => {
+    const local = data({ settings: [setting('locale', 'zh-TW'), fav([Q1, Q2])] });
+    const incoming = data({ settings: [setting('locale', 'en', T2), fav([Q3, Q1], T2)] });
+    const m = mergeData(local, incoming, { settings: false });
+    expect(favOf(m.settings)).toEqual(fav([Q1, Q2, Q3], T2));
+    expect(m.settings.find((s) => s.key === 'locale')?.value).toBe('zh-TW');
+  });
+
+  it('勾選套用設定（settings: true）的合併仍是聯集，不是整份蓋掉', () => {
+    const local = data({ settings: [fav([Q1, Q2], T2)] });
+    const incoming = data({ settings: [setting('locale', 'en', T1), fav([Q3], T1)] });
+    const m = mergeData(local, incoming, { settings: true });
+    expect(favOf(m.settings)).toEqual(fav([Q1, Q2, Q3], T2));
+    expect(m.settings.find((s) => s.key === 'locale')?.value).toBe('en');
+  });
+
+  it('只有一邊有收藏就用那一邊；不是陣列的值當作空清單；非字串與重複的項目去掉', () => {
+    expect(favOf(mergeData(data(), data({ settings: [fav([Q1])] }), { settings: false }).settings)).toEqual(fav([Q1]));
+    expect(favOf(mergeData(data({ settings: [fav([Q2])] }), data(), { settings: false }).settings)).toEqual(fav([Q2]));
+    const broken = data({ settings: [setting(FAVOURITES_SETTING_KEY, 'oops', T1)] });
+    expect(favOf(mergeData(broken, data({ settings: [fav([Q1, 3, '', Q1], T2)] }), { settings: false }).settings)).toEqual(fav([Q1], T2));
+  });
+
+  it('合併冪等：merge(a, a) 的收藏不變；再合併一次也不變', () => {
+    const a = data({ settings: [fav([Q2, Q1])] });
+    const once = mergeData(a, a, { settings: false });
+    expect(favOf(once.settings)).toEqual(fav([Q2, Q1]));
+    expect(mergeData(once, once, { settings: false })).toEqual(once);
+  });
+
+  it('覆蓋模式：收藏取備份的清單；備份沒有收藏時本機的收藏也清掉；語言等偏好仍保留本機', () => {
+    const current = snapshot({ settings: [setting('locale', 'zh-TW'), fav([Q1, Q2])] });
+    const withFav = replaceSnapshot(current, data({ settings: [fav([Q3], T2), setting('locale', 'en')] }), { ...opts, mode: 'replace' });
+    expect(favOf(withFav.settings)).toEqual(fav([Q3], T2));
+    expect(withFav.settings.find((s) => s.key === 'locale')?.value).toBe('zh-TW');
+    const withoutFav = importSnapshot(current, data(), { ...opts, mode: 'replace' });
+    expect(favOf(withoutFav.settings)).toBeUndefined();
+    expect(withoutFav.settings).toEqual([setting('locale', 'zh-TW')]);
+    // 覆蓋模式勾選套用設定：偏好取備份，收藏一樣取備份
+    const both = replaceSnapshot(current, data({ settings: [fav([Q3], T2), setting('locale', 'en')] }), { ...opts, mode: 'replace', settings: true });
+    expect(both.settings).toEqual([fav([Q3], T2), setting('locale', 'en')]);
+  });
+
+  it('mergeSnapshots 走同一套規則', () => {
+    const current = snapshot({ settings: [fav([Q1])] });
+    const m = mergeSnapshots(current, data({ settings: [fav([Q2], T2)] }), opts);
+    expect(favOf(m.settings)).toEqual(fav([Q1, Q2], T2));
   });
 });

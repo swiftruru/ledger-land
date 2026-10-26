@@ -1,0 +1,73 @@
+{
+  "id": "q_3chc878r",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "ratio_interpret",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_e2942m",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "one_off"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4",
+    "tm_n4e8t2jy"
+  ],
+  "scored": true,
+  "ratioRef": "pe_ratio@slides02",
+  "vars": {
+    "epsLast": 3,
+    "epsThis": 6,
+    "peLast": 20,
+    "peThis": 10
+  },
+  "prompt": {
+    "zh-TW": "晨光印刷今年賣掉一座舊廠房，認列了一大筆處分利益，每股盈餘從去年的 {{money:vars.epsLast}} 跳到今年的 {{money:vars.epsThis}}；股價沒變，所以本益比從 {{number:vars.peLast|unit=times}} 降到 {{number:vars.peThis|unit=times}}。哪一句判讀最合理？",
+    "en": "Morning Light Printing sold an old factory this year and recognised a large disposal gain. Earnings per share jumped from {{money:vars.epsLast}} last year to {{money:vars.epsThis}} this year; the share price did not move, so the P/E ratio fell from {{number:vars.peLast|unit=times}} to {{number:vars.peThis|unit=times}}. Which reading is the most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_s7c3",
+      "text": {
+        "zh-TW": "倍數下降主要是一次性的處分利益墊高了每股盈餘",
+        "en": "The lower multiple mainly comes from a one-off disposal gain inflating earnings per share"
+      },
+      "feedback": {
+        "zh-TW": "答對了。本益比的分母一旦含有明年不會再發生的利益，倍數就會失真；分析時常用扣除一次性項目後的盈餘重算。",
+        "en": "That is right. Once the denominator contains a gain that will not recur next year, the multiple is distorted; analysts often recompute it with one-off items stripped out."
+      }
+    },
+    {
+      "id": "o_t8d4",
+      "text": {
+        "zh-TW": "每股盈餘翻倍，代表公司本業的賺錢能力也提升了一倍",
+        "en": "Earnings per share doubled, so the company’s core earning power has doubled too"
+      },
+      "feedback": {
+        "zh-TW": "每股盈餘確實變成兩倍，你讀的數字沒錯。但增加的部分來自賣廠房，不是印刷生意賺的；廠房只能賣一次。",
+        "en": "Earnings per share did double, so you read the figure correctly. But the increase came from selling a factory, not from the printing business, and a factory can only be sold once."
+      },
+      "misconceptionId": "mc_0ne5"
+    },
+    {
+      "id": "o_v9e5",
+      "text": {
+        "zh-TW": "本益比變低，代表市場開始看壞這家公司",
+        "en": "The lower P/E ratio means the market has turned negative on the company"
+      },
+      "feedback": {
+        "zh-TW": "倍數變低有時確實反映市場看法變差，這個方向值得考慮。但題目說股價沒變，市場看法沒有改變；變的是分母被一次性利益放大。",
+        "en": "A lower multiple can indeed reflect a gloomier market view, which is worth considering. But the question says the price did not move, so the market view is unchanged; the denominator was inflated by a one-off gain."
+      }
+    }
+  ],
+  "correctOptionId": "o_s7c3",
+  "explanation": {
+    "zh-TW": "{{option:o_s7c3}}把倍數的變化拆回報表：分子沒動、分母被一次性利益放大。{{option:o_t8d4}}把一次性利益當成本業能力；{{option:o_v9e5}}與「股價沒變」矛盾。",
+    "en": "{{option:o_s7c3}} traces the change in the multiple back to the statements: the numerator did not move and the denominator was inflated by a one-off gain. {{option:o_t8d4}} treats the one-off gain as core earning power; {{option:o_v9e5}} contradicts the unchanged share price."
+  }
+}

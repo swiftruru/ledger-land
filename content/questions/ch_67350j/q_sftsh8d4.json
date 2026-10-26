@@ -1,0 +1,66 @@
+{
+  "id": "q_sftsh8d4",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_8jjgc4",
+  "difficulty": 2,
+  "tags": [
+    "red_light",
+    "retained_earnings"
+  ],
+  "termRefs": [
+    "tm_4c6v99nn",
+    "tm_n4e8t2jy",
+    "tm_chbctb2d"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "另一次練習的燈號是：步驟②綠、步驟③綠、步驟④紅、步驟⑤紅，兩盞紅燈的差額相同。最合理的判斷是什麼？",
+    "en": "In another exercise the lights read: step 2 green, step 3 green, step 4 red, step 5 red, and both show the same difference. What is the most reasonable conclusion?"
+  },
+  "options": [
+    {
+      "id": "o_crsm",
+      "text": {
+        "zh-TW": "未分配盈餘填錯了；它既是步驟④的右邊，也算在負債及股東權益總計裡",
+        "en": "Unappropriated retained earnings are wrong; they are the right-hand side of step 4 and also part of total liabilities and equity"
+      },
+      "feedback": {
+        "zh-TW": "答對了。未分配盈餘一格填錯，步驟④直接不平，資產負債表右邊的合計也跟著差同樣的金額，所以步驟⑤亮紅、差額相同。",
+        "en": "Correct. One wrong unappropriated retained earnings figure fails step 4 directly, and the right-hand total of the balance sheet is off by the same amount, so step 5 is red with an identical difference."
+      }
+    },
+    {
+      "id": "o_dbjx",
+      "text": {
+        "zh-TW": "現金流量表哪裡算錯了，因為勾稽不上多半是現金流量表的問題",
+        "en": "Something in the statement of cash flows is wrong, since failed checks are usually its fault"
+      },
+      "feedback": {
+        "zh-TW": "步驟②與③都是綠燈，表示現金流量表的起點與終點都對得上。步驟④與⑤看的都是資產負債表，線索指向那裡。",
+        "en": "Steps 2 and 3 are green, so both the start and the end of the statement of cash flows agree. Steps 4 and 5 both look at the balance sheet, and that is where the clue points."
+      },
+      "misconceptionId": "mc_4v3q"
+    },
+    {
+      "id": "o_ga46",
+      "text": {
+        "zh-TW": "有兩筆交易漏記，一筆影響步驟④、另一筆影響步驟⑤",
+        "en": "Two transactions were missed, one affecting step 4 and another affecting step 5"
+      },
+      "feedback": {
+        "zh-TW": "兩盞紅燈差額相同，最省力的解釋是同一格出錯被兩個勾稽點同時看到，而不是剛好有兩個金額相同的錯誤。",
+        "en": "When two red lights show the same difference, the simplest explanation is one wrong cell seen by two check points, not two separate mistakes that happen to be the same size."
+      },
+      "misconceptionId": "mc_7140"
+    }
+  ],
+  "correctOptionId": "o_crsm",
+  "explanation": {
+    "zh-TW": "{{option:o_crsm}}。步驟④的右邊與步驟⑤的右邊共用同一格，所以一格填錯會讓兩盞燈以同樣的差額亮紅。燈號是線索，用來縮小範圍：綠燈排除掉的格子不用再查，紅燈共同指向的格子先修。",
+    "en": "{{option:o_crsm}}. The right-hand side of step 4 and the right-hand side of step 5 share the same cell, so one wrong entry turns both lights red by the same difference. Lights are clues for narrowing the search: cells cleared by green lights need no further checking, and the cell the red lights point to together is fixed first."
+  }
+}

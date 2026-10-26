@@ -1,0 +1,76 @@
+{
+  "id": "q_tpt5n1v5",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_qg146a",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "retained_earnings",
+    "pick_line"
+  ],
+  "termRefs": [
+    "tm_4c6v99nn",
+    "tm_n4e8t2jy",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "pick_line",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 100000,
+        "inventory": 70000,
+        "share_capital": 170000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_cash",
+        "params": {
+          "price": 110000
+        }
+      },
+      {
+        "id": "e2",
+        "template": "tpl.pay_packing_freight_cash",
+        "params": {
+          "amount": 8000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": []
+  },
+  "statement": "bs",
+  "correctLines": [
+    "bs_retained_earnings"
+  ],
+  "feedbackByLine": {
+    "bs_share_capital": {
+      "zh-TW": "股本是股東投入的錢，店賺了錢不會讓它變多。",
+      "en": "Share capital is what the shareholders put in; it does not grow when the shop earns a profit."
+    },
+    "bs_cash": {
+      "zh-TW": "賣書確實讓現金變多了，不過現金在資產那一邊；題目問的是右邊記錄「賺來的錢」的那一列。",
+      "en": "Selling the books did raise cash, but cash sits on the asset side; the question asks for the line on the right that records what was earned."
+    },
+    "bs_total_equity": {
+      "zh-TW": "很接近了：股東權益總額裡包含本期淨利，但它也包含股本。請點出只記錄「賺來還沒分配的錢」那一列。",
+      "en": "Very close: total equity does include profit for the period, but it also includes share capital. Tap the line that records only the earnings not yet distributed."
+    }
+  },
+  "prompt": {
+    "zh-TW": "月光書店這一期賣掉了全部的書，也付了寄書的運費，損益表最後算出一筆本期淨利。這筆本期淨利會留在資產負債表的哪一列？請在表上點出來。",
+    "en": "This period Moonlight Books sold all of its books and paid the delivery costs, and the income statement ends with a profit for the period. On which line of the balance sheet does that profit stay? Tap it on the sheet."
+  },
+  "explanation": {
+    "zh-TW": "損益表算出的{{term:tm_n4e8t2jy}}會留下來：它流進股東權益裡的{{term:tm_4c6v99nn}}，代表公司自己賺來、還沒分給股東的錢。這就是損益表和資產負債表之間最重要的連結。",
+    "en": "{{term:tm_n4e8t2jy}} from the income statement stays: it flows into {{term:tm_4c6v99nn}} within equity, the profit the company earned and has not yet distributed to shareholders. This is the most important link between the income statement and the balance sheet."
+  }
+}

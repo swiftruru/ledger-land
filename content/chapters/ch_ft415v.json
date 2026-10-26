@@ -1,0 +1,47 @@
+{
+  "id": "ch_ft415v",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "order": 9,
+  "scope": "core",
+  "examScope": "midterm",
+  "title": {
+    "zh-TW": "六大指標：轉換（經營能力、槓桿度）",
+    "en": "The six ratio families: transformation (operating efficiency and leverage)"
+  },
+  "summary": {
+    "zh-TW": "錢投進公司之後，轉得多快、變動被放大幾倍？這一章看「轉換」：經營能力用週轉率與天數衡量應收帳款、存貨、設備與總資產轉動的速度；槓桿度用「變動百分比被放大幾倍」衡量固定費用與利息的放大效果。最後比較應付款項週轉率的兩種分子，學會看題目指定的版本作答。",
+    "en": "Once money is in the company, how fast does it turn and how much are changes magnified? This chapter covers the transformation stage: operating efficiency uses turnover ratios and days to measure how quickly receivables, inventory, equipment and total assets turn over, while leverage measures how fixed costs and interest magnify percentage changes. It ends with the two numerators of payables turnover and the habit of answering in the version each question specifies."
+  },
+  "objectiveIds": [
+    "obj_6x06z2",
+    "obj_fbc0kw",
+    "obj_6r5ph7",
+    "obj_qr0bbx"
+  ],
+  "levelIds": [
+    "lv_c0hxq2zv",
+    "lv_6ewffczs",
+    "lv_dgewh5tm",
+    "lv_3r8rgv8b"
+  ],
+  "prerequisites": [
+    "ch_8g6pzz"
+  ],
+  "badge": {
+    "icon": "arrows-clockwise",
+    "title": {
+      "zh-TW": "週轉達人",
+      "en": "Turnover expert"
+    }
+  },
+  "termRefs": [
+    "tm_2s4hterv",
+    "tm_08g66t9j",
+    "tm_2cqt9cfd",
+    "tm_tspyazrx",
+    "tm_gkmknxh4",
+    "tm_2jyfy0hn"
+  ]
+}

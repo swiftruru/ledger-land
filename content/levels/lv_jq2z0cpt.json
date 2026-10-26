@@ -1,0 +1,11 @@
+{
+  "id": "lv_jq2z0cpt",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "order": 4,
+  "title": { "zh-TW": "綜合挑戰：一筆交易走完五步", "en": "Final challenge: one transaction, five steps" },
+  "objectiveIds": ["obj_wt6czr", "obj_f5en1x", "obj_8jjgc4", "obj_pynkwp"],
+  "questionIds": ["q_2re6ftpp", "q_4t8zswxm", "q_wjtv9xqc", "q_w29nyfgm", "q_az4cvr5z", "q_zvrr08v7"]
+}

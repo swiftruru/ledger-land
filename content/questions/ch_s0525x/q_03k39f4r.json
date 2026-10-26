@@ -1,6 +1,6 @@
 {
   "id": "q_03k39f4r",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -19,7 +19,7 @@
   "type": "multi_choice",
   "prompt": {
     "zh-TW": "大東想知道河岸麵包坊「本業」今年到底做得好不好。下列哪一種看法說得通？",
-    "en": "Tung wants to know how well Riverside Bakery's core business actually did this year. Which of these views makes sense?"
+    "en": "Tung wants to know how well Riverside Bakery’s core business actually did this year. Which of these views makes sense?"
   },
   "options": [
     {
@@ -48,11 +48,11 @@
       "id": "o_fv74",
       "text": {
         "zh-TW": "看本期淨利，再把供應商付的違約金也算成本業的成績",
-        "en": "Look at profit for the period, and count the supplier's penalty payment as part of the core business"
+        "en": "Look at profit for the period, and count the supplier’s penalty payment as part of the core business"
       },
       "feedback": {
         "zh-TW": "本期淨利確實是最後留下來的數字，這點沒錯。但違約金是一次性的業外收益，把它算進本業會高估今年的經營成果。",
-        "en": "Profit for the period is indeed the figure finally kept, that much is right. But the penalty is a one-off gain outside the core business; counting it would overstate this year's trading result."
+        "en": "Profit for the period is indeed the figure finally kept, that much is right. But the penalty is a one-off gain outside the core business; counting it would overstate this year’s trading result."
       },
       "misconceptionId": "mc_etqs"
     },

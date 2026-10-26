@@ -108,3 +108,60 @@ export const qJudgment: QuestionSnapshot = {
   attribution: 'site',
   explanation: '沒有標準答案。',
 };
+
+export const qFiveStep: QuestionSnapshot = {
+  ...base,
+  id: 'q_f1v3st3p',
+  type: 'five_step_fill',
+  prompt: '填入兩個勾稽點的數字。',
+  scenario: {
+    opening: { balances: { cash: 400000, share_capital: 400000 } },
+    events: [{ id: 'e1', template: 'tpl.purchase_inventory_cash', params: { amount: 150000 } }],
+    policy: 'teacher@1',
+    layout: 'teacher@1',
+    window: 'cumulative',
+    targets: [],
+  },
+  openCells: ['cf_pretax_income', 'bs_cash'],
+  explanation: '兩邊要一樣。',
+  compiled: { expected: {}, values: { 'e1.amount': 150000 }, cells: { cf_pretax_income: 0, bs_cash: 250000 } },
+};
+
+export const qRatioNumeric: QuestionSnapshot = {
+  ...base,
+  id: 'q_r4t10num',
+  type: 'ratio_numeric',
+  prompt: '負債比率是多少？',
+  vars: { liabilities: 100000, assets: 400000 },
+  compute: { ratioRef: 'debt_ratio@excel', measures: { bs_total_liabilities: 'vars.liabilities', bs_total_assets: 'vars.assets' } },
+  answerUnit: 'percent',
+  decimals: 2,
+  tolerance: 0.01,
+  explanation: '負債總額 ÷ 資產總計。',
+  compiled: { ratio: { ratioRef: 'debt_ratio@excel', status: 'ok', exact: { num: '1', den: '4' }, displayValue: 25 } },
+};
+
+export const qJournal: QuestionSnapshot = {
+  ...base,
+  id: 'q_j0urn4l1',
+  type: 'journal_entry',
+  prompt: '用現金 {{money:e1.amount}} 買存貨，分錄怎麼寫？',
+  scenario: {
+    opening: { balances: { cash: 400000, share_capital: 400000 } },
+    events: [{ id: 'e1', template: 'tpl.purchase_inventory_cash', params: { amount: 150000 } }],
+    policy: 'teacher@1',
+    layout: 'teacher@1',
+    window: 'transaction',
+    targets: [],
+  },
+  accountChoices: ['cash', 'inventory', 'accounts_payable', 'revenue'],
+  explanation: '借存貨、貸現金。',
+  compiled: {
+    expected: {},
+    values: { 'e1.amount': 150000 },
+    expectedEntries: [
+      { account: 'inventory', side: 'debit', amount: 150000 },
+      { account: 'cash', side: 'credit', amount: 150000 },
+    ],
+  },
+};

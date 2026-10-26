@@ -1,0 +1,67 @@
+{
+  "id": "q_shym7yq8",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "single_choice",
+  "objectiveId": "obj_qr0bbx",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity",
+    "version"
+  ],
+  "termRefs": [
+    "tm_2jyfy0hn",
+    "tm_p7h3c5xq",
+    "tm_g5c2m8tw"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "計算應付款項週轉率時，課程的 Excel 版與年報公式的分子不一樣。下列哪一個說法正確？",
+    "en": "The course Excel version and the annual-report formula for payables turnover use different numerators. Which statement is correct?"
+  },
+  "options": [
+    {
+      "id": "o_pvjm",
+      "text": {
+        "zh-TW": "Excel 版用本期進貨，年報版用營業成本，依題目指定的版本作答",
+        "en": "The Excel version uses purchases and the annual-report version cost of sales; answer in the version the question names"
+      },
+      "feedback": {
+        "zh-TW": "答對了。兩種分子都有教科書依據；網站把兩個版本並列，計分只看題目指定的那一個。",
+        "en": "That’s right. Both numerators have textbook support; the site shows both versions side by side and scores only the one the question names."
+      }
+    },
+    {
+      "id": "o_bqdn",
+      "text": {
+        "zh-TW": "兩個版本的分子雖然不同，算出來的週轉率一定完全一樣",
+        "en": "Although the numerators differ, the two versions always give exactly the same turnover"
+      },
+      "feedback": {
+        "zh-TW": "你知道兩者都在衡量付款速度，這個理解沒錯。不過本期進貨和營業成本只有在期初、期末存貨相同時才相等，平常會差一截，所以數字通常不同。",
+        "en": "You understand that both measure payment speed, which is right. But purchases and cost of sales are only equal when opening and closing inventory are the same; usually they differ, so the figures differ too."
+      },
+      "misconceptionId": "mc_xhr6"
+    },
+    {
+      "id": "o_y0zw",
+      "text": {
+        "zh-TW": "兩個版本的分子都是營業收入，差別只在分母要不要取平均",
+        "en": "Both versions use revenue as the numerator; they differ only in whether the denominator is averaged"
+      },
+      "feedback": {
+        "zh-TW": "你注意到分母不一樣，這點沒錯：Excel 版用期末的應付帳款，年報版用期初與期末的平均。不過差別不只在分母，分子也不同，而且兩個版本都不是營業收入：欠供應商的貨款才是應付帳款，拿它和進貨或成本相比才合理；營業收入含有毛利，不是合適的分子。",
+        "en": "You noticed that the denominators differ, which is right: the Excel version uses closing trade payables and the annual-report version the average of opening and closing. But the difference is not only in the denominator; the numerators differ too, and neither is revenue: trade payables are what is owed to suppliers for goods, so it only makes sense to compare them with purchases or cost; revenue includes the gross margin and is not a suitable numerator."
+      },
+      "misconceptionId": "mc_rejj"
+    }
+  ],
+  "correctOptionId": "o_pvjm",
+  "explanation": {
+    "zh-TW": "{{term:tm_2jyfy0hn}}的 Excel 版分子是{{term:tm_p7h3c5xq}}，年報版是{{term:tm_g5c2m8tw}}。{{option:o_pvjm}}說明了差異與作答原則；{{option:o_bqdn}}忽略了存貨變動，{{option:o_y0zw}}用錯分子。",
+    "en": "The Excel version of {{term:tm_2jyfy0hn}} uses {{term:tm_p7h3c5xq}} as the numerator; the annual-report version uses {{term:tm_g5c2m8tw}}. {{option:o_pvjm}} states the difference and the rule for answering; {{option:o_bqdn}} ignores the change in inventory, and {{option:o_y0zw}} picks the wrong numerator."
+  }
+}

@@ -1,169 +1,195 @@
-// 章節場景（17 第 4、6 節，M2 的幾何色塊版）：每章一個小 SVG，只用 tokens 上色，20 個圖形以內；沒有文字資訊，純裝飾（aria-hidden）。
-// 題材用會計的比喻：碼頭、三島、市集、天平、河流、燈塔、齒輪、農田、麵包坊、山頂；延伸區是外海小島。強制色彩下整個隱藏（quest-map.css）。
-// M3 每章換成原創手繪風插圖時，只換這裡的元件，章節區段的結構不動。
-export type SceneKind = 'dock' | 'islands' | 'market' | 'scale' | 'river' | 'lighthouse' | 'gears' | 'farm' | 'bakery' | 'summit' | 'island';
+// 章節場景（17 第 4、6、8 節，圖規第 6 節）：主線 10 章各一個場景、延伸區 4 章各一座外海小島，另加延伸區海峽的海面層；全部用 scene tokens 上色、沒有文字、純裝飾（aria-hidden）。
+// 每個場景是 features/quest-map-scenes/ 底下自己的模組，章節區段進入視窗前後一屏時才 import()（17 第 8 節：場景 SVG 依章 lazy 載入）；
+// 放在 quest-map 的隔壁目錄是因為 vite.config.ts 的 quest-map 群組會把 features/quest-map/ 底下的模組全部併成地圖的 chunk，場景要各自成 chunk 才能依章載入。
+// 離線時全部在 precache。體積由 tools/budget.mjs 的 sceneChunkGzipKb、sceneChunksTotalGzipKb 與 sceneKitGzipKb 檢查。強制色彩下整個隱藏（quest-map.css）。
+// 物件層（圖規第 6.1、6.2 節）：外層 svg 是真實 px（viewBox 0 0 bandW h，不用 slice），場景元件收到 SceneGeo（layout.ts 的 sceneGeo：
+// 區帶座標、y 向下、已外擴的保護框與兩翼），直接畫在這個座標系裡。
+// 全部改寫完成（2026-10-25）：主線第 1 到 10 章（scene-dock、islands、market、scale、river、lighthouse、gears、farm、bakery、summit）、
+// 延伸區四座小島（scene-isle-*，共用 scene-isle-kit）與海峽（scene-strait）。各章共用的放置器、地形塊與小物件在 quest-map-scenes/scene-kit.tsx
+// （延後載入的共用 chunk，預算 sceneKitGzipKb）；改寫一章的範本是 scene-dock.tsx（構圖純函式 planX 加畫法）。
+// 場景 chunk 載入失敗時改成什麼都不畫（finding map-6）：純裝飾的東西不該讓地圖被錯誤頁取代。
+// 第一屏的場景和地圖一起到（維護者 2026-10-26：點進任何一頁都要直接看到完整的資訊）：Play 在第一次捲動定位之後量出視窗附近的區段，
+// 用 SceneReadyProvider 的 eager 要求那幾章立刻載入，場景畫好時由 onLoaded 回報，全部到齊才讓布幕掀開；其他章仍等進入視窗前後一屏才載入。
+import { createContext, memo, useContext, useEffect, useRef, useState, type ComponentType } from 'react';
+import type { SceneGeo } from './layout.ts';
 
-const CORE_SCENES: readonly SceneKind[] = ['dock', 'islands', 'market', 'scale', 'river', 'lighthouse', 'gears', 'farm', 'bakery', 'summit'];
+export type SceneKind =
+  | 'dock'
+  | 'islands'
+  | 'market'
+  | 'scale'
+  | 'river'
+  | 'lighthouse'
+  | 'gears'
+  | 'farm'
+  | 'bakery'
+  | 'summit'
+  | 'isle-valuation'
+  | 'isle-finance'
+  | 'isle-stakeholders'
+  | 'isle-ledger';
 
+/** 主線第 1 到 10 章的場景，依 03 第 2.2 節的章節草案順序 */
+export const CORE_SCENES: readonly SceneKind[] = ['dock', 'islands', 'market', 'scale', 'river', 'lighthouse', 'gears', 'farm', 'bakery', 'summit'];
+/** 延伸區 E01 到 E04 的小島 */
+export const EXTENSION_SCENES: readonly SceneKind[] = ['isle-valuation', 'isle-finance', 'isle-stakeholders', 'isle-ledger'];
+export const ALL_SCENES: readonly SceneKind[] = [...CORE_SCENES, ...EXTENSION_SCENES];
+/** 物件層的種類：章節場景加上延伸區海峽的海面層（海峽不是章節，sceneFor 不會選到它，地景底色另見 terrain.ts 的 STRAIT_TERRAIN） */
+export type SceneLayerKind = SceneKind | 'strait';
+
+/** 依章序（主線與延伸區各自從 1 起算）與延伸旗標選場景；章數超過設定時輪流使用 */
 export function sceneFor(chapterNo: number, extension: boolean): SceneKind {
-  if (extension) return 'island';
-  return CORE_SCENES[(chapterNo - 1) % CORE_SCENES.length]!;
+  const list = extension ? EXTENSION_SCENES : CORE_SCENES;
+  const i = Math.max(0, Math.floor(chapterNo) - 1) % list.length;
+  return list[i]!;
 }
 
-const GROUND = 'var(--ll-surface-2)';
-const WATER = 'var(--ll-element-asset-tint)';
-const WOOD = 'var(--ll-element-expense-tint)';
-const LEAF = 'var(--ll-element-equity-tint)';
-const WARM = 'var(--ll-highlight-ring)';
-const INK = 'var(--ll-text-4)';
-const SUN = 'var(--ll-element-revenue-tint)';
-
-function Stars() {
-  // 深色主題的夜空星點（淺色下由 CSS 隱藏）
-  return (
-    <g className="qm-scene__stars" fill={INK}>
-      <circle cx="40" cy="60" r="1.5" />
-      <circle cx="140" cy="30" r="1" />
-      <circle cx="260" cy="70" r="1.5" />
-      <circle cx="340" cy="40" r="1" />
-      <circle cx="200" cy="110" r="1" />
-    </g>
-  );
+/** 場景元件收到的 props：照 geo 畫 */
+export interface SceneProps {
+  geo: SceneGeo;
 }
+type SceneModule = { default: ComponentType<SceneProps>; geoAware?: boolean };
+const LOADERS: Record<SceneLayerKind, () => Promise<SceneModule>> = {
+  dock: () => import('../quest-map-scenes/scene-dock.tsx'),
+  islands: () => import('../quest-map-scenes/scene-islands.tsx'),
+  market: () => import('../quest-map-scenes/scene-market.tsx'),
+  scale: () => import('../quest-map-scenes/scene-scale.tsx'),
+  river: () => import('../quest-map-scenes/scene-river.tsx'),
+  lighthouse: () => import('../quest-map-scenes/scene-lighthouse.tsx'),
+  gears: () => import('../quest-map-scenes/scene-gears.tsx'),
+  farm: () => import('../quest-map-scenes/scene-farm.tsx'),
+  bakery: () => import('../quest-map-scenes/scene-bakery.tsx'),
+  summit: () => import('../quest-map-scenes/scene-summit.tsx'),
+  'isle-valuation': () => import('../quest-map-scenes/scene-isle-valuation.tsx'),
+  'isle-finance': () => import('../quest-map-scenes/scene-isle-finance.tsx'),
+  'isle-stakeholders': () => import('../quest-map-scenes/scene-isle-stakeholders.tsx'),
+  'isle-ledger': () => import('../quest-map-scenes/scene-isle-ledger.tsx'),
+  strait: () => import('../quest-map-scenes/scene-strait.tsx'),
+};
 
-function body(kind: SceneKind) {
-  switch (kind) {
-    case 'dock':
-      return (
-        <>
-          <rect x="0" y="560" width="400" height="240" fill={WATER} />
-          <rect x="0" y="700" width="400" height="100" fill={GROUND} />
-          <rect x="120" y="600" width="160" height="22" fill={WOOD} />
-          <rect x="140" y="622" width="12" height="60" fill={WOOD} />
-          <rect x="248" y="622" width="12" height="60" fill={WOOD} />
-          <path d="M60 740 l40 -16 l40 16 l40 -16 l40 16 v40 H60Z" fill={SUN} />
-          <circle cx="330" cy="120" r="34" fill={SUN} />
-        </>
-      );
-    case 'islands':
-      return (
-        <>
-          <rect x="0" y="520" width="400" height="280" fill={WATER} />
-          <ellipse cx="90" cy="640" rx="70" ry="28" fill={GROUND} />
-          <ellipse cx="220" cy="580" rx="60" ry="24" fill={GROUND} />
-          <ellipse cx="320" cy="690" rx="66" ry="26" fill={GROUND} />
-          <path d="M90 612 v-50 l26 10 l-26 10" fill={WARM} />
-          <path d="M220 556 v-50 l26 10 l-26 10" fill={LEAF} />
-          <path d="M320 664 v-50 l26 10 l-26 10" fill={SUN} />
-        </>
-      );
-    case 'market':
-      return (
-        <>
-          <rect x="0" y="680" width="400" height="120" fill={GROUND} />
-          <rect x="40" y="600" width="110" height="80" fill={WOOD} />
-          <path d="M30 600 h130 l-14 -40 H44Z" fill={WARM} />
-          <rect x="250" y="610" width="110" height="70" fill={WOOD} />
-          <path d="M240 610 h130 l-14 -40 H254Z" fill={SUN} />
-          <rect x="160" y="640" width="80" height="8" fill={INK} />
-          <rect x="170" y="620" width="60" height="8" fill={INK} />
-          <rect x="180" y="600" width="40" height="8" fill={INK} />
-        </>
-      );
-    case 'scale':
-      return (
-        <>
-          <rect x="0" y="700" width="400" height="100" fill={GROUND} />
-          <rect x="194" y="520" width="12" height="180" fill={WOOD} />
-          <rect x="90" y="520" width="220" height="10" rx="5" fill={WOOD} />
-          <path d="M100 530 l-40 70 h80Z" fill={WATER} />
-          <path d="M300 530 l-40 70 h80Z" fill={WARM} />
-          <rect x="80" y="580" width="40" height="22" fill={LEAF} />
-          <rect x="280" y="580" width="40" height="22" fill={SUN} />
-        </>
-      );
-    case 'river':
-      return (
-        <>
-          <rect x="0" y="640" width="400" height="160" fill={GROUND} />
-          <path d="M40 300 q40 120 100 200 t60 240 H140 q-20 -140 -60 -220 t-60 -220Z" fill={WATER} />
-          <path d="M360 320 q-40 120 -100 200 t-60 220 h60 q20 -140 60 -220 t60 -200Z" fill={WATER} />
-          <rect x="150" y="600" width="100" height="16" rx="4" fill={WOOD} />
-          <circle cx="330" cy="120" r="34" fill={SUN} />
-        </>
-      );
-    case 'lighthouse':
-      return (
-        <>
-          <rect x="0" y="600" width="400" height="200" fill={WATER} />
-          <ellipse cx="200" cy="640" rx="120" ry="40" fill={GROUND} />
-          <path d="M176 620 l10 -200 h28 l10 200Z" fill={WOOD} />
-          <rect x="182" y="400" width="36" height="28" fill={SUN} />
-          <path d="M218 404 l120 -40 v100Z" fill={SUN} opacity="0.5" />
-          <circle cx="60" cy="100" r="26" fill={INK} />
-        </>
-      );
-    case 'gears':
-      return (
-        <>
-          <rect x="0" y="680" width="400" height="120" fill={GROUND} />
-          <circle cx="120" cy="560" r="60" fill={WOOD} />
-          <circle cx="120" cy="560" r="24" fill={GROUND} />
-          <circle cx="230" cy="620" r="44" fill={WARM} />
-          <circle cx="230" cy="620" r="16" fill={GROUND} />
-          <circle cx="310" cy="540" r="36" fill={SUN} />
-          <circle cx="310" cy="540" r="12" fill={GROUND} />
-        </>
-      );
-    case 'farm':
-      return (
-        <>
-          <rect x="0" y="600" width="400" height="200" fill={LEAF} />
-          <path d="M0 640 h400 M0 690 h400 M0 740 h400" stroke={GROUND} strokeWidth="8" />
-          <circle cx="320" cy="560" r="50" fill="none" stroke={WOOD} strokeWidth="10" />
-          <path d="M320 510 v100 M270 560 h100" stroke={WOOD} strokeWidth="8" />
-          <circle cx="80" cy="120" r="34" fill={SUN} />
-        </>
-      );
-    case 'bakery':
-      return (
-        <>
-          <rect x="0" y="680" width="400" height="120" fill={GROUND} />
-          <rect x="60" y="540" width="140" height="140" rx="12" fill={WOOD} />
-          <path d="M90 620 a40 40 0 0 1 80 0 v30 H90Z" fill={WARM} />
-          <rect x="220" y="640" width="140" height="14" rx="7" fill={INK} />
-          <ellipse cx="260" cy="628" rx="18" ry="10" fill={SUN} />
-          <ellipse cx="310" cy="628" rx="18" ry="10" fill={SUN} />
-        </>
-      );
-    case 'summit':
-      return (
-        <>
-          <path d="M0 800 L140 420 L240 560 L320 460 L400 800Z" fill={GROUND} />
-          <path d="M110 500 L140 420 L170 500Z" fill={WARM} />
-          <path d="M140 420 v-80 l30 12 l-30 12" fill={SUN} />
-          <circle cx="330" cy="120" r="34" fill={SUN} />
-        </>
-      );
-    case 'island':
-      return (
-        <>
-          <rect x="0" y="540" width="400" height="260" fill={WATER} />
-          <ellipse cx="200" cy="660" rx="110" ry="36" fill={GROUND} />
-          <rect x="194" y="560" width="8" height="90" fill={WOOD} />
-          <path d="M198 560 q-40 -20 -60 10 q30 -6 60 10 q30 -16 60 -10 q-20 -30 -60 -10Z" fill={LEAF} />
-          <rect x="100" y="640" width="30" height="8" fill={WARM} />
-          <rect x="270" y="640" width="30" height="8" fill={WARM} />
-        </>
-      );
+const EmptyScene: ComponentType<SceneProps> = () => null;
+
+/** 載好的場景元件（模組層級的快取：同一種場景第二次掛載時同步畫出，不再等） */
+const loadedScenes = new Map<SceneLayerKind, ComponentType<SceneProps>>();
+const loadingScenes = new Map<SceneLayerKind, Promise<ComponentType<SceneProps>>>();
+
+/** 載入一種場景的模組；失敗時記一筆錯誤、改成空場景（之後不再重試，這一次瀏覽就是沒有裝飾） */
+export function loadScene(kind: SceneLayerKind): Promise<ComponentType<SceneProps>> {
+  let p = loadingScenes.get(kind);
+  if (!p) {
+    p = LOADERS[kind]().then(
+      (m) => m.default,
+      (e: unknown) => {
+        void import('../../lib/errors.ts')
+          .then((x) => x.logError(`scene ${kind}: ${(e as Error)?.message ?? String(e)}`, (e as Error)?.stack ?? ''))
+          .catch(() => {});
+        return EmptyScene;
+      },
+    );
+    p.then((C) => loadedScenes.set(kind, C));
+    loadingScenes.set(kind, p);
   }
+  return p;
 }
 
-export function ChapterScene({ kind }: { kind: SceneKind }) {
+export interface SceneReadyState {
+  /** 不等進入視窗就要載入的場景（第一屏附近的那幾章）；null 表示還沒量 */
+  readonly eager: ReadonlySet<SceneLayerKind> | null;
+  /** 某一種場景畫出來了（含載入失敗改成空場景） */
+  readonly onLoaded: (kind: SceneLayerKind) => void;
+}
+const SceneReadyCtx = createContext<SceneReadyState | null>(null);
+/** 地圖頁提供：第一屏要先到的場景與回報 */
+export const SceneReadyProvider = SceneReadyCtx.Provider;
+
+export interface ChapterSceneProps {
+  kind: SceneLayerKind;
+  /** 這一段（章節或海峽）的場景座標（layout.ts 的 sceneGeo） */
+  geo: SceneGeo;
+  /** 目前關卡（圖規 6.2 的 memo 鍵；保護框裡每個節點都有鈴框，所以其實不隨它變） */
+  currentLevelId?: string | null;
+  /** 不等進入視窗就載入（測試或截圖用） */
+  eager?: boolean;
+  /**
+   * 只畫場景的一段（場景座標，y 向下）：第 1 章的場景延伸到地圖底部的地面（sceneGeo 的 below），
+   * 區段裡畫 0 到區段高、地面（.qm-ground）裡畫剩下的部分，兩張 svg 上下接齊。預設整段（0 到 geo.h）
+   */
+  view?: { readonly y: number; readonly h: number };
+}
+
+/** 章節區段的物件層：svg 一開始是空的，所屬區段進入視窗前後一屏（或頁面點名 eager）時載入場景模組並畫出來；已載過的場景第一次 render 就畫 */
+function ChapterSceneImpl({ kind, geo, eager = false, view }: ChapterSceneProps) {
+  const ref = useRef<SVGSVGElement>(null);
+  const ctx = useContext(SceneReadyCtx);
+  const wanted = eager || ctx?.eager?.has(kind) === true;
+  const [near, setNear] = useState(wanted);
+  const [Body, setBody] = useState<ComponentType<SceneProps> | null>(() => (wanted ? (loadedScenes.get(kind) ?? null) : null));
+  useEffect(() => {
+    if (near || wanted) return;
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setNear(true);
+      return;
+    }
+    // 觀察所屬的章節區段（content-visibility: auto 之下，區段本身的交集最可靠）
+    const target = el.parentElement ?? el;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: '100% 0px 100% 0px' },
+    );
+    io.observe(target);
+    return () => io.disconnect();
+  }, [near, wanted]);
+  const onLoaded = ctx?.onLoaded;
+  useEffect(() => {
+    if (!near && !wanted) return;
+    let alive = true;
+    void loadScene(kind).then((C) => {
+      if (!alive) return;
+      setBody(() => C);
+      onLoaded?.(kind);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [near, wanted, kind, onLoaded]);
+  const vy = view?.y ?? 0;
+  const vh = view?.h ?? geo.h;
   return (
-    <svg className={`qm-scene qm-scene--${kind}`} viewBox="0 0 400 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-      <Stars />
-      {body(kind)}
+    <svg
+      ref={ref}
+      className={`qm-scene qm-scene--${kind}`}
+      width={geo.bandW}
+      height={vh}
+      viewBox={`0 ${vy} ${geo.bandW} ${vh}`}
+      aria-hidden="true"
+      focusable="false"
+      data-scene={kind}
+      data-loaded={Body ? 'true' : undefined}
+      data-part={vy > 0 ? 'ground' : undefined}
+    >
+      {Body && <Body geo={geo} />}
     </svg>
   );
 }
+
+/** memo 鍵（圖規 6.2）：場景種類、區帶寬、軌道寬、區段高、畫的那一段與目前關卡；其他父層重繪不重畫場景 */
+export const ChapterScene = memo(
+  ChapterSceneImpl,
+  (a, b) =>
+    a.kind === b.kind &&
+    a.eager === b.eager &&
+    a.currentLevelId === b.currentLevelId &&
+    a.geo.bandW === b.geo.bandW &&
+    a.geo.h === b.geo.h &&
+    a.view?.y === b.view?.y &&
+    a.view?.h === b.view?.h &&
+    a.geo.track.left === b.geo.track.left &&
+    a.geo.track.right === b.geo.track.right,
+);

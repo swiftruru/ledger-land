@@ -2,23 +2,43 @@
   "id": "tm_z2c2sbg4",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "處分資產收入(+)", "en": "Proceeds from disposal of non-current assets (+)" },
+  "label": {
+    "zh-TW": "處分資產收入(+)",
+    "en": "Proceeds from disposal of non-current assets (+)"
+  },
   "teacherLabel": "處分資產收入(+)",
   "currentTwLabel": "處分不動產、廠房及設備",
   "ifrsEnglish": "Proceeds from disposal of non-current assets",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 7.16(b)",
   "note": {
-    "zh-TW": "網站補充的延伸列，模板沒有；金額不為零時才顯示，並標「模板無此列」。",
-    "en": "An extension row added by the site. The template has no such line; it is shown only when the amount is not nil, marked as absent from the template."
+    "zh-TW": "網站補充的延伸列，課程模板沒有；金額不為零時才顯示，並標「模板無此列」。",
+    "en": "An extension line added by the site; the course template has no such line. It is shown only when the amount is non-zero, marked as not in the template."
   },
   "definition": {
-    "zh-TW": "賣掉設備等長期資產時收到的現金。處分的利益或損失留在損益表，這裡記的是收到的全部價款。",
-    "en": "Cash received when equipment or another long-term asset is sold. Any gain or loss stays in the income statement; this line records the full proceeds."
-  }
+    "zh-TW": "賣掉機器設備等長期資產時收到的現金。\n\n這是投資活動的流入；賣價和帳面金額的差額（處分損益）列在損益表的營業外收支，不影響這一列的金額。",
+    "en": "Cash received from selling long-lived assets such as machinery.\n\nIt is an investing inflow; the difference between the selling price and the carrying amount (the gain or loss on disposal) goes to non-operating income or expenses on the income statement and does not change this line."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表投資活動區。本課故事沒有處分資產，所以用不到。",
+    "en": "Where it sits: the investing activities section of the statement of cash flows. The course story disposes of nothing, so it is not used."
+  },
+  "misconception": {
+    "zh-TW": "把處分利益當成這一列的金額。這一列填的是收到的全部價款，不是賺到的差額；處分利益另外在損益表出現，間接法裡還要從稅前淨利扣掉以免重複。",
+    "en": "Entering the gain on disposal as this line’s amount. The line records the full proceeds received, not the profit made; the gain appears separately on the income statement and is deducted from profit before tax in the indirect method to avoid double counting."
+  },
+  "related": [
+    "tm_gt8g4afe",
+    "tm_xen3p30x",
+    "tm_6nmfxa10",
+    "tm_9hrfpqem"
+  ]
 }

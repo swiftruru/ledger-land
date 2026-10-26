@@ -1,0 +1,48 @@
+{
+  "id": "ch_a0s9tk",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "order": 14,
+  "scope": "extension",
+  "examScope": "not_in_exam",
+  "kind": "journal",
+  "title": {
+    "zh-TW": "借貸與分錄",
+    "en": "Debits, credits and journal entries"
+  },
+  "summary": {
+    "zh-TW": "主線用「從報表倒推」學會計，這一章補上會計人員記帳的那一層：每一筆交易寫成一筆分錄，左邊叫借方、右邊叫貸方，兩邊金額永遠相等；再把分錄過到 T 字帳、算出餘額，對回三張報表。第一關先用教學卡說明，再動手寫分錄。本章不列入期中考範圍。",
+    "en": "The main path learns accounting by working back from the statements; this chapter adds the layer the bookkeeper works in. Every transaction is written as a journal entry, with a left side called debit and a right side called credit that always total the same; the entries are then posted to T-accounts, balanced, and traced back to the three statements. The first level opens with a teaching card before you write entries yourself. This chapter is not in the midterm scope."
+  },
+  "objectiveIds": [
+    "obj_trr8qh",
+    "obj_cskmkg",
+    "obj_dqxgq8",
+    "obj_2489dv"
+  ],
+  "levelIds": [
+    "lv_5y25q2rd",
+    "lv_9ysh66da",
+    "lv_svhghrzy"
+  ],
+  "prerequisites": [
+    "ch_c5f8w2",
+    "ch_s0525x"
+  ],
+  "badge": {
+    "icon": "scales",
+    "title": {
+      "zh-TW": "左右平衡",
+      "en": "Left and right in balance"
+    }
+  },
+  "termRefs": [
+    "tm_b9e9vjct",
+    "tm_50v66dt7",
+    "tm_kfnzbf8s",
+    "tm_p5yjwmnm",
+    "tm_2967ackr",
+    "tm_cfghjxzq"
+  ]
+}

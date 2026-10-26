@@ -1,0 +1,69 @@
+{
+  "id": "q_qse9t0ea",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "single_choice",
+  "objectiveId": "obj_6x06z2",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity",
+    "days"
+  ],
+  "termRefs": [
+    "tm_gysqtps0",
+    "tm_2s4hterv"
+  ],
+  "scored": true,
+  "vars": {
+    "turnover": 7.3
+  },
+  "prompt": {
+    "zh-TW": "海風民宿的應收款項週轉率是 {{number:vars.turnover|digits=2,unit=times}}。要算出平均收現日數，應該怎麼做？",
+    "en": "Sea Breeze Guesthouse has a receivables turnover of {{number:vars.turnover|digits=2,unit=times}}. How do you work out the average collection period?"
+  },
+  "options": [
+    {
+      "id": "o_yafp",
+      "text": {
+        "zh-TW": "用 {{number:365|unit=day}} 除以週轉率",
+        "en": "Divide {{number:365|unit=day}} by the turnover"
+      },
+      "feedback": {
+        "zh-TW": "答對了。一年轉幾輪，每一輪就是一年除以輪數那麼多天。",
+        "en": "That’s right. If receivables turn over a certain number of times a year, each turn lasts the days in a year divided by that number."
+      }
+    },
+    {
+      "id": "o_4awy",
+      "text": {
+        "zh-TW": "用週轉率乘以 {{number:365|unit=day}}",
+        "en": "Multiply the turnover by {{number:365|unit=day}}"
+      },
+      "feedback": {
+        "zh-TW": "你知道天數和週轉率有關，也用到了一年的天數，方向對了一半。不過週轉率越高表示收款越快、天數應該越短，所以是用一年的天數去「除以」週轉率，不是相乘。",
+        "en": "You know days and turnover are linked and used the days in a year, so you are halfway there. But higher turnover means faster collection and fewer days, so you divide the days in a year by the turnover rather than multiplying."
+      },
+      "misconceptionId": "mc_xvtr"
+    },
+    {
+      "id": "o_7fjm",
+      "text": {
+        "zh-TW": "用營業收入除以週轉率",
+        "en": "Divide revenue by the turnover"
+      },
+      "feedback": {
+        "zh-TW": "營業收入除以週轉率算回來的是應收帳款的餘額，單位是金額，不是天數。",
+        "en": "Revenue divided by turnover gives you back the receivables balance, an amount of money rather than a number of days."
+      },
+      "misconceptionId": "mc_x5nh"
+    }
+  ],
+  "correctOptionId": "o_yafp",
+  "explanation": {
+    "zh-TW": "{{term:tm_gysqtps0}}＝一年的天數 ÷ {{term:tm_2s4hterv}}。{{option:o_yafp}}是正確的換算；{{option:o_4awy}}會得到一個越收越快、天數卻越多的矛盾結果，{{option:o_7fjm}}算出來的是金額。",
+    "en": "{{term:tm_gysqtps0}} = days in a year ÷ {{term:tm_2s4hterv}}. {{option:o_yafp}} is the right conversion; {{option:o_4awy}} would absurdly give more days the faster the collection, and {{option:o_7fjm}} produces an amount of money."
+  }
+}

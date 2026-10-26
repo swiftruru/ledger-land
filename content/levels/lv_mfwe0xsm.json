@@ -1,0 +1,26 @@
+{
+  "id": "lv_mfwe0xsm",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "order": 4,
+  "title": {
+    "zh-TW": "綜合挑戰：參考值不是判決",
+    "en": "Final challenge: a reference value is not a verdict"
+  },
+  "objectiveIds": [
+    "obj_wb2v68",
+    "obj_6f1csw",
+    "obj_fyd5cv",
+    "obj_ftamqc"
+  ],
+  "questionIds": [
+    "q_cdq7fbay",
+    "q_by6w2nh0",
+    "q_m1rdag0a",
+    "q_hs4nb6mv",
+    "q_ygfnrnzh",
+    "q_wp9qpbd1"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "lv_0dvm2fte",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "order": 2,
+  "title": {
+    "zh-TW": "把利益換回現金",
+    "en": "Turning profit back into cash"
+  },
+  "objectiveIds": [
+    "obj_mcdpxx",
+    "obj_3ddr90"
+  ],
+  "questionIds": [
+    "q_vvnr9yy8",
+    "q_4pypyedm",
+    "q_ch2x3m6w",
+    "q_v40eefpw",
+    "q_hyyt57sv",
+    "q_40bkjhgt"
+  ]
+}

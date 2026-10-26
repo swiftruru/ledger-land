@@ -1,6 +1,6 @@
 {
   "id": "q_4dc31y14",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -60,6 +60,6 @@
   "correctOptionId": "o_4t8s",
   "explanation": {
     "zh-TW": "「哪一段期間做得比較好」是期間的問題，看{{option:o_4t8s}}。{{option:o_m08k}}只是時點快照；{{option:o_55ck}}的現金可能受借款與買設備影響，不等於經營成績。",
-    "en": "\"Which period was better\" is a question about a period, so look at {{option:o_4t8s}}. {{option:o_m08k}} is only a snapshot, and the cash on {{option:o_55ck}} can be swayed by loans and equipment purchases, so it is not a measure of performance."
+    "en": "‘Which period was better’ is a question about a period, so look at {{option:o_4t8s}}. {{option:o_m08k}} is only a snapshot, and the cash on {{option:o_55ck}} can be swayed by loans and equipment purchases, so it is not a measure of performance."
   }
 }

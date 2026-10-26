@@ -1,6 +1,6 @@
 {
   "id": "q_m29f3khg",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -21,7 +21,7 @@
   },
   "statement": {
     "zh-TW": "小山咖啡向銀行借了 {{money:vars.loan}}，存進店裡的戶頭。因為錢已經在戶頭裡，這 {{money:vars.loan}} 算是店自己的錢，屬於股東權益。",
-    "en": "Hillside Coffee borrowed {{money:vars.loan}} from the bank and the money is now in the shop's account. Because the money is in the account, that {{money:vars.loan}} counts as the shop's own money and belongs to equity."
+    "en": "Hillside Coffee borrowed {{money:vars.loan}} from the bank and the money is now in the shop’s account. Because the money is in the account, that {{money:vars.loan}} counts as the shop’s own money and belongs to equity."
   },
   "correct": false,
   "feedbackTrue": {

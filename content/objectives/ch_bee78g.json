@@ -1,0 +1,213 @@
+{
+  "chapterId": "ch_bee78g",
+  "items": [
+    {
+      "id": "obj_am21nv",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_bee78g",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能依題目指定的版本計算並解讀 ROA、ROE、稅前利益佔實收資本比率、純益率與每股盈餘",
+        "en": "Calculate and interpret ROA, ROE, the profit before tax to paid-in capital ratio, the net profit margin and earnings per share in the version a question specifies"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_96tb",
+          "text": {
+            "zh-TW": "把 ROA 與 ROE 的分母搞混，用股東權益算 ROA 或用資產算 ROE",
+            "en": "Mixing up the denominators of ROA and ROE, using equity for ROA or assets for ROE"
+          }
+        },
+        {
+          "id": "mc_8z3a",
+          "text": {
+            "zh-TW": "以為 ROA 只有一種公式，不同版本算出來一定相同",
+            "en": "Thinking there is only one ROA formula and every version must give the same figure"
+          }
+        },
+        {
+          "id": "mc_9cf5",
+          "text": {
+            "zh-TW": "每股盈餘直接用股本金額當分母，忘了換算成股數",
+            "en": "Using the share capital amount as the denominator of EPS instead of converting it into a number of shares"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "single_choice"
+      ],
+      "termRefs": [
+        "tm_r0a5t3kq",
+        "tm_0k8vegyr",
+        "tm_bkqw8c59",
+        "tm_92yzx0fn",
+        "tm_knqbr6g4"
+      ],
+      "pendingRefs": [
+        "T21",
+        "T22"
+      ]
+    },
+    {
+      "id": "obj_33hdss",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_bee78g",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能算出償債能力的三個指標（流動、速動與利息保障倍數）並說明各自的意義，以及流動負債為零時為什麼顯示 N/A",
+        "en": "Work out the three solvency ratios (current, quick and times interest earned), explain what each one means, and say why the current ratio shows N/A when there are no current liabilities"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_gncf",
+          "text": {
+            "zh-TW": "速動比率忘了把存貨排除",
+            "en": "Forgetting to exclude inventory from the quick ratio"
+          }
+        },
+        {
+          "id": "mc_8ee3",
+          "text": {
+            "zh-TW": "利息保障倍數的分子直接用本期淨利，沒有加回利息與所得稅",
+            "en": "Using profit for the period as the numerator of times interest earned without adding back interest and tax"
+          }
+        },
+        {
+          "id": "mc_vnp8",
+          "text": {
+            "zh-TW": "以為流動負債為零時流動比率是無限大或滿分",
+            "en": "Thinking the current ratio is infinite or a perfect score when there are no current liabilities"
+          }
+        }
+      ],
+      "plannedQuestions": 7,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "ratio_interpret",
+        "true_false",
+        "multi_choice"
+      ],
+      "termRefs": [
+        "tm_c8r1t4zm",
+        "tm_n8ysnw1m",
+        "tm_h3c7v1xe",
+        "tm_c2y9b5ex",
+        "tm_k52yxb68"
+      ],
+      "pendingRefs": [
+        "T28"
+      ]
+    },
+    {
+      "id": "obj_mj1tas",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_bee78g",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能把一個指標的變化拆回報表上的原因（分子變了還是分母變了），並搭配另一個指標交叉檢查",
+        "en": "Trace a change in a ratio back to its cause on the statements (did the numerator or the denominator move) and cross-check it with a second ratio"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_w74a",
+          "text": {
+            "zh-TW": "看到 ROE 上升就認定獲利能力變好，忽略分母的權益可能變小",
+            "en": "Reading a rise in ROE as better profitability, ignoring that equity in the denominator may have shrunk"
+          }
+        },
+        {
+          "id": "mc_vz9j",
+          "text": {
+            "zh-TW": "看到流動比率上升就認定短期償債能力變好，忽略可能只是存貨堆積",
+            "en": "Reading a rise in the current ratio as better short-term solvency, ignoring that it may just be piled-up inventory"
+          }
+        },
+        {
+          "id": "mc_dcpb",
+          "text": {
+            "zh-TW": "只看一個指標就下結論，不交叉檢查",
+            "en": "Drawing a conclusion from a single ratio without cross-checking"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "ratio_interpret",
+        "single_choice",
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_0k8vegyr",
+        "tm_r0a5t3kq",
+        "tm_c8r1t4zm",
+        "tm_n8ysnw1m",
+        "tm_92yzx0fn",
+        "tm_h3c7v1xe"
+      ]
+    },
+    {
+      "id": "obj_32ab85",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_bee78g",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能分辨以實收資本（股本）為分母的指標與以資產或權益為分母的指標各回答什麼問題，並知道營業利益佔實收資本比率是延伸指標",
+        "en": "Tell apart what ratios based on paid-in capital (share capital) answer and what ratios based on assets or equity answer, and know that the operating profit to paid-in capital ratio is an extension ratio"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_zxrb",
+          "text": {
+            "zh-TW": "把實收資本（股本）當成股東權益總額",
+            "en": "Treating paid-in capital (share capital) as total equity"
+          }
+        },
+        {
+          "id": "mc_5pdb",
+          "text": {
+            "zh-TW": "以為稅前利益佔實收資本比率是一種資產報酬率",
+            "en": "Thinking the profit before tax to paid-in capital ratio is a kind of return on assets"
+          }
+        },
+        {
+          "id": "mc_bvjs",
+          "text": {
+            "zh-TW": "以為每股盈餘越高的公司獲利能力一定越強，忽略股數不同",
+            "en": "Assuming a company with higher EPS must be more profitable, ignoring differences in the number of shares"
+          }
+        }
+      ],
+      "plannedQuestions": 4,
+      "suggestedTypes": [
+        "single_choice",
+        "ratio_numeric",
+        "classify",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_bkqw8c59",
+        "tm_7km3j04r",
+        "tm_knqbr6g4",
+        "tm_5e3py55a",
+        "tm_y37ymj9w"
+      ],
+      "pendingRefs": [
+        "T23"
+      ]
+    }
+  ]
+}

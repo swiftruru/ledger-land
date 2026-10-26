@@ -2,23 +2,43 @@
   "id": "tm_k1tghpyd",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "行銷費用", "en": "Marketing expenses" },
+  "label": {
+    "zh-TW": "行銷費用",
+    "en": "Marketing expenses"
+  },
   "teacherLabel": "行銷費用",
   "currentTwLabel": null,
   "ifrsEnglish": "Marketing expenses",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "0-2 以 ME 代表；網站補充的延伸科目，給 ME intensity 等指標使用。台灣報表多列在推銷費用。",
-    "en": "Represented by ME in the 0-2 slides; an extension account added by the site for ratios such as marketing expense intensity. Taiwanese statements usually show it under distribution costs."
+    "zh-TW": "課程的企業績效指標以 ME 代表；這是網站補充的延伸科目，給 ME intensity 等指標使用。台灣報表多列在推銷費用。",
+    "en": "The course’s business performance indicators use ME for it; it is an extension account added by the site for ratios such as marketing expense intensity. Taiwanese statements usually show it under distribution costs."
   },
   "definition": {
-    "zh-TW": "廣告、促銷等推廣產品的費用。它屬於銷管費用。",
-    "en": "Advertising, promotion and similar costs of marketing the products. It belongs to distribution and administrative expenses."
+    "zh-TW": "為了推廣產品與品牌而花的廣告、活動與促銷支出。\n\n它是營業費用的一種；課程的企業績效指標用它衡量行銷投入的強度。",
+    "en": "Spending on advertising, events and promotions to market products and the brand.\n\nIt is a type of operating expense; the course’s business performance indicators use it to measure marketing intensity."
   },
-  "accountRef": "marketing_expense"
+  "example": {
+    "zh-TW": "位置：損益表銷管費用區。ME intensity 以它為分子。",
+    "en": "Where it sits: the distribution and administrative expenses section of the income statement. Marketing expense intensity uses it as the numerator."
+  },
+  "misconception": {
+    "zh-TW": "以為行銷支出會提高營業成本、壓低毛利。它是營業費用，在毛利之後才扣，影響的是營業利益而不是營業毛利。",
+    "en": "Assuming marketing spending raises cost of sales and lowers gross profit. It is an operating expense deducted after gross profit, so it affects operating profit rather than gross profit."
+  },
+  "accountRef": "marketing_expense",
+  "related": [
+    "tm_x6e56fqp",
+    "tm_j8zg281d",
+    "tm_kyjfrraq",
+    "tm_dxr5anv4"
+  ]
 }

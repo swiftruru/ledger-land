@@ -1,0 +1,77 @@
+{
+  "id": "q_9zbp1zqg",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_f5en1x",
+  "difficulty": 2,
+  "tags": [
+    "five_step_fill",
+    "pretax_income"
+  ],
+  "termRefs": [
+    "tm_z971merj",
+    "tm_r7x2c9fa",
+    "tm_chbctb2d"
+  ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_aw2j4t"
+  },
+  "scored": true,
+  "type": "five_step_fill",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 120000,
+        "inventory": 300000,
+        "accounts_payable": 100000,
+        "share_capital": 320000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_credit",
+        "params": {
+          "price": 480000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "is_pretax_income",
+        "measure": "value"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "cf_pretax_income",
+        "measure": "value"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "value"
+      }
+    ]
+  },
+  "openCells": [
+    "cf_pretax_income"
+  ],
+  "prompt": {
+    "zh-TW": "北風單車行把全部存貨賒銷給一家租車公司，售價 {{money:e1.price}}，貨款下個月才收。損益表與資產負債表已經算好，請填出現金流量表起算的稅前淨利，讓步驟②（勾稽點 A）亮綠燈。",
+    "en": "North Wind Cycles sells all its inventory on credit to a bike-hire company for {{money:e1.price}}, with payment due next month. The income statement and balance sheet are done; fill in the profit before tax that the statement of cash flows starts from, so that step 2 (check A) turns green."
+  },
+  "explanation": {
+    "zh-TW": "步驟②只是把損益表的稅前淨利 {{money:expected.t1.after}} 原封不動抄到現金流量表的第一列，所以答案是 {{money:expected.t2.after}}。雖然一毛錢都還沒收到（現金仍是 {{money:expected.t3.after}}），稅前淨利已經包含這筆賒銷的毛利。之後現金流量表會在「銷貨債權增加(-)」減掉整筆還沒收到的 {{money:e1.price}}，並在「存貨增加(-)」這一列以正數加回賣掉的存貨成本 {{money:e1.costOfAllInventory}}，營業活動的現金流量總計剛好是零，和現金沒有變動一致。",
+    "en": "Step 2 simply copies profit before tax of {{money:expected.t1.after}} from the income statement to the first line of the statement of cash flows, so the answer is {{money:expected.t2.after}}. Even though not a cent has been received yet (cash is still {{money:expected.t3.after}}), profit before tax already includes the gross profit on this credit sale. Further down, the statement of cash flows deducts the whole uncollected {{money:e1.price}} on the ‘increase in trade receivables (-)’ line and adds back the {{money:e1.costOfAllInventory}} cost of the inventory sold, as a positive figure, on the ‘increase in inventories (-)’ line, so net cash from operating activities comes to exactly zero, in line with the unchanged cash balance."
+  }
+}

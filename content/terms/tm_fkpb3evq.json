@@ -1,8 +1,8 @@
 {
   "id": "tm_fkpb3evq",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "投資活動的現金流量總計(-)",
@@ -30,7 +30,25 @@
     "en": "The template label uses a wrong word for total; the site shows the corrected wording and keeps the original as a searchable alias."
   },
   "definition": {
-    "zh-TW": "投資活動各列的合計。成長中的公司通常是淨流出，因為一直在添購設備；模板的列名帶著負號提醒這一點。",
-    "en": "The sum of the investing lines. A growing company usually shows a net outflow because it keeps buying equipment; the template label carries a minus sign as a reminder."
-  }
+    "zh-TW": "投資活動所有流入與流出加總之後的淨額。\n\n它告訴你公司這段期間為了長期資產與放款，淨投入或淨收回了多少現金；模板原文的「統計」是「總計」的用詞錯誤，網站顯示修正寫法。",
+    "en": "The net of all investing inflows and outflows.\n\nIt tells you how much net cash the company put into, or recovered from, long-lived assets and loans during the period; the template’s wording for total is a misused word, which the site shows corrected."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表投資活動區的最後一列。列名帶 (-) 是因為模板預期這一區通常是淨流出。它和營業活動、籌資活動的總計相加，就是現金及約當現金增減額。",
+    "en": "Where it sits: the last line of the investing section of the statement of cash flows. The (-) in the label reflects the template’s expectation that this section is usually a net outflow. Added to the operating and financing totals it gives the net change in cash and cash equivalents."
+  },
+  "misconception": {
+    "zh-TW": "把列名上的 (-) 當成「一定要填負數」。符號只是提示方向；這一區若有處分資產或收回放款的大筆流入，總計也可能是正數。",
+    "en": "Reading the (-) in the label as an instruction to always enter a negative number. The sign merely hints at the usual direction; with large disposal proceeds or loan collections the total can be positive."
+  },
+  "formula": {
+    "zh-TW": "投資活動的現金流量總計的算法：流入的收回放款與處分資產收入，減去流出的取得非流動資產、放貸支出與其他投資支出。",
+    "en": "Net cash used in investing activities = loan repayments received + disposal proceeds － payments to acquire non-current assets － loans advanced － other investing payments."
+  },
+  "related": [
+    "tm_9hrfpqem",
+    "tm_e61ht6yh",
+    "tm_vk8v09cy",
+    "tm_x6gmpvm5"
+  ]
 }

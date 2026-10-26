@@ -1,0 +1,66 @@
+{
+  "id": "q_y1jz9mjq",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_f5en1x",
+  "difficulty": 2,
+  "tags": [
+    "check_point",
+    "retained_earnings"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_4c6v99nn",
+    "tm_chbctb2d",
+    "tm_sf72dfsv",
+    "tm_tkj8x3a7"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "北風單車行今年剛成立，期初沒有未分配盈餘，也沒有發股利。步驟④（勾稽點 B）要怎麼比？",
+    "en": "North Wind Cycles was set up this year, with no opening unappropriated retained earnings and no dividends paid. How is step 4 (check B) done?"
+  },
+  "options": [
+    {
+      "id": "o_vr28",
+      "text": {
+        "zh-TW": "損益表最底下的本期淨利，要和資產負債表裡未分配盈餘多出來的金額一樣",
+        "en": "Profit for the period at the bottom of the income statement must match the amount by which unappropriated retained earnings on the balance sheet have grown"
+      },
+      "feedback": {
+        "zh-TW": "答對了。本期淨利會流進未分配盈餘，所以未分配盈餘增加的金額就是本期淨利。這家店期初是零、也沒發股利，增加額剛好等於期末餘額。",
+        "en": "Correct. Profit for the period flows into unappropriated retained earnings, so the increase in retained earnings is profit for the period. With a zero opening balance and no dividends, the increase happens to equal the closing balance."
+      }
+    },
+    {
+      "id": "o_d91s",
+      "text": {
+        "zh-TW": "損益表最底下的本期淨利，要和資產負債表裡的股本一樣",
+        "en": "Profit for the period at the bottom of the income statement must match share capital on the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "股本是股東出資的錢，和賺來的錢是不同來源。本期淨利流進的是未分配盈餘，不是股本。",
+        "en": "Share capital is money the shareholders put in; it is a different source from money earned. Profit for the period flows into unappropriated retained earnings, not share capital."
+      }
+    },
+    {
+      "id": "o_bve8",
+      "text": {
+        "zh-TW": "損益表第一層的營業毛利，要和資產負債表裡的未分配盈餘一樣",
+        "en": "Gross profit, the first level of the income statement, must match unappropriated retained earnings on the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "你找對了資產負債表那一邊，但損益表這邊要用最底下的本期淨利。營業毛利還沒扣費用、業外與所得稅，不是留在公司裡的金額。",
+        "en": "You have the right balance sheet side, but the income statement side must be profit for the period at the very bottom. Gross profit has not yet had expenses, non-operating items and tax deducted, so it is not what stays in the company."
+      }
+    }
+  ],
+  "correctOptionId": "o_vr28",
+  "explanation": {
+    "zh-TW": "步驟④把損益表的最後一列接到資產負債表的股東權益：{{option:o_vr28}}。完整的檢核是「期初未分配盈餘＋本期淨利－股利－提列公積＝期末未分配盈餘」；本題期初為零、沒有股利，所以簡化成本期淨利等於未分配盈餘。日後期初已有餘額時，本期淨利對的是未分配盈餘的增加額；如果這一期發了股利或提列公積，增加額會比本期淨利少這些金額，這時要回到上面的完整公式。",
+    "en": "Step 4 joins the last line of the income statement to equity on the balance sheet: {{option:o_vr28}}. The full check is ‘opening unappropriated retained earnings plus profit for the period, less dividends and reserve appropriations, equals closing retained earnings’; here the opening balance is zero and there are no dividends, so it reduces to profit for the period equalling retained earnings. Once there is an opening balance, profit for the period is compared with the increase in retained earnings; if dividends are paid or reserves appropriated in the period, the increase falls short of profit by those amounts, so go back to the full formula above."
+  }
+}

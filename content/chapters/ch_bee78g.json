@@ -1,0 +1,48 @@
+{
+  "id": "ch_bee78g",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "order": 10,
+  "scope": "core",
+  "examScope": "midterm",
+  "title": {
+    "zh-TW": "六大指標：產出（獲利能力、償債能力）",
+    "en": "The six ratio families: outputs (profitability and solvency)"
+  },
+  "summary": {
+    "zh-TW": "最後兩類看結果：公司這段期間留下多少利益（獲利能力），以及手上的資源夠不夠應付到期的債（償債能力）。這一章的計算題都指定指標的版本，例如 ROA 與 ROE 用課程 Excel 口徑；流動負債為零時流動比率顯示 N/A。最後練習把一個指標的變化拆回報表上的原因，再用另一個指標交叉檢查。",
+    "en": "The last two families look at results: how much profit the company kept for the period (profitability) and whether its resources are enough to meet debts as they fall due (solvency). Every calculation question in this chapter names the version of the ratio it uses, for example ROA and ROE on the course Excel basis, and the current ratio shows N/A when there are no current liabilities. It ends with tracing a change in a ratio back to its cause on the statements and cross-checking with a second ratio."
+  },
+  "objectiveIds": [
+    "obj_am21nv",
+    "obj_33hdss",
+    "obj_mj1tas",
+    "obj_32ab85"
+  ],
+  "levelIds": [
+    "lv_rxgnwsf0",
+    "lv_kvr537aw",
+    "lv_radd9bqk",
+    "lv_3ssvj0h2"
+  ],
+  "prerequisites": [
+    "ch_ft415v"
+  ],
+  "badge": {
+    "icon": "chart-line-up",
+    "title": {
+      "zh-TW": "成果判讀師",
+      "en": "Results reader"
+    }
+  },
+  "termRefs": [
+    "tm_r0a5t3kq",
+    "tm_0k8vegyr",
+    "tm_92yzx0fn",
+    "tm_knqbr6g4",
+    "tm_c8r1t4zm",
+    "tm_n8ysnw1m",
+    "tm_h3c7v1xe"
+  ]
+}

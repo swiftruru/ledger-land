@@ -1,6 +1,6 @@
 {
   "id": "tm_n7v3k8pq",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -15,7 +15,7 @@
   "ifrsBasis": "IAS 2",
   "definition": {
     "zh-TW": "買進來準備賣出去、還放在倉庫裡的商品。賣出時成本轉成營業成本，期末盤點的結果決定資產負債表上的金額。",
-    "en": "Goods bought for resale that are still on hand. When they are sold their cost becomes cost of sales, and the period-end count fixes the amount shown on the statement of financial position."
+    "en": "Goods bought for resale that are still on hand. When they are sold their cost becomes cost of sales, and the period-end count fixes the amount shown on the balance sheet."
   },
   "accountRef": "inventory"
 }

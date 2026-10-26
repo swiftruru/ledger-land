@@ -1,0 +1,68 @@
+{
+  "id": "q_p5zzzgtv",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_e2942m",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "not_investment_advice"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4"
+  ],
+  "scored": true,
+  "vars": {
+    "pe": 18
+  },
+  "prompt": {
+    "zh-TW": "佩珊假設本益比 {{number:vars.pe|unit=times}}，乘上公司公告的預估每股盈餘，得到暖木家具的「合理價」，然後在課堂上說：「所以這支股票可以買。」針對佩珊的結論，哪一個說法最恰當？",
+    "en": "Pei-shan assumes a P/E ratio of {{number:vars.pe|unit=times}} and multiplies it by the company’s published forecast earnings per share to get a ‘fair price’ for Warm Timber Furniture, then tells the class: ‘So this share is a buy.’ Which statement about her conclusion is the most appropriate?"
+  },
+  "options": [
+    {
+      "id": "o_c7n3",
+      "text": {
+        "zh-TW": "合理價取決於假設的倍數與預估盈餘，算出來不代表該買",
+        "en": "A fair price depends on an assumed multiple and a forecast; it does not make the share a buy"
+      },
+      "feedback": {
+        "zh-TW": "答對了。合理價建立在兩個假設上，而且沒有考慮風險、資金與個人狀況；課堂練習到此為止。",
+        "en": "That is right. A fair price rests on two assumptions and ignores risk, funding and personal circumstances; the classroom exercise stops here."
+      }
+    },
+    {
+      "id": "o_d8p4",
+      "text": {
+        "zh-TW": "算出合理價後，只要股價低於它，買進就一定划算",
+        "en": "Once a fair price is calculated, buying at any price below it is bound to pay off"
+      },
+      "feedback": {
+        "zh-TW": "你完成了估價的計算步驟，這部分沒問題。但「一定划算」把假設當成事實；預估盈餘可能落空，倍數也可能不合理。",
+        "en": "You completed the valuation arithmetic, which is fine. But ‘bound to pay off’ treats assumptions as facts; the forecast may miss and the multiple may be inappropriate."
+      },
+      "misconceptionId": "mc_adv1"
+    },
+    {
+      "id": "o_e9q5",
+      "text": {
+        "zh-TW": "把合理價算到更多位小數，佩珊的買進結論就比較站得住腳",
+        "en": "Working the fair price out to more decimal places would make the case for buying somewhat sounder"
+      },
+      "feedback": {
+        "zh-TW": "追求精確是好習慣。但這裡的不確定來自假設本身，不是小數位數；小數再多，假設錯了結果還是錯。",
+        "en": "Precision is a good habit. But the uncertainty here comes from the assumptions, not the decimal places; more decimals cannot fix a wrong assumption."
+      }
+    }
+  ],
+  "correctOptionId": "o_c7n3",
+  "explanation": {
+    "zh-TW": "{{option:o_c7n3}}說清楚了本章的立場。{{option:o_d8p4}}把假設當成保證；{{option:o_e9q5}}誤把精確當成正確。本章是會計觀念練習，不是投資建議。",
+    "en": "{{option:o_c7n3}} states this chapter’s position clearly. {{option:o_d8p4}} treats an assumption as a guarantee; {{option:o_e9q5}} mistakes precision for accuracy. This chapter is an accounting concept exercise, not investment advice."
+  }
+}

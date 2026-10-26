@@ -2,24 +2,53 @@
   "id": "tm_2ggtxnaz",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "權益倍數", "en": "Equity multiplier" },
+  "label": {
+    "zh-TW": "權益倍數",
+    "en": "Equity multiplier"
+  },
   "teacherLabel": "權益倍數",
   "currentTwLabel": "權益倍數",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T38"],
-  "note": { "zh-TW": "與負債比率的換算關係在解說中補上：權益倍數等於 1 除以（1 減負債比率）（設計說明見 T38）。", "en": "The explanation gives the conversion from the debt ratio: the equity multiplier equals 1 divided by (1 minus the debt ratio) (see the design note T38)." },
+  "pendingRefs": [
+    "T38"
+  ],
+  "note": {
+    "zh-TW": "與負債比率可以互相換算：權益倍數等於 1 除以（1 減負債比率），相關題目的解說會寫出這個換算。",
+    "en": "It converts from the debt ratio: the equity multiplier equals 1 divided by (1 minus the debt ratio), and the explanations of related questions show this conversion."
+  },
   "definition": {
-    "zh-TW": "資產總計是權益的幾倍，看公司用股東的錢撐起多大的資產。倍數越高表示借的錢越多；它和負債比率是同一件事的兩種看法。",
-    "en": "Total assets as a multiple of equity: how large an asset base the shareholders' money supports. A higher multiple means more borrowing; it and the debt ratio are two views of the same thing."
+    "zh-TW": "每一元股東權益撐起多少資產。\n\n倍數越大，表示資產中靠負債支應的比例越高，財務槓桿越大。",
+    "en": "How many units of assets each unit of equity supports.\n\nThe larger the multiple, the greater the share of assets funded by liabilities, and the higher the financial leverage."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在資產負債表上。沒有任何負債時倍數剛好是 1；權益為負時比率不具解釋意義。它是杜邦分析的第三個因子，把資產報酬率放大成權益報酬率。",
+    "en": "Both figures are on the balance sheet. With no liabilities at all the multiple is exactly 1; when equity is negative the ratio is not meaningful. It is the third factor in DuPont analysis, scaling return on assets up to return on equity."
+  },
+  "misconception": {
+    "zh-TW": "拿權益倍數回答「資產有多大比例來自負債」。那個問題直接對應的是負債比率；權益倍數回答的是「每一元權益撐起多少資產」，兩者相關但不是同一個數字。",
+    "en": "Answering the question what share of assets is funded by debt with the equity multiplier. That question maps directly to the debt ratio; the equity multiplier answers how many units of assets each unit of equity supports. The two are related but not the same number."
+  },
+  "formula": {
+    "zh-TW": "權益倍數 ＝ 資產總計 ÷ 股東權益總額。它和負債比率可以互相換算：權益倍數 ＝ 1 ÷（1 － 負債比率）。",
+    "en": "Equity multiplier = total assets ÷ total equity. It converts to and from the debt ratio: equity multiplier = 1 ÷ (1 － debt ratio)."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "equity_multiplier@slides02"
+  "ratioRef": "equity_multiplier@slides02",
+  "related": [
+    "tm_9e1rb64c",
+    "tm_0k8vegyr",
+    "tm_t7a3s6wb",
+    "tm_y37ymj9w"
+  ]
 }

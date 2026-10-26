@@ -2,19 +2,41 @@
   "id": "tm_4n517fc3",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "發行股票收入(+)", "en": "Proceeds from issuing shares (+)" },
+  "label": {
+    "zh-TW": "發行股票收入(+)",
+    "en": "Proceeds from issuing shares (+)"
+  },
   "teacherLabel": "發行股票收入(+)",
   "currentTwLabel": "現金增資",
   "ifrsEnglish": "Proceeds from issuing shares",
-  "aliases": { "zh-TW": ["現金增資"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "現金增資"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 7.17(a)",
   "definition": {
-    "zh-TW": "股東投入資本、公司發行股票時收到的現金。故事第一筆成立公司的現金就從這裡進來；含股本與溢價兩部分。",
-    "en": "Cash received when shareholders put in capital and the company issues shares. In the story the cash that founds the company comes in here; it covers both par value and any premium."
-  }
+    "zh-TW": "公司發行新股向股東收到的現金。\n\n這是籌資活動的流入：股東出錢換股票，公司的現金與股東權益同時增加，不是收入。",
+    "en": "Cash received from shareholders for newly issued shares.\n\nIt is a financing inflow: the owners pay cash for shares, so cash and equity rise together, and none of it is revenue."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表籌資活動區。公司成立時股東出資就填在這裡；故事的第一筆交易就是這一列。以高於面額發行時，股本增加面額的部分、資本公積增加溢價的部分，流入金額是兩者合計。現行報表稱現金增資。",
+    "en": "Where it sits: the financing activities section of the statement of cash flows. The owners’ initial investment at formation goes here; the first transaction in the story is this line. When shares are issued above par, share capital rises by the par portion and capital surplus by the premium, and the inflow is the total. Current statements call it a cash capital increase."
+  },
+  "misconception": {
+    "zh-TW": "把股東出資當成營業收入或營業活動的現金流入。它來自股東，不是來自客戶；放錯區會讓營業活動的現金流量被高估。",
+    "en": "Treating the owners’ investment as revenue or an operating inflow. It comes from shareholders, not customers; putting it in the wrong section overstates operating cash flow."
+  },
+  "related": [
+    "tm_5e3py55a",
+    "tm_yka0razf",
+    "tm_f9a4c6md",
+    "tm_vk8v09cy"
+  ]
 }

@@ -1,0 +1,87 @@
+{
+  "id": "q_z363wks6",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_m3fgww",
+  "difficulty": 3,
+  "tags": [
+    "equity_multiplier",
+    "roe",
+    "trade_off"
+  ],
+  "termRefs": [
+    "tm_2ggtxnaz",
+    "tm_0k8vegyr",
+    "tm_r0a5t3kq",
+    "tm_1ebm48ca"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "scoringMode": "any_correct",
+  "vars": {
+    "roa": 0.1,
+    "rate": 0.03
+  },
+  "prompt": {
+    "zh-TW": "北風單車行帳上有一些應付帳款與短期借款，這幾年的 ROA 穩定在 {{percent:vars.roa|digits=0}} 左右，銀行願意以 {{percent:vars.rate|digits=0}} 的年利率借錢給它。老闆想在不改變本業做法的前提下提高 ROE。下列哪一個做法說得通？",
+    "en": "North Wind Cycles carries some trade payables and short-term borrowings. Its ROA has held steady at about {{percent:vars.roa|digits=0}} for several years, and the bank will lend to it at {{percent:vars.rate|digits=0}} a year. The owner wants a higher ROE without changing how the core business operates. Which of these approaches makes sense?"
+  },
+  "options": [
+    {
+      "id": "o_swj3",
+      "text": {
+        "zh-TW": "向銀行借款，買進能賺到同樣報酬的設備與存貨，股東不另外增資",
+        "en": "Borrow from the bank to buy equipment and inventories that earn the same return, without the shareholders putting in more"
+      },
+      "feedback": {
+        "zh-TW": "說得通。資產的報酬高於借款利率，多借的每一元都替股東多賺差額；權益不變、資產變大，權益倍數上升，ROE 跟著上升。代價是利息負擔與景氣轉差時的風險。",
+        "en": "This works. The assets earn more than the loan costs, so every borrowed unit earns the difference for the shareholders; equity stays the same while assets grow, the multiplier rises and ROE with it. The cost is the interest burden and the risk in a downturn."
+      },
+      "short": {
+        "zh-TW": "借款買進同樣會賺的資產",
+        "en": "Borrowing to buy assets that earn the same return"
+      }
+    },
+    {
+      "id": "o_mtxs",
+      "text": {
+        "zh-TW": "把帳上閒置的現金以股利發還股東，讓權益縮小",
+        "en": "Pay the idle cash on the books back to shareholders as a dividend, shrinking equity"
+      },
+      "feedback": {
+        "zh-TW": "說得通。閒置的現金本來就沒有替公司賺錢，發還之後淨利幾乎不變、權益變小，ROE 上升。代價是手上的週轉金變少，臨時的支出要另外想辦法。",
+        "en": "This works too. Idle cash was earning nothing for the company; once it is paid out, profit is barely changed while equity shrinks, so ROE rises. The cost is less cash on hand, so unexpected outlays need another source."
+      },
+      "short": {
+        "zh-TW": "把閒置現金發還股東",
+        "en": "Paying idle cash back to shareholders"
+      }
+    },
+    {
+      "id": "o_x2m0",
+      "text": {
+        "zh-TW": "請股東再增資一筆，先放在銀行活存備用",
+        "en": "Ask the shareholders for more capital and leave it in a current account as a reserve"
+      },
+      "feedback": {
+        "zh-TW": "這個做法會讓 ROE 下降。權益變大、資產也變大，但多出來的資產幾乎不產生淨利，權益倍數與 ROA 都往下走。",
+        "en": "This would lower ROE. Equity grows and so do assets, but the extra assets earn almost no profit, so both the multiplier and ROA move down."
+      },
+      "misconceptionId": "mc_ytrm",
+      "short": {
+        "zh-TW": "請股東增資放進活存",
+        "en": "Raising new capital to hold in a current account"
+      }
+    }
+  ],
+  "correctOptionIds": [
+    "o_swj3",
+    "o_mtxs"
+  ],
+  "explanation": {
+    "zh-TW": "ROE ＝ ROA × 權益倍數。本章的 ROA 是本期淨利 ÷ 資產，淨利已經扣掉利息，所以改變籌錢或用錢的方式，ROA 也可能跟著變；本業做法不變時，主要能動的是權益倍數。{{option:o_swj3}}，資產變大、權益不變，權益倍數上升；利息會把 ROA 拉低一些，但新資產的報酬高於 {{percent:vars.rate|digits=0}} 的借款利率，淨利增加，ROE 仍會上升。{{option:o_mtxs}}，資產和權益減少同樣的金額；帳上有負債，權益比資產小，縮小的比例較大，所以權益倍數上升，少了不賺錢的現金，ROA 也跟著上升。{{option:o_x2m0}}則讓權益變大卻沒有帶來報酬，權益倍數與 ROA 都下降，ROE 反而變低。兩個說得通的做法都有代價：負債多了風險高，現金少了週轉緊。",
+    "en": "ROE = ROA × equity multiplier. This chapter’s ROA is profit ÷ assets, and profit is already after interest, so changing how the money is raised or used can move ROA as well; with the core business unchanged, the main lever is the multiplier. {{option:o_swj3}} makes assets grow while equity stays the same, so the multiplier rises; the interest pulls ROA down a little, but the new assets earn more than the {{percent:vars.rate|digits=0}} loan rate, so profit grows and ROE still rises. {{option:o_mtxs}} takes the same amount off assets and equity; because the company has liabilities, equity is the smaller figure and shrinks by a larger share, so the multiplier rises, and with the idle cash gone ROA rises too. {{option:o_x2m0}} enlarges equity without adding any return, so the multiplier and ROA both fall and ROE drops. Both workable approaches have a price: more debt means more risk, and less cash means tighter liquidity."
+  }
+}

@@ -1,24 +1,50 @@
 {
   "id": "tm_7v02zwjf",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "營運週期", "en": "Operating cycle" },
+  "label": {
+    "zh-TW": "營運週期",
+    "en": "Operating cycle"
+  },
   "teacherLabel": "營運週期",
   "currentTwLabel": "營運週期",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["營業週期"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "營業週期"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "從進貨到賣出再到收回現金，平均要經過幾天，等於平均銷貨日數加平均收現日數。天數越短表示生意轉得越快。",
-    "en": "The average number of days from buying stock to selling it and collecting the cash: days inventory plus days sales outstanding. A shorter cycle means the business turns over faster."
+    "zh-TW": "從買進商品到把貨款收回來，平均要經過幾天。\n\n它把存貨壓在倉庫的天數和貨款掛在客戶那邊的天數加起來，天數越長，資金被綁住的時間越久。",
+    "en": "The average number of days from buying goods to collecting the cash from their sale.\n\nIt adds the days inventory sits in the warehouse to the days receivables sit with customers; the longer it is, the longer the money is tied up."
+  },
+  "example": {
+    "zh-TW": "它是用另外兩個比率算出來的，任何一個是 N/A 時它也是 N/A。再減去平均付款天數就是現金轉換循環。",
+    "en": "It is derived from two other ratios, so it is N/A whenever either of them is. Subtracting the average payment period gives the cash conversion cycle."
+  },
+  "misconception": {
+    "zh-TW": "以為營運週期一定要短於一年。有些產業（例如造船或釀酒）的營運週期本來就很長，流動資產的分類也會跟著用營運週期而不是一年當界線。",
+    "en": "Assuming the operating cycle must be shorter than a year. Some industries, such as shipbuilding or wine-making, naturally have long cycles, and the current or non-current split then follows the operating cycle rather than twelve months."
+  },
+  "formula": {
+    "zh-TW": "營運週期的算法：把平均銷貨日數和平均收現日數加起來。",
+    "en": "Operating cycle = average days to sell inventory + average collection period."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "operating_cycle@slides03"
+  "ratioRef": "operating_cycle@slides03",
+  "related": [
+    "tm_fsv83x2z",
+    "tm_gysqtps0",
+    "tm_arb3vgk7",
+    "tm_kzkzng5e"
+  ]
 }

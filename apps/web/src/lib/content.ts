@@ -12,10 +12,17 @@ export interface ContentManifest {
   includesDrafts?: boolean;
   locales: Record<string, { status: 'complete' | 'beta' }>;
   /** 章節檔是章節本身加該章已發布的學習目標（objectives）；levelIds 只列已發布的關卡，順序依 chapter.levelIds（M2 起） */
-  chapters: { id: string; order: number; levelIds?: string[]; files: Record<string, string> }[];
+  /** scope（core、extension）與 examScope（midterm、not_in_exam、unconfirmed）是 M3 起才有的欄位（T32；tools/lib/content-snapshot.mjs）；
+   *  notices 是章節標記的固定聲明（例如 not_investment_advice，2026-10-24 起），沒有時省略 */
+  chapters: { id: string; order: number; scope?: string; examScope?: string; notices?: string[]; levelIds?: string[]; files: Record<string, string> }[];
   /** M2 起：每關一檔 { level, questions }，questions 依 questionIds 順序，每題帶 answerRev 與核心算出的 compiled（tools/lib/content-snapshot.mjs） */
   levels?: LevelManifestEntry[];
-  terms: Record<string, string>;
+  /** 章節索引（schemaVersion 2 起）：每個語系一檔，全部章節的摘要（ChapterSummary），依 order 排列 */
+  chapterIndex: Record<string, string>;
+  /** 名詞索引（schemaVersion 2 起）：每個語系一檔，只有關卡、名詞 chip 與圖鑑列表要的欄位（tools/lib/content-snapshot.mjs 的 TERM_INDEX_FIELDS） */
+  termIndex: Record<string, string>;
+  /** 名詞的完整內容：語系 → 分桶（名詞 ID 的最後一個字元，見 termDetailBucket）→ 檔案路徑；只列有名詞的桶 */
+  termDetails: Record<string, Record<string, string>>;
   tombstones: string;
 }
 
@@ -40,6 +47,8 @@ export interface LevelSnapshot {
     questionIds: string[];
     timerSeconds?: number;
     status?: string;
+    /** 整關都是不計分的題目（延伸章的取捨題）：結果頁不算星星、不寫 stars，只記已完成（tools/lib/content-snapshot.mjs 只在 true 時輸出） */
+    unscored?: boolean;
   };
   questions: QuestionSnapshot[];
 }
@@ -67,6 +76,24 @@ export interface ChapterSnapshot {
   badge?: { icon: string; title: string };
   termRefs?: string[];
   [field: string]: unknown;
+}
+
+/** 章節索引的一筆（08 第 7.3 節）：地圖、章節頁、名詞圖鑑與徽章只用這些欄位；學習目標只有 id、order、statement */
+export interface ChapterSummary {
+  id: string;
+  order: number;
+  scope?: string;
+  examScope?: string;
+  kind?: string;
+  /** 章節的固定聲明（例如 not_investment_advice），沒有時省略 */
+  notices?: string[];
+  title: string;
+  summary?: string;
+  levelIds: string[];
+  badge?: { icon: string; title: string };
+  levels?: (ChapterLevelSummary & { unscored?: boolean })[];
+  objectives: { id: string; order: number; statement: string }[];
+  chapterEndLinks?: { kind: 'lab'; story: string; step: string }[];
 }
 
 /** 已下架項目的墓碑（08 第 7.3 節）：supersededBy 指向替代項目 */
@@ -98,13 +125,34 @@ export interface QuestionSnapshot {
   compiled?: {
     expected?: Record<string, unknown>;
     values?: Record<string, number>;
-    expectedEntries?: readonly unknown[];
-    ratio?: unknown;
+    /** journal_entry：核心 expectedJournalEntries 的正解行（已攤平、合併同科目同方向；科目是 ID） */
+    expectedEntries?: readonly CompiledEntryLine[];
+    /** ratio_numeric：核心依 compute.ratioRef 算出的指標（tools/lib/content-rules.mjs 的 ratioAnswer） */
+    ratio?: CompiledRatio;
+    /** ratio_interpret：畫面上指標小表格的數字（快照目前還沒有這個欄位，由工具補上；見 M3 回報） */
+    ratios?: readonly CompiledRatio[];
     categories?: Record<string, string>;
     /** pick_line：該報表在交易後（cumulative）的可見列與核心算出的金額，label 已依語系展開；total 是合計或公式列，heading 是群組標題列 */
     lines?: CompiledLine[];
+    /** five_step_fill：開放格子（openCells 的版面線 ID）對核心算出的金額（判分的 expectedCells；快照目前還沒有這個欄位，由工具補上） */
+    cells?: Record<string, number>;
   };
   [field: string]: unknown;
+}
+
+/** 分錄題正解的一行（核心 EntryLine 的 JSON 形狀） */
+export interface CompiledEntryLine {
+  account: string;
+  side: 'debit' | 'credit';
+  amount: number;
+}
+
+/** 核心 RatioResult 進快照的子集（04 第 12.1 節）：exact 是精確分數、displayValue 已依 displayDecimals 四捨五入（percent 以百分點表示） */
+export interface CompiledRatio {
+  ratioRef: string;
+  status: 'ok' | 'zero' | 'na' | 'not_meaningful';
+  exact: { num: string; den: string } | null;
+  displayValue: number | null;
 }
 
 export interface CompiledLine {
@@ -116,18 +164,41 @@ export interface CompiledLine {
   heading?: boolean;
 }
 
-export interface TermSnapshot {
+/** 名詞類別（packages/content-schema 的 TermCategory；名詞卡的類別徽記與說明列用） */
+export type TermCategory = 'statement' | 'account' | 'ratio' | 'concept' | 'process' | 'other';
+/** 會計要素（核心科目表的 element）：科目類名詞的要素徽記 */
+export type TermElement = 'asset' | 'liability' | 'equity' | 'revenue' | 'expense';
+
+/** 名詞索引的一筆（08 第 7.3 節）：作答頁的名詞 chip 與科目、指標名稱，圖鑑的列表、分組與搜尋，名詞卡的標題列、類別與要素徽記都只用這些欄位 */
+export interface TermIndexEntry {
   id: string;
-  category: string;
+  category: TermCategory;
   label: string;
   teacherLabel: string;
   currentTwLabel: string | null;
   ifrsEnglish: string | null;
+  /** 兩種語言的別名（圖鑑搜尋兩種都比對） */
+  aliases?: Partial<Record<Locale, string[]>>;
+  flags: string[];
+  accountRef?: string;
+  /** 科目類名詞的會計要素（站規 1.11.4）：建置工具由 accountRef 查核心科目表算出；不是科目類或查不到時省略，名詞卡退回中性的類別徽記 */
+  element?: TermElement;
+  ratioRef?: string;
+  /** 第一個用到這個名詞的已發布關卡（建置工具算出；沒有關卡用到時省略） */
+  firstLevel?: { levelId: string; chapterId: string };
+  /** 作者另設的解鎖關卡 */
+  unlock?: { levelId: string };
+}
+
+/** 名詞的完整內容（完整內容檔的一筆）：索引欄位加上定義、例子與 IFRS 說明等長文 */
+export interface TermSnapshot extends TermIndexEntry {
   definition: string;
   note?: string;
+  example?: string;
+  misconception?: string;
+  formula?: string;
   ifrsNote?: string;
   related?: string[];
-  flags: string[];
 }
 
 export class ContentLoadError extends Error {
@@ -139,14 +210,16 @@ export class ContentLoadError extends Error {
   }
 }
 
-const SUPPORTED_SCHEMA = 1;
+/** 2：名詞分成索引與分桶的完整內容（2026-10-24） */
+const SUPPORTED_SCHEMA = 2;
 let manifestPromise: Promise<ContentManifest> | null = null;
 const cache = new Map<string, Promise<unknown>>();
 
 async function fetchJson<T>(path: string): Promise<T> {
   let res: Response;
   try {
-    // 同源請求用預設的 credentials（殼層的 preload 才會被重用；本站沒有 cookie）
+    // 同源請求用預設的 mode（cors）與 credentials（same-origin）；殼層的 preload 要帶 crossorigin 才會是同一組設定而被重用，
+    // 少了它瀏覽器會再發一次請求（2026-10-24 在 Lighthouse 的請求清單看到 manifest 讀兩次）
     res = await fetch(path);
   } catch (e) {
     throw new ContentLoadError(`無法載入 ${path}：${String(e)}`, 'network');
@@ -172,17 +245,29 @@ export function loadManifest(): Promise<ContentManifest> {
   return manifestPromise;
 }
 
-export async function loadTerms(locale: Locale): Promise<TermSnapshot[]> {
+/** 完整內容檔的分桶：名詞 ID 的最後一個字元（必須和 tools/lib/content-snapshot.mjs 的 termDetailBucket 一致）。
+ *  由 ID 直接算出桶，名詞頁與名詞卡不必先讀索引就能讀完整內容（06 第 8.2 節） */
+export function termDetailBucket(id: string): string {
+  return id.slice(-1);
+}
+
+/** 名詞索引（每個語系一檔，約 10 KB gzip）：作答頁、名詞列表、收藏與 resolveId 都只讀它 */
+export async function loadTermIndex(locale: Locale): Promise<TermIndexEntry[]> {
   const m = await loadManifest();
-  const path = m.terms[locale];
-  if (!path) throw new ContentLoadError(`沒有 ${locale} 的名詞快照`, 'missing');
-  let p = cache.get(path) as Promise<TermSnapshot[]> | undefined;
-  if (!p) {
-    p = fetchJson<TermSnapshot[]>(`/${path}`);
-    cache.set(path, p);
-    p.catch(() => cache.delete(path));
-  }
-  return p;
+  const path = m.termIndex?.[locale];
+  if (!path) throw new ContentLoadError(`沒有 ${locale} 的名詞索引`, 'missing');
+  return cached<TermIndexEntry[]>(path);
+}
+
+/** 一個名詞的完整內容：讀它所在的桶（約 5 個名詞）；快照裡沒有這個名詞時回傳 undefined，檔案讀不到時丟 ContentLoadError */
+export async function loadTermDetail(id: string, locale: Locale): Promise<TermSnapshot | undefined> {
+  const m = await loadManifest();
+  const byBucket = m.termDetails?.[locale];
+  if (!byBucket) throw new ContentLoadError(`沒有 ${locale} 的名詞內容`, 'missing');
+  const path = byBucket[termDetailBucket(id)];
+  if (!path) return undefined;
+  const list = await cached<TermSnapshot[]>(path);
+  return list.find((t) => t.id === id);
 }
 
 function cached<T>(path: string): Promise<T> {
@@ -210,6 +295,14 @@ export async function loadChapter(chapterId: string, locale: Locale): Promise<Ch
   const path = entry?.files[locale];
   if (!entry || !path) throw new ContentLoadError(`沒有章節 ${chapterId} 的 ${locale} 快照`, 'missing');
   return cached<ChapterSnapshot>(path);
+}
+
+/** 章節索引（每個語系一檔，約 8 KB gzip）：地圖與名詞圖鑑第一次繪製只讀它，不必逐章讀章節檔 */
+export async function loadChapterIndex(locale: Locale): Promise<ChapterSummary[]> {
+  const m = await loadManifest();
+  const path = m.chapterIndex?.[locale];
+  if (!path) throw new ContentLoadError(`沒有 ${locale} 的章節索引`, 'missing');
+  return cached<ChapterSummary[]>(path);
 }
 
 export async function loadTombstones(): Promise<Tombstone[]> {
@@ -249,7 +342,7 @@ export async function resolveId(id: string, locale: Locale = 'zh-TW'): Promise<R
               : false;
     if (active) return { status: 'active', kind };
     if (kind === 'term') {
-      const terms = await loadTerms(locale);
+      const terms = await loadTermIndex(locale);
       if (terms.some((t) => t.id === id)) return { status: 'active', kind };
     }
   }

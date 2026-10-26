@@ -1,19 +1,27 @@
 {
   "id": "tm_12k2yq6k",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "期末現金及約當現金餘額", "en": "Cash and cash equivalents at the end of the period" },
+  "label": {
+    "zh-TW": "期末現金及約當現金餘額",
+    "en": "Cash and cash equivalents at the end of the period"
+  },
   "teacherLabel": "期末現金及約當現金餘額",
   "currentTwLabel": "期末現金及約當現金餘額",
   "ifrsEnglish": "Cash and cash equivalents at the end of the period",
-  "aliases": { "zh-TW": ["期末現金餘額"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "期末現金餘額"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "期初現金加上本期增減額後的期末現金餘額。它必須等於資產負債表的現金及約當現金（勾稽點 C）。",
-    "en": "Opening cash plus the period's net change: the closing cash balance. It must equal cash and cash equivalents on the statement of financial position (check C)."
+    "zh-TW": "期初現金加上本期增減額之後，期末還剩多少現金。這個數字要和資產負債表左上角「現金及約當現金」那一列的餘額一模一樣（步驟③，勾稽點 C）。",
+    "en": "Opening cash plus the period’s net change: how much cash is left at the end. This figure must be identical to the cash and cash equivalents line at the top of the balance sheet (step 3, check C)."
   }
 }

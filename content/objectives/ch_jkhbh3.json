@@ -1,0 +1,224 @@
+{
+  "chapterId": "ch_jkhbh3",
+  "items": [
+    {
+      "id": "obj_8ypaqg",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_jkhbh3",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能把一筆現金收付歸入營業、投資或籌資活動",
+        "en": "Put a cash receipt or payment into operating, investing or financing activities"
+      },
+      "skill": "classify",
+      "misconceptions": [
+        {
+          "id": "mc_q1zb",
+          "text": {
+            "zh-TW": "把借款收到的現金當成營業活動的流入",
+            "en": "Treating cash received from a loan as an operating inflow"
+          }
+        },
+        {
+          "id": "mc_qx45",
+          "text": {
+            "zh-TW": "以為買設備付的錢是營業活動，因為設備是用來做生意的",
+            "en": "Thinking cash paid for equipment is operating because the equipment is used in the business"
+          }
+        },
+        {
+          "id": "mc_gfrd",
+          "text": {
+            "zh-TW": "把股東出資當成公司賺到的錢",
+            "en": "Treating capital from shareholders as money the company earned"
+          }
+        },
+        {
+          "id": "mc_j8g6",
+          "text": {
+            "zh-TW": "不知道課程把付利息列在營業活動，以為一定要和還本金一樣列在籌資活動",
+            "en": "Not realising the course places interest paid under operating activities, and assuming it must sit with loan repayments under financing"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "classify",
+        "single_choice",
+        "true_false",
+        "transaction_effect"
+      ],
+      "termRefs": [
+        "tm_p2a7c5vk",
+        "tm_9hrfpqem",
+        "tm_f9a4c6md",
+        "tm_67e7f0mn"
+      ],
+      "pendingRefs": [
+        "T11",
+        "T30"
+      ]
+    },
+    {
+      "id": "obj_mcdpxx",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_jkhbh3",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能說明間接法怎麼把損益表的利益換算成營業活動的現金：哪些沒有付現的費用要還原、營運資金的增減怎麼調整，以及本課為什麼以稅前淨利當起點",
+        "en": "Explain how the indirect method converts profit on the income statement into operating cash: which non-cash expenses are reversed, how working-capital changes are adjusted, and why this course takes profit before tax as the starting point"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_gf8e",
+          "text": {
+            "zh-TW": "以為折舊加回來是因為公司收到了一筆錢",
+            "en": "Thinking depreciation is added back because the company received cash"
+          }
+        },
+        {
+          "id": "mc_0k0g",
+          "text": {
+            "zh-TW": "以為間接法只能從稅前淨利起算，從本期淨利起算是錯的",
+            "en": "Thinking the indirect method may only start from profit before tax and that starting from profit for the period is wrong"
+          }
+        },
+        {
+          "id": "mc_9tn4",
+          "text": {
+            "zh-TW": "以為營業活動的現金流量就是稅前淨利",
+            "en": "Thinking cash from operating activities is simply profit before tax"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "transaction_effect",
+        "multi_choice"
+      ],
+      "termRefs": [
+        "tm_z971merj",
+        "tm_85pkjrv0",
+        "tm_e61ht6yh"
+      ],
+      "pendingRefs": [
+        "T12"
+      ]
+    },
+    {
+      "id": "obj_3ddr90",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_jkhbh3",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能判斷應收帳款、存貨與應付帳款的增減，會讓營業活動的現金變多還是變少",
+        "en": "Judge whether a change in trade receivables, inventories or trade payables makes operating cash higher or lower"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_288v",
+          "text": {
+            "zh-TW": "以為應收帳款增加代表收到更多錢",
+            "en": "Thinking an increase in trade receivables means more cash was collected"
+          }
+        },
+        {
+          "id": "mc_m4nc",
+          "text": {
+            "zh-TW": "以為應付帳款增加會讓現金減少，因為欠的錢變多了",
+            "en": "Thinking an increase in trade payables reduces cash because more is owed"
+          }
+        },
+        {
+          "id": "mc_8tnr",
+          "text": {
+            "zh-TW": "以為賒購存貨會讓營業活動的現金減少",
+            "en": "Thinking inventory bought on credit reduces operating cash"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "transaction_effect",
+        "single_choice",
+        "multi_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_873r9bx9",
+        "tm_bpt2kp5c",
+        "tm_dc0p0nrv",
+        "tm_e61ht6yh"
+      ],
+      "pendingRefs": [
+        "T12"
+      ]
+    },
+    {
+      "id": "obj_9ba3z0",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_jkhbh3",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能解釋「有獲利卻缺現金」與「虧損卻有現金」各是怎麼發生的",
+        "en": "Explain how a company can be profitable yet short of cash, or loss-making yet have cash to spare"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_4azj",
+          "text": {
+            "zh-TW": "以為有賺錢的公司不可能付不出錢",
+            "en": "Thinking a profitable company cannot run short of cash"
+          }
+        },
+        {
+          "id": "mc_4r2x",
+          "text": {
+            "zh-TW": "以為帳上現金變多就代表這一期有賺錢",
+            "en": "Thinking a rise in cash means the period was profitable"
+          }
+        },
+        {
+          "id": "mc_fw7k",
+          "text": {
+            "zh-TW": "以為虧損的公司一定沒有現金",
+            "en": "Thinking a loss-making company must have no cash"
+          }
+        },
+        {
+          "id": "mc_0err",
+          "text": {
+            "zh-TW": "以為提列折舊會讓現金變少",
+            "en": "Thinking depreciation drains cash"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "multi_choice",
+        "transaction_effect"
+      ],
+      "termRefs": [
+        "tm_05t9wphy",
+        "tm_n4e8t2jy",
+        "tm_e61ht6yh",
+        "tm_c4sh8k2p"
+      ]
+    }
+  ]
+}

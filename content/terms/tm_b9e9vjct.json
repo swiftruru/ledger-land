@@ -1,0 +1,43 @@
+{
+  "id": "tm_b9e9vjct",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "process",
+  "label": {
+    "zh-TW": "分錄",
+    "en": "Journal entry"
+  },
+  "teacherLabel": "分錄",
+  "currentTwLabel": "分錄",
+  "ifrsEnglish": "Journal entry",
+  "aliases": {
+    "zh-TW": [
+      "會計分錄",
+      "日記帳分錄"
+    ],
+    "en": [
+      "Bookkeeping entry"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "把一筆交易寫成「哪些科目記借方、哪些科目記貸方、各多少錢」的紀錄。每筆分錄的借方合計一定等於貸方合計。課程以報表倒推學會計，不教分錄；分錄只在「借貸與分錄」延伸章出現，不列入期中考範圍。",
+    "en": "The record of one transaction stating which accounts are debited, which are credited and by how much. Total debits in an entry always equal total credits. The course teaches accounting by working back from the statements and does not teach entries; they appear only in the extension chapter on debits and credits, outside the midterm scope."
+  },
+  "note": {
+    "zh-TW": "網站核心內部一律以複式分錄過帳；主線章節不出分錄題。",
+    "en": "The site’s core always posts by double entry; main-path chapters set no entry questions."
+  },
+  "related": [
+    "tm_50v66dt7",
+    "tm_kfnzbf8s",
+    "tm_p5yjwmnm"
+  ],
+  "ifrsNote": {
+    "zh-TW": "IFRS 規範報表的內容與表達，不規範記帳的方法；分錄是簿記的工具。",
+    "en": "IFRS governs what statements contain and how they are presented, not the method of bookkeeping; entries are a bookkeeping tool."
+  }
+}

@@ -1,6 +1,6 @@
 {
   "id": "tm_x3n8v5tc",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "concept",
@@ -8,18 +8,18 @@
   "teacherLabel": "股東權益",
   "currentTwLabel": "權益",
   "ifrsEnglish": "Equity",
-  "aliases": { "zh-TW": ["權益", "業主權益"], "en": ["Owners' equity", "Shareholders' equity"] },
+  "aliases": { "zh-TW": ["權益", "業主權益"], "en": ["Owners’ equity", "Shareholders’ equity"] },
   "flags": ["old_name"],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "Conceptual Framework",
   "note": {
-    "zh-TW": "教材用「股東權益」，現行報表的科目名稱是「權益」；本站的主要顯示跟著教材。",
-    "en": "The course materials say shareholders' equity; current Taiwanese statements use the shorter heading equity. The site follows the course wording."
+    "zh-TW": "教材用「股東權益」，現行報表的科目名稱是「權益」；網站的主要顯示跟著教材。",
+    "en": "The course materials say shareholders’ equity; current Taiwanese statements use the shorter heading equity. The site follows the course wording."
   },
   "definition": {
-    "zh-TW": "資產減去負債後剩下、屬於股東的部分；股東投入的本錢加上公司累積下來的盈餘。",
-    "en": "What is left for the owners after subtracting liabilities from assets: the capital the owners put in plus the profits the business has kept."
+    "zh-TW": "資產扣除全部負債後剩下的部分，也就是股東對公司資產的剩餘請求權。它主要來自股東投入的股本與資本公積、公司賺到後沒有分配出去的保留盈餘，另外還有其他權益項目。",
+    "en": "The residual interest in the assets after deducting all liabilities, that is, the shareholders’ remaining claim on the company. It comes mainly from what shareholders put in (share capital and capital surplus) and from profits the company has kept (retained earnings), plus other components of equity."
   },
   "related": ["tm_r4w8n2qe", "tm_h6p2k9wd"]
 }

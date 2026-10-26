@@ -1,0 +1,45 @@
+{
+  "id": "ch_155y47",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "order": 11,
+  "scope": "extension",
+  "examScope": "not_in_exam",
+  "notices": [
+    "not_investment_advice"
+  ],
+  "title": {
+    "zh-TW": "本益比與估價",
+    "en": "The P/E ratio and valuation"
+  },
+  "summary": {
+    "zh-TW": "從損益表上的每股盈餘出發，加上市場的股價，算出本益比，再練習判讀倍數高低的意義與它的限制。本章是會計觀念練習，不是投資建議。",
+    "en": "Start from earnings per share on the income statement, add the market share price to arrive at the price-to-earnings ratio, then practise reading what a high or low multiple means and where it breaks down. This chapter is an accounting concept exercise, not investment advice."
+  },
+  "objectiveIds": [
+    "obj_7j31n2",
+    "obj_000wkh",
+    "obj_e2942m"
+  ],
+  "levelIds": [
+    "lv_rnyg3wz7",
+    "lv_r7m2y1mn"
+  ],
+  "prerequisites": [
+    "ch_s0525x"
+  ],
+  "badge": {
+    "icon": "chart-line-up",
+    "title": {
+      "zh-TW": "倍數讀得懂",
+      "en": "Multiples decoded"
+    }
+  },
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4",
+    "tm_n4e8t2jy",
+    "tm_5e3py55a"
+  ]
+}

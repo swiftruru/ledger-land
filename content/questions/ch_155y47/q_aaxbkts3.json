@@ -1,0 +1,75 @@
+{
+  "id": "q_aaxbkts3",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "ratio_interpret",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_000wkh",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "interpret"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4"
+  ],
+  "scored": true,
+  "ratioRef": "pe_ratio@slides02",
+  "vars": {
+    "priceA": 36,
+    "epsA": 3,
+    "peA": 12,
+    "priceB": 90,
+    "epsB": 3,
+    "peB": 30
+  },
+  "prompt": {
+    "zh-TW": "晨光印刷的股價 {{money:vars.priceA}}、每股盈餘 {{money:vars.epsA}}，本益比 {{number:vars.peA|unit=times}}；星河軟體的股價 {{money:vars.priceB}}、每股盈餘 {{money:vars.epsB}}，本益比 {{number:vars.peB|unit=times}}。兩家的每股盈餘一樣。下面哪一句解讀最合理？",
+    "en": "Morning Light Printing: share price {{money:vars.priceA}}, earnings per share {{money:vars.epsA}}, P/E {{number:vars.peA|unit=times}}. Starriver Software: share price {{money:vars.priceB}}, earnings per share {{money:vars.epsB}}, P/E {{number:vars.peB|unit=times}}. Both have the same earnings per share. Which reading is the most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_d4p2",
+      "text": {
+        "zh-TW": "市場為星河軟體每一元盈餘付的價格比較高",
+        "en": "The market pays more for each dollar of Starriver Software’s earnings"
+      },
+      "feedback": {
+        "zh-TW": "答對了。本益比是「價格」除以「盈餘」，同樣的盈餘配更高的價格，倍數就高；它說的是市場付了多少，不是公司賺了多少。倍數高通常反映市場對它未來成長比較樂觀，也可能只是股價偏貴。",
+        "en": "That is right. The P/E ratio is price divided by earnings; the same earnings at a higher price give a higher multiple. It tells you what the market pays, not what the company earns. A high multiple usually reflects more optimistic growth expectations, or it may simply mean the share is dear."
+      }
+    },
+    {
+      "id": "o_e5q1",
+      "text": {
+        "zh-TW": "星河軟體比較賺錢，因為它的倍數比較高",
+        "en": "Starriver Software is more profitable, because its multiple is higher"
+      },
+      "feedback": {
+        "zh-TW": "你注意到倍數不同，這是對的起點。但兩家的每股盈餘一模一樣，差的是股價；倍數高是因為市場付得多，不是因為賺得多。",
+        "en": "You noticed the multiples differ, which is the right start. But both companies have identical earnings per share; what differs is the price. The higher multiple comes from the market paying more, not from earning more."
+      },
+      "misconceptionId": "mc_hp9k"
+    },
+    {
+      "id": "o_f6r8",
+      "text": {
+        "zh-TW": "晨光印刷的倍數比較低，代表它比較便宜、值得買",
+        "en": "Morning Light Printing has the lower multiple, so it is cheaper and worth buying"
+      },
+      "feedback": {
+        "zh-TW": "倍數低確實表示每一元盈餘的價格較低，這部分沒錯。但「低」可能反映市場預期成長慢或風險高，便宜不等於值得買。",
+        "en": "A lower multiple does mean a lower price per dollar of earnings, that much is right. But a low multiple may reflect slower expected growth or higher risk, and cheap does not mean worth buying."
+      },
+      "misconceptionId": "mc_1w2b"
+    }
+  ],
+  "correctOptionId": "o_d4p2",
+  "explanation": {
+    "zh-TW": "{{option:o_d4p2}}抓到了本益比的本質：市場為每一元盈餘付出的價格。{{option:o_e5q1}}把價格差當成獲利差；{{option:o_f6r8}}把低倍數直接當成便宜又該買。本章是會計觀念練習，不是投資建議。",
+    "en": "{{option:o_d4p2}} captures what the P/E ratio is: the price the market pays per dollar of earnings. {{option:o_e5q1}} mistakes a price difference for a profit difference; {{option:o_f6r8}} jumps from a low multiple to cheap and worth buying. This chapter is an accounting concept exercise, not investment advice."
+  }
+}

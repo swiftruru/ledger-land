@@ -1,0 +1,71 @@
+{
+  "id": "q_v1qtf3r5",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "ratio_interpret",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_000wkh",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "interpret"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4"
+  ],
+  "scored": true,
+  "ratioRef": "pe_ratio@slides02",
+  "vars": {
+    "eps": 4,
+    "peLast": 15,
+    "peThis": 25
+  },
+  "prompt": {
+    "zh-TW": "綠茵運動用品去年與今年的每股盈餘都是 {{money:vars.eps}}，但本益比從去年的 {{number:vars.peLast|unit=times}} 變成今年的 {{number:vars.peThis|unit=times}}。最可能發生了什麼事？",
+    "en": "Greenfield Sports had earnings per share of {{money:vars.eps}} both last year and this year, yet its P/E ratio moved from {{number:vars.peLast|unit=times}} last year to {{number:vars.peThis|unit=times}} this year. What most likely happened?"
+  },
+  "options": [
+    {
+      "id": "o_k1w6",
+      "text": {
+        "zh-TW": "股價上漲了，市場願意為同樣的每一元盈餘付更多錢",
+        "en": "The share price rose, so the market now pays more for the same dollar of earnings"
+      },
+      "feedback": {
+        "zh-TW": "答對了。分母沒變、倍數變大，只能是分子（股價）變大。",
+        "en": "That is right. With the denominator unchanged and the multiple higher, only the numerator, the share price, can have risen."
+      }
+    },
+    {
+      "id": "o_m2x7",
+      "text": {
+        "zh-TW": "公司今年賺得比去年多，所以倍數跟著變高",
+        "en": "The company earned more this year, so the multiple rose"
+      },
+      "feedback": {
+        "zh-TW": "倍數變高常常讓人聯想到「表現變好」，這個聯想很自然。但題目說每股盈餘兩年一樣，獲利並沒有變；變的是市場給的價格。",
+        "en": "A higher multiple naturally suggests better performance. But the question says earnings per share were the same in both years, so profit did not change; what changed is the price the market pays."
+      },
+      "misconceptionId": "mc_hp9k"
+    },
+    {
+      "id": "o_n3y8",
+      "text": {
+        "zh-TW": "公司發行了更多股票，所以倍數變高了",
+        "en": "The company issued more shares, which raised the multiple"
+      },
+      "feedback": {
+        "zh-TW": "你想到股數會影響每股數字，方向正確。但股數變多會讓每股盈餘下降，而題目中的每股盈餘沒變，所以不是這個原因。",
+        "en": "You are right that the share count affects per-share figures. But more shares would lower earnings per share, and here earnings per share did not change, so that is not the cause."
+      }
+    }
+  ],
+  "correctOptionId": "o_k1w6",
+  "explanation": {
+    "zh-TW": "本益比 ＝ 股價 ÷ 每股盈餘。{{option:o_k1w6}}是唯一能讓分母不變、倍數變大的解釋；{{option:o_m2x7}}與題目給的每股盈餘矛盾，{{option:o_n3y8}}會讓每股盈餘下降而不是不變。",
+    "en": "P/E ratio = share price ÷ earnings per share. {{option:o_k1w6}} is the only explanation that leaves the denominator unchanged and raises the multiple; {{option:o_m2x7}} contradicts the given earnings per share, and {{option:o_n3y8}} would lower earnings per share rather than leave it unchanged."
+  }
+}

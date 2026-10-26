@@ -1,5 +1,6 @@
-// 04 第 12 節的單元測試：登錄檔編譯（43 個指標的全部版本）、表 A 的 23 項 excel 版公式、狀態判定順序與邊界、連鎖、輸入值、顯示精度。全部用自編數字。
+// 04 第 12 節的單元測試：登錄檔編譯（43 個指標的全部版本）、表 A 的 23 項 excel 版公式、表 B 年報版現金再投資比率的分母、表 C 的 RD 與 ME leverage、狀態判定順序與邊界、連鎖、輸入值、顯示精度。全部用自編數字。
 import { describe, expect, it } from 'vitest';
+import { fc } from '@fast-check/vitest';
 import {
   type MeasureMap,
   type Money,
@@ -433,6 +434,187 @@ describe('輸入值與平均', () => {
     expect(() => computeRatio('roa@excel', { ...base, bs_total_assets: 'x' as unknown as Money })).toThrow(TypeError);
     expect(() => computeRatio('roa@excel', { is_net_income: 1 })).toThrow(/bs_total_assets/);
     expect(() => computeRatio('nope@excel', base)).toThrow(/nope@excel/);
+  });
+});
+
+describe('表 B：現金再投資比率年報版（slides03）的分母含無形資產與遞延資產（14 第 5.1 節）', () => {
+  const SLIDES03_DENOMINATOR =
+    'line.bs_ppe_gross + line.bs_investments_other + line.bs_intangible_assets + line.bs_deferred_org_costs + line.bs_deferred_dev_costs + line.bs_current_assets - line.bs_current_liabilities';
+
+  /** 自編的小數字：機器設備成本 600、累計折舊 150（淨額 450），資產總計由版面的加總關係算出 */
+  function reinvestment(over: Readonly<Record<string, Money>> = {}): MeasureMap {
+    const v: Record<string, Money> = {
+      cf_operating_total: 120,
+      cf_dividends_paid: 0,
+      bs_ppe_gross: 600,
+      bs_machinery_net: 450,
+      bs_office_equipment: 0,
+      bs_investments_other: 100,
+      bs_intangible_assets: 50,
+      bs_deferred_org_costs: 30,
+      bs_deferred_dev_costs: 20,
+      bs_current_assets: 500,
+      bs_current_liabilities: 200,
+      ...over,
+    };
+    const total =
+      v['bs_current_assets']! +
+      v['bs_machinery_net']! +
+      v['bs_office_equipment']! +
+      v['bs_intangible_assets']! +
+      v['bs_investments_other']! +
+      v['bs_deferred_org_costs']! +
+      v['bs_deferred_dev_costs']!;
+    return measures({ ...v, bs_total_assets: total });
+  }
+
+  it('分母公式列入設立費與開發費，旗標、na 與 not_meaningful 規則不變', () => {
+    const spec = getRatioVersion(registry, 'cash_reinvestment@slides03')?.spec;
+    expect(spec?.denominator).toBe(SLIDES03_DENOMINATOR);
+    expect(spec?.naWhen).toEqual(['denominator_zero']);
+    expect(spec?.notMeaningfulWhen).toEqual(['denominator_negative']);
+    expect(spec?.flags).toEqual(['end_of_period_balance', 'website_definition']);
+    expect(registry.byId.get('cash_reinvestment')?.pendingRefs).toEqual(['T24', 'T25']);
+  });
+
+  it('自編數字：120 ÷ (600 + 100 + 50 + 30 + 20 + 500 − 200) ＝ 10.91%（沒有遞延資產時會是 120 ÷ 1,050 ＝ 11.43%）', () => {
+    const r = computeRatio('cash_reinvestment@slides03', reinvestment());
+    expect(r.status).toBe('ok');
+    expect(r.exact).toEqual({ num: '6', den: '55' });
+    expect(r.displayValue).toBe(10.91);
+    expect(r.inputs['line.bs_deferred_org_costs']).toBe(30);
+    expect(r.inputs['line.bs_deferred_dev_costs']).toBe(20);
+    // excel 版的分母是資產總計 1,150 減流動負債 200
+    expect(computeRatio('cash_reinvestment@excel', reinvestment()).displayValue).toBe(12.63);
+  });
+
+  it('不動產廠房設備毛額等於淨額時兩版相同，不論遞延資產是否為 0；有累計折舊時差額只來自毛額與淨額的差', () => {
+    const exact = (ref: string, m: MeasureMap) => computeRatio(ref, m).exact;
+    const noDeferred = reinvestment({ bs_deferred_org_costs: 0, bs_deferred_dev_costs: 0, bs_machinery_net: 600 });
+    expect(exact('cash_reinvestment@slides03', noDeferred)).toEqual(exact('cash_reinvestment@excel', noDeferred));
+    const withDeferred = reinvestment({ bs_machinery_net: 600 });
+    expect(exact('cash_reinvestment@slides03', withDeferred)).toEqual(exact('cash_reinvestment@excel', withDeferred));
+    // 遞延資產為 0、累計折舊 150：slides03 的分母 1,050，excel 版 900
+    const depreciated = reinvestment({ bs_deferred_org_costs: 0, bs_deferred_dev_costs: 0 });
+    expect(exact('cash_reinvestment@slides03', depreciated)).toEqual({ num: '4', den: '35' });
+    expect(exact('cash_reinvestment@excel', depreciated)).toEqual({ num: '2', den: '15' });
+  });
+
+  it('分母為負是 not_meaningful（非 excel 版沒有數值），分母為 0 是 na', () => {
+    const negative = computeRatio('cash_reinvestment@slides03', reinvestment({ bs_current_liabilities: 2_000 }));
+    expect(negative.status).toBe('not_meaningful');
+    expect(negative.exact).toBeNull();
+    expect(negative.displayValue).toBeNull();
+    expect(negative.reason).toEqual({ key: 'ratio.reason.negative_base', params: { base: SLIDES03_DENOMINATOR } });
+    const zero = computeRatio('cash_reinvestment@slides03', reinvestment({ bs_current_liabilities: 1_300 }));
+    expect(zero.status).toBe('na');
+    expect(zero.reason).toEqual({ key: 'ratio.reason.denominator_zero', params: { denominator: SLIDES03_DENOMINATOR } });
+  });
+
+  it('性質：分母都為正時，slides03 與 excel 版分母的差恰好是毛額減淨額（遞延資產兩邊都計入）', () => {
+    const amount = fc.integer({ min: 0, max: 50_000_000 });
+    fc.assert(
+      fc.property(
+        fc.record({
+          ocf: fc.integer({ min: 1, max: 50_000_000 }),
+          net: amount,
+          depreciation: amount,
+          office: amount,
+          investments: amount,
+          intangible: amount,
+          org: amount,
+          dev: amount,
+          cl: amount,
+          workingCapital: fc.integer({ min: 1, max: 50_000_000 }),
+        }),
+        (x) => {
+          const m = reinvestment({
+            cf_operating_total: x.ocf,
+            bs_machinery_net: x.net,
+            bs_office_equipment: x.office,
+            bs_ppe_gross: x.net + x.depreciation + x.office,
+            bs_investments_other: x.investments,
+            bs_intangible_assets: x.intangible,
+            bs_deferred_org_costs: x.org,
+            bs_deferred_dev_costs: x.dev,
+            bs_current_assets: x.cl + x.workingCapital,
+            bs_current_liabilities: x.cl,
+          });
+          const denominatorOf = (ref: string): bigint => {
+            const e = computeRatio(ref, m).exact;
+            expect(e).not.toBeNull();
+            const product = BigInt(x.ocf) * BigInt(e!.den);
+            expect(product % BigInt(e!.num)).toBe(0n);
+            return product / BigInt(e!.num);
+          };
+          expect(denominatorOf('cash_reinvestment@slides03') - denominatorOf('cash_reinvestment@excel')).toBe(BigInt(x.depreciation));
+        },
+      ),
+    );
+  });
+});
+
+describe('表 C：RD leverage 與 ME leverage 採增量比（14 第 5.1 節，自編數字）', () => {
+  const cases = [
+    { ref: 'rd_leverage@slides02', expense: 'is_research_development_expense' },
+    { ref: 'me_leverage@slides02', expense: 'is_marketing_expense' },
+  ] as const;
+
+  describe.each(cases)('$ref', ({ ref, expense }) => {
+    const m = (revenue: Money, spend: Money): MeasureMap => measures({ is_revenue: revenue, [expense]: spend });
+
+    it('公式是（本期營收 − 前期營收）÷ 本期費用，需要前期營收輸入，標網站補充定義', () => {
+      const cv = getRatioVersion(registry, ref);
+      expect(cv?.spec.numerator).toBe('line.is_revenue - input.prior_revenue');
+      expect(cv?.spec.denominator).toBe(`line.${expense}`);
+      expect(cv?.spec.unit).toBe('multiple');
+      expect(cv?.spec.naWhen).toEqual(['denominator_zero', 'missing_input']);
+      expect(cv?.spec.flags).toEqual(['website_definition']);
+      expect(cv?.inputRefs).toEqual(['prior_revenue']);
+      expect(cv?.inputDefaults.get('prior_revenue')).toBeNull();
+    });
+
+    it('營收 1,000、前期 800、費用 100：ok，2 倍', () => {
+      const r = computeRatio(ref, m(1_000, 100), { prior_revenue: 800 });
+      expect(r.status).toBe('ok');
+      expect(r.exact).toEqual({ num: '2', den: '1' });
+      expect(r.displayValue).toBe(2);
+      expect(r.flags).toEqual(['website_definition']);
+      expect(r.inputs['input.prior_revenue']).toBe(800);
+      expect(r.inputs[`line.${expense}`]).toBe(100);
+    });
+
+    it('沒有前期營收（未輸入或 null）：na，missing_input', () => {
+      const missing: readonly Readonly<Record<string, number | null>>[] = [{}, { prior_revenue: null }];
+      for (const inputs of missing) {
+        const r = computeRatio(ref, m(1_000, 100), inputs);
+        expect(r.status).toBe('na');
+        expect(r.displayValue).toBeNull();
+        expect(r.reason).toEqual({ key: 'ratio.reason.missing_input', params: { input: 'prior_revenue' } });
+      }
+    });
+
+    it('費用為 0：na，denominator_zero', () => {
+      const r = computeRatio(ref, m(1_000, 0), { prior_revenue: 800 });
+      expect(r.status).toBe('na');
+      expect(r.reason).toEqual({ key: 'ratio.reason.denominator_zero', params: { denominator: `line.${expense}` } });
+    });
+
+    it('營收 700、前期 800：負值 −1 仍是 ok；營收持平是 zero', () => {
+      const down = computeRatio(ref, m(700, 100), { prior_revenue: 800 });
+      expect(down.status).toBe('ok');
+      expect(down.displayValue).toBe(-1);
+      const flat = computeRatio(ref, m(800, 100), { prior_revenue: 800 });
+      expect(flat.status).toBe('zero');
+      expect(flat.displayValue).toBe(0);
+    });
+
+    it('不是水準比：營收 ÷ 費用（10）與 intensity 的倒數相同，leverage 的值不同', () => {
+      const r = computeRatio(ref, m(1_000, 100), { prior_revenue: 800 });
+      const intensity = computeRatio(ref.replace('leverage', 'intensity'), m(1_000, 100));
+      expect(intensity.exact).toEqual({ num: '1', den: '10' });
+      expect(r.exact).not.toEqual({ num: '10', den: '1' });
+    });
   });
 });
 

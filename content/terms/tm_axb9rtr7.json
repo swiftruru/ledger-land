@@ -1,24 +1,52 @@
 {
   "id": "tm_axb9rtr7",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "毛利率", "en": "Gross profit margin" },
+  "label": {
+    "zh-TW": "毛利率",
+    "en": "Gross profit margin"
+  },
   "teacherLabel": "毛利率",
   "currentTwLabel": "毛利率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["營業毛利率"], "en": ["Gross margin"] },
+  "aliases": {
+    "zh-TW": [
+      "營業毛利率"
+    ],
+    "en": [
+      "Gross margin"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "營業毛利占營業收入的比例，看商品本身的賺頭。數值越高表示進貨成本相對越低、定價空間越大。",
-    "en": "Gross profit as a share of revenue: the margin in the goods themselves. Higher means purchase costs are relatively lower and there is more pricing room."
+    "zh-TW": "每一元營業收入在扣掉賣出商品本身的成本之後，還留下多少營業毛利。\n\n它反映產品本身的定價能力與進貨成本控制，是五層利益中最上面那一層的比率。",
+    "en": "How much gross profit is left from each unit of revenue after the cost of the goods sold.\n\nIt reflects pricing power and purchasing cost control, and corresponds to the top of the five profit levels."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上半部。營業收入為 0 時顯示 N/A。毛利率減去銷售及管理費用率就是營業利益率，因為課程版面的銷管費用就是全部的營業費用。",
+    "en": "Both figures sit in the upper part of the income statement. When revenue is zero the result is N/A. Gross margin minus the SG&A ratio equals the operating margin, because in the course layout distribution costs and administrative expenses are the whole of operating expenses."
+  },
+  "misconception": {
+    "zh-TW": "把毛利率和營業成本率當成兩個獨立的指標。它們加起來剛好是 {{percent:1|digits=0}}（營業收入被拆成成本與毛利兩塊），知道其中一個就知道另一個。",
+    "en": "Treating gross margin and the cost of sales ratio as independent figures. They add up to {{percent:1|digits=0}}, because revenue is split into cost and gross profit, so knowing one tells you the other."
+  },
+  "formula": {
+    "zh-TW": "毛利率的算法：營業毛利 ÷ 營業收入。",
+    "en": "Gross profit margin = gross profit ÷ revenue."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "gross_margin@slides01"
+  "ratioRef": "gross_margin@slides01",
+  "related": [
+    "tm_g8p4w1rz",
+    "tm_zn4nbxtb",
+    "tm_1c1g4a7q",
+    "tm_v3n8q2ye"
+  ]
 }

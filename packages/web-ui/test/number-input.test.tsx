@@ -5,10 +5,9 @@ import { useState } from 'react';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
-import type { NumericUnit } from '@ledgerland/i18n';
-import { NumberInput, loadWebUiMessages } from '../src/index.ts';
+import { NumberInput, formatParsed, loadWebUiMessages, normalizeInput, type InputUnit } from '../src/index.ts';
 
-function Demo({ unit = 'plain', allowNa = true }: { unit?: NumericUnit; allowNa?: boolean }) {
+function Demo({ unit = 'plain', allowNa = true }: { unit?: InputUnit; allowNa?: boolean }) {
   const [v, setV] = useState('');
   const [na, setNa] = useState(false);
   return (
@@ -63,6 +62,43 @@ describe('NumberInput', () => {
     await expect.element(input).toHaveAttribute('aria-invalid', 'true');
     await userEvent.fill(input, '１，２３４');
     await expect.element(page.getByText('系統讀到：1,234')).toBeInTheDocument();
+    expect(input.element().hasAttribute('aria-invalid')).toBe(false);
+    screen.unmount();
+  });
+  it('窄螢幕（約 320px 的卡片內寬）：數字框、單位、± 與 N/A 允許換行，不超出容器；按鈕至少 44×44', async () => {
+    i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
+    const screen = await render(
+      <div style={{ width: '200px' }} data-testid="narrow">
+        <Demo unit="percent" />
+      </div>,
+    );
+    const narrow = document.querySelector('[data-testid="narrow"]') as HTMLElement;
+    const row = narrow.querySelector('.ll-numinput__row') as HTMLElement;
+    expect(row.scrollWidth).toBeLessThanOrEqual(row.clientWidth);
+    expect(narrow.scrollWidth).toBeLessThanOrEqual(narrow.clientWidth);
+    for (const name of ['切換正負號', 'N/A，分母不存在']) {
+      const r = page.getByRole('button', { name }).element().getBoundingClientRect();
+      expect(r.width).toBeGreaterThanOrEqual(44);
+      expect(r.height).toBeGreaterThanOrEqual(44);
+      expect(r.right).toBeLessThanOrEqual(narrow.getBoundingClientRect().right + 0.5);
+    }
+    screen.unmount();
+  });
+  it('週轉次數（turns）的「系統讀到」用「次」，倍數用「倍」', () => {
+    expect(formatParsed(1.5, 'turns', 'zh-TW')).toBe('1.5 次');
+    expect(formatParsed(1.5, 'times', 'zh-TW')).toBe('1.5 倍');
+  });
+  it('天數（days）：「36.50天」「36.5 days」讀得懂，「系統讀到」用「天」；別的單位字樣讀不懂', async () => {
+    expect(normalizeInput('36.50天', 'days')).toEqual({ ok: true, value: 36.5 });
+    expect(normalizeInput('36.5 days', 'days')).toEqual({ ok: true, value: 36.5 });
+    expect(normalizeInput('1.5次', 'days')).toEqual({ ok: false, reason: 'invalid' });
+    expect(formatParsed(36.5, 'days', 'zh-TW')).toBe('36.5 天');
+    expect(formatParsed(36.5, 'days', 'en')).toBe('36.5 days');
+    i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
+    const screen = await render(<Demo unit="days" allowNa={false} />);
+    const input = page.getByRole('textbox', { name: '流動比率' });
+    await userEvent.fill(input, '36.50天');
+    await expect.element(page.getByText('系統讀到：36.5 天')).toBeInTheDocument();
     expect(input.element().hasAttribute('aria-invalid')).toBe(false);
     screen.unmount();
   });

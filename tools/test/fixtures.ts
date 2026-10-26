@@ -32,7 +32,8 @@ export function term(id: string): Entry {
   };
 }
 
-export function chapter(id: string, order: number, scope: 'core' | 'extension' = 'core'): Entry {
+/** 已發布的章節：主線 midterm、延伸 not_in_exam（T32）；extra 可覆蓋任何欄位（例如 kind: 'journal'、status: 'draft'） */
+export function chapter(id: string, order: number, scope: 'core' | 'extension' = 'core', extra: Record<string, unknown> = {}): Entry {
   return {
     file: `content/chapters/${id}.json`,
     data: {
@@ -42,11 +43,12 @@ export function chapter(id: string, order: number, scope: 'core' | 'extension' =
       status: 'published',
       order,
       scope,
-      examScope: scope === 'extension' ? 'not_in_exam' : 'unconfirmed',
+      examScope: scope === 'extension' ? 'not_in_exam' : 'midterm',
       title: lt(`章節 ${id}`, `Chapter ${id}`),
       summary: lt('測試用的章節。', 'A chapter used in tests.'),
       objectiveIds: [],
       levelIds: [],
+      ...extra,
     },
   };
 }
@@ -234,7 +236,8 @@ export function bundleWith(questions: Record<string, unknown>[], extra: Partial<
     for (const step of s.data.steps as { termRefs: string[] }[]) for (const ref of step.termRefs) termIds.add(ref);
   return {
     terms: [...[...termIds].map(term), ...(extra.terms ?? [])],
-    chapters: [chapter('ch_n3f8q1', 1), chapter('ch_x4d9p2', 2), chapter('ch_e4j7r2', 3, 'extension'), ...(extra.chapters ?? [])],
+    // ch_e4j7r2 是「借貸與分錄」延伸章（kind: journal），分錄題只能放在這一章（ans.journalScope）
+    chapters: [chapter('ch_n3f8q1', 1), chapter('ch_x4d9p2', 2), chapter('ch_e4j7r2', 3, 'extension', { kind: 'journal' }), ...(extra.chapters ?? [])],
     templates,
     stories: [storyEntry, ...(extra.stories ?? [])],
     questions: questions.map((q) => ({ file: `content/questions/${String(q.id)}.json`, data: q })),

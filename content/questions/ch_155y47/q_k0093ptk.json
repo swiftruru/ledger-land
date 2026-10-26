@@ -1,0 +1,76 @@
+{
+  "id": "q_k0093ptk",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "ratio_interpret",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_000wkh",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "na"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4",
+    "tm_n4e8t2jy"
+  ],
+  "scored": true,
+  "ratioRef": "pe_ratio@slides02",
+  "vars": {
+    "price": 24,
+    "lossPerShare": 2
+  },
+  "prompt": {
+    "zh-TW": "海風麵包坊今年虧損，每股虧損 {{money:vars.lossPerShare}}，股價 {{money:vars.price}}。阿哲把股價除以負的每股盈餘，得到一個負數的本益比。他該怎麼理解這個結果？",
+    "en": "Sea Breeze Bakery made a loss this year of {{money:vars.lossPerShare}} per share, and its share price is {{money:vars.price}}. Che divides the price by the negative earnings per share and gets a negative P/E ratio. How should he read this result?"
+  },
+  "options": [
+    {
+      "id": "o_g7s3",
+      "text": {
+        "zh-TW": "負倍數不具解釋意義，不拿來比較；N/A 是每股盈餘為零的情況",
+        "en": "The negative multiple is not meaningful and is not compared; N/A is the case of zero earnings per share"
+      },
+      "short": {
+        "zh-TW": "負倍數不具解釋意義",
+        "en": "The negative multiple is not meaningful"
+      },
+      "feedback": {
+        "zh-TW": "答對了。本益比回答的是「每一元盈餘要付多少錢」；公司虧損時沒有盈餘可以對應，算出的負倍數不具解釋意義。這和每股盈餘為零的 N/A 不同：N/A 是分母不存在，根本算不出來。",
+        "en": "That is right. The P/E ratio answers how much is paid per unit of earnings; a loss-making company has no earnings to set against the price, so the negative multiple is not meaningful. That differs from N/A at zero earnings per share, where there is no denominator and nothing can be computed."
+      }
+    },
+    {
+      "id": "o_h8t4",
+      "text": {
+        "zh-TW": "把負的本益比當成零，表示這是最便宜的股票",
+        "en": "Treat the negative P/E ratio as zero, which makes it the cheapest share"
+      },
+      "feedback": {
+        "zh-TW": "你想把結果換成一個可以比較的數字，這個直覺可以理解。但零倍代表「免費拿到盈餘」，而這家公司是虧損；負倍數不具解釋意義，也不能改記成零。",
+        "en": "Wanting to turn the result into a comparable number is understandable. But a multiple of zero would mean earnings for free, and this company made a loss; a negative multiple is not meaningful and cannot be recorded as zero either."
+      },
+      "misconceptionId": "mc_z0ng"
+    },
+    {
+      "id": "o_j9v5",
+      "text": {
+        "zh-TW": "負的本益比表示股價被低估，是趁低買進的訊號",
+        "en": "A negative P/E ratio means the share is undervalued, a signal to buy while the price is low"
+      },
+      "feedback": {
+        "zh-TW": "你把負數解讀成「異常便宜」，但負號只是因為分母是虧損；虧損公司要用別的方法看。",
+        "en": "You read the minus sign as unusually cheap, but it only appears because the denominator is a loss; loss-making companies need other tools."
+      },
+      "misconceptionId": "mc_1w2b"
+    }
+  ],
+  "correctOptionId": "o_g7s3",
+  "explanation": {
+    "zh-TW": "{{option:o_g7s3}}是正確的理解：每股盈餘為零時本益比是 N/A（分母不存在）；為負時算得出負數，但不具解釋意義，不能拿來比較。{{option:o_h8t4}}把沒有意義的負倍數改成零；{{option:o_j9v5}}把負號當成買點。本章是會計觀念練習，不是投資建議。",
+    "en": "{{option:o_g7s3}} is the right reading: at zero earnings per share the P/E ratio is N/A (there is no denominator); with negative earnings per share a negative number can be computed, but it is not meaningful and cannot be compared. {{option:o_h8t4}} turns a meaningless negative multiple into zero; {{option:o_j9v5}} reads the minus sign as a buying point. This chapter is an accounting concept exercise, not investment advice."
+  }
+}

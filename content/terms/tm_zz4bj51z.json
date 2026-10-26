@@ -2,18 +2,39 @@
   "id": "tm_zz4bj51z",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "保留盈餘", "en": "Retained earnings" },
+  "label": {
+    "zh-TW": "保留盈餘",
+    "en": "Retained earnings"
+  },
   "teacherLabel": "保留盈餘",
   "currentTwLabel": "保留盈餘",
   "ifrsEnglish": "Retained earnings",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "公司歷年盈餘留在公司裡的部分，包括法定盈餘公積、特別盈餘公積與未分配盈餘。模板的分組標題，不可入帳。",
-    "en": "The part of past profits kept in the company, made up of the legal reserve, special reserve and unappropriated retained earnings. A template group heading that cannot be posted to."
-  }
+    "zh-TW": "公司歷年賺到、還沒以股利分配給股東而留在公司的盈餘總和。\n\n課程模板用它當分組標題，底下分成法定盈餘公積、特別盈餘公積與未分配盈餘；本期淨利就是經由未分配盈餘流進這一區。",
+    "en": "The accumulated profits the company has earned over the years and kept rather than distributed as dividends.\n\nThe course template uses it as a group heading over the legal reserve, special reserve and unappropriated retained earnings; profit for the period flows into this group through unappropriated retained earnings."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表股東權益區，資本公積的下一個分組，它是分組標題，不能直接入帳。完整的檢查是期初未分配盈餘加本期淨利、減股利、減提列的公積，要等於期末未分配盈餘，這就是步驟④（勾稽點 B）；沒有股利與提撥公積時，未分配盈餘的增加額就等於本期淨利。",
+    "en": "Where it sits: the equity section of the balance sheet, the group after capital surplus; being a heading, it cannot be posted to directly. The full check is opening unappropriated retained earnings plus profit for the period, less dividends and reserve appropriations, which must equal closing unappropriated retained earnings: that is step 4 (check B). With no dividends or reserve appropriations, the increase in unappropriated retained earnings simply equals profit for the period."
+  },
+  "misconception": {
+    "zh-TW": "以為保留盈餘是一筆放在銀行裡的現金。它是權益的來源紀錄，對應的資產可能早就變成設備、存貨或應收帳款；保留盈餘很多的公司也可能現金很少。",
+    "en": "Believing retained earnings are a pile of cash in the bank. They record a source of equity; the matching assets may long since have become equipment, inventories or receivables, so a company with large retained earnings can still be short of cash."
+  },
+  "related": [
+    "tm_4c6v99nn",
+    "tm_3bd0kmwn",
+    "tm_j5778msk",
+    "tm_x3n8v5tc",
+    "tm_n4e8t2jy"
+  ]
 }

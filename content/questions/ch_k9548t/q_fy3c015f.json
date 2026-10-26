@@ -1,0 +1,83 @@
+{
+  "id": "q_fy3c015f",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_k9548t",
+  "objectiveId": "obj_bkfrmc",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "stakeholders",
+    "judgment",
+    "employee"
+  ],
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_n4e8t2jy",
+    "tm_e61ht6yh",
+    "tm_tkj8x3a7"
+  ],
+  "scored": false,
+  "prompt": {
+    "zh-TW": "海風麵包坊要和員工談明年的報酬方案。店長志明拿到財報，發現今年淨利不錯但現金一直很緊。三種方案都合理，如果你是員工，你會選哪一種？",
+    "en": "Sea Breeze Bakery is negotiating next year’s pay with staff. Manager Chih-ming has the statements and sees a decent profit this year but persistently tight cash. All three schemes are reasonable; if you were an employee, which would you choose?"
+  },
+  "options": [
+    {
+      "id": "o_p7r8",
+      "text": {
+        "zh-TW": "固定加薪，不看業績",
+        "en": "A fixed pay rise regardless of results"
+      },
+      "upside": {
+        "zh-TW": "收入可預期，不受公司的會計估計或景氣影響；對生活規劃最穩。",
+        "en": "Predictable income, unaffected by the company’s accounting estimates or the economy; steadiest for planning life."
+      },
+      "downside": {
+        "zh-TW": "生意變好時分不到更多；現金很緊的公司，固定成本增加也可能讓它更危險。",
+        "en": "No share in the upside when business improves; and for a cash-tight company, higher fixed costs can make it riskier."
+      }
+    },
+    {
+      "id": "o_q9s1",
+      "text": {
+        "zh-TW": "底薪加上和本期淨利連動的獎金",
+        "en": "Base pay plus a bonus linked to profit for the period"
+      },
+      "upside": {
+        "zh-TW": "公司賺得多你拿得多，和股東的利益一致。",
+        "en": "The more the company earns, the more you receive, aligned with shareholders."
+      },
+      "downside": {
+        "zh-TW": "淨利可以被會計估計影響，也可能是賒銷做出來的；帳上有獲利，現金卻發不出獎金。",
+        "en": "Profit can be shaped by accounting estimates or built on credit sales; the books show profit, but there may be no cash to pay the bonus."
+      }
+    },
+    {
+      "id": "o_r2t3",
+      "text": {
+        "zh-TW": "底薪加上和營業活動現金流量連動的獎金",
+        "en": "Base pay plus a bonus linked to net cash from operating activities"
+      },
+      "upside": {
+        "zh-TW": "現金真的進來才算數，獎金發得出來；也會促使大家關心收款。",
+        "en": "Only cash that actually arrives counts, so the bonus can actually be paid; it also makes everyone care about collection."
+      },
+      "downside": {
+        "zh-TW": "現金流量受收付款時點影響，可能某一年很好、下一年很差，波動比淨利大。",
+        "en": "Cash flow depends on payment timing and can swing from a good year to a bad one, more volatile than profit."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "員工關心的不只是薪資那一列，而是公司能不能持續經營、承諾的報酬發不發得出來。所以員工也該看現金流量與負債，不只看淨利。偏好穩定的人選固定加薪；願意和公司共同承擔起伏的人，可以選連動方案，但要知道連動的是淨利還是現金，兩者在現金很緊的公司差別很大。",
+    "en": "Employees care about more than the wages line: whether the company can keep going and whether promised pay can actually be paid. So employees should read cash flow and debt too, not just profit. Those who prefer stability choose the fixed rise; those willing to share the company’s ups and downs may choose a linked scheme, but should know whether it is linked to profit or to cash, which differ greatly in a cash-tight company."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

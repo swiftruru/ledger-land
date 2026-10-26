@@ -5,9 +5,13 @@
 ## 確定要做
 
 - **三層 tokens**：基礎色票（primitive）→ 語意 tokens（semantic）→ 元件 tokens（component），以 `packages/tokens` 的 TypeScript 原始檔為唯一來源，建置時產生 CSS custom properties，以及給 manifest 與圖表使用的 TS 常數；淺色與深色各一組，預設跟隨系統（第 2 節）。
-- **主題**：已決定（2026-10-21）：淺色是紙質（頁面 `#FCF8F0`、卡片 `#FFFDF9`、暖墨文字、赤陶強調色），深色是三個風味（夜空、莓果、紅酒：同一組強調色，只換底色色相），完整色票、對比度門檻與切換機制見 [16 主題](16-themes.md)；「不用紫色」只限淺色，深色用紫當填色（第 2.2 節）。
+- **主題**：已決定（2026-10-21）：淺色是紙質（頁面 `#FCF8F0`、卡片 `#FFFDF9`、暖墨文字、赤陶強調色），深色是三個風味（夜空、莓果、紅酒：換底色色相，強調色也隨風味：夜空紫、莓果洋紅、紅酒覆盆子紅；狀態色與文字色共用），完整色票、對比度門檻與切換機制見 [16 主題](16-themes.md)；「不用紫色」只限淺色，夜空用紫當填色（第 2.2 節）。
 - **不只靠顏色傳達資訊**：會計五大要素的顏色一律搭配圖示與文字；增減一律用 ▲▼、正負號與文字；答對答錯一律有圖示與文字（第 2.4、2.5 節）。
-- **系統字型**：中文 PingFang TC 與 Noto Sans TC 等系統字型，不下載字型檔；金額與表格一律等寬數字（第 3 節）。
+- **系統字型**：中文 PingFang TC 與 Noto Sans TC 等系統字型，不下載字型檔；中文堆疊把拉丁系統字放在前面（2026-10-25），關卡代號的連字號不會看起來像破折號；金額與表格一律等寬數字（第 3 節）。
+- **全站不得有未設計的連結**（2026-10-24，你的要求，M3 實作）：可點元素只准用第 9.2 節列的元件與第 9.3 節的專用元件；瀏覽器預設樣式的連結、帶底線的按鈕、沒有 class 的原生按鈕、看起來像普通文字的可點元素一律視為缺陷，任何里程碑、任何占位頁都適用；由原始碼檢查 `pnpm check:links`（`tools/check-links.mjs`，規則 R1 到 R12）與 E2E `apps/web/e2e/link-style.spec.ts` 擋下（第 8.5 節）。
+- **遊戲感按鈕與同一套手感**（M3）：Button 五種變體（primary、secondary、back、quiet、danger）、三種尺寸（sm 44、md 48、lg 56px）；primary、secondary、danger 是「代幣」，有 4px 立體底邊（`--ll-btn-depth`），按下時沉 4px、底邊歸零，減少動態時只換色與底邊、不位移；地圖節點用同一組底邊與按壓規則；頁首、工具列、HUD、Tab bar 是平的（第 1、4.6、9.2 節）。
+- **全站一套中文換行規則**（M3）：`line-break: strict`、`text-wrap: pretty`，標點與「的」不落在行首；整句要依詞換行的地方用共用的切詞工具，不在各頁另寫（第 3.5 節）。
+- **寬版頁面**（M3）：首頁、章節頁、名詞圖鑑、我的、徽章、安裝教學、關於系統設計的內容最寬 1040px，其他頁 720px，闖關地圖全幅（第 10 節）。
 - **間距、圓角、陰影、動態**各有 tokens；動態含時長、彈簧曲線，以及「減少動態效果」時的 reduced 變體（第 4 節）。
 - **對比度在 M0b 驗證**：每組文字與背景、圖示與背景、玻璃與最糟背景的組合都留下計算紀錄（第 2.6 節）。
 - **玻璃分三層，由 JS 決定層級**：Tier 0 實色、Tier 1 霧面、Tier 2 折射；含 `url()` 的折射宣告只放在 `html[data-glass=refract]` 底下，Safari 與 Firefox 永遠不會套用；`CSS.supports` 的測試字串不放 `var()`（第 5 節）。
@@ -81,6 +85,9 @@ iOS 的「減少動態效果」可以透過 `prefers-reduced-motion` 讀到（iO
 5. **原生手感。** 系統字型、44px 觸控目標、彈簧動態、safe area；但不模仿 Apple 的專有素材。
 6. **動態要有意義，而且可以關掉。** 動畫用來說明「數字從哪裡來、往哪裡去」，減少動態時改用醒目標示與文字，資訊不減少。
 7. **一套 tokens，兩種主題，兩種語言。** 深色模式不是反色，而是另一組調過的值；英文字串較長，元件不得依賴固定寬度。
+8. **形狀說明可點，不靠底線。** 按鈕有填色或外框；選單列與名詞卡有卡片與右側箭頭；底線只留給句子裡的文中連結（TextLink）。（M3，2026-10-24）
+9. **可按的實體一律是代幣造型，頁首與工具列是平的。** 內容區的 Button（primary、secondary、danger）與地圖節點共用 4px 立體底邊與按壓規則；鈴是金幣、節點像硬幣、按鈕像代幣。BackButton、IconButton 的 chrome 變體、StatChip、HUD、Tab bar 沒有底邊，只有底色與按壓時的底色變化。（M3）
+10. **顏色的意思固定。** `--ll-accent` 系只給動作與選取（主按鈕、目前關卡外圈）；`--ll-star` 系只給進度、收集與獎勵（進度條、圖鑑印章、星星、精通徽章）；success、danger 是對錯與狀態；`--ll-link` 只給句中連結；「已按下、目前頁」這類選取外框用 `--ll-selected`（第 2.7 節）。一個畫面一顆 primary。（M3）
 
 ---
 
@@ -97,16 +104,17 @@ iOS 的「減少動態效果」可以透過 `prefers-reduced-motion` 讀到（iO
 - 主題寫在 `html[data-theme='light'|'dark']`，深色另有 `html[data-flavor='violet'|'berry'|'wine']`；已決定（2026-10-21）：預設跟隨系統，可在設定頁手動選擇外觀與深色風味，偏好存在 localStorage 的 `ll:theme` 與 `ll:dark-flavor`，由 boot 腳本在首次繪製前套用（16 第 7 節）。
 - 原始檔位置依 [09 技術選擇](09-tech-stack.md) 第 8 節的資料夾結構。已決定（2026-10-20）：以 `packages/tokens` 的 TypeScript 原始檔為唯一來源，建置時產生 CSS 變數檔、TS 常數、manifest 色碼（`theme_color` 與 `background_color`）與 HTML 內聯的首次繪製背景色（見 [06 PWA](06-pwa-responsive.md) 第 2 節）；日後也能產生 App 用的常數。`packages/tokens` 只放 tokens，不放元件樣式與玻璃規則（第 5 節、第 9 節）。
 - 媒體查詢裡不能用 `var()`，斷點（600px、1024px、1440px，見 02）的常數同樣由 `packages/tokens` 在建置期產生，CSS 與 TypeScript 共用同一份來源。
+- 元件 tokens 的實際清單見第 2.7 節（M3 起：連結、按鈕、平面元件、進度與收集、遮罩、選取色）；地圖與場景的 tokens 見 [16 主題](16-themes.md) 第 11 節。
 
 ### 2.2 基礎色票（已移到 16）
 
-已決定（2026-10-21）：色票以 [16 主題](16-themes.md) 為準。淺色是紙質：paper 五階（`#FFFDF9` 卡片、`#FCF8F0` 頁面、`#F4F0E7` 凹陷區、`#E0DACF` 髮絲線、`#C2BDB4` 裝飾）、ink 四階（`#292622`、`#625D56`、`#6D6861`、`#8F8880`）、赤陶 `#9E4A25`、蜜桃 `#F49A6C`（只做裝飾）、天空藍 `#1D5F8C`、薄荷 `#1F6E52`、赭 `#7F5A00`、珊瑚 `#A8383A`、星星 `#F0C64A`（16 第 2.1 節）。深色是三風味：每個風味的卡片、選取底、註解三階為錨定值，其餘底色階梯由公式推導；強調色（紫 `#9580FF`、亮紫 `#AA99FF`）、狀態色（綠 `#8AFF80`、紅 `#FF9580`、橙 `#FFCA80`、青 `#80FFEA`、黃 `#FFFF80`、粉 `#FF80BF`）與文字 `#F8F8F2` 三個風味共用（16 第 3 節）。
+已決定（2026-10-21）：色票以 [16 主題](16-themes.md) 為準。淺色是紙質：paper 五階（`#FFFDF9` 卡片、`#FCF8F0` 頁面、`#F4F0E7` 凹陷區、`#E0DACF` 髮絲線、`#C2BDB4` 裝飾）、ink 四階（`#292622`、`#625D56`、`#6D6861`、`#8F8880`）、赤陶 `#9E4A25`、蜜桃 `#F49A6C`（只做裝飾）、天空藍 `#1D5F8C`、薄荷 `#1F6E52`、赭 `#7F5A00`、珊瑚 `#A8383A`、星星 `#F0C64A`（16 第 2.1 節）。深色是三風味：每個風味的卡片、選取底、註解三階為錨定值，其餘底色階梯由公式推導；狀態色（綠 `#8AFF80`、紅 `#FF9580`、橙 `#FFCA80`、青 `#80FFEA`、黃 `#FFFF80`）與文字 `#F8F8F2` 三個風味共用；強調色隨風味：夜空是紫 `#9580FF` 與亮紫 `#AA99FF`，莓果與紅酒由各自的註解色色相推導（16 第 3.4 節）；費用要素夜空是粉 `#FF80BF`、莓果與紅酒是亮紫（16 第 4.1 節）。
 
 刻意不用的顏色：淺色不用紫色與偏紫的藍；兩個主題都不用純黑 `#000000` 與純白 `#FFFFFF` 當底色或文字色（陰影與高光的半透明疊色除外）；淺色不用高飽和的螢光色。原本的粉彩色票（蜜桃、奶油黃、薄荷、天空藍、珊瑚粉加杏仁米底）作廢，杏仁米 `#FBF4EA` 在紙上偏黃。
 
 ### 2.3 語意 tokens（名稱不變，值見 16）
 
-token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`、`--ll-surface-2`、`--ll-elevated`（新增，sheet 與玻璃底）、`--ll-border`、`--ll-border-strong`、`--ll-text`、`--ll-text-2`、`--ll-text-3`、`--ll-text-4`（新增，裝飾）、`--ll-accent`、`--ll-accent-contrast`、`--ll-accent-tint`、`--ll-accent-ink`、`--ll-accent-pressed`（新增）、`--ll-link`、`--ll-focus`、`--ll-success-tint` 與 `-ink`、`--ll-danger-tint` 與 `-ink`、`--ll-warning-tint` 與 `-ink`、`--ll-info-tint` 與 `-ink`、`--ll-change-up-tint` 與 `-ink`、`--ll-change-down-tint` 與 `-ink`、`--ll-change-none-tint` 與 `-ink`、`--ll-highlight-ring`、`--ll-star`（新增）。四個主題的值在 16 第 2.2 節（淺色）與第 3.3 節（深色）。兩條規則：淺色的淡底是 ink 以 12% 疊在卡片上，深色是 15%；淺色的選取狀態（膠囊、選項）用紙色底加赤陶色邊與圖示，不用彩色塊。
+token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`、`--ll-surface-2`、`--ll-elevated`（新增，sheet 與玻璃底）、`--ll-border`、`--ll-border-strong`、`--ll-text`、`--ll-text-2`、`--ll-text-3`、`--ll-text-4`（新增，裝飾）、`--ll-accent`、`--ll-accent-contrast`、`--ll-accent-tint`、`--ll-accent-ink`、`--ll-accent-pressed`（新增）、`--ll-selected`（2026-10-25 新增，選取色）、`--ll-link`（2026-10-24 起等於強調墨色：紙質赤陶、深色依風味）、`--ll-focus`（紙質天空藍、夜空青、莓果與紅酒是風味淡色）、`--ll-success-tint` 與 `-ink`、`--ll-danger-tint` 與 `-ink`、`--ll-warning-tint` 與 `-ink`、`--ll-info-tint` 與 `-ink`、`--ll-change-up-tint` 與 `-ink`、`--ll-change-down-tint` 與 `-ink`、`--ll-change-none-tint` 與 `-ink`、`--ll-highlight-ring`、`--ll-star`（新增）。四個主題的值在 16 第 2.2 節（淺色）與第 3.3 節（深色）。兩條規則：淺色的淡底是 ink 以 12% 疊在卡片上，深色是 15%；淺色的選取狀態（膠囊、選項）用紙色底加赤陶色邊與圖示，不用彩色塊。
 
 ### 2.4 會計要素的顏色（一律搭配圖示與文字）
 
@@ -158,6 +166,28 @@ token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`
 3. 增強對比（`prefers-contrast: more`）與深色模式各跑一次。
 4. 報表結果存進 repo，作為 [10 里程碑](10-milestones.md) 的無障礙完成標準之一。
 
+### 2.7 元件 tokens（M3，2026-10-24 到 26）
+
+全站可點元素重新設計時新增（`packages/tokens` 的 `COMPONENT_COLOR_TOKENS`）；元件只引用這些與第 2.3 節的語意 token，不寫死色碼。深色的值只寫在共用區塊，以 `color-mix(in oklab, …)` 帶入各風味的底色或強調色，所以夜空、莓果、紅酒自動不同；完整的值與對比見 [16 主題](16-themes.md) 第 2.2、3.3、6 節。
+
+| 用途 | token | 紙質 | 深色（共用區塊的寫法） |
+| --- | --- | --- | --- |
+| 句中連結 | `--ll-link`、`--ll-link-underline`、`--ll-link-hover` | 赤陶、赤陶 45% 透明、accent-pressed | 強調墨色、墨色 50% 透明、墨色 70% 混 text |
+| 主按鈕 | `--ll-btn-primary-bg`、`-fg`、`-ledge`、`-pressed` | accent、accent-contrast、`#6F341A`、accent-pressed | accent、accent-contrast、accent 60% 混 bg、accent-pressed 85% 混 bg |
+| 次要按鈕 | `--ll-btn-secondary-bg`、`-fg`、`-border`、`-ledge`、`-pressed`、`-icon` | surface、text、border-strong、text-4、accent-tint、強調墨色 | elevated 68% 混 border-strong、text、border-strong、border-strong 40% 混 bg、accent-tint 80% 混 bg、selected 60% 混 text |
+| 危險按鈕 | `--ll-btn-danger-bg`、`-fg`、`-ledge`、`-pressed` | danger-tint、danger-ink、danger-ink、淡底混 10% 珊瑚色 | 淡底混 20% 珊瑚色、珊瑚色混 28% text、珊瑚色 32% 混 bg、danger-tint |
+| 停用 | `--ll-btn-disabled-bg`、`-fg` | surface-2、text-3 | 同左（停用是灰底加虛線外框，不用 opacity） |
+| 圖示 | `--ll-btn-icon` | 強調墨色 | 強調墨色（IconButton、BackButton、quiet、Disclosure 的圖示） |
+| 平面元件 | `--ll-chrome-bg`、`--ll-chrome-pressed`、`--ll-quiet-hover` | surface-2、border、surface-2 | elevated、surface-2、surface-2 |
+| 列按下 | `--ll-row-pressed` | 強調色 12% 混卡片色 | accent-tint（NavRow、Disclosure、選單項目、quiet 按鈕按下的底；頁面自己的可點列也用它） |
+| 地圖節點底邊 | `--ll-node-ledge` | text-4 | border-strong（節點立在路面上，暗底邊在路面上看不見，所以不跟著次要按鈕變） |
+| 進度與收集 | `--ll-star-fill`、`--ll-star-edge`、`--ll-star-ink`、`--ll-collected-ring` | star、warning-ink 40% 透明、text、star 30% 透明 | star 82% 混 warning-ink、透明、bg、填色 65% 透明 |
+| 進度條軌道 | `--ll-progress-track`、`--ll-progress-rim` | surface-2、border | border-strong 28% 混 surface、border-strong 70% 混 surface（空的進度條在深色看得到） |
+| 遮罩 | `--ll-scrim` | `rgb(41 38 34 / 0.4)` | `rgb(0 0 0 / 0.65)` |
+
+- 次要按鈕、危險按鈕的底邊一定比面暗（四個主題都由 `contrast.test.ts` 檢查：面對底邊至少 1.3，危險 1.2；底邊對卡片 1.3、對頁面 1.5）。
+- 次要按鈕的圖示在深色用 `--ll-btn-secondary-icon`（和面同一個色相）；選單列與收藏卡的圖示也用它。NavCard 旁的動作鈕（收藏卡的垃圾桶）靜止時用它、滑過與鍵盤焦點才換回 `--ll-btn-icon`（2026-10-26 決定：深色三風味裡垃圾桶不比愛心鮮豔）。
+
 ---
 
 ## 3. 字型與字級
@@ -166,7 +196,7 @@ token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`
 
 ```css
 :root {
-  --ll-font-zh: "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", "Microsoft JhengHei", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ll-font-zh: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
   --ll-font-en: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
   --ll-font-num: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
@@ -175,7 +205,9 @@ token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`
 .ll-num { font-family: var(--ll-font-num); font-variant-numeric: tabular-nums lining-nums; }
 ```
 
-- 中文把繁體中文字型放在 `system-ui` 前面，避免某些系統的 `system-ui` 對中文挑到簡體字形的字型。
+- 中文堆疊是拉丁系統字在前、繁體中文字型在後（2026-10-25，M3 收尾第 4 輪看圖驗收）：PingFang TC 的 ASCII 連字號寬 0.6em（比數字還寬），「1-3」「E1-1」這類關卡代號在首頁、主按鈕、小地圖、名詞卡、地圖節點、收藏卡上看起來像破折號。系統字的連字號約 0.43em，和英文版、`.ll-num` 是同一個字面。中文字與全形標點（（）「」，。－）系統字沒有，逐字退回 PingFang TC 等中文字型，字面不變（以 Chromium 的 `CSS.getPlatformFontsForNode` 逐段核對）。副作用：中文介面裡的 ASCII 數字、英文字母與「…」改用系統字（和英文版相同），數字稍寬（0.49em 對 0.41em）。各頁不另外給代號設字型。
+- 原本把繁體中文字型放在 `system-ui` 前面，是怕某些系統的 `system-ui` 對中文挑到簡體字形。現在 `system-ui` 只負責拉丁字：macOS 與 iOS 的系統字依元素的 `lang="zh-TW"` 退到 PingFang TC（Chromium 實測，中文字一律是 PingFang TC）；Windows 的 Segoe UI 與 Android 的 Roboto 沒有中文字形，依堆疊往下找到微軟正黑體或 Noto Sans CJK TC。退路：若哪個平台的中文出現簡體字形，把中文字型移回前面，改成給關卡代號一個拉丁字的 class。
+- 中文行首的全形括號：`:lang(zh-TW) { text-spacing-trim: trim-start }`（base.css），換行後落在行首的「（」不留半個字的空白；不支援的瀏覽器維持原樣。
 - 不下載任何字型檔：首次載入更快、離線不缺字；Noto Sans TC 只在裝置已安裝時使用。不自行託管 SF Pro。
 - 缺翻譯而退回中文的元素會設 `lang="zh-TW"`（見 05），自動套用中文字型堆疊。
 
@@ -202,8 +234,46 @@ token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`
 | `--ll-type-number-lg` | 28px／34px | 700 | 指標卡的主要數值（等寬） |
 
 - 中文不加字距；英文全大寫的小標加 0.02em。
+- 等寬字 `--ll-font-mono`（`ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Roboto Mono", "Liberation Mono", monospace`，M3）：備份碼、診斷資訊。Chromium 不認得 `ui-monospace`，所以不能只寫 `ui-monospace, monospace`。
 - 不用 300 以下的字重：中文細字在低解析度螢幕上不易閱讀。
 - 文字放大到 200% 時版面不破（WCAG 1.4.4），所以字級一律用 rem。表中以 px 標示方便閱讀，實作時換算成 rem（例如 17px 寫成 `1.0625rem`）；`clamp()` 的上下限也用 rem，只有中間的 `vw` 值例外。
+
+### 3.4 元件的字級對照（M3）
+
+| 角色 | token | 字重 | 用在 |
+| --- | --- | --- | --- |
+| 頁首標題（PageHeader、地圖 HUD 的 h1） | compact `title-3`、600px 以上 `title-2` | 700 | 五個頂層頁 |
+| 子頁標題（TopBar 第二列的 h1） | `title-1`（手機 `title-2`；compact 版 `title-3`） | 700 | 章節頁、名詞頁、設定等 |
+| 卡標題 | `title-3` | 700 | 名詞卡名稱、徽章格、結果卡、主卡標題 |
+| 列標題 | `body` 17 | 600（選單項目 400） | NavRow、NavCard、LevelCard 名稱、Disclosure |
+| 說明 | `body-sm` 15 | 400，`--ll-text-2` | 列與卡的說明、Banner 內文 |
+| 群組小標、眉標 | `footnote` 13 | 600，`--ll-text-2` | NavList 標題、「第 3 章」 |
+| 籤、徽章文字 | `caption` 12 | 600 | Badge、地圖的星星籤 |
+| 按鈕 sm、md、lg | `body-sm` 15、`body` 17、`title-3` 20 | 600、600、700 | Button |
+| 大數字 | `number-lg` 28 | 700，`.ll-num` | 圖鑑收集百分比、結果頁正確率 |
+
+Tab bar 標籤是 `min(0.75rem, 16px)`（文字放大時跟著變大，最多 16px）；英文另加 `5vw - 2.5px` 的上限（320 寬時 13.5px，375 起 16px），長標籤換行時底盤跟著長高。
+
+### 3.5 中文換行與依詞換行（M3，2026-10-25 到 26 定案）
+
+全站規則寫在 `packages/web-ui/src/styles/03-core-utils.css`，都是繼承的屬性，元件與頁面不另寫：
+
+```css
+html { line-break: strict; text-wrap: pretty; }   /* 句號、逗號、頓號不落在行首；不留孤字；word-break 維持 normal */
+@container (max-width: 11em) {                     /* 英文只在窄容器（文字放大 200% 的手機）的內文斷字 */
+  :lang(en) { hyphens: auto; hyphenate-limit-chars: 8 4 3; }
+  :is([class*='title'], [class*='name'], .ll-btn), :is([class*='title'], [class*='name'], .ll-btn) * { hyphens: manual; }
+}
+.ll-nowrap { white-space: nowrap; }                /* 整塊不斷開的短詞 */
+.ll-phrased { word-break: keep-all; overflow-wrap: anywhere; }   /* 已經切好詞、詞之間有 <wbr> 的句子 */
+```
+
+- **不再用** `word-break: keep-all` 加 `overflow-wrap: anywhere` 的組合處理整段文字：分句比一行長時沒有合法斷點，緊急換行會把「。」單獨推到下一行。只有已經切好詞的 `.ll-phrased` 用它。窄欄裡的英文長字或網址可以單獨寫 `overflow-wrap: anywhere`。
+- **整塊不斷的短詞**（會計名詞、介面名稱）用 Lingui rich text 包 `<span class="ll-nowrap">`（中文 6 個字以內，英文不包）；開括號、開引號放在 span 外面（Chromium 在 nowrap 的 span 裡不套用 `text-spacing-trim`）；緊接標點而且最窄寬度放不下「詞加標點」時不包。數字和量詞之間用不換行空白 U+00A0；首次載入的 chunk 裡的字串（橫幅、首頁）只能用 `.ll-nowrap`、U+00A0 或字之間的 U+2060，不能載入切詞程式。
+- **整句依詞換行**：用 `Intl.Segmenter('zh-Hant')` 切詞、詞之間放 `<wbr>`。切詞程式依用途分五種，都在懶載入的 chunk，首次載入的 JS 不變：(1) web-ui 的 `phraseParts`（`components/phrase.ts`；`Phrased`、`PhrasedRich`、名詞卡名稱、地圖標題）給名稱與短說明，單字黏前後、括號裡整段不斷，可傳 `keep` 清單；地圖標題另由 `phrased()` 在「：」「，」「、」「；」後切成子句；(2) `apps/web/src/components/prose-units.ts` 與 `ProseWords`（說明頁、安裝圖解、關卡面板的學習目標）給長段落；(3) `features/chapter/prose.ts`（章節摘要、學習目標、徽章預覽）依欄寬用容器查詢分詞、單位兩層；(4) `features/term-page/prose.ts`（名詞頁長文）以 (2) 為準，再加名詞自己的名稱與會計複合名詞整塊；(5) `features/quiz-phrase/quiz-phrase.ts`（作答頁的題幹、選項、回饋、解說與名詞卡內文）建立在 (4) 上，金額切成不換行的千分位組，切詞程式在作答頁自己的 chunk。
+- **共同的規則**：「的」「地」「得」與「了」「著」等助詞黏前一個詞，不落在行首（「的」後面只剩一個字時也黏著）；否定詞「不」「沒」「未」「別」黏後面的詞；「在」「從」「而」前面可以斷、黏後面；貨幣符號和後面的數字不斷；英文接空格再接「的」時那個空格換成 U+00A0。Segmenter 切成兩個單字的會計用語（沖減、營收、籌資、賒銷、攤銷、勾稽、過帳等，`KNOWN_WORDS`）先併成一個詞。
+- **還沒做**：五種工具合併成 web-ui `phrase.ts` 的 prose 模式（粒度不同，合併會改變已經看圖驗收過的換行，要重拍整套圖），留到之後。
+- **檢查方式**：320、375 與文字放大 200% 各拍一次，沒有任何一行以「。」「，」「、」「；」「：」或「的」開頭，重要名詞不從中間斷；章節頁、名詞頁、作答頁各有逐行量測的單元測試（`chapter-prose.test.ts`、`term-prose.test.ts`、`quiz-phrase.test.ts`）。
 
 ---
 
@@ -254,7 +324,7 @@ token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`
 
 | token | 值 | 元素 |
 | --- | --- | --- |
-| `--ll-z-sticky` | 10 | 實驗室的恆等式摘要（實色，不加玻璃） |
+| `--ll-z-sticky` | 10 | 實驗室的恆等式摘要（實色，不加玻璃）；闖關地圖的頂部統計列、提示條與工具選單（M3，17 第 3.4 節） |
 | `--ll-z-tabbar` | 50 | Tab bar、rail、側邊欄 |
 | `--ll-z-sheet` | 60 | 名詞卡、底部表單 |
 | `--ll-z-toast` | 70 | 更新提示、內建瀏覽器橫幅 |
@@ -306,9 +376,27 @@ html[data-motion="reduced"] { --ll-dur-fast: 0ms; --ll-dur-base: 120ms; --ll-dur
 | 恆等式天平 | 傾斜後回正 | 直接顯示結果與「左右相等」文字 |
 | 答對答錯回饋 | 回饋面板滑入、星星彈出 | 淡入或直接出現 |
 | 捲動到輸入框 | smooth | 直接定位 |
+| 按鈕與地圖節點按下（M3） | 沉 4px、底邊歸零 | 不位移，只換色與底邊厚度 |
+| 名詞卡蓋章、結果頁星星、章末慶祝（M3） | 縮放與旋轉一次 | 不加動畫 class，直接是最後的樣子 |
+| 角色鈴沿路線移動（M3） | 章內 700ms，跨章停在拱門下 400ms，最長 2200ms | 直接出現在新節點，星星同時出現 |
+
+- 只用 `--ll-dur-fast` 的過渡（按鈕、分段控制、選單列、Disclosure、開關）不必另寫 `transition: none`：減少動態時 tokens 已經是 0ms，0 秒的過渡不會開始（M3 收尾時刪掉重複的規則）。用 `--ll-dur-base` 的（Disclosure 的箭頭、進度條、跳到主要內容）與動畫（Toast、骨架）仍各自處理。
 
 - 不自動播放任何超過 5 秒的動畫；實驗室動畫一律由使用者按「下一步」推進。
 - 不做閃爍、快速明暗交替的效果。
+
+### 4.6 按鈕與連結的尺寸（M3）
+
+| token | 值 | 用途 |
+| --- | --- | --- |
+| `--ll-btn-h-sm`、`-md`、`-lg` | 44、48、56px | Button 三種尺寸的面高（不含底邊）；md 是預設 |
+| `--ll-btn-depth` | 4px | 代幣按鈕與地圖節點的立體底邊；元素下方自帶 4px 外距保留底邊的位置，排版時算進去，不用負外距抵銷 |
+| `--ll-navrow-h` | 56px | 選單列（compact 44px） |
+| `--ll-progress-h-sm`、`-md` | 6、10px | 進度條（列與卡片內用 sm；主卡、作答頁、圖鑑收集卡用 md） |
+| `--ll-layout-wide` | 1040px | 寬版頁面的內容寬（第 10 節） |
+
+- 按鈕圓角是 `max(1.6em, 面高 / 2)`：一行時是膠囊，文字放大換成多行時是圓角方塊，不變成橢圓。有前置圖示的標籤換行時，圖示與最長一行一起置中（`Button.tsx` 量最長一行再平移，不改版面）。
+- 左右內距在文字放大時最多少 4px（一般字級不變），320 寬加 200% 時按鈕字排成兩行而不是四行。
 
 ---
 
@@ -659,7 +747,9 @@ html[data-glass="refract"][data-theme="dark"] .ll-tabbar {
 
 ### 8.2 焦點與頁面結構
 
-- 焦點樣式用 `--ll-focus-ring`（3px outline、2px offset、天空藍 ink），只在 `:focus-visible` 時顯示，任何元件都不得移除 outline。
+- 焦點樣式是 3px outline、2px offset（按鈕 3px，選單列、Disclosure、選單項目畫在內側 -3px，不被卡片裁掉），顏色 `--ll-focus`（紙質天空藍、夜空青、莓果與紅酒是帶風味色相的淡色，16 第 3.3 節），只在 `:focus-visible` 時顯示，任何元件都不得移除 outline，也不得被 `overflow` 或 Tab bar 切到。全站的 `:focus-visible` 寫在 `base.css`，元件不重寫相同的 outline（M3 收尾）。
+- 返回鍵（BackButton）的可讀名稱一定包含畫面上的短字（WCAG 2.5.3，例如畫面「地圖」、可讀名稱「回到闖關地圖」；開發模式違反時丟錯誤）；返回目的地依 02 第 3.6 節的表固定。
+- 切換按鈕（收藏、清單檢視、計時）用 `aria-pressed`；選單按鈕用 `aria-haspopup="menu"` 與 `aria-expanded`（M3）。
 - 頁面最前面是「跳到主要內容」連結，平常隱藏、取得焦點時顯示。
 - 換頁後焦點移到頁面的 `<h1>`（設 `tabindex="-1"`），並更新 `document.title`。
 - `html` 設 `scroll-padding-top` 與 `scroll-padding-bottom`，讓取得焦點的元素不會被頂部列或 Tab bar 遮住（WCAG 2.4.11）。
@@ -679,8 +769,9 @@ html[data-glass="refract"][data-theme="dark"] .ll-tabbar {
 
 ### 8.4 觸控目標、色彩與時間
 
-- 所有可點元素至少 44×44 CSS px（高於 WCAG 2.5.8 AA 的 24×24），相鄰目標間距至少 8px。
-- 顏色不是唯一的資訊來源（WCAG 1.4.1）：答對答錯有圖示與文字；要素有圖示與文字；增減有符號與文字；連結有底線。
+- 所有可點元素至少 44×44 CSS px（高於 WCAG 2.5.8 AA 的 24×24），相鄰目標間距至少 8px。例外只有句中的文中連結（TextLink）與行內名詞 chip（WCAG 2.5.8 的行內例外，行內 chip 至少 24px 高）；量測以元素本身的方框為準，不用偽元素補範圍（`link-style.spec.ts` 第 6 項）。
+- 顏色不是唯一的資訊來源（WCAG 1.4.1）：答對答錯有圖示與文字；要素有圖示與文字；增減有符號與文字；句中的連結有底線（中文底線位置 0.16em、英文 0.24em）；按鈕、選單列、名詞卡靠形狀、圖示與箭頭辨識，沒有底線（M3）。
+- 欄位錯誤狀態全站只用一種紅（`aria-invalid="true"` 時 2px `--ll-danger-ink` 外框、焦點框也是同一個紅），錯誤文字是欄位下方的 FieldError（M3）。
 - 對比：文字 4.5:1（大字 3:1）、圖示與元件邊界 3:1；玻璃以最糟背景計算（第 2.6、6.4 節）。
 - 計時預設關閉；開啟後可以暫停、以文字顯示剩餘時間、可以延長（WCAG 2.2.1）。
 - 不禁止縮放；320px 寬、文字放大 200% 時內容可完整使用（WCAG 1.4.10、1.4.4）。
@@ -690,6 +781,12 @@ html[data-glass="refract"][data-theme="dark"] .ll-tabbar {
 
 axe 沒有 serious 或 critical 問題；Playwright 純鍵盤 E2E；iOS VoiceOver 與 Android TalkBack 手動清單（每個模組 5 到 10 個步驟）；減少動態效果的畫面檢查；對比計算紀錄。細節見 [10 里程碑](10-milestones.md)。
 
+M3 起另加三項（2026-10-24，你要求全站連結重新設計）：
+
+- `pnpm check:links`（`tools/check-links.mjs`，CI 的 verify）：原始碼檢查。react-router 的 `Link` 只准出現在 `apps/web/src/components/RouterLink.tsx`；JSX 的 `<a>` 只准在設計系統的元件檔；設計系統的 class 名稱（`ll-btn`、`ll-navrow`、`ll-termitem` 等）保留給元件檔，其他檔案出現就失敗；CSS 只有 `base.css`（`:where(a)` 把所有連結重設成繼承顏色、沒有底線）、`dev.css` 與 web-ui 的 `07-core-components.css`（TextLink 與漏網裸連結的保底外觀）可以用型別選擇器 `a`；`:visited`、`text-decoration`、style 物件、innerHTML 產生的連結也在檢查範圍（規則 R1 到 R12 在 `tools/link-rules.json`）。例外寫在 `tools/link-exceptions.json`，數量必須和實際相同，用不到的例外也算失敗（目前 1 條：備份頁程式產生、不插進畫面的下載連結）。
+- `apps/web/e2e/link-style.spec.ts`（desktop-chromium 與 reduced-motion）：每一頁、每一種狀態檢查沒有瀏覽器預設連結色、連結與按鈕的文字色在 token 白名單內、按鈕類與其後代沒有底線（`ll-link` 除外）、每個連結都帶核准的 class、裸連結的數量是 0、文中連結的底線合格、觸控目標 44px、滑過與按下後再檢查一次、Tab 走完整頁的焦點框、強制色彩下看得到邊界、站內連結不通往找不到頁面。按鈕狀態板（`?ll-fixture=buttons`，只在開發伺服器與 `VITE_LL_FIXTURES=1` 的建置存在）另有一組。
+- 看圖驗收：設計審查者對 375、768、1280（地圖另加 1440、1920）四個主題的截圖評分（全站九項、地圖八項，各 1 到 5 分），每項至少 4 分、平均至少 4.3，而且沒有一票否決項（瀏覽器預設連結、按鈕底線、文字被遮、觸控目標不足、焦點框被切、右下浮動按鈕、同一畫面兩顆 primary、站內連結通往找不到頁面；地圖另有文字被路線壓住、元件被裁切、硬邊矩形場景、HUD 和軌道不對齊、延伸區路線斷開）才算通過。M3 跑了八輪，結果見 [M3 回報](../reports/m3.md) 第 5 節。
+
 ---
 
 ## 9. 元件清單
@@ -698,14 +795,16 @@ axe 沒有 serious 或 critical 問題；Playwright 純鍵盤 E2E；iOS VoiceOve
 
 M2 的元件已實作（2026-10-23）：下表「首次需要」為 M2 的元件都已建立。放在 `packages/web-ui` 的有 TopBar、SegmentedControl（檔名 Segmented）、Switch、Card、LevelCard、Stars、Badge、TermChip、TermSheet、QuestionCard、ChoiceGroup（含 ChoiceOption）、TrueFalse、PickStatement、PickLine、ClassifyBoard、ImpactPicker、NumberInput、FeedbackPanel、NoteTag、Toast、Banner、LevelCodeInput、LevelCode、EmptyState 與 ErrorState（檔名 States）、Skeleton，以及地圖的 LevelNode、LevelSheet、ChapterBanner、ChapterEnd、MapMarker、MapHud、MapListToggle；會用到相機、IndexedDB 或殼層狀態的 QrScanner（`apps/web/src/features/quest-map/`）、BackupPanel（備份頁 `/me/backup/`）、InstallGuide 精簡版（安裝提示卡）、Safari 分頁提示與內建瀏覽器橫幅都在 `apps/web`，後台不需要它們。與下表的差異：ElementTag 與 ChangeBadge 在 M2 還沒有獨立的元件，M4a 的報表實驗室需要時再建立；NavRail 與 Sidebar 仍是殼層的 Tab bar 元素由 CSS 變形，不是元件。做法上的共同點：選項與分段控制的原生 `<input type="radio">`、`<input type="checkbox">` 做成透明覆蓋層（`opacity: 0`，絕對定位蓋滿整張選項卡片或分段），視覺由外層的卡片與圖示呈現，鍵盤、螢幕閱讀器與 Playwright 都直接操作原生輸入，不用 `aria-hidden` 的假元件。
 
+M3 的元件已實作（2026-10-26）：題型元件 FiveStepFill、RatioNumeric、RatioTable、JournalEntryEditor，計時 TimerDisplay，地圖的 ChapterBadge 與 RollingNumber（頂部統計的數字滾動），以及全站重新設計的連結與按鈕元件（第 9.2 節）都在 `packages/web-ui`；元件樣式依層疊順序分成 `packages/web-ui/src/styles/` 的 15 個檔（`01-core-base.css` 到 `15-quiz-session.css`，檔名的數字就是順序，不改名、不調換）。完整安裝圖解（`features/install/`）、玩家卡、首頁的章節小地圖、收藏區與按鈕狀態板（`features/design-system/ButtonBoard.tsx`，`?ll-fixture=buttons`，只在開發伺服器與 `VITE_LL_FIXTURES=1` 的建置存在）在 `apps/web`。下表是原本的清單，M3 更動的列已改寫。
+
 | 元件 | 用途 | 主要變體 | 玻璃 | 無障礙重點 | 首次需要 |
 | --- | --- | --- | --- | --- | --- |
 | AppShell | 殼層、safe area、背景 | 手機、平板、電腦 | 否 | 地標區域（header、nav、main） | M0b |
 | SkipLink | 跳到主要內容 | 無 | 否 | 第一個可聚焦元素 | M0b |
 | TabBar | 手機底部導覽；元素寫在殼層 HTML，React 只更新屬性與文字（D8，6.1） | 展開、收合、隱藏 | 是 | `nav`、`aria-current` | M0a 原型、M0b |
 | NavRail、Sidebar | 平板橫向與電腦導覽；與 TabBar 是同一個殼層元素，由 CSS 依斷點改變外觀 | rail、懸浮側邊欄 | 是 | 同 TabBar | M2 |
-| TopBar | 頁面標題與返回 | 一般、精簡 | 否 | 返回按鈕的可讀名稱 | M2 |
-| Button、IconButton | 操作 | primary、secondary、ghost、danger | 否 | 44px、焦點框 | M0b |
+| TopBar | 子頁的頁首（M3 改版）：第一列 BackButton 與右側 actions，第二列 h1 | 一般（兩列）、compact（一列：圖示返回、標題、actions） | 否 | 返回鍵的可讀名稱包含短字；h1 `tabindex="-1"` | M2，M3 改版 |
+| Button、IconButton | 操作（M3 重寫，第 9.2 節） | Button：primary、secondary、back、quiet、danger；sm、md、lg；pressed、busy、block、external。IconButton：quiet、chrome | 否 | 44px、焦點框、`aria-pressed`；IconButton 的 `label` 必填 | M0b，M3 重寫 |
 | SegmentedControl | 小手機切換三表、篩選 | 2 到 4 段 | 否 | radio group 語意 | M2 |
 | Switch | 設定開關 | 無 | 否 | `role="switch"` 與狀態文字 | M2 |
 | LanguageToggle | 語言切換 | 兩種語言時為開關、超過兩種自動改選單（見 05） | 否 | 顯示目標語言的原文名稱 | M0b |
@@ -717,13 +816,14 @@ M2 的元件已實作（2026-10-23）：下表「首次需要」為 M2 的元件
 | QuestionCard | 題目外框 | 各題型（題型代號見 08 第 3.6 節） | 否 | 題號、進度文字 | M2 |
 | ChoiceGroup、ChoiceOption | 選擇題的選項群組與選項（`single_choice`、`pick_statement`、`ratio_interpret`，以及 D12 新增的 `multi_choice`，規格見 9.1） | 單選（radio）、複選（checkbox）；作答前：未選、已選；作答後：選對、也是合理答案、漏選、選錯、未選的錯誤選項 | 否 | `fieldset` 加 `legend`（多正解題的提示放在 legend）、逐選項回饋、狀態有文字 | M2 |
 | TrueFalse | 是非題（`true_false`） | 無 | 否 | 同 ChoiceOption | M2 |
-| JournalEntryInput | 借貸分錄題（`journal_entry`，只用在延伸章「借貸與分錄」，不列入期中考範圍，D1） | 借方、貸方列 | 否 | 每列有可見標籤，金額用 NumberInput | M3（見 03 與 10） |
+| JournalEntryEditor（原名 JournalEntryInput） | 借貸分錄題（`journal_entry`，只用在延伸章「借貸與分錄」，不列入期中考範圍，D1） | 借方、貸方列；新增與移除列；科目面板（借用選單項目的外觀 `menuItemClass()`） | 否 | 每列有可見標籤，金額用 NumberInput；純鍵盤可完成（`journal-entry-keyboard.test.tsx`）；窄螢幕時表格在可捲動的 region 裡 | M3（已實作） |
+| FiveStepFill、RatioNumeric、RatioTable | 五步驟勾稽填格（`five_step_fill`）、指標計算（`ratio_numeric`，固定的 N/A 按鈕）、指標判讀題上方的指標小表格（`ratio_interpret`） | 填格、作答後逐格對錯 | 否 | 每格有可見標籤；N/A 按鈕有可讀名稱 | M3（已實作） |
 | ClassifyBoard | 分類題（`classify`） | 點選、拖放 | 否 | 鍵盤流程（8.1） | M2 |
 | ImpactPicker | 交易影響（`transaction_effect`；增加、減少、不變，題目需要時另有變得可計算、變成 N/A，見 08 第 3.6 節） | 單列、多列 | 否 | 每列一組 radio | M2 |
 | NumberInput | 金額與指標輸入（`ratio_numeric`、`five_step_fill`） | 含 N/A 按鈕、± 按鈕 | 否 | 16px 以上字級、`inputmode` | M2 |
 | FeedbackPanel | 答題回饋 | 答對、答錯、取捨題的解說觀點；多正解題標出全部正確答案（9.1） | 否 | 按「確認答案」後焦點移到回饋區標題，不另用 `aria-live` 重複播報（8.3） | M2 |
 | NoteTag | 小型註記標籤，一律有文字，可點開名詞卡或說明 | 「舊稱」（W07）、「簡化」（W14）、「單期近似」（W12）、「非 IFRS 項目」／"Not an IFRS line item"（D11，中英介面都加，字串在 `packages/web-ui` 的 catalog，訊息 ID 見 05）、「IFRS 對照，不計分」（D10(f)）、「老師觀點」（W15，能否以老師名義標示【待確認 T37】） | 否 | 標籤是按鈕時有完整的可讀名稱（例如 "Not an IFRS line item: Ordinary profit. Show how IFRS treats this."，見 05） | M2 |
-| Timer | 計時 | 關閉、進行、暫停 | 否 | 可暫停、文字時間 | M3 |
+| Timer（實作名稱 TimerDisplay） | 計時 | 關閉、進行、暫停；全站設定或「這一關計時」單次開啟；寬鬆加倍 | 否 | 可暫停、文字時間；剩 1 分鐘與時間到的提醒可在設定關閉；切到背景或離開作答畫面自動暫停 | M3（已實作） |
 | StatementTable | 三表 | 累計、本筆變動（W06 並列）；教材版面（中英都用，D11）、IFRS 對照（M4b，D10(f)）；非 IFRS 的列加 NoteTag | 否 | 真正的 table | M4a（IFRS 對照在 M4b） |
 | EquationBalance | 會計恆等式天平 | 平衡、失衡（自由實驗擋下時） | 否 | 文字結論 | M4a |
 | CheckLights | 四個勾稽燈號 | 通過、未通過、尚未計算 | 否 | 燈號有文字與圖示 | M4a |
@@ -735,15 +835,15 @@ M2 的元件已實作（2026-10-23）：下表「首次需要」為 M2 的元件
 | StepController | 實驗室的上一步、下一步 | 浮動 | 是；Safari 17 以下改實色（5.3） | 一般按鈕 | M4a |
 | StakeholderCard | 利害關係人觀點 | 正面、反面、建議 | 否 | 標題層級 | M4a |
 | LabLink | 從題目跳到實驗室對應步驟 | 無 | 否 | 連結文字說明去處 | M5 |
-| Toast、Banner | 更新提示、內建瀏覽器、Safari 分頁提示、備份提醒 | 資訊、提醒、錯誤 | 預設否 | `role="status"`，不搶焦點 | M2 |
-| InstallGuide | iOS 圖解教學 | Compact、Top／Bottom | 否 | 每步有文字，插圖有替代文字 | M2 精簡、M3 完整 |
+| Toast、Banner、HintBar | 更新提示、內建瀏覽器、Safari 分頁提示、備份提醒；HintBar 是地圖頁專用的單行提示條（M3） | 資訊、提醒、錯誤、收集（`kind="collect"`，取得徽章）；Banner 有標題、動作列、關閉鈕 | 預設否 | 事件型提示放在常駐的 `ToastRegion`（`role="status"`）；不搶焦點；焦點或滑鼠停在提示裡時暫停自動收起 | M2，M3 改版 |
+| InstallGuide | iOS 圖解教學 | Compact、Top／Bottom；iOS 17、18 只用 Top／Bottom | 否 | 每步有文字，插圖有替代文字 | M2 精簡、M3 完整（已實作，`/install/` 與安裝建議卡的展開圖解） |
 | BackupPanel | 匯出、匯入、合併預覽（D10(a)） | 備份檔、文字備份碼；匯入預設合併，覆蓋放在進階選項 | 否 | 步驟文字與確認 | M2 |
 | LevelCodeInput | 闖關地圖的「輸入關卡代號」（D10(a)，06 第 4.9 節） | 一般、錯誤（格式不符、找不到、已下架） | 否 | 可見標籤、錯誤以 `aria-describedby` 連到輸入框、16px 以上字級 | M2 |
 | LevelCode | 關卡介紹顯示的代號（例如 `k7m2 q9xd`） | 無 | 否 | 等寬字型；可讀名稱念出完整代號 | M2 |
 | QrScanner | App 內掃描課堂 QR（D10(a)，06 第 4.9 節） | 說明、掃描中、無權限、非站內 QR | 否 | 預覽畫面有文字說明；取消按鈕永遠可用；無權限時提供關卡代號入口 | M2 |
-| EmptyState、ErrorState | 空狀態與錯誤頁 | 錯題本空、離線、載入失敗 | 否 | 有下一步按鈕 | M2 |
-| LevelNode、LevelSheet、ChapterBanner、ChapterEnd、MapMarker、MapHud、MapListToggle | 闖關地圖（[17 闖關地圖](17-quest-map.md)）：關卡節點與星星、關卡介紹表單、章節牌與章末區、角色標記、頂部統計、清單檢視切換 | 節點：已完成、目前、尚未挑戰、延伸章；表單：開始、再挑戰 | 否 | 節點是 `<ol>` 裡的 `<button>`，可讀名稱含章、關、名稱、星星與狀態；目前關卡 `aria-current="step"`；角色 `aria-hidden`；表單是對話框 | M2（幾何場景、簡單版角色），M3（場景插圖、角色定稿） |
-| Skeleton | 載入中 | 卡片、表格 | 否 | 減少動態時不閃動 | M2 |
+| EmptyState、ErrorState | 空狀態與錯誤頁 | 錯題本空、離線、載入失敗；預設插圖是鈴（空 `clasp`、錯 `cheek`，96px；整頁狀態在 1024 以上是 480px 的卡片） | 否 | 有下一步按鈕（`action` 只接受 Button，`onRetry` 自動放「再試一次」）；ErrorState 是 `role="alert"` | M2，M3 改版 |
+| LevelNode、LevelSheet、ChapterBanner、ChapterEnd、MapMarker、MapHud、ChapterBadge、RollingNumber | 闖關地圖（[17 闖關地圖](17-quest-map.md)）：關卡節點與星星籤、關卡介紹面板（共用 Sheet）、立柱章節牌、章末拱門與紙籤、角色鈴、頂部統計列（StatChip、IconButton chrome、compact 的「更多」選單）、章節徽章、數字滾動 | 節點：已完成、目前、尚未挑戰、延伸章（六邊形、`E1-1`）、不計分已讀；面板：開始、再挑戰 | 否 | 節點是 `<ol>` 裡的 `<button>`，可讀名稱含章、關、名稱、星星與狀態；目前關卡 `aria-current="step"`；角色 `aria-hidden`；面板是對話框 | M2（幾何場景、簡單版角色），M3（版面重做、場景插圖、徽章與章末慶祝；已實作）。MapListToggle 與右下的 MapToolbar 已不用（工具併入 HUD） |
+| PageReveal（`apps/web/src/lib/page-ready.tsx`，殼層） | 頁面布幕：每一頁第一次繪製要的資料（內容快照、進度、第一屏的懶載入作答區）齊了才整頁一次淡入，齊之前整頁隱形（版面照排）；超過 0.7 秒才顯示載入圈 | 無骨架畫面：Skeleton 元件與「…」佔位已於 2026-10-26 全站移除（維護者的要求：遊戲每一頁點進去就要是完整的，不先畫版面再補資料） | 否 | 淡入 `--ll-dur-base`，減少動態時直接出現；掀開那一刻才把焦點移到 h1 | M3 收尾 |
 | DebugPanel | `/debug/` 量測頁 | 無 | 否 | 純文字 | M0a（量測用的最小版）、M0b |
 
 ### 9.1 選擇題元件（D12，M2）
@@ -798,6 +898,50 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 - 後台的題目編輯畫面以單選按鈕選擇判分方式，並用同一個 ChoiceGroup 元件（`packages/web-ui`）即時預覽學習端的提示（後台在獨立 origin，見 08）；Excel 範本的「判分方式」下拉欄位見 08。改動 `scoringMode` 或 `correctOptionIds` 屬於答案改版（見 08）。
 - 減少動態時，作答後的狀態直接出現，不做逐一亮起的動畫。
 
+### 9.2 連結與按鈕（M3，2026-10-24 到 26）
+
+可點元素只准有下列外觀（從 `@ledgerland/web-ui` 匯入）；頁面的 `className` 只給版面（外距、grid 位置），不得改元件的顏色、底線、高度與圓角。站內 href 一律由 `localePath()` 產生、帶結尾斜線，經 `LinkProvider` 交給 react-router（不整頁重新載入；web-ui 不依賴 react-router）。
+
+| 元件 | 什麼時候用 | 外觀與規則 |
+| --- | --- | --- |
+| `Button` | 下一步用 primary（一個畫面一顆）；替代動作 secondary；第三層 quiet；破壞性 danger；`back` 只在少數平面情境 | 第 4.6 節的尺寸與底邊；`icon`、`iconEnd` 的大小由尺寸決定；`busy` 轉圈但寬度不變；`pressed` 輸出 `aria-pressed`；`external` 自動加外連箭頭與「（外部網站）」，不加 `target`；連結形式停用時是不可聚焦的 span，旁邊要寫原因；`minWidth="action"` 是列表右側的動作鈕（最小 96px） |
+| `IconButton` | 只有圖示（關閉、介紹、HUD 的工具） | 44px 圓形、圖示 22px、沒有底邊；`label` 必填，同時是 `aria-label` 與 `title`；quiet 給面板、橫幅、Toast，chrome 給頁首與 HUD |
+| `BackButton`、`TopBar`、`PageHeader` | 返回與頁首 | 頂層五頁用 PageHeader（三欄 grid，手機 56px、600 以上 64px；闖關頁 sticky）；其他頁用 TopBar 加 BackButton，返回目的地固定（02 第 3.6 節） |
+| `StatChip` | 頁首的狀態數字（星星、徽章、錯題、圖鑑） | 44px 平面膠囊；`value` 是畫面上的數字，`label` 是完整的可讀名稱；有 href 是連結，沒有是不可聚焦的 span；`dot` 是需要注意時的小紅點 |
+| `NavList`、`NavRow`、`NavCard` | 兩個以上的去處用 NavList 加 NavRow；單一大去處或一筆收集物（收藏的題目）用 NavCard | 列 56px（compact 44px）、36px 圖示方塊、標題 17/600、說明 15、右側箭頭；一個 NavList 最多兩種 tone（accent、neutral），需要注意的狀態只改右側的 Badge；每列只有一個可聚焦元素，`aside`（例如收藏卡的移除鈕）在連結外面；`current` 輸出 `aria-current` |
+| `Disclosure` | 所有 `<details>`（參考名詞、進階選項、iPhone 步驟、回饋的「其他選項」、地圖清單的章節） | 原生 `<details>`；summary 48px、右側箭頭展開轉 180 度；card 與 plain 兩種；可受控（搜尋命中時強制展開） |
+| `MenuButton`、`MenuItem` | 頁首的「更多」選單（地圖 HUD 的 compact 版） | `role="menu"`；方向鍵、Home、End、Esc 關閉並還焦點、Tab 離開時關閉；會開疊加層的項目焦點不回選單按鈕 |
+| `Sheet`、`ConfirmSheet` | 所有面板（關卡介紹、名詞卡、地圖疊加層）與確認（覆蓋進度） | 原生 `<dialog>`；頭部是選用的 lead、h2（開啟時的初始焦點）、副標與右上的關閉鈕；腳部不再放「關閉」按鈕，最後一顆是主動作；手機是滿寬的底部面板，768 以上置中 560 寬；關閉後焦點回到 `returnFocusTo` |
+| `GlossaryItem`、`GlossaryGrid`、`TermPill` | 名詞圖鑑的收集卡與參考名詞膠囊 | 依格子本身的寬度排欄（每張至少 264px：375 一欄、600 到 1023 兩欄、寬版三欄）；未收進是虛線空位，已收進右上角是金色印章（第一次出現時蓋章一次）；徽記：科目類用要素的淡底與圖示，其他類別用中性底加類別圖示 |
+| `TextLink` | 只用在句子裡提到的頁面 | 強調墨色加半透明底線（中文 0.16em、英文 0.24em）；錯誤與危險區塊裡不用（改 Button sm）；漏網的裸 `<a>` 會套到同一個外觀當保底，但 E2E 要求畫面上沒有任何元素套到它 |
+| `SearchField`、`.ll-input`、`FieldError` | 搜尋框、文字欄位與錯誤 | 48px；搜尋框有字時右側「清除搜尋」；注音組字中不回呼，父層晚一步回傳的值不蓋掉後來打的字 |
+| `ProgressBar` | 進度與收集 | 本身 `aria-hidden`，旁邊一定有文字；填色 `--ll-star-fill` |
+| `Segmented`、`Switch` | 單選切換與開關 | Segmented 的選取段是浮起的按鍵、一列放不下時改成等寬格子（不水平捲動）；Switch 的開啟軌道是 `--ll-selected` |
+
+保留的 class（只准元件檔使用，`check:links` 擋手寫）：`ll-btn*`、`ll-iconbtn*`、`ll-backbtn`、`ll-topbar--page`、`ll-topbar--compact`、`ll-pagehead*`、`ll-statchip*`、`ll-link*`、`ll-navlist*`、`ll-navrow*`、`ll-navcard*`、`ll-disclosure*`、`ll-menu*`、`ll-menuitem*`、`ll-termitem*`、`ll-termgrid*`、`ll-termpill*`、`ll-search*`、`ll-progress*`、`ll-hintbar*`。
+
+### 9.3 專用元件（M3）
+
+下列元件不是第 9.2 節的通用元件，但同樣設計過：各有自己的 `ll-` class，滑過、按下、焦點、停用、選取都有規格，至少 44px（行內例外除外），沒有底線，減少動態時不位移。新增專用元件要先加進這張表。
+
+| 元件 | class | 狀態來源 |
+| --- | --- | --- |
+| Tab bar 分頁（殼層） | `ll-tabbar__link` | 第 6 節；選中的圖示是強調墨色 |
+| 地圖節點 `LevelNode` | `ll-node`、`ll-node__disc` | 17 第 3.1 節；按壓與底邊同 Button（`--ll-node-ledge`） |
+| 星星籤 | `ll-node__stars` | 節點按鈕的子元素，不單獨可點 |
+| 章節牌的章名連結 | `ll-chbanner__link` | 至少 44px、文字 `--ll-text`、結尾 16px 箭頭；滑過時文字換強調墨色、箭頭右移 2px；按下時整張卡換 surface-2 |
+| 章末紙籤 | `ll-chend__plaque` | 不可點；有實驗室步驟路由時才放 Button quiet sm「看實驗室步驟」 |
+| 地圖頂部統計列 | `MapHud` | StatChip 加 IconButton chrome；compact 用 MenuButton |
+| 地圖提示條 `HintBar` | `ll-hintbar` | 44px、info 淡底、右側「詳細」與「關閉」兩顆 IconButton |
+| 分段控制 `Segmented` | `ll-seg`、`ll-seg__opt` | 16 第 7 節 |
+| 開關 `Switch` | `ll-switch` | 停用是灰底虛線外框 |
+| 選項卡（ChoiceGroup、TrueFalse） | 各元件現有 class | 第 9.1 節；點按範圍量 label |
+| 分類題卡片與落點 | `ll-classify__card`、`ll-classify__drop` | 第 9.1 節 |
+| 選行、選表、影響方向 | 各元件現有 class | 第 9.1 節 |
+| 名詞 chip `TermChip` | `ll-chip`（44px）、句中的 `ll-chip--inline` | 句中 chip 是行內例外，沒有底線，用強調墨色的虛線下框表示可點 |
+| 註記標籤 `NoteTag`（按鈕形式） | `ll-notetag--btn`、內層 `ll-notetag__pill` | 按鈕本身 44px、透明，膠囊在內層，結尾 14px 資訊圖示 |
+| 星星 `Stars`、徽章 `ChapterBadge` | 不可點 | 只是圖形 |
+
 ---
 
 ## 10. 版面密度與插圖
@@ -806,7 +950,9 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 - 插圖都是裝飾或輔助，一律有文字說明同樣的資訊；純裝飾的插圖 `alt=""`。
 - 卡片之間至少 12px，區段之間至少 24px；小手機上不並排兩個以上的主要按鈕。
 - 資訊密集的報表區不加插圖與漸層，背景用 surface 或 surface-2。
-- 章節場景與吉祥物（17 第 4、9 節）：原創 SVG，手繪風線條加粉彩填色，只用 16 的 tokens 上色（四個主題自動換色）；單章場景不超過 12 KB；題材用會計的比喻，不用糖果或任何遊戲的角色；角色設計與名稱另外保留，不隨授權授出。
+- 章節場景與吉祥物（17 第 4、9 節）：原創 SVG，手繪風線條加粉彩填色，只用 16 的 tokens 上色（四個主題自動換色）；題材用會計的比喻，不用糖果或任何遊戲的角色；角色設計與名稱另外保留，不隨授權授出。M3 定案（2026-10-25）：場景是俯視的地景，只用場景 tokens（16 第 11 節），**不用強調色、要素的淡底、`--ll-highlight-ring` 與 `--ll-star`**，不畫虛線、點線、文字、數字、像節點的大圓色塊與動畫（場景裡不能有看起來像路線或可點的東西）；體積改成 gzip 數字：單章 8 KB、14 章與海峽合計 80 KB、共用的 scene-kit 5 KB（`apps/web/perf/urls.json`，原本的「單章 12 KB（gzip 前）」作廢）。
+- **寬版頁面**（M3，2026-10-25）：路由的 `handle.layout` 是 `wide` 時，Root 在 `<main>` 寫 `data-layout="wide"`，內容最寬 1040px（`--ll-layout-wide`）；1024 以上另加 rail 的 120px 左內距。目前是首頁、章節頁、名詞圖鑑、我的、徽章、安裝教學、關於系統設計（安裝教學原規格是一般寬度；第 4 輪看圖驗收時大畫面上的示意圖太小、卡片空，改成寬版，圖解卡片內容 720px 以上時步驟並排成方塊）。其他頁一般 720px（1024 以上的內容寬也真的是 720，不扣 rail）；闖關地圖是 `map`，全幅。
+- **各頁的桌面欄位**（1024 以上）：首頁 7/12 與 5/12 兩欄（左欄是主卡海報，右欄是章節小地圖、今日複習與捷徑）；章節頁 5/12 與 7/12（左欄頁首與主卡，夠高時 sticky；右欄學習目標、關卡、實驗室與已下架）；我的是左欄玩家卡與「關於」、右欄選單列與收藏；名詞圖鑑是搜尋卡與收集進度卡並排、名詞卡三欄；徽章 375 兩欄、600 三欄、1024 四欄；關於系統設計是本文加右側的段落目錄。名詞卡 600 起兩欄。
 
 ---
 
@@ -892,6 +1038,8 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 | 單選與複選的選取框 | `Circle`、`RadioButton`；`Square`、`CheckSquare` |
 | 掃描課堂 QR、輸入關卡代號 | `QrCode`（備選 `Scan`）、`Keyboard` |
 
+M3 補充（2026-10-24 到 25）：Phosphor 只用在殼層的 Tab bar（`apps/web` 內嵌 SVG 原始檔）；`packages/web-ui` 的元件圖示是同樣風格的原創線條（24 格、2px 線、圓頭、`currentColor`、一律 `aria-hidden`，`components/icons.tsx` 與 `map-icons.tsx`），不加依賴、不描摹 SF Symbols、不用品牌圖形（GitHub 連結用 `CodeIcon`）。M3 新增：`CaretRightIcon`、`CaretDownIcon`、`ArrowRightIcon`、`ArrowUpRightIcon`（外部網站）、`PlayIcon`、`RetryIcon`、`InfoIcon`、`LockIcon`、`CheckIcon`、`SearchIcon`、`TrashIcon`、`PlusIcon`、`GearIcon`、`ExportIcon`、`FileIcon`、`DeviceIcon`、`ShieldIcon`、`CompassIcon`、`FlaskIcon`、`CardsIcon`、`HouseIcon`、`BookIcon`、`CodeIcon`、`TranslateIcon`、`TimerIcon`、`PauseIcon`、`MoreIcon`、`HeartIcon`（收藏題目；星星只代表關卡成績）、`PulseIcon`（診斷資訊）、`PaletteIcon`（關於系統設計的「顏色」），名詞類別的 `StatementIcon`、`AccountIcon`、`RatioIcon`、`ConceptIcon`、`ProcessIcon`、`OtherIcon`，以及會計要素的 `WalletIcon`、`IouIcon`、`HandshakeIcon`、`CoinsIcon`、`ReceiptIcon`；`StarIcon`、`BookmarkIcon`、`HeartIcon` 有實心版（切換按鈕已按下時用）。
+
 來源：https://github.com/phosphor-icons/react 、https://github.com/tabler/tabler-icons 、https://developer.apple.com/forums/thread/739523 、https://developer.apple.com/design/human-interface-guidelines/sf-symbols （查證日期 2026-10-20）
 
 ---
@@ -924,3 +1072,5 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 - 實機驗證：PingFang TC、Noto Sans CJK TC、Microsoft JhengHei 搭配 `tabular-nums` 時數字是否等寬（3.2）。
 - 實機驗證（D8 的 M0a 項目，registry 沒有對應的 V 編號）：iOS 17 上，寫在殼層的 Tab bar 在切換語言（只改文字與 `href`）、旋轉螢幕、由 Tab bar 改成 rail 之後是否仍有模糊；執行期插入的玻璃元件在 `data-glass-legacy="true"` 時是否確實改為實色（5.2、5.3、6.1）。
 - 查證（M0a）：Lightning CSS 與 Autoprefixer 依 browserslist 補 `-webkit-backdrop-filter` 的實際輸出，選定其中一個並寫進 09（5.3）。
+- （已決定 2026-10-25，選項 B）莓果與紅酒是否各自有強調色：各自換成和風味同色相的強調色，見 16 第 3.4 節與 14 第 5.2 節。
+- （沿用 02）作答時是否進入專注模式：已是 02「需評估」第二項，M3 的設計兩種情況都能套用，不另開。

@@ -1,0 +1,567 @@
+/* 章節頁（站規 2.3，寬版）。只用 tokens；元件（Button、Card、ProgressBar、LevelCard、NavRow…）的外觀在 web-ui，這裡只排版面與章節頁自己的部分。
+   手機一欄：頁首、主卡、學習目標、關卡。1024 以上兩欄：左 5/12 是頁首與主卡（夠高時 sticky），右 7/12 是學習目標、關卡、實驗室、已下架。 */
+
+.ch-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--ll-space-6);
+}
+.ch-page__aside,
+.ch-page__main {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+}
+.ch-page__main {
+  row-gap: var(--ll-space-6);
+}
+/* 讀不到內容：頁首和載入中同一個位置的返回「地圖」（從載入切到離線不跳），ErrorState 在下面剩下的高度裡置中
+   （大螢幕不會上面一小塊、下面一大片空白）。說明的寬度與換行用元件本身的（22em、balance，換行照全站規則），和其他空狀態一致 */
+.ch-page.ch-page--state {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: calc(100dvh - 160px);
+}
+.ch-page--state .ch-state {
+  align-self: center;
+}
+/* 尺寸和找不到頁面、路由錯誤一致（M3 驗收第 5 輪：同一種整頁狀態在不同頁長得不一樣）。那兩頁的規則只認 main 的直接子層
+   （notices.css 的 .ll-notfound、07-core-components.css 的 main > .ll-state:has(> h1.ll-state__title)），
+   這裡的 ErrorState 包在 .ch-page--state 裡套不到，所以照同一組值再寫一次。
+   768 以上：鈴 120px、標題 title-2、間距 12（notices.css 的 768 規則） */
+@media (min-width: 768px) {
+  .ch-page--state .ch-state {
+    gap: var(--ll-space-3);
+  }
+  .ch-page--state .ch-state .ll-state__art svg {
+    width: 120px;
+    height: 120px;
+  }
+  .ch-page--state .ch-state .ll-state__title {
+    font-size: var(--ll-type-title-2-size);
+    line-height: var(--ll-type-title-2-line);
+  }
+}
+/* 1024 以上（1280 時原本只有一小團鈴、標題和按鈕浮在約 1100×900 的空畫布中間）：畫成同一張最寬 480px 的卡片
+   （surface、radius-lg、shadow-1 加 card-ring）。卡片的上緣和找不到頁面的卡片同高（那邊是 max(space-6, 40dvh - 220px)，
+   這裡先扣掉頁首返回「地圖」的 44px 與列間距），不再撐滿視窗後置中；返回「地圖」的位置不動 */
+@media (min-width: 1024px) {
+  .ch-page.ch-page--state {
+    min-height: 0;
+  }
+  .ch-page--state .ch-state {
+    box-sizing: border-box;
+    align-self: start;
+    justify-self: center;
+    width: min(480px, 100%);
+    margin-top: max(0px, 40dvh - 220px - var(--ll-target-min) - var(--ll-space-6));
+    padding: var(--ll-space-8);
+    border-radius: var(--ll-radius-lg);
+    background: var(--ll-surface);
+    box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  }
+}
+@media (min-width: 1024px) and (forced-colors: active) {
+  .ch-page--state .ch-state {
+    border: 1px solid CanvasText;
+  }
+}
+@media (min-width: 1024px) {
+  .ch-page {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--ll-space-8);
+    align-items: start;
+  }
+  /* 右欄第一個標題和左欄的 h1 對齊（頁首第一列是 44px 的返回、間距 8px，外加上緣 4px） */
+  .ch-page__main {
+    padding-top: calc(var(--ll-target-min) + var(--ll-space-3));
+  }
+}
+@media (min-width: 1024px) and (min-height: 760px) {
+  .ch-page__aside {
+    position: sticky;
+    top: var(--ll-space-4);
+  }
+}
+
+/* ---- 主卡 ---- */
+.ch-hero {
+  margin: 0;
+}
+.ch-hero__thumb {
+  margin: calc(-1 * var(--ll-space-4)) calc(-1 * var(--ll-space-4)) 0;
+  border-radius: var(--ll-radius-lg) var(--ll-radius-lg) 0 0;
+}
+.ch-hero__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+  min-height: 24px;
+  margin: var(--ll-space-4) 0 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ch-hero__tag {
+  margin-inline-start: var(--ll-space-1);
+}
+.ch-hero__summary {
+  margin: var(--ll-space-2) 0 0;
+  font-size: var(--ll-type-body-size);
+  line-height: 1.6;
+}
+.ch-hero__progress {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2) var(--ll-space-3);
+  margin-top: var(--ll-space-4);
+}
+.ch-hero__bar {
+  flex: 1 1 120px;
+}
+.ch-hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-1) var(--ll-space-3);
+  margin: 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+  white-space: nowrap;
+}
+.ch-hero__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ll-space-1);
+}
+.ch-hero__star {
+  width: 1rem;
+  height: 1rem;
+  color: var(--ll-star);
+  stroke: color-mix(in srgb, var(--ll-star) 70%, var(--ll-text));
+  stroke-width: 1.5;
+}
+.ch-hero__badge {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-3);
+  margin-top: var(--ll-space-4);
+  padding: var(--ll-space-2) var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+}
+.ch-hero__badge-art {
+  flex: none;
+}
+.ch-hero__badge-text {
+  flex: 1 1 0;
+  min-width: 0;
+}
+/* 徽章名不在中間斷開（M3 驗收第 5 輪：英文 375 斷成「…to earn ‘Open」「for business’」）：
+   - 徽章名連同引號是一個 inline-block（ChapterHero 的 BadgeSentence）：放得下時整個換到下一行；比一整行還長（文字放大 200%）時
+     才在自己的框裡換行，不會超出卡片；
+   - 換行時兩行等長（balance）：英文斷在「Finish this chapter to」「earn ‘Open for business’」，不會留一個字在第一行行尾。
+   中文 375 一行放得下，不受影響。不加 keep-all：文字放大 200% 的 320 寬一行只放得下六個字，「完成本章可獲得」會被硬斷成三行 */
+.ch-hero__badge-name {
+  margin: 0;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  font-weight: 600;
+  text-wrap: balance;
+}
+.ch-hero__badge-title {
+  display: inline-block;
+}
+.ch-hero__badge-hint {
+  margin: 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+}
+.ch-hero__actions {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin-top: var(--ll-space-5);
+}
+/* 平板一欄、主卡很寬時兩顆並排（主要在前）；手機與桌面左欄上下排 */
+@media (min-width: 600px) and (max-width: 1023.98px) {
+  .ch-hero__actions {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+.ch-hero__notes {
+  display: grid;
+  gap: var(--ll-space-1);
+  margin: var(--ll-space-4) 0 0;
+  padding: var(--ll-space-3) 0 0;
+  list-style: none;
+  border-top: 1px solid var(--ll-border);
+}
+.ch-hero__notes li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ll-space-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+}
+.ch-hero__note-text {
+  flex: 1 1 0;
+}
+.ch-hero__note-icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.0625rem;
+  color: var(--ll-text-3);
+}
+
+/* 延伸章眉標前的六角形徽記（和地圖的延伸節點同造型） */
+.ch-extmark {
+  flex: none;
+}
+.ch-extmark__hex {
+  fill: var(--ll-surface-2);
+  stroke: var(--ll-border-strong);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.ch-extmark__text {
+  fill: var(--ll-text-2);
+  font-family: var(--ll-font-num);
+  font-size: 8.5px;
+  font-weight: 700;
+}
+
+/* ---- 右欄的段落 ---- */
+.ch-section {
+  display: grid;
+  gap: var(--ll-space-3);
+  min-width: 0;
+}
+.ch-section__title {
+  margin: 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+}
+.ch-section__note,
+.ch-section__empty {
+  margin: 0;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  color: var(--ll-text-2);
+}
+.ch-objectives {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin: 0;
+  padding: var(--ll-space-4);
+  list-style: none;
+  background: var(--ll-surface);
+  border-radius: var(--ll-radius-lg);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+}
+.ch-objectives__item {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: var(--ll-space-3);
+  align-items: start;
+}
+.ch-objectives__no {
+  display: grid;
+  place-items: center;
+  /* 24px；文字放大時跟著放大，數字不會跑出圓外 */
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.125rem;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-surface-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: 1;
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ch-objectives__text {
+  font-size: var(--ll-type-body-size);
+  line-height: 1.6;
+}
+/* 摘要與學習目標的斷行（M3 驗收第 6 輪：「認識資／產」「股東／權益」「它的限／制」、末行只剩「什麼」；徽章預覽與說明行也用，
+   文字放大時不斷成「可獲／得」「期中／考」；容器有 inline-size 的容器查詢，flex 子項要給 flex: 1 1 0，寬度不靠內容撐開）：
+   字的換行照全站規則（web-ui 03-core-utils.css：line-break: strict、text-wrap: pretty，英文長字斷字），這裡不另外寫。
+   ChapterProse（features/chapter/prose.ts）切成兩層：.ch-w、.ch-l 是詞（資產、限制、「資產負債表，」，最多約 6 個字寬），
+   .ch-u 是幾個詞合成的單位（股東權益、本益比的分母，最多 7 個漢字加標點）。
+   欄寬（容器查詢的 em 以摘要、目標本身的字級計算）至少 12 個字時單位不拆；至少 4.5 個字時 4 個字寬以內的詞（資產、（資產＝）不拆，
+   至少 6.5 個字時更長的詞（.ch-l，「資產負債表，」「（N/A），」）也不拆，只在詞與詞之間斷。文字放大 200% 的 375 寬一行約 8 個字、
+   320 寬的目標欄一行不到六個字，這時長詞在小詞之間斷（名詞「股東權益，」是「股東」「權益，」，見 ChapterProse；沒有小詞的照一般規則斷），
+   不撐破卡片。
+   不用 .ll-nowrap：它一律不斷，單位有 7、8 個字寬，窄欄會撐破 */
+.ch-hero__summary,
+.ch-objectives__text,
+.ch-hero__badge-text,
+.ch-hero__note-text {
+  container-type: inline-size;
+}
+@container (min-width: 4.5em) {
+  .ch-w {
+    white-space: nowrap;
+  }
+}
+@container (min-width: 6.5em) {
+  .ch-l {
+    white-space: nowrap;
+  }
+}
+@container (min-width: 12em) {
+  .ch-u {
+    white-space: nowrap;
+  }
+}
+.ch-levels {
+  display: grid;
+  /* 卡片間距 12（站規 2.3） */
+  gap: var(--ll-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- 場景縮圖（chapter/ChapterThumb.tsx、thumb-art.tsx） ---- */
+.ch-thumb {
+  /* 地景與道具的顏色就是地圖的 scene tokens（闖關地圖規格第 5 節），縮圖和地圖同一套 */
+  --ch-sea: var(--ll-scene-sea);
+  --ch-sea-deep: var(--ll-scene-sea-deep);
+  --ch-foam: var(--ll-scene-foam);
+  --ch-sand: var(--ll-scene-sand);
+  --ch-meadow: var(--ll-scene-meadow);
+  --ch-meadow-deep: var(--ll-scene-meadow-deep);
+  --ch-field: var(--ll-scene-field);
+  --ch-plaza: var(--ll-scene-plaza);
+  --ch-rock: var(--ll-scene-rock);
+  --ch-rock-deep: var(--ll-scene-rock-deep);
+  --ch-wood: var(--ll-scene-wood);
+  --ch-roof: var(--ll-scene-roof);
+  --ch-leaf: var(--ll-scene-leaf);
+  --ch-glow: var(--ll-scene-glow);
+  --ch-line: var(--ll-scene-line);
+  --ch-road: var(--ll-scene-road);
+  /* 小路（棧橋前的路、廣場的環形步道）：淺色是路面色，深色另外提亮 */
+  --ch-path: var(--ch-road);
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+  background: var(--ch-plaza);
+}
+/* 深色：地景、道具的色相和地圖一樣（--ll-scene-*，不混入 info、warning、danger、success 這些語意墨色，
+   否則會在莓果、紅酒的卡片上冒出不屬於該主題的青綠與橘紅）。縮圖小、又直接疊在卡片上，地圖的深色地景放在這裡會和卡片底色
+   （surface）幾乎一樣暗，箱子、小路、看板都看不見（第 2 輪看圖驗收）。所以只在縮圖裡做中性的提亮：
+   - 地景（海、沙、草地、田、廣場、岩地）各混入 12% 的前景色，比卡片亮一截，縮圖像一張畫而不是一塊暗色污漬；
+   - 物件描邊用 --ll-border-strong（1.5px，.cht-edge），小路用 --ll-text-3，物件和路從地景上分得出來；
+   - 浪花往 text-3 靠（地圖的浪花是半透明細紋，縮圖的浪花是實線，直接用會偏青），石頭與路面亮一階。 */
+html[data-theme='dark'] .ch-thumb {
+  --ch-sea: color-mix(in oklab, var(--ll-scene-sea) 88%, var(--ll-text));
+  --ch-sea-deep: color-mix(in oklab, var(--ll-scene-sea-deep) 88%, var(--ll-text));
+  --ch-sand: color-mix(in oklab, var(--ll-scene-sand) 88%, var(--ll-text));
+  --ch-meadow: color-mix(in oklab, var(--ll-scene-meadow) 88%, var(--ll-text));
+  --ch-meadow-deep: color-mix(in oklab, var(--ll-scene-meadow-deep) 88%, var(--ll-text));
+  --ch-field: color-mix(in oklab, var(--ll-scene-field) 88%, var(--ll-text));
+  --ch-plaza: color-mix(in oklab, var(--ll-scene-plaza) 88%, var(--ll-text));
+  --ch-rock: color-mix(in oklab, var(--ll-scene-rock) 88%, var(--ll-text));
+  --ch-foam: color-mix(in oklab, var(--ll-scene-foam) 70%, var(--ll-text-3) 30%);
+  --ch-rock-deep: color-mix(in oklab, var(--ll-scene-rock-deep) 80%, var(--ll-text) 20%);
+  --ch-line: var(--ll-border-strong);
+  --ch-road: color-mix(in oklab, var(--ll-scene-road) 78%, var(--ll-text) 22%);
+  --ch-path: var(--ll-text-3);
+}
+/* 縮圖下緣一條 1px 的 border，和卡片內容分開（畫在 svg 上面，所以用 ::after 而不是 inset 陰影） */
+.ch-thumb::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: var(--ll-border);
+  pointer-events: none;
+}
+@media (min-width: 600px) {
+  .ch-thumb {
+    height: 152px;
+  }
+}
+.ch-thumb--sand {
+  background: var(--ch-sand);
+}
+.ch-thumb--sea {
+  background: var(--ch-sea);
+}
+.ch-thumb--sea-deep {
+  background: var(--ch-sea-deep);
+}
+.ch-thumb--plaza {
+  background: var(--ch-plaza);
+}
+.ch-thumb--rock {
+  background: var(--ch-rock);
+}
+.ch-thumb--meadow {
+  background: var(--ch-meadow);
+}
+.ch-thumb--meadow-deep {
+  background: var(--ch-meadow-deep);
+}
+.ch-thumb--field {
+  background: var(--ch-field);
+}
+.ch-thumb__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* 被外框切到的小物件不畫（thumb-art.tsx 量過後標 data-cut） */
+.ch-thumb [data-cut] {
+  visibility: hidden;
+}
+.cht-sea {
+  fill: var(--ch-sea);
+}
+/* 岸（shore）和沙地同色、草（grass）和草地同色（兩種主題都一樣），共用規則 */
+.cht-sand,
+.cht-shore {
+  fill: var(--ch-sand);
+}
+.cht-meadow,
+.cht-grass {
+  fill: var(--ch-meadow);
+}
+.cht-meadow-deep {
+  fill: var(--ch-meadow-deep);
+}
+.cht-plaza {
+  fill: var(--ch-plaza);
+}
+.cht-rock {
+  fill: var(--ch-rock);
+}
+.cht-rock-deep {
+  fill: var(--ch-rock-deep);
+}
+.cht-wood {
+  fill: var(--ch-wood);
+}
+.cht-roof {
+  fill: var(--ch-roof);
+}
+.cht-leaf {
+  fill: var(--ch-leaf);
+}
+.cht-glow {
+  fill: var(--ch-glow);
+}
+.cht-foam {
+  fill: var(--ch-foam);
+}
+.cht-road {
+  fill: var(--ch-road);
+}
+.cht-edge {
+  stroke: var(--ch-line);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.cht-edge-only {
+  fill: none;
+  stroke: var(--ch-line);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.cht-ln,
+.cht-ln-thin,
+.cht-wood-ln,
+.cht-leaf-ln,
+.cht-foam-ln,
+.cht-grid,
+.cht-wheel,
+.cht-path-ln {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cht-ln {
+  stroke: var(--ch-line);
+  stroke-width: 2;
+}
+.cht-ln-thin {
+  stroke: var(--ch-line);
+  stroke-width: 1.5;
+}
+.cht-wood-ln {
+  stroke: var(--ch-wood);
+  stroke-width: 5;
+}
+.cht-leaf-ln {
+  stroke: color-mix(in oklab, var(--ch-leaf) 55%, var(--ch-line));
+  stroke-width: 2;
+}
+.cht-foam-ln {
+  stroke: var(--ch-foam);
+  stroke-width: 2;
+}
+.cht-thick {
+  stroke-width: 3;
+}
+.cht-grid {
+  stroke: var(--ch-line);
+  stroke-width: 1;
+  opacity: 0.35;
+}
+.cht-dot {
+  fill: var(--ch-line);
+  opacity: 0.45;
+}
+.cht-wheel {
+  stroke: var(--ch-wood);
+  stroke-width: 6;
+}
+.cht-path-ln {
+  stroke: var(--ch-path);
+  stroke-width: 6;
+}
+.cht-roadway,
+.cht-roadway-edge {
+  fill: none;
+  stroke-linecap: round;
+}
+.cht-roadway {
+  stroke: var(--ch-path);
+  stroke-width: 14;
+}
+.cht-roadway-edge {
+  stroke: var(--ch-line);
+  stroke-width: 17;
+}
+.cht-beam {
+  opacity: 0.35;
+}
+@media (forced-colors: active) {
+  .ch-thumb {
+    display: none;
+  }
+  /* 陰影與底色在強制色彩下都消失：自己的卡片與徽章框補一條系統色外框 */
+  .ch-objectives,
+  .ch-hero__badge {
+    border: 1px solid CanvasText;
+  }
+  .ch-objectives__no {
+    border: 1px solid CanvasText;
+  }
+  .ch-extmark__hex {
+    stroke: CanvasText;
+  }
+  .ch-extmark__text {
+    fill: CanvasText;
+  }
+}

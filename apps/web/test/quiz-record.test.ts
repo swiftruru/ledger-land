@@ -11,7 +11,57 @@ beforeEach(() => {
   store = MemoryProgressStore.empty(meta());
 });
 
+describe('recordLevelComplete（不計分的關卡）', () => {
+  it('unscored：stars 與 bestScore 維持 0、firstCompletedAt 有記、關卡計數照加；之後計分完成仍可提高', async () => {
+    const done = await recordLevelComplete('lv_t3st0002', [{ scored: false, score: 0 }], store, { unscored: true });
+    expect(done.firstEver).toBe(true);
+    expect(done.progress).toMatchObject({ levelId: 'lv_t3st0002', stars: 0, bestScore: 0 });
+    expect(done.progress.firstCompletedAt).toBe(done.progress.lastPlayedAt);
+    expect((await store.getSetting('levelsCompleted'))?.value).toBe(1);
+    // 就算傳進計分的題目，unscored 也不算星星
+    const again = await recordLevelComplete('lv_t3st0002', [{ scored: true, score: 1 }], store, { unscored: true });
+    expect(again.progress.stars).toBe(0);
+    expect(again.firstEver).toBe(false);
+  });
+});
+
 describe('recordAttempt', () => {
+  it('所有寫入一起送出：addAttempt 還沒完成時 putReview 與 addUnlock 已經呼叫（快速跳頁不掉錯題本那一筆）', async () => {
+    const wrong = scoreSnapshotQuestion(qSingle, 'o_c3d4');
+    const calls: string[] = [];
+    let releaseAttempt: () => void = () => {};
+    const gate = new Promise<void>((resolve) => {
+      releaseAttempt = resolve;
+    });
+    let attemptStarted: () => void = () => {};
+    const started = new Promise<void>((resolve) => {
+      attemptStarted = resolve;
+    });
+    const slow: typeof store = Object.create(store) as typeof store;
+    slow.addAttempt = async (a) => {
+      calls.push('addAttempt');
+      attemptStarted();
+      await gate;
+      return store.addAttempt(a);
+    };
+    slow.putReview = async (e) => {
+      calls.push('putReview');
+      return store.putReview(e);
+    };
+    slow.addUnlock = async (u) => {
+      calls.push('addUnlock');
+      return store.addUnlock(u);
+    };
+    const pending = recordAttempt({ q: qSingle, answer: wrong.answer, result: wrong.result, source: 'play', levelId: 'lv_t3st0001', durationMs: 10 }, slow);
+    // 三個寫入在同一個 tick 送出：addAttempt 一開始（還沒完成）另外兩個就已經呼叫
+    await started;
+    expect(calls).toEqual(['addAttempt', 'putReview', 'addUnlock']);
+    releaseAttempt();
+    await pending;
+    expect(await store.getReview(qSingle.id)).toMatchObject({ box: 1 });
+    expect(await store.hasUnlock('term:tm_t3st0001')).toBe(true);
+  });
+
   it('答錯：寫一筆作答紀錄、進錯題本盒子 1、解鎖 termRefs 的名詞（第二次不再解鎖）', async () => {
     const wrong = scoreSnapshotQuestion(qSingle, 'o_c3d4');
     const out = await recordAttempt(

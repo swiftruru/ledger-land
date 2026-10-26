@@ -1,0 +1,36 @@
+{
+  "id": "q_kschag38",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "true_false",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_qrvy9c",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "capital_surplus",
+    "ifrs"
+  ],
+  "termRefs": [
+    "tm_yka0razf"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "{{raw:2001}} 年修正前的公司法，曾把資產重估增值與處分固定資產收益列為資本公積的來源；在現行 IFRS 下，這兩項都不列入資本公積。",
+    "en": "Before its {{raw:2001}} amendment, the Company Act listed revaluation increments and gains on disposal of property, plant and equipment as sources of capital surplus; under current IFRS neither goes to capital surplus."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。現行 IFRS 下，處分不動產、廠房及設備的利益列入當期損益；重估增值經其他綜合損益，累計在股東權益的其他權益項下。課程的清單就是這種舊制分類，保留下來是因為它是課堂的脈絡；判斷現行做法時以準則與公司法為準。",
+    "en": "Correct. Under current IFRS a gain on disposal of property, plant and equipment goes to profit or loss, and a revaluation increment goes through other comprehensive income to other equity. The course list follows this older classification and is kept because it is the classroom context; for current practice, the standards and the Company Act govern."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你可能以為這兩項現在仍列資本公積。現行準則把處分利益放在損益，重估增值放在其他權益。",
+    "en": "You may have assumed these two items still go to capital surplus. Current standards put the disposal gain in profit or loss and the revaluation increment in other equity."
+  },
+  "explanation": {
+    "zh-TW": "資本公積的核心是股東投入超過面額的部分。其他來源要逐一對照現行準則；台灣的公開發行公司依規定對不動產、廠房及設備採成本模式，實務上也很少再出現新的重估增值（現行規定，查證於 {{raw:2026-10-24}}）。本章只練習觀念，不出計算題。",
+    "en": "The core of capital surplus is shareholder contributions above par. Other sources have to be checked one by one against current standards; Taiwanese public companies are required to use the cost model for property, plant and equipment, so new revaluation increments rarely arise in practice (current rules, checked on {{raw:2026-10-24}}). This chapter practises concepts only and sets no calculation questions."
+  }
+}

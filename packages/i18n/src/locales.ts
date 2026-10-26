@@ -22,7 +22,7 @@ export const LOCALES = [
       { minAbs: 100_000_000, factor: 100_000_000, maxFractionDigits: 2, pattern: '{n} 億元' },
       { minAbs: 1_000_000, factor: 10_000, maxFractionDigits: 0, pattern: '{n} 萬元' },
     ],
-    units: { day: { other: '{n} 天' }, times: { other: '{n} 倍' } },
+    units: { day: { other: '{n} 天' }, times: { other: '{n} 倍' }, turns: { other: '{n} 次' } },
   },
   {
     code: 'en',
@@ -44,7 +44,7 @@ export const LOCALES = [
       { minAbs: 1_000_000_000, factor: 1_000_000_000, maxFractionDigits: 2, pattern: 'NT${n} billion' },
       { minAbs: 1_000_000, factor: 1_000_000, maxFractionDigits: 2, pattern: 'NT${n} million' },
     ],
-    units: { day: { one: '{n} day', other: '{n} days' }, times: { other: '{n}×' } },
+    units: { day: { one: '{n} day', other: '{n} days' }, times: { other: '{n}×' }, turns: { other: '{n}×' } },
   },
 ] as const satisfies readonly LocaleDef[];
 

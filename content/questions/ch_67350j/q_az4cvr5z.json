@@ -1,0 +1,71 @@
+{
+  "id": "q_az4cvr5z",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_f5en1x",
+  "difficulty": 3,
+  "tags": [
+    "check_point",
+    "retained_earnings",
+    "dividend"
+  ],
+  "termRefs": [
+    "tm_4c6v99nn",
+    "tm_n4e8t2jy",
+    "tm_chbctb2d"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "opening": 150000,
+    "profit": 60000,
+    "dividend": 40000
+  },
+  "prompt": {
+    "zh-TW": "北風單車行第二年期初的未分配盈餘是 {{money:vars.opening}}，這一年賺了本期淨利 {{money:vars.profit}}，年中發了現金股利 {{money:vars.dividend}}。做步驟④（勾稽點 B）時，應該拿什麼去對資產負債表上的期末未分配盈餘？",
+    "en": "North Wind Cycles starts its second year with unappropriated retained earnings of {{money:vars.opening}}, earns a profit for the period of {{money:vars.profit}}, and pays a cash dividend of {{money:vars.dividend}} mid-year. In step 4 (check B), what should be compared with closing retained earnings on the balance sheet?"
+  },
+  "options": [
+    {
+      "id": "o_n2sx",
+      "text": {
+        "zh-TW": "期初未分配盈餘 {{money:vars.opening}}，加本期淨利 {{money:vars.profit}}，減股利 {{money:vars.dividend}}",
+        "en": "Opening unappropriated retained earnings of {{money:vars.opening}}, plus profit for the period of {{money:vars.profit}}, less the dividend of {{money:vars.dividend}}"
+      },
+      "feedback": {
+        "zh-TW": "答對了。這就是完整的公式；也可以反過來說：期末減期初的「增加額」要等於本期淨利減股利。第一年期初是零、又沒發股利也沒提列公積，才會簡化成本期淨利等於未分配盈餘。",
+        "en": "Correct. That is the full formula; put the other way, the increase from opening to closing must equal profit for the period less dividends. Only in a first year with a zero opening balance, no dividend and no reserve appropriation does it collapse to profit equalling unappropriated retained earnings."
+      }
+    },
+    {
+      "id": "o_her8",
+      "text": {
+        "zh-TW": "本期淨利 {{money:vars.profit}}，它應該直接等於期末未分配盈餘",
+        "en": "Profit for the period of {{money:vars.profit}}, which should directly equal closing unappropriated retained earnings"
+      },
+      "feedback": {
+        "zh-TW": "這個簡化只在期初為零、沒有股利也沒有提列公積時成立。這裡期初已經有餘額、又發了股利，本期淨利不會等於期末餘額。步驟④要檢查的是：期末減期初的增加額，是否等於本期淨利減股利；也就是期初加本期淨利減股利，是否等於期末未分配盈餘。",
+        "en": "That shortcut works only with a zero opening balance, no dividends and no reserve appropriations. Here there is an opening balance and a dividend was paid, so profit for the period cannot equal the closing balance. Step 4 checks whether the increase from opening to closing equals profit for the period less the dividend, that is, whether opening unappropriated retained earnings plus profit for the period less the dividend equals closing retained earnings."
+      },
+      "misconceptionId": "mc_6v0k"
+    },
+    {
+      "id": "o_cnkn",
+      "text": {
+        "zh-TW": "期初未分配盈餘 {{money:vars.opening}} 加本期淨利 {{money:vars.profit}}，股利不用管，因為那是現金流量表的事",
+        "en": "Opening unappropriated retained earnings of {{money:vars.opening}} plus profit for the period of {{money:vars.profit}}; the dividend can be ignored because it belongs to the statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "股利確實會出現在現金流量表的籌資活動，但它同時從未分配盈餘裡拿走了錢。少減股利，步驟④會差 {{money:vars.dividend}}。",
+        "en": "The dividend does appear under financing activities on the statement of cash flows, but it also takes money out of unappropriated retained earnings. Leave it out and step 4 will be off by {{money:vars.dividend}}."
+      }
+    }
+  ],
+  "correctOptionId": "o_n2sx",
+  "explanation": {
+    "zh-TW": "{{option:o_n2sx}}。未分配盈餘像一個水池：期初有多少水，流進本期淨利，流出股利與提列的公積，剩下的就是期末餘額。步驟④真正檢查的是「流進流出有沒有都記到」。網站畫面上的步驟④只拿兩個數字對照：本期淨利，以及未分配盈餘這一期多了多少，前提是沒有股利也沒有提列公積；本題發了股利，所以增加額要等於本期淨利減股利。如果期初又是零，本期淨利才會直接等於期末餘額。",
+    "en": "{{option:o_n2sx}}. Unappropriated retained earnings behave like a reservoir: start with the opening level, add the inflow of profit for the period, subtract the outflows of dividends and reserve appropriations, and what is left is the closing balance. What step 4 really checks is whether every inflow and outflow was recorded. On screen the site shortens it to profit for the period against the increase in retained earnings, which holds only when there are no dividends and no reserve appropriations; here a dividend was paid, so the increase must equal profit for the period less the dividend. Only when the opening balance is also zero does profit for the period equal the closing balance itself."
+  }
+}

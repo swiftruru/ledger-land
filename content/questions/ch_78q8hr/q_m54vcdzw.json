@@ -1,0 +1,61 @@
+{
+  "id": "q_m54vcdzw",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_8e479x",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "current_noncurrent",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_k52yxb68",
+    "tm_c2y9b5ex",
+    "tm_93mhtb4s",
+    "tm_adqjyfqg"
+  ],
+  "scored": true,
+  "type": "classify",
+  "prompt": {
+    "zh-TW": "月光書店的資產負債表要把科目分成「一年內會變成現金或到期」與「一年以上」兩組。下面這些科目各屬於流動還是非流動？",
+    "en": "Moonlight Books’ balance sheet splits its accounts into those that turn into cash or fall due within a year and those that take longer. Is each of these accounts current or non-current?"
+  },
+  "dimension": "current",
+  "items": [
+    {
+      "id": "it_djmn",
+      "account": "cash"
+    },
+    {
+      "id": "it_74yj",
+      "account": "accounts_receivable"
+    },
+    {
+      "id": "it_xda1",
+      "account": "inventory"
+    },
+    {
+      "id": "it_hsxd",
+      "account": "machinery_equipment"
+    },
+    {
+      "id": "it_550z",
+      "account": "accounts_payable"
+    },
+    {
+      "id": "it_mdgy",
+      "account": "long_term_borrowings"
+    },
+    {
+      "id": "it_kjyr",
+      "account": "short_term_borrowings"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "分流動與非流動看的是時間：現金本來就是現金，應收帳款幾個月內會收到，存貨準備在一年內賣掉，所以是{{term:tm_k52yxb68}}；機器設備要用好幾年，是{{term:tm_93mhtb4s}}。應付帳款和短期借款一年內要付，是{{term:tm_c2y9b5ex}}；長期借款一年後才到期，是{{term:tm_adqjyfqg}}。",
+    "en": "Current or non-current is a question of time: cash is already cash, receivables will be collected within months and inventories are meant to be sold within a year, so they are {{term:tm_k52yxb68}}; machinery will be used for years, so it belongs to {{term:tm_93mhtb4s}}. Trade payables and short-term borrowings fall due within a year, so they are {{term:tm_c2y9b5ex}}; long-term borrowings fall due later, so they are {{term:tm_adqjyfqg}}."
+  }
+}

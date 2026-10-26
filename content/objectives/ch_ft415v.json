@@ -1,0 +1,210 @@
+{
+  "chapterId": "ch_ft415v",
+  "items": [
+    {
+      "id": "obj_6x06z2",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_ft415v",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能計算應收款項、存貨、不動產廠房及設備與總資產的週轉率，並把週轉率換算成天數",
+        "en": "Calculate receivables turnover, inventory turnover, property, plant and equipment turnover and total asset turnover, and convert a turnover ratio into days"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_x5nh",
+          "text": {
+            "zh-TW": "把週轉率的分子分母顛倒，用餘額去除營收或成本",
+            "en": "Inverting the turnover ratio, dividing the balance by revenue or cost"
+          }
+        },
+        {
+          "id": "mc_xvtr",
+          "text": {
+            "zh-TW": "以為天數是週轉率乘以一年的天數，而不是一年的天數除以週轉率",
+            "en": "Thinking days equal turnover multiplied by the days in a year rather than the days in a year divided by turnover"
+          }
+        },
+        {
+          "id": "mc_mms2",
+          "text": {
+            "zh-TW": "用營業收入當存貨週轉率的分子",
+            "en": "Using revenue as the numerator of inventory turnover"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_2s4hterv",
+        "tm_08g66t9j",
+        "tm_fsv83x2z",
+        "tm_2cqt9cfd",
+        "tm_4tz4q9pa"
+      ]
+    },
+    {
+      "id": "obj_fbc0kw",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_ft415v",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能說明週轉率高低對資金壓力的意義，並在跨產業比較時考慮產業特性",
+        "en": "Explain what high or low turnover means for cash pressure, and allow for industry characteristics when comparing across industries"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_21sh",
+          "text": {
+            "zh-TW": "以為週轉率永遠越高越好",
+            "en": "Assuming higher turnover is always better"
+          }
+        },
+        {
+          "id": "mc_m4zs",
+          "text": {
+            "zh-TW": "以為平均收現日數變長代表客戶變多、生意變好",
+            "en": "Thinking a longer collection period means more customers and better business"
+          }
+        },
+        {
+          "id": "mc_hssb",
+          "text": {
+            "zh-TW": "拿不同產業的週轉率直接比高低",
+            "en": "Comparing turnover ratios across different industries as if they were the same"
+          }
+        }
+      ],
+      "plannedQuestions": 7,
+      "suggestedTypes": [
+        "ratio_interpret",
+        "single_choice",
+        "true_false",
+        "multi_choice",
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_2s4hterv",
+        "tm_gysqtps0",
+        "tm_08g66t9j",
+        "tm_2jyfy0hn",
+        "tm_2cqt9cfd"
+      ]
+    },
+    {
+      "id": "obj_6r5ph7",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_ft415v",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能計算營運槓桿度與財務槓桿度，並用「變動百分比被放大幾倍」解讀：營收變動的百分比，被放大成營業利益變動的百分比；營業利益變動的百分比，被放大成稅前淨利變動的百分比",
+        "en": "Calculate the degree of operating leverage and the degree of financial leverage and read them as magnified percentage changes: the percentage change in revenue is magnified into the percentage change in operating profit, and the percentage change in operating profit into the percentage change in profit before tax"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_v222",
+          "text": {
+            "zh-TW": "用金額解讀槓桿度，以為營收每多一元營業利益就多幾元",
+            "en": "Reading leverage in money terms, as if each extra dollar of revenue added several dollars of operating profit"
+          }
+        },
+        {
+          "id": "mc_j5vk",
+          "text": {
+            "zh-TW": "把財務槓桿度的終點當成現金或營業收入，而不是稅前淨利",
+            "en": "Taking cash or revenue, rather than profit before tax, as the end point of financial leverage"
+          }
+        },
+        {
+          "id": "mc_04wj",
+          "text": {
+            "zh-TW": "以為槓桿度高一定是好事，忘了它同樣放大虧損",
+            "en": "Assuming high leverage is always good, forgetting that it magnifies losses just as much"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "ratio_interpret",
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_tspyazrx",
+        "tm_gkmknxh4",
+        "tm_g8p4w1rz",
+        "tm_z3vbt800",
+        "tm_z971merj"
+      ],
+      "pendingRefs": [
+        "T20",
+        "T26"
+      ]
+    },
+    {
+      "id": "obj_qr0bbx",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_ft415v",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能說明應付款項週轉率在課程 Excel 版（本期進貨）與年報版（銷貨成本）的分子差異，並依題目指定的版本計算",
+        "en": "Explain the difference between the numerators of payables turnover in the course Excel version (purchases) and the annual-report version (cost of sales), and calculate it in the version a question specifies"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_xhr6",
+          "text": {
+            "zh-TW": "以為兩種版本算出來的數字一定相同",
+            "en": "Thinking the two versions must give the same figure"
+          }
+        },
+        {
+          "id": "mc_rejj",
+          "text": {
+            "zh-TW": "用營業收入當應付款項週轉率的分子",
+            "en": "Using revenue as the numerator of payables turnover"
+          }
+        },
+        {
+          "id": "mc_a4xy",
+          "text": {
+            "zh-TW": "以為應付帳款為零時週轉率是零",
+            "en": "Thinking payables turnover is zero when there are no trade payables"
+          }
+        }
+      ],
+      "plannedQuestions": 4,
+      "suggestedTypes": [
+        "single_choice",
+        "ratio_numeric",
+        "ratio_interpret"
+      ],
+      "termRefs": [
+        "tm_2jyfy0hn",
+        "tm_p7h3c5xq",
+        "tm_g5c2m8tw",
+        "tm_kzkzng5e"
+      ],
+      "pendingRefs": [
+        "T27"
+      ]
+    }
+  ]
+}

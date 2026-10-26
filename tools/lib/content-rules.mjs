@@ -1,4 +1,6 @@
-// 會計與答案規則（08 第 5.4 節 acct.*、第 5.5 節的 ans.expectedMatchesCore、ans.notMeaningful、ans.acceptStatus、ans.ratioNumericFields）：
+// 會計與答案規則（08 第 5.4 節 acct.*、第 5.5 節的 ans.expectedMatchesCore、ans.notMeaningful、ans.acceptStatus、ans.ratioNumericFields、ans.ratioTableFields、ans.placeholderResolves）：
+// 另算進快照的衍生資料：five_step_fill 的 compiled.cells（openCells 在情境過帳後的金額，判分的 expectedCells）、
+// ratio_interpret 的 compiled.ratios（ratioTable 列出的指標，畫面上方的小表格）。
 // 全部呼叫 packages/core，不另寫會計邏輯。這個模組不讀檔也不列印，content-check.mjs 與 content-lock.mjs 負責讀檔與輸出，tools/test 直接呼叫。
 // 故事只做性質檢查：訊息只寫規則、列、步驟與事件，不印任何金額（D2）。
 // acct.pendingBlocked：pendingRefs 自 2026-10-23 起是「相關設計決定的編號」（14 的 T 系列都已決定），只有 open-refs.json 仍列為開放的編號才警告。
@@ -10,6 +12,7 @@ import {
   canonicalJson,
   checkStatementInvariants,
   compileTemplate,
+  lineValue,
   computeRatio,
   createCoreContext,
   createLedger,
@@ -28,6 +31,7 @@ import {
 } from '@ledgerland/core';
 import { integer as fcInteger, record as fcRecord, sample as fcSample } from 'fast-check';
 import openRefsFile from './open-refs.json' with { type: 'json' };
+import { checkPlaceholderValues } from './content-values.mjs';
 
 /**
  * @typedef {{ rule: string; file: string; path: string; message: string; severity: 'error' | 'warning' }} RuleIssue
@@ -35,7 +39,11 @@ import openRefsFile from './open-refs.json' with { type: 'json' };
  * @typedef {{ terms: Parsed[]; chapters: Parsed[]; templates: Parsed[]; stories: Parsed[]; questions: Parsed[]; objectives: Parsed[]; levels: Parsed[] }} ParsedBundle
  * @typedef {{ id: string; label: { 'zh-TW': string; en: string }; value: number; level?: number; total?: boolean; heading?: boolean }} CompiledLine
  *   pick_line 題在 after 狀態（cumulative）下該報表的可見列：label 是版面的雙語 label（快照依語系展開），value 是核心算出的金額
- * @typedef {{ expected?: Record<string, unknown>; values?: Record<string, number>; expectedEntries?: readonly unknown[]; ratio?: unknown; categories?: Record<string, string>; lines?: CompiledLine[] }} CompiledQuestion
+ * @typedef {{ ratioRef: string; status: string; exact: { num: string; den: string } | null; displayValue: number | null }} CompiledRatio 核心 RatioResult 進快照的子集
+ * @typedef {{ expected?: Record<string, unknown>; values?: Record<string, number>; expectedEntries?: readonly unknown[]; ratio?: CompiledRatio; ratios?: CompiledRatio[];
+ *   categories?: Record<string, string>; lines?: CompiledLine[]; cells?: Record<string, number> }} CompiledQuestion
+ *   cells：five_step_fill 的 openCells 線 ID 對情境過帳後（cumulative）的金額（packages/quiz scoreFiveStep 的 expectedCells）；
+ *   ratios：ratio_interpret 的 ratioTable.ratioRefs 依序算出的指標（沒有 ratioTable 就沒有這個欄位）
  */
 
 /** 仍開放的 14 編號（tools/lib/open-refs.json）；目前為空，T 系列已全部決定 */
@@ -387,13 +395,79 @@ function checkClassify(entry, q, chart, registry, issues) {
 
 function scenarioOf(q) {
   if (q.type === 'ratio_numeric') return { scenario: q.compute.scenario, path: 'compute.scenario' };
+  if (q.type === 'ratio_interpret') return { scenario: q.ratioTable?.scenario, path: 'ratioTable.scenario' };
   if ('scenario' in q) return { scenario: q.scenario, path: 'scenario' };
   return { scenario: undefined, path: 'scenario' };
 }
 
-/** 指標答案的可序列化形狀（進 answerHash 與快照）：狀態、精確值與顯示值 */
+/**
+ * 指標答案的可序列化形狀（進 answerHash 與快照）：狀態、精確值與顯示值
+ * @returns {CompiledRatio}
+ */
 function ratioAnswer(result) {
   return { ratioRef: result.ratioRef, status: result.status, exact: result.exact, displayValue: result.displayValue };
+}
+
+/** 情境過帳後的累計報表（after）與期初報表（start，給需要期初值的指標，例如平均餘額） */
+function scenarioStatements(run, ctx) {
+  const after = buildStatements(run, { kind: 'cumulative', to: SCENARIO_STEP_ID }, ctx.layout, ctx.policy);
+  const start = buildStatements(
+    { steps: [], finalState: createLedger(ctx.chart, run.finalState.opening) },
+    { kind: 'cumulative', to: null },
+    ctx.layout,
+    ctx.policy,
+  );
+  return { after, start };
+}
+
+/**
+ * 指標公式用到的線，連鎖指標（公式裡的 ratio.* 來源）遞迴展開：例如 pe_ratio@slides02 的分母是 ratio.eps.excel，
+ * 所以 is_net_income 與 bs_share_capital 也算需要。登錄檔編譯時已確認沒有循環。
+ * @param {import('@ledgerland/core').RatioRegistry} registry
+ * @param {string} ratioRef
+ * @param {Set<string>} [out]
+ */
+export function requiredLines(registry, ratioRef, out = new Set()) {
+  const version = getRatioVersion(registry, ratioRef);
+  if (version === undefined) return out;
+  for (const line of version.lineRefs) out.add(line);
+  for (const source of version.ratioRefs) requiredLines(registry, source, out);
+  return out;
+}
+
+/**
+ * 以作者 vars 經 measures 給值算指標（ratio_numeric 的 compute.measures 與 ratio_interpret 的 ratioTable.measures 共用）。
+ * 公式用到的線（含連鎖指標展開後的線）都要有值、沒用到的不准多給（ratioRefs 多個時看聯集）；rule 是回報用的規則代號。
+ * @returns {CompiledRatio[] | null}
+ */
+function ratiosFromMeasures(entry, q, ratioRefs, measuresSpec, path, rule, registry, issues) {
+  const versions = [];
+  for (const ref of ratioRefs) {
+    const version = getRatioVersion(registry, ref);
+    if (version === undefined) {
+      issues.push(error('ref.ratio', entry.file, `${path}.ratioRef`, `指標登錄檔沒有 ${ref}`));
+      return null;
+    }
+    versions.push({ ref, version });
+  }
+  /** @type {Record<string, number>} */
+  const measures = {};
+  /** @type {Record<string, number>} */
+  const inputs = {};
+  for (const [key, ref] of Object.entries(/** @type {Record<string, string>} */ (measuresSpec))) {
+    const value = q.vars?.[ref.slice('vars.'.length)];
+    if (value === undefined) return null; // schema 已回報未宣告的 vars
+    if (key.startsWith('input.')) inputs[key.slice('input.'.length)] = value;
+    else measures[key] = value;
+  }
+  const needed = new Set();
+  for (const v of versions) requiredLines(registry, v.ref, needed);
+  const missing = [...needed].filter((l) => !(l in measures));
+  const extra = Object.keys(measures).filter((l) => !needed.has(l));
+  if (missing.length > 0) issues.push(error(rule, entry.file, `${path}.measures`, `公式用到的線沒有給值：${missing.join('、')}`));
+  if (extra.length > 0) issues.push(error(rule, entry.file, `${path}.measures`, `公式沒用到的線不准多給：${extra.join('、')}`));
+  if (missing.length > 0 || extra.length > 0) return null;
+  return versions.map((v) => ratioAnswer(computeRatio(v.ref, measures, inputs, registry)));
 }
 
 /** ans.notMeaningful、ans.acceptStatus：數字題的正解狀態不得是 not_meaningful；acceptStatus 與核心狀態一致 */
@@ -486,51 +560,52 @@ function checkQuestion(entry, ctx, stories, templatesById, registry, issues, ope
       }
     }
     if (q.type === 'journal_entry') compiled.expectedEntries = expectedJournalEntries(r.value);
-    if (q.type === 'pick_line') {
-      const after = buildStatements(r.value.run, { kind: 'cumulative', to: SCENARIO_STEP_ID }, ctx.layout, ctx.policy);
-      compiled.lines = statementLines(after, q.statement);
+    if (q.type === 'pick_line') compiled.lines = statementLines(scenarioStatements(r.value.run, ctx).after, q.statement);
+    if (q.type === 'five_step_fill') {
+      // compiled.cells：openCells 每格在情境過帳後的金額（判分的 expectedCells 與逐格回饋）；線不在版面上是 ref.layoutLine
+      const { after } = scenarioStatements(r.value.run, ctx);
+      /** @type {Record<string, number>} */
+      const cells = {};
+      const unknown = [];
+      for (const id of q.openCells) {
+        if (after.lines.has(id)) cells[id] = lineValue(after, id).value;
+        else unknown.push(id);
+      }
+      if (unknown.length > 0) {
+        issues.push(error('ref.layoutLine', entry.file, 'openCells', `版面 ${scenario.layout} 沒有這些線：${unknown.join('、')}`));
+        return null;
+      }
+      compiled.cells = cells;
     }
     if (q.type === 'ratio_numeric') {
-      const run = r.value.run;
-      const after = buildStatements(run, { kind: 'cumulative', to: SCENARIO_STEP_ID }, ctx.layout, ctx.policy);
-      const start = buildStatements(
-        { steps: [], finalState: createLedger(ctx.chart, run.finalState.opening) },
-        { kind: 'cumulative', to: null },
-        ctx.layout,
-        ctx.policy,
-      );
       if (getRatioVersion(registry, q.compute.ratioRef) === undefined) {
         issues.push(error('ref.ratio', entry.file, 'compute.ratioRef', `指標登錄檔沒有 ${q.compute.ratioRef}`));
         return null;
       }
+      const { after, start } = scenarioStatements(r.value.run, ctx);
       const result = computeRatio(q.compute.ratioRef, measureMap(after), {}, registry, { opening: measureMap(start) });
       checkRatioStatus(entry, q, result, issues);
       compiled.ratio = ratioAnswer(result);
     }
+    if (q.type === 'ratio_interpret' && q.ratioTable !== undefined) {
+      // compiled.ratios：小表格的每個指標都由核心依情境過帳後的報表算出；狀態照實寫（表格可以顯示 N/A），不套 ans.notMeaningful
+      const unknown = q.ratioTable.ratioRefs.filter((ref) => getRatioVersion(registry, ref) === undefined);
+      if (unknown.length > 0) {
+        issues.push(error('ref.ratio', entry.file, 'ratioTable.ratioRefs', `指標登錄檔沒有 ${unknown.join('、')}`));
+        return null;
+      }
+      const { after, start } = scenarioStatements(r.value.run, ctx);
+      compiled.ratios = q.ratioTable.ratioRefs.map((ref) => ratioAnswer(computeRatio(ref, measureMap(after), {}, registry, { opening: measureMap(start) })));
+    }
   } else if (q.type === 'ratio_numeric' && q.compute.measures !== undefined) {
-    const version = getRatioVersion(registry, q.compute.ratioRef);
-    if (version === undefined) {
-      issues.push(error('ref.ratio', entry.file, 'compute.ratioRef', `指標登錄檔沒有 ${q.compute.ratioRef}`));
-      return null;
-    }
-    /** @type {Record<string, number>} */
-    const measures = {};
-    /** @type {Record<string, number>} */
-    const inputs = {};
-    for (const [key, ref] of Object.entries(/** @type {Record<string, string>} */ (q.compute.measures))) {
-      const value = q.vars?.[ref.slice('vars.'.length)];
-      if (value === undefined) return null; // schema 已回報未宣告的 vars
-      if (key.startsWith('input.')) inputs[key.slice('input.'.length)] = value;
-      else measures[key] = value;
-    }
-    const missing = version.lineRefs.filter((l) => !(l in measures));
-    const extra = Object.keys(measures).filter((l) => !version.lineRefs.includes(l));
-    if (missing.length > 0) issues.push(error('ans.ratioNumericFields', entry.file, 'compute.measures', `公式用到的線沒有給值：${missing.join('、')}`));
-    if (extra.length > 0) issues.push(error('ans.ratioNumericFields', entry.file, 'compute.measures', `公式沒用到的線不准多給：${extra.join('、')}`));
-    if (missing.length > 0 || extra.length > 0) return null;
-    const result = computeRatio(q.compute.ratioRef, measures, inputs, registry);
-    checkRatioStatus(entry, q, result, issues);
-    compiled.ratio = ratioAnswer(result);
+    const ratios = ratiosFromMeasures(entry, q, [q.compute.ratioRef], q.compute.measures, 'compute', 'ans.ratioNumericFields', registry, issues);
+    if (ratios === null) return null;
+    checkRatioStatus(entry, q, ratios[0], issues); // 只看 status，CompiledRatio 已帶
+    compiled.ratio = ratios[0];
+  } else if (q.type === 'ratio_interpret' && q.ratioTable?.measures !== undefined) {
+    const ratios = ratiosFromMeasures(entry, q, q.ratioTable.ratioRefs, q.ratioTable.measures, 'ratioTable', 'ans.ratioTableFields', registry, issues);
+    if (ratios === null) return null;
+    compiled.ratios = ratios;
   }
   if (q.type === 'classify') compiled.categories = checkClassify(entry, q, ctx.chart, registry, issues);
   return failed ? null : compiled;
@@ -581,6 +656,8 @@ export function runAccountingChecks(parsed, options = {}) {
         );
     }
   }
+  // ans.placeholderResolves：題目文字的數值佔位符依快照的 compiled 都解析得到數字（content-values.mjs）
+  issues.push(...checkPlaceholderValues(parsed.questions, compiled));
   return { issues, compiled, stats: { ...stats, storiesReplayed, templates: compiledTemplates.size } };
 }
 

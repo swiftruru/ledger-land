@@ -1,0 +1,42 @@
+{
+  "id": "q_bpb8kn9n",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_81e8f8",
+  "difficulty": 1,
+  "tags": [
+    "net_profit_margin",
+    "dupont"
+  ],
+  "termRefs": [
+    "tm_92yzx0fn",
+    "tm_n4e8t2jy",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "netIncome": 288000,
+    "revenue": 3600000
+  },
+  "compute": {
+    "ratioRef": "net_profit_margin@slides02",
+    "measures": {
+      "is_net_income": "vars.netIncome",
+      "is_revenue": "vars.revenue"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "晨霧茶行今年的營收是 {{money:vars.revenue}}，本期淨利是 {{money:vars.netIncome}}。純益率是多少？以百分比作答，取到小數點後兩位。",
+    "en": "Morning Mist Tea had revenue of {{money:vars.revenue}} this year and a profit for the period of {{money:vars.netIncome}}. What is its net profit margin? Answer as a percentage with two decimal places."
+  },
+  "explanation": {
+    "zh-TW": "純益率 ＝ 本期淨利 ÷ 營收 ＝ {{money:vars.netIncome}} ÷ {{money:vars.revenue}} ＝ {{percent:expected.answer.value}}（簡化版，兩個數字都來自同一年的損益表）。它是杜邦拆解的第一個因子：每一元生意最後留下多少。",
+    "en": "Net profit margin = profit for the period ÷ revenue = {{money:vars.netIncome}} ÷ {{money:vars.revenue}} = {{percent:expected.answer.value}} (simplified version; both figures come from the same year’s income statement). It is the first DuPont factor: how much of each unit of revenue is kept as profit."
+  }
+}

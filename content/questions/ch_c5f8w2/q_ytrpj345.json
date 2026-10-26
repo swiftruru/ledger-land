@@ -1,6 +1,6 @@
 {
   "id": "q_ytrpj345",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -52,7 +52,7 @@
       },
       "downside": {
         "zh-TW": "它是某一天的快照，看不出這個月的經營是好是壞。",
-        "en": "It is a snapshot of one day and does not show whether this month's trading went well or badly."
+        "en": "It is a snapshot of one day and does not show whether this month’s trading went well or badly."
       }
     },
     {

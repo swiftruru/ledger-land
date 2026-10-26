@@ -2,27 +2,59 @@
   "id": "tm_tspyazrx",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "營運槓桿度", "en": "Degree of operating leverage (DOL)" },
+  "label": {
+    "zh-TW": "營運槓桿度",
+    "en": "Degree of operating leverage (DOL)"
+  },
   "teacherLabel": "營運槓桿度",
   "currentTwLabel": "營運槓桿度",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["營業槓桿", "經營槓桿"], "en": ["Operating leverage"] },
+  "aliases": {
+    "zh-TW": [
+      "營業槓桿",
+      "經營槓桿"
+    ],
+    "en": [
+      "Operating leverage"
+    ]
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T20", "T26"],
+  "pendingRefs": [
+    "T20",
+    "T26"
+  ],
   "note": {
-    "zh-TW": "以百分比變動解讀（T20）；模板以營業毛利近似邊際貢獻（T26）。",
-    "en": "Read as a ratio of percentage changes (T20); the template approximates contribution margin with gross profit (T26)."
+    "zh-TW": "網站以百分比變動解讀；課程模板以營業毛利近似貢獻邊際。",
+    "en": "The site reads it as a ratio of percentage changes; the course template approximates the contribution margin with gross profit."
   },
   "definition": {
-    "zh-TW": "營業收入變動一些時，營業利益會放大變動多少倍。固定成本越高，槓桿度越大：景氣好時獲利放大，景氣差時也跌得更兇。",
-    "en": "How many times more operating profit moves when revenue moves. More fixed costs mean a higher degree: profit rises faster in good times and falls faster in bad ones."
+    "zh-TW": "營業收入每變動一個百分比，營業利益會變動幾個百分比。\n\n營業利益是營收扣掉變動成本與固定成本後的餘額；營收增加時只有變動成本跟著增加，所以餘額增加的比例比營收大。固定成本在總成本中的比重越大，這個倍數就越高。",
+    "en": "By what percentage operating profit changes for each one per cent change in revenue.\n\nOperating profit is what is left of revenue after variable and fixed costs. When revenue rises only the variable costs rise with it, so the remainder grows by a larger percentage than revenue. The bigger the share of fixed costs in total costs, the higher this multiple."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上。它和財務槓桿度相乘就是整體槓桿度。舉例來說，槓桿度是 {{number:2.5}} 倍時，營收成長 {{percent:0.2}}，營業利益大約成長 {{percent:0.5}}。模板稱它為營業槓桿。",
+    "en": "Both figures are on the income statement. Multiplied by the degree of financial leverage it gives the degree of total leverage. For example, at a leverage of {{number:2.5}}, a {{percent:0.2}} rise in revenue lifts operating profit by roughly {{percent:0.5}}. The template calls it operating leverage."
+  },
+  "misconception": {
+    "zh-TW": "以為營運槓桿度高代表公司經營得好。它只說明成本結構裡固定成本的比重高：營收成長時利益成長得比營收快，營收衰退時利益也會以同樣倍數縮水；它描述的是獲利對營收變動的敏感度，不是經營好壞。",
+    "en": "Reading a high degree of operating leverage as good management. It only says fixed costs make up a large share of the cost structure: when revenue grows, profit grows faster, and when revenue falls, profit shrinks by the same multiple; it describes how sensitive profit is to changes in revenue, not how well the business is run."
+  },
+  "formula": {
+    "zh-TW": "營運槓桿度 ＝ 貢獻邊際 ÷ 營業利益。課程模板以營業毛利近似貢獻邊際，所以寫成營業毛利 ÷ 營業利益；營業利益為 0 時沒有可用的分母，顯示 N/A；營業利益為負時標示「不具解釋意義」，不顯示 0。",
+    "en": "Degree of operating leverage = contribution margin ÷ operating profit. The course template approximates the contribution margin with gross profit, giving gross profit ÷ operating profit; when operating profit is zero there is no usable denominator and the result is N/A; when it is negative the ratio is marked as not meaningful rather than shown as zero."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算方式以指標卡列出的口徑為準，題目會指定用哪一個口徑計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation follows the versions listed on the ratio card, and each question states which version it scores against."
   },
-  "ratioRef": "dol@excel"
+  "ratioRef": "dol@excel",
+  "related": [
+    "tm_gkmknxh4",
+    "tm_jx267rna",
+    "tm_g8p4w1rz",
+    "tm_z3vbt800"
+  ]
 }

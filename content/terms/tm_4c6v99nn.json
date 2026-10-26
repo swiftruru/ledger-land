@@ -1,6 +1,6 @@
 {
   "id": "tm_4c6v99nn",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -28,7 +28,7 @@
   },
   "definition": {
     "zh-TW": "公司歷年賺到、還沒分給股東也沒提撥成公積的盈餘。本期淨利經由這一列流進資產負債表，讓三張報表接得起來。",
-    "en": "Profits earned over the years that have not been distributed or set aside as reserves. Profit for the period flows into the statement of financial position through this line, which is what links the statements together."
+    "en": "Profits earned over the years that have not been distributed or set aside as reserves. Profit for the period flows into the balance sheet through this line, which is what links the statements together."
   },
   "accountRef": "retained_earnings"
 }

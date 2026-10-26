@@ -1,0 +1,176 @@
+/* 基礎組：註記標籤、面板（Sheet）共用結構。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+.ll-notetag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--ll-radius-xs);
+  background: var(--ll-surface-2);
+  color: var(--ll-text-2);
+  font: inherit;
+  font-size: var(--ll-type-caption-size);
+  font-weight: 600;
+  border: 0;
+}
+@media (forced-colors: active) {
+  .ll-notetag {
+    border: 1px solid CanvasText;
+  }
+}
+.ll-notetag--not-ifrs-line,
+.ll-notetag--ifrs-not-scored {
+  background: var(--ll-warning-tint);
+  color: var(--ll-warning-ink);
+}
+.ll-notetag--design-note {
+  background: var(--ll-info-tint);
+  color: var(--ll-info-ink);
+}
+/* 按鈕形式（站規 1.20）：<button> 本身 44px 高、透明，沒有底線；視覺膠囊是內層的 .ll-notetag__pill，結尾 14px 的說明圖示 */
+.ll-notetag--btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ll-target-min);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ll-notetag__pill {
+  gap: 4px;
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: box-shadow var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-notetag__icon {
+  flex: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-notetag--btn:hover .ll-notetag__pill {
+    box-shadow: inset 0 0 0 1px var(--ll-border-strong);
+  }
+}
+.ll-notetag--btn:active .ll-notetag__pill {
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+.ll-notetag--btn:focus-visible {
+  outline: none;
+}
+.ll-notetag--btn:focus-visible .ll-notetag__pill {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-sheet {
+  width: min(100%, 560px);
+  /* 瀏覽器給 modal dialog 的 max-width 是 100% 減 2em，手機上的底部面板會左右各空一截 */
+  max-width: 100%;
+  max-height: 85dvh;
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ll-radius-xl) var(--ll-radius-xl) 0 0;
+  background: var(--ll-surface);
+  color: var(--ll-text);
+  /* 深色時 card-ring 是一圈 1px 的亮邊，面板和遮罩分得開（站規 1.10） */
+  box-shadow: var(--ll-shadow-3), var(--ll-card-ring);
+  z-index: var(--ll-z-sheet);
+  overscroll-behavior: contain;
+}
+.ll-sheet::backdrop {
+  background: var(--ll-scrim);
+}
+@media (min-width: 768px) {
+  .ll-sheet {
+    margin: auto;
+    border-radius: var(--ll-radius-xl);
+  }
+}
+/* 1024 以上左側有 rail（88px 加 32px 的區域）：面板以 rail 右側的內容區置中，和頁首、地圖軌道、頁面內容同一條中線
+   （M3 驗收第 1 輪：以整個視窗置中時，1280 寬差了 60px）。modal dialog 是 position: fixed、inset 0、margin auto，
+   把左緣移到 rail 區域的右邊，margin auto 就在剩下的寬度裡置中 */
+@media (min-width: 1024px) {
+  .ll-sheet {
+    left: calc(var(--ll-tabbar-rail-w) + 32px);
+    max-width: calc(100% - var(--ll-tabbar-rail-w) - 32px - 2 * var(--ll-space-4));
+  }
+}
+.ll-sheet__body {
+  padding: var(--ll-space-4) var(--ll-space-4) max(var(--ll-space-4), env(safe-area-inset-bottom));
+}
+/* 拖曳把手（裝飾）：只有底部面板（手機）才有 */
+.ll-sheet__grip {
+  width: 36px;
+  height: 4px;
+  margin: calc(-1 * var(--ll-space-2)) auto var(--ll-space-3);
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-text-4);
+}
+@media (min-width: 768px) {
+  .ll-sheet__grip {
+    display: none;
+  }
+}
+.ll-sheet__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--ll-space-2);
+}
+.ll-sheet__heading {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 8px;
+}
+.ll-sheet__lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin-bottom: var(--ll-space-2);
+}
+.ll-sheet__title {
+  margin: 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+  overflow-wrap: break-word;
+}
+/* 標題是開啟時的初始焦點，不是互動元素，不畫焦點框 */
+.ll-sheet__title:focus {
+  outline: none;
+}
+.ll-sheet__subtitle {
+  margin: 2px 0 0;
+  color: var(--ll-text-2);
+}
+.ll-sheet__close {
+  flex: none;
+  margin-inline-end: -6px;
+}
+.ll-sheet__content {
+  margin-top: var(--ll-space-4);
+}
+.ll-sheet__content > :first-child {
+  margin-top: 0;
+}
+.ll-sheet__desc {
+  margin: 0;
+  color: var(--ll-text-2);
+}
+/* 腳：動作列，一欄排開；最後一顆是主動作（primary 或 danger lg block） */
+.ll-sheet__foot {
+  display: grid;
+  gap: var(--ll-space-2);
+  margin-top: var(--ll-space-6);
+}
+/* 確認面板在桌面是置中的對話框（M3 驗收第 2 輪）：16px 的內距在 560px 寬的框裡很擠，改成 24px；按鈕列仍撐滿，和內文之間 24px */
+@media (min-width: 600px) {
+  .ll-sheet--confirm .ll-sheet__body {
+    padding: var(--ll-space-6) var(--ll-space-6) max(var(--ll-space-6), env(safe-area-inset-bottom));
+  }
+  .ll-sheet--confirm .ll-sheet__foot {
+    margin-top: var(--ll-space-6);
+  }
+}

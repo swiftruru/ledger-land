@@ -1,0 +1,16 @@
+[
+  {
+    "file": "apps/web/src/pages/Backup.tsx",
+    "rule": "R9",
+    "count": 1,
+    "reason": "程式產生的下載連結，不插進畫面",
+    "added": "2026-10-24"
+  },
+  {
+    "file": "apps/web/src/features/quest-map-overlays/LevelQr.tsx",
+    "rule": "R9",
+    "count": 1,
+    "reason": "程式產生的下載連結（給老師的關卡 QR 圖），不插進畫面",
+    "added": "2026-10-26"
+  }
+]

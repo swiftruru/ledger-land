@@ -1,0 +1,149 @@
+/* 按鈕狀態板（?ll-fixture=buttons）的版面：只有排列，元件外觀全部來自 web-ui */
+.ll-board__group {
+  margin: var(--ll-space-8) 0;
+}
+.ll-board__h {
+  margin: 0 0 var(--ll-space-3);
+  font-size: var(--ll-type-footnote-size);
+  font-weight: 600;
+  color: var(--ll-text-2);
+  font-family: var(--ll-font-mono);
+}
+.ll-board__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--ll-space-3);
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-board__stack {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin: 0 0 var(--ll-space-3);
+}
+/* 窄容器（約 320 寬加 200% 字級時按鈕的可用寬度的一半）：有前置圖示的標籤一定會換行 */
+.ll-board__narrow {
+  display: grid;
+  justify-items: start;
+  gap: var(--ll-space-3);
+  max-width: 11em;
+  margin: 0 0 var(--ll-space-3);
+  padding: var(--ll-space-2);
+  border: 1px dashed var(--ll-border);
+  border-radius: var(--ll-radius-md);
+}
+/* 一列：尺寸標籤加七種狀態；窄螢幕時換行 */
+.ll-board__states {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ll-space-3) var(--ll-space-4);
+  margin: 0 0 var(--ll-space-4);
+  padding: var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-card-ring);
+}
+.ll-board__size {
+  flex-basis: 100%;
+  font-family: var(--ll-font-mono);
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-3);
+}
+.ll-board__cell {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+}
+.ll-board__cap {
+  font-size: var(--ll-type-caption-size);
+  font-weight: 600;
+  color: var(--ll-text-3);
+}
+.ll-board__na {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ll-btn-h-sm);
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-3);
+}
+.ll-board__cols {
+  display: grid;
+  gap: var(--ll-space-4);
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .ll-board__cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* NavCard 的 media 示範：場景 tokens 畫的靜態地景（BoardLandscape） */
+.ll-board__scene {
+  display: block;
+  width: 100%;
+  height: 120px;
+}
+.ll-board__sea {
+  fill: var(--ll-scene-sea);
+}
+.ll-board__sand {
+  fill: var(--ll-scene-sand);
+}
+.ll-board__land {
+  fill: var(--ll-scene-plaza);
+}
+.ll-board__meadow {
+  fill: var(--ll-scene-meadow);
+}
+.ll-board__leaf {
+  fill: var(--ll-scene-leaf);
+}
+.ll-board__road-edge,
+.ll-board__road,
+.ll-board__walked,
+.ll-board__ahead {
+  fill: none;
+  stroke-linecap: round;
+}
+.ll-board__road-edge {
+  stroke: var(--ll-scene-road-edge);
+  stroke-width: 18;
+}
+.ll-board__road {
+  stroke: var(--ll-scene-road);
+  stroke-width: 14;
+}
+.ll-board__walked {
+  stroke: var(--ll-scene-route-walked);
+  stroke-width: 5;
+}
+.ll-board__ahead {
+  stroke: var(--ll-scene-route-ahead);
+  stroke-width: 4;
+  stroke-dasharray: 0 12;
+}
+.ll-board__ledge--done {
+  fill: var(--ll-btn-primary-ledge);
+}
+.ll-board__disc--done {
+  fill: var(--ll-accent);
+}
+.ll-board__ledge--next {
+  fill: var(--ll-node-ledge);
+}
+.ll-board__disc--next {
+  fill: var(--ll-scene-card);
+  stroke: var(--ll-border-strong);
+  stroke-width: 2;
+}
+.ll-board__progress {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ll-space-3);
+  max-width: 480px;
+  margin: var(--ll-space-4) 0;
+}
+.ll-board__toasts {
+  margin: var(--ll-space-6) 0;
+}

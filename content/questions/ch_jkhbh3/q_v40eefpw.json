@@ -1,0 +1,82 @@
+{
+  "id": "q_v40eefpw",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_mcdpxx",
+  "difficulty": 2,
+  "tags": [
+    "indirect_method",
+    "adjustments"
+  ],
+  "termRefs": [
+    "tm_z971merj",
+    "tm_85pkjrv0",
+    "tm_873r9bx9",
+    "tm_e61ht6yh",
+    "tm_9hrfpqem",
+    "tm_f9a4c6md"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "從稅前淨利走到營業活動的現金流量，下列哪些是間接法會做的調整？",
+    "en": "On the way from profit before tax to net cash from operating activities, which of the following are adjustments the indirect method makes?"
+  },
+  "options": [
+    {
+      "id": "o_zwrd",
+      "text": {
+        "zh-TW": "把折舊費用加回來",
+        "en": "Add back depreciation"
+      },
+      "feedback": {
+        "zh-TW": "是。折舊讓利益變少，卻沒有付出現金，所以要加回。",
+        "en": "Yes. Depreciation lowered profit without any cash being paid, so it is added back."
+      }
+    },
+    {
+      "id": "o_9kck",
+      "text": {
+        "zh-TW": "把應收帳款增加的金額扣掉",
+        "en": "Deduct the increase in trade receivables"
+      },
+      "feedback": {
+        "zh-TW": "是。這部分的收入算進了利益，錢卻還沒收到，要扣掉。",
+        "en": "Yes. That part of revenue is in profit but the cash has not arrived, so it is deducted."
+      }
+    },
+    {
+      "id": "o_tjec",
+      "text": {
+        "zh-TW": "把向銀行借款收到的現金加進來",
+        "en": "Add the cash received from a bank loan"
+      },
+      "feedback": {
+        "zh-TW": "借款確實讓現金變多，這點沒錯。不過它和營業活動無關，會放在下面的籌資活動，不是從稅前淨利調整出來的。",
+        "en": "The loan does increase cash, that much is right. But it has nothing to do with operating activities; it appears further down under financing and is not an adjustment to profit before tax."
+      }
+    },
+    {
+      "id": "o_x6km",
+      "text": {
+        "zh-TW": "把買設備付出的現金扣掉",
+        "en": "Deduct the cash paid for equipment"
+      },
+      "feedback": {
+        "zh-TW": "買設備確實付了現金，這點沒錯。不過那是投資活動的支出，有自己的一段；營業活動只處理利益和日常收付之間的差異。",
+        "en": "Equipment was indeed paid for in cash, that much is right. But that is an investing outflow with its own section; the operating section only deals with the gap between profit and day-to-day receipts and payments."
+      }
+    }
+  ],
+  "correctOptionIds": [
+    "o_zwrd",
+    "o_9kck"
+  ],
+  "scoringMode": "all_correct",
+  "explanation": {
+    "zh-TW": "間接法只修正「利益和營業現金不一樣」的地方：沒付現的費用要加回，例如{{option:o_zwrd}}；營運資金的變動要調整，例如{{option:o_9kck}}。{{option:o_tjec}}屬於{{term:tm_f9a4c6md}}，{{option:o_x6km}}屬於{{term:tm_9hrfpqem}}，各有自己的段落。",
+    "en": "The indirect method corrects only the places where profit and operating cash differ: non-cash expenses are added back, as in {{option:o_zwrd}}, and working-capital changes are adjusted, as in {{option:o_9kck}}. {{option:o_tjec}} belongs to {{term:tm_f9a4c6md}} and {{option:o_x6km}} to {{term:tm_9hrfpqem}}, each in its own section."
+  }
+}

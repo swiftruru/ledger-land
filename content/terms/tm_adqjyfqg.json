@@ -2,7 +2,7 @@
   "id": "tm_adqjyfqg",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "非流動負債",
@@ -29,7 +29,22 @@
     "en": "Some course pages and template notes say long-term liabilities, an older term. The same card serves the total non-current liabilities line."
   },
   "definition": {
-    "zh-TW": "一年以後才需要償還的債務，例如長期借款。模板的分組標題。",
-    "en": "Obligations due more than a year ahead, such as long-term borrowings. A template group heading."
-  }
+    "zh-TW": "到期日在一年以後的負債，例如長期借款與應付公司債。\n\n它和流動負債的分界同樣是一年：一年內要清償的是流動負債，其餘是非流動負債。教材部分頁面與模板註解稱它為長期負債，是舊稱。",
+    "en": "Liabilities falling due more than a year away, such as long-term borrowings and bonds payable.\n\nThe dividing line from current liabilities is again one year: amounts due within a year are current, the rest are non-current. Some course pages and template notes call them long-term liabilities, an older name."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表流動負債之後的分組標題，課程版面底下只有長期借款一列；同一張名詞卡也用於「非流動負債合計」列。它和股東權益合起來就是長期資金。本課故事沒有長期借款，所以這一區是 0。",
+    "en": "Where it sits: the group heading after current liabilities on the balance sheet; in the course layout it contains only long-term borrowings, and this same card covers the total non-current liabilities line. Together with equity it makes up long-term funds. The course story has no long-term borrowing, so the section is zero."
+  },
+  "misconception": {
+    "zh-TW": "以為非流動負債不用擔心、只有流動負債才會還不起。長期借款終究要還，而且每年都有利息；長期資金占固定資產比率和負債比率就是在看這部分的壓力。",
+    "en": "Assuming non-current liabilities are nothing to worry about and only current ones can go unpaid. Long-term borrowings still fall due and carry interest every year; the long-term funds to property, plant and equipment ratio and the debt ratio measure exactly that burden."
+  },
+  "related": [
+    "tm_c2y9b5ex",
+    "tm_gcp2zeys",
+    "tm_fwys72qx",
+    "tm_8eyx0srs",
+    "tm_h6p2k9wd"
+  ]
 }

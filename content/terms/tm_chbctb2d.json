@@ -1,0 +1,32 @@
+{
+  "id": "tm_chbctb2d",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": { "zh-TW": "三表勾稽", "en": "Articulation of the three statements" },
+  "teacherLabel": "三表勾稽",
+  "currentTwLabel": null,
+  "ifrsEnglish": null,
+  "aliases": { "zh-TW": ["勾稽", "勾稽點", "檢核點"], "en": ["Articulation", "Check points", "Cross-checks between the statements"] },
+  "flags": [],
+  "confidence": "medium",
+  "pendingRefs": ["T13"],
+  "note": {
+    "zh-TW": "網站以步驟編號②到⑤為主，字母 A 到 D 只當顯示的別名，畫面寫成「步驟③（勾稽點 C）」。",
+    "en": "The site identifies the checks by step number (2 to 5); the letters A to D are display aliases only, shown as ‘step 3 (check C)’."
+  },
+  "definition": {
+    "zh-TW": "三張報表不是各自獨立的表格，有幾個數字一定要在兩張表上對得起來：稅前淨利同時出現在損益表與現金流量表的起點，期末現金同時出現在現金流量表與資產負債表，本期淨利會流進未分配盈餘，而資產負債表左右兩邊永遠相等。把這些對應的格子一一核對，就叫勾稽。",
+    "en": "The three statements are not independent tables: several figures must agree across two of them. Profit before tax appears both on the income statement and at the start of the statement of cash flows, closing cash appears on both the statement of cash flows and the balance sheet, profit for the period flows into unappropriated retained earnings, and the two sides of the balance sheet always agree. Checking these matching cells one by one is what articulation means."
+  },
+  "misconception": {
+    "zh-TW": "只看資產負債表左右相等就以為三張表全對。左右相等只是最後一個勾稽點，前面三個勾稽點不平時它也可能剛好平。",
+    "en": "Assuming all three statements are right because the balance sheet balances. Balancing is only the last check; the earlier three can fail while the balance sheet still happens to agree."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 沒有「勾稽」這個名詞；報表之間的連結來自同一套分錄，勾稽是課程用來檢查的方法。",
+    "en": "IFRS has no term for this. The links between the statements come from the same set of journal entries; articulation is the course’s way of checking them."
+  },
+  "related": ["tm_ftp19fkf", "tm_z971merj", "tm_12k2yq6k", "tm_4c6v99nn", "tm_cfghjxzq"]
+}

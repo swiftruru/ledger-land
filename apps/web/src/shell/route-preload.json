@@ -1,0 +1,90 @@
+{
+  "$comment": "殼層依路徑預先載入的表（06 第 8.2 節、14 第 5.2 節）：tools/postbuild.mjs 依這張表、Vite 的 .vite/manifest.json 與內容的 content-manifest.json 算出每條路由的頁面 chunk（含靜態 import）與內容快照，填進 boot 腳本。pattern 比對去掉 /en 前綴、轉小寫並補上結尾斜線之後的路徑，第一個符合的生效；module 必須和 src/app/router.tsx 的 lazy import 一致（apps/web/test/route-preload.test.ts 檢查）。catalogs 是各語言的訊息 catalog 模組（src/i18n/lingui.ts 動態載入的那一個），目前語言的一律預先載入。always 是每一頁都要的動態 chunk（進度 runtime，src/lib/progress/index.ts 動態載入的那一個；2026-10-26 起每一頁都等進度齊了才一次顯示，所以和頁面 chunk 一起預先載入）。content 只列頁面第一次繪製就要讀的快照，和 router.tsx 的 prefetch 一致：chapterIndex 與 termIndex 依目前語言、tombstones 不分語言；level 是第一個捕捉群組的關卡、目前語言；termDetail 是第一個捕捉群組的名詞所在的完整內容檔、兩種語言。",
+  "always": ["src/lib/progress/runtime.ts"],
+  "catalogs": {
+    "zh-TW": "src/i18n/catalog-zh-TW.ts",
+    "en": "src/i18n/catalog-en.ts"
+  },
+  "routes": [
+    {
+      "pattern": "^/play/$",
+      "module": "src/pages/Play.tsx",
+      "content": ["chapterIndex"]
+    },
+    {
+      "pattern": "^/chapter/([^/]+)/$",
+      "module": "src/pages/Chapter.tsx",
+      "content": ["chapterIndex"]
+    },
+    {
+      "pattern": "^/level/([^/]+)/$",
+      "module": "src/pages/Level.tsx",
+      "content": ["level", "termIndex"]
+    },
+    {
+      "pattern": "^/review/$",
+      "module": "src/pages/Review.tsx",
+      "content": ["termIndex"]
+    },
+    {
+      "pattern": "^/terms/$",
+      "module": "src/pages/Terms.tsx",
+      "content": ["termIndex", "chapterIndex"]
+    },
+    {
+      "pattern": "^/terms/([^/]+)/$",
+      "module": "src/pages/Term.tsx",
+      "content": ["termDetail", "chapterIndex"]
+    },
+    {
+      "pattern": "^/lab/$",
+      "module": "src/pages/Placeholder.tsx",
+      "content": []
+    },
+    {
+      "pattern": "^/me/$",
+      "module": "src/pages/Me.tsx",
+      "content": []
+    },
+    {
+      "pattern": "^/me/settings/$",
+      "module": "src/pages/Settings.tsx",
+      "content": []
+    },
+    {
+      "pattern": "^/me/badges/$",
+      "module": "src/pages/Badges.tsx",
+      "content": ["chapterIndex"]
+    },
+    {
+      "pattern": "^/install/$",
+      "module": "src/pages/Install.tsx",
+      "content": []
+    },
+    {
+      "pattern": "^/me/backup/$",
+      "module": "src/pages/Backup.tsx",
+      "content": []
+    },
+    {
+      "pattern": "^/privacy/$",
+      "module": "src/pages/Privacy.tsx",
+      "content": []
+    },
+    {
+      "pattern": "^/about/$",
+      "module": "src/pages/About.tsx",
+      "content": []
+    },
+    {
+      "pattern": "^/design/$",
+      "module": "src/pages/Design.tsx",
+      "content": []
+    },
+    {
+      "pattern": "^/debug/$",
+      "module": "src/pages/Debug.tsx",
+      "content": []
+    }
+  ]
+}

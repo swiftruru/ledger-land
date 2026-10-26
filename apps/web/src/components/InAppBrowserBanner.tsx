@@ -1,16 +1,25 @@
 // App 內建瀏覽器的提醒（06 第 4.8 節第 2 點、02 第 9.6 節）：LINE、Facebook、Instagram 裡開啟時，所有頁面頂部常駐但可收合（收合記在 sessionStorage），
-// 附「複製連結」讓學生貼到 Safari 或 Chrome；不阻擋學習。是否顯示由 Banners.tsx 依 isInAppBrowser() 決定。
+// 附「複製連結」讓學生貼到 Safari 或 Chrome；不阻擋學習。是否顯示、展開或收合由 Banners.tsx 決定（banner-rules.ts：一次只展開一條），收合狀態也由 Banners 記。
+// 外觀（站規 2.17，第 1 輪驗收改）：展開時是 warning 的 Banner，主動作 secondary sm「複製連結」帶 CopyIcon（畫面上唯一的 primary 留給頁面主卡）、quiet sm「收合」（箭頭朝上）；
+// 收合後是一顆有警示圖示的 secondary sm「在 LINE 裡開啟：顯示提示」，靠左放在頁首下方的橫幅位置。
+// 第 4 輪驗收：展開時有一行標題「在 LINE 裡開啟」（和收合膠囊同一句開頭），內文只寫建議怎麼做。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useRef, useState } from 'react';
-import { Banner, Button } from '@ledgerland/web-ui';
+import { Banner, Button, CaretDownIcon, WarningIcon } from '@ledgerland/web-ui';
+import { CopyIcon } from '@ledgerland/web-ui/map';
 import { inAppBrowserName } from '../lib/env.ts';
-import { useSessionFlag } from './useSessionFlag.ts';
 
 export const IN_APP_COLLAPSED_KEY = 'll:inapp-collapsed';
 
-export function InAppBrowserBanner() {
+export interface InAppBrowserBannerProps {
+  /** 使用者收合過（這個工作階段）：只畫一顆膠囊 */
+  collapsed: boolean;
+  onCollapse: () => void;
+  onExpand: () => void;
+}
+
+export function InAppBrowserBanner({ collapsed, onCollapse, onExpand }: InAppBrowserBannerProps) {
   const { t } = useLingui();
-  const [collapsed, setCollapsed] = useSessionFlag(IN_APP_COLLAPSED_KEY);
   const [copied, setCopied] = useState<'idle' | 'done' | 'failed'>('idle');
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
@@ -31,45 +40,55 @@ export function InAppBrowserBanner() {
     timer.current = setTimeout(() => setCopied('idle'), 3000);
   };
 
-  if (collapsed === '1') {
+  if (collapsed) {
     return (
-      <div className="ll-row ll-inapp ll-inapp--collapsed" data-testid="inapp-collapsed">
-        <Button className="ll-btn--small" aria-expanded={false} onClick={() => setCollapsed(null)}>
-          {t({ id: 'inapp.expand', message: `在 ${app} 裡開啟：顯示提示`, comment: '內建瀏覽器提醒收合後的小按鈕；app 是 App 名稱' })}
+      <div className="ll-notice-collapsed ll-inapp ll-inapp--collapsed" data-testid="inapp-collapsed">
+        <Button size="sm" icon={<WarningIcon />} aria-expanded={false} onClick={onExpand}>
+          {t({ id: 'inapp.collapsed', message: `在 ${app} 裡開啟：顯示提示`, comment: '內建瀏覽器提醒收合後的小按鈕；app 是 App 名稱' })}
         </Button>
       </div>
     );
   }
   return (
-    <Banner kind="warning" className="ll-inapp">
+    <Banner
+      kind="warning"
+      className="ll-inapp"
+      title={t({ id: 'inapp.title', message: `在 ${app} 裡開啟`, comment: '內建瀏覽器提醒的標題（和收合後的小按鈕同一句開頭）；app 是 App 名稱' })}
+      actions={
+        <>
+          <Button size="sm" icon={<CopyIcon />} onClick={() => void copy()}>
+            <Trans id="inapp.copy" comment="複製目前網址的按鈕">
+              複製連結
+            </Trans>
+          </Button>
+          <Button
+            variant="quiet"
+            size="sm"
+            icon={<CaretDownIcon className="ll-icon-flip" />}
+            aria-expanded={true}
+            onClick={onCollapse}
+            aria-label={t({ id: 'inapp.collapse', message: '收合提示', comment: '把內建瀏覽器提醒縮成小按鈕' })}
+          >
+            <Trans id="inapp.collapseShort" comment="收合按鈕的文字">
+              收合
+            </Trans>
+          </Button>
+          {/* 複製結果：空的時候沒有寬高；有字時自己換到按鈕下面一行（notices.css） */}
+          <output className="ll-notice-status" aria-live="polite" data-testid="inapp-copy-status">
+            {copied === 'done'
+              ? t({ id: 'inapp.copied', message: '已複製連結，貼到 Safari 或 Chrome 的網址列就能開啟。', comment: '複製成功' })
+              : copied === 'failed'
+                ? t({ id: 'inapp.copyFailed', message: '無法自動複製，請長按網址列自行複製。', comment: '複製失敗' })
+                : null}
+          </output>
+        </>
+      }
+    >
       <p>
-        <Trans id="inapp.text" comment="內建瀏覽器提醒的本文；app 是 LINE、Facebook、Instagram 或「這個 App」">
-          你正在 {app} 裡開啟。改用 Safari 或 Chrome，進度比較不會消失，也能離線使用。
+        <Trans id="inapp.body" comment="內建瀏覽器提醒的本文（標題已經寫了在哪個 App 裡開啟）">
+          改⁠用 Safari 或 Chrome 開⁠啟，進⁠度比⁠較不⁠會消⁠失，也⁠能離⁠線使⁠用。
         </Trans>
       </p>
-      <div className="ll-row">
-        <Button variant="primary" onClick={() => void copy()}>
-          <Trans id="inapp.copy" comment="複製目前網址的按鈕">
-            複製連結
-          </Trans>
-        </Button>
-        <Button
-          aria-expanded={true}
-          onClick={() => setCollapsed('1')}
-          aria-label={t({ id: 'inapp.collapse', message: '收合提示', comment: '把內建瀏覽器提醒縮成小按鈕' })}
-        >
-          <Trans id="inapp.collapseShort" comment="收合按鈕的文字">
-            收合
-          </Trans>
-        </Button>
-      </div>
-      <output className="ll-small" aria-live="polite" data-testid="inapp-copy-status">
-        {copied === 'done'
-          ? t({ id: 'inapp.copied', message: '已複製連結，貼到 Safari 或 Chrome 的網址列就能開啟。', comment: '複製成功' })
-          : copied === 'failed'
-            ? t({ id: 'inapp.copyFailed', message: '無法自動複製，請長按網址列自行複製。', comment: '複製失敗' })
-            : ''}
-      </output>
     </Banner>
   );
 }

@@ -1,6 +1,6 @@
 {
   "id": "tm_r4w8n2qe",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "concept",
@@ -14,8 +14,8 @@
   "pendingRefs": [],
   "ifrsBasis": "Conceptual Framework",
   "definition": {
-    "zh-TW": "公司擁有或控制、預期在未來會帶來經濟效益的資源，例如現金、存貨與設備。",
-    "en": "A resource the business owns or controls and expects to bring future economic benefits, such as cash, inventories or equipment."
+    "zh-TW": "公司因過去的交易或事項而控制的現時經濟資源；經濟資源是有潛力帶來經濟效益的權利，例如現金、應收帳款、存貨與設備。重點在控制，不一定要有法律上的所有權。",
+    "en": "A present economic resource the company controls as a result of past events; an economic resource is a right that has the potential to produce economic benefits, such as cash, receivables, inventories or equipment. What matters is control, not necessarily legal ownership."
   },
   "related": ["tm_h6p2k9wd", "tm_x3n8v5tc"]
 }

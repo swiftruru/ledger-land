@@ -1,0 +1,68 @@
+{
+  "id": "q_xzqdydyz",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "single_choice",
+  "objectiveId": "obj_fbc0kw",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_08g66t9j",
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw"
+  ],
+  "scored": true,
+  "vars": {
+    "last": 6,
+    "now": 3.5
+  },
+  "prompt": {
+    "zh-TW": "綠丘單車行的存貨週轉率從去年的 {{number:vars.last|digits=2,unit=times}} 降到今年的 {{number:vars.now|digits=2,unit=times}}，兩年的營業成本差不多。最可能發生了什麼事？",
+    "en": "Green Hill Cycles’ inventory turnover fell from {{number:vars.last|digits=2,unit=times}} last year to {{number:vars.now|digits=2,unit=times}} this year, with cost of sales about the same. What most likely happened?"
+  },
+  "options": [
+    {
+      "id": "o_25y3",
+      "text": {
+        "zh-TW": "年底囤了比較多賣不掉的車款，存貨餘額變大",
+        "en": "More unsold models were sitting in stock at year end, so the inventory balance grew"
+      },
+      "feedback": {
+        "zh-TW": "答對了。成本差不多、週轉率變低，就是分母的存貨變大了；該去看是哪些車款賣不動。",
+        "en": "That’s right. With cost about the same, lower turnover means the inventory in the denominator grew; the next step is to see which models are not selling."
+      }
+    },
+    {
+      "id": "o_xwbw",
+      "text": {
+        "zh-TW": "進貨價格變便宜，所以營業成本下降",
+        "en": "Purchase prices fell, so cost of sales dropped"
+      },
+      "feedback": {
+        "zh-TW": "你從分子想起，方向可以理解。不過題目說營業成本差不多，分子沒有明顯變化；週轉率變低主要來自分母的存貨變大。",
+        "en": "Starting from the numerator is understandable. But cost of sales is about the same, so the numerator did not change much; the lower turnover comes mainly from a bigger inventory in the denominator."
+      }
+    },
+    {
+      "id": "o_z4fc",
+      "text": {
+        "zh-TW": "客戶賒帳變多",
+        "en": "More customers bought on credit"
+      },
+      "feedback": {
+        "zh-TW": "賒帳影響的是應收帳款與應收款項週轉率，不會改變存貨週轉率。",
+        "en": "Credit sales affect receivables and receivables turnover; they do not change inventory turnover."
+      }
+    }
+  ],
+  "correctOptionId": "o_25y3",
+  "explanation": {
+    "zh-TW": "{{term:tm_08g66t9j}}＝營業成本 ÷ 存貨。分子不變、比率下降，只能是分母變大，也就是{{option:o_25y3}}。{{option:o_xwbw}}與題目的前提不符，{{option:o_z4fc}}影響的是另一個指標。",
+    "en": "{{term:tm_08g66t9j}} = cost of sales ÷ inventory. With the numerator unchanged, a lower ratio can only mean a bigger denominator, which is {{option:o_25y3}}. {{option:o_xwbw}} contradicts the premise, and {{option:o_z4fc}} affects a different ratio."
+  }
+}

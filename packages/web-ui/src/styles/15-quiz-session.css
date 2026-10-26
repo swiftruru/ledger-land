@@ -1,0 +1,962 @@
+/* 作答組：作答頁、結果頁、錯題本的版面（站規 2.4、2.5）。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。
+   放在 web-ui 的主樣式裡（不另外切頁面 CSS）：作答頁在第一次繪製的關鍵路徑上，多一個 CSS 請求會拖慢 LCP（06 第 8.2 節）。
+   這裡只排版自己的 class；設計系統元件（Button、TopBar、Badge…）的外觀不在這裡改，只決定它們放在哪裡。 */
+
+/* ---- 作答頁頁首：TopBar compact 加一列章節標示（計時在題目卡的題號列，不在這裡） ----
+   載入中、離線、作答中、錯題複習都包同一層 .ll-level-head，頁首結構一樣，換狀態時右側不會突然多出一塊。
+   它是容器查詢 ll-level-head：頁首窄於 26em（375px 手機、文字放大 200%）時，語言切換收成一顆 44px 的語言圖示按鈕（QuizLangSwitch）。
+   語言選單的面板往下蓋到題目卡上：頁首自成一層、疊在題目卡與「下一題」的 sticky 動作列上面 */
+.ll-level-head {
+  position: relative;
+  z-index: calc(var(--ll-z-sticky) + 1);
+  container: ll-level-head / inline-size;
+  margin-bottom: var(--ll-space-3);
+}
+.ll-quiz-lang {
+  display: flex;
+  align-items: center;
+}
+.ll-quiz-lang__narrow {
+  display: none;
+}
+@container ll-level-head (max-width: 26em) {
+  .ll-quiz-lang__wide {
+    display: none;
+  }
+  .ll-quiz-lang__narrow {
+    display: inline-flex;
+  }
+}
+/* 再窄（文字放大 200% 的手機）：返回與語言按鈕留在第一行兩端，標題換到第二行用整列的寬度，不被兩顆 44px 的按鈕擠成兩三個字一行
+   （排法和子頁的兩列頁首相同，只決定 TopBar 各部分放在哪裡，不改它的外觀） */
+@container ll-level-head (max-width: 18em) {
+  .ll-level-head .ll-topbar--compact {
+    flex-wrap: wrap;
+    row-gap: var(--ll-space-1);
+  }
+  .ll-level-head .ll-topbar--compact > .ll-topbar__title {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
+.ll-level-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2) var(--ll-space-3);
+  margin-top: var(--ll-space-1);
+}
+/* 作答頁標題下的範圍標示：排版（flex、換行、間距、下外距）在 apps/web 的 base.css（排在後面，原本這裡同樣的五條宣告一直被它蓋掉，
+   M3 驗收第 7 輪後刪除），這裡只給字級與字色 */
+.ll-level-notes {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+}
+/* ---- 題目卡：題號列（右側是計時或「這一關計時」）與進度條、按鈕列 ---- */
+.ll-question__head {
+  margin-bottom: var(--ll-space-3);
+}
+.ll-question__head .ll-question__progress {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--ll-space-1) var(--ll-space-2);
+  margin: 0;
+}
+.ll-question__count {
+  margin: 0;
+}
+/* 放得下時和題號同一列、靠右（space-between）；放不下換到下一行時靠左，和題號對齊 */
+.ll-question__meta {
+  display: flex;
+  align-items: center;
+}
+/* 卡片裡的計時是平的膠囊（卡片已經浮起來，不再疊一層陰影），內距收窄一點，375px 時和題號放得進同一列 */
+.ll-question__meta .ll-timer {
+  padding-inline-start: 10px;
+  background: var(--ll-surface-2);
+  box-shadow: none;
+}
+.ll-question__meta .ll-timer__toggle {
+  --_px: 12px;
+}
+.ll-question__meta .ll-timer--expired {
+  background: var(--ll-warning-tint);
+}
+.ll-question__bar {
+  margin-top: var(--ll-space-2);
+}
+/* 「確認答案」「下一題」：手機撐滿（grid 的子元素預設拉滿寬度）；600px 以上靠右、照字的寬度 */
+.ll-question__actions {
+  display: grid;
+  margin-top: var(--ll-space-5);
+}
+@media (min-width: 600px) {
+  .ll-question__actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+/* 作答區還沒齊的題目卡（LevelSession.tsx 的 .ll-question-wrap：換到模組或資料還沒到的題目時）：整張先不顯示（版面照排），齊了一次淡入；
+   第一題由整頁的布幕負責（base.css 的 .ll-page），這裡只管之後換題。減少動態時直接出現 */
+.ll-question-wrap[data-ready='false'] {
+  visibility: hidden;
+}
+.ll-question-wrap[data-ready='true'] {
+  animation: ll-question-in var(--ll-dur-base) var(--ll-ease-enter) both;
+}
+@keyframes ll-question-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-question-wrap[data-ready='true'] {
+    animation: none;
+  }
+}
+html[data-motion='reduced'] .ll-question-wrap[data-ready='true'] {
+  animation: none;
+}
+
+/* ---- 浮動提示（「部分題目已更新」、名詞卡打不開）：手機從頁首下方滑下來，電腦版在右下角；不蓋頁首與底部的動作列，也不把題目往下推。
+   收進圖鑑不再用浮動提示（M3 驗收第 2 輪：它停在「下一題」正上方，剛好蓋住「我是猜的」那一列），改在回饋面板裡顯示 ---- */
+.ll-float-toasts {
+  /* 底部動作列（「下一題」lg 加立體底邊、動作列的下內距、題目卡的下內距）加 12px 的間隔：
+     捲到頁尾、按鈕停在原位時也比它高，不會蓋住「下一題」 */
+  --_bar: calc(var(--ll-btn-h-lg) + var(--ll-btn-depth) + var(--ll-space-4) + 2 * var(--ll-space-3));
+  position: fixed;
+  z-index: var(--ll-z-toast);
+  left: max(var(--ll-space-4), env(safe-area-inset-left));
+  right: max(var(--ll-space-4), env(safe-area-inset-right));
+  bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--ll-space-6) + var(--_bar));
+  max-width: 480px;
+  margin-inline: auto;
+  pointer-events: none;
+}
+.ll-float-toasts > * {
+  pointer-events: auto;
+  animation: ll-float-toast-in var(--ll-dur-base) var(--ll-ease-enter) both;
+}
+/* 手機：從頁首（TopBar compact，約 60px）下方滑下來，不壓在底部的「下一題」與工具列上 */
+@media (max-width: 599px) {
+  .ll-float-toasts {
+    top: calc(env(safe-area-inset-top, 0px) + 72px);
+    bottom: auto;
+  }
+  .ll-float-toasts > * {
+    animation-name: ll-float-toast-down;
+  }
+}
+@keyframes ll-float-toast-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@media (min-width: 1024px) {
+  .ll-float-toasts {
+    left: auto;
+    right: var(--ll-space-6);
+    bottom: calc(var(--ll-space-8) + var(--ll-space-2) + var(--_bar));
+    width: max-content;
+    max-width: min(360px, calc(100vw - 2 * var(--ll-space-6)));
+    margin: 0;
+  }
+}
+@keyframes ll-float-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---- 結果頁（站規 2.4.2）：手機是滿版舞台，動作固定在 Tab bar 上方；600px 以上是一張置中的結果卡 ---- */
+/* 舞台光暈：淺色是星星色；深色三種主題用各自的強調色當主光暈，只在鈴正後方疊一小圈金光（星星色直接疊在深底上會變成一片橄欖土黃的霧）。
+   顏色是 tokens 的元件 token --ll-stage-glow 與 --ll-stage-core（packages/tokens/src/colors.ts）；錯題本的入口卡也用 */
+.ll-result {
+  /* 動作區的底緣（第二顆按鈕的立體底邊）到 Tab bar 上緣 16px（站規 2.4.2）：Tab bar 離螢幕底 max(8px, 安全區 - 13px)、至少 64px 高 */
+  --_bottom: calc(var(--ll-tabbar-h) + max(8px, calc(env(safe-area-inset-bottom, 0px) - 13px)) + var(--ll-space-4));
+  /* 底部固定區（動作兩顆 lg 加 Tab bar）放不下時不再固定（M3 驗收第 4 輪）：320px 加文字放大 200% 時固定區占了將近一半的畫面。
+     條件是「畫面扣掉固定區之後，放不下 26rem 的內容」（一般字級約 416px：iPhone SE 以上照樣固定；字放大到 150% 以上或很矮的視窗就回到內容流）。
+     寫法：超過時把 sticky 的 bottom 減一個極大的值（最多 20000px），等於永遠不會黏住；沒超過時減 0。rem 跟著根字級，文字放大也算得到 */
+  --_fixed: calc(
+    2 * (max(var(--ll-btn-h-lg), 1.3 * var(--ll-type-title-3-size) + 12px) + var(--ll-btn-depth)) + var(--ll-space-3) + var(--ll-space-5) + var(--_bottom)
+  );
+  --_unstick: max(0px, var(--_fixed) + 26rem - 100dvh);
+  /* 光暈偽元素超出舞台的距離（等於結果頁的左右與上方內距），鈴的幣面中心在光暈裡的高度 */
+  --_bleed-x: var(--ll-space-4);
+  --_bleed-top: var(--ll-space-4);
+  --_core-y: 80px;
+  --_core-r: 80px;
+  display: flex;
+  flex-direction: column;
+  /* 滿版：抵銷 main 的左右內距，舞台的光暈貼齊螢幕兩邊 */
+  margin-inline: calc(-1 * var(--ll-space-4));
+  padding: var(--ll-space-2) var(--ll-space-4) 0;
+  /* 舞台撐到 Tab bar 上方：100dvh 減去頁首（約 4.75rem，文字放大時頁首的標題換到第二行，跟著根字級長高）與 main 底部留給 Tab bar 的空間 */
+  min-height: calc(100dvh - 4.75rem - var(--ll-tabbar-h) - 24px - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px));
+}
+.ll-result__stage {
+  position: relative;
+  isolation: isolate;
+  /* 成績小卡依舞台寬度決定一欄或兩欄（文字放大 200%、320px 時一欄） */
+  container: ll-stage / inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+/* 光暈畫在舞台後面：跟著鈴走（錯題本的結果卡內容垂直置中時也對得上）；兩層都是上緣剛好透明的橢圓，不會在頁首下方拼出一條水平硬邊 */
+.ll-result__stage::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-inline: calc(-1 * var(--_bleed-x));
+  top: calc(-1 * var(--_bleed-top));
+  height: 440px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle var(--_core-r) at 50% calc(var(--_bleed-top) + var(--_core-y)), var(--ll-stage-core), transparent),
+    radial-gradient(ellipse 80% 210px at 50% 210px, var(--ll-stage-glow), transparent);
+}
+/* 鈴：svg 的 viewBox 上下有留白，外框只留可見的高度（帽頂到鞋底約是尺寸的 0.795），結果頁看起來 120px、錯題本 96px */
+.ll-result__bell {
+  --_s: 152px;
+  display: flex;
+  flex: none;
+  justify-content: center;
+  height: calc(var(--_s) * 0.795);
+  margin-top: var(--ll-space-2);
+}
+.ll-result__bell--sm {
+  --_s: 122px;
+}
+.ll-result__bell > svg {
+  flex: none;
+  overflow: visible;
+  margin-top: calc(var(--_s) * -0.11);
+}
+/* 三顆 56px 星排成弧形：中間那顆高 8px（呼應地圖節點下的星星籤）；點亮的星依序彈出，各差 120ms */
+.ll-result__stars {
+  gap: var(--ll-space-3);
+  margin-top: var(--ll-space-2);
+  padding-top: 8px;
+}
+.ll-result__stars > svg:nth-child(2) {
+  translate: 0 -8px;
+}
+.ll-result__stars > .is-on {
+  animation: ll-result-star var(--ll-dur-slow) var(--ll-ease-spring-snappy) both;
+}
+.ll-result__stars > .is-on:nth-child(2) {
+  animation-delay: 120ms;
+}
+.ll-result__stars > .is-on:nth-child(3) {
+  animation-delay: 240ms;
+}
+@keyframes ll-result-star {
+  from {
+    scale: 0.3;
+    opacity: 0;
+  }
+  60% {
+    scale: 1.15;
+    opacity: 1;
+  }
+  to {
+    scale: 1;
+  }
+}
+.ll-result__title {
+  margin: var(--ll-space-2) 0 0;
+  font-size: var(--ll-type-title-1-size);
+  line-height: var(--ll-type-title-1-line);
+  font-weight: 700;
+  text-wrap: balance;
+}
+.ll-result__title:focus {
+  outline: none;
+}
+.ll-result__level {
+  margin: var(--ll-space-1) 0 0;
+  color: var(--ll-text-2);
+}
+.ll-result__cheer {
+  max-width: 24em;
+  margin: var(--ll-space-2) 0 0;
+  color: var(--ll-text);
+  font-weight: 600;
+  text-wrap: balance;
+}
+.ll-result__best {
+  margin: var(--ll-space-2) 0 0;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+/* 成績小卡（站規 5.1）：兩欄（正確率、計分題），新收名詞與用時各是一整列的橫條；舞台窄於 17.5rem（文字放大或 320px）時一欄。
+   標籤換行也不影響數字的位置：卡片分兩列，數字一律貼齊卡片底部。數字字級隨小卡區的寬度（cqi）在 1.75rem 到 2.5rem 之間 */
+.ll-result__stats {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ll-space-3);
+  width: 100%;
+  max-width: 440px;
+  margin: var(--ll-space-5) 0 0;
+}
+@container ll-stage (max-width: 17.5rem) {
+  .ll-result__stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.ll-result__stat {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--ll-space-3) var(--ll-space-4);
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  text-align: start;
+}
+.ll-result__stat dt {
+  min-width: 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+  overflow-wrap: anywhere;
+}
+.ll-result__stat dd {
+  align-self: end;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+  overflow-wrap: anywhere;
+}
+.ll-result__num {
+  font-size: clamp(1.75rem, 9cqi, 2.5rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--ll-text);
+}
+/* 橫條：左邊圖示加標籤、右邊數字；放不下時數字換到下一行 */
+.ll-result__stat--row {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ll-space-2) var(--ll-space-3);
+}
+.ll-result__stat--row dt {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-3);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  color: var(--ll-text);
+}
+.ll-result__stat--row dd {
+  align-self: center;
+}
+.ll-result__stat--row .ll-result__num {
+  font-size: var(--ll-type-number-lg-size);
+}
+.ll-result__stat-icon {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-accent-tint);
+  color: var(--ll-accent-ink);
+}
+.ll-result__stat-icon svg {
+  width: 22px;
+  height: 22px;
+}
+/* 說明句的換行照全站規則（03-core-utils.css，M3 驗收第 7 輪起不再自己寫 keep-all）。說明句裡的專有名詞（「錯題本」「計分題」「再挑戰」「星星」）
+   在字串裡用 Lingui rich text 包成 .ll-nowrap，不從詞的中間拆開（M3 驗收第 5 輪：320px 加文字放大 200% 斷成「進錯／題本」） */
+.ll-result__note {
+  max-width: 36em;
+  margin: var(--ll-space-4) 0 0;
+  color: var(--ll-text-2);
+}
+/* 兩顆動作：手機固定在 Tab bar 上方的底部區（內容短時被 margin-top: auto 推到底，長時 sticky）。兩顆之間 12px（第一顆的立體底邊下面），
+   第二顆的底邊到 Tab bar 16px；畫面放不下固定區時（--_unstick 大於 0）不黏住，回到內容流 */
+.ll-result__actions {
+  position: sticky;
+  bottom: calc(var(--_bottom) - min(var(--_unstick) * 1000, 20000px));
+  z-index: var(--ll-z-sticky);
+  display: grid;
+  gap: var(--ll-space-3);
+  margin-top: auto;
+  padding: var(--ll-space-5) 0 0;
+  background: linear-gradient(to bottom, transparent, var(--ll-bg) var(--ll-space-5));
+}
+/* 黏在 Tab bar 上方時，往下再鋪一段頁面底色：捲過去的內容不會從按鈕和 Tab bar 之間的縫露出來（停在原位時鋪在 main 的底部留白上，看不出來） */
+.ll-result__actions::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: var(--ll-space-4);
+  background: var(--ll-bg);
+  pointer-events: none;
+}
+/* 錯題本的完成畫面與空狀態是「小舞台」：不撐滿到 Tab bar（下面可能還有已下架題目的卡片），按鈕接在說明後面 */
+/* 高度：錯題本的完成與空狀態都同時有 .ll-result--card（後面的 min-height: 50vh 決定），原本這裡的 min-height: 0 一直被它蓋掉，M3 驗收第 7 輪後刪除 */
+.ll-result--review {
+  --_core-y: 64px;
+  --_core-r: 64px;
+  padding-bottom: var(--ll-space-6);
+}
+.ll-result--review .ll-result__note {
+  text-wrap: balance;
+}
+.ll-result--review .ll-result__title {
+  font-size: var(--ll-type-title-2-size);
+  line-height: var(--ll-type-title-2-line);
+}
+.ll-result--review .ll-result__actions {
+  position: static;
+  margin-top: var(--ll-space-5);
+  padding-top: 0;
+  background: none;
+}
+.ll-result--review .ll-result__actions::after {
+  content: none;
+}
+/* 錯題本完成的兩段說明：成績一句（body、600 字重、--ll-text），下面一句之後怎麼複習（body-sm、--ll-text-2） */
+.ll-result__score {
+  margin: var(--ll-space-3) 0 0;
+  font-weight: 600;
+  color: var(--ll-text);
+}
+.ll-result__note--hint {
+  margin-top: var(--ll-space-1);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+/* 錯題本的空狀態（EmptyState）放在同一種舞台裡：標題和完成畫面同級，不另加內距 */
+.ll-result__state {
+  padding: 0;
+}
+.ll-result__state .ll-state__art {
+  margin-bottom: 0;
+}
+.ll-result__state .ll-state__title {
+  margin-top: var(--ll-space-2);
+  font-size: var(--ll-type-title-2-size);
+  line-height: var(--ll-type-title-2-line);
+}
+@media (min-width: 600px) {
+  .ll-result {
+    --_bleed-x: var(--ll-space-8);
+    --_bleed-top: var(--ll-space-6);
+    margin: var(--ll-space-2) 0 0;
+    padding: var(--ll-space-6) var(--ll-space-8) var(--ll-space-6);
+    min-height: 0;
+    overflow: clip;
+    border-radius: var(--ll-radius-xl);
+    background: var(--ll-surface);
+    box-shadow: var(--ll-shadow-2), var(--ll-card-ring);
+  }
+  /* 和下面兩顆動作同寬（結果卡的內容寬） */
+  .ll-result__stats {
+    max-width: none;
+  }
+  .ll-result__stat {
+    background: var(--ll-bg);
+    box-shadow: inset 0 0 0 1px var(--ll-border);
+  }
+  .ll-result__actions {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ll-space-3);
+    margin-top: var(--ll-space-6);
+    padding: 0;
+    background: none;
+  }
+  .ll-result__actions::after {
+    content: none;
+  }
+  .ll-result__actions--single {
+    grid-template-columns: minmax(0, 320px);
+    justify-content: center;
+  }
+}
+/* 錯題本的結果卡（完成、空狀態）：至少半個畫面高、內容垂直置中，兩種狀態同一種構圖 */
+.ll-result--card {
+  display: grid;
+  align-content: center;
+  min-height: 50vh;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-result__stars > .is-on,
+  .ll-float-toasts > * {
+    animation: none;
+  }
+}
+html[data-motion='reduced'] .ll-result__stars > .is-on,
+html[data-motion='reduced'] .ll-float-toasts > * {
+  animation: none;
+}
+
+/* ---- 關卡讀不到（離線）：頁首照樣是 TopBar compact。手機：下面的 ErrorState 在剩下的高度裡置中 ----
+   600px 以上（M3 驗收第 5 輪：1280 時 ErrorState 在視窗正中，頁首下方空出約 300px，和頁首脫節）：和錯題本的空狀態、完成畫面同一種卡片
+   （surface、radius-xl、shadow-2，寬度是內容寬 720），緊接在頁首下方：間距是頁首的下外距 12，和同一頁的題目卡、載入中的骨架、結果卡同一個位置
+   （讀取失敗時卡片不會從骨架的位置往下跳；錯題本那邊是 h1 頁首加區段間距，結構不同），上下內距 48，
+   至少半個視窗高、內容在卡片裡置中（和錯題本的結果卡同高）；鈴、標題、說明、兩顆按鈕都在卡片裡 */
+.ll-level-offline {
+  box-sizing: border-box;
+  min-height: calc(100dvh - 92px - var(--ll-tabbar-h) - 24px - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px));
+  align-content: center;
+}
+@media (min-width: 600px) {
+  .ll-level-offline {
+    min-height: 50vh;
+    padding: var(--ll-space-12) var(--ll-space-8);
+    border-radius: var(--ll-radius-xl);
+    background: var(--ll-surface);
+    box-shadow: var(--ll-shadow-2), var(--ll-card-ring);
+  }
+  /* 鈴和章節頁離線卡、錯題本結果卡看起來一樣大（M3 驗收第 6 輪：預設 96px 的 svg 看起來只有約 77px，比另外兩張卡小一號）：
+     svg 上下有留白，120px 的 svg 看起來約 95px */
+  .ll-level-offline .ll-state__art svg {
+    width: 120px;
+    height: 120px;
+  }
+  /* 標題和錯題本結果卡的標題同級（title-2） */
+  .ll-level-offline .ll-state__title {
+    font-size: var(--ll-type-title-2-size);
+    line-height: var(--ll-type-title-2-line);
+  }
+}
+@media (min-width: 600px) and (forced-colors: active) {
+  .ll-level-offline {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* ---- 錯題本（站規 2.5） ---- */
+/* 入口卡：上面是舞台（鈴 72px、小字「今天要複習」、大字題數、primary「開始複習」），下面是到期清單；1024px 以上舞台在左、清單在右 */
+.ll-review-entry {
+  display: grid;
+  gap: var(--ll-space-4);
+  padding: var(--ll-space-5) var(--ll-space-4) var(--ll-space-4);
+}
+.ll-review-entry__stage {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  justify-items: center;
+  gap: var(--ll-space-2);
+  text-align: center;
+}
+/* 鈴後面的一小圈光暈（和結果頁同一組顏色），上緣透明 */
+.ll-review-entry__stage::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: calc(-1 * var(--ll-space-5)) calc(-1 * var(--ll-space-4)) auto;
+  height: 200px;
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 100px at 50% 100px, var(--ll-stage-glow), transparent);
+}
+.ll-review-entry__bell {
+  --_s: 91px;
+  display: flex;
+  justify-content: center;
+  height: calc(var(--_s) * 0.795);
+}
+.ll-review-entry__bell > svg {
+  flex: none;
+  overflow: visible;
+  margin-top: calc(var(--_s) * -0.11);
+}
+.ll-review-entry__title {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  margin: var(--ll-space-1) 0 0;
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+}
+.ll-review-entry__eyebrow {
+  font-size: var(--ll-type-body-sm-size);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ll-review-entry__count {
+  font-weight: 700;
+  color: var(--ll-text-2);
+}
+.ll-review-entry__num {
+  font-size: 2.75rem;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--ll-text);
+}
+.ll-review-entry__actions {
+  width: 100%;
+  margin-top: var(--ll-space-3);
+}
+.ll-review-entry__queue {
+  min-width: 0;
+  padding-top: var(--ll-space-4);
+  border-top: 1px solid var(--ll-border);
+}
+/* 清單小標「今天的題目」（title-3） */
+.ll-review-entry__list-title {
+  margin: 0 0 var(--ll-space-2);
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+}
+.ll-review-entry__skeleton-title {
+  margin-bottom: var(--ll-space-3);
+}
+/* 不可點的資訊列（M3 驗收第 2 輪）：沒有框也沒有底色（不像可以點的卡片），上下各一條分隔線；左邊 16px 書籤（danger-ink，和錯題本的圖示同一個），
+   第一行是關卡代號 Badge 加關卡名稱，第二行是來源 */
+.ll-review-entry__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--ll-border);
+}
+.ll-review-entry__row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  column-gap: var(--ll-space-3);
+  padding: var(--ll-space-3) 0;
+  border-bottom: 1px solid var(--ll-border);
+}
+/* 書籤和第一行（代號 Badge 與名稱）的中線對齊 */
+.ll-review-entry__mark {
+  display: inline-flex;
+  margin-top: 4px;
+  color: var(--ll-danger-ink);
+}
+.ll-review-entry__main {
+  min-width: 0;
+}
+.ll-review-entry__level,
+.ll-review-retired__name {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0;
+  font-weight: 600;
+}
+.ll-review-entry__level > .ll-badge,
+.ll-review-retired__name > .ll-badge,
+.ll-review-source > .ll-badge {
+  flex: none;
+}
+.ll-review-entry__level > span {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+/* 今天的題目：代號 Badge 和名稱的第一行對齊基線（文字放大、名稱換兩行時 Badge 不會掉到兩行中間） */
+.ll-review-entry__level {
+  align-items: baseline;
+}
+.ll-review-entry__source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-1) var(--ll-space-2);
+  margin: 2px 0 0;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+/* 「還有 N 題」：和名稱的左緣對齊（書籤 16px 加間距） */
+.ll-review-entry__more {
+  margin: 0;
+  padding: var(--ll-space-2) 0 0 calc(16px + var(--ll-space-3));
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+@media (forced-colors: active) {
+  .ll-review-entry__mark svg {
+    color: CanvasText;
+  }
+}
+/* 1024 以上（M3 驗收第 5 輪）：一般頁面的內容寬改成真的 720 之後，舞台固定 280px、清單吃掉剩下的寬度，欄距 24 */
+@media (min-width: 1024px) {
+  .ll-review-entry {
+    grid-template-columns: 280px minmax(0, 1fr);
+    align-items: start;
+    gap: var(--ll-space-6);
+    padding: var(--ll-space-6);
+  }
+  .ll-review-entry__stage::before {
+    inset: calc(-1 * var(--ll-space-6)) calc(-1 * var(--ll-space-6)) auto;
+  }
+  /* 右欄：清單貼齊上緣（不在欄裡垂直置中），左邊一條直線和舞台分開，直線撐滿卡片的高度 */
+  .ll-review-entry__queue {
+    align-self: stretch;
+    padding: 0 0 0 var(--ll-space-6);
+    border-top: 0;
+    border-inline-start: 1px solid var(--ll-border);
+  }
+}
+/* 複習中：頁首標題是純文字「錯題複習」（title-3、--ll-text，和作答頁的關卡名稱同一種頁首），前面 16px 的 danger 書籤；
+   不做成有底色的膠囊（M3 驗收第 4 輪：粉紅底紅字和同一頁的 danger 按鈕「移除」幾乎一樣，看起來像可以按）。
+   錯題模式由題目卡裡一條 4px 的 danger 直條表示，和選項說明框的色條同一種語言（M3 驗收第 5 輪）：離卡片左緣 8px、上下各留 24px、
+   兩端圓頭，不貼著卡片邊、不蓋掉卡片的外框；題目卡的左內距多 8px（24），直條和文字之間 8px。
+   不用 border-left（配上大圓角，上下兩端會變成越來越細的月牙形，M3 驗收第 2 輪） */
+.ll-review-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  max-width: 100%;
+  color: var(--ll-text);
+}
+.ll-review-mode svg {
+  flex: none;
+  color: var(--ll-danger-ink);
+}
+@media (forced-colors: active) {
+  .ll-review-mode svg {
+    color: CanvasText;
+  }
+}
+.ll-question--review {
+  position: relative;
+  padding-inline-start: calc(var(--ll-space-4) + 8px);
+}
+.ll-question--review::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--ll-space-6);
+  inset-inline-start: 8px;
+  inline-size: 4px;
+  border-radius: 2px;
+  background: var(--ll-danger-ink);
+  pointer-events: none;
+}
+/* 強制色彩下背景色會被換掉：直條明寫系統色 */
+@media (forced-colors: active) {
+  .ll-question--review::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
+.ll-review-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: var(--ll-space-1) 0 0;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+.ll-review-box {
+  margin: var(--ll-space-4) 0 0;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+.ll-review-empty__next {
+  display: block;
+  margin-top: var(--ll-space-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+}
+.ll-review-retired__title {
+  margin: 0 0 var(--ll-space-1);
+}
+.ll-review-retired__list {
+  /* 列寬窄（手機、文字放大）時「移除」換到自己的一列，中繼資料拿到整個文字欄 */
+  container: ll-retired / inline-size;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* 已下架的每一列（M3 驗收第 2 輪）：第一行是原本的關卡（代號 Badge、名稱一行截斷）加最右邊的「已下架」Badge；
+   第二行左邊是來源與上次作答，右邊是 danger「移除」（minWidth action），「已下架」與「移除」的右緣對齊。
+   最前面和「今天的題目」同一個 16px 書籤欄（空心、--ll-text-3，M3 驗收第 4 輪），兩張卡片的代號與文字對齊同一欄 */
+.ll-review-retired__row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'mark name name'
+    '. meta remove';
+  align-items: center;
+  gap: var(--ll-space-1) var(--ll-space-3);
+  padding: var(--ll-space-3) 0;
+}
+/* 書籤和第一行（代號 Badge 與名稱）的中線對齊 */
+.ll-review-retired__mark {
+  grid-area: mark;
+  display: inline-flex;
+  color: var(--ll-text-3);
+}
+@media (forced-colors: active) {
+  .ll-review-retired__mark svg {
+    color: CanvasText;
+  }
+}
+.ll-review-retired__row + .ll-review-retired__row {
+  border-top: 1px solid var(--ll-border);
+}
+.ll-review-retired__name {
+  grid-area: name;
+  min-width: 0;
+}
+.ll-review-retired__label {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow-wrap: anywhere;
+}
+.ll-review-retired__badge {
+  margin-inline-start: auto;
+}
+.ll-review-retired__meta {
+  grid-area: meta;
+  min-width: 0;
+}
+.ll-review-retired__meta p {
+  margin: 0;
+}
+/* 中繼資料（來源、上次作答）：每一項是一個 flex 項目，整項一起換行（「上次作答」和日期不拆開，M3 驗收第 5 輪）。
+   項目之間一顆小圓點（純裝飾，畫在每一項前面 20px 寬的左內距裡）：整段往左挪 20px、再用 clip-path 把左邊 20px 剪掉，
+   每一行開頭那一項的圓點就落在剪掉的地方，換行時不會有圓點擠到行首；放得下時是「答錯 1 次 · 上次作答 10月20日」一行 */
+/* 選擇器多一層 __meta：上面的 `.ll-review-retired__meta p { margin: 0 }` 會蓋掉單一 class 的左外距 */
+.ll-review-retired__meta > .ll-review-retired__source {
+  --_sep: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 0;
+  margin-inline-start: calc(-1 * var(--_sep));
+  clip-path: inset(0 0 0 var(--_sep));
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+/* 圓點畫在每一項的左內距裡（絕對定位）：整項比一行還寬、在項目裡換行時（文字放大 200%），第二行照樣從文字欄的左緣開始，不會被剪掉 */
+.ll-review-retired__source > span {
+  position: relative;
+  min-width: 0;
+  padding-inline-start: var(--_sep);
+}
+.ll-review-retired__source > span::before {
+  content: '·';
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: var(--_sep);
+  text-align: center;
+  color: var(--ll-text-3);
+}
+.ll-review-retired__date {
+  white-space: nowrap;
+}
+.ll-review-retired__note {
+  margin-top: 2px;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+.ll-review-retired__remove {
+  grid-area: remove;
+}
+/* 列窄於 26em（手機 480px 以下、文字放大，M3 驗收第 5 輪）：「移除」和中繼資料擠在同一列時文字欄只剩約 185px，
+   「上次作答」和日期被拆成兩行。改成三列：關卡名稱與「已下架」、中繼資料（整個文字欄）、「移除」自己一列靠右（和「已下架」的右緣對齊） */
+@container ll-retired (max-width: 26em) {
+  .ll-review-retired__row {
+    grid-template-columns: 16px minmax(0, 1fr);
+    grid-template-areas:
+      'mark name'
+      '. meta'
+      '. remove';
+  }
+  .ll-review-retired__remove {
+    justify-self: end;
+    margin-top: var(--ll-space-1);
+  }
+}
+
+/* ---- 回饋區「看其他選項為什麼不對」（FeedbackPanel 的 Disclosure plain，M3 驗收第 7 輪）----
+   共用的 plain 字離色塊邊 16px（對齊章節資訊面板的 NavCard），放在回饋區會比上面的解說、選項說明卡與下面的「相關名詞」縮進一截，
+   也不對齊說明卡的內文。整個展開列連同上下髮絲線往左右各伸 8px，summary 與展開的內容（元件的 summaryClassName、bodyClassName 都給
+   .ll-feedback__inset）左右內距改 8px：標題、箭頭與展開的說明卡回到欄的左右緣，滑過的色塊照樣和髮絲線兩端切齊、字離色塊邊 8px；
+   面板內距 16px，髮絲線離面板外框還有 8px。寫在這裡是因為要排在 14-core-nav.css 的 .ll-disclosure、.ll-disclosure__summary 後面（同權重） */
+.ll-feedback__others {
+  margin-inline: calc(-1 * var(--ll-space-2));
+}
+.ll-feedback__inset {
+  padding-inline: var(--ll-space-2);
+}
+
+/* ---- 剛收進圖鑑的名詞 chip（TermChip isNew，M3 驗收後維護者的要求：原本右上角的圓點壓在外框線上，看起來像跑版）----
+   放在這裡是因為要排在 04（.ll-chip）與 13（.ll-stamp）之後，同權重的規則不必再管先後。四個主題用同一組算式（不另寫深色版）：
+   深色的 star、star-fill、star-ink 本來就不同，算出來的金色自然是深色該用的那一階 */
+/* 剛收進圖鑑的名詞 chip（TermChip isNew）：淡金底、金框、內側一圈金光，最前面是金色勾章（.ll-stamp--inline）。
+   標記全部畫在 chip 裡面，不壓外框線（原本右上角的 8px 圓點壓在外框線上，看起來像跑版）。
+   框是印章內框同一種金（star-fill 混 star-ink），和底色至少 3:1（淺色 3.2、深色約 3.7）；底只帶 10% 星星色（深色疊多了會變土褐色） */
+.ll-chip--new,
+.ll-chip--new:is(:hover, :active) {
+  border-color: color-mix(in oklab, var(--ll-star-fill) 65%, var(--ll-star-ink));
+  background-color: color-mix(in oklab, var(--ll-star) var(--ll-cn, 10%), var(--ll-surface));
+  box-shadow: inset 0 0 12px -3px color-mix(in oklab, var(--ll-star) 40%, transparent);
+}
+.ll-chip--new:active {
+  --ll-cn: 20%;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-chip--new:hover {
+    --ll-cn: 20%;
+  }
+}
+/* 回饋區出現時亮光由左往右掃過一次：只在允許動態、沒有強制色彩時播（系統的減少動態與設定頁的「減少動態」都不播）。
+   時長 dur-lift（620ms）、延遲 dur-slow（320ms，等回饋面板就位）；只動背景圖的位置，chip 本身不位移、不縮放 */
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+  html:not([data-motion='reduced']) .ll-chip--new {
+    animation: ll-chip-glint var(--ll-dur-lift) linear var(--ll-dur-slow);
+  }
+}
+/* 背景圖是 chip 的 3 倍寬，從 100% 移到 0%（終點用 chip 本來的 0%，不另寫）；圖比 chip 寬，重複的那幾張永遠在 chip 外面，不必寫 no-repeat */
+@keyframes ll-chip-glint {
+  from,
+  to {
+    background-image: linear-gradient(105deg, transparent 40%, color-mix(in oklab, var(--ll-star) 55%, transparent) 50%, transparent 60%);
+    background-size: 300% 100%;
+  }
+  from {
+    background-position-x: 100%;
+  }
+}
+/* 小勾章（作答回饋的剛收進 chip 與「新收進 N」）：和名詞圖鑑「已收進」的印章同一種（金色實心圓、深色勾號、斜 8 度，.ll-stamp），
+   大小跟著字（chip 約 20px、Badge 約 17px，文字放大時一起放大）；只留一圈深一階的金色內框，不加外圈與內側虛線（這麼小時會糊成一團） */
+.ll-stamp--inline {
+  width: 1.3em;
+  height: 1.3em;
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--ll-star-fill) 72%, var(--ll-star-ink));
+}
+.ll-stamp--inline::before {
+  content: none;
+}
+.ll-stamp--inline svg {
+  width: 62%;
+  height: 62%;
+  color: inherit;
+}
+/* 強制色彩：金色看不到。chip 的框改 Highlight（兩個 class，權重和上面的 :is(:hover, :active) 一樣，滑過、按下時也是）；勾章沿用 .ll-stamp 的 Highlight 底、HighlightText 勾（13-glossary.css），只拿掉內框 */
+@media (forced-colors: active) {
+  .ll-chip.ll-chip--new {
+    border-color: Highlight;
+  }
+  .ll-stamp--inline {
+    box-shadow: none;
+  }
+}

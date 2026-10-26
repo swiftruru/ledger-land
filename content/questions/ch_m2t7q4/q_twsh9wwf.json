@@ -1,0 +1,65 @@
+{
+  "id": "q_twsh9wwf",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_bwx8x2",
+  "difficulty": 1,
+  "tags": [
+    "pick_statement",
+    "period"
+  ],
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_67e7f0mn"
+  ],
+  "scored": true,
+  "type": "pick_statement",
+  "prompt": {
+    "zh-TW": "風行腳踏車行的老闆想知道「暑假這三個月，修車加賣車一共賺了多少」。該看哪一張報表？",
+    "en": "The owner of Breeze Bicycles wants to know how much the shop earned from repairs and sales over the three summer months. Which statement should he look at?"
+  },
+  "options": [
+    {
+      "id": "o_hb9n",
+      "text": {
+        "zh-TW": "損益表",
+        "en": "Income statement"
+      },
+      "feedback": {
+        "zh-TW": "答對了。一段期間賺了多少，是損益表回答的問題。",
+        "en": "Nice work. How much was earned over a period is the question the income statement answers."
+      }
+    },
+    {
+      "id": "o_afqq",
+      "text": {
+        "zh-TW": "資產負債表",
+        "en": "Balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "資產負債表確實也和經營成果有關，這點沒錯。不過它只呈現某一天的狀況，看不出「這三個月」賺了多少；一段期間的成績要看損益表。",
+        "en": "The balance sheet is indeed linked to results, that much is right. But it shows only one day’s position and cannot tell you what was earned over these three months; performance over a period is on the income statement."
+      },
+      "misconceptionId": "mc_3mj1"
+    },
+    {
+      "id": "o_w215",
+      "text": {
+        "zh-TW": "現金流量表",
+        "en": "Statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "現金流量表也是一段期間的報表，這點沒錯。不過它說的是現金怎麼進出，不是賺了多少；修好的車還沒收到錢也算賺到，這部分現金流量表不會告訴你。",
+        "en": "The statement of cash flows also covers a period, that much is right. But it tells you how cash moved, not how much was earned; a repair finished but not yet paid for still counts as earned, and the statement of cash flows will not show that."
+      }
+    }
+  ],
+  "correctOptionId": "o_hb9n",
+  "explanation": {
+    "zh-TW": "問題裡的關鍵字是「這三個月」和「賺了多少」：一段期間、問利益，答案就是{{option:o_hb9n}}。{{option:o_afqq}}是某一天的照片，{{option:o_w215}}講的是現金而不是利益。",
+    "en": "The key words are ‘three months’ and ‘earned’: a period and a question about profit point to {{option:o_hb9n}}. {{option:o_afqq}} is a photograph of one day, and {{option:o_w215}} talks about cash rather than profit."
+  }
+}

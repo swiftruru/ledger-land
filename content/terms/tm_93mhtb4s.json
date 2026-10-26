@@ -2,18 +2,39 @@
   "id": "tm_93mhtb4s",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "非流動資產", "en": "Non-current assets" },
+  "label": {
+    "zh-TW": "非流動資產",
+    "en": "Non-current assets"
+  },
   "teacherLabel": "非流動資產",
   "currentTwLabel": "非流動資產",
   "ifrsEnglish": "Non-current assets",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "預期使用或持有超過一年的資產，例如設備、無形資產與長期投資。模板的分組標題。",
-    "en": "Assets expected to be used or held for more than a year, such as equipment, intangible assets and long-term investments. A template group heading."
-  }
+    "zh-TW": "預計使用或持有超過一年的資產，例如機器設備、無形資產與長期投資。\n\n它和流動資產的分界是一年（或一個營運週期）：一年內會變現的是流動資產，其餘都是非流動資產。",
+    "en": "Assets expected to be used or held for more than a year, such as machinery, intangible assets and long-term investments.\n\nThe dividing line from current assets is one year (or one operating cycle): assets that will turn into cash within a year are current, everything else is non-current."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表流動資產之後的分組標題，課程版面底下有固定資產、無形資產、投資其他資產與遞延資產。取得與處分這些資產的現金流量都列在投資活動。",
+    "en": "Where it sits: the group heading after current assets on the balance sheet; in the course layout it contains fixed assets, intangible assets, investments and other assets, and deferred assets. Cash flows from buying and selling these assets are investing activities."
+  },
+  "misconception": {
+    "zh-TW": "以為非流動資產就是「不會動的資產」。分類看的是持有的目的與期間，不是會不會動：交通工具會動但是非流動資產，倉庫裡的存貨不會動卻是流動資產。",
+    "en": "Reading non-current as assets that do not move. The classification depends on purpose and holding period, not physical movement: vehicles move yet are non-current, while inventory sits still yet is current."
+  },
+  "related": [
+    "tm_k52yxb68",
+    "tm_12gxceqy",
+    "tm_wqn6nph9",
+    "tm_yw1wvkkd",
+    "tm_t7a3s6wb"
+  ]
 }

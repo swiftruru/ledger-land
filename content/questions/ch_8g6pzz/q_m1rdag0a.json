@@ -1,0 +1,65 @@
+{
+  "id": "q_m1rdag0a",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "single_choice",
+  "objectiveId": "obj_ftamqc",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "financial_structure",
+    "reference_value"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_fwys72qx"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "阿哲發現一家銀行的負債比率遠高於課程參考值，比他看過的任何一家商店都高。下列哪一個說法最合理？",
+    "en": "Che notices that a bank’s debt ratio is far above the course reference value, higher than any shop he has looked at. Which statement is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_07yx",
+      "text": {
+        "zh-TW": "銀行吸收的存款就是負債，負債比率天生偏高，應該和其他銀行比較",
+        "en": "Deposits a bank takes in are liabilities, so its debt ratio is naturally high; compare it with other banks"
+      },
+      "feedback": {
+        "zh-TW": "答對了。銀行是負債比率的典型例外產業，參考值在這裡幫不上忙。",
+        "en": "That’s right. Banks are the classic exception for the debt ratio, and the general reference value is no help here."
+      }
+    },
+    {
+      "id": "o_0z9b",
+      "text": {
+        "zh-TW": "負債比率遠高於參考值，表示這家銀行的財務狀況已經很危險",
+        "en": "The debt ratio is far above the reference value, so the bank’s finances are already in danger"
+      },
+      "feedback": {
+        "zh-TW": "高負債比率值得警覺，這個反應可以理解。不過對銀行來說，靠存款（負債）營運是商業模式本身；判斷它安不安全要用銀行業自己的指標。",
+        "en": "Being alert to a high debt ratio is understandable. But for a bank, operating on deposits (liabilities) is the business model itself; whether it is safe has to be judged with banking-specific measures."
+      },
+      "misconceptionId": "mc_cwq6"
+    },
+    {
+      "id": "o_fcjp",
+      "text": {
+        "zh-TW": "存款是存戶自己的錢，不該算進負債，所以這個比率是算錯了",
+        "en": "Deposits are the depositors’ own money and should not count as liabilities, so the ratio is miscalculated"
+      },
+      "feedback": {
+        "zh-TW": "存款是銀行欠存戶的錢，確實是負債；數字沒有算錯，只是產業特性讓它天生偏高。",
+        "en": "Deposits are money the bank owes its depositors, so they are liabilities; the figure is not wrong, the industry simply makes it high by nature."
+      }
+    }
+  ],
+  "correctOptionId": "o_07yx",
+  "explanation": {
+    "zh-TW": "{{term:tm_9e1rb64c}}的參考值假設的是一般的買賣或製造業。{{option:o_07yx}}認出了例外產業；{{option:o_0z9b}}跳過產業直接下結論，{{option:o_fcjp}}則否認了存款是負債的事實。",
+    "en": "The reference value for the {{term:tm_9e1rb64c}} assumes an ordinary trading or manufacturing business. {{option:o_07yx}} recognises the exception; {{option:o_0z9b}} skips the industry and jumps to a conclusion, and {{option:o_fcjp}} denies that deposits are liabilities."
+  }
+}

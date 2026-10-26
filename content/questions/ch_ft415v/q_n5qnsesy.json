@@ -1,0 +1,81 @@
+{
+  "id": "q_n5qnsesy",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "ratio_interpret",
+  "ratioRef": "inventory_turnover@excel",
+  "objectiveId": "obj_fbc0kw",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_08g66t9j",
+    "tm_n7v3k8pq"
+  ],
+  "scored": true,
+  "vars": {
+    "coffee": 24,
+    "furniture": 3,
+    "cogs": 1200000,
+    "inventory": 50000
+  },
+  "prompt": {
+    "zh-TW": "小山咖啡今年營業成本 {{money:vars.cogs}}、年底存貨 {{money:vars.inventory}}，存貨週轉率是 {{number:vars.coffee|digits=2,unit=times}}（見上表）；木岸家具的存貨週轉率是 {{number:vars.furniture|digits=2,unit=times}}。哪一個判讀最站得住腳？",
+    "en": "Hillside Coffee had cost of sales of {{money:vars.cogs}} this year and inventories of {{money:vars.inventory}} at year end, an inventory turnover of {{number:vars.coffee|digits=2,unit=times}} (see the table above); Woodbank Furniture’s inventory turnover is {{number:vars.furniture|digits=2,unit=times}}. Which reading holds up best?"
+  },
+  "options": [
+    {
+      "id": "o_jgmw",
+      "text": {
+        "zh-TW": "兩家產業不同，要各自和同業比，不能直接說誰經營得好",
+        "en": "The two are in different industries; each should be compared with its own peers, not with each other"
+      },
+      "feedback": {
+        "zh-TW": "答對了。食材放不久，週轉自然快；家具一件可以放很久，週轉本來就慢。週轉率的「正常值」隨產業差很多，跨產業比較要先問生意的性質。",
+        "en": "That’s right. Food spoils quickly, so it naturally turns fast, while a piece of furniture can sit for a long time. What counts as normal turnover varies widely by industry, so a cross-industry comparison has to start with the nature of the business."
+      }
+    },
+    {
+      "id": "o_01r3",
+      "text": {
+        "zh-TW": "木岸家具的週轉率低，經營效率一定比小山咖啡差",
+        "en": "Woodbank’s turnover is lower, so it must be run less efficiently than Hillside Coffee"
+      },
+      "feedback": {
+        "zh-TW": "你抓到了「週轉率低表示存貨轉得慢」，這個讀法本身沒錯。不過家具業的存貨本來就轉得慢，要和其他家具店比才知道木岸家具好不好。",
+        "en": "You correctly read low turnover as slow-moving inventory. But furniture inventory is slow-moving by nature; only a comparison with other furniture shops tells you whether Woodbank is doing well."
+      },
+      "misconceptionId": "mc_hssb"
+    },
+    {
+      "id": "o_64cd",
+      "text": {
+        "zh-TW": "小山咖啡應該把週轉率再提高，週轉率永遠越高越好",
+        "en": "Hillside Coffee should push its turnover even higher; higher is always better"
+      },
+      "feedback": {
+        "zh-TW": "想讓存貨轉得更快，出發點沒錯。不過週轉率再往上衝，通常代表豆子和牛奶備得更緊；尖峰時段一缺料，客人就走了，省下的存貨成本可能補不回少賣的杯數。高到什麼程度合理，要看產業和缺貨的代價。",
+        "en": "Wanting stock to turn faster is a sound starting point. But pushing turnover even higher usually means holding even leaner stocks of beans and milk; run out at the morning rush and customers walk away, and the inventory cost saved may not make up for the cups not sold. How high is reasonable depends on the industry and the cost of running out."
+      },
+      "misconceptionId": "mc_21sh"
+    }
+  ],
+  "correctOptionId": "o_jgmw",
+  "explanation": {
+    "zh-TW": "{{term:tm_08g66t9j}}要和同業比。{{option:o_jgmw}}先看產業的差別；{{option:o_01r3}}跨產業直接比高低，{{option:o_64cd}}忘了週轉率太高也有代價。",
+    "en": "{{term:tm_08g66t9j}} has to be compared with peers. {{option:o_jgmw}} looks at the industry difference first; {{option:o_01r3}} compares straight across industries, and {{option:o_64cd}} forgets that very high turnover has a cost too."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "inventory_turnover@excel"
+    ],
+    "measures": {
+      "is_cogs": "vars.cogs",
+      "bs_inventory": "vars.inventory"
+    }
+  }
+}

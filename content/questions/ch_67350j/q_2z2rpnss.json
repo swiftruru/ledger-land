@@ -1,0 +1,98 @@
+{
+  "id": "q_2z2rpnss",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_wt6czr",
+  "difficulty": 2,
+  "tags": [
+    "depreciation",
+    "profit_levels",
+    "non_cash"
+  ],
+  "termRefs": [
+    "tm_d4p7x2mv",
+    "tm_gt8g4afe",
+    "tm_z3vbt800",
+    "tm_e61ht6yh"
+  ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_j6185k"
+  },
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 100000,
+        "machinery_equipment": 250000,
+        "share_capital": 350000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.depreciation_straight_line",
+        "params": {
+          "usefulLifeYears": 5
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "is_gross_profit",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "is_operating_income",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_net_income",
+        "measure": "direction"
+      },
+      {
+        "id": "t5",
+        "kind": "line",
+        "line": "bs_machinery_net",
+        "measure": "direction"
+      },
+      {
+        "id": "t6",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "年底到了，北風單車行替店裡的修車機具提列這一年的折舊，機具依 {{number:e1.usefulLifeYears}} 年平均攤提，金額 {{money:e1.amount}}。照五步驟走一遍之前，先預測下面六個數字各會怎麼變。",
+    "en": "At year end North Wind Cycles records a year’s depreciation on its workshop machinery, which is depreciated evenly over {{number:e1.usefulLifeYears}} years: {{money:e1.amount}} for the year. Before walking through the five steps, predict how each of the six figures below changes."
+  },
+  "explanation": {
+    "zh-TW": "折舊是銷管費用，所以營業利益與本期淨利都減少 {{money:e1.amount}}，營業毛利不受影響；機器設備的帳面金額同樣減少。關鍵在現金：提列折舊沒有付任何錢，現金不變，而現金流量表會在「折舊費用(+)」那一列把它加回來，營業活動的現金流量總計也不變。",
+    "en": "Depreciation is part of distribution costs and administrative expenses, so operating profit and profit for the period both fall by {{money:e1.amount}} while gross profit is untouched; the carrying amount of machinery falls by the same amount. The key is cash: recording depreciation pays nobody, so cash is unchanged, and the statement of cash flows adds it back on the ‘depreciation (+)’ line, leaving net cash from operating activities unchanged as well."
+  }
+}

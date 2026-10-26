@@ -1,11 +1,13 @@
 // content:coverage 的純函式（08 第 1.2 節）：每個學習目標的預計題數、草稿數、已發布數、題型與難度分布、迷思是否被練到、待確認編號。
+// coverageShortfalls 列出「已發布題數未達 plannedQuestions」的目標（10 第 10 節 M3 完成標準第一條），content:coverage --check 以它判定失敗。
 // 不讀檔也不列印；content-coverage.mjs 負責輸出。
 import { QUESTION_TYPES } from '@ledgerland/content-schema';
 
 /**
- * @typedef {{ objectiveId: string; chapterId: string; chapterOrder: number; chapterTitle: string; order: number; statement: string; skill: string;
- *   suggestedTypes: string[]; misconceptions: { id: string; text: string; used: number }[]; planned: number; draft: number; published: number; retired: number;
- *   byType: Record<string, number>; byDifficulty: Record<'1' | '2' | '3', number>; pendingRefs: string[]; status: string }} ObjectiveCoverage
+ * @typedef {{ objectiveId: string; file: string; path: string; chapterId: string; chapterOrder: number; chapterTitle: string; chapterStatus: string; order: number;
+ *   statement: string; skill: string; suggestedTypes: string[]; misconceptions: { id: string; text: string; used: number }[]; planned: number; draft: number;
+ *   published: number; retired: number; byType: Record<string, number>; byDifficulty: Record<'1' | '2' | '3', number>; pendingRefs: string[]; status: string }} ObjectiveCoverage
+ *   file 與 path 是目標在 content/objectives/<chapterId>.json 裡的位置（items.<i>），給 --check 的錯誤訊息定位
  */
 
 /**
@@ -23,7 +25,7 @@ export function coverage(parsed) {
     else list.push(q.data);
   }
   const rows = parsed.objectives
-    .map(({ data: o }) => {
+    .map(({ data: o, file, path }) => {
       const qs = byObjective.get(o.id) ?? [];
       const ch = chapters.get(o.chapterId);
       const byType = /** @type {Record<string, number>} */ ({});
@@ -43,9 +45,12 @@ export function coverage(parsed) {
       }
       return {
         objectiveId: o.id,
+        file,
+        path: path ?? '(root)',
         chapterId: o.chapterId,
         chapterOrder: ch?.order ?? Number.MAX_SAFE_INTEGER,
         chapterTitle: ch?.title?.['zh-TW'] ?? o.chapterId,
+        chapterStatus: ch?.status ?? 'missing',
         order: o.order,
         statement: o.statement['zh-TW'],
         skill: o.skill,
@@ -68,6 +73,32 @@ export function coverage(parsed) {
     published: 0,
   });
   return { rows, unassigned, totals };
+}
+
+/**
+ * 已發布題數未達預計題數的目標（M3 完成標準第一條）。已下架的目標不算；草稿目標照算（完成時不該還有草稿），訊息會標出來。
+ * 每一條附檔案、JSON 路徑、訊息與建議修正（08 第 5.8 節的錯誤訊息格式）。
+ * @param {{ rows: ObjectiveCoverage[]; unassigned: { id: string; objectiveId: string; file: string }[] }} result
+ * @returns {{ rule: string; file: string; path: string; message: string }[]}
+ */
+export function coverageShortfalls(result) {
+  const out = [];
+  for (const r of result.rows) {
+    if (r.status === 'retired') continue;
+    if (r.published >= r.planned) continue;
+    const missing = r.planned - r.published;
+    const draftNote = r.draft > 0 ? `，草稿 ${r.draft} 題` : '';
+    const statusNote = r.status === 'draft' ? '（目標本身仍是草稿）' : '';
+    out.push({
+      rule: 'coverage.planned',
+      file: r.file,
+      path: `${r.path}.plannedQuestions`,
+      message: `${r.objectiveId}${statusNote}（${r.chapterTitle}）已發布 ${r.published} / 預計 ${r.planned} 題${draftNote}；再發布 ${missing} 題，或依審稿結論調整 plannedQuestions`,
+    });
+  }
+  for (const u of result.unassigned)
+    out.push({ rule: 'coverage.unassigned', file: u.file, path: 'objectiveId', message: `題目 ${u.id} 的學習目標 ${u.objectiveId} 不存在，無法計入覆蓋表` });
+  return out;
 }
 
 const dist = (obj) =>

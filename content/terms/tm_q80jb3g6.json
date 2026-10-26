@@ -2,18 +2,43 @@
   "id": "tm_q80jb3g6",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "營業外支出小計", "en": "Total non-operating expenses" },
+  "label": {
+    "zh-TW": "營業外支出小計",
+    "en": "Total non-operating expenses"
+  },
   "teacherLabel": "營業外支出小計",
   "currentTwLabel": "營業外支出小計",
   "ifrsEnglish": "Total non-operating expenses",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": [],
+  "pendingRefs": ["T04", "T05"],
   "definition": {
-    "zh-TW": "營業外支出各項的合計。營業利益加營業外收入、減掉它，就是教材的經常利益。",
-    "en": "The sum of the non-operating expense lines. Operating profit plus non-operating income less this subtotal gives the course's ordinary profit."
-  }
+    "zh-TW": "損益表營業外支出區各列的合計。\n\n課程版面底下有利息費用與攤銷遞延資產兩列；營業利益加營業外收入、減這個小計，就是經常利益。",
+    "en": "The total of the lines in the non-operating expenses section of the income statement.\n\nIn the course layout it sums finance costs (interest expense) and amortisation of deferred assets; operating profit plus non-operating income minus this subtotal gives ordinary profit."
+  },
+  "example": {
+    "zh-TW": "位置：損益表營業利益之後、經常利益之前。故事裡還款付息與年底攤銷設立費之後，這一列才會有金額。現行報表把利息列在財務成本；IFRS 下設立費在發生時就列為營業費用，不會有攤銷遞延資產這一列。",
+    "en": "Where it sits: on the income statement after operating profit and before ordinary profit. In the story it only shows an amount after the loan is repaid with interest and the start-up costs are amortised at year end. Current statements show interest under finance costs; under IFRS start-up costs are expensed as incurred within operating expenses, so there is no line for amortisation of deferred assets."
+  },
+  "misconception": {
+    "zh-TW": "把營業外支出算進營業利益。它在營業利益之後才扣，所以利息多寡不影響營業利益，只影響經常利益以下的各層。",
+    "en": "Deducting non-operating expenses before operating profit. They come after it, so the size of the interest bill leaves operating profit untouched and only affects ordinary profit and the levels below."
+  },
+  "formula": {
+    "zh-TW": "營業外支出小計 ＝ 利息費用 ＋ 攤銷遞延資產。",
+    "en": "Total non-operating expenses = finance costs (interest expense) + amortisation of deferred assets."
+  },
+  "related": [
+    "tm_gvrw06p3",
+    "tm_k6t2e9wr",
+    "tm_a2m7z4tf",
+    "tm_9hg0gb2b",
+    "tm_z3vbt800"
+  ]
 }

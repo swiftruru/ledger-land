@@ -1,0 +1,23 @@
+{
+  "id": "lv_qyeddb18",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "order": 2,
+  "title": {
+    "zh-TW": "現金流量指標",
+    "en": "Cash flow ratios"
+  },
+  "objectiveIds": [
+    "obj_6f1csw"
+  ],
+  "questionIds": [
+    "q_xyd7q2fm",
+    "q_y3hevfd7",
+    "q_zk86qsjs",
+    "q_50bacwv4",
+    "q_ct59r0r5",
+    "q_gtyj4dyz"
+  ]
+}

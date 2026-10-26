@@ -1,0 +1,147 @@
+/* 頂部提示、更新提示與狀態訊息的版面（站規 2.17、2.18；頁面組 pages-b，Banners.tsx 匯入，進首次載入的 CSS）。
+   橫幅、提示條、按鈕本身的外觀在 web-ui 的 Banner、HintBar、Button；這裡只排位置與間距，不改元件外觀（站規 1.2.1）。 */
+
+/* 橫幅的位置（Banners.tsx，第 1 輪驗收）：頁首之後、頁面內容之前，一次只展開一條（加最多一顆收合的膠囊）。
+   和內容間距 12px；跟在 TopBar 後面時（標題下緣只有 8px）上面多留 4px。空的時候不佔位置。
+   .ll-banner-home 是找不到頁首時的位置（main 最上方），本身不產生方塊。 */
+.ll-banner-home {
+  display: contents;
+}
+.ll-banner-slot {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-banner-slot:empty {
+  display: none;
+}
+.ll-topbar + .ll-banner-slot,
+.ll-level-head + .ll-banner-slot {
+  margin-top: var(--ll-space-1);
+}
+.ll-banner-slot > .ll-banner,
+.ll-banner-slot > .ll-notice-collapsed {
+  margin: 0;
+}
+/* 地圖頁 HUD 下方的完整橫幅（儲存層、更新、相機預覽）：寬度跟著提示條的位置（軌道寬），上下間距由那個位置負責 */
+.ll-map-banner > .ll-banner {
+  margin: 0;
+}
+/* 說明文字的 text-wrap: pretty 在 web-ui 的 Banner 本身（全站） */
+
+/* 匯入提示卡（首頁，ImportPromptCard）：動作列延伸到關閉鈕下方之後（web-ui 的 Banner，第 5 輪），360 以上兩顆 sm 按鈕（各約 135px，加間距 278px）放得下同一列，
+   和其他橫幅一樣並排；只有橫幅內容寬不到 278px（320 寬的手機，內容寬與動作列 256px）放不下，改成上下兩顆等寬（不再一長一短地靠左，第 6 輪）。
+   container query 量的是橫幅的內容寬（扣掉左右內距）。只寫 display: grid：沒有指定欄時是一個 auto 欄、撐滿動作列的寬，兩顆按鈕的標籤都能換行，
+   最小內容寬遠小於動作列，和 minmax(0, 1fr) 同樣效果（第 9 輪拿掉，抵掉 Banner 內容欄多寫的格線，入口 CSS 不增加） */
+@container (max-width: 277.98px) {
+  .ll-import-prompt .ll-banner__actions {
+    display: grid;
+  }
+}
+/* 可收合提示（Safari 分頁、內建瀏覽器）收合後：一顆 secondary sm，靠左、在內容流裡，和橫幅同樣的上下間距 */
+.ll-notice-collapsed {
+  display: flex;
+  margin: var(--ll-space-3) 0;
+}
+/* 「收合」「收起圖解」的箭頭朝上（CaretDownIcon 轉 180 度）；減少動態時也是靜態的角度，沒有動畫 */
+.ll-icon-flip {
+  transform: rotate(180deg);
+}
+/* 動作列裡的狀態文字（例如「已複製連結」）：空的時候沒有寬高；有字時自己換到按鈕下面一行 */
+.ll-notice-status {
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-notice-status:not(:empty) {
+  flex-basis: 100%;
+}
+/* 圖示加一句狀態（「已開啟」「已複製」「記住了」）：圖示 20px，和第一行字對齊 */
+.ll-statusline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0;
+  font-weight: 600;
+}
+.ll-statusline > svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+
+/* iOS 的安裝建議（第 3 輪驗收；第 4 輪改成只有「匯出到 App」是 secondary sm，看圖解教學、完整教學頁、之後再說都是 quiet sm）：橫幅只有頭部，動作列用 Banner 本身的 actions 槽。
+   展開的圖解是橫幅正下方的一張紙卡片（Card，和 /install/ 的教學卡片同一個樣子）：和橫幅的距離是 .ll-banner-slot 的 gap（12px），卡片自己不再加外距；
+   收起時是 hidden 的空卡片（給 aria-controls 指向），不佔位置也不產生 gap。圖解的字色、步驟編號（accent-ink）、分隔線都是 install.css 的原樣 */
+/* 動作列四顆（第 5 輪驗收：原本往左延伸到圖示下方、flex-wrap 各列自己排，四顆看起來是散開擺的）：
+   和 Safari 分頁、內建瀏覽器、備份、更新橫幅一樣從文字欄開始（左緣等於標題與內文），排成兩欄的格子（DOM 順序就是格子順序）：
+   第一列「匯出到 App」（secondary）與「看圖解教學／收起圖解」，第二列「完整教學頁 →」與「之後再說」（都是 quiet）。
+   quiet 沒有外框，看得到的是字：第一欄的「完整教學頁」用負的左外距抵銷內距（sm 16px 加 1.5px 透明外框），字對齊上方膠囊的左緣；
+   第二欄的兩顆都是 quiet、內距相同，箭頭和「之後再說」自然對齊；左側內距加 4px 的欄距就是和膠囊之間的空隙（滑過或按下時的底色
+   和膠囊隔 4px，不貼在一起、也不蓋到膠囊）。第二欄右側的內距不佔欄寬：375 寬時文字欄 279px，
+   英文 Export to app（157）加欄距 4 加 See steps（字 100、左內距 17.5）約 279px 以內。
+   按鈕本身的 max-width: 100% 會把加寬的方塊夾回欄寬、字被擠成直排，這裡取消。
+   橫幅的內容寬（container query 量的是扣掉內距的內容方塊）不到 308px（320 寬的手機、放大顯示）兩欄排不下，改成一欄、四顆的字一樣左緣對齊。
+   寬的橫幅（720px 以上）格子靠右（web-ui 的 Banner 規則），右欄保留右側內距（不然滑過時的底色會超出橫幅右緣）。
+   展開與收起時列數不變。對齊用的負外距只是版面，不改按鈕的外觀：三顆 quiet 帶版面用的 class（ll-install-prompt__quiet，Button 的 className
+   只給版面用），不直接選 .ll-btn--quiet（check:links R11）。第一欄只有第 3 顆（完整教學頁），第二欄是第 2、4 顆 */
+.ll-install-prompt--ios .ll-banner__actions {
+  display: grid;
+  grid-template-columns: max-content;
+  place-items: start;
+  gap: var(--ll-space-1);
+}
+/* 17.5px = sm 的左右內距 16px 加 1.5px 透明外框 */
+.ll-install-prompt--ios .ll-install-prompt__quiet {
+  max-width: none;
+  margin-inline-start: -17.5px;
+}
+@container (min-width: 308px) {
+  .ll-install-prompt--ios .ll-banner__actions {
+    grid-template-columns: max-content max-content;
+  }
+  .ll-install-prompt--ios .ll-install-prompt__quiet:nth-child(2n) {
+    margin-inline: 0 -17.5px;
+  }
+}
+/* 寬的橫幅：格子靠右是 web-ui 的 justify-content: flex-end（在格子裡等於 end） */
+@container (min-width: 720px) {
+  .ll-install-prompt--ios .ll-install-prompt__quiet:nth-child(2n) {
+    margin-inline-end: 0;
+  }
+}
+.ll-banner-slot > .ll-install-prompt__guide {
+  margin: 0;
+}
+.ll-install-prompt__guide[hidden] {
+  display: none;
+}
+
+/* 找不到頁面、路由錯誤：狀態區塊在內容欄裡置中，上方留一點空間，不貼著頁首。
+   768 以上（第 2 輪驗收：桌面整組擠在上半部、下方空一大片）：區塊撐滿 main 扣掉上下內距的高度，內容在正中央；
+   鈴放大到 120px、標題 title-2，按鈕維持 primary 加 secondary（768 到 1023 有底部 Tab bar）。1024 起由基礎組畫成最寬 480px 的卡片
+   （07-core-components.css 的 main > .ll-state:has(> h1.ll-state__title)，min-height 歸零），這裡不再另外設定。
+   只垂直置中（align-content）：水平維持滿欄，說明文字不會被縮到按鈕列的寬度而斷成兩行 */
+.ll-notfound,
+.ll-route-error {
+  min-height: min(70vh, 560px);
+  align-content: center;
+}
+@media (min-width: 768px) {
+  .ll-notfound,
+  .ll-route-error {
+    min-height: calc(100dvh - var(--ll-space-4) - var(--ll-tabbar-h) - var(--ll-space-6) - env(safe-area-inset-bottom, 0px));
+    align-content: center;
+    gap: var(--ll-space-3);
+    padding-block: var(--ll-space-6);
+  }
+  .ll-notfound .ll-state__art svg,
+  .ll-route-error .ll-state__art svg {
+    width: 120px;
+    height: 120px;
+  }
+  .ll-notfound .ll-state__title,
+  .ll-route-error .ll-state__title {
+    font-size: var(--ll-type-title-2-size);
+    line-height: var(--ll-type-title-2-line);
+  }
+}

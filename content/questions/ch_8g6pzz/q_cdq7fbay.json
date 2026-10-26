@@ -1,0 +1,68 @@
+{
+  "id": "q_cdq7fbay",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "classify",
+  "dimension": "ratio_category",
+  "objectiveId": "obj_ftamqc",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_555a7d2s",
+    "tm_c8r1t4zm",
+    "tm_r0a5t3kq",
+    "tm_2s4hterv",
+    "tm_tspyazrx",
+    "tm_8eyx0srs",
+    "tm_jbtbky5v"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "木岸家具的會計師列出下面幾個指標。把每一個放進六大類：資產結構、現金流量、經營能力、槓桿度、獲利能力、償債能力。",
+    "en": "Woodbank Furniture’s accountant has listed the ratios below. Put each one into its family: financial structure, cash flow, operating efficiency, leverage, profitability or solvency."
+  },
+  "items": [
+    {
+      "id": "it_a293",
+      "ratio": "debt_ratio"
+    },
+    {
+      "id": "it_bfq8",
+      "ratio": "long_term_funds_to_ppe"
+    },
+    {
+      "id": "it_c6km",
+      "ratio": "cash_flow_ratio"
+    },
+    {
+      "id": "it_t01j",
+      "ratio": "cash_reinvestment"
+    },
+    {
+      "id": "it_spgx",
+      "ratio": "current_ratio"
+    },
+    {
+      "id": "it_a2q4",
+      "ratio": "roa"
+    },
+    {
+      "id": "it_804v",
+      "ratio": "ar_turnover"
+    },
+    {
+      "id": "it_sntk",
+      "ratio": "dol"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "問「錢從哪裡來」的是資產結構（負債比率、{{term:tm_8eyx0srs|plain}}）；問「本業的現金夠不夠」的是現金流量類（{{term:tm_555a7d2s|plain}}、{{term:tm_jbtbky5v|plain}}）；問「資產轉得多快」的是經營能力（應收款項週轉率）；問「變動被放大幾倍」的是槓桿度（營運槓桿度）；問「賺多少」的是獲利能力（ROA）；問「還不還得起」的是償債能力（流動比率）。",
+    "en": "Ratios that ask ‘where does the money come from’ are financial structure (the debt ratio and the {{term:tm_8eyx0srs|plain}}); ‘is operating cash enough’ is the cash flow family (the {{term:tm_555a7d2s|plain}} and the {{term:tm_jbtbky5v|plain}}); ‘how fast do assets turn’ is operating efficiency (receivables turnover); ‘how much is a change magnified’ is leverage (degree of operating leverage); ‘how much is earned’ is profitability (ROA); and ‘can the debts be paid’ is solvency (current ratio)."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "q_gn7yd90q",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "true_false",
+  "objectiveId": "obj_fyd5cv",
+  "difficulty": 1,
+  "tags": [
+    "ratio",
+    "na_vs_zero"
+  ],
+  "termRefs": [
+    "tm_555a7d2s",
+    "tm_9e1rb64c"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "禾心文具年底沒有任何流動負債，所以它的現金流量比率那一格填 0 就好。",
+    "en": "Hexin Stationery has no current liabilities at year end, so its cash flow ratio can simply be entered as 0."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "看到分母那一欄是空的，就想填 0，這個想法很常見。不過現金流量比率的分母是流動負債，分母為零時這道除法做不了，正確的呈現是 N/A；0 是做得出來、答案剛好是零的結果，兩者不能互換。",
+    "en": "Wanting to enter 0 when the denominator is empty is a common instinct. But the denominator of the cash flow ratio is current liabilities, and with a zero denominator the division cannot be done, so the right presentation is N/A; 0 is the result of a division that works and happens to give zero, and the two cannot be swapped."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。N/A 是「這道除法做不了」，0 是「做得出來，答案剛好是零」；把 N/A 寫成 0，等於替一個不存在的比率編了一個分數。",
+    "en": "Correct. N/A means ‘this division cannot be done’, while 0 means ‘it can be done and the answer happens to be zero’; writing 0 for N/A makes up a score for a ratio that does not exist."
+  },
+  "misconceptionId": "mc_ys4m",
+  "explanation": {
+    "zh-TW": "網站不會把 N/A 改填成 0，也不會隱藏它。看到 N/A 時先問「哪個分母是零」，例如沒有流動負債、沒有資產；看到 0 時則問「哪個分子剛好是零」。",
+    "en": "The site never replaces N/A with 0 and never hides it. When you see N/A, ask which denominator is zero, for example no current liabilities or no assets; when you see 0, ask which numerator happens to be zero."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "lv_ssqpqpdm",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "order": 1,
+  "title": {
+    "zh-TW": "資產結構：錢從哪裡來",
+    "en": "Financial structure: where the money comes from"
+  },
+  "objectiveIds": [
+    "obj_wb2v68"
+  ],
+  "questionIds": [
+    "q_nf55d360",
+    "q_b9smn7e4",
+    "q_937d00pm",
+    "q_x6agrbg7",
+    "q_htf4dfse"
+  ]
+}

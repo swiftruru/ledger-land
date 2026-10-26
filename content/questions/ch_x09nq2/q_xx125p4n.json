@@ -1,0 +1,78 @@
+{
+  "id": "q_xx125p4n",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_qrvy9c",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "capital_surplus",
+    "company_act"
+  ],
+  "termRefs": [
+    "tm_yka0razf",
+    "tm_4c6v99nn",
+    "tm_wdsk6cs7"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "晨光印刷的董事會想「用一下」帳上的資本公積。依現行公司法，資本公積的用途以什麼為主？",
+    "en": "The board of Morning Light Printing wants to put its capital surplus to use. Under the current Company Act, what is capital surplus mainly for?"
+  },
+  "options": [
+    {
+      "id": "o_w1x2",
+      "text": {
+        "zh-TW": "以彌補虧損為主；沒有虧損時，特定來源的部分才能經決議發給新股或現金",
+        "en": "Mainly offsetting losses; with no losses, only surplus from specified sources may be paid out as new shares or cash by resolution"
+      },
+      "short": {
+        "zh-TW": "以彌補虧損為主，其他用途有條件",
+        "en": "Mainly offsetting losses, with other uses conditional"
+      },
+      "feedback": {
+        "zh-TW": "答對了。資本公積是股東投入的資本，法規把它的用途限制得比盈餘嚴格，主要用來彌補虧損。",
+        "en": "That is right. Capital surplus is contributed capital, and the law restricts its use more tightly than earnings: it is mainly for offsetting losses."
+      }
+    },
+    {
+      "id": "o_y3z4",
+      "text": {
+        "zh-TW": "和未分配盈餘一樣沒有特別限制，董事會想配現金股利就可以配",
+        "en": "Like unappropriated retained earnings, it has no special limits: the board can pay cash dividends from it whenever it likes"
+      },
+      "short": {
+        "zh-TW": "像盈餘一樣想配就配",
+        "en": "Paying dividends from it at will"
+      },
+      "feedback": {
+        "zh-TW": "你知道公司法允許在某些情況下用資本公積發放現金，這點是對的。但它有來源與條件的限制：只限股票發行溢價與受領贈與這兩種來源，公司要沒有虧損，還要經股東會特別決議（公開發行公司可以在章程授權董事會決議發放現金，再報告股東會），不像盈餘那樣自由。",
+        "en": "You are right that the Company Act does allow cash distributions from capital surplus in some cases. But source and condition restrictions apply: only the share issue premium and gifts received qualify, the company must have no losses, and a special resolution of the shareholders’ meeting is needed (a public company may authorise its board in the articles to resolve on cash distributions and report to the shareholders’ meeting), unlike the freedom with earnings."
+      },
+      "misconceptionId": "mc_dvd3"
+    },
+    {
+      "id": "o_b5c6",
+      "text": {
+        "zh-TW": "資本公積只能拿來買回公司自己的庫藏股，沒有其他用途",
+        "en": "Capital surplus can only be used to buy back the company’s own treasury shares, with no other use"
+      },
+      "short": {
+        "zh-TW": "只能買回庫藏股",
+        "en": "Only buying back treasury shares"
+      },
+      "feedback": {
+        "zh-TW": "買回庫藏股是另一件事：它用的是公司的現金，會計上以減項列在股東權益，不是公司法規定的資本公積用途。買回時，資本公積只用來計算買回總金額的上限，更談不上「只能」拿來買回。",
+        "en": "Buying back treasury shares is a different matter: it uses the company’s cash and is shown as a deduction within equity, and it is not a use of capital surplus under the Company Act. In a buy-back, capital surplus only enters into the ceiling on the total amount; it is not spent on the buy-back, let alone usable only for buy-backs."
+      }
+    }
+  ],
+  "correctOptionId": "o_w1x2",
+  "explanation": {
+    "zh-TW": "{{option:o_w1x2}}是現行規定的重點。公司法第 239 條規定資本公積除了填補虧損之外不得使用，而且要先用盈餘公積填補，仍不足時才能動用資本公積；第 241 條是例外：公司沒有虧損時，可以把特定來源的資本公積按持股比例發給新股或現金。{{option:o_y3z4}}把有條件的用途說成沒有限制；{{option:o_b5c6}}說的不是公司法允許的資本公積用途，買回庫藏股時，資本公積只用來計算買回總金額的上限（公司法第 167-1 條、證券交易法第 28-2 條）。課程提到的三種用途在現行規定下都還可行，但撥充資本與發放現金都有條件；依第 241 條發給現金，發出去的是資本，不是盈餘分派（現行規定，查證於 {{raw:2026-10-24}}）。",
+    "en": "{{option:o_w1x2}} is the gist of the current rules. Article 239 of the Company Act says capital surplus may not be used except to offset losses, and the surplus reserves must be used first, with capital surplus drawn on only if they fall short; Article 241 is the exception: a company with no losses may distribute capital surplus from specified sources as new shares or cash in proportion to holdings. {{option:o_y3z4}} turns a conditional use into an unrestricted one; {{option:o_b5c6}} is not a use the Company Act allows for capital surplus, and in a treasury share buy-back it only enters into the ceiling on the total amount (Company Act Article 167-1, Securities and Exchange Act Article 28-2). The three uses mentioned in the course still hold under current rules, but capitalisation and cash distributions are conditional; a cash distribution under Article 241 pays out capital, not earnings (current rules, checked on {{raw:2026-10-24}})."
+  }
+}

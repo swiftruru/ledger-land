@@ -1,0 +1,882 @@
+/* 作答組：題型元件（選項狀態、是非、選報表、迷你報表、分類、交易影響、數字輸入、回饋面板、名詞 chip）。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* ---- M2 題型元件（07 第 9 節）。只用 tokens，不寫死色碼 ---- */
+/* 選項：原生輸入視覺隱藏，記號用內嵌 SVG 畫（圓形是單選、方形是複選），焦點框畫在整張卡片上 */
+.ll-option {
+  position: relative;
+}
+/* 原生輸入透明地蓋住整張卡片：點選、原生鍵盤行為與 VoiceOver 都作用在原生控制項上；記號另外用 SVG 畫 */
+.ll-option__input,
+.ll-seg__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+.ll-option__input:disabled,
+.ll-seg__input:disabled {
+  cursor: default;
+}
+.ll-option:has(.ll-option__input:focus-visible) {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-option__mark {
+  flex: none;
+  display: inline-flex;
+  margin-top: 1px;
+  color: var(--ll-text-3);
+}
+.ll-option.is-chosen .ll-option__mark {
+  color: var(--ll-accent-ink);
+}
+.ll-option__body {
+  display: block;
+  min-width: 0;
+  flex: 1;
+}
+.ll-option__text {
+  display: block;
+}
+.ll-option:has(.ll-option__input:disabled) {
+  cursor: default;
+}
+/* 作答後的狀態：寫在選取樣式之後，權重要蓋過 :has(input:checked)（07 第 9.1 節 M0a 補充） */
+.ll-option.is-correct-selected,
+.ll-option.is-correct-selected:has(input:checked),
+.ll-option.is-also-reasonable,
+.ll-option.is-also-reasonable:has(input:checked) {
+  background: var(--ll-success-tint);
+  border-color: var(--ll-success-ink);
+  box-shadow: none;
+}
+.ll-option.is-correct-not-selected,
+.ll-option.is-correct-not-selected:has(input:checked) {
+  background: var(--ll-surface);
+  border: 1px dashed var(--ll-success-ink);
+  box-shadow: none;
+}
+.ll-option.is-wrong-selected,
+.ll-option.is-wrong-selected:has(input:checked) {
+  background: var(--ll-danger-tint);
+  border-color: var(--ll-danger-ink);
+  box-shadow: none;
+}
+.ll-option.is-wrong-not-selected,
+.ll-option.is-wrong-not-selected:has(input:checked) {
+  background: var(--ll-surface);
+  box-shadow: none;
+}
+.ll-option.is-correct-selected .ll-option__mark,
+.ll-option.is-also-reasonable .ll-option__mark,
+.ll-option.is-correct-not-selected .ll-option__mark,
+.ll-option.is-correct-selected .ll-option__status,
+.ll-option.is-also-reasonable .ll-option__status,
+.ll-option.is-correct-not-selected .ll-option__status {
+  color: var(--ll-success-ink);
+}
+.ll-option.is-wrong-selected .ll-option__mark,
+.ll-option.is-wrong-selected .ll-option__status {
+  color: var(--ll-danger-ink);
+}
+.ll-option.is-wrong-not-selected .ll-option__status {
+  color: var(--ll-text-2);
+}
+/* 多正解題的提示在 legend：小字、text-2、前面有燈泡（aria-hidden） */
+.ll-choice__hint {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-weight: var(--ll-type-body-sm-weight);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  color: var(--ll-text-2);
+}
+.ll-choice__prompt {
+  margin: 0 0 var(--ll-space-2);
+  font-weight: 600;
+}
+/* 選項群組與按鈕列之間 20px（07 第 9.1 節）：按鈕列 .ll-question__actions 自己有 margin-top，版面在 15-quiz-session.css */
+/* 題目外框 */
+/* 題號列一定在 .ll-question__head 裡（QuestionCard），間距與外距在 15-quiz-session.css 的 .ll-question__head .ll-question__progress
+   （原本這裡的 gap 8px 與下外距 4px 一直被它蓋掉，M3 驗收第 7 輪後刪除，畫面不變） */
+.ll-question__progress {
+  display: flex;
+  align-items: center;
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+/* 題目標題自己的閱讀寬度上限約 28em（M3 驗收第 5 輪：1024 以上作答頁真的是 720 寬，標題不拉成一整行） */
+.ll-question__prompt {
+  max-width: 28em;
+  margin: 0 0 var(--ll-space-3);
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: var(--ll-type-title-3-weight);
+}
+/* 是非題：兩個大按鈕並排（小手機維持兩欄，因為只有兩個字） */
+.ll-tf__statement {
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-tf__choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ll-space-2);
+}
+.ll-tf__option {
+  justify-content: center;
+  min-height: 64px;
+  text-align: center;
+}
+.ll-tf__label {
+  font-size: var(--ll-type-title-3-size);
+  font-weight: 700;
+}
+/* 選報表：三張卡片 */
+.ll-pick-statement {
+  display: grid;
+  gap: var(--ll-space-2);
+}
+.ll-statement-card__name {
+  display: block;
+  font-weight: 700;
+}
+.ll-statement-card__desc {
+  display: block;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+/* 迷你報表：真正的 table，每列的按鈕至少 44px 高 */
+.ll-mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--ll-surface);
+}
+.ll-mini-table caption {
+  text-align: left;
+  font-weight: 700;
+  padding: 0 0 var(--ll-space-2);
+}
+.ll-mini-table th,
+.ll-mini-table td {
+  padding: 0;
+  border-top: 1px solid var(--ll-border);
+  text-align: left;
+  vertical-align: middle;
+  font-weight: inherit;
+}
+.ll-mini-table thead th {
+  padding: 6px 10px;
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+  border-top: 0;
+}
+.ll-mini-table .ll-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ll-mini-table__value {
+  padding: 0 10px !important;
+}
+.ll-mini-table__heading th {
+  padding: 8px 10px;
+  font-weight: 700;
+  background: var(--ll-surface-2);
+}
+.ll-mini-table__btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: var(--ll-target-min);
+  padding: 8px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--ll-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ll-mini-table__btn[aria-pressed='true'] {
+  background: var(--ll-accent-tint);
+  box-shadow: inset 3px 0 0 var(--ll-accent);
+  font-weight: 700;
+}
+.ll-mini-table__btn:disabled {
+  cursor: default;
+}
+.ll-mini-table__mark {
+  display: inline-flex;
+  width: 16px;
+}
+.ll-mini-table__row.is-total th,
+.ll-mini-table__row.is-total td {
+  font-weight: 700;
+  border-top: 2px solid var(--ll-border-strong);
+}
+.ll-mini-table__row.is-correct-selected .ll-mini-table__btn,
+.ll-mini-table__row.is-correct-not-selected .ll-mini-table__btn {
+  background: var(--ll-success-tint);
+  color: var(--ll-success-ink);
+}
+.ll-mini-table__row.is-wrong-selected .ll-mini-table__btn {
+  background: var(--ll-danger-tint);
+  color: var(--ll-danger-ink);
+}
+.ll-mini-table__fb {
+  display: block;
+  padding: 0 10px 8px;
+}
+.ll-mini-table__row.is-correct-selected .ll-option__status,
+.ll-mini-table__row.is-correct-not-selected .ll-option__status {
+  color: var(--ll-success-ink);
+}
+.ll-mini-table__row.is-wrong-selected .ll-option__status {
+  color: var(--ll-danger-ink);
+}
+.ll-indent-1 .ll-mini-table__btn {
+  padding-left: 22px;
+}
+.ll-indent-2 .ll-mini-table__btn {
+  padding-left: 34px;
+}
+/* 分類題 */
+.ll-classify {
+  display: grid;
+  gap: var(--ll-space-3);
+}
+.ll-classify__title {
+  margin: 0 0 var(--ll-space-2);
+  font-size: var(--ll-type-callout-size);
+  font-weight: 700;
+}
+.ll-classify__pool {
+  padding: var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+}
+.ll-classify__empty {
+  margin: 0;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+.ll-classify__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+}
+.ll-classify__card {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--ll-target-min);
+  padding: 8px 14px;
+  border: 1px solid var(--ll-border-strong);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  color: var(--ll-text);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: var(--ll-shadow-1);
+}
+.ll-classify__card.is-held {
+  background: var(--ll-accent-tint);
+  border-color: var(--ll-accent);
+  box-shadow: inset 0 0 0 1px var(--ll-accent);
+  font-weight: 700;
+}
+.ll-classify__held {
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+  font-weight: 400;
+}
+.ll-classify__card.is-correct {
+  background: var(--ll-success-tint);
+  border-color: var(--ll-success-ink);
+}
+.ll-classify__card.is-wrong {
+  background: var(--ll-danger-tint);
+  border-color: var(--ll-danger-ink);
+}
+.ll-classify__mark {
+  display: inline-flex;
+}
+.ll-classify__card.is-correct .ll-classify__mark {
+  color: var(--ll-success-ink);
+}
+.ll-classify__card.is-wrong .ll-classify__mark {
+  color: var(--ll-danger-ink);
+}
+.ll-classify__card:disabled {
+  cursor: default;
+}
+.ll-classify__zones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--ll-space-2);
+}
+.ll-classify__zone {
+  min-height: 120px;
+  padding: var(--ll-space-3);
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  transition: border-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-classify__zone.is-droppable {
+  border: 2px dashed var(--ll-accent);
+}
+.ll-classify__zone.is-target {
+  background: var(--ll-accent-tint);
+  box-shadow: inset 0 0 0 2px var(--ll-accent);
+}
+.ll-classify__drop {
+  display: block;
+  width: 100%;
+  min-height: var(--ll-target-min);
+  margin-bottom: var(--ll-space-2);
+  padding: 8px 10px;
+  border: 1px dashed var(--ll-border-strong);
+  border-radius: var(--ll-radius-sm);
+  background: transparent;
+  color: var(--ll-text-2);
+  font: inherit;
+  font-size: var(--ll-type-footnote-size);
+  cursor: pointer;
+}
+.ll-classify__drop:not(:disabled) {
+  color: var(--ll-text);
+  border-color: var(--ll-accent);
+  font-weight: 700;
+}
+.ll-classify__drop:disabled {
+  cursor: default;
+}
+.ll-classify__fb {
+  display: block;
+  margin-top: 4px;
+}
+.ll-classify__fb.is-correct .ll-option__status {
+  color: var(--ll-success-ink);
+}
+.ll-classify__fb.is-wrong .ll-option__status {
+  color: var(--ll-danger-ink);
+}
+/* 專用元件的滑過與按下（站規 1.19）：選行的按鈕、分類卡、落點。選取與作答後的狀態寫在上面，這裡只補沒有選取時的回饋 */
+@media (hover: hover) and (pointer: fine) {
+  .ll-mini-table__btn:not(:disabled):not([aria-pressed='true']):hover,
+  .ll-classify__drop:not(:disabled):hover {
+    background: var(--ll-quiet-hover);
+  }
+  .ll-classify__card:not(:disabled):not(.is-held):hover {
+    border-color: var(--ll-accent);
+  }
+}
+.ll-mini-table__btn:not(:disabled):not([aria-pressed='true']):active,
+.ll-classify__card:not(:disabled):not(.is-held):active,
+.ll-classify__drop:not(:disabled):active {
+  background: var(--ll-chrome-pressed);
+}
+/* 交易影響題：每個目標一列，方向是分段控制外觀的原生 radio */
+.ll-impact {
+  display: grid;
+  gap: var(--ll-space-3);
+}
+.ll-impact__row {
+  /* 依這一列自己的寬度決定方向按鈕的排法（quiz-19：英文三段在 320 到 375px 放不下） */
+  container-type: inline-size;
+  padding: var(--ll-space-3);
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+}
+.ll-impact__label {
+  display: block;
+  margin-bottom: var(--ll-space-2);
+  font-weight: 600;
+}
+/* 三個方向固定三等分（蓋過 Segmented 共用的 inline-flex 換列）：不會出現兩個一列、一個一列的不對齊 */
+.ll-impact__seg {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+}
+.ll-seg__item {
+  position: relative;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: var(--ll-target-min);
+  padding: 0 10px;
+  border-radius: var(--ll-radius-full);
+  color: var(--ll-text);
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+/* 窄的一列（手機、英文）：符號在上、文字在下，字級 body-sm，文字可換行；格子仍是三等分、至少 44px 高 */
+@container (max-width: 420px) {
+  .ll-impact__seg {
+    border-radius: var(--ll-radius-lg);
+  }
+  .ll-impact__seg .ll-seg__item {
+    flex-direction: column;
+    gap: 0;
+    min-height: 56px;
+    padding: 4px 6px;
+    border-radius: var(--ll-radius-md);
+    font-size: var(--ll-type-body-sm-size);
+    line-height: 1.2;
+  }
+}
+/* 最窄（320px 手機的英文）：字再小一級，英文單字（Increase、Decrease）不會被切成兩半；只在空白處換行 */
+@container (max-width: 300px) {
+  .ll-impact__seg .ll-seg__item {
+    padding-inline: 2px;
+    font-size: var(--ll-type-footnote-size);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-seg__item:not(.is-chosen):has(.ll-seg__input:not(:disabled)):hover {
+    background: var(--ll-quiet-hover);
+  }
+}
+.ll-seg__item:not(.is-chosen):has(.ll-seg__input:not(:disabled)):active {
+  background: var(--ll-chrome-pressed);
+}
+.ll-seg__item.is-chosen {
+  background: var(--ll-accent-tint);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1.5px var(--ll-accent);
+}
+.ll-seg__item:has(.ll-seg__input:focus-visible) {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-seg__item:has(input:disabled) {
+  cursor: default;
+}
+.ll-impact__symbol {
+  color: var(--ll-accent-ink);
+}
+.ll-impact__row.is-correct {
+  border-color: var(--ll-success-ink);
+}
+.ll-impact__row.is-wrong {
+  border-color: var(--ll-danger-ink);
+}
+.ll-impact__result {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin: var(--ll-space-2) 0 0;
+}
+.ll-impact__result.is-correct {
+  color: var(--ll-success-ink);
+}
+.ll-impact__result.is-wrong {
+  color: var(--ll-danger-ink);
+}
+.ll-impact__icon {
+  display: inline-flex;
+  margin-top: 2px;
+}
+/* 數字輸入：至少 16px、右對齊的數字字體 */
+.ll-numinput__label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+/* 窄螢幕（320px）放不下數字框、單位、± 與 N/A 時，按鈕換到下一行，不讓整頁變寬（07 第 8.4 節） */
+.ll-numinput__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+}
+.ll-numinput__input {
+  flex: 1 1 7em;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--ll-target-min);
+  padding: 8px 12px;
+  border: 1px solid var(--ll-border-strong);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  color: var(--ll-text);
+  font-family: var(--ll-font-num);
+  font-size: max(16px, var(--ll-type-input-size));
+  text-align: right;
+}
+.ll-numinput__input:disabled {
+  background: var(--ll-surface-2);
+  color: var(--ll-text-3);
+}
+.ll-numinput__input[aria-invalid='true'] {
+  border-color: var(--ll-danger-ink);
+}
+.ll-numinput__suffix {
+  color: var(--ll-text-2);
+}
+.ll-numinput__help {
+  margin: 6px 0 0;
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+.ll-numinput__help.is-error {
+  color: var(--ll-danger-ink);
+}
+/* 回饋面板（站規 2.4.1）：上方標題區帶結果色（答對 success、答錯 danger、取捨題 info），下方內容在 surface 上、文字一律 --ll-text，
+   整塊有一圈同色系的細框。「看其他選項為什麼不對」是 Disclosure plain；名詞 chip 另有「相關名詞」小標；工具列放錯題本狀態、收藏、看動畫 */
+.ll-feedback {
+  --_fb-tint: var(--ll-success-tint);
+  --_fb-ink: var(--ll-success-ink);
+  margin-top: var(--ll-space-5);
+  /* 剛按下確認時面板捲到畫面上緣（FeedbackPanel 的 scrollOnMount），上方留一點空 */
+  scroll-margin-top: var(--ll-space-4);
+  border: 1.5px solid color-mix(in oklab, var(--_fb-ink) 40%, transparent);
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  overflow: clip;
+}
+.ll-feedback--no {
+  --_fb-tint: var(--ll-danger-tint);
+  --_fb-ink: var(--ll-danger-ink);
+}
+.ll-feedback--neutral {
+  --_fb-tint: var(--ll-info-tint);
+  --_fb-ink: var(--ll-info-ink);
+}
+.ll-feedback__head {
+  padding: var(--ll-space-3) var(--ll-space-4);
+  background: var(--_fb-tint);
+  color: var(--_fb-ink);
+}
+/* 深色：標頭帶比答對、答錯的選項底（同一個 tint）再多帶 8% 的結果色（第 2 輪驗收），回饋和選項分得出層次。
+   標題在標頭帶上的對比：答對 6.3:1 以上、取捨題 7:1 以上、答錯 4.7:1 以上（莓果與紅酒最低；標題是 20px 粗體，仍高於一般文字的 4.5:1） */
+html[data-theme='dark'] .ll-feedback__head {
+  background: color-mix(in oklab, var(--_fb-ink) 8%, var(--_fb-tint));
+}
+.ll-feedback__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+}
+.ll-feedback__title:focus {
+  outline: none;
+}
+.ll-feedback__icon {
+  display: inline-flex;
+  flex: none;
+}
+.ll-feedback__icon svg {
+  width: 24px;
+  height: 24px;
+}
+.ll-feedback__summary {
+  margin: var(--ll-space-1) 0 0;
+  color: var(--ll-text);
+}
+.ll-feedback__main {
+  padding: var(--ll-space-1) var(--ll-space-4) var(--ll-space-4);
+  color: var(--ll-text);
+}
+.ll-feedback__section {
+  margin-top: var(--ll-space-4);
+}
+.ll-feedback__h {
+  margin: 0 0 var(--ll-space-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 700;
+  color: var(--ll-text-2);
+}
+.ll-feedback__explanation > :first-child {
+  margin-top: 0;
+}
+.ll-feedback__explanation > :last-child {
+  margin-bottom: 0;
+}
+.ll-feedback__options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--ll-space-2);
+}
+/* 選項說明框：文字欄一律從 20px 開始（你選的那一個左邊有色條，沒選的沒有，兩種框的字仍對齊同一欄） */
+.ll-feedback__option {
+  position: relative;
+  padding-block: 10px;
+  padding-inline: 20px var(--ll-space-4);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+}
+/* 你選的那一個：框內一條 4px 的結果色直條（上下各留 12px、兩端圓頭）。不用 border-left 或 inset 陰影：
+   配上圓角，上下兩端會變成兩頭尖的月牙形，強制色彩下是一條彎鉤（M3 驗收第 4 輪，同站規 2.5 錯題色條的做法） */
+.ll-feedback__option.is-chosen::before {
+  content: '';
+  position: absolute;
+  inset-block: 12px;
+  inset-inline-start: 8px;
+  inline-size: 4px;
+  border-radius: 2px;
+  background: var(--_fb-ink);
+  pointer-events: none;
+}
+/* 強制色彩：底色會消失，說明框改用 1px 框線（看得出是一塊一塊的），你選的那一個的直條明寫系統色 */
+@media (forced-colors: active) {
+  .ll-feedback__option {
+    border: 1px solid CanvasText;
+  }
+  .ll-feedback__option.is-chosen::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
+.ll-feedback__option-text {
+  display: block;
+  font-weight: 600;
+}
+.ll-feedback__option-note {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+/* 「看其他選項為什麼不對」（Disclosure plain）的左右對齊在 15-quiz-session.css（要排在 14-core-nav.css 的 Disclosure 後面）。
+   這裡原本的 .ll-feedback__others 上外距 8px 與展開清單的上外距 4px 一直被 14 的 .ll-disclosure、.ll-disclosure__body > :first-child 蓋掉
+   （同權重、14 在後），M3 驗收第 7 輪後刪除，畫面不變 */
+/* 「相關名詞」小標與「新收進 N」：同一行，Badge 在小標右邊 */
+.ll-feedback__terms-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-1) var(--ll-space-2);
+  margin-bottom: var(--ll-space-2);
+}
+.ll-feedback__terms-head .ll-feedback__h {
+  margin: 0;
+}
+.ll-feedback__terms-status:empty {
+  display: none;
+}
+/* 「新收進 N」是 Badge kind="star"（07-core-components.css；收集類的顏色，和 Toast 的 collect 色條、結果頁的新收名詞同一組），前面一枚金色勾章；
+   剛收進的名詞 chip 整顆鍍金、最前面也是同一枚勾章（.ll-chip--new 與 .ll-stamp--inline 在 15-quiz-session.css 檔尾） */
+.ll-feedback__terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+}
+/* 工具列：錯題本狀態、我是猜的、收藏、看動畫（都在主按鈕「下一題」之上）。按鈕都是 secondary sm（外框加立體底邊，一看就是按鈕），
+   左緣和上面的名詞 chip 對齊；狀態是平的 Badge（沒有外框與底邊），兩者不會混淆（M3 驗收第 4 輪） */
+.ll-feedback__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin-top: var(--ll-space-4);
+}
+/* 錯題本的狀態區（role="status"）：答對時是空的，從版面拿掉但留在無障礙樹裡（不用 display: none，插進 Badge 時才會播報） */
+.ll-feedback__mistake {
+  display: inline-flex;
+}
+.ll-feedback__mistake:empty {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+/* 「已放進錯題本」：28px 高的 danger 膠囊、前面 16px 實心書籤；比 44px 的按鈕小一號，看得出是狀態不是按鈕。
+   字級、字重與內距照 Badge 本身（07-core-components.css 的 .ll-badge：12px、600、左右 8px；它排在後面，原本這裡寫的 13px 粗體與 4px 12px 4px 10px
+   一直被它蓋掉，M3 驗收第 7 輪後刪除，畫面不變），這裡只加高度、行高與圖示間距 */
+.ll-feedback__mistake-badge {
+  gap: 6px;
+  min-block-size: 28px;
+  line-height: var(--ll-type-footnote-line);
+}
+.ll-feedback__mistake-badge svg {
+  flex: none;
+}
+/* 工具列與「下一題」的外層 .ll-feedback__actions：手機不產生方框（display: contents），工具列一列、「下一題」照樣是自己 sticky 的一列；
+   600px 以上兩者同一列（左邊「我是猜的」或「已放進錯題本」、右邊「下一題」），整列一起 sticky（M3 驗收第 2 輪：分兩行時中間空約 40px，動作區顯得散） */
+.ll-feedback__actions {
+  display: contents;
+}
+/* 「下一題」的動作列（站規 2.4.1、和結果頁同一套）：回饋很長時 sticky 在 Tab bar 上方，不必捲到最後才按得到；
+   底色從透明漸到面板底色，捲過去的內容不會和按鈕疊在一起。電腦版（沒有底部 Tab bar）貼齊視窗底部 */
+.ll-feedback__main:has(> .ll-feedback__actions .ll-feedback__next) {
+  padding-bottom: 0;
+}
+.ll-feedback__next {
+  position: sticky;
+  bottom: calc(var(--ll-tabbar-h) + max(8px, calc(env(safe-area-inset-bottom, 0px) - 13px)));
+  z-index: var(--ll-z-sticky);
+  margin: var(--ll-space-2) calc(-1 * var(--ll-space-4)) 0;
+  padding: var(--ll-space-4) var(--ll-space-4) var(--ll-space-3);
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--ll-surface) 0%, transparent), var(--ll-surface) var(--ll-space-4));
+}
+/* 工具列到「下一題」是一個區段間距 24px（上外距 8 加漸層的上內距 16）。15-quiz-session.css 的 .ll-question__actions（題目卡的按鈕列）
+   排在後面、會把上外距蓋成 20px（第 4 輪量到約 56px），所以這裡用多一層的選擇器寫回來 */
+.ll-feedback__actions > .ll-feedback__next {
+  margin-top: var(--ll-space-2);
+}
+/* 貼在 Tab bar 上方時，往下再鋪一段面板底色：捲過去的內容不會從按鈕和 Tab bar 之間的縫露出來。
+   停在原位（回饋的最後）時這一段在面板外面，被 .ll-feedback 的 overflow: clip 裁掉 */
+.ll-feedback__next::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: var(--ll-space-8);
+  background: var(--ll-surface);
+  pointer-events: none;
+}
+/* 1024 以上「下一題」貼齊視窗底部的寫法在下面 .ll-feedback__actions 的 1024 規則：600 以上「下一題」已經在動作列裡 position: static、內距 0，
+   原本這裡給 .ll-feedback__next 的 1024 規則（bottom 0、下內距 20px）不會生效，M3 驗收第 7 輪後刪除 */
+@media (min-width: 600px) {
+  .ll-feedback__actions {
+    position: sticky;
+    bottom: calc(var(--ll-tabbar-h) + max(8px, calc(env(safe-area-inset-bottom, 0px) - 13px)));
+    z-index: var(--ll-z-sticky);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ll-space-3);
+    margin: var(--ll-space-2) calc(-1 * var(--ll-space-4)) 0;
+    padding: var(--ll-space-4) var(--ll-space-4) var(--ll-space-3);
+    background: linear-gradient(to bottom, color-mix(in oklab, var(--ll-surface) 0%, transparent), var(--ll-surface) var(--ll-space-4));
+  }
+  /* 往下再鋪一段面板底色（同 .ll-feedback__next::after）：停在原位時被面板的 overflow: clip 裁掉 */
+  .ll-feedback__actions::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: var(--ll-space-8);
+    background: var(--ll-surface);
+    pointer-events: none;
+  }
+  .ll-feedback__actions > .ll-feedback__tools {
+    flex: 1 1 auto;
+    margin-top: 0;
+  }
+  /* 「下一題」在這一列裡不再自己 sticky，只靠右 */
+  .ll-feedback__actions > .ll-feedback__next {
+    position: static;
+    flex: none;
+    margin: 0 0 0 auto;
+    padding: 0;
+    background: none;
+  }
+  .ll-feedback__actions > .ll-feedback__next::after {
+    content: none;
+  }
+}
+@media (min-width: 1024px) {
+  .ll-feedback__actions {
+    bottom: 0;
+    padding-bottom: var(--ll-space-5);
+  }
+}
+
+/* 名詞 chip（站規 1.19）：獨立的 chip（作答後的名詞列、名詞卡的相關名詞）至少 44×44（07 第 8.4 節），有滑過、按下、焦點三種狀態；
+   嵌在句子裡的行內 chip（ll-chip--inline）依 WCAG 2.5.8 的行內例外維持行高，沒有底線，用 accent-ink 的虛線下框表示可點 */
+/* 名詞很長或文字放大、chip 換成兩三行時（M3 驗收第 7 輪，英文 320 的 Machinery and equipment）：字靠圖示排（button 預設置中，圖示和字之間會空一大截），
+   圓角用 1.6em（一行時 44px 高照樣是膠囊，多行時是圓角矩形，不會變成橢圓） */
+.ll-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--ll-target-min);
+  min-width: var(--ll-target-min);
+  padding: 4px 14px 4px 12px;
+  border: 1px solid var(--ll-border-strong);
+  border-radius: 1.6em;
+  background: var(--ll-surface);
+  text-align: start;
+  color: var(--ll-text);
+  font: inherit;
+  font-size: var(--ll-type-body-sm-size);
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+/* 圖示和滑過的外框跟著次要按鈕（M3 驗收第 6 輪）：莓果、紅酒的外框是風味的玫瑰色，強調色的紫色圖示是第三種色相；
+   淺色主題的 btn-secondary-icon 等於強調墨色、selected 等於強調色，紙質畫面不變 */
+/* 圖示跟著字級放大（M3 驗收第 7 輪：文字放大 200% 時 16px 的圖示只剩字的一半大；一般字級仍是 16px） */
+.ll-chip svg {
+  flex: none;
+  width: max(16px, 1em);
+  height: max(16px, 1em);
+  color: var(--ll-btn-secondary-icon);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-chip:hover {
+    border-color: var(--ll-selected);
+    background: var(--ll-quiet-hover);
+  }
+}
+/* 按下用列的按下色（第 2 輪驗收）：紙質的 accent-tint 等於滑過的底（#F4F0E7），按下去畫面不變 */
+.ll-chip:active {
+  background: var(--ll-row-pressed);
+}
+.ll-chip:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-chip--inline {
+  /* 行內例外不必 44px，但至少 24px 高（和行高一樣或更矮，不把行距撐開） */
+  display: inline-block;
+  box-sizing: border-box;
+  min-height: 24px;
+  min-width: 0;
+  padding: 0 2px;
+  border: 0;
+  border-block-end: 1.5px dashed var(--ll-accent-ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ll-accent-ink);
+  font: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-chip--inline:hover {
+    border-color: var(--ll-accent-ink);
+    background: var(--ll-accent-tint);
+  }
+}
+.ll-chip--inline:active {
+  background: var(--ll-row-pressed);
+}
+/* 強制色彩：svg 預設是 forced-color-adjust: preserve-parent-color，自己設了 color 的圖示不會被換成系統色（會留著 accent-ink 的棕色），所以明寫系統色 */
+@media (forced-colors: active) {
+  .ll-chip--inline {
+    border-block-end-color: LinkText;
+    color: LinkText;
+  }
+  .ll-chip svg {
+    color: ButtonText;
+  }
+  .ll-feedback__mistake-badge {
+    border: 1px solid CanvasText;
+  }
+}

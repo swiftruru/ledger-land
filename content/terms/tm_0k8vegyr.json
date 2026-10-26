@@ -2,7 +2,7 @@
   "id": "tm_0k8vegyr",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
   "label": {
     "zh-TW": "權益報酬率（ROE）",
@@ -31,16 +31,35 @@
     "T22"
   ],
   "note": {
-    "zh-TW": "模板標題是「歸屬於母公司業主之權益報酬率」，教材另以 CIAS 代稱（不是通用縮寫）；0-2 簡化為 Profit÷E，介面加「簡化」標記。名稱與計分口徑依 14 的決定處理：顯示通用名稱，計分看題目指定的版本（設計說明見 T22）。",
-    "en": "The template heading is return on equity attributable to owners of the parent, and the course also uses the non-standard abbreviation CIAS; the 0-2 slides simplify it to Profit over E with a simplified marker. The name and scoring basis follow the decision in 14: the common name is shown and scoring uses the version the question specifies (see the design note T22)."
+    "zh-TW": "模板標題多了「歸屬於母公司業主」的限定語，後面才接權益報酬率；教材另以 CIAS 代稱（不是通用縮寫）；課程的簡化版寫成 Profit÷E，介面加「簡化」標記。網站顯示通用名稱；權益報酬率有幾種算法，計分看題目指定的版本。",
+    "en": "The template heading adds the qualifier attributable to owners of the parent in front of return on equity, and the course also uses the non-standard abbreviation CIAS; the simplified course form is written Profit over E with a simplified marker. The site shows the common name; return on equity has several versions, and scoring uses the version the question specifies."
   },
   "definition": {
-    "zh-TW": "股東投入的權益賺到多少獲利，是股東最關心的報酬率。數值越高表示股東的錢用得越有效率；杜邦分析把它拆成純益率、總資產週轉率與權益倍數。",
-    "en": "How much profit the shareholders' equity earns: the return shareholders care about most. Higher means their money works harder; the DuPont analysis splits it into net profit margin, total asset turnover and the equity multiplier."
+    "zh-TW": "股東在公司裡每一元的權益，在一段期間內替他們賺回多少本期淨利。\n\n它是從股東的角度看獲利能力：同樣的淨利，用越少的權益賺到，報酬率越高。",
+    "en": "How much profit for the period the company earns for each unit of equity the owners have in it.\n\nIt measures profitability from the shareholders’ point of view: the same profit earned on less equity gives a higher return."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表最後一列，分母來自資產負債表的股東權益總額。權益為負時比率沒有解釋意義，網站標示「不具解釋意義」。本課故事沒有子公司，所以歸屬母公司的權益和權益總額相同。",
+    "en": "The numerator is the last line of the income statement and the denominator is total equity on the balance sheet. When equity is negative the ratio is not meaningful and the site says so. The course story has no subsidiaries, so equity attributable to the parent equals total equity."
+  },
+  "misconception": {
+    "zh-TW": "以為權益報酬率高一定代表經營得好。多借錢、少用自有資金也能把它推高，所以要搭配負債比率或權益倍數一起看，才知道報酬是來自本業還是來自槓桿。",
+    "en": "Assuming a high return on equity always means strong operations. Borrowing more and using less of the owners’ money also pushes it up, so read it alongside the debt ratio or equity multiplier to see whether the return comes from the business or from leverage."
+  },
+  "formula": {
+    "zh-TW": "權益報酬率 ＝ 本期淨利 ÷ 股東權益總額。課程版用期末權益；年報版用平均權益；杜邦版拆成純益率 × 總資產週轉率 × 權益倍數。課程的簡化版（Profit ÷ E）用的是同一個想法，介面標示「簡化」。",
+    "en": "Return on equity = profit for the period ÷ total equity. The course version uses closing equity; the annual report version uses average equity; the DuPont version breaks it into net profit margin × total asset turnover × equity multiplier. The simplified course form (Profit ÷ E) is the same idea and is marked as simplified in the interface."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "roe@excel"
+  "ratioRef": "roe@excel",
+  "related": [
+    "tm_r0a5t3kq",
+    "tm_2ggtxnaz",
+    "tm_92yzx0fn",
+    "tm_y37ymj9w",
+    "tm_n4e8t2jy"
+  ]
 }

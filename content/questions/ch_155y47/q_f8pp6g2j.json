@@ -1,0 +1,73 @@
+{
+  "id": "q_f8pp6g2j",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "ratio_interpret",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_e2942m",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "forward_trailing"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4"
+  ],
+  "scored": true,
+  "ratioRef": "pe_ratio@slides02",
+  "vars": {
+    "price": 90,
+    "epsTrailing": 3,
+    "epsForward": 6,
+    "peTrailing": 30,
+    "peForward": 15
+  },
+  "prompt": {
+    "zh-TW": "星河軟體的股價是 {{money:vars.price}}。去年實際的每股盈餘是 {{money:vars.epsTrailing}}，公司對今年的預估是 {{money:vars.epsForward}}。佩珊算出兩個本益比：用歷史盈餘是 {{number:vars.peTrailing|unit=times}}，用預估盈餘是 {{number:vars.peForward|unit=times}}。哪一句說法最恰當？",
+    "en": "Starriver Software trades at {{money:vars.price}}. Last year’s actual earnings per share were {{money:vars.epsTrailing}}, and the company forecasts {{money:vars.epsForward}} for this year. Pei-shan gets two P/E ratios: {{number:vars.peTrailing|unit=times}} on trailing earnings and {{number:vars.peForward|unit=times}} on forecast earnings. Which statement is the most appropriate?"
+  },
+  "options": [
+    {
+      "id": "o_w1f6",
+      "text": {
+        "zh-TW": "兩個都算得對，但分母一個是實際盈餘、一個是預估；引用時要標明用哪一個",
+        "en": "Both are right, but one denominator is actual earnings and the other a forecast; whichever is quoted must be labelled"
+      },
+      "feedback": {
+        "zh-TW": "答對了。歷史本益比與預估本益比各有用途，混著比較會得出錯誤結論；標示清楚是基本功。",
+        "en": "That is right. Trailing and forward P/E ratios each have their uses; mixing them leads to wrong conclusions, and labelling them is basic discipline."
+      }
+    },
+    {
+      "id": "o_x2g7",
+      "text": {
+        "zh-TW": "預估本益比比較低，所以這家公司其實很便宜，兩個數字可以互換使用",
+        "en": "The forward P/E ratio is lower, so the company is actually cheap, and the two figures are interchangeable"
+      },
+      "feedback": {
+        "zh-TW": "你發現預估盈餘會讓倍數變低，觀察正確。但預估可能落空，倍數低是建立在「今年真的賺到兩倍」的假設上；兩個數字不能互換。",
+        "en": "You noticed that forecast earnings lower the multiple, a correct observation. But forecasts can miss; the lower multiple rests on the assumption that earnings really double this year. The two figures are not interchangeable."
+      },
+      "misconceptionId": "mc_tf6d"
+    },
+    {
+      "id": "o_y3h8",
+      "text": {
+        "zh-TW": "只有用歷史盈餘算的本益比才是對的，預估數字根本不能拿來算本益比",
+        "en": "Only the P/E ratio on trailing earnings is valid; forecast figures should never be used to calculate it"
+      },
+      "feedback": {
+        "zh-TW": "你對預估數字保持懷疑，這個態度很好。不過實務上預估本益比很常用，問題不在能不能用，而在要標示清楚並知道它的不確定性。",
+        "en": "Being sceptical of forecasts is a good instinct. In practice, though, forward P/E ratios are widely used; the issue is not whether they may be used but that they must be labelled and their uncertainty understood."
+      }
+    }
+  ],
+  "correctOptionId": "o_w1f6",
+  "explanation": {
+    "zh-TW": "{{option:o_w1f6}}點出關鍵：分母是歷史還是預估，倍數的意義完全不同。{{option:o_x2g7}}把兩者互換，{{option:o_y3h8}}則走到另一個極端。",
+    "en": "{{option:o_w1f6}} makes the key point: whether the denominator is trailing or forecast changes what the multiple means. {{option:o_x2g7}} treats them as interchangeable, and {{option:o_y3h8}} goes to the opposite extreme."
+  }
+}

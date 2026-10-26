@@ -1,0 +1,82 @@
+{
+  "id": "q_qmz3tqmk",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_2a6vbq",
+  "difficulty": 3,
+  "tags": [
+    "department_ratio",
+    "rd_intensity",
+    "comparison"
+  ],
+  "termRefs": [
+    "tm_vpzcjk6n",
+    "tm_v3n8q2ye",
+    "tm_kyjfrraq",
+    "tm_avgpa43e"
+  ],
+  "scored": true,
+  "type": "ratio_interpret",
+  "ratioRef": "rd_intensity@slides02",
+  "vars": {
+    "revenue": 5000000,
+    "rdExpense": 900000,
+    "rdHardware": 0.02
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "rd_intensity@slides02"
+    ],
+    "measures": {
+      "is_revenue": "vars.revenue",
+      "is_research_development_expense": "vars.rdExpense"
+    }
+  },
+  "prompt": {
+    "zh-TW": "上方表格是雲梯軟體的 RD intensity：今年營收 {{money:vars.revenue}}，研究發展費用 {{money:vars.rdExpense}}。另一家海鷗五金行的 RD intensity 只有 {{percent:vars.rdHardware}}。下列哪一個解讀最合理？",
+    "en": "The table above shows Cloud Ladder Software’s R&D intensity: revenue of {{money:vars.revenue}} this year and research and development expense of {{money:vars.rdExpense}}. Seagull Hardware’s R&D intensity is only {{percent:vars.rdHardware}}. Which reading is the most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_z12f",
+      "text": {
+        "zh-TW": "雲梯投入研發的比例高，符合軟體業的特性，不能和五金行直接比",
+        "en": "Cloud Ladder puts a high share of revenue into research, as a software firm would, and cannot be ranked directly against a hardware shop"
+      },
+      "feedback": {
+        "zh-TW": "答對了。RD intensity 說的是研發在生意裡的分量，不同產業的合理區間差很多，比較要找同業。",
+        "en": "Correct. R&D intensity shows how much research weighs in the business; sensible ranges differ widely by industry, so comparisons belong within the same sector."
+      }
+    },
+    {
+      "id": "o_7yq0",
+      "text": {
+        "zh-TW": "海鷗經營得比較好，因為研發花得少，省下的都是利潤",
+        "en": "Seagull is better run, because it spends less on research and the savings are all profit"
+      },
+      "feedback": {
+        "zh-TW": "研發是為了未來的營收，不只是今天的費用。五金行本來就不需要太多研發，軟體公司砍研發反而可能砍掉明年的產品；RD intensity 沒有「越低越好」這回事。",
+        "en": "Research is spent for future revenue, not just today’s expense. A hardware shop naturally needs little research, while a software firm that cuts research may be cutting next year’s products; there is no ‘lower is better’ rule for R&D intensity."
+      },
+      "misconceptionId": "mc_rqdt"
+    },
+    {
+      "id": "o_01e6",
+      "text": {
+        "zh-TW": "雲梯的研發費用金額一定比海鷗多，因為比例比較高",
+        "en": "Cloud Ladder’s research spending must be larger in absolute terms than Seagull’s, because its share is higher"
+      },
+      "feedback": {
+        "zh-TW": "RD intensity 是比例，不是金額。營收很大的五金連鎖，即使比例低，研發的金額也可能比一家小軟體公司多；要比金額得回到損益表。",
+        "en": "R&D intensity is a share, not an amount. A hardware chain with very large revenue could spend more on research in absolute terms than a small software firm despite its low share; for amounts, go back to the income statement."
+      }
+    }
+  ],
+  "correctOptionId": "o_z12f",
+  "explanation": {
+    "zh-TW": "{{option:o_z12f}}。RD intensity ＝ 研究發展費用 ÷ 營收 ＝ {{money:vars.rdExpense}} ÷ {{money:vars.revenue}}，研發費用在銷管費用裡。它回答的是「這家公司的生意有多依賴研發」，答案和產業特性綁在一起，所以高低本身沒有好壞，跨產業比較也沒有意義；要看的是同業之間的差距與自己的趨勢。",
+    "en": "{{option:o_z12f}}. R&D intensity = research and development expense ÷ revenue = {{money:vars.rdExpense}} ÷ {{money:vars.revenue}}, with research costs sitting within distribution costs and administrative expenses. It answers ‘how much does this business depend on research’, and the answer is tied to the industry, so a high or low figure is neither good nor bad in itself and comparing across industries means little; what matters is the gap against peers and the company’s own trend."
+  }
+}

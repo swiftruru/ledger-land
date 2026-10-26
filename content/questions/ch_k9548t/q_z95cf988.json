@@ -1,0 +1,85 @@
+{
+  "id": "q_z95cf988",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_k9548t",
+  "objectiveId": "obj_xkyrq9",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "stakeholders",
+    "judgment",
+    "creditor"
+  ],
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_e61ht6yh",
+    "tm_h6p2k9wd",
+    "tm_n4e8t2jy",
+    "tm_9e1rb64c",
+    "tm_h3c7v1xe"
+  ],
+  "scored": false,
+  "prompt": {
+    "zh-TW": "初陽貿易向銀行申請一筆一年期貸款。如果你是銀行的審核人員，只能先細看一組數字，你會先看哪一組？",
+    "en": "First Light Trading applies to a bank for a one-year loan. If you were the bank’s credit officer and could study only one set of figures first, which would it be?"
+  },
+  "options": [
+    {
+      "id": "o_d7f8",
+      "text": {
+        "zh-TW": "現金流量表上本業收付的淨額，也就是營業活動的現金流量總計",
+        "en": "The net amount the core business took in and paid out on the statement of cash flows, that is, net cash from operating activities"
+      },
+      "upside": {
+        "zh-TW": "還款靠現金，不靠帳面獲利；本業能不能持續帶進現金，直接決定還款能力。",
+        "en": "Loans are repaid with cash, not book profit; whether the core business keeps bringing in cash decides repayment ability directly."
+      },
+      "downside": {
+        "zh-TW": "單一年度的現金流量會被收付款時點影響，可能高估或低估長期能力。",
+        "en": "A single year’s cash flow is affected by payment timing and may over- or understate longer-term capacity."
+      }
+    },
+    {
+      "id": "o_e9g1",
+      "text": {
+        "zh-TW": "負債比率（欠的債占資產多少）與利息保障倍數（獲利夠付幾倍的利息）",
+        "en": "The debt ratio (how much of the assets is financed by debt) and times interest earned (how many times over profit covers the interest)"
+      },
+      "upside": {
+        "zh-TW": "一眼看出公司已經背了多少債、獲利夠不夠付利息，是債權人最直接的安全訊號。",
+        "en": "Shows at a glance how much debt the company already carries and whether profit covers the interest, the creditor’s most direct safety signals."
+      },
+      "downside": {
+        "zh-TW": "比率是某一天與某一期的結果，看不出接下來一年現金會怎麼流動。",
+        "en": "Ratios describe one date and one period; they do not show how cash will move over the coming year."
+      }
+    },
+    {
+      "id": "o_f2h3",
+      "text": {
+        "zh-TW": "損益表的本期淨利與成長趨勢",
+        "en": "Profit for the period and its trend on the income statement"
+      },
+      "upside": {
+        "zh-TW": "能看出生意本身是否健康、是否在成長；長期賺錢的公司還款機率高。",
+        "en": "Shows whether the business itself is healthy and growing; consistently profitable companies are more likely to repay."
+      },
+      "downside": {
+        "zh-TW": "帳面獲利高不等於有現金，賒銷做出來的獲利可能一毛錢都還沒收到。",
+        "en": "High profit is not cash; profit built on credit sales may not have been collected at all."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "債權人最在意的是「到期時拿得回本息」，所以通常會從現金與償債指標看起，股東則常常先看淨利。三組數字其實要一起看：現金流量說明還款來源，負債比率說明安全邊際，淨利趨勢說明這些能不能持續。你選哪一組先看，取決於你最怕哪一種風險。",
+    "en": "A creditor cares most about getting principal and interest back on time, so they usually start with cash and solvency measures whereas shareholders often look at profit first. All three sets belong together: cash flow shows the source of repayment, the debt ratio the margin of safety, and the profit trend whether both can last. Which you read first depends on which risk you fear most."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

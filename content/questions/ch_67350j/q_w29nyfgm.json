@@ -1,0 +1,37 @@
+{
+  "id": "q_w29nyfgm",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_wt6czr",
+  "difficulty": 3,
+  "tags": ["collect_receivables", "profit_levels", "total_assets"],
+  "termRefs": ["tm_r7x2c9fa", "tm_c4sh8k2p", "tm_v3n8q2ye", "tm_t7a3s6wb"],
+  "labRef": { "story": "story_ywv2dy", "step": "st_q5rssq" },
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": { "balances": { "cash": 50000, "accounts_receivable": 180000, "share_capital": 230000 } },
+    "events": [{ "id": "e1", "template": "tpl.collect_receivables", "params": { "amount": 120000 } }],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      { "id": "t1", "kind": "line", "line": "bs_cash", "measure": "direction" },
+      { "id": "t2", "kind": "line", "line": "bs_accounts_receivable", "measure": "direction" },
+      { "id": "t3", "kind": "line", "line": "is_revenue", "measure": "direction" },
+      { "id": "t4", "kind": "line", "line": "is_net_income", "measure": "direction" },
+      { "id": "t5", "kind": "line", "line": "bs_total_assets", "measure": "direction" }
+    ]
+  },
+  "choices": ["up", "down", "unchanged"],
+  "prompt": {
+    "zh-TW": "補習班把上一期欠青苔書店的書款付了 {{money:e1.amount}}。阿哲照五步驟檢查前，先預測：這筆收款會讓下面五個數字各怎麼變？",
+    "en": "The tutoring centre pays {{money:e1.amount}} of the amount it owed Moss Bookshop from last period. Before Che runs the five steps, predict how this collection changes each of the five figures below."
+  },
+  "explanation": {
+    "zh-TW": "收回帳款只是把應收帳款換成現金：現金增加 {{money:e1.amount}}，應收帳款減少同樣的金額，資產總計不變。收入在當初賣出時就認列過了，這次收款不會再有收入，五層利益一層都不動；步驟①看起來「沒有變化」是正常的，步驟③則會看到兩邊的現金一起增加。",
+    "en": "Collecting a receivable simply swaps receivables for cash: cash rises by {{money:e1.amount}}, receivables fall by the same amount, and total assets are unchanged. The revenue was recognised when the books were sold, so no new revenue arises and none of the five profit levels moves; a ‘no change’ at step 1 is exactly right here, while step 3 shows cash rising on both sides."
+  }
+}

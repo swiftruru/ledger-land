@@ -2,7 +2,7 @@
   "id": "tm_tgfsn0x3",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "收回放款(+)",
@@ -22,11 +22,24 @@
   "pendingRefs": [],
   "ifrsBasis": "IAS 7.16(f)",
   "note": {
-    "zh-TW": "網站補充的延伸列，模板沒有；金額不為零時才顯示，並標「模板無此列」。",
-    "en": "An extension row added by the site. The template has no such line; it is shown only when the amount is not nil, marked as absent from the template."
+    "zh-TW": "網站補充的延伸列，課程模板沒有；金額不為零時才顯示，並標「模板無此列」。",
+    "en": "An extension line added by the site; the course template has no such line. It is shown only when the amount is non-zero, marked as not in the template."
   },
   "definition": {
-    "zh-TW": "以前借給別人的錢收回來時的現金流入。",
-    "en": "Cash received when money lent to others is repaid."
-  }
+    "zh-TW": "以前借給別人的款項收回來時收到的現金。\n\n這是投資活動的流入，是放貸支出的反向：現金增加、短期放款減少。",
+    "en": "Cash received when loans previously made to other parties are repaid.\n\nIt is an investing inflow and the reverse of loans advanced: cash rises and short-term loans receivable fall."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表投資活動區。本課故事沒有放款，所以用不到。",
+    "en": "Where it sits: the investing activities section of the statement of cash flows. The course story makes no loans, so it is not used."
+  },
+  "misconception": {
+    "zh-TW": "把收回的放款當成收入或營業活動的流入。本金收回只是資產形式的轉換（債權變現金），不是收入；收到的利息才是營業外收入。",
+    "en": "Treating the repayment as income or an operating inflow. Collecting the principal merely converts one asset into another (a receivable into cash) and is not income; only the interest received is non-operating income."
+  },
+  "related": [
+    "tm_3sy1gk7c",
+    "tm_wqc6rnsx",
+    "tm_9hrfpqem"
+  ]
 }

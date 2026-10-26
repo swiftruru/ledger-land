@@ -1,0 +1,31 @@
+{
+  "id": "q_pax9fd8e",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_f5en1x",
+  "difficulty": 1,
+  "tags": ["check_point", "cash"],
+  "termRefs": ["tm_12k2yq6k", "tm_c4sh8k2p", "tm_x6gmpvm5"],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "步驟③（勾稽點 C）比對的是現金流量表最後一列的期末現金餘額，與資產負債表上的現金及約當現金。",
+    "en": "Step 3 (check C) compares the closing cash balance on the last line of the statement of cash flows with cash and cash equivalents on the balance sheet."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。現金流量表算到最後會得到期末現金餘額，它就是資產負債表那一天的現金，兩邊一定要相等。",
+    "en": "Correct. The statement of cash flows ends with the closing cash balance, which is the cash on the balance sheet on that day, so the two must agree."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你可能想到的是「現金及約當現金增減額」那一列。增減額是這一期的變動，期末餘額才是和資產負債表對得上的數字；步驟③比的是期末餘額。",
+    "en": "You may have been thinking of the ‘net increase (decrease) in cash’ line. The net change is the movement for the period; the closing balance is the figure that agrees with the balance sheet, and step 3 compares the closing balance."
+  },
+  "misconceptionId": "mc_k07y",
+  "explanation": {
+    "zh-TW": "現金流量表的結構是：期初現金，加上本期增減額，等於期末現金。資產負債表上寫的是某一天的餘額，所以要對的是期末現金，不是增減額。",
+    "en": "The statement of cash flows runs: opening cash, plus the net change for the period, equals closing cash. The balance sheet shows a balance on one day, so the figure to match is closing cash, not the net change."
+  }
+}

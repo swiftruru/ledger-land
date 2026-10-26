@@ -1,6 +1,6 @@
 {
   "id": "tm_t7a3s6wb",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -28,7 +28,7 @@
     "en": "The template label uses a wrong word for total; the site shows the corrected wording and keeps the original as a searchable alias."
   },
   "definition": {
-    "zh-TW": "公司所有資產加起來的金額。它必須等於負債與股東權益的總計（勾稽點 D），也是負債比率與總資產週轉率的分母。",
-    "en": "The sum of all the company's assets. It must equal total liabilities and equity (check D) and is the denominator of the debt ratio and total asset turnover."
+    "zh-TW": "公司所有資產加起來的金額。它必須等於負債及股東權益總計，這就是步驟⑤（勾稽點 D）；它也是負債比率與總資產週轉率的分母。",
+    "en": "The sum of all the company’s assets. It must equal total liabilities and equity, which is step 5 (check D), and it is the denominator of the debt ratio and total asset turnover."
   }
 }

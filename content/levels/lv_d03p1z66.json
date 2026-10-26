@@ -1,0 +1,24 @@
+{
+  "id": "lv_d03p1z66",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "order": 2,
+  "title": {
+    "zh-TW": "流動、非流動與留下的利益",
+    "en": "Current, non-current and the profit that stays"
+  },
+  "objectiveIds": [
+    "obj_8e479x",
+    "obj_qg146a"
+  ],
+  "questionIds": [
+    "q_pvwgq1bq",
+    "q_m54vcdzw",
+    "q_94rkh8jz",
+    "q_t4ve4md6",
+    "q_b6h8p6xd",
+    "q_cbahch0n"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "q_nf55d360",
+  "rev": 3,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "single_choice",
+  "objectiveId": "obj_wb2v68",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "financial_structure"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_fwys72qx",
+    "tm_t7a3s6wb",
+    "tm_y37ymj9w",
+    "tm_8eyx0srs"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "初陽貿易算出了年底的負債比率。三位關心公司的人各問了一句話，這個比率能替哪一位解答？",
+    "en": "First Light Trading has worked out its debt ratio at year end. Three people who follow the company each ask one question. Which of them does that ratio answer?"
+  },
+  "options": [
+    {
+      "id": "o_1cxm",
+      "text": {
+        "zh-TW": "新股東：公司現在的資產，有幾成是用借來的錢買的？",
+        "en": "A new shareholder: of everything the company owns now, what share was paid for with borrowed money?"
+      },
+      "feedback": {
+        "zh-TW": "答對了。負債比率是負債總額除以資產總計：分母是公司全部的資產，分子是其中借來的部分，相除就是這位股東想知道的「幾成」。",
+        "en": "That’s right. The debt ratio is total liabilities divided by total assets: the denominator is everything the company owns and the numerator is the borrowed part, so the result is exactly the share this shareholder wants to know."
+      }
+    },
+    {
+      "id": "o_rm5h",
+      "text": {
+        "zh-TW": "往來銀行：公司每有一元股東權益，就欠了多少負債？",
+        "en": "The company’s bank: for each dollar of equity, how much does the company owe?"
+      },
+      "feedback": {
+        "zh-TW": "這一句也在問借款，方向沒錯。不過它拿股東權益當比較的基準，要用負債總額除以股東權益總額才算得出來；負債比率的分母是資產總計，不是股東權益。",
+        "en": "This question is about borrowing too, so you are on the right track. But it measures the debt against equity, which takes total liabilities divided by total equity; the denominator of the debt ratio is total assets, not equity."
+      },
+      "misconceptionId": "mc_5tc7"
+    },
+    {
+      "id": "o_6wbk",
+      "text": {
+        "zh-TW": "經理：貨車和倉儲設備這些要用好幾年的資產，是不是都由長期的資金撐著？",
+        "en": "The manager: are the delivery vans and warehouse equipment, which will be used for years, all backed by long-term money?"
+      },
+      "feedback": {
+        "zh-TW": "這一句確實和公司的資金結構有關。不過它是{{term:tm_8eyx0srs}}要回答的事：拿股東權益加非流動負債去和設備相比，看長期的錢夠不夠支應長期使用的資產，不是看全部資產裡借來的比例。",
+        "en": "This one is about how the company is funded, too. But it is what the {{term:tm_8eyx0srs}} answers: it sets equity plus non-current liabilities against the equipment to see whether long-term money covers long-lived assets, not what share of all the assets is borrowed."
+      }
+    }
+  ],
+  "correctOptionId": "o_1cxm",
+  "explanation": {
+    "zh-TW": "分辨這三句話，看分母最快。負債比率的分母是資產總計、分子是負債總額，相除得到的是全部資產裡借來的比例，所以答案是新股東的問題。往來銀行的問題要拿股東權益當分母，經理的問題要拿設備當分母；分母一換，比率回答的就是另一件事。",
+    "en": "The quickest way to tell the three apart is the denominator. The debt ratio puts total liabilities over total assets, so it gives the borrowed share of everything the company owns: that is the new shareholder’s question. The bank’s question needs equity as the denominator and the manager’s needs the equipment; change the denominator and the ratio answers a different question."
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "chapterId": "ch_8g6pzz",
+  "items": [
+    {
+      "id": "obj_wb2v68",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_8g6pzz",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能計算並解讀負債比率與長期資金占固定資產比率，說出兩者各回答什麼問題",
+        "en": "Calculate and interpret the debt ratio and the long-term funds to property, plant and equipment ratio, and say what question each one answers"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_5tc7",
+          "text": {
+            "zh-TW": "把負債比率的分母當成股東權益，算成負債除以權益",
+            "en": "Using equity as the denominator of the debt ratio, so it becomes liabilities divided by equity"
+          }
+        },
+        {
+          "id": "mc_jvzk",
+          "text": {
+            "zh-TW": "以為長期資金只有非流動負債，忘了加股東權益",
+            "en": "Thinking long-term funds means only non-current liabilities and forgetting to add equity"
+          }
+        },
+        {
+          "id": "mc_kqm5",
+          "text": {
+            "zh-TW": "以為負債比率越低一定越好，或低負債就等於會賺錢",
+            "en": "Assuming a lower debt ratio is always better, or that low debt means the business is profitable"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "ratio_interpret",
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_9e1rb64c",
+        "tm_8eyx0srs",
+        "tm_fwys72qx",
+        "tm_t7a3s6wb",
+        "tm_y37ymj9w"
+      ],
+      "pendingRefs": [
+        "T38"
+      ]
+    },
+    {
+      "id": "obj_6f1csw",
+      "rev": 3,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_8g6pzz",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能算出三個現金流量類指標（現金流量比率、允當比率的單期近似、再投資比率）並說明各自的意義",
+        "en": "Work out the three cash flow ratios (the cash flow ratio, the single-period approximation of the adequacy ratio and the reinvestment ratio) and explain what each one means"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_tz3y",
+          "text": {
+            "zh-TW": "把本期淨利當成現金流量比率的分子",
+            "en": "Using profit for the period as the numerator of the cash flow ratio"
+          }
+        },
+        {
+          "id": "mc_7mqm",
+          "text": {
+            "zh-TW": "現金流量允當比率的分母漏掉存貨增加額或現金股利",
+            "en": "Leaving the increase in inventories or cash dividends out of the denominator of the cash flow adequacy ratio"
+          }
+        },
+        {
+          "id": "mc_mkp6",
+          "text": {
+            "zh-TW": "以為存貨減少也要放進允當比率的分母，把分母縮小",
+            "en": "Thinking a decrease in inventories should also enter the adequacy denominator and shrink it"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "ratio_interpret",
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_555a7d2s",
+        "tm_35qb8and",
+        "tm_jbtbky5v",
+        "tm_e61ht6yh",
+        "tm_c2y9b5ex"
+      ],
+      "pendingRefs": [
+        "T25"
+      ]
+    },
+    {
+      "id": "obj_fyd5cv",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_8g6pzz",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能說明「算不出來」（N/A）和「算得出來但剛好是零」（0）為什麼是兩回事，並各舉一個報表上的例子",
+        "en": "Explain why ‘cannot be calculated’ (N/A) and ‘calculated and exactly zero’ (0) are different things, and give an example of each from the statements"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_ys4m",
+          "text": {
+            "zh-TW": "把 N/A 填成 0，或把兩者當成同一回事",
+            "en": "Entering 0 instead of N/A, or treating the two as the same thing"
+          }
+        },
+        {
+          "id": "mc_6xya",
+          "text": {
+            "zh-TW": "以為分母為零時比率「趨近無限大」，可以當成滿分",
+            "en": "Thinking a ratio with a zero denominator ‘tends to infinity’ and counts as a perfect score"
+          }
+        },
+        {
+          "id": "mc_gzj0",
+          "text": {
+            "zh-TW": "以為 N/A 代表資料有錯或公司表現很差",
+            "en": "Thinking N/A means the data are wrong or the company is doing badly"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "true_false",
+        "single_choice"
+      ],
+      "termRefs": [
+        "tm_555a7d2s",
+        "tm_9e1rb64c",
+        "tm_c2y9b5ex"
+      ],
+      "pendingRefs": [
+        "T28"
+      ]
+    },
+    {
+      "id": "obj_ftamqc",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_8g6pzz",
+      "order": 4,
+      "statement": {
+        "zh-TW": "用課程參考值判讀指標高低時，能說明例外產業與參考值的限制，不把參考值當成法規門檻",
+        "en": "When using course reference values to judge a ratio, explain the exceptions by industry and the limits of reference values, rather than treating them as legal thresholds"
+      },
+      "skill": "judge",
+      "misconceptions": [
+        {
+          "id": "mc_2wn7",
+          "text": {
+            "zh-TW": "把課程參考值當成法規規定的門檻",
+            "en": "Treating course reference values as thresholds set by law"
+          }
+        },
+        {
+          "id": "mc_cwq6",
+          "text": {
+            "zh-TW": "不看產業就判定高於參考值的公司有危險",
+            "en": "Declaring a company dangerous for exceeding a reference value without looking at its industry"
+          }
+        },
+        {
+          "id": "mc_tfjb",
+          "text": {
+            "zh-TW": "以為落在參考值內就不必再追問其他報表",
+            "en": "Assuming that a ratio inside the reference range means nothing else needs checking"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "ratio_interpret",
+        "single_choice",
+        "multi_choice",
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_9e1rb64c",
+        "tm_8eyx0srs",
+        "tm_jbtbky5v"
+      ],
+      "pendingRefs": [
+        "T24"
+      ]
+    }
+  ]
+}

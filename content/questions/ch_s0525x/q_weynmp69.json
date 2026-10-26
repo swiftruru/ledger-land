@@ -1,0 +1,84 @@
+{
+  "id": "q_weynmp69",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vqayt8",
+  "difficulty": 2,
+  "tags": [
+    "five_levels",
+    "interest"
+  ],
+  "termRefs": [
+    "tm_k6t2e9wr",
+    "tm_gvrw06p3",
+    "tm_kyjfrraq"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_a13q1h"
+  },
+  "vars": {
+    "interest": 9000
+  },
+  "prompt": {
+    "zh-TW": "日暮文具社這個月付了銀行借款的利息 {{money:vars.interest}}。這筆利息在損益表上要放在哪一列？",
+    "en": "Sunset Stationery pays {{money:vars.interest}} of interest on its bank loan this month. Where does this interest go on the income statement?"
+  },
+  "options": [
+    {
+      "id": "o_pj4f",
+      "text": {
+        "zh-TW": "營業外支出的利息費用，在營業利益之後才扣",
+        "en": "Finance costs (interest expense) under non-operating expenses, deducted after operating profit"
+      },
+      "feedback": {
+        "zh-TW": "答對了。利息是借錢的代價，不是經營文具本業的開銷。",
+        "en": "Nice work. Interest is the price of borrowing, not a cost of running the stationery business."
+      },
+      "short": {
+        "zh-TW": "營業外支出的利息費用",
+        "en": "Finance costs under non-operating expenses"
+      }
+    },
+    {
+      "id": "o_ashs",
+      "text": {
+        "zh-TW": "銷管費用，和店租、水電一樣都是開店的開銷",
+        "en": "Distribution costs and administrative expenses: a cost of keeping the shop open, like rent and utilities"
+      },
+      "feedback": {
+        "zh-TW": "利息確實是每個月要付的錢，這點沒錯。不過銷管費用是為了賣文具、管理店面而花的；利息多少取決於借了多少錢，和賣得好不好無關，所以放在營業利益之後的營業外支出。",
+        "en": "Interest is indeed a monthly outgoing, that much is right. But distribution costs and administrative expenses are spent on selling stationery and running the shop; how much interest is paid depends on how much was borrowed, not on how well the shop sells, so it sits under non-operating expenses after operating profit."
+      },
+      "short": {
+        "zh-TW": "銷管費用",
+        "en": "Distribution costs and administrative expenses"
+      },
+      "misconceptionId": "mc_bm3a"
+    },
+    {
+      "id": "o_9yz0",
+      "text": {
+        "zh-TW": "營業成本，因為借錢是為了進貨",
+        "en": "Cost of sales, because the money was borrowed to buy stock"
+      },
+      "feedback": {
+        "zh-TW": "你想把利息和進貨連在一起，這個聯想可以理解。不過就算借款真的拿去進貨，營業成本也只放賣出去那些商品本身的成本；錢的來源是借的還是股東出的，不會改變商品的成本。",
+        "en": "Linking the interest to buying stock is an understandable thought. But even if the loan really was used to buy stock, cost of sales holds only the cost of the goods themselves that were sold; whether the money came from a loan or from shareholders does not change what the goods cost."
+      },
+      "short": {
+        "zh-TW": "營業成本",
+        "en": "Cost of sales"
+      }
+    }
+  ],
+  "correctOptionId": "o_pj4f",
+  "explanation": {
+    "zh-TW": "五層利益把「本業」和「本業以外」分開：{{term:tm_kyjfrraq}}在營業利益之前扣，{{term:tm_k6t2e9wr}}屬於{{term:tm_gvrw06p3}}，在營業利益之後才扣，所以答案是{{option:o_pj4f}}。選{{option:o_ashs}}會讓營業利益被借錢多寡影響，選{{option:o_9yz0}}則把資金來源和商品成本混在一起。",
+    "en": "The five levels separate the core business from everything else: {{term:tm_kyjfrraq}} are deducted before operating profit, while {{term:tm_k6t2e9wr}} belong to {{term:tm_gvrw06p3}} and are deducted after it, so the answer is {{option:o_pj4f}}. Choosing {{option:o_ashs}} would let the amount borrowed distort operating profit, and choosing {{option:o_9yz0}} mixes the source of funds with the cost of the goods."
+  }
+}

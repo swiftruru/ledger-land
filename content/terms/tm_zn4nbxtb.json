@@ -1,24 +1,50 @@
 {
   "id": "tm_zn4nbxtb",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "營業成本率", "en": "Cost of sales ratio" },
+  "label": {
+    "zh-TW": "營業成本率",
+    "en": "Cost of sales ratio"
+  },
   "teacherLabel": "營業成本率",
   "currentTwLabel": "營業成本率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["成本率"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "成本率"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "營業成本占營業收入的比例，和毛利率是一體兩面。數值越低表示商品的賺頭越大。",
-    "en": "Cost of sales as a share of revenue, the mirror image of the gross profit margin. Lower means more margin in the goods."
+    "zh-TW": "營業成本占營業收入的比例，也就是每做一元生意，賣出去的商品本身花了多少成本。\n\n它和毛利率是一體兩面：成本率上升，毛利率就下降。",
+    "en": "Cost of sales as a share of revenue: how much the goods sold cost for each unit of sales.\n\nIt is the mirror image of the gross profit margin: when the cost ratio rises, the gross margin falls."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上半部。課程版面的營業成本是期初存貨加本期進貨減期末存貨，所以存貨盤盈沖減營業成本時，這個比率也會下降。",
+    "en": "Both figures sit in the upper part of the income statement. In the course layout cost of sales is opening inventories plus purchases minus closing inventories, so when an inventory count surplus reduces cost of sales this ratio falls too."
+  },
+  "misconception": {
+    "zh-TW": "把銷管費用也算進成本率。銷管費用是毛利之後才扣的營業費用，另外有銷售及管理費用率；成本率只看賣出商品本身的成本。",
+    "en": "Including distribution costs and administrative expenses in the cost ratio. Those are operating expenses deducted after gross profit and have their own measure, the selling, general and administrative expense ratio; the cost ratio looks only at the cost of the goods sold."
+  },
+  "formula": {
+    "zh-TW": "營業成本率的算法：營業成本 ÷ 營業收入，也等於 1 － 毛利率。",
+    "en": "Cost of sales ratio = cost of sales ÷ revenue = 1 － gross profit margin."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；網站依課程的公式計算。",
+    "en": "IFRS does not define financial ratios; the name follows international usage, and the site calculates it with the course formula."
   },
-  "ratioRef": "cost_ratio@slides01"
+  "ratioRef": "cost_ratio@slides01",
+  "related": [
+    "tm_g5c2m8tw",
+    "tm_axb9rtr7",
+    "tm_2f3fqvmq",
+    "tm_v3n8q2ye"
+  ]
 }

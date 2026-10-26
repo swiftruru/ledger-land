@@ -1,0 +1,37 @@
+{
+  "id": "q_60dbvn4v",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_pynkwp",
+  "difficulty": 2,
+  "tags": ["credit_purchase", "cost_of_sales"],
+  "termRefs": ["tm_n7v3k8pq", "tm_a3p9y6kc", "tm_g5c2m8tw", "tm_g8p4w1rz"],
+  "labRef": { "story": "story_ywv2dy", "step": "st_p6m0q7" },
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": { "balances": { "cash": 150000, "share_capital": 150000 } },
+    "events": [{ "id": "e1", "template": "tpl.purchase_inventory_credit", "params": { "amount": 70000 } }],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      { "id": "t1", "kind": "line", "line": "bs_cash", "measure": "direction" },
+      { "id": "t2", "kind": "line", "line": "bs_inventory", "measure": "direction" },
+      { "id": "t3", "kind": "line", "line": "bs_accounts_payable", "measure": "direction" },
+      { "id": "t4", "kind": "line", "line": "is_cogs", "measure": "direction" },
+      { "id": "t5", "kind": "line", "line": "is_gross_profit", "measure": "direction" }
+    ]
+  },
+  "choices": ["up", "down", "unchanged"],
+  "prompt": {
+    "zh-TW": "青苔書店向出版社賒購一批新書 {{money:e1.amount}}，貨到了、款項月底再付。預測下面五個數字各會怎麼變。",
+    "en": "Moss Bookshop buys {{money:e1.amount}} of new books from a publisher on credit; the books arrive now and payment is due at month end. Predict how each of the five figures below changes."
+  },
+  "explanation": {
+    "zh-TW": "進貨讓存貨增加 {{money:e1.amount}}，同時多了一筆應付帳款；現金還沒付，所以不變。損益表那邊要特別注意：本期進貨變多，但這批書還沒賣出，期末存貨會把它減回去，營業成本小計與營業毛利都不動。成本要等賣出去的那一刻才算。",
+    "en": "The purchase raises inventories by {{money:e1.amount}} and creates a trade payable; no cash has been paid, so cash is unchanged. Watch the income statement: purchases go up, but these books have not been sold, so closing inventories deduct them again and neither cost of sales nor gross profit moves. The cost counts only when the books are sold."
+  }
+}

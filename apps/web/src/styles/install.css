@@ -1,0 +1,226 @@
+/* 安裝圖解（06 第 2.5、2.6 節）：步驟清單與原創示意圖；顏色只用 tokens 變數，四個主題都能看；減少動態時不動畫 */
+.ll-guide__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: ll-guide-step;
+}
+.ll-guide__step {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: var(--ll-space-3);
+  align-items: start;
+  padding: var(--ll-space-3) 0;
+  border-bottom: 1px solid var(--ll-border);
+  counter-increment: ll-guide-step;
+}
+.ll-guide__step:last-child {
+  border-bottom: 0;
+}
+/* 步驟編號是懸掛的一欄（第 5 輪驗收後）：說明換行時第二行對齊第一行的字、不鑽到編號下面；編號也不會因為第一個分句排不下而自己留在一行。
+   說明包在 span 裡（InstallGuide.tsx），整段是一個格子項目 */
+.ll-guide__step-text {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.3em;
+  align-items: baseline;
+  margin: 0;
+  padding-top: var(--ll-space-2);
+}
+.ll-guide__step-text::before {
+  content: counter(ll-guide-step) '.';
+  font-weight: 600;
+  color: var(--ll-accent-ink);
+}
+/* 斷行（第 7 輪：全站同一套規則，基礎組定在 web-ui）：圖解裡的說明（步驟、第 0 步、提醒）用全站預設的逐字換行加 line-break: strict、
+   text-wrap: pretty，每行排滿、標點不落在行首。第 6 輪的 keep-all 讓第 0 步每行都停在逗號、右緣參差，已拿掉。
+   引號裡的介面名稱（「匯出到 App」「加入主畫面」）在字串裡包 .ll-nowrap（web-ui 的全站 class，引號在 span 外面），整個名稱不拆到兩行；
+   最窄的步驟欄（320 寬約 148px）放不下整個「以 Web App 打開」（整塊不斷時水平捲動 4 到 13px），只包 Web App，在名稱裡的空格處換行。
+   其餘的中文詞由 components/ProseWords.tsx 包成 .ll-nowrap，詞不拆開。不需要另加 overflow-wrap: anywhere（全部預算 40 KB 只剩幾個 bytes） */
+.ll-guide__svg {
+  width: 96px;
+  height: auto;
+  display: block;
+  color: var(--ll-text);
+}
+.ll-guide__phone {
+  fill: var(--ll-surface);
+  stroke: var(--ll-border-strong);
+  stroke-width: 2;
+}
+.ll-guide__line {
+  fill: var(--ll-border);
+}
+.ll-guide__bar {
+  fill: var(--ll-surface-2);
+  stroke: var(--ll-border);
+  stroke-width: 1;
+}
+.ll-guide__bar--full {
+  stroke: none;
+}
+.ll-guide__sheet {
+  fill: var(--ll-surface);
+  stroke: var(--ll-border-strong);
+  stroke-width: 1.5;
+}
+.ll-guide__glyph {
+  fill: none;
+  stroke: var(--ll-text-2);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ll-guide__glyph--fill {
+  fill: var(--ll-text-2);
+  stroke: none;
+}
+.ll-guide__highlight {
+  fill: var(--ll-accent-tint);
+  stroke: var(--ll-accent);
+  stroke-width: 2;
+}
+.ll-guide__highlight--button {
+  fill: var(--ll-accent);
+}
+.ll-guide__highlight + .ll-guide__glyph,
+.ll-guide__highlight ~ .ll-guide__glyph--fill {
+  stroke: var(--ll-accent-ink);
+}
+.ll-guide__text {
+  font-size: 9px;
+  font-family: inherit;
+  fill: var(--ll-text-2);
+}
+.ll-guide__text--strong {
+  fill: var(--ll-text);
+  font-weight: 600;
+}
+.ll-guide__text--onaccent {
+  fill: var(--ll-accent-contrast);
+  font-weight: 600;
+}
+.ll-guide__appicon {
+  fill: var(--ll-accent);
+}
+.ll-guide__toggle {
+  fill: var(--ll-success-ink);
+}
+.ll-guide__knob {
+  fill: var(--ll-surface);
+}
+.ll-guide__layout {
+  margin: var(--ll-space-2) 0 var(--ll-space-3);
+}
+.ll-guide__note {
+  margin: var(--ll-space-3) 0 0;
+}
+/* 第 0 步：說明一段，「匯出到 App」獨立一行（站規 2.13，不接在句子後面） */
+.ll-guide__step0 {
+  display: grid;
+  justify-items: start;
+  gap: var(--ll-space-2);
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-guide__step0 > p {
+  margin: 0;
+}
+/* 最後的確認：按鈕或「記住了」的結果訊息（同一個位置，焦點移到訊息上） */
+.ll-guide__done {
+  margin-top: var(--ll-space-3);
+}
+/* 其他瀏覽器：說明一段 */
+.ll-guide__generic {
+  margin: 0;
+}
+/* 卡片內容 480px 以上（/install/ 在平板與桌面、首頁桌面的圖解卡片）：示意圖從 96px 放大到 120px（第 4 輪驗收：大畫面上的圖太小、卡片空） */
+@container (min-width: 480px) {
+  .ll-guide__step {
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: var(--ll-space-4);
+  }
+  .ll-guide__svg {
+    width: 120px;
+  }
+}
+/* 文字放大的窄卡片（內容不到 12 個字寬：320 或 375 寬放大 200%）：說明欄只剩三、四個字，示意圖改到上面、說明用整個寬度；
+   詞與介面名稱不再整塊不斷（一行只有七個字左右，「以 Web App 打開」整塊放不下會超出卡片），照全站規則換行。
+   em 是 .ll-guide 的字級，文字放大時跟著變大；一般字級的 320 寬是 15 個字寬，不受影響 */
+@container (max-width: 12em) {
+  .ll-guide__step {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ll-guide .ll-nowrap {
+    white-space: normal;
+  }
+}
+/* 寬的圖解（卡片內容 720px 以上，例如 1280 時首頁安裝建議橫幅下方的圖解卡片，約 1000px 寬）：一列一步時示意圖靠左、右邊一大片空白，
+   改成步驟並排的格子（四步或三步一列）：每一步是一塊淺底的方塊，示意圖在上、說明在下。/install/ 的卡片（約 550px）與手機維持一列一步 */
+.ll-guide {
+  container-type: inline-size;
+}
+@container (min-width: 720px) {
+  .ll-guide__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(176px, 1fr));
+    gap: var(--ll-space-3);
+    margin-top: var(--ll-space-1);
+  }
+  .ll-guide__steps > .ll-guide__step {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: var(--ll-space-2);
+    padding: var(--ll-space-4) var(--ll-space-3);
+    border-bottom: 0;
+    border-radius: var(--ll-radius-md);
+    background: var(--ll-surface-2);
+    /* 格子等高：多出來的高度留在方塊底部，說明一律緊接在示意圖下方 */
+    align-content: start;
+  }
+  .ll-guide__steps > .ll-guide__step .ll-guide__step-text {
+    justify-self: stretch;
+    padding-top: 0;
+  }
+  .ll-guide__steps + .ll-guide__note {
+    margin-top: var(--ll-space-4);
+  }
+  /* Chromium（第 4 輪驗收）：兩步的方塊靠左，寬度和 iPhone 做法的四步方塊相同（內容寬的四分之一）；收尾的說明與按鈕在右側、垂直置中，
+     卡片不會一半是空白。有安裝事件時只有一步 */
+  .ll-guide__chromium {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--ll-space-6);
+    align-items: center;
+  }
+  .ll-guide__chromium > .ll-guide__steps {
+    grid-template-columns: repeat(2, calc((100cqi - 3 * var(--ll-space-3)) / 4));
+    margin-top: 0;
+  }
+  .ll-guide__chromium > .ll-guide__steps[data-count='1'] {
+    grid-template-columns: calc((100cqi - 3 * var(--ll-space-3)) / 4);
+  }
+  /* 兩三行的短說明：各行長度平衡，不留「用搬。」這種兩三個字的尾行 */
+  .ll-guide__chromium > .ll-guide__finish > .ll-guide__note {
+    margin-top: 0;
+    max-width: 32em;
+    text-wrap: balance;
+  }
+  /* 強制色彩下淺底會消失：方塊改用框線 */
+  @media (forced-colors: active) {
+    .ll-guide__steps > .ll-guide__step {
+      border: 1px solid CanvasText;
+    }
+  }
+}
+@media (forced-colors: active) {
+  .ll-guide__svg {
+    color: CanvasText;
+  }
+  .ll-guide__highlight {
+    fill: Highlight;
+    stroke: CanvasText;
+  }
+  .ll-guide__text--onaccent {
+    fill: HighlightText;
+  }
+}

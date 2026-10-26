@@ -1,0 +1,68 @@
+{
+  "id": "q_smc16qav",
+  "rev": 3,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_m3fgww",
+  "difficulty": 2,
+  "tags": [
+    "debt_ratio",
+    "equity_multiplier"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_2ggtxnaz",
+    "tm_fwys72qx",
+    "tm_t7a3s6wb",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "晨霧茶行年底開店務會議，老闆娘把資產負債表投影出來。新來的店員小禾問：「店裡的資產，有多大比例來自負債？」要直接回答她，該用哪一個算法？",
+    "en": "At Morning Mist Tea’s year-end staff meeting, the owner puts the balance sheet up on the screen. Xiaohe, who has just joined, asks: ‘What share of the shop’s assets comes from liabilities?’ Which calculation answers her directly?"
+  },
+  "options": [
+    {
+      "id": "o_9v46",
+      "text": {
+        "zh-TW": "負債總額 ÷ 資產總計",
+        "en": "Total liabilities ÷ total assets"
+      },
+      "feedback": {
+        "zh-TW": "答對了。小禾問的是資產裡有多大比例來自負債：分子是負債總額、分母是資產總計，這正是負債比率。",
+        "en": "Correct. Xiaohe is asking what share of the assets comes from liabilities: total liabilities over total assets, which is exactly the debt ratio."
+      }
+    },
+    {
+      "id": "o_73wz",
+      "text": {
+        "zh-TW": "資產總計 ÷ 股東權益總額",
+        "en": "Total assets ÷ total equity"
+      },
+      "feedback": {
+        "zh-TW": "這是權益倍數。它和負債比率確實相關，可以互相換算：權益倍數 ＝ 1 ÷（1 － 負債比率）。但它直接回答的是「每一元權益撐起多少資產」，要知道負債占的比例還得再換算一次。",
+        "en": "This is the equity multiplier. It is indeed related to the debt ratio and can be converted: equity multiplier = 1 ÷ (1 − debt ratio). But what it answers directly is how many units of assets each unit of equity supports; getting the share funded by liabilities takes one more conversion."
+      },
+      "misconceptionId": "mc_b56b"
+    },
+    {
+      "id": "o_0x21",
+      "text": {
+        "zh-TW": "負債總額 ÷ 股東權益總額",
+        "en": "Total liabilities ÷ total equity"
+      },
+      "feedback": {
+        "zh-TW": "這樣算出來的是負債為權益的幾倍，分母是權益，不是資產。問「資產有多大比例來自負債」，分母要用資產總計。",
+        "en": "That gives liabilities as a multiple of equity: the denominator is equity, not assets. To find what share of the assets comes from liabilities, divide by total assets."
+      },
+      "misconceptionId": "mc_ezwx"
+    }
+  ],
+  "correctOptionId": "o_9v46",
+  "explanation": {
+    "zh-TW": "{{option:o_9v46}}，這就是負債比率。兩個指標回答兩個不同的問句：「資產有多大比例來自負債」看負債比率；「每一元權益撐起多少資產」看權益倍數。它們描述同一個資本結構、可以互相換算，但回答的問句不同，不要混用。",
+    "en": "{{option:o_9v46}}, which is the debt ratio. The two indicators answer two different questions: ‘what share of assets comes from liabilities’ is the debt ratio; ‘how many units of assets does each unit of equity support’ is the equity multiplier. Both describe the same capital structure and convert into each other, but they answer different questions, so keep each matched to its own."
+  }
+}

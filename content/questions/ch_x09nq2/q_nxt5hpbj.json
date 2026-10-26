@@ -1,0 +1,69 @@
+{
+  "id": "q_nxt5hpbj",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_1m58qq",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "capital_surplus"
+  ],
+  "termRefs": [
+    "tm_yka0razf",
+    "tm_sf72dfsv",
+    "tm_x3n8v5tc"
+  ],
+  "scored": true,
+  "vars": {
+    "cs": 2400000
+  },
+  "prompt": {
+    "zh-TW": "小安看到綠茵運動用品資產負債表的股東權益區列著資本公積 {{money:vars.cs}}，說：「公司有這麼一大筆錢可以用。」哪一個回應最正確？",
+    "en": "An sees capital surplus of {{money:vars.cs}} in the equity section of Greenfield Sports’ balance sheet and says: ‘So the company has this big pot of money to spend.’ Which response is the most accurate?"
+  },
+  "options": [
+    {
+      "id": "o_g7h8",
+      "text": {
+        "zh-TW": "資本公積只說明錢的來源；那筆錢早已變成各種資產，不是放著的現金",
+        "en": "Capital surplus only shows where the money came from; that money has long since become various assets, not cash sitting around"
+      },
+      "feedback": {
+        "zh-TW": "答對了。股東權益區的每一列都是「錢從哪裡來」，不是「錢現在在哪裡」；要看現金，請看資產區的現金。",
+        "en": "That is right. Every line in equity says where the money came from, not where it is now; for cash, look at the cash line among the assets."
+      }
+    },
+    {
+      "id": "o_j9k1",
+      "text": {
+        "zh-TW": "沒錯，這筆現金就放在公司的銀行帳戶裡，董事會隨時可以動用",
+        "en": "Correct, this cash sits in the company’s bank account and the board can use it at any time"
+      },
+      "feedback": {
+        "zh-TW": "你知道資本公積是股東投入的，這沒錯。但資產負債表右邊的數字是來源，左邊才是資產；資本公積對應的現金可能早就買了設備或存貨。",
+        "en": "You know capital surplus came from shareholders, which is right. But the right-hand side of the balance sheet shows sources and the left shows assets; the cash behind the surplus may long ago have become equipment or inventory."
+      },
+      "misconceptionId": "mc_csh4"
+    },
+    {
+      "id": "o_m2n3",
+      "text": {
+        "zh-TW": "這是公司歷年營業賺來、還沒分配給股東的盈餘",
+        "en": "This is profit the company has earned from trading over the years and not yet distributed to shareholders"
+      },
+      "feedback": {
+        "zh-TW": "你把它和另一個股東權益項目想在一起了。歷年賺來未分配的是未分配盈餘；資本公積來自股東投入，不是營業賺的。",
+        "en": "You are thinking of a different equity item. Profit earned and not yet distributed is unappropriated retained earnings; capital surplus comes from shareholder contributions, not from trading."
+      },
+      "misconceptionId": "mc_ern2"
+    }
+  ],
+  "correctOptionId": "o_g7h8",
+  "explanation": {
+    "zh-TW": "{{option:o_g7h8}}分清了「來源」與「現在的形態」。{{option:o_j9k1}}把股東權益當成現金；{{option:o_m2n3}}把資本公積和未分配盈餘搞混。",
+    "en": "{{option:o_g7h8}} separates the source from its present form. {{option:o_j9k1}} treats equity as cash; {{option:o_m2n3}} confuses capital surplus with unappropriated retained earnings."
+  }
+}

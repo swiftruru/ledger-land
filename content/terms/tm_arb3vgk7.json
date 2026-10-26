@@ -1,25 +1,52 @@
 {
   "id": "tm_arb3vgk7",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "現金轉換循環", "en": "Cash conversion cycle" },
+  "label": {
+    "zh-TW": "現金轉換循環",
+    "en": "Cash conversion cycle"
+  },
   "teacherLabel": "現金轉換循環",
   "currentTwLabel": "現金轉換循環",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
-  "note": { "zh-TW": "教材只有概念；公式（營運週期減平均付款天數）是網站補充定義。", "en": "The course gives only the idea; the formula (operating cycle less days payable) is a site supplement." },
+  "note": {
+    "zh-TW": "教材只有概念；公式（營運週期減平均付款天數）是網站補充定義。",
+    "en": "The course gives only the idea; the formula (operating cycle less average payment period) is a site supplement."
+  },
   "definition": {
-    "zh-TW": "營運週期再扣掉平均付款天數，也就是公司自己的錢被壓在營運裡多少天。天數越短越輕鬆，甚至可能是負的。",
-    "en": "The operating cycle less days payable: how many days the company's own cash is tied up in operations. Shorter is easier, and it can even be negative."
+    "zh-TW": "公司從付錢買貨到收回貨款，實際有幾天是自己墊錢的。\n\n它在營運週期的基礎上，再扣掉供應商讓公司賒帳的天數；天數越短，公司需要自己準備的營運資金越少。",
+    "en": "How many days the company actually finances its trading out of its own pocket, from paying for goods to collecting from customers.\n\nIt starts from the operating cycle and deducts the days suppliers let the company owe them; the shorter it is, the less working capital the company must provide itself."
+  },
+  "example": {
+    "zh-TW": "它由三個天數指標組成，任何一個是 N/A 時它也是 N/A。數字可以是負的：收款比付款還快的公司（例如先收現金再向供應商賒帳的零售業）就會出現負值。",
+    "en": "It is built from three day-count ratios and is N/A whenever any of them is. It can be negative: a business that collects before it pays its suppliers, such as a cash retailer buying on credit, shows a negative cycle."
+  },
+  "misconception": {
+    "zh-TW": "以為現金轉換循環越短一定越好。拖長付款天數可以縮短它，可是拖得太久，供應商的信任以及折扣都會流失；它是權衡的結果，不是越低越好的比賽。",
+    "en": "Assuming a shorter cycle is always better. Stretching payments shortens it, but stretch too far and both supplier goodwill and discounts are lost; it is a balance to strike, not a contest to get the lowest number."
+  },
+  "formula": {
+    "zh-TW": "現金轉換循環的算法：營運週期扣掉平均付款天數；展開來就是平均銷貨日數加平均收現日數，再減平均付款天數。課程只講概念，這個公式是網站補充的定義。",
+    "en": "Cash conversion cycle = operating cycle － average payment period = days to sell inventory + average collection period － average payment period. The course covers the concept only; this formula is a definition supplied by the site."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率；這個名稱是財務管理的通用說法，公式由網站補充，計算口徑以指標登錄檔為準。",
+    "en": "IFRS does not define financial ratios; the name is standard in financial management, the formula is supplied by the site and the calculation basis is the ratio registry."
   },
-  "ratioRef": "cash_conversion_cycle@slides03"
+  "ratioRef": "cash_conversion_cycle@slides03",
+  "related": [
+    "tm_7v02zwjf",
+    "tm_kzkzng5e",
+    "tm_fsv83x2z",
+    "tm_gysqtps0"
+  ]
 }

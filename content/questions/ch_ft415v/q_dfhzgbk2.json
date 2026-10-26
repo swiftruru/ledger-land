@@ -1,0 +1,84 @@
+{
+  "id": "q_dfhzgbk2",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "judgment",
+  "objectiveId": "obj_fbc0kw",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "activity",
+    "judgment"
+  ],
+  "termRefs": [
+    "tm_gysqtps0",
+    "tm_2s4hterv",
+    "tm_9e1rb64c"
+  ],
+  "scored": false,
+  "vars": {
+    "days": 60
+  },
+  "prompt": {
+    "zh-TW": "海風民宿的住客大多由旅行社介紹，旅行社習慣住宿後 {{number:vars.days|unit=day}} 才付款，民宿的平均收現日數因此偏長，旺季前常常現金吃緊。老闆娘阿芳有三個做法，三個都說得通，你會建議哪一個？",
+    "en": "Most of Sea Breeze Guesthouse’s guests come through travel agencies, which usually pay {{number:vars.days|unit=day}} after the stay, so the guesthouse’s collection period is long and cash is often tight before the peak season. The owner, Fang, has three options, all defensible. Which would you suggest?"
+  },
+  "options": [
+    {
+      "id": "o_rdcp",
+      "text": {
+        "zh-TW": "要求旅行社預付部分訂金，並把付款期縮短",
+        "en": "Ask the travel agencies for a partial deposit and shorten their payment terms"
+      },
+      "upside": {
+        "zh-TW": "收現日數直接縮短，自己的現金壓力最快緩解，也減少收不回來的風險。",
+        "en": "The collection period shortens immediately, cash pressure eases fastest and the risk of bad debts falls."
+      },
+      "downside": {
+        "zh-TW": "旅行社可能轉向條件更寬鬆的民宿，訂單量下降；談判也要花時間與人情。",
+        "en": "Agencies may switch to guesthouses with easier terms and bookings may fall; negotiating also costs time and goodwill."
+      }
+    },
+    {
+      "id": "o_d4n9",
+      "text": {
+        "zh-TW": "提供早付折扣，付款快的旅行社房價打折",
+        "en": "Offer an early-payment discount: agencies that pay quickly get a lower room rate"
+      },
+      "upside": {
+        "zh-TW": "客戶自己選擇要不要提早付，關係比較不緊張；願意配合的旅行社會讓收現加快。",
+        "en": "Agencies choose for themselves whether to pay early, so the relationship stays relaxed, and those who take it up speed up collection."
+      },
+      "downside": {
+        "zh-TW": "折扣會侵蝕毛利，等於用利潤換現金；如果大家本來就會準時付，折扣就是白送。",
+        "en": "The discount eats into gross margin, trading profit for cash; if agencies would have paid on time anyway, the discount is given away for nothing."
+      }
+    },
+    {
+      "id": "o_57jg",
+      "text": {
+        "zh-TW": "維持現狀，用短期借款補足等待收款期間的現金缺口",
+        "en": "Keep the current terms and cover the cash gap with a short-term bank loan"
+      },
+      "upside": {
+        "zh-TW": "客戶關係與訂單量都不受影響；借款金額可以隨淡旺季調整。",
+        "en": "Customer relationships and bookings are untouched, and the loan can be sized to the season."
+      },
+      "downside": {
+        "zh-TW": "利息是實實在在的成本，負債比率與流動負債都會上升；等於替旅行社的賒帳付利息。",
+        "en": "Interest is a real cost, and both the debt ratio and current liabilities rise; in effect the guesthouse pays interest on the agencies’ credit."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "收現日數不是越短越好，而是要和「這段等待值不值得」一起看。網站的看法是先算清楚三件事（旅行社帶來的訂單占多少、早付折扣會吃掉多少毛利、借款的利息是多少）。如果旅行社的訂單是命脈，折扣或借款比硬性縮短付款期安全；如果只是少數客戶付得特別慢，直接談條件最划算。不管選哪一個，之後都要回頭看平均收現日數、毛利率與負債比率有沒有往你預期的方向走。",
+    "en": "A shorter collection period is not automatically better; the question is whether the wait is worth it. The site’s view: first work out three numbers (how much business the agencies bring, how much gross margin an early-payment discount would cost, and what the loan interest would be). If agency bookings are the lifeline, a discount or a loan is safer than forcing shorter terms; if only a few customers pay especially late, negotiating directly is the best value. Whichever you pick, check afterwards whether the collection period, gross margin and debt ratio move the way you expected."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

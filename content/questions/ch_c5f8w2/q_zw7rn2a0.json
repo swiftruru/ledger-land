@@ -1,6 +1,6 @@
 {
   "id": "q_zw7rn2a0",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -29,7 +29,7 @@
       },
       "feedback": {
         "zh-TW": "答對了。先有一筆一筆的交易紀錄，報表上的數字才整理得出來。",
-        "en": "That's right. The transaction records come first; the figures on the statements are built from them."
+        "en": "That’s right. The transaction records come first; the figures on the statements are built from them."
       }
     },
     {

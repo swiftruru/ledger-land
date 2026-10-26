@@ -50,7 +50,7 @@ describe('備份碼 round-trip', () => {
     const validated = await validateBackup(decoded.value, { currentSchemaVersion: DB_SCHEMA_VERSION, sha256, now: NOW });
     expect(validated.ok).toBe(true);
     if (!validated.ok) return;
-    expect(validated.value.preview).toEqual({ attempts: 2, levels: 1, badges: 1, terms: 0, reviewEntries: 0, hasSettings: true });
+    expect(validated.value.preview).toEqual({ attempts: 2, levels: 1, badges: 1, terms: 0, reviewEntries: 0, favourites: 0, hasSettings: true });
     expect(validated.value.data.attempts.map((a) => a.attemptId)).toEqual(['a_000000000001', 'a_000000000002']);
   });
 

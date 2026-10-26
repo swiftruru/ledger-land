@@ -1,0 +1,300 @@
+{
+  "chapterId": "ch_65j92w",
+  "items": [
+    {
+      "id": "obj_kse1q6",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_65j92w",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能認出 TR、Profit、A、E 四個基本數字各來自哪張報表，說明營收是本期認列（賣出）的生意而不是收到的現金，並在計算時讓分子與分母用同一期間",
+        "en": "Recognise which statement each of the four basic figures TR, Profit, A and E comes from, explain that revenue is the sales recognised (goods sold) this period rather than the cash received, and keep numerator and denominator to the same period when calculating"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_q3r9",
+          "text": {
+            "zh-TW": "把營業收入當成這一期收到的現金",
+            "en": "Treating revenue as the cash received this period"
+          }
+        },
+        {
+          "id": "mc_c11k",
+          "text": {
+            "zh-TW": "以為 Profit 指的是營業毛利",
+            "en": "Thinking Profit means gross profit"
+          }
+        },
+        {
+          "id": "mc_k82a",
+          "text": {
+            "zh-TW": "以為資產總計是損益表上一段期間的數字",
+            "en": "Thinking total assets is a period figure from the income statement"
+          }
+        },
+        {
+          "id": "mc_m7cx",
+          "text": {
+            "zh-TW": "以為 E 就等於股本",
+            "en": "Thinking E is just share capital"
+          }
+        },
+        {
+          "id": "mc_6n2x",
+          "text": {
+            "zh-TW": "計算比率時分子與分母用不同的期間（例如一個月的營收對年底的資產）",
+            "en": "Using different periods for numerator and denominator (for example one month of revenue against a year-end asset figure)"
+          }
+        },
+        {
+          "id": "mc_rzbs",
+          "text": {
+            "zh-TW": "以為營收和資產一樣，是某一天擁有多少的存量",
+            "en": "Thinking revenue, like assets, is an amount held on one day"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_v3n8q2ye",
+        "tm_n4e8t2jy",
+        "tm_t7a3s6wb",
+        "tm_y37ymj9w",
+        "tm_05t9wphy"
+      ]
+    },
+    {
+      "id": "obj_81e8f8",
+      "rev": 3,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_65j92w",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能用指定的版本計算純益率、資產週轉率，以及權益倍數與 ROE，並用三個因子相乘拆解 ROE",
+        "en": "Calculate net profit margin, asset turnover, the equity multiplier and ROE using the specified version, and split ROE into the product of the three factors"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_6gj4",
+          "text": {
+            "zh-TW": "算 ROE 時把分母用成資產總計",
+            "en": "Using total assets as the denominator when calculating ROE"
+          }
+        },
+        {
+          "id": "mc_tfxp",
+          "text": {
+            "zh-TW": "把 ROA 或 ROE 的分子用成營業收入",
+            "en": "Using revenue as the numerator of ROA or ROE"
+          }
+        },
+        {
+          "id": "mc_ezat",
+          "text": {
+            "zh-TW": "把資產週轉率當成百分比，或把三個因子相加而不是相乘",
+            "en": "Treating asset turnover as a percentage, or adding the three factors instead of multiplying them"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "ratio_interpret",
+        "single_choice"
+      ],
+      "termRefs": [
+        "tm_1ebm48ca",
+        "tm_0k8vegyr",
+        "tm_92yzx0fn",
+        "tm_2cqt9cfd",
+        "tm_2ggtxnaz"
+      ],
+      "pendingRefs": [
+        "T21",
+        "T22"
+      ]
+    },
+    {
+      "id": "obj_m3fgww",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_65j92w",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能說明 ROE 與 ROA 的差距來自權益倍數（借來的錢），並分辨權益倍數與負債比率各回答什麼問題",
+        "en": "Explain that the gap between ROE and ROA comes from the equity multiplier (borrowed money), and tell apart the questions the equity multiplier and the debt ratio each answer"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_8780",
+          "text": {
+            "zh-TW": "看到 ROE 高就以為本業特別會賺錢",
+            "en": "Assuming a high ROE means the core business is especially profitable"
+          }
+        },
+        {
+          "id": "mc_b56b",
+          "text": {
+            "zh-TW": "以為「資產有多大比例來自負債」要看權益倍數",
+            "en": "Thinking the equity multiplier answers ‘what share of assets is funded by liabilities’"
+          }
+        },
+        {
+          "id": "mc_mmcy",
+          "text": {
+            "zh-TW": "以為權益倍數越高越安全",
+            "en": "Thinking a higher equity multiplier means a safer company"
+          }
+        },
+        {
+          "id": "mc_0c1v",
+          "text": {
+            "zh-TW": "搞錯權益倍數和負債多寡的關係（倍數一倍其實是沒有負債，大於一才表示有負債）",
+            "en": "Getting the link between the equity multiplier and liabilities wrong (a multiplier of one actually means no liabilities; above one means there are some)"
+          }
+        },
+        {
+          "id": "mc_ytrm",
+          "text": {
+            "zh-TW": "以為請股東再增資一定能提高 ROE",
+            "en": "Thinking that asking shareholders for more capital must raise ROE"
+          }
+        },
+        {
+          "id": "mc_ezwx",
+          "text": {
+            "zh-TW": "以為「資產有多大比例來自負債」要用負債除以權益",
+            "en": "Thinking ‘what share of assets comes from liabilities’ is liabilities divided by equity"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "ratio_interpret",
+        "single_choice",
+        "ratio_numeric",
+        "multi_choice"
+      ],
+      "termRefs": [
+        "tm_1ebm48ca",
+        "tm_0k8vegyr",
+        "tm_r0a5t3kq",
+        "tm_2ggtxnaz",
+        "tm_9e1rb64c"
+      ],
+      "pendingRefs": [
+        "T21",
+        "T38"
+      ]
+    },
+    {
+      "id": "obj_2a6vbq",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_65j92w",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能說出人均營收與研發、資本支出、行銷相關的指標各衡量什麼、分子分母是什麼，並把指標放進正確的類別",
+        "en": "Say what revenue per employee and the research, capital spending and marketing indicators each measure and what their numerators and denominators are, and place indicators in the right category"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_tte1",
+          "text": {
+            "zh-TW": "以為人均營收高就代表公司有賺錢",
+            "en": "Assuming high revenue per employee means the company is profitable"
+          }
+        },
+        {
+          "id": "mc_rqdt",
+          "text": {
+            "zh-TW": "以為 RD intensity 越低越好",
+            "en": "Thinking a lower R&D intensity is always better"
+          }
+        },
+        {
+          "id": "mc_zwm6",
+          "text": {
+            "zh-TW": "以為 CE intensity 與 CE turnover 提供不同的資訊",
+            "en": "Thinking capex intensity and capex turnover give different information"
+          }
+        },
+        {
+          "id": "mc_zfjp",
+          "text": {
+            "zh-TW": "把行銷費用當成營業成本的一部分",
+            "en": "Treating marketing expenses as part of cost of sales"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "classify",
+        "single_choice",
+        "ratio_numeric",
+        "ratio_interpret"
+      ],
+      "termRefs": [
+        "tm_g50575m9",
+        "tm_vpzcjk6n",
+        "tm_1hgn004m",
+        "tm_jcbwesg8",
+        "tm_x6e56fqp"
+      ]
+    },
+    {
+      "id": "obj_v29ayq",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_65j92w",
+      "order": 5,
+      "statement": {
+        "zh-TW": "能在幾個都合理的經營方案之間，用純益率、週轉率與權益倍數說明取捨的依據",
+        "en": "Between several reasonable business options, explain the trade-off using net profit margin, turnover and the equity multiplier"
+      },
+      "skill": "judge",
+      "misconceptions": [
+        {
+          "id": "mc_msd3",
+          "text": {
+            "zh-TW": "以為提高 ROE 只有一種正確的做法",
+            "en": "Thinking there is only one correct way to raise ROE"
+          }
+        },
+        {
+          "id": "mc_jrw9",
+          "text": {
+            "zh-TW": "以為提高 ROE 不需要付出任何代價",
+            "en": "Thinking ROE can be raised at no cost"
+          }
+        }
+      ],
+      "plannedQuestions": 1,
+      "suggestedTypes": [
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_1ebm48ca",
+        "tm_0k8vegyr",
+        "tm_2ggtxnaz"
+      ],
+      "pendingRefs": [
+        "T37"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "id": "q_753by8kn",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -26,7 +26,7 @@
       "id": "o_h5sv",
       "text": {
         "zh-TW": "還沒付給豆商的進貨款",
-        "en": "The bean supplier's invoice that has not been paid yet"
+        "en": "The bean supplier’s invoice that has not been paid yet"
       },
       "feedback": {
         "zh-TW": "是負債。貨已經收到、錢還沒付，這就是應付帳款。",
@@ -52,7 +52,7 @@
       },
       "feedback": {
         "zh-TW": "不是負債。股本是股東自己出的錢，店不必償還，屬於股東權益。",
-        "en": "Not a liability. Share capital is the owner's own money and does not have to be repaid, so it is equity."
+        "en": "Not a liability. Share capital is the owner’s own money and does not have to be repaid, so it is equity."
       },
       "misconceptionId": "mc_8ef5"
     },
@@ -76,6 +76,6 @@
   "scoringMode": "all_correct",
   "explanation": {
     "zh-TW": "負債的判斷標準是「將來要付給別人」。{{option:o_h5sv}}與{{option:o_yzk9}}都是店欠別人的錢，所以都是負債。{{option:o_per2}}不必償還，是股東權益；{{option:o_7n4m}}是店擁有的東西，是資產。",
-    "en": "The test for a liability is \"will have to be paid to someone else\". {{option:o_h5sv}} and {{option:o_yzk9}} are both owed by the shop, so both are liabilities. {{option:o_per2}} never has to be repaid, so it is equity; {{option:o_7n4m}} is something the shop owns, so it is an asset."
+    "en": "The test for a liability is ‘will have to be paid to someone else’. {{option:o_h5sv}} and {{option:o_yzk9}} are both owed by the shop, so both are liabilities. {{option:o_per2}} never has to be repaid, so it is equity; {{option:o_7n4m}} is something the shop owns, so it is an asset."
   }
 }

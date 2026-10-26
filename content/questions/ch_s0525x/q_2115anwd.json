@@ -1,6 +1,6 @@
 {
   "id": "q_2115anwd",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -71,7 +71,7 @@
   ],
   "prompt": {
     "zh-TW": "河岸麵包坊用現金 {{money:e1.amount}} 付了這個月把麵包送到各家咖啡店的包裝運送費。這筆支出之後，下面四個數字各會怎麼變？",
-    "en": "Riverside Bakery pays {{money:e1.amount}} in cash for this month's packing and delivery of bread to cafés. After this payment, how does each of the four figures below change?"
+    "en": "Riverside Bakery pays {{money:e1.amount}} in cash for this month’s packing and delivery of bread to cafés. After this payment, how does each of the four figures below change?"
   },
   "explanation": {
     "zh-TW": "包裝運送費是銷管費用，所以銷管費用小計增加 {{money:e1.amount}}，營業利益減少同樣的金額；營業毛利不受影響，因為它只看收入減營業成本。現金當然也減少了 {{money:e1.amount}}。",

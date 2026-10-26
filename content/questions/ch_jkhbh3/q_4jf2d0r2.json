@@ -1,0 +1,82 @@
+{
+  "id": "q_4jf2d0r2",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_8ypaqg",
+  "difficulty": 2,
+  "tags": [
+    "cash_flow_activity",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_p2a7c5vk",
+    "tm_9hrfpqem",
+    "tm_f9a4c6md",
+    "tm_y7a34vmk"
+  ],
+  "scored": true,
+  "type": "classify",
+  "prompt": {
+    "zh-TW": "美琪的「山谷民宿」年底有這幾筆現金進出，有些比較容易混淆。每一筆屬於營業、投資還是籌資活動？",
+    "en": "Mei’s Valley Guesthouse had these cash movements at year end, and some are easy to mix up. Is each one an operating, investing or financing activity?"
+  },
+  "dimension": "cf_activity",
+  "items": [
+    {
+      "id": "it_jzxm",
+      "text": {
+        "zh-TW": "還掉短期借款的本金",
+        "en": "Repaying the principal of a short-term loan"
+      }
+    },
+    {
+      "id": "it_5vns",
+      "text": {
+        "zh-TW": "付給銀行的借款利息",
+        "en": "Paying the interest on the loan to the bank"
+      }
+    },
+    {
+      "id": "it_2gvq",
+      "text": {
+        "zh-TW": "發放現金股利給股東",
+        "en": "Paying a cash dividend to the shareholders"
+      }
+    },
+    {
+      "id": "it_mtg5",
+      "text": {
+        "zh-TW": "繳納這一年的所得稅",
+        "en": "Paying the income tax for the year"
+      }
+    },
+    {
+      "id": "it_z204",
+      "text": {
+        "zh-TW": "把用了好幾年、已經換新的接駁廂型車賣給中古車行，收到現金",
+        "en": "Selling the guesthouse’s old shuttle van, now replaced, to a used-car dealer for cash"
+      }
+    },
+    {
+      "id": "it_cjrc",
+      "text": {
+        "zh-TW": "收回上個月賒帳的旅行社團費",
+        "en": "Collecting what a travel agency owed from last month’s group booking"
+      }
+    }
+  ],
+  "correctCategories": {
+    "it_jzxm": "financing",
+    "it_5vns": "operating",
+    "it_2gvq": "financing",
+    "it_mtg5": "operating",
+    "it_z204": "investing",
+    "it_cjrc": "operating"
+  },
+  "explanation": {
+    "zh-TW": "還本金和發股利是把錢還給或分給資金提供者，屬於{{term:tm_f9a4c6md}}。利息是借錢的代價，課程模板把它列在{{term:tm_p2a7c5vk}}裡的{{term:tm_y7a34vmk}}這一列（現行 IAS 7 允許列營業或籌資，網站沿用課程的做法；IFRS 18 適用後一般企業要改列籌資，詳見名詞卡）；所得稅與收回帳款也都是營業活動。處分用了好幾年的廂型車，和當初買它一樣，屬於{{term:tm_9hrfpqem}}。",
+    "en": "Repaying principal and paying dividends hand money back to, or share it out among, the providers of funds, so they are {{term:tm_f9a4c6md}}. Interest is the price of borrowing; the course template places it under {{term:tm_p2a7c5vk}}, on the {{term:tm_y7a34vmk}} line (IAS 7 currently allows operating or financing, and the site follows the course; once IFRS 18 applies, most entities will have to classify it as financing, as the term card explains). Income tax and collecting a receivable are operating too. Disposing of the long-used van, like buying it in the first place, is {{term:tm_9hrfpqem}}."
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "id": "q_ych499y5",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "ratio_interpret",
+  "ratioRef": "dol@excel",
+  "objectiveId": "obj_6r5ph7",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "leverage"
+  ],
+  "termRefs": [
+    "tm_tspyazrx",
+    "tm_z3vbt800",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "vars": {
+    "dol": 2.5,
+    "growth": 0.1,
+    "profitGrowth": 0.25,
+    "gp": 1000000,
+    "oi": 400000,
+    "revStep": 100,
+    "profitStep": 250
+  },
+  "prompt": {
+    "zh-TW": "木岸家具今年營業毛利 {{money:vars.gp}}、營業利益 {{money:vars.oi}}，營運槓桿度是 {{number:vars.dol|digits=2,unit=times}}（見上表）。如果明年營收成長 {{percent:vars.growth}}、其他條件不變，下列哪一個推論正確？",
+    "en": "Woodbank Furniture had gross profit of {{money:vars.gp}} and operating profit of {{money:vars.oi}} this year, a degree of operating leverage of {{number:vars.dol|digits=2,unit=times}} (see the table above). If revenue grows by {{percent:vars.growth}} next year and nothing else changes, which conclusion is correct?"
+  },
+  "options": [
+    {
+      "id": "o_67j6",
+      "text": {
+        "zh-TW": "營業利益大約成長 {{percent:vars.profitGrowth}}",
+        "en": "Operating profit grows by roughly {{percent:vars.profitGrowth}}"
+      },
+      "feedback": {
+        "zh-TW": "答對了。槓桿度放大的是百分比：營收的變動百分比乘以槓桿度，就是營業利益的變動百分比。",
+        "en": "That’s right. Leverage magnifies percentages: the percentage change in revenue times the degree of leverage gives the percentage change in operating profit."
+      }
+    },
+    {
+      "id": "o_3qz5",
+      "text": {
+        "zh-TW": "營收每多 {{money:vars.revStep}}，營業利益就多 {{money:vars.profitStep}}",
+        "en": "For every extra {{money:vars.revStep}} of revenue, operating profit rises by {{money:vars.profitStep}}"
+      },
+      "feedback": {
+        "zh-TW": "你抓到「營業利益變動比營收大」這個方向，這點對。不過槓桿度放大的是變動的「百分比」，不是金額；營業利益不可能比多出來的營收還多。課程有些例子用金額說明槓桿度；網站統一用百分比解讀，因為槓桿度的定義就是兩個變動百分比相除。",
+        "en": "You got the direction right: operating profit moves more than revenue. But leverage magnifies the percentage change, not the amount; operating profit cannot rise by more than the extra revenue itself. Some course examples explain leverage in amounts; the site always reads it in percentages, because leverage is defined as one percentage change divided by another."
+      },
+      "misconceptionId": "mc_v222"
+    },
+    {
+      "id": "o_y5d3",
+      "text": {
+        "zh-TW": "營業利益也剛好成長 {{percent:vars.growth}}，因為成本會等比例增加",
+        "en": "Operating profit also grows by exactly {{percent:vars.growth}}, because costs rise in proportion"
+      },
+      "feedback": {
+        "zh-TW": "如果所有成本都隨營收等比例變動，槓桿度會是 {{number:1|digits=0,unit=times}}；木岸家具的槓桿度大於 {{number:1|digits=0,unit=times}}，表示有固定費用，營業利益的變動比例會比營收大。",
+        "en": "If every cost moved in proportion to revenue the degree of leverage would be {{number:1|digits=0,unit=times}}; Woodbank’s is above {{number:1|digits=0,unit=times}}, which means there are fixed costs and operating profit moves proportionally more than revenue."
+      }
+    }
+  ],
+  "correctOptionId": "o_67j6",
+  "explanation": {
+    "zh-TW": "{{term:tm_tspyazrx}}回答「營收變動 {{percent:0.01|digits=0}}，營業利益變動百分之幾」。{{option:o_67j6}}用百分比正確放大；{{option:o_3qz5}}誤用金額，{{option:o_y5d3}}等於假設沒有固定費用。",
+    "en": "The {{term:tm_tspyazrx}} answers ‘by what percentage does operating profit change when revenue changes by {{percent:0.01|digits=0}}’. {{option:o_67j6}} magnifies the percentage correctly; {{option:o_3qz5}} wrongly uses amounts, and {{option:o_y5d3}} amounts to assuming there are no fixed costs."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "dol@excel"
+    ],
+    "measures": {
+      "is_gross_profit": "vars.gp",
+      "is_operating_income": "vars.oi"
+    }
+  }
+}

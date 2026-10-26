@@ -1,26 +1,55 @@
 {
   "id": "tm_baexgs31",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "有效稅率", "en": "Effective tax rate" },
+  "label": {
+    "zh-TW": "有效稅率",
+    "en": "Effective tax rate"
+  },
   "teacherLabel": "有效稅率",
   "currentTwLabel": "有效稅率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T10"],
+  "pendingRefs": [
+    "T10"
+  ],
   "ifrsBasis": "IAS 12.86",
-  "note": { "zh-TW": "與法定稅率不符時提示屬教學設定（T10）。", "en": "When it differs from the statutory rate the site notes that the rate is a teaching assumption (T10)." },
+  "note": {
+    "zh-TW": "本課故事的所得稅金額是課程的教學設定，與法定稅率不符時，網站會提示這一點。",
+    "en": "The tax amount in the course story is a teaching assumption; when the effective rate differs from the statutory rate, the site points this out."
+  },
   "definition": {
-    "zh-TW": "所得稅費用占稅前淨利的比例，也就是公司實際負擔的稅率。它和法定稅率不一定相同。",
-    "en": "Income tax expense as a share of profit before tax: the tax rate the company actually bears. It need not equal the statutory rate."
+    "zh-TW": "把本期的所得稅費用拿來和稅前淨利相比得到的百分比，也就是公司每賺一元稅前利潤，實際上有多少被所得稅拿走。\n\n它常和法定稅率不一樣，因為有免稅所得、不可扣除的費用以及以前年度的虧損扣抵等因素。",
+    "en": "Income tax expense divided by profit before tax: for each unit of pre-tax profit, how much is actually taken by income tax.\n\nIt often differs from the statutory rate because of tax-exempt income, non-deductible expenses and losses carried forward."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表最下面幾列。稅前淨利為 0 時顯示 N/A，為負時比率不具解釋意義。本課故事的所得稅金額是課程的教學設定，所以算出來的有效稅率和法定稅率不符，實驗室會提示這一點。",
+    "en": "Both figures are in the last few lines of the income statement. When profit before tax is zero the result is N/A; when it is negative the ratio is not meaningful. The tax amount in the course story is a teaching assumption, so the effective rate it produces does not match the statutory rate, and the lab points this out."
+  },
+  "misconception": {
+    "zh-TW": "以為有效稅率一定等於法定稅率。法定稅率是法律規定的名目稅率，有效稅率是用報表數字算出來的實際負擔，兩者相差越大，表示稅務調整的影響越大。",
+    "en": "Expecting the effective rate to equal the statutory rate. The statutory rate is the nominal rate set by law; the effective rate is the actual burden computed from the statements, and a wide gap signals large tax adjustments."
+  },
+  "formula": {
+    "zh-TW": "有效稅率的算法：所得稅費用 ÷ 稅前淨利，看稅前賺到的錢有幾成繳了稅。",
+    "en": "Effective tax rate = income tax expense ÷ profit before tax."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不把它當成報表列；IAS 12.86 在附註揭露中稱它為平均有效稅率。",
-    "en": "IFRS does not treat it as a statement line; IAS 12.86 calls it the average effective tax rate in the note disclosures."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "effective_tax_rate@slides01"
+  "ratioRef": "effective_tax_rate@slides01",
+  "related": [
+    "tm_3qfqnrmm",
+    "tm_z971merj",
+    "tm_kgv20zg0",
+    "tm_n4e8t2jy"
+  ]
 }

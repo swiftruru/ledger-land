@@ -2,22 +2,51 @@
   "id": "tm_873r9bx9",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "銷貨債權增加(-)", "en": "Increase in trade receivables (-)" },
+  "label": {
+    "zh-TW": "銷貨債權增加(-)",
+    "en": "Increase in trade receivables (-)"
+  },
   "teacherLabel": "銷貨債權增加(-)",
   "currentTwLabel": "應收帳款（增加）減少",
   "ifrsEnglish": "Increase in trade receivables",
-  "aliases": { "zh-TW": ["應收帳款增加(-)"], "en": ["Increase in accounts receivable (-)"] },
-  "flags": ["japanese"],
+  "aliases": {
+    "zh-TW": [
+      "應收帳款增加(-)"
+    ],
+    "en": [
+      "Increase in accounts receivable (-)"
+    ]
+  },
+  "flags": [
+    "japanese"
+  ],
   "confidence": "high",
-  "pendingRefs": ["T12", "T15"],
+  "pendingRefs": [
+    "T12",
+    "T15"
+  ],
   "note": {
-    "zh-TW": "「銷貨債權」直譯自日文売上債権，就是應收帳款；台灣報表每個科目只有一行淨變動。T12、T15 回覆後再定主要顯示。",
-    "en": "The Japanese-style label means trade receivables; Taiwanese statements show one net-change line per account. The main display will be settled after T12 and T15."
+    "zh-TW": "「銷貨債權」直譯自日文売上債権，泛指因銷貨產生的應收票據與應收帳款，本課只有應收帳款。網站維持課程原字為主要顯示，「應收帳款增加(-)」列為別名，並附現行用語對照；淨增加填這一列，淨減少填「應收帳款減少(+)」。台灣報表每個科目只有一行淨變動。",
+    "en": "The Japanese-style label covers trade notes and accounts receivable arising from sales; this course only has accounts receivable. The site keeps the course label as the main display, lists Increase in accounts receivable (-) as an alias and shows the current Taiwanese caption alongside; a net increase goes on this line and a net decrease on the decrease in trade receivables (+) line. Taiwanese statements show one net-change line per account."
   },
   "definition": {
-    "zh-TW": "應收帳款增加表示有些銷貨還沒收到錢，收入裡有一部分不是現金，所以要從稅前淨利減掉。",
-    "en": "When receivables rise, part of the revenue has not yet been collected, so that amount is deducted from profit before tax."
-  }
+    "zh-TW": "間接法裡的調整列：本期應收帳款比期初多了多少。\n\n應收帳款增加代表有一部分收入還沒收到現金，所以要從稅前淨利扣掉。「銷貨債權」直譯自日文，指因銷貨產生的應收票據與應收帳款；本課只有應收帳款。",
+    "en": "An adjustment line in the indirect method: how much trade receivables have grown since the start of the period.\n\nAn increase means part of the revenue has not yet been received in cash, so it is deducted from profit before tax. The label is a direct translation from Japanese covering trade notes and accounts receivable; this course only has accounts receivable."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動的營運資金變動區。故事裡賒銷之後、收款之前，這一列會出現負數，說明為什麼淨利很高但營業活動的現金沒有跟上。課程模板另有「應收帳款減少(+)」處理相反方向。",
+    "en": "Where it sits: the working capital section of operating activities in the statement of cash flows. In the story, between the credit sale and its collection, this line shows a negative figure, explaining why profit is high while operating cash has not caught up. The course template has a separate decrease line for the opposite direction."
+  },
+  "misconception": {
+    "zh-TW": "把賒銷當成已經收到的現金。賒銷當下只有收入和應收帳款增加，現金一毛錢都沒進來；這一列就是把這個差額從淨利中扣掉。",
+    "en": "Treating a credit sale as cash already received. At the moment of sale only revenue and receivables rise; no cash arrives. This line removes exactly that gap from profit."
+  },
+  "related": [
+    "tm_4dgfgxmt",
+    "tm_r7x2c9fa",
+    "tm_v3n8q2ye",
+    "tm_mcjk5sza"
+  ]
 }

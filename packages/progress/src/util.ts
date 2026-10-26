@@ -148,6 +148,17 @@ export function base64urlDecode(text: string): Uint8Array | undefined {
   return Uint8Array.from(out);
 }
 
+/** 把 NaN、Infinity 換成 null（遞迴處理陣列與物件），其餘原樣：IndexedDB 的結構化複製接受非有限的數字，JSON 與 canonicalJson 不接受，
+ *  備份前先清掉，避免一筆壞掉的作答紀錄讓每次匯出都失敗（core-3） */
+export function finiteJson<T>(value: T): T {
+  if (typeof value === 'number') return (Number.isFinite(value) ? value : null) as T;
+  if (value === null || typeof value !== 'object') return value;
+  if (Array.isArray(value)) return value.map((v: unknown) => finiteJson(v)) as unknown as T;
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(value as Record<string, unknown>)) out[k] = finiteJson(v);
+  return out as T;
+}
+
 /** 深層複製純資料（JSON 可表示的值），讓儲存實作回傳的資料不與內部狀態共用參照 */
 export function clonePlain<T>(value: T): T {
   if (value === null || typeof value !== 'object') return value;

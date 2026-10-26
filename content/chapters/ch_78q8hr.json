@@ -1,0 +1,48 @@
+{
+  "id": "ch_78q8hr",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "order": 4,
+  "scope": "core",
+  "examScope": "midterm",
+  "title": {
+    "zh-TW": "資產負債表：結帳那天的全貌",
+    "en": "The balance sheet: the full picture on closing day"
+  },
+  "summary": {
+    "zh-TW": "跟著一家衝浪店和一家書店，看懂資產負債表的左右兩邊為什麼永遠相等：科目怎麼分成資產、負債與股東權益，哪些是一年內的流動項目，賺到的錢怎麼留在未分配盈餘，以及流動比率怎麼看短期還得出錢來的能力。",
+    "en": "Follow a surf shop and a bookshop to see why the two sides of the balance sheet always agree: how accounts fall into assets, liabilities and equity, which items are current, how profit stays in unappropriated retained earnings, and how the current ratio gauges the ability to pay what falls due within the year."
+  },
+  "objectiveIds": [
+    "obj_bt5xpr",
+    "obj_8e479x",
+    "obj_qg146a",
+    "obj_0x64wz",
+    "obj_d6egd4"
+  ],
+  "levelIds": [
+    "lv_65v1tajr",
+    "lv_d03p1z66",
+    "lv_4tcv2pd7",
+    "lv_fjndp8nf"
+  ],
+  "prerequisites": [
+    "ch_s0525x"
+  ],
+  "badge": {
+    "icon": "scales",
+    "title": {
+      "zh-TW": "兩邊一樣重",
+      "en": "Both sides level"
+    }
+  },
+  "termRefs": [
+    "tm_sf72dfsv",
+    "tm_cfghjxzq",
+    "tm_k52yxb68",
+    "tm_c2y9b5ex",
+    "tm_4c6v99nn",
+    "tm_c8r1t4zm"
+  ]
+}

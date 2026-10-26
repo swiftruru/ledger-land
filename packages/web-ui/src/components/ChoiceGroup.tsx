@@ -2,9 +2,10 @@
 // 整張選項卡片都是 label。判分不在這裡：按「確認答案」後由父層把結果（checked 加 correctOptionIds 或逐選項的 statuses）傳進來，
 // 元件只負責把每個選項的狀態以文字加圖示顯示（不只靠顏色），並以 aria-describedby 連到選項。
 import { Trans, useLingui } from '@lingui/react/macro';
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { Button } from './Button.tsx';
-import { CheckCircleIcon, CheckSquareIcon, CircleIcon, LightbulbIcon, RadioIcon, SquareIcon, XCircleIcon } from './icons.tsx';
+import { CheckCircleIcon, CheckSquareIcon, CircleIcon, LightbulbIcon, RadioIcon, RetryIcon, SquareIcon, XCircleIcon } from './icons.tsx';
+import { phraseParts } from './phrase.ts';
 
 export interface ChoiceOption {
   id: string;
@@ -55,6 +56,23 @@ export function toSelectedIds(selected: string | null | readonly string[]): read
 export function deriveChoiceStatus(chosen: boolean, isCorrect: boolean, hint?: ChoiceHint): ChoiceOptionStatus {
   if (isCorrect) return chosen ? 'correct_selected' : hint === 'any_correct' ? 'also_reasonable' : 'correct_not_selected';
   return chosen ? 'wrong_selected' : 'wrong_not_selected';
+}
+
+/** 狀態行與多正解提示的短句依詞換行（phraseParts 加 .ll-phrased，全站換行規則；M3 驗收第 8 輪後：320 加 200% 的「正確答案，你／選了」）。
+ *  選項群組只在作答頁（懶載入），phrase.ts 在 common chunk，作答頁本來就載 */
+function Phrased({ text }: { text: string }) {
+  const parts = phraseParts(text);
+  if (!parts) return <>{text}</>;
+  return (
+    <span className="ll-phrased">
+      {parts.map((p, i) => (
+        <Fragment key={i}>
+          {i > 0 && <wbr />}
+          {p}
+        </Fragment>
+      ))}
+    </span>
+  );
 }
 
 function StatusMark({ status, mode }: { status: ChoiceOptionStatus; mode: 'single' | 'multiple' }) {
@@ -123,7 +141,9 @@ export function ChoiceGroup({
         {hintText !== null ? (
           <legend id={legendId} className="ll-choice__hint">
             <LightbulbIcon size={16} />
-            <span>{hintText}</span>
+            <span>
+              <Phrased text={hintText} />
+            </span>
           </legend>
         ) : prompt !== undefined ? (
           <legend id={legendId}>{prompt}</legend>
@@ -169,7 +189,9 @@ export function ChoiceGroup({
                   </span>
                   {status !== null && (
                     <span id={fbId}>
-                      <span className="ll-option__status">{statusText[status]}</span>
+                      <span className="ll-option__status">
+                        <Phrased text={statusText[status]} />
+                      </span>
                       {o.feedback && <span className="ll-option__feedback">{o.feedback}</span>}
                     </span>
                   )}
@@ -190,16 +212,16 @@ export function ChoiceGroup({
       }}
     >
       {body}
-      <div className="ll-row ll-actions">
+      <div className="ll-question__actions">
         {!checked ? (
-          <Button type="submit" variant="primary" disabled={selectedIds.length === 0}>
+          <Button type="submit" variant="primary" size="lg" disabled={selectedIds.length === 0}>
             <Trans id="quiz.submit" comment="作答的共用按鈕，按下後才判分">
               確認答案
             </Trans>
           </Button>
         ) : (
           onRetry && (
-            <Button onClick={onRetry}>
+            <Button icon={<RetryIcon />} onClick={onRetry}>
               <Trans id="quiz.retry" comment="作答後重新作答同一題">
                 再試一次
               </Trans>

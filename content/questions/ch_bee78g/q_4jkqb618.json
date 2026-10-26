@@ -1,0 +1,83 @@
+{
+  "id": "q_4jkqb618",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "ratio_interpret",
+  "ratioRef": "roe@excel",
+  "objectiveId": "obj_mj1tas",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "profitability",
+    "cross_check"
+  ],
+  "termRefs": [
+    "tm_0k8vegyr",
+    "tm_9e1rb64c",
+    "tm_y37ymj9w",
+    "tm_n4e8t2jy"
+  ],
+  "scored": true,
+  "vars": {
+    "last": 0.1,
+    "now": 0.15,
+    "ni": 300000,
+    "equity": 2000000
+  },
+  "prompt": {
+    "zh-TW": "初陽貿易今年本期淨利 {{money:vars.ni}}（和去年一樣），年底股東權益總額 {{money:vars.equity}}；ROE 從去年的 {{percent:vars.last}} 升到今年的 {{percent:vars.now}}（見上表）。年中公司發了一筆很大的現金股利。哪一個判讀最合理？",
+    "en": "First Light Trading’s profit for the period is {{money:vars.ni}} this year (the same as last year) and total equity at year end is {{money:vars.equity}}; ROE rose from {{percent:vars.last}} last year to {{percent:vars.now}} this year (see the table above). Mid-year the company paid a very large cash dividend. Which reading is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_0hrk",
+      "text": {
+        "zh-TW": "ROE 上升是因為分母的股東權益變小，不是賺得更多",
+        "en": "ROE rose because equity in the denominator shrank, not because more was earned"
+      },
+      "feedback": {
+        "zh-TW": "答對了。分子沒變、比率上升，答案一定在分母；再看負債比率是否上升，就能確認是資本結構改變。",
+        "en": "That’s right. With the numerator unchanged, a higher ratio must come from the denominator; checking whether the debt ratio rose confirms a change in capital structure."
+      }
+    },
+    {
+      "id": "o_456y",
+      "text": {
+        "zh-TW": "ROE 上升代表初陽貿易的獲利能力變好了",
+        "en": "The rise in ROE means First Light Trading has become more profitable"
+      },
+      "feedback": {
+        "zh-TW": "ROE 確實是獲利能力的指標，你的直覺有道理。不過題目說本期淨利沒變；比率上升只是因為大額股利讓權益變小，生意本身沒有變好。",
+        "en": "ROE is indeed a profitability ratio, so the instinct is understandable. But profit for the period did not change; the ratio rose only because the large dividend shrank equity, and the business itself did not improve."
+      },
+      "misconceptionId": "mc_w74a"
+    },
+    {
+      "id": "o_qhm1",
+      "text": {
+        "zh-TW": "ROE 上升一定是因為今年的營收成長了",
+        "en": "ROE must have risen because revenue grew this year"
+      },
+      "feedback": {
+        "zh-TW": "ROE 的分子是本期淨利，題目說它沒變；分子不變而比率上升，只可能是分母變小，和營收無關。",
+        "en": "The numerator of ROE is profit for the period, which did not change; an unchanged numerator with a higher ratio can only mean a smaller denominator, nothing to do with revenue."
+      }
+    }
+  ],
+  "correctOptionId": "o_0hrk",
+  "explanation": {
+    "zh-TW": "拆解{{term:tm_0k8vegyr}}：分子{{term:tm_n4e8t2jy}}沒變，分母{{term:tm_y37ymj9w}}因為發股利變小。{{option:o_0hrk}}找到了分母，再看負債比率是否跟著上升就能交叉檢查；{{option:o_456y}}與{{option:o_qhm1}}都只看表面的上升。",
+    "en": "Break {{term:tm_0k8vegyr}} down: the numerator, {{term:tm_n4e8t2jy}}, did not change, while the denominator, {{term:tm_y37ymj9w}}, shrank because of the dividend. {{option:o_0hrk}} finds the denominator, and checking whether the debt ratio rose as well cross-checks it; {{option:o_456y}} and {{option:o_qhm1}} look only at the surface rise."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "roe@excel"
+    ],
+    "measures": {
+      "is_net_income": "vars.ni",
+      "bs_total_equity": "vars.equity"
+    }
+  }
+}

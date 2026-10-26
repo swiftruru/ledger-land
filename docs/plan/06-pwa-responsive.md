@@ -226,9 +226,9 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 <meta name="apple-mobile-web-app-title" content="LedgerLand">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="manifest" href="/manifest.webmanifest">
+<!-- manifest 連結在第一次繪製送出後才由殼層插入（見下面的規則與 8.2） -->
 <link rel="icon" href="/favicon.ico" sizes="32x32">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="data:image/svg+xml,…" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
   html, body { background: #FCF8F0; }
@@ -238,7 +238,7 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
   html[data-flavor="berry"], html[data-flavor="berry"] body { background: #171018; }
   html[data-flavor="wine"], html[data-flavor="wine"] body { background: #181012; }
 </style>
-<script>/* boot 腳本：依網址寫入 html lang（/en/ 開頭為 en，其餘為 zh-TW，見 05），讀 ll:theme 與 ll:dark-flavor 寫入 data-theme 與 data-flavor（16 第 7 節），並寫入 data-display、data-glass、data-motion，見 2.7 與 07 第 5 節 */</script>
+<script>/* boot 腳本：依網址寫入 html lang（/en/ 開頭為 en，其餘為 zh-TW，見 05），讀 ll:theme 與 ll:dark-flavor 寫入 data-theme 與 data-flavor（16 第 7 節），並寫入 data-display、data-glass、data-motion，見 2.7 與 07 第 5 節；M3 起另依路徑插入這一頁的 modulepreload 與內容快照的 preload，表格由建置後腳本填入，見 8.2 */</script>
 ```
 
 ```html
@@ -263,6 +263,7 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 - `interactive-widget=resizes-content` 由 Chromium 支援，Safari 不支援；iOS 的鍵盤處理改用 visualViewport（第 7 節）。
 - 背景色在 `<head>` 內聯，確保首次繪製就是品牌色，避免啟動或換頁時閃白，也讓 Safari 從 `html`／`body` 取色時拿到正確的值。已決定（2026-10-20）：首次繪製背景色由 `packages/tokens` 在建置時產生（07 第 2.1 節），上面的色碼是示意；殼層 `index.html` 屬於 `apps/web`。
 - 不使用 `apple-mobile-web-app-status-bar-style: black-translucent` 的全螢幕延伸效果（理由見 2.4）。
+- SVG 圖示寫成 HTML 裡的 data: URI（建置時由 `public/favicon.svg` 產生，檔案照常部署並進 precache），`<link rel="manifest">` 在第一次繪製送出後才由殼層插入（`src/app/manifest-link.ts`，和 Service Worker 的註冊同一個時間點；建置時插入的那一個由 `vite.config.ts` 的 `ll-defer-manifest-link` 拿掉）。已決定（2026-10-26，M3 收尾 QA）：瀏覽器在 load 前後就會抓 favicon、manifest 與 192px 的安裝圖示，本機量測把這三個請求算在 LCP 之前（8.2）；它們不影響第一次繪製，安裝提示與「加入主畫面」都在那之後才用得到，Chrome 與 Safari 都會處理之後才加進來的 manifest 連結。CSP 的 `img-src` 本來就允許 `data:`。
 - CSP 的 `script-src` 放行兩段 inline 腳本的 sha256（head 的 boot 腳本、`nav` 之後的殼層在地化腳本），首次繪製的 `<style>` 另有雜湊或規則；CI 檢查兩段腳本的雜湊與殼層一致（9.4）【待實測 V15】，細節見 [09 技術選擇](09-tech-stack.md)。
 
 ### 2.4 主題色、狀態列與啟動畫面
@@ -303,7 +304,8 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 - 不在首次載入時跳出；不在課堂 QR 的落地頁跳出（QR 落地頁要直接進入內容，見 02）；不在作答中或實驗室步驟中跳出。
 - 觸發點：第一次完成一個關卡、看到星星結算頁時，在結算頁下方顯示一張可關閉的卡片：「把會計樂園加到主畫面，開啟更快，進度也比較不容易被清除。」
 - 記住選擇（存在 IndexedDB 的設定，暫定規則）：按「之後再說」後，至少再完成 3 個關卡且距離上次至少 7 天才再顯示；累計關閉 2 次後不再自動顯示，只保留「我的 › 安裝教學」入口（`/install/`）；按下安裝或偵測到 `appinstalled` 後永久不顯示。
-- M2 簡易版（已決定 2026-10-23）：關閉一次就記住、不再自動顯示；只出現在首頁與章節頁；上面「3 個關卡、7 天、累計 2 次」的完整細則留到 M3 的完整安裝圖解一起做。
+- M2 簡易版（已決定 2026-10-23）：關閉一次就記住、不再自動顯示；只出現在首頁與章節頁；上面「3 個關卡、7 天、累計 2 次」的完整細則留到 M3 的完整安裝圖解一起做。M3 實作（2026-10-26）：完整圖解已做（2.6）；顯示時機仍是簡易版的規則（至少完成一關、不是第一次造訪、只在首頁與章節頁、關閉一次就不再自動顯示），「3 個關卡、7 天、累計 2 次」與結算頁下方的卡片沒有做：結算頁在作答頁裡，路由看不出來，地圖頁也不放安裝建議的提示條（17 第 3.4 節）。這個簡化不影響安裝，「我的 › 安裝教學」一直都在；要不要補細則等試用回饋再定。
+- iOS 安裝建議的橫幅（M3 第 4 輪看圖驗收後）：說明一句「已經加入就從主畫面圖示開啟，進度存在那裡；還沒加入就看圖解。」，動作列是 secondary sm「匯出到 App」與 quiet sm 的「看圖解教學」（就地展開圖解）、「完整教學頁」、「之後再說」。
 
 **Chromium 的實作**
 
@@ -347,11 +349,13 @@ iOS 26 的 Safari 分頁列有三種版面：Compact（預設，往下捲動時�
 
 設計規則：
 
-- 網頁偵測不到使用者的分頁列版面，所以教學頁上方放兩張小縮圖讓使用者自己選「我的 Safari 長這樣」，選擇記在設定裡。
+M3 實作（2026-10-25 到 26，`apps/web/src/features/install/`）：`/install/` 是寬版頁，最上面是「這台裝置的做法」一張卡（iOS「用 Safari 加入主畫面」、Chromium「用這個瀏覽器安裝」、其他瀏覽器「換個瀏覽器安裝」），下面是 iPhone 的完整做法（展開列，1024 以上預設展開）；首頁的 iOS 安裝建議橫幅也能就地展開同一份圖解。每一步是一張原創的 SVG 示意圖加一句說明（示意圖 96px，卡片內容 480px 以上放大到 120px；720px 以上的寬卡片改成步驟並排的方塊；文字放大 200% 的窄卡片改成圖在上、字在下）。Chromium 沒有安裝事件時是兩步（選單、確認）加「我已安裝」，有安裝事件時是一步加 primary「安裝」。iOS 的版本判斷用 Safari 的 `Version/`（Safari 的版本跟著 iOS 主版本走，沒有凍結）：26 以上給兩種分頁列版面讓使用者選，17、18 只用 Top／Bottom 那一套（E2E `glossary.spec.ts` 的「安裝圖解」三組）；沒有 `Version/` 的第三方瀏覽器 UA 讀到 OS 18 時可能是凍結值，交給使用者選。截圖與目前 iOS 介面是否一致還沒在實機確認（10 第 10 節完成標準，[M3 回報](../reports/m3.md) 第 7 節的實機清單）。
+
+- 網頁偵測不到使用者的分頁列版面，所以教學頁上方放兩張小縮圖讓使用者自己選「我的 Safari 長這樣」，選擇記在設定裡（M3 實作是圖解上方的分段控制，選擇記在進度的 settings `installGuideLayout`）。
 - 插圖為原創的簡化示意圖，不放 iOS 實機截圖（截圖含 Apple 的介面素材，見 07 第 12 節）；按鈕用 Phosphor 的圖示示意並附文字標籤。
 - 教學文字與插圖放在 i18n 內容檔，iOS 改版時只要更新內容，不必改程式。
 - 教學的第 0 步是「先把進度帶走」：按「匯出到 App」複製文字備份碼（同時提供存成備份檔，見 4.7），再開始加入主畫面。
-- iOS 17 與 18 沒有「以 Web App 打開」開關（iOS 26 才有），而網頁無法可靠分辨 iOS 18 與 26（Safari 26 凍結了 UA 中的系統版本），所以這一步寫成「如果看到『以 Web App 打開』，確認它是開啟的」，兩代都適用；iOS 17、18 的分頁列沒有 Compact 版面，使用者會自己選 Top／Bottom 那一套。
+- iOS 17 與 18 沒有「以 Web App 打開」開關（iOS 26 才有），而網頁無法可靠分辨 iOS 18 與 26（Safari 26 凍結了 UA 中的系統版本），所以這一步寫成「有『以 Web App 打開』就開啟，點『加入』。」（2026-10-25 M3 收尾改短：375 的步驟說明一行約 10 字，排成兩行），兩代都適用；iOS 17、18 的分頁列沒有 Compact 版面，使用者會自己選 Top／Bottom 那一套。
 - 步驟依據的是第三方教學（其中一篇在 iOS 26.4 測試），事實核對標為 UNCERTAIN；另外，從 iOS 18 升級上來的裝置是否保留原本的 Bottom 或 Top 設定，目前沒有證據。M3 的「完整安裝圖解」以 M0a 的實機截圖為準（見文末建議新增）。
 
 來源：https://9to5mac.com/2025/09/15/iphone-ios-26-safari-new-compact-design/ 、https://support.apple.com/guide/iphone/change-the-layout-ipha9ffea1a3/26/ios/26 、https://www.ithinkdiff.com/add-web-app-bookmark-iphone-home-screen-ios-26/ （查證日期 2026-10-20）
@@ -459,7 +463,7 @@ generateSW 只處理 precache、導覽 fallback 與明確設定的 `runtimeCachi
 - **第一次啟動要上線完成快取才能離線**（M0a 實機發現，2026-10-22）：新加入主畫面的 App 有自己的儲存（V02），第一次啟動時才在背景下載 precache；加入後馬上關掉再離線開啟，會看到 Safari 的「未連接網際網路」頁。Simulator 重現：加入後約 1.5 秒就關掉，離線開啟就是錯誤頁；開一次開到快取完成，離線就正常。原本決定用 vite-plugin-pwa 的 `offlineReady` 顯示一次性提示「已經可以離線使用了。」；已改決定（2026-10-23，使用者覺得這則提示干擾又沒有意義）：不顯示提示，離線就緒的狀態只在 debug 頁看得到；安裝教學與老師的課堂說明改成提醒「加入主畫面後先打開，停留幾秒再離線」。這也是課堂情境的風險：學生裝完就失去訊號時，App 還不能離線用。
 - **課程內容不用 stale-while-revalidate**：會造成介面與內容版本混用，也會讓學生在同一堂課看到前後不同版本的題目。內容更新一律走 SW 更新流程（3.3）。
 - Workbox v7 在 install 時，對帶 revision 的項目（例如 `index.html`）用 `cache: 'reload'` 繞過 HTTP 快取，hash 檔名的資源用 `'default'`。所以就算 HTTP 快取標頭設錯（例如 GitHub Pages 那種固定 `max-age=600` 的主機），precache 也不會抓到舊版；Cloudflare 上的快取標頭見 3.5 與 9.4。會變動但檔名不帶 hash 的檔案都要放進 precache 清單並帶 revision。
-- **precache 體積預算**（暫定）：未壓縮總和不超過 5 MB，從 M0b 起由 CI 加總 precache manifest 並把關；QR 解碼器的 chunk 也算在內。若雙語內容讓總量超過預算，改成只 precache 目前介面語言，另一個語言包用 runtime CacheFirst，並在切換語言時提示下載（這會影響 05 的切換流程與離線切換語言，屆時回報）。雙語核心內容的實際大小在 M1 之後估算。已決定（2026-10-23）：CI 的檢查值（`apps/web/perf/urls.json` 的 `precacheKb`）從 1024 提高到 2048，上限 5 MB 不變；雙語內容快照隨已發布的章節成長，M2 發布三章後 precache 約 1.1 MB（量測值 1094 KB），超過 5 MB 才改成只 precache 目前語言。
+- **precache 體積預算**（暫定）：未壓縮總和不超過 5 MB，從 M0b 起由 CI 加總 precache manifest 並把關；QR 解碼器的 chunk 也算在內。若雙語內容讓總量超過預算，改成只 precache 目前介面語言，另一個語言包用 runtime CacheFirst，並在切換語言時提示下載（這會影響 05 的切換流程與離線切換語言，屆時回報）。雙語核心內容的實際大小在 M1 之後估算。已決定（2026-10-24，M3）：CI 的檢查值（`apps/web/perf/urls.json` 的 `precacheKb`）從 2048 提高到 3600，上限 5 MB 不變。內容擴到 14 章、雙語，名詞快照分成索引與分桶的完整內容、另加章節索引後 precache 實測 2793 KB（拆分前 2633 KB），取實測值加約 30% 的餘裕；名詞內容與章節快照一律留在 precache，不為了壓預算移出（離線整章可作答是 M2 與 M3 的完成標準），超過 5 MB 才改成只 precache 目前語言。原決定（2026-10-23）：CI 的檢查值從 1024 提高到 2048；M2 發布三章後 precache 約 1.1 MB（量測值 1094 KB）。
 - 進度以「題目 id 加 rev」對應（見 [08 題庫管理](08-content-admin.md)），內容更新後進度不會錯位；錯題本遇到改版顯示「題目已更新」。
 - 配額不是問題：WebKit（Safari 17 起）的瀏覽器 App 每個 origin 最多約占磁碟 60%，主畫面 App 相同；真正的風險是淘汰（4.5）。
 
@@ -703,6 +707,7 @@ export function openProgressDB() {
 - 每個舊版本都有一份 fixture 資料庫，Vitest 用 fake-indexeddb 測試「從任何舊版本升級到最新版」。
 - **blocked**：顯示「請關閉其他 LedgerLand 分頁，再重新整理」。
 - **blocking（收到 versionchange 的舊分頁）**：先寫入進度、關閉連線，立刻顯示橫幅「網站已在其他分頁更新，重新整理後才能繼續儲存進度」。關閉連線之後若使用者又答了題，答案暫存在 localStorage 的 `ll:pending`，重新整理後合併寫入。這個橫幅和 SW 更新提示共用元件；但因為這時已經不能儲存，它不等回到列表頁才顯示。
+- **快速跳頁的補強**（M3 第一件事，2026-10-24，M2 回報第 7 節第 6 點）：每一筆寫入在開交易之前先同步排進 `ll:pending`，交易 complete 之後才移除，所以作答後馬上整頁跳轉、`pagehide`、`visibilitychange` 轉 hidden 之後被系統回收時，那一筆仍在佇列，下次啟動由 `replayPending` 依序補寫（`apps/web/src/lib/progress/pending.ts`，`apps/web/test/pending.test.ts`）。重放的每一種操作都是冪等的；重放前先比對新舊（星星與分數取大、設定比 `updatedAt`、錯題本比 rev 與作答時間、刪除比排入時間），資料庫已有較新的值時不蓋回舊值；還活著的分頁正在寫的項目用 Web Locks 標記，不重放。已知的取捨：刪除不留紀錄，所以「舊的錯題本寫入在使用者從另一個分頁手動移除之後才重放」仍會把那一題救回錯題本（只在排入的分頁於交易完成前被關閉時發生）。
 - Safari 27.0 修正了多個 IndexedDB 問題（worker 連線在 network process 當機後恢復、transaction 長時間被阻塞、`onupgradeneeded` 中 abort 後回傳 version 0 的資料庫）；還停在 iOS 26，以及 D8 正式支援的 iOS 17、18 的使用者仍可能遇到，所以下面的防禦都要做。
 
 來源：https://webkit.org/blog/18325/webkit-features-for-safari-27-0/ 、https://bugs.webkit.org/show_bug.cgi?id=273827 （查證日期 2026-10-20）
@@ -1055,16 +1060,20 @@ document.addEventListener('focusout', () => {
 
 | 指標 | 目標 | 條件 | 說明 |
 | --- | --- | --- | --- |
-| LCP | ≤ 2.5 秒 | mid-tier 行動裝置節流 | Core Web Vitals 良好門檻；超過 4.0 秒為差 |
+| LCP | ≤ 2.5 秒；CI 的檢查值 2700ms（2026-10-26 放寬，見 8.2 的收尾紀錄） | mid-tier 行動裝置節流 | Core Web Vitals 良好門檻；超過 4.0 秒為差。放寬的理由：每一頁改成資料齊了才整頁出現，Lighthouse 量到的是「資料齊了那一刻」，比原本「先畫版面」的做法多約 60 到 100ms |
 | LCP（低階） | 盡量 ≤ 4 秒 | low-tier 節流 | 正式發布前檢查一次，不擋 CI |
 | INP | ≤ 200ms | 作答、分類、實驗室改數字等實際互動 | 超過 500ms 為差 |
 | CLS | ≤ 0.1 | Chromium | 超過 0.25 為差；Safari 量不到 |
 | TBT | ≤ 200ms | Lighthouse 行動版 | Lighthouse 導覽模式量不到 INP，用 TBT 當代理指標 |
 | Lighthouse 效能分數 | ≥ 90 | 行動版、5 次中位數 | |
 | Lighthouse 無障礙分數 | ≥ 95 | 同上 | 另有人工檢查，見 07 第 8 節 |
-| 首次載入 JS | ≤ 150 KB（gzip 後，暫定） | 首頁與 QR 落地頁 | 從 M0b 起由 CI 把關；M0a 實測後調整，只能附理由放寬 |
-| 首次載入 CSS | ≤ 30 KB（gzip 後，暫定） | 同上 | 同上 |
-| precache 總量 | ≤ 5 MB（未壓縮，暫定）；CI 的檢查值 2 MB（`precacheKb` 2048，2026-10-23 從 1 MB 提高） | 第一次安裝 SW | 見 3.2 |
+| 首次載入 JS | ≤ 150 KB（gzip 後，暫定）；CI 的檢查值 152 KB（2026-10-26 放寬，見 8.2 的收尾紀錄） | 首頁與 QR 落地頁 | 從 M0b 起由 CI 把關；M0a 實測後調整，只能附理由放寬。放寬的理由：M3 收尾的頁面布幕進了入口 chunk，給老師的說明與關卡 QR 的介面字串進了兩種語言的 catalog，/en/ 入口實測 150.4 KB；英文作答頁的 LCP 實測 2420ms |
+| 首次載入 CSS | ≤ 30 KB（gzip 後，暫定）；CI 只算 `index.html` 引用的入口 CSS（`initialCssGzipKb`，2026-10-25 起，懶載入頁面的 CSS 和頁面 chunk 一樣不算） | 同上 | 同上 |
+| 全部 CSS | ≤ 40 KB（gzip 後，暫定）；`assets` 底下所有 CSS 的合計，含懶載入頁面自己的 CSS（`allCssGzipKb`，2026-10-25 起） | 建置產物 | 維護者 2026-10-25 決定把 CSS 預算拆成兩項。理由：原本的檢查名為首次載入，實際加總所有 CSS，地圖、章節頁、名詞圖鑑的版面 CSS 拆成頁面 CSS 以後，那個數字已經不是開頁時要下載的量；入口那一項管開頁速度，合計這一項防止頁面 CSS 不受控制地長大。M3 新增設計系統（遊戲按鈕、選單列、名詞卡、面板、橫幅）並重做地圖與章節頁，全部 CSS 從約 14 KB 變成 36.8 KB，40 是實測值加約一成的餘裕；只能附理由放寬 |
+| precache 總量 | ≤ 5 MB（未壓縮，暫定）；CI 的檢查值 3600 KB（`precacheKb` 3600，2026-10-24 從 2048 提高；2026-10-23 從 1024 提高到 2048） | 第一次安裝 SW | 見 3.2 |
+| `/en/` 首次載入 JS | ≤ 150 KB（gzip，和首次載入 JS 同一個上限） | 英文網址的入口 JS 加英文訊息 catalog（`tools/budget.mjs` 的 `initialJsEnGzipKb`） | M3 收尾不提高 150、也不拆 catalog，M4a 開工時拆兩層（14 第 5.2 節）；2026-10-26 實測 149.5 KB |
+| 闖關地圖 chunk | ≤ 28 KB（gzip，`mapChunkGzipKb`） | Play 頁與 `quest-map` chunk 的合計，不在首頁與其他頁的第一波 | 2026-10-25 從 25 改成 28（M3 地圖重做實測 26.8 KB，17 第 8 節）；2026-10-26 實測 27.5 KB |
+| 場景 chunk | 單章 ≤ 8 KB、合計 ≤ 80 KB、共用的 scene-kit ≤ 5 KB（gzip，`sceneChunkGzipKb`、`sceneChunksTotalGzipKb`、`sceneKitGzipKb`） | 各章場景物件層的 lazy chunk（延伸區與海峽共用的 chunk、主線交界重畫的 chunk 都算進單章與合計） | 2026-10-25 從單章 2、合計 20 放寬（物件層要畫整章的地形塊與兩翼，不在第一波，不影響 LCP 與 TBT）；scene-kit 原訂 4，第 2 輪看圖驗收後改 5；2026-10-26 實測單章最大 7.6、合計 66.3、scene-kit 4.7 KB |
 
 Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算。坊間有「2026 年調整門檻」的說法，但查不到 Google 的一手來源，維持現行門檻。
 
@@ -1078,7 +1087,10 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
 - 記錄每次報告的 `benchmarkIndex`，據此校準 `--throttling.cpuSlowdownMultiplier`。Lighthouse 預設的行動節流是 simulated：RTT 150ms、下行 1.6 Mbps、上行 750 Kbps、CPU 4 倍減速，模擬中階行動裝置；`benchmarkIndex` 125 到 800 為中階、低於 125 為低階。另加一組 6 倍減速的低階設定，代表較舊的 Android 手機。
 - **M0b 的兩個實測教訓（2026-10-22）**：(1) 會插入到內容上方的元素（語言切換提示、橫幅）必須在首次繪製就決定要不要顯示或預留空間，不能在 effect 裡才插入，否則會把下面的卡片往下推，首頁與作答頁的 CLS 曾因此到 0.073 與 0.097；(2) 內容頁不能在頁面 chunk 載入後才開始串行請求 manifest 與內容快照，名詞頁曾因此比列表頁多約 450ms、LCP 超過 2.5 秒；做法是殼層 `preload` manifest、App 啟動就讀 manifest、路由在載入 chunk 的同時讀快照。
 - **M2 的實測教訓（2026-10-23）**：(1) 量效能只能用完整建置（`vite build` 之後要跑 `tools/postbuild.mjs` 填 CSP 雜湊），只跑 `vite build` 會讓殼層的 inline 腳本與首次繪製的 style 被 CSP 擋掉，每一頁 LCP 一致多約 300ms，看起來像程式回歸其實不是；(2) rolldown 的 `codeSplitting.groups` 預設連依賴一起抓（`includeDependenciesRecursively`），群組要依「共用的先宣告」排序，作答頁專用的群組用 `entriesAware` 拆開，否則地圖頁會多載判分與題目元件；(3) 進度資料庫的開啟（runtime、zod 約 37 KB gzip）一律在第一次繪製送出之後（`afterFirstPaint`：兩個動畫影格、閒置、再等 400ms），任何在 effect 裡直接呼叫 `getProgressStore()` 的元件都會搶在 LCP 前面；(4) 闖關地圖與作答頁第二波仍要 75 到 110 KB，M2 把這兩頁的 LCP 門檻暫放寬到 3300ms（CI 執行器對同一頁的波動約 300 到 400ms，門檻要留餘裕），M3 拆 progress 的 schema 與 runtime、判分改成按下確認才載入後收回（14 第 5.2 節）。
-- **固定量測網址**：首頁（`/`）、闖關地圖（`/play/`，17 第 8 節）、一個章節頁（`/chapter/<chapterId>/`）、一個關卡作答頁（`/level/<levelId>/`）、實驗室故事的第 7 個步驟（`/lab/story/<storyId>/<stepId>/`），另加同一個關卡的英文作答頁（`/en/level/<levelId>/`），確認英文殼層與英文 catalog 同樣達標。路徑格式以 02 的頁面總表為準（關卡不巢狀在章節底下，一律帶結尾斜線）；D5 決定中文在根路徑、英文加 `/en/`。實際網址寫在 `perf/urls.json`，不因功能調整而換網址。D5 也決定不預先產生 HTML，所以每個網址都是經由 Cloudflare 的 SPA fallback 拿到殼層、再由用戶端載入資料，一律量「冷啟動直接開啟深層連結」的情況。
+- **M3 的實測教訓（2026-10-24）**：(1) 判分、core 與作答紀錄改成按下「確認答案」才動態載入並在第一次繪製後預載，儲存 runtime 由 `session` chunk 分出（`codeSplitting` 群組 `session` 在 `progress` 之前宣告，`progress` 加 `entriesAware`），地圖元件分成 `quest-map` chunk 之後，作答頁與地圖的第一波 JS 從約 70 KB 降到約 45 KB gzip，zod 與 runtime 都不在關鍵路徑；三章內容的快照上 LCP 2.9 秒變 2607ms、2.75 秒變 2605ms，門檻尚未收回（14 第 5.2 節）；(2) 群組會連依賴一起抓，所以「第一次繪製就要、又是 runtime 依賴」的小模組（`generateAttemptId` 所在的 `model.ts`、content-schema 的 `ids.ts`）要由先宣告的群組拿走，否則作答頁靜態連回 runtime；頂層就建 zod schema 的模組（`content-schema/common.ts`、`quiz/answers.ts`）只要被第一波用到一個常數就會把 zod 帶進來，不帶 zod 的常數與純函式要另開檔案；(3) 不要 `import('@ledgerland/progress')` 之後解構整個入口：那會把套件所有模組綁成一個動態進入點，第一波 chunk 又連回 runtime；(4) 內容快照才是現在的瓶頸：十二章發布後名詞快照 52 KB gzip（兩種語言各一份），作答頁與名詞列表第一次繪製都要等它，作答頁 3490ms、名詞列表 3471ms，比第二波 JS 的影響大；收回 2500ms 要先把名詞快照拆成關卡用的名稱索引與完整定義。(5) 名詞快照分兩層（2026-10-24 收回門檻時實測）：每個語系一份名詞索引（名稱、別名、科目與指標對照，約 10 KB gzip），完整定義依名詞 ID 分桶、打開名詞卡或名詞頁才讀；章節也另有一個語系一檔的章節索引（約 8 KB gzip），地圖與名詞圖鑑不再逐章讀十四個章節檔（08 第 7.3 節）；(6) 本機量測是 wrangler dev 的 HTTP/1.1，Lighthouse 的模擬依實際連線數排隊，第一次繪製前每多一層或多一批請求就多約 150ms：小 chunk 要併起來（`common`、`level-view` 群組，每個語言的兩份訊息 catalog 合成一個 chunk），殼層的 boot 腳本依路徑先發出頁面 chunk、訊息 catalog 與內容快照的預先載入（表格由 `tools/postbuild.mjs` 在建置後填入，`src/shell/route-preload.json`），`<link rel="preload" as="fetch">` 要加 `crossorigin` 才會被 `fetch()` 重用（少了它 manifest 會讀兩次）；(7) 進度讀到後才改的文字不要放在最大的文字區塊裡：名詞列表「已收進圖鑑 N／M」的 N 換數字時整段被當成新的 LCP（多約 500ms），數字改放 inline-block 的小方塊；名詞頁的解鎖狀態先照「未解鎖」排版、只把小標藏起來。場景 SVG、Service Worker 註冊（workbox-window）與統計腳本也延到第一次繪製之後，地圖先畫路線、進度到了再套上星星與目前關卡。收回後六個量測網址本機中位數約 2.0 到 2.3 秒，門檻回到全站 2500ms（14 第 5.2 節）。
+- **M3 收尾 QA 的實測教訓（2026-10-26）**：設計系統、地圖重做與依詞換行加進第一波以後（入口 CSS 從約 24 KB 變約 30 KB gzip，作答頁第一波多了五個 chunk），2026-10-25 下午起八個網址有六個超過 2500ms（作答頁 2739ms、地圖 2607ms、章節頁 2594ms、名詞頁 2583ms）。原因用 Lighthouse 的 artifacts（`-G` 存下、改網路紀錄後 `-A` 重算）做假設實驗找出來：(1) 本機的 HTTP/1.1 每個網域 6 條連線，模擬時每條連線分到「總頻寬除以同時進行的請求數」（還在等第一個位元組的請求也算），約 133 KB 的入口 JS 整段只分到約六分之一，LCP 幾乎就是入口 JS 下載完的時間；它以一次往返（約 150ms）為一級跳動，第一波的位元組或請求多到跨過一級就多 150ms，少一點不會少，所以要看的是「總量有沒有跨級」，單看某一個檔案大小常常看不出差別；(2) 瀏覽器在 load 前後自己抓的 favicon、manifest 與安裝圖示也算在 LCP 之前，三個請求約等於一級，改成 2.3 節的寫法；(3) 第一波裡不該有的 chunk：作答頁為了名詞旗標一個 10 行的函式載整個名詞卡 chunk、為了窄版語言選單載面板與選單的 overlay、依詞換行分在三個 chunk，名詞頁為了佔位符與欄位對應載作答頁的 level-view 與 session，地圖與章節頁為了 ID 規則與「中途離開的關卡」載 session；改成 `prose` 群組（切詞、佔位符、欄位對應、名詞旗標與 `ids.ts`）、`level-exit.ts` 放 `common`、`level-view` 群組併進 `session` 與 `quiz-view`（結果頁元件改回第一次繪製後才載），窄版語言選單在第一次繪製後才載入（之前畫外觀相同的按鈕），作答頁第一波的 JS 從 10 個 chunk 變 5 個；(4) 地圖頁偶爾在 window 上出現「ResizeObserver loop completed with undelivered notifications」（`--qm-sticky-h` 在 ResizeObserver 的回呼裡改到地圖內容的 min-height），錯誤紀錄因此在 LCP 之前開進度資料庫、多載約 16 KB（同一棵樹 3 次裡有 1 到 3 次）：觸發點改到下一個影格才寫，錯誤紀錄也等第一次繪製送出後才寫入、不記這個無害的通知（9.2）。結果（`pnpm perf --runs 3` 中位數）：首頁 1981、地圖 2458、作答頁 2431、英文作答頁 2419、名詞圖鑑 2473、名詞頁 2433、交易影響開頭的作答頁 2444、章節頁 2446ms，體積預算都沒有動（入口 CSS 29.6、全部 CSS 39.6、`/en/` 首次載入 JS 149.4、地圖 chunk 27.4 KB）。餘裕很小：作答頁三個網址的入口 CSS 只能再多約 0.5 KB gzip（多 1 KB 就回到約 2580ms），訊息 catalog 約 1 KB；其他頁至少還能多 2 KB。入口 CSS 的 30 KB 預算比 LCP 門檻允許的寬，加 CSS 或 catalog 字串之前先量作答頁；之後要再留餘裕，可以考慮把只在作答頁結果、錯題本、備份、題型元件用的樣式移出入口 CSS（拆檔會讓全部 CSS 的合計多約 0.8 KB，超過 40 KB 的預算，要由維護者決定），或把說明頁的長文字串拆成另一份 catalog。
+- **M3 收尾的頁面布幕（2026-10-26）**：維護者在本機預覽看到首頁、地圖清單、名詞圖鑑先出現「…」、灰色長條與沒印章的卡片、半秒後才補上，要求每一頁點進去就是完整的（可以整頁淡入）。做法：(1) 進度資料庫改成和頁面一起開始載入（`main.tsx` 不再 `afterFirstPaint`，runtime 的 chunk 由殼層依 `route-preload.json` 的 `always` 和頁面 chunk 一起預先載入；Vite 的 manifest 對 `codeSplitting.groups` 併出的 chunk 沒有原始碼鍵，所以建置時另產生 `.vite/chunk-modules.json` 找出含 `runtime.ts` 的 chunk）；(2) 殼層的 `PageReveal`（`lib/page-ready.tsx`）包住每一頁，頁面用 `usePageReady` 回報內容快照、進度與第一屏的懶載入作答區齊了沒，齊之前整頁 `visibility: hidden`、齊了淡入 `--ll-dur-base`，超過 0.7 秒才顯示載入圈；(3) Skeleton 元件、骨架 CSS、所有「…」佔位移除，橫幅也在布幕裡和頁面一起出現，換頁後的焦點在掀開那一刻才移到 h1。代價：Lighthouse 的 LCP 變成資料齊了那一刻，八個網址實測 home 2124、play 2563、quiz 2570、quiz-en 2420、terms 2564、term 2434、quiz-effect 2569、chapter 2564（5 次中位數），超過 2500 的五個都在 70ms 內；維護者決定接受，門檻改 2700（`urls.json`、14 第 5.2 節）。另外 `firstPaintSettled` 只剩錯誤紀錄與分析腳本在用（看不見的工作照舊延後）。同一天的 /en/ 入口 JS 實測 150.4 KB（布幕的程式在入口、給老師的說明與關卡 QR 的字串在 catalog），`initialJsGzipKb` 從 150 放寬到 152；英文作答頁 LCP 2420ms。
+- **固定量測網址**：首頁（`/`）、闖關地圖（`/play/`，17 第 8 節）、一個章節頁（`/chapter/<chapterId>/`）、一個關卡作答頁（`/level/<levelId>/`）、實驗室故事的第 7 個步驟（`/lab/story/<storyId>/<stepId>/`），另加同一個關卡的英文作答頁（`/en/level/<levelId>/`），確認英文殼層與英文 catalog 同樣達標。M3 結束時（2026-10-26）`perf/urls.json` 有八個：home、play、quiz（`/level/lv_h2zx7srx/`）、quiz-en、terms（名詞圖鑑）、term（名詞頁 `/terms/tm_r4w8n2qe/`）、quiz-effect（交易影響題開頭的作答頁 `/level/lv_14xjcbk8/`，2026-10-24 加入，守住非單選開頭的關卡）、chapter（`/chapter/ch_c5f8w2/`）；實驗室步驟在 M4a 加入。路徑格式以 02 的頁面總表為準（關卡不巢狀在章節底下，一律帶結尾斜線）；D5 決定中文在根路徑、英文加 `/en/`。實際網址寫在 `perf/urls.json`，不因功能調整而換網址。D5 也決定不預先產生 HTML，所以每個網址都是經由 Cloudflare 的 SPA fallback 拿到殼層、再由用戶端載入資料，一律量「冷啟動直接開啟深層連結」的情況。
 - **統計腳本保持開啟**（D7，8.3）：量測時照正式網站的方式載入統計腳本，但把送出目的地換成本機的 stub（或用 Playwright 攔截請求），讓它的體積與執行成本算進結果，又不汙染正式的統計資料。統計腳本讓數值超出預算時，改它的載入方式，不放寬預算。
 - **JS 與 CSS 體積**：用 size-limit 之類的工具在每個 PR 檢查；QR 解碼器是動態載入的 chunk，不計入首次載入，但另設一條 chunk 體積的檢查，數值在解碼器選型後訂定。
 
@@ -1097,13 +1109,13 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
     { "name": "lab-step-7", "path": "/lab/story/story_k8p3x6/st_r2x9k4/" }
   ],
   "assertions": {
-    "largest-contentful-paint": { "maxMs": 2500 },
+    "largest-contentful-paint": { "maxMs": 2700 },
     "total-blocking-time": { "maxMs": 200 },
     "cumulative-layout-shift": { "max": 0.1 },
     "categories.performance": { "min": 0.9 },
     "categories.accessibility": { "min": 0.95 }
   },
-  "budgets": { "initialJsGzipKb": 150, "initialCssGzipKb": 30, "precacheKb": 2048 }
+  "budgets": { "initialJsGzipKb": 152, "initialCssGzipKb": 30, "allCssGzipKb": 40, "precacheKb": 3600 }
 }
 ```
 
@@ -1111,6 +1123,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
 
 - 用 Playwright 腳本實際操作：作答一題並看回饋、在分類題完成一次分類（點選與拖放各一次）、在實驗室改一個金額看三表重算、開關名詞卡。
 - 在 Chromium 專案中用 CDP 的 CPU 節流（與 Lighthouse 相同的倍數），頁面注入 web-vitals 6.x（6.2.3）的 `onINP`，每個互動的結果都要 ≤ 200ms。
+- 門檻依執行器速度校正（2026-10-26 起）：測試開始前在同樣的節流下跑一段固定的計算與 DOM 工作，和基準機器相比慢幾倍，門檻就放寬幾倍（最多 2.5 倍，不會比 200ms 嚴）；CI 把這一支單獨用一個 worker 跑，不和其他測試搶 CPU。GitHub 的執行器量到的互動時間約是維護者 Mac 的 2.4 倍，而且時間都在繪製而不是 JS，固定 200ms 在那裡只是在量執行器。
 - 也可以用 Lighthouse user flow 的 timespan 模式補充。
 - Safari 26.2 起支援 LCP 與 Event Timing API（INP 的基礎），兩者成為 Baseline Newly available；但各引擎的量測終點略有不同，也有報告指出 Safari 的 INP 實作數值偏高。所以 iPhone 上的 INP 只當參考，CI 門檻以 Chromium 為準。
 - **CLS 只能在 Chromium 量測**（Layout Instability API 只有 Chromium 有）。
@@ -1200,6 +1213,7 @@ iOS 手動檢查清單（iOS 26 與 27 各一次；iOS 17 跑標示「17」的�
 - IndexedDB 的 `errors` store 環狀保留最近 50 筆；IndexedDB 不能用時改存在記憶體。
 - 欄位：時間、路由、訊息、截斷後的 stack、`appVersion`、`contentVersion`。
 - 在 `/debug/` 頁可以檢視與清除；使用者匯出時可勾選「附上錯誤紀錄」，自己決定要不要提供給維護者。
+- 第一次載入時發生的錯誤，紀錄在發生當下組好，等第一次繪製送出後才開資料庫寫入（`lib/errors.ts`，2026-10-26）：開資料庫會載入進度 runtime 與作答工作階段的 chunk，不和頁面內容搶第一波（8.2）。瀏覽器在 ResizeObserver 一輪送不完通知時丟的「ResizeObserver loop …」不是程式錯誤（沒有 error 物件，下一個影格照常通知），不記錄。
 - 沒有任何遠端錯誤回報。D7 決定加入的統計只計算匿名的頁面瀏覽，不送出錯誤紀錄、作答或進度（8.3）。
 
 ### 9.3 debug 頁的量測項目

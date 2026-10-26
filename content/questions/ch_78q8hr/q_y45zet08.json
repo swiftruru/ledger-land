@@ -1,0 +1,85 @@
+{
+  "id": "q_y45zet08",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_bt5xpr",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "equation",
+    "equipment"
+  ],
+  "termRefs": [
+    "tm_t7a3s6wb",
+    "tm_gt8g4afe",
+    "tm_c4sh8k2p"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_v77z53"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 400000,
+        "inventory": 50000,
+        "share_capital": 450000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.buy_equipment_cash",
+        "params": {
+          "amount": 180000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_machinery_net",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_total_assets",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_total_liabilities_equity",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "海風衝浪店用現金 {{money:e1.amount}} 買了一台衝浪板修整機，預計用好幾年。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "Seabreeze Surf pays {{money:e1.amount}} in cash for a board-shaping machine it expects to use for several years. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金減少 {{money:e1.amount}}，機器設備增加同樣的金額：錢只是從一種資產換成另一種資產，所以{{term:tm_t7a3s6wb}}不變。右邊沒有任何科目動到，負債及股東權益總計也不變，表仍然平衡。",
+    "en": "Cash falls by {{money:e1.amount}} and machinery rises by the same amount: the money simply moves from one asset into another, so {{term:tm_t7a3s6wb}} do not change. Nothing on the right side moves either, so total liabilities and equity stay the same and the sheet still balances."
+  }
+}

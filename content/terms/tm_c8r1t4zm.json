@@ -1,28 +1,55 @@
 {
   "id": "tm_c8r1t4zm",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "流動比率", "en": "Current ratio" },
+  "label": {
+    "zh-TW": "流動比率",
+    "en": "Current ratio"
+  },
   "teacherLabel": "流動比率",
   "currentTwLabel": "流動比率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T24", "T28"],
+  "pendingRefs": [
+    "T24",
+    "T28"
+  ],
   "note": {
-    "zh-TW": "課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）；流動負債為 0 時網站顯示 N/A，不顯示無限大（設計說明見 T28）。",
-    "en": "The course threshold is shown only as a course reference value and is not scored (see the design note T24); when current liabilities are nil the site shows N/A rather than infinity (see the design note T28)."
+    "zh-TW": "課程的門檻是經驗值，只當「課程參考值」顯示，不計分；流動負債為 0 時比率沒有定義，網站顯示 N/A，不顯示無限大。",
+    "en": "The course threshold is a rule of thumb, shown only as a course reference value and not scored; when current liabilities are nil the ratio is undefined, so the site shows N/A rather than infinity."
   },
   "definition": {
-    "zh-TW": "流動資產相對於流動負債的倍數，看一年內能變現的資產夠不夠還一年內到期的債務。數值越高，短期償債能力越強。",
-    "en": "Current assets relative to current liabilities: whether the assets that turn into cash within a year cover the debts due within a year. Higher means stronger short-term solvency."
+    "zh-TW": "一年內會變成現金的流動資產，是一年內要償還的流動負債的幾倍。\n\n它是最常用的短期償債能力指標：倍數越高，短期內周轉不過來的風險越低。",
+    "en": "How many times the current assets that will turn into cash within a year cover the current liabilities due within a year.\n\nIt is the most common measure of short-term solvency: the higher the multiple, the lower the risk of a cash squeeze."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在資產負債表上。流動負債為 0 時比率沒有定義，網站顯示 N/A 並說明「目前沒有流動負債」，不顯示無限大。課程的門檻只當參考值顯示，常見的經驗值有兩倍或一倍半，都不計分。",
+    "en": "Both figures are on the balance sheet. When current liabilities are zero the ratio is undefined; the site shows N/A with the note that there are no current liabilities rather than infinity. The course threshold is shown as a reference value only; common rules of thumb are two times or one and a half times, and none of them is scored."
+  },
+  "misconception": {
+    "zh-TW": "以為流動比率越高越好。流動資產裡可能塞滿賣不掉的存貨或收不回的帳款，比率高不代表隨時有現金；所以要再看速動比率與現金流量比率。",
+    "en": "Assuming a higher current ratio is always better. Current assets may be stuffed with unsaleable inventory or uncollectable receivables, so a high ratio does not guarantee ready cash; check the quick ratio and cash flow ratio as well."
+  },
+  "formula": {
+    "zh-TW": "流動比率的算法：流動資產 ÷ 流動負債。",
+    "en": "Current ratio = current assets ÷ current liabilities."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "current_ratio@excel"
+  "ratioRef": "current_ratio@excel",
+  "related": [
+    "tm_n8ysnw1m",
+    "tm_k52yxb68",
+    "tm_c2y9b5ex",
+    "tm_555a7d2s"
+  ]
 }

@@ -1,0 +1,38 @@
+{
+  "id": "q_g552s9hy",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_kse1q6",
+  "difficulty": 2,
+  "tags": [
+    "basic_figures",
+    "period"
+  ],
+  "termRefs": [
+    "tm_2cqt9cfd",
+    "tm_v3n8q2ye",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "算資產週轉率時，分子用最近一個月的營收、分母用年底的資產總計，算出來的數字一樣可以拿去和別家公司的年度資產週轉率比較。",
+    "en": "When working out asset turnover, using the latest month’s revenue as the numerator and year-end total assets as the denominator gives a figure that can still be compared with another company’s annual asset turnover."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "把營收和資產相除的方向是對的。問題在期間：一個月的營收只有全年的一小部分，除以整年累積出來的資產，週轉率會被低估到沒辦法和別人比。分子分母要用同一期間，或先把月營收年化並標示出來。",
+    "en": "Dividing revenue by assets is the right idea. The problem is the period: one month’s revenue is only a fraction of the year’s, so dividing it by the assets built up over a whole year understates turnover beyond comparison. Numerator and denominator must cover the same period, or the monthly revenue must be annualised and labelled as such."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。比率的分子與分母要用同一期間；網站的計算器會統一期間並標示是否年化。",
+    "en": "Correct. Numerator and denominator must cover the same period; the site’s calculator aligns the periods and says whether a figure has been annualised."
+  },
+  "misconceptionId": "mc_6n2x",
+  "explanation": {
+    "zh-TW": "營收是一段期間的流量，資產是某一天的存量。要讓「每一元資產帶出多少營收」有意義，流量的期間必須和存量對應的期間一致：全年營收對年底（或平均）資產。拿一個月對一年，週轉率大約只剩全年的十二分之一（假設每個月營收差不多）。",
+    "en": "Revenue is a flow over a period; assets are a balance at a point in time. For ‘how much revenue each unit of assets generates’ to mean anything, the flow’s period must match the period the balance belongs to: a full year’s revenue against year-end (or average) assets. Taking one month against a year cuts the turnover to roughly a twelfth, assuming revenue is spread evenly across the months."
+  }
+}

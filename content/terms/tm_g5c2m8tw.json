@@ -1,7 +1,7 @@
 {
   "id": "tm_g5c2m8tw",
-  "rev": 1,
-  "revKind": "text",
+  "rev": 2,
+  "revKind": "answer",
   "status": "published",
   "category": "account",
   "label": { "zh-TW": "營業成本", "en": "Cost of sales" },
@@ -14,8 +14,8 @@
   "pendingRefs": ["T06"],
   "ifrsBasis": "IAS 1.103",
   "definition": {
-    "zh-TW": "本期賣出的商品原本的進貨成本。模板用期初存貨加本期進貨再減期末存貨算出來，營業收入減掉它就是營業毛利。",
-    "en": "The purchase cost of the goods sold during the period. The template derives it as opening inventories plus purchases less closing inventories, and revenue less this amount is gross profit."
+    "zh-TW": "本期賣出的商品原本的進貨成本。模板用期初存貨加本期進貨再減期末存貨算出來，營業收入減掉它就是營業毛利。期末盤點的差異也在這裡調整：盤損（實際少於帳上）增加營業成本，盤盈沖減營業成本，所以就算本期沒有銷貨，營業成本也可能不是 0。",
+    "en": "The purchase cost of the goods sold during the period. The template derives it as opening inventories plus purchases less closing inventories, and revenue less this amount is gross profit. Differences found at the period-end count are adjusted here as well: a shortfall against the books increases cost of sales and a surplus reduces it, so cost of sales can be non-zero even in a period with no sales."
   },
   "accountRef": "cost_of_goods_sold"
 }

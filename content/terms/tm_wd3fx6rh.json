@@ -1,28 +1,57 @@
 {
   "id": "tm_wd3fx6rh",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "本益比（PE）", "en": "Price-to-earnings ratio (P/E ratio)" },
+  "label": {
+    "zh-TW": "本益比（PE）",
+    "en": "Price-to-earnings ratio (P/E ratio)"
+  },
   "teacherLabel": "本益比（PE）",
   "currentTwLabel": "本益比（PE）",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["本益比", "PE"], "en": ["P/E ratio", "Price earnings ratio"] },
+  "aliases": {
+    "zh-TW": [
+      "本益比",
+      "PE"
+    ],
+    "en": [
+      "P/E ratio",
+      "Price earnings ratio"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "0-2 的投資內容放在延伸區，名詞卡附「非投資建議」聲明。",
-    "en": "The investment material from the 0-2 slides sits in the extension area, and the card carries a not-investment-advice statement."
+    "zh-TW": "投資與金融用語，放在延伸區。",
+    "en": "An investment term kept in the extension area."
   },
   "definition": {
-    "zh-TW": "股價是每股盈餘的幾倍，也就是市場願意為每一份獲利付多少錢。倍數越高表示市場預期越樂觀或股價越貴；每股盈餘小於或等於零時不適用。",
-    "en": "The share price as a multiple of earnings per share: how much the market pays for each unit of profit. A higher multiple means more optimistic expectations or a dearer share; it does not apply when earnings per share are zero or negative."
+    "zh-TW": "買一股要付的價格，是這一股一年賺的錢的幾倍。\n\n它是最常見的股價估值指標：倍數高表示市場願意為每一元盈餘付較高的價格，通常反映對未來成長的期待。本站的說明只供學習，不構成任何投資建議。",
+    "en": "How many times one share’s annual earnings you pay to buy that share.\n\nIt is the most common valuation measure: a high multiple means the market pays more for each unit of earnings, usually reflecting expectations of growth. This explanation is for learning only and is not investment advice."
+  },
+  "example": {
+    "zh-TW": "股價不在財務報表裡，要自行輸入；每股盈餘由損益表與股本算出。每股盈餘為 0 或沒有輸入股價時顯示 N/A，每股盈餘為負時比率不具解釋意義。這是延伸區的投資內容，網站一律用虛擬公司舉例，不引用真實上市公司的數字。",
+    "en": "The share price is not in the financial statements and must be entered; earnings per share comes from the income statement and share capital. When earnings per share is zero or no price is entered the result is N/A, and when earnings are negative the ratio is not meaningful. This is extension investment content; the site uses fictional companies only and never quotes real listed companies."
+  },
+  "misconception": {
+    "zh-TW": "以為本益比低就是便宜、值得買。本益比低可能是因為市場預期獲利會衰退，也可能是一次性的獲利把每股盈餘墊高；它是比較的起點，不是結論。",
+    "en": "Treating a low price-to-earnings ratio as cheap and therefore worth buying. A low multiple may mean the market expects earnings to fall, or that a one-off gain has inflated earnings per share; it is a starting point for comparison, not a conclusion."
+  },
+  "formula": {
+    "zh-TW": "本益比的算法：股價 ÷ 每股盈餘。",
+    "en": "Price-to-earnings ratio = share price ÷ earnings per share."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義本益比；股價是輸入值，每股盈餘的定義依 IAS 33。",
-    "en": "IFRS does not define the price-to-earnings ratio; the share price is an input and earnings per share follow IAS 33."
+    "zh-TW": "IFRS 不定義本益比；每股盈餘的計算依 IAS 33，股價則來自市場。這是投資與金融的延伸內容，不列入期中考範圍。",
+    "en": "IFRS does not define the price-to-earnings ratio; earnings per share follows IAS 33 and the price comes from the market. This is investment and finance extension content, outside the midterm scope."
   },
-  "ratioRef": "pe_ratio@slides02"
+  "ratioRef": "pe_ratio@slides02",
+  "related": [
+    "tm_knqbr6g4",
+    "tm_qpw1px47",
+    "tm_n70k1r9t"
+  ]
 }

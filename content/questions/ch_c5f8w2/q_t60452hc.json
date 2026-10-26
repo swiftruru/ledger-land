@@ -1,6 +1,6 @@
 {
   "id": "q_t60452hc",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -22,7 +22,7 @@
   },
   "prompt": {
     "zh-TW": "小晴開店時從自己的存款拿出 {{money:vars.capital}} 當股本。從店的角度看，這筆錢該怎麼看？",
-    "en": "When she opened the shop, Ching put {{money:vars.capital}} of her own savings in as share capital. From the shop's point of view, how should this money be treated?"
+    "en": "When she opened the shop, Ching put {{money:vars.capital}} of her own savings in as share capital. From the shop’s point of view, how should this money be treated?"
   },
   "options": [
     {
@@ -33,7 +33,7 @@
       },
       "feedback": {
         "zh-TW": "答對了。股東出資是股東權益，店不必像還貸款那樣把它還給小晴。",
-        "en": "That's right. Capital from the owner is equity; the shop does not have to repay it the way it repays a loan."
+        "en": "That’s right. Capital from the owner is equity; the shop does not have to repay it the way it repays a loan."
       }
     },
     {
@@ -44,7 +44,7 @@
       },
       "feedback": {
         "zh-TW": "你注意到這筆錢來自小晴，不是店自己賺的，這點沒錯。不過股東出資沒有還款期限，也沒有利息，店不必「還」它，所以放股東權益而不是負債。",
-        "en": "You noticed that the money came from Ching rather than from the shop's own earnings, which is right. But capital has no repayment date and no interest; the shop does not have to pay it back, so it is equity rather than a liability."
+        "en": "You noticed that the money came from Ching rather than from the shop’s own earnings, which is right. But capital has no repayment date and no interest; the shop does not have to pay it back, so it is equity rather than a liability."
       },
       "misconceptionId": "mc_8ef5"
     },

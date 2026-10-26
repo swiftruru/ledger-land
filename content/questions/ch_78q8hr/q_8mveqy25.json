@@ -1,0 +1,86 @@
+{
+  "id": "q_8mveqy25",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_qg146a",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "retained_earnings",
+    "collection"
+  ],
+  "termRefs": [
+    "tm_4c6v99nn",
+    "tm_r7x2c9fa",
+    "tm_c4sh8k2p",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_q5rssq"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 60000,
+        "accounts_receivable": 90000,
+        "share_capital": 150000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.collect_receivables",
+        "params": {
+          "amount": 50000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_accounts_receivable",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_retained_earnings",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_revenue",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "月光書店上個月賒銷給一所學校的教科書，這個月收到其中 {{money:e1.amount}} 的貨款。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "Last month Moonlight Books sold textbooks to a school on credit; this month it collects {{money:e1.amount}} of what is owed. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金增加 {{money:e1.amount}}，應收帳款減少同樣的金額：這只是把一種資產換成另一種。收入在上個月賒銷時就已經認列了，這個月收錢不是新的收入，所以營業收入與{{term:tm_4c6v99nn}}都不動。有現金進來，不代表賺到新的錢。",
+    "en": "Cash rises by {{money:e1.amount}} and trade receivables fall by the same amount: one asset simply turns into another. The revenue was recognised last month when the credit sale was made, so collecting the money this month is not new revenue, and neither revenue nor {{term:tm_4c6v99nn}} moves. Cash coming in does not mean new profit was earned."
+  }
+}

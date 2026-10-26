@@ -1,6 +1,6 @@
 {
   "id": "q_06cjtf6n",
-  "rev": 1,
+  "rev": 3,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -28,12 +28,16 @@
     {
       "id": "o_1jdv",
       "text": {
-        "zh-TW": "流進未分配盈餘，留在資產負債表的股東權益裡",
-        "en": "Flows into unappropriated retained earnings and stays in equity on the balance sheet"
+        "zh-TW": "流進未分配盈餘，仍留在股東權益裡",
+        "en": "Flows into unappropriated retained earnings and stays within equity"
+      },
+      "short": {
+        "zh-TW": "流進未分配盈餘",
+        "en": "Into unappropriated retained earnings"
       },
       "feedback": {
         "zh-TW": "答對了。賺到而沒分掉的利益，就是股東留在公司裡的錢。",
-        "en": "That's right. Profit that is earned and not paid out is money the owners have left in the company."
+        "en": "That’s right. Profit that is earned and not paid out is money the owners have left in the company."
       }
     },
     {
@@ -41,6 +45,10 @@
       "text": {
         "zh-TW": "隨著年度結束歸零，明年重新開始",
         "en": "Reset to zero as the year ends, starting afresh next year"
+      },
+      "short": {
+        "zh-TW": "年度結束就歸零",
+        "en": "Reset to zero at year end"
       },
       "feedback": {
         "zh-TW": "損益表的數字確實每年重新累計，這點沒錯。但利益沒有消失：它搬進了未分配盈餘，留在資產負債表上。",
@@ -54,6 +62,10 @@
         "zh-TW": "變成資產負債表上同樣金額的現金",
         "en": "Becomes the same amount of cash on the balance sheet"
       },
+      "short": {
+        "zh-TW": "變成同額的現金",
+        "en": "The same amount of cash"
+      },
       "feedback": {
         "zh-TW": "利益留在公司裡，這點你想對了。但利益不是現金：有一部分可能還在應收帳款裡，也可能已經拿去買了車架。",
         "en": "You are right that the profit stays in the company. But profit is not cash: part of it may still be in receivables, or may already have been spent on frames."
@@ -64,6 +76,6 @@
   "correctOptionId": "o_1jdv",
   "explanation": {
     "zh-TW": "損益表的本期淨利流進未分配盈餘，留在資產負債表的股東權益裡，所以{{option:o_1jdv}}正確。這是損益表與資產負債表之間的連動；{{option:o_tstc}}以為利益會消失，{{option:o_1dkg}}把利益當成現金。",
-    "en": "Profit for the period flows into unappropriated retained earnings and stays in equity on the balance sheet, so {{option:o_1jdv}} is right. This is the link between the income statement and the balance sheet; {{option:o_tstc}} thinks the profit vanishes, and {{option:o_1dkg}} treats profit as cash."
+    "en": "Profit for the period flows into unappropriated retained earnings and stays in equity on the balance sheet, so {{option:o_1jdv}} is right. This is the link between the income statement and the balance sheet; {{option:o_tstc}} assumes the profit vanishes, and {{option:o_1dkg}} treats profit as cash."
   }
 }

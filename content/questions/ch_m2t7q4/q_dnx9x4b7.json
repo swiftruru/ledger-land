@@ -1,6 +1,6 @@
 {
   "id": "q_dnx9x4b7",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -19,7 +19,7 @@
   "type": "pick_statement",
   "prompt": {
     "zh-TW": "林姊看著晴川花坊上個月的損益表，本期淨利明明是正的，可是銀行戶頭的錢卻比月初少。她想知道是哪一類活動把現金用掉了。該看哪一張報表？",
-    "en": "Lin looks at Clearwater Florist's income statement for last month: profit for the period is clearly positive, yet the bank account holds less than it did at the start of the month. She wants to know which kind of activity used up the cash. Which statement should she look at?"
+    "en": "Lin looks at Clearwater Florist’s income statement for last month: profit for the period is clearly positive, yet the bank account holds less than it did at the start of the month. She wants to know which kind of activity used up the cash. Which statement should she look at?"
   },
   "options": [
     {
@@ -53,13 +53,13 @@
       },
       "feedback": {
         "zh-TW": "答對了。現金流量表把一段期間的現金收付分成營業、投資、籌資三類活動，一眼就能看出錢是花在買設備、還借款，還是本業本身就沒有帶進現金。",
-        "en": "That's right. The statement of cash flows sorts a period's receipts and payments into operating, investing and financing activities, so it shows at once whether the money went on equipment, on repaying loans, or whether the business itself simply did not bring cash in."
+        "en": "That’s right. The statement of cash flows sorts a period’s receipts and payments into operating, investing and financing activities, so it shows at once whether the money went on equipment, on repaying loans, or whether the business itself simply did not bring cash in."
       }
     }
   ],
   "correctOptionId": "o_4y6m",
   "explanation": {
     "zh-TW": "「有賺錢」是損益表的事，「現金去了哪裡」是{{option:o_4y6m}}的事：它按三類活動列出一段期間的現金進出。{{option:o_amsj}}只給月底一個時點的餘額，{{option:o_m70j}}說的是利益而不是現金。",
-    "en": "\"Did we earn money\" is a question for the income statement; \"where did the cash go\" is the job of {{option:o_4y6m}}, which lists a period's cash movements under three activities. {{option:o_amsj}} gives only a balance at month end, and {{option:o_m70j}} is about profit rather than cash."
+    "en": "‘Did we earn money’ is a question for the income statement; ‘where did the cash go’ is the job of {{option:o_4y6m}}, which lists a period’s cash movements under three activities. {{option:o_amsj}} gives only a balance at month end, and {{option:o_m70j}} is about profit rather than cash."
   }
 }

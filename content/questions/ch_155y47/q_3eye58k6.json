@@ -1,0 +1,80 @@
+{
+  "id": "q_3eye58k6",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_e2942m",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "judgment"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4"
+  ],
+  "scored": false,
+  "prompt": {
+    "zh-TW": "三位同學要替綠茵運動用品的課堂報告算一個本益比，爭論分母該用哪一個每股盈餘。三個選擇都說得通，你會選哪一個？",
+    "en": "Three students preparing a class report on Greenfield Sports disagree about which earnings per share to use as the denominator of the P/E ratio. All three choices can be defended; which would you pick?"
+  },
+  "options": [
+    {
+      "id": "o_f1r6",
+      "text": {
+        "zh-TW": "用去年經過查核的實際每股盈餘",
+        "en": "Use last year’s audited actual earnings per share"
+      },
+      "upside": {
+        "zh-TW": "數字已經發生而且查核過，任何人都能重算，不會被樂觀的預估帶著走。",
+        "en": "The figure is already reported and audited; anyone can recompute it, and it cannot be swayed by an optimistic forecast."
+      },
+      "downside": {
+        "zh-TW": "反映的是過去；公司如果正在轉變，去年的盈餘可能已經不代表現在。",
+        "en": "It reflects the past; if the company is changing, last year’s earnings may no longer represent it."
+      }
+    },
+    {
+      "id": "o_g2s7",
+      "text": {
+        "zh-TW": "用公司公告的今年預估每股盈餘",
+        "en": "Use the company’s published forecast for this year"
+      },
+      "upside": {
+        "zh-TW": "比較貼近接下來的狀況，和市場定價時看的方向一致。",
+        "en": "Closer to what lies ahead, and in line with the direction the market looks when pricing."
+      },
+      "downside": {
+        "zh-TW": "預估可能落空，也可能偏樂觀；用它算出的倍數看起來低，不代表真的便宜。",
+        "en": "Forecasts can miss and may lean optimistic; a multiple that looks low on a forecast is not necessarily cheap."
+      }
+    },
+    {
+      "id": "o_h3t8",
+      "text": {
+        "zh-TW": "用過去三年的平均每股盈餘",
+        "en": "Use the average earnings per share of the past three years"
+      },
+      "upside": {
+        "zh-TW": "能平滑掉單一年度的一次性損益，對景氣起伏大的公司比較穩。",
+        "en": "Smooths out one-off items in any single year, steadier for companies with cyclical results."
+      },
+      "downside": {
+        "zh-TW": "對快速成長或快速衰退的公司反應太慢，平均數可能和現況差很遠。",
+        "en": "Reacts too slowly for fast-growing or fast-declining companies; the average may be far from the present."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "三個分母都有人用，重點不是選出唯一正確的那個，而是說清楚你用的是哪一個、為什麼，並把一次性項目分開看。如果你最在意可驗證，選實際數；最在意貼近未來，選預估並標示不確定性；最在意穩定，選平均。本章是會計觀念練習，不是投資建議。",
+    "en": "All three denominators are in use. The point is not to find the one right answer but to state which you used and why, and to separate one-off items. If you value verifiability most, use the actual figure; if you value closeness to the future, use the forecast and flag its uncertainty; if you value stability, use the average. This chapter is an accounting concept exercise, not investment advice."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

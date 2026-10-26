@@ -2,23 +2,42 @@
   "id": "tm_hg8c967a",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "應付利息", "en": "Interest payable" },
+  "label": {
+    "zh-TW": "應付利息",
+    "en": "Interest payable"
+  },
   "teacherLabel": "應付利息",
   "currentTwLabel": null,
   "ifrsEnglish": "Interest payable",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "note": {
     "zh-TW": "網站補充的延伸科目，老師的模板沒有這一列；不列入期中考範圍。",
-    "en": "An extension account added by the site; the teacher's template has no such line and it is outside the mid-term scope."
+    "en": "An extension account added by the site; the teacher’s template has no such line and it is not in the midterm."
   },
   "definition": {
-    "zh-TW": "已經發生、還沒付出去的利息。它是流動負債；間接法的「其他負債增加」不可以把它算進去，否則會和利息支出列重複。",
-    "en": "Interest that has accrued but has not yet been paid. A current liability; it must be kept out of the increase in other liabilities line in the indirect method, or it would double count the interest paid line."
+    "zh-TW": "已經隨時間產生、但還沒付給債權人的利息。\n\n權責發生制下，利息每天都在累積，期末要先把還沒付的部分認列成費用和負債。",
+    "en": "Interest that has accrued with the passage of time but has not yet been paid to the lender.\n\nUnder the accrual basis interest builds up every day, so at period end the unpaid part is recognised as an expense and a liability."
   },
-  "accountRef": "interest_payable"
+  "example": {
+    "zh-TW": "位置：資產負債表流動負債。期末估列時利息費用增加、應付利息增加；付款時現金與應付利息一起減少。它的變動不放進間接法的「其他負債增加」列，因為支付利息另有自己的列。",
+    "en": "Where it sits: current liabilities on the balance sheet. Accruing it increases interest expense and this liability; paying reduces cash and the liability together. Its movement is excluded from the line for increases in other liabilities in the indirect method, because interest paid has its own line."
+  },
+  "misconception": {
+    "zh-TW": "以為沒付現就不用認列利息費用。利息是隨時間產生的，就算付款日還沒到，本期應負擔的利息也要先認列；課程偶爾出現的「應付利息支出」是口語，指的是要付的利息，不是這個負債科目。",
+    "en": "Assuming no interest expense arises until cash is paid. Interest accrues with time, so the period’s share is recognised even before the payment date; the course occasionally uses a Chinese phrase that translates literally as interest payable expense, which informally means interest that is due and does not refer to this liability account."
+  },
+  "accountRef": "interest_payable",
+  "related": [
+    "tm_k6t2e9wr",
+    "tm_y7a34vmk",
+    "tm_05t9wphy"
+  ]
 }

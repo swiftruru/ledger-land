@@ -1,0 +1,91 @@
+{
+  "id": "q_59v8fm8w",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_pynkwp",
+  "difficulty": 1,
+  "tags": [
+    "credit_sale",
+    "profit_levels"
+  ],
+  "termRefs": [
+    "tm_r7x2c9fa",
+    "tm_n7v3k8pq",
+    "tm_g8p4w1rz",
+    "tm_n4e8t2jy"
+  ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_aw2j4t"
+  },
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 90000,
+        "inventory": 210000,
+        "share_capital": 300000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_credit",
+        "params": {
+          "price": 330000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_accounts_receivable",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_inventory",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_gross_profit",
+        "measure": "direction"
+      },
+      {
+        "id": "t5",
+        "kind": "line",
+        "line": "is_net_income",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "北風單車行把店裡全部的單車賒銷給一家車隊，售價 {{money:e1.price}}，對方下個月付款。這是五步驟的步驟①：先預測下面五個數字各會怎麼變。",
+    "en": "North Wind Cycles sells all its bicycles on credit to a cycling team for {{money:e1.price}}, payable next month. This is step 1 of the five-step check: first predict how each of the five figures below changes."
+  },
+  "explanation": {
+    "zh-TW": "賣出就認列收入，不必等收到錢：營業毛利增加 {{money:e1.grossProfit}}（售價 {{money:e1.price}} 減去存貨成本 {{money:e1.costOfAllInventory}}），本期淨利跟著增加同樣的金額。現金完全沒動，錢暫時掛在應收帳款；存貨則因為賣出而減少。",
+    "en": "Revenue is recognised when the goods are sold, not when the money arrives: gross profit rises by {{money:e1.grossProfit}} (the price of {{money:e1.price}} less the inventory cost of {{money:e1.costOfAllInventory}}), and profit for the period rises by the same amount. Cash does not move at all; the money sits in trade receivables for now, and inventories fall because the goods have left."
+  }
+}

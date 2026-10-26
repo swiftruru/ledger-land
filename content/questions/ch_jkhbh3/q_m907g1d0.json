@@ -1,0 +1,45 @@
+{
+  "id": "q_m907g1d0",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_8ypaqg",
+  "difficulty": 2,
+  "tags": [
+    "cash_flow_activity",
+    "issue_shares"
+  ],
+  "termRefs": [
+    "tm_f9a4c6md",
+    "tm_p2a7c5vk",
+    "tm_5e3py55a"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_9htcrg"
+  },
+  "vars": {
+    "capital": 600000
+  },
+  "statement": {
+    "zh-TW": "山谷民宿的股東投入 {{money:vars.capital}}，這筆現金流入會出現在現金流量表的籌資活動，而不是營業活動。",
+    "en": "The shareholders of Valley Guesthouse put in {{money:vars.capital}}. This inflow appears under financing activities on the statement of cash flows, not under operating activities."
+  },
+  "correct": true,
+  "misconceptionId": "mc_gfrd",
+  "feedbackTrue": {
+    "zh-TW": "答對了。股東出資是向資金提供者拿到的錢，不是經營賺來的，所以放籌資活動。",
+    "en": "That is right. Capital from shareholders is money from a provider of funds, not something earned from operations, so it sits under financing."
+  },
+  "feedbackFalse": {
+    "zh-TW": "錢確實進了公司的帳戶，這點沒錯。不過營業活動只記錄「做生意」本身的收付；股東出資和借款一樣，是公司取得資金的方式，所以放籌資活動。",
+    "en": "The money did arrive in the company account, that much is right. But operating activities record only the receipts and payments of the business itself; capital from shareholders, like a loan, is a way of raising funds, so it goes under financing."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_f9a4c6md}}記錄公司和資金提供者之間的往來：借款與還款、股東出資與發放股利。這些現金進出改變的是資產負債表右邊的負債與股東權益，不是損益表上的收入。",
+    "en": "{{term:tm_f9a4c6md}} record dealings with the providers of funds: borrowing and repaying, capital from shareholders and dividends paid. These cash movements change the liabilities and equity on the right of the balance sheet, not revenue on the income statement."
+  }
+}

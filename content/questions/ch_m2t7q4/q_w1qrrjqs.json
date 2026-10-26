@@ -1,0 +1,45 @@
+{
+  "id": "q_w1qrrjqs",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_nqw4e9",
+  "difficulty": 2,
+  "tags": [
+    "accrual",
+    "collection"
+  ],
+  "termRefs": [
+    "tm_05t9wphy",
+    "tm_r7x2c9fa",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_q5rssq"
+  },
+  "vars": {
+    "amount": 36000
+  },
+  "statement": {
+    "zh-TW": "晴川花坊上個月替一家餐廳布置開幕花藝並賒帳，這個月收到了這筆 {{money:vars.amount}} 的款項。這個月的損益表可以把這 {{money:vars.amount}} 列為營業收入。",
+    "en": "Last month Clearwater Florist decorated a restaurant opening on credit; this month it collects the {{money:vars.amount}} it was owed. This month’s income statement can show the {{money:vars.amount}} as revenue."
+  },
+  "correct": false,
+  "misconceptionId": "mc_2ny7",
+  "feedbackTrue": {
+    "zh-TW": "錢確實是這個月進來的，這點沒錯。不過這筆生意的收入上個月布置完成時就已經認列了；這個月收款只是把應收帳款換成現金，如果再列一次收入，同一筆生意就算了兩次。",
+    "en": "The money did arrive this month, that much is right. But the revenue on this job was recognised last month when the decorating was done; collecting it this month merely turns a receivable into cash, and showing it as revenue again would count the same job twice."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。收入在賺到的那個月認列，收款那個月只動現金和應收帳款。",
+    "en": "That is right. Revenue is recognised in the month it is earned; the month of collection only moves cash and receivables."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_05t9wphy}}下，收入跟著「賺到」走，不跟著「收到」走。賒銷那個月：收入與{{term:tm_r7x2c9fa}}增加；收款這個月：現金增加、應收帳款減少，收入不再變動。",
+    "en": "Under the {{term:tm_05t9wphy}}, revenue follows earning, not receiving. In the month of the credit sale, revenue and {{term:tm_r7x2c9fa}} rise; in the month of collection, cash rises and receivables fall, and revenue does not move again."
+  }
+}

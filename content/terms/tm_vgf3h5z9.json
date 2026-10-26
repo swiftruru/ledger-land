@@ -2,19 +2,41 @@
   "id": "tm_vgf3h5z9",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "短期借款返還(-)", "en": "Repayment of short-term borrowings (-)" },
+  "label": {
+    "zh-TW": "短期借款返還(-)",
+    "en": "Repayment of short-term borrowings (-)"
+  },
   "teacherLabel": "短期借款返還(-)",
   "currentTwLabel": "短期借款減少",
   "ifrsEnglish": "Repayment of short-term borrowings",
-  "aliases": { "zh-TW": ["短期借款減少"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "短期借款減少"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 7.17(d)",
   "definition": {
-    "zh-TW": "償還短期借款本金時付出的現金。利息不算在這裡，利息另外列在營業活動的利息支出。",
-    "en": "Cash paid to repay the principal of short-term borrowings. Interest is not included; it appears separately under interest paid in operating activities."
-  }
+    "zh-TW": "償還短期借款本金時付出的現金。\n\n這是籌資活動的流出：現金與短期借款同時減少；同一天付的利息不在這裡，列在營業活動的支付利息(-)。",
+    "en": "Cash paid to repay the principal of a short-term loan.\n\nIt is a financing outflow: cash and short-term borrowings fall together; interest paid on the same day is shown under operating activities as interest paid (-), not here."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表籌資活動區，短期借款收入(+) 的下一列。故事裡「還款並付息」那一筆會拆成兩個地方：本金在這一列，利息在營業活動。現行報表稱短期借款減少。",
+    "en": "Where it sits: the financing activities section of the statement of cash flows, right after proceeds from short-term borrowings (+). The story’s repay-with-interest transaction splits in two: the principal goes here and the interest goes to operating activities. Current statements call it a decrease in short-term borrowings."
+  },
+  "misconception": {
+    "zh-TW": "把本金和利息合成一筆填在同一列。利息是費用、列營業活動；本金是還債、列籌資活動；兩者的性質與位置都不同。",
+    "en": "Entering principal and interest together on one line. Interest is an expense and belongs in operating activities; principal is debt repayment and belongs in financing; they differ in nature and belong in different sections."
+  },
+  "related": [
+    "tm_s5b8r3hd",
+    "tm_s0b4f89c",
+    "tm_y7a34vmk",
+    "tm_tfmnrp7r"
+  ]
 }

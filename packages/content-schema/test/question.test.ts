@@ -161,6 +161,19 @@ describe('multi_choice（D12）', () => {
 });
 
 describe('其他題型的規則', () => {
+  it('ratio_interpret 的 ratioTable：只給 ratio_interpret、ratioRefs 不重複、scenario 與 measures 二選一、measures 引用已宣告的 vars', () => {
+    const interpret = { ...single, id: 'q_r4t1px9k', type: 'ratio_interpret', ratioRef: 'roa@excel', vars: { ni: 10, ta: 40 } };
+    const measures = { is_net_income: 'vars.ni', bs_total_assets: 'vars.ta' };
+    expect(ok({ ...interpret, ratioTable: { ratioRefs: ['roa@excel', 'current_ratio@excel'], measures } })).toBe(true);
+    expect(ok({ ...interpret, ratioTable: { ratioRefs: ['roa@excel'], scenario: effect.scenario } })).toBe(true);
+    expect(messages({ ...single, ratioTable: { ratioRefs: ['roa@excel'], measures } })).toContain('只給 ratio_interpret');
+    expect(messages({ ...interpret, ratioTable: { ratioRefs: ['roa@excel', 'roa@excel'], measures } })).toContain('不得重複');
+    expect(messages({ ...interpret, ratioTable: { ratioRefs: ['roa@excel'] } })).toContain('二選一');
+    expect(messages({ ...interpret, ratioTable: { ratioRefs: ['roa@excel'], scenario: effect.scenario, measures } })).toContain('二選一');
+    expect(messages({ ...interpret, ratioTable: { ratioRefs: ['roa@excel'], measures: { is_net_income: 'vars.nope' } } })).toContain('vars.nope');
+    expect(ok({ ...interpret, ratioTable: { ratioRefs: [], measures } })).toBe(false);
+    expect(ok({ ...interpret, ratioTable: { ratioRefs: ['roa'], measures } })).toBe(false);
+  });
   it('single_choice 類：3 或 4 個選項、正解要在 options、ratio_interpret 要有 ratioRef', () => {
     expect(ok({ ...single, options: single.options.slice(0, 2) })).toBe(false);
     expect(messages({ ...single, correctOptionId: 'o_zzzz' })).toContain('必須是 options 裡的選項');
@@ -202,13 +215,13 @@ const chapterCore = {
   status: 'published',
   order: 1,
   scope: 'core',
-  examScope: 'unconfirmed',
+  examScope: 'midterm',
   title: lt('會計是什麼', 'What accounting is'),
   summary: lt('從一家小店開始。', 'Start from a small shop.'),
   objectiveIds: [],
   levelIds: [],
 };
-const chapterExtension = { ...chapterCore, id: 'ch_e4j7r2', order: 9, scope: 'extension', examScope: 'not_in_exam' };
+const chapterExtension = { ...chapterCore, id: 'ch_e4j7r2', order: 9, scope: 'extension', examScope: 'not_in_exam', kind: 'journal' };
 const term = {
   id: 'tm_r4w8n2qe',
   rev: 1,
@@ -249,10 +262,44 @@ describe('validateBundle（跨檔案規則）', () => {
     const issues = validateBundle(bundle({ questions: [single, multi, effect, ratioNumeric, journal].map((q) => ({ file: `questions/${q.id}`, data: q })) }));
     expect(issues).toEqual([]);
   });
-  it('journal_entry 只能放在 scope 為 extension 的章節', () => {
+  it('journal_entry 只能放在 scope 為 extension 且 kind 為 journal 的章節（ans.journalScope）', () => {
     const issues = validateBundle(bundle({ questions: [{ file: 'q', data: { ...journal, chapterId: 'ch_c5f8w2' } }] }));
     expect(has(issues, 'journal_entry 只能放在')).toBe(true);
+    expect(issues.find((i) => i.message.includes('journal_entry 只能放在'))?.rule).toBe('ans.journalScope');
     expect(has(validateBundle(bundle({ questions: [{ file: 'q', data: journal }] })), 'journal_entry 只能放在')).toBe(false);
+    // 延伸章但沒有標 kind: journal（例如本益比延伸章）也不行
+    const { kind: _kind, ...noKind } = chapterExtension;
+    const noKindIssues = validateBundle(
+      bundle({
+        chapters: [
+          { file: 'chapters/core', data: chapterCore },
+          { file: 'chapters/ext', data: noKind },
+        ],
+        questions: [{ file: 'q', data: journal }],
+      }),
+    );
+    expect(noKindIssues.filter((i) => i.rule === 'ans.journalScope').map((i) => i.path)).toEqual(['chapterId']);
+  });
+  it('章節的期中考範圍與種類（struct.examScope、struct.chapterKind）', () => {
+    const chaptersWith = (...extra: Record<string, unknown>[]) =>
+      validateBundle(
+        bundle({
+          chapters: [
+            { file: 'chapters/core', data: chapterCore },
+            { file: 'chapters/ext', data: chapterExtension },
+            ...extra.map((c, i) => ({ file: `chapters/x${i}`, data: c })),
+          ],
+        }),
+      );
+    // 已發布的章節不得 unconfirmed；草稿可以
+    expect(chaptersWith({ ...chapterCore, id: 'ch_m2t7q4', order: 2, examScope: 'unconfirmed' }).map((i) => i.rule)).toEqual(['struct.examScope']);
+    expect(chaptersWith({ ...chapterCore, id: 'ch_m2t7q4', order: 2, examScope: 'unconfirmed', status: 'draft' })).toEqual([]);
+    // 延伸章只能 not_in_exam；kind: journal 只能是延伸章（Zod 層）
+    expect(chaptersWith({ ...chapterExtension, id: 'ch_m2t7q4', order: 2, kind: undefined, examScope: 'midterm' }).map((i) => i.path)).toEqual(['examScope']);
+    expect(chaptersWith({ ...chapterCore, id: 'ch_m2t7q4', order: 2, kind: 'journal' }).map((i) => i.path)).toEqual(['kind']);
+    // 全站只能有一章 kind: journal
+    const two = chaptersWith({ ...chapterExtension, id: 'ch_m2t7q4', order: 2 });
+    expect(two.filter((i) => i.rule === 'struct.chapterKind')).toHaveLength(2);
   });
   it('journal_entry 不得用 entryQuestionBlockedBy 非空的範本', () => {
     const blocked = { ...template, entryQuestionBlockedBy: ['T04'] };

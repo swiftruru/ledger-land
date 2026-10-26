@@ -1,6 +1,6 @@
 {
   "id": "tm_g8p4w1rz",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -14,7 +14,7 @@
   "pendingRefs": [],
   "ifrsBasis": "IAS 1.85",
   "definition": {
-    "zh-TW": "營業收入減掉營業成本後剩下的錢，是五層利益的第一層。它表示商品本身賺不賺錢，還沒扣掉人事、運費等營業上的其他開支。",
-    "en": "Revenue less cost of sales, the first of the five profit levels. It shows whether the goods themselves make money, before staff, delivery and other operating costs are deducted."
+    "zh-TW": "營業收入減掉營業成本的差額，是五層利益的第一層。它只看售價和進貨成本之間的價差：本期賣出的商品，比當初買進時多賣了多少錢。包裝運送費、行銷費用等銷管費用，要到計算營業利益時才扣除。",
+    "en": "Revenue less cost of sales, the first of the five profit levels. It looks only at the gap between selling price and purchase cost: how much more the goods sold this period fetched than they cost to buy. Distribution and administrative expenses, such as packing and delivery or marketing, are deducted only when operating profit is worked out."
   }
 }

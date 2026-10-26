@@ -1,0 +1,45 @@
+{
+  "id": "q_a0y6tg61",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "ratio_numeric",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_7j31n2",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "eps",
+    "pe_ratio"
+  ],
+  "termRefs": [
+    "tm_knqbr6g4",
+    "tm_n4e8t2jy",
+    "tm_5e3py55a"
+  ],
+  "scored": true,
+  "vars": {
+    "netIncome": 1800000,
+    "shareCapital": 6000000,
+    "parValue": 10
+  },
+  "compute": {
+    "ratioRef": "eps@excel",
+    "measures": {
+      "is_net_income": "vars.netIncome",
+      "bs_share_capital": "vars.shareCapital",
+      "input.par_value": "vars.parValue"
+    }
+  },
+  "answerUnit": "currency_per_share",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "綠茵運動用品今年的本期淨利是 {{money:vars.netIncome}}，年底的股本是 {{money:vars.shareCapital}}，每股面額 {{money:vars.parValue}}。請先用股本除以每股面額算出股數，再算出每股盈餘（EPS），取到小數點後兩位。",
+    "en": "Greenfield Sports earned a profit for the period of {{money:vars.netIncome}} this year. Its share capital at year end is {{money:vars.shareCapital}} and the par value is {{money:vars.parValue}} per share. First divide share capital by par value to get the number of shares, then work out earnings per share (EPS) to two decimal places."
+  },
+  "explanation": {
+    "zh-TW": "先算股數：股本 {{money:vars.shareCapital}} ÷ 每股面額 {{money:vars.parValue}}。再算每股盈餘：本期淨利 {{money:vars.netIncome}} ÷ 股數 ＝ {{number:expected.answer.value|digits=2}}。這個數字就是本益比的分母；本題的股數用股本推算，是課程的簡化做法。",
+    "en": "First the number of shares: share capital {{money:vars.shareCapital}} ÷ par value {{money:vars.parValue}}. Then earnings per share: profit for the period {{money:vars.netIncome}} ÷ number of shares = {{number:expected.answer.value|digits=2}}. This figure is the denominator of the P/E ratio; estimating the share count from share capital is a simplification used in the course."
+  }
+}

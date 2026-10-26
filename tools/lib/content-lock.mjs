@@ -72,7 +72,16 @@ function questionAnswerFields(q, c) {
     case 'single_choice':
     case 'pick_statement':
     case 'ratio_interpret':
-      return { ...base, optionIds, correctOptionId: q.correctOptionId, ...pick(q, ['ratioRef', 'distractorExprs']) };
+      return {
+        ...base,
+        optionIds,
+        correctOptionId: q.correctOptionId,
+        ...pick(q, ['ratioRef', 'distractorExprs']),
+        // 指標小表格的數字改了，正解選項可能跟著變，所以算答案欄位
+        ...(q.ratioTable === undefined
+          ? {}
+          : { ratioTable: { ...q.ratioTable, ...(q.ratioTable.scenario === undefined ? {} : { scenario: stripExpected(q.ratioTable.scenario) }) } }),
+      };
     case 'multi_choice':
       return { ...base, optionIds, scoringMode: q.scoringMode, correctOptionIds: sorted(q.correctOptionIds) };
     case 'true_false':

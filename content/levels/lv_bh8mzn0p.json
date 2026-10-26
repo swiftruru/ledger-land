@@ -1,0 +1,11 @@
+{
+  "id": "lv_bh8mzn0p",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "order": 4,
+  "title": { "zh-TW": "綜合挑戰：部門指標與取捨", "en": "Final challenge: department indicators and trade-offs" },
+  "objectiveIds": ["obj_2a6vbq", "obj_v29ayq"],
+  "questionIds": ["q_wa79qvat", "q_1wdqf16n", "q_x71b8w2r", "q_kys21epe", "q_qmz3tqmk", "q_erq4x87t"]
+}

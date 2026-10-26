@@ -2,23 +2,48 @@
   "id": "tm_1hgn004m",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "CE intensity", "en": "Capital expenditure intensity" },
+  "label": {
+    "zh-TW": "CE intensity",
+    "en": "Capital expenditure intensity"
+  },
   "teacherLabel": "CE intensity",
   "currentTwLabel": "CE intensity",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": ["Capex to revenue"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Capex to revenue"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "資本支出占營業收入的比例，看公司為了做生意要投入多少在設備上。數值越高表示越重資產。",
-    "en": "Capital expenditure as a share of revenue: how much has to be invested in equipment to support the business. Higher means a more asset-heavy business."
+    "zh-TW": "資本支出占營業收入的比例，也就是公司每做一元生意，花多少錢在添購設備等長期資產上。\n\n比例高表示公司正在大舉擴充產能，也可能表示這是個需要不斷投資設備的產業。",
+    "en": "Capital expenditure as a share of revenue: how much the company spends on equipment and other long-lived assets for each unit of sales.\n\nA high figure means heavy expansion, or simply an industry that must keep investing in equipment."
+  },
+  "example": {
+    "zh-TW": "分子來自現金流量表的投資活動，分母來自損益表。課程以 CE 代表資本支出。",
+    "en": "The numerator comes from investing activities in the statement of cash flows and the denominator from the income statement. The course uses CE as shorthand for capital expenditure."
+  },
+  "misconception": {
+    "zh-TW": "把折舊費用當成資本支出。折舊是把過去買設備的錢分期列為費用，資本支出是本期真的付出去買設備的現金，兩者的時間點與金額都不同。",
+    "en": "Treating depreciation as capital expenditure. Depreciation spreads past equipment purchases into expense over time; capital expenditure is the cash actually paid for equipment this period. They differ in both timing and amount."
+  },
+  "formula": {
+    "zh-TW": "CE intensity ＝ 資本支出 ÷ 營業收入。網站以現金流量表「取得非流動資產」的流出金額當作資本支出；課程政策下這一列也包含支付的設立費，所以會一併算進資本支出，IFRS 對照下設立費費用化，不計入。",
+    "en": "CE intensity = capital expenditure ÷ revenue. The site takes the outflow on payments to acquire non-current assets in the statement of cash flows as capital expenditure; under the course policy that line also includes start-up costs paid, so they are counted too, whereas in the IFRS comparison start-up costs are expensed and left out."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率；CE intensity 是課程的寫法，一般常稱 capex to revenue。計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; CE intensity is the course’s abbreviation, and the measure is commonly called capex to revenue. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "ce_intensity@slides02"
+  "ratioRef": "ce_intensity@slides02",
+  "related": [
+    "tm_jcbwesg8",
+    "tm_xen3p30x",
+    "tm_v3n8q2ye"
+  ]
 }

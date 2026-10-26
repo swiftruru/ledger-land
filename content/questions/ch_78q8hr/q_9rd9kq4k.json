@@ -1,0 +1,42 @@
+{
+  "id": "q_9rd9kq4k",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_0x64wz",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "retained_earnings",
+    "cash"
+  ],
+  "termRefs": [
+    "tm_4c6v99nn",
+    "tm_c4sh8k2p",
+    "tm_r4w8n2qe"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "vars": {
+    "re": 260000
+  },
+  "statement": {
+    "zh-TW": "月光書店的未分配盈餘有 {{money:vars.re}}，表示銀行帳戶裡至少有 {{money:vars.re}} 隨時可以領出來發給股東。",
+    "en": "Moonlight Books has unappropriated retained earnings of {{money:vars.re}}, so there must be at least {{money:vars.re}} in the bank account ready to be paid out to the shareholders."
+  },
+  "correct": false,
+  "misconceptionId": "mc_swd1",
+  "feedbackTrue": {
+    "zh-TW": "未分配盈餘確實是可以分配給股東的來源，這點沒錯。不過它只記錄「賺來還沒分的錢有多少」，不說這些錢現在變成了什麼；它們可能早就變成書架上的存貨或店裡的設備。帳上有多少現金，要看資產那一邊的現金那一列。",
+    "en": "Unappropriated retained earnings are indeed the source that can be distributed to shareholders, that much is right. But the figure only records how much profit has not yet been distributed, not what that money has become; it may long since have turned into books on the shelves or equipment in the shop. How much cash there is shows on the cash line on the asset side."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。未分配盈餘在右邊，說明錢的來源；現金在左邊，說明錢現在的樣子。兩者沒有理由相等。",
+    "en": "That is right. Unappropriated retained earnings sit on the right and explain where the money came from; cash sits on the left and shows what the money looks like now. There is no reason for the two to be equal."
+  },
+  "explanation": {
+    "zh-TW": "資產負債表的右邊是「錢從哪裡來」，左邊是「錢現在變成什麼」。{{term:tm_4c6v99nn}}是來源之一，對應的資產可能是{{term:tm_c4sh8k2p}}，也可能是存貨或設備。",
+    "en": "The right side of the balance sheet shows where the money came from; the left shows what it has become. {{term:tm_4c6v99nn}} are one of the sources, and the matching assets may be {{term:tm_c4sh8k2p}}, but equally inventories or equipment."
+  }
+}

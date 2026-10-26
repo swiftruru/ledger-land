@@ -1,0 +1,82 @@
+{
+  "id": "q_4ynpdxbv",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_9ba3z0",
+  "difficulty": 2,
+  "tags": [
+    "profit_vs_cash",
+    "loss"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_f9a4c6md",
+    "tm_e61ht6yh"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "loss": 50000,
+    "inc": 150000
+  },
+  "prompt": {
+    "zh-TW": "速達機車行這一期虧損 {{money:vars.loss}}，帳上的現金卻比期初多了 {{money:vars.inc}}。哪一個說法最合理？",
+    "en": "Swift Scooter Repairs made a loss of {{money:vars.loss}} this period, yet its cash is {{money:vars.inc}} higher than at the start. Which explanation is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_0kta",
+      "text": {
+        "zh-TW": "現金可能來自借款、出資或收回舊帳，和這一期的利益無關",
+        "en": "The cash may have come from loans, capital or old receivables, all unrelated to this period’s profit"
+      },
+      "feedback": {
+        "zh-TW": "答對了。錢的來源很多種，只有其中一部分和這一期的利益有關。",
+        "en": "Nice work. Cash has many sources, and only some of them have anything to do with this period’s profit."
+      },
+      "short": {
+        "zh-TW": "現金來自借款、出資或收回舊帳",
+        "en": "Cash from loans, capital or old receivables"
+      }
+    },
+    {
+      "id": "o_bf6n",
+      "text": {
+        "zh-TW": "不可能：虧損代表錢賠掉了，現金一定比期初少",
+        "en": "Impossible; a loss means money was lost, so cash must be lower than at the start"
+      },
+      "feedback": {
+        "zh-TW": "虧損的公司常常現金吃緊，這個印象沒錯。不過虧損說的是「這一期的收入少於費用」，現金的增減還要看籌資與投資活動，以及應收、應付的變化；兩者可以反向。",
+        "en": "Loss-making companies are often short of cash, and that impression is fair. But a loss only says that this period’s revenue fell short of its expenses; the change in cash also depends on financing and investing activities and on receivables and payables, so the two can move in opposite directions."
+      },
+      "short": {
+        "zh-TW": "不可能",
+        "en": "Impossible"
+      },
+      "misconceptionId": "mc_fw7k"
+    },
+    {
+      "id": "o_n36q",
+      "text": {
+        "zh-TW": "虧損的金額可能算錯了，現金增加就表示其實有賺錢",
+        "en": "The loss may be a mistake; more cash means the company actually made a profit"
+      },
+      "feedback": {
+        "zh-TW": "你把現金當成檢查利益的方法，這個想法可以理解。不過現金變多可以完全來自借款或股東出資；要檢查利益對不對，該看的是損益表上的收入和費用。",
+        "en": "Using cash as a check on profit is an understandable idea. But a rise in cash can come entirely from a loan or from shareholders; to check the profit figure, look at the revenue and expenses on the income statement."
+      },
+      "short": {
+        "zh-TW": "虧損可能算錯了",
+        "en": "The loss may be a mistake"
+      },
+      "misconceptionId": "mc_4r2x"
+    }
+  ],
+  "correctOptionId": "o_0kta",
+  "explanation": {
+    "zh-TW": "{{term:tm_n4e8t2jy}}和現金的增減是兩個不同的問題。借款與出資（屬於{{term:tm_f9a4c6md}}）、收回舊帳款，都會讓現金變多而不影響這一期的利益，所以答案是{{option:o_0kta}}。{{option:o_bf6n}}與{{option:o_n36q}}都假設兩者一定同方向。",
+    "en": "{{term:tm_n4e8t2jy}} and the change in cash are two different questions. Loans and capital under {{term:tm_f9a4c6md}}, and collecting old receivables, all raise cash without touching this period’s profit, so the answer is {{option:o_0kta}}. {{option:o_bf6n}} and {{option:o_n36q}} both assume the two must move together."
+  }
+}

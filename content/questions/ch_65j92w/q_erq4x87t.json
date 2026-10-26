@@ -1,0 +1,82 @@
+{
+  "id": "q_erq4x87t",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_v29ayq",
+  "difficulty": 3,
+  "tags": [
+    "judgment",
+    "dupont",
+    "trade_off"
+  ],
+  "termRefs": [
+    "tm_1ebm48ca",
+    "tm_92yzx0fn",
+    "tm_2cqt9cfd",
+    "tm_2ggtxnaz"
+  ],
+  "scored": false,
+  "type": "judgment",
+  "prompt": {
+    "zh-TW": "晴川花坊的林姊看完今年的杜邦拆解，發現三個因子都不算突出。她想讓明年的 ROE 高一些，手上有三個方向，每一個都動到不同的因子。你會建議她先從哪一個下手？三個都說得通，想想在什麼條件下你會選哪一個。",
+    "en": "After looking at this year’s DuPont breakdown for Clearwater Florist, Lin finds none of the three factors stands out. She would like a higher ROE next year and has three directions in mind, each moving a different factor. Which would you suggest she start with? All three can make sense; think about the conditions under which you would pick each."
+  },
+  "options": [
+    {
+      "id": "o_3gya",
+      "text": {
+        "zh-TW": "重新檢討花材進貨與定價，讓每一筆訂單留下更多淨利（純益率）",
+        "en": "Rework flower sourcing and pricing so each order keeps more profit (net profit margin)"
+      },
+      "upside": {
+        "zh-TW": "不用多投入資產、也不用借錢，改善的是體質本身；只要客人接受新價格，效果會一直留著。",
+        "en": "No extra assets and no borrowing; it improves the business itself, and the effect lasts as long as customers accept the new prices."
+      },
+      "downside": {
+        "zh-TW": "漲價可能流失對價格敏感的客人，壓低進貨成本則可能影響花材品質；純益率的改善通常慢而且有限。",
+        "en": "Higher prices may lose price-sensitive customers, and squeezing suppliers may hurt flower quality; margin gains are usually slow and limited."
+      }
+    },
+    {
+      "id": "o_ckqx",
+      "text": {
+        "zh-TW": "用同一家店與同一批設備多接企業與婚禮訂單，讓營收變多（資產週轉率）",
+        "en": "Take on more corporate and wedding orders with the same shop and equipment, so revenue grows (asset turnover)"
+      },
+      "upside": {
+        "zh-TW": "資產沒有增加、營收變多，週轉率直接上升；花坊的人力與冷藏設備常有閒置時段，填滿它幾乎沒有額外的資產成本。",
+        "en": "Assets stay the same while revenue grows, so turnover rises directly; a florist’s staff and cold storage often have idle hours, and filling them costs almost no extra assets."
+      },
+      "downside": {
+        "zh-TW": "接單能力有上限，忙季可能超出負荷而影響品質；為了搶單降價，反而會把純益率拉低。",
+        "en": "Capacity has a ceiling, and peak seasons may be overloaded at the expense of quality; discounting to win orders would drag the margin down instead."
+      }
+    },
+    {
+      "id": "o_hnrs",
+      "text": {
+        "zh-TW": "向銀行借款在隔壁鎮開第二家店，用借來的錢放大資產（權益倍數）",
+        "en": "Borrow from the bank to open a second shop in the next town, using borrowed money to enlarge the assets (equity multiplier)"
+      },
+      "upside": {
+        "zh-TW": "只要新店的資產報酬高於借款利率，多出來的報酬全部歸股東，ROE 的放大效果最快、最明顯。",
+        "en": "As long as the new shop’s return on assets beats the loan rate, all the extra return goes to the shareholders; this is the fastest and most visible way to lift ROE."
+      },
+      "downside": {
+        "zh-TW": "利息每個月都要付，新店若生意不如預期，ROE 會反過來被槓桿放大成下跌；風險與負債比率一起上升。",
+        "en": "Interest is due every month, and if the new shop underperforms, leverage magnifies the fall in ROE just as it magnified the rise; risk climbs together with the debt ratio."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "三個方向對應杜邦的三個因子，沒有哪一個永遠最好。如果花坊的毛利被進貨成本吃掉太多，先修純益率最划算；如果店裡明顯有閒置的人力與設備，先衝週轉率的代價最小；只有在本業的資產報酬穩定高於借款利率、而且林姊承受得了利息壓力時，才輪到借錢放大權益倍數。順序上，網站的觀點是先改善前兩個「靠自己」的因子，再考慮槓桿：同樣的 ROE，靠 ROA 撐起來的比靠借款撐起來的穩。",
+    "en": "The three directions match the three DuPont factors, and none is always best. If flower costs are eating too much of the gross profit, fixing the margin pays off most; if the shop clearly has idle staff and equipment, pushing turnover costs the least; only when the return on the core assets is reliably above the loan rate, and Lin can carry the interest, does borrowing to raise the multiplier come into play. In order, the site’s view is to improve the two factors that depend on the business itself before reaching for leverage: for the same ROE, one built on ROA is steadier than one built on borrowing."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個方向各自的好處、代價與網站的觀點。",
+    "en": "There is no single right answer here; once you submit, you will see the upside, the cost and the site’s viewpoint for each of the three directions."
+  }
+}

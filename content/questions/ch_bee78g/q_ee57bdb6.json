@@ -1,0 +1,42 @@
+{
+  "id": "q_ee57bdb6",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_33hdss",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "solvency"
+  ],
+  "termRefs": [
+    "tm_h3c7v1xe",
+    "tm_z971merj",
+    "tm_k6t2e9wr"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "pretax": 600000,
+    "interest": 150000
+  },
+  "compute": {
+    "ratioRef": "interest_coverage@excel",
+    "measures": {
+      "is_pretax_income": "vars.pretax",
+      "is_interest_expense": "vars.interest"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "星橋物流今年稅前淨利 {{money:vars.pretax}}，利息費用 {{money:vars.interest}}。依課程 Excel 口徑計算利息保障倍數，以「倍」作答。",
+    "en": "Starbridge Logistics had profit before tax of {{money:vars.pretax}} and interest expense (finance costs) of {{money:vars.interest}} this year. Using the course Excel basis, what is its times interest earned (interest coverage)? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_h3c7v1xe}}＝（{{term:tm_z971merj}}＋{{term:tm_k6t2e9wr}}）÷ {{term:tm_k6t2e9wr|plain}}。分子是「付利息和所得稅之前」的利益，所以要把已經扣掉的利息加回來；倍數表示公司賺的錢可以付幾次利息。",
+    "en": "{{term:tm_h3c7v1xe}} = ({{term:tm_z971merj}} + {{term:tm_k6t2e9wr}}) ÷ {{term:tm_k6t2e9wr|plain}}. The numerator is profit before interest and tax, so the interest already deducted is added back; the multiple says how many times over the company’s earnings could pay its interest."
+  }
+}

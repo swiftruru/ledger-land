@@ -1,0 +1,46 @@
+{
+  "id": "q_00c37f3f",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_hz3wcr",
+  "difficulty": 2,
+  "tags": [
+    "cost_of_sales",
+    "purchases"
+  ],
+  "termRefs": [
+    "tm_p7h3c5xq",
+    "tm_q4k9v2nd",
+    "tm_g5c2m8tw",
+    "tm_v6j2k8sr"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_g4h3hx"
+  },
+  "vars": {
+    "flour": 48000
+  },
+  "statement": {
+    "zh-TW": "河岸麵包坊這個月進了 {{money:vars.flour}} 的麵粉與奶油，所以這個月損益表上的營業成本至少是 {{money:vars.flour}}。",
+    "en": "Riverside Bakery bought {{money:vars.flour}} of flour and butter this month, so cost of sales on this month’s income statement must be at least {{money:vars.flour}}."
+  },
+  "correct": false,
+  "misconceptionId": "mc_8nbp",
+  "feedbackTrue": {
+    "zh-TW": "進貨確實是營業成本的來源，這點沒錯。不過營業成本只算「賣出去的麵包用掉多少」；月底還沒用完的麵粉與奶油是期末存貨，會從本期進貨裡減掉，留在資產負債表上。進得多不代表賣得多。",
+    "en": "Purchases are indeed where cost of sales comes from, that much is right. But cost of sales counts only what went into the bread that was sold; flour and butter still unused at month end are closing inventory, deducted from purchases and left on the balance sheet. Buying a lot is not the same as selling a lot."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。營業成本只算賣出去的部分：{{term:tm_v6j2k8sr}}加上{{term:tm_p7h3c5xq}}，再扣掉期末存貨；沒用完的材料留在存貨裡，不是這個月的成本。",
+    "en": "That is right. Cost of sales counts only what was sold: {{term:tm_v6j2k8sr}} plus {{term:tm_p7h3c5xq}}, less closing inventories; unused materials stay in inventories and are not this month’s cost."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_g5c2m8tw}}＝{{term:tm_v6j2k8sr}}＋{{term:tm_p7h3c5xq}}－期末存貨，進貨只是中間那一項。只要月底盤點剩下的比月初還多，成本就會比進貨少，所以「進了多少，成本至少就有多少」並不成立。剩下的部分在損益表上以{{term:tm_q4k9v2nd}}那一列扣回，留在資產負債表的存貨裡。",
+    "en": "{{term:tm_g5c2m8tw}} = {{term:tm_v6j2k8sr}} + {{term:tm_p7h3c5xq}} − closing inventories, and purchases are only the middle term. Whenever more is left at the month-end count than at the start of the month, cost is lower than purchases, so ‘cost is at least what was bought’ does not hold. What is left is taken back on the {{term:tm_q4k9v2nd}} line of the income statement and stays in inventories on the balance sheet."
+  }
+}

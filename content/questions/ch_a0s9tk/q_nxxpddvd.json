@@ -1,0 +1,37 @@
+{
+  "id": "q_nxxpddvd",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "true_false",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_trr8qh",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "t_account"
+  ],
+  "termRefs": [
+    "tm_kfnzbf8s",
+    "tm_50v66dt7"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "T 字帳的左邊是借方、右邊是貸方；它不是「左邊記收入、右邊記支出」的流水帳。",
+    "en": "The left of a T-account is the debit side and the right is the credit side; it is not a cash book with income on the left and spending on the right."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。每一個科目都有自己的 T 字帳，左借右貸；收入與費用各有自己的科目，不是 T 字帳的兩邊。",
+    "en": "Correct. Every account has its own T-account, debits left and credits right; revenue and expenses have their own accounts and are not the two sides of a T-account."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你可能把 T 字帳想成家用記帳本。家用帳本記的是錢進錢出；T 字帳記的是某一個科目的借方與貸方，現金有現金的 T 字帳，營業收入有營業收入的 T 字帳。",
+    "en": "You may be picturing a household cash book. That records money in and out; a T-account records the debits and credits of one account, so cash has its own T-account and revenue has another."
+  },
+  "misconceptionId": "mc_exp4",
+  "explanation": {
+    "zh-TW": "T 字帳是分錄過帳之後的整理方式：同一個科目的所有借方金額放左邊、所有貸方金額放右邊，兩邊相減就是餘額。",
+    "en": "A T-account is how entries are organised after posting: all of one account’s debits on the left, all its credits on the right, and the difference is the balance."
+  }
+}

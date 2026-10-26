@@ -1,0 +1,196 @@
+/* 說明頁（安裝教學、隱私說明、關於與授權、關於系統設計、診斷資訊；站規 2.13 到 2.15；頁面組 pages-b，各頁自己匯入，跟頁面一起懶載入）。
+   內文最寬 65ch、段距 12、h2 上距 24；元件（TopBar、NavList、Banner、Button、TextLink）的外觀不在這裡改。
+   安裝圖解（install.css）併進這一份（M3 驗收第 7 輪 handoff，預算）：分成兩個 CSS 檔時全部 CSS 的 gzip 合計多約 200 bytes（40 KB 只剩十幾個 bytes）；
+   安裝頁本來就兩份都載，說明頁多載約 1 KB 的圖解規則，首頁橫幅展開圖解時多載說明頁的規則。InstallGuide 匯入的是這一份 */
+@import './install.css';
+.ll-lede {
+  max-width: 65ch;
+  margin: 0 0 var(--ll-space-4);
+  color: var(--ll-text-2);
+}
+.ll-prose {
+  max-width: 65ch;
+}
+.ll-prose > p,
+.ll-prose > ul {
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-prose > h2 {
+  margin: var(--ll-space-6) 0 var(--ll-space-2);
+}
+.ll-prose > .ll-list {
+  padding-inline-start: 1.2em;
+}
+.ll-prose .ll-list li {
+  margin: var(--ll-space-2) 0;
+}
+.ll-prose > .ll-lede {
+  margin-bottom: var(--ll-space-4);
+}
+/* 斷行（第 7 輪：全站同一套規則，web-ui 的 03-core-utils.css）：導言與內文都用全站預設（逐字換行、line-break: strict、
+   text-wrap: pretty），每行排滿、句號逗號不落在行首、最後一行不只剩一兩個字。第 6 輪的 keep-all（只在標點處斷）讓段落右緣參差得像逐句分行，已拿掉。
+   詞不拆開：段落的 Trans 用 components/ProseWords.tsx 把中文詞包成 span.ll-nowrap（web-ui 的全站 class）；網址、「我的 › 備份」也是 .ll-nowrap */
+/* 關於系統設計（Design.tsx，第 2 輪驗收）：每一段是 section，段與段之間一條髮絲線（不用強調色，站規 1.0 原則 4）；
+   標題前是 32px 的中性方塊加 20px 線條圖示（和右側目錄、頁尾選單列 neutral 的圖示方塊同一個樣子），長頁有視覺錨點。 */
+.ll-design__section {
+  scroll-margin-top: var(--ll-space-4);
+}
+.ll-design__section + .ll-design__section {
+  margin-top: var(--ll-space-6);
+  padding-top: var(--ll-space-6);
+  border-top: 1px solid var(--ll-border);
+}
+.ll-design__section:first-child {
+  margin-top: var(--ll-space-4);
+}
+.ll-design__section > p {
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-design__section > p:last-child {
+  margin-bottom: 0;
+}
+.ll-design__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-3);
+  margin: 0 0 var(--ll-space-3);
+}
+/* 目錄跳過來時焦點在標題上（tabindex=-1）：標題不是可操作的元素，不畫焦點框（和換頁時的 h1 一樣） */
+.ll-design__heading:focus {
+  outline: none;
+}
+.ll-design__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ll-radius-sm);
+  background: var(--ll-surface-2);
+  color: var(--ll-text-2);
+}
+.ll-design__icon svg {
+  width: 20px;
+  height: 20px;
+}
+.ll-design__body > .ll-design__foot {
+  margin: var(--ll-space-6) 0 0;
+}
+/* 目錄只在 1024 以上顯示（十二列在手機上太長，直接往下讀） */
+.ll-design__toc {
+  display: none;
+}
+/* 1024 以上兩欄：左邊 65ch 內文、右邊 sticky 目錄（寬 260 到 320px，十一個字的段落標題排得進一行）；兩欄靠左排、中間 48px，目錄緊跟著內文，不被推到最右邊 */
+@media (min-width: 1024px) {
+  .ll-design {
+    display: grid;
+    grid-template-columns: minmax(0, 65ch) minmax(260px, 320px);
+    column-gap: var(--ll-space-12);
+    align-items: start;
+  }
+  .ll-design__main {
+    min-width: 0;
+  }
+  .ll-design__toc {
+    display: block;
+    position: sticky;
+    top: var(--ll-space-4);
+    max-height: calc(100dvh - var(--ll-space-8));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* 捲動容器會裁掉卡片的陰影：四周留一點空間給陰影，左右用負外距抵銷，欄位寬度不變 */
+    margin-inline: calc(-1 * var(--ll-space-2));
+    padding: 0 var(--ll-space-2) var(--ll-space-3);
+  }
+  .ll-design__toclist {
+    margin: var(--ll-space-4) 0 0;
+  }
+}
+/* 頁尾的選單列群組、聲明卡、最後更新 */
+.ll-info-nav {
+  margin-top: var(--ll-space-6);
+}
+.ll-about-notice {
+  margin: var(--ll-space-4) 0 var(--ll-space-2);
+}
+.ll-about-version {
+  color: var(--ll-text-2);
+}
+.ll-info-updated {
+  margin: var(--ll-space-4) 0 0;
+}
+.ll-footnote {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+}
+/* 句中的網址（隱私說明的正式網址）：放得下時整個網址一起換到下一行，不從「//」或「.」後面斷；欄寬比網址還窄時
+   （320 寬文字放大 200%）才在網址裡換行，不超出版面。inline-block 前後可以換行，所以只給前後是空格的網址用 */
+.ll-url {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* 安裝教學頁（第 4 輪驗收：寬版路由；這台裝置的教學卡片在上、iPhone 的做法在下，卡片間距 16） */
+.ll-install {
+  display: grid;
+  gap: var(--ll-space-4);
+}
+.ll-install > .ll-install-card,
+.ll-install > .ll-install-ios {
+  margin: 0;
+}
+.ll-install-card__title {
+  margin: 0 0 var(--ll-space-3);
+}
+/* 頂部提示接在導言後面（Install.tsx 的 data-ll-banner-after）：導言下 16px 是提示，提示和下一張卡片之間也是 16px */
+.ll-lede + .ll-banner-slot {
+  margin-bottom: var(--ll-space-4);
+}
+/* 展開後的圖解和 summary 列之間留一點距離（summary 是 48px 的列，內容緊貼著會擠） */
+.ll-install-ios__body {
+  padding-top: var(--ll-space-3);
+}
+
+/* 診斷資訊：JSON 區塊在內部水平捲動（tabindex=0，鍵盤也捲得動），頁面本身不水平捲動 */
+.ll-debug__actions {
+  margin: var(--ll-space-3) 0;
+}
+.ll-debug__section > h2 {
+  margin: var(--ll-space-6) 0 var(--ll-space-2);
+}
+.ll-debug__section > p {
+  margin: 0 0 var(--ll-space-2);
+}
+.ll-json {
+  display: block;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--ll-space-3);
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  border-radius: var(--ll-radius-md);
+  /* 捲動陰影（第 4 輪驗收：長字串貼著右緣被切斷，看不出可以捲動）：被切掉的那一側有一道 16px 的陰影（scroll，固定在區塊邊緣），
+     捲到盡頭或內容沒有超出時，被和底色相同的遮罩（local，跟著內容走、停在內容兩端）蓋掉。四個主題都用 tokens，強制色彩下背景消失就沒有陰影 */
+  --_shade: color-mix(in oklab, var(--ll-border-strong) 75%, transparent);
+  background:
+    linear-gradient(to right, var(--ll-surface-2) 40%, transparent) left center / 40px 100% no-repeat local,
+    linear-gradient(to left, var(--ll-surface-2) 40%, transparent) right center / 40px 100% no-repeat local,
+    linear-gradient(to right, var(--_shade), transparent) left center / 16px 100% no-repeat scroll,
+    linear-gradient(to left, var(--_shade), transparent) right center / 16px 100% no-repeat scroll,
+    var(--ll-surface-2);
+  /* 有傳統捲軸的系統（Windows、部分 Android）顯示細捲軸；macOS 與 iOS 的浮動捲軸照系統設定 */
+  scrollbar-width: thin;
+  scrollbar-color: var(--ll-border-strong) transparent;
+  color: var(--ll-text);
+  font-family: var(--ll-font-mono);
+  font-size: var(--ll-type-footnote-size);
+  line-height: 1.5;
+  tab-size: 2;
+}
+.ll-debug__foot {
+  margin: var(--ll-space-6) 0 0;
+}

@@ -1,0 +1,239 @@
+{
+  "chapterId": "ch_67350j",
+  "items": [
+    {
+      "id": "obj_wt6czr",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_67350j",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能依步驟①到⑤的順序，檢查一筆交易記完之後三張報表的變化：先看五層利益，再逐一核對四個勾稽點",
+        "en": "Check the three statements after a transaction in the order of steps 1 to 5: look at the five profit levels first, then work through the four check points one by one"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_6284",
+          "text": {
+            "zh-TW": "以為五步驟只是填表的順序，填完報表就不用再核對",
+            "en": "Thinking the five steps are only an order for filling in the statements, with no checking needed once they are filled in"
+          }
+        },
+        {
+          "id": "mc_te52",
+          "text": {
+            "zh-TW": "以為步驟①的五層利益也有兩邊要比對",
+            "en": "Thinking that step 1, the five profit levels, also has two sides to compare"
+          }
+        },
+        {
+          "id": "mc_92dj",
+          "text": {
+            "zh-TW": "只要資產負債表左右相等，就以為三張報表全部正確",
+            "en": "Assuming all three statements are right as long as the balance sheet balances"
+          }
+        },
+        {
+          "id": "mc_4yen",
+          "text": {
+            "zh-TW": "以為一筆交易只會動到一張報表",
+            "en": "Thinking a transaction affects only one statement"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "transaction_effect"
+      ],
+      "termRefs": [
+        "tm_ftp19fkf",
+        "tm_chbctb2d",
+        "tm_g8p4w1rz",
+        "tm_n4e8t2jy"
+      ],
+      "pendingRefs": [
+        "T13"
+      ]
+    },
+    {
+      "id": "obj_f5en1x",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_67350j",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能說出四個勾稽點各自比對哪兩個數字、來自哪兩張報表，並用步驟編號稱呼它們（字母只是別名）",
+        "en": "Say which two figures each of the four check points compares and which two statements they come from, calling them by step number (the letters are only aliases)"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_cmsz",
+          "text": {
+            "zh-TW": "以為步驟②比對的是本期淨利，而不是稅前淨利",
+            "en": "Thinking step 2 compares profit for the period rather than profit before tax"
+          }
+        },
+        {
+          "id": "mc_k07y",
+          "text": {
+            "zh-TW": "以為步驟③比對的是本期現金增減額，而不是期末現金餘額",
+            "en": "Thinking step 3 compares the net change in cash rather than the closing cash balance"
+          }
+        },
+        {
+          "id": "mc_6v0k",
+          "text": {
+            "zh-TW": "以為步驟④永遠是「本期淨利等於未分配盈餘的餘額」，忽略期初餘額與股利",
+            "en": "Thinking step 4 is always ‘profit for the period equals the balance of unappropriated retained earnings’, ignoring the opening balance and dividends"
+          }
+        },
+        {
+          "id": "mc_pe84",
+          "text": {
+            "zh-TW": "以為步驟⑤比對的是資產總計與負債總額",
+            "en": "Thinking step 5 compares total assets with total liabilities"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "five_step_fill"
+      ],
+      "termRefs": [
+        "tm_chbctb2d",
+        "tm_z971merj",
+        "tm_12k2yq6k",
+        "tm_4c6v99nn",
+        "tm_ec80jjev"
+      ],
+      "pendingRefs": [
+        "T13"
+      ]
+    },
+    {
+      "id": "obj_8jjgc4",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_67350j",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能從亮紅燈的勾稽點推論最可能填錯的格子，先修最上游的那一格，並說明差額只是線索而不是答案",
+        "en": "Work out from the check points that light up red which cell is most likely wrong, fix the one furthest upstream first, and explain that the difference is a clue rather than the answer"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_7140",
+          "text": {
+            "zh-TW": "看到兩個勾稽點亮紅燈就以為有兩個地方填錯",
+            "en": "Assuming two red check points mean two separate mistakes"
+          }
+        },
+        {
+          "id": "mc_wea6",
+          "text": {
+            "zh-TW": "先改最下游的合計數字，而不是先找最上游填錯的格子",
+            "en": "Adjusting the downstream totals first instead of finding the upstream cell that is wrong"
+          }
+        },
+        {
+          "id": "mc_4v3q",
+          "text": {
+            "zh-TW": "以為勾稽不上一定是現金流量表的錯",
+            "en": "Assuming a failed check must come from a mistake in the statement of cash flows"
+          }
+        },
+        {
+          "id": "mc_3jae",
+          "text": {
+            "zh-TW": "以為勾稽點的差額一定等於漏記那筆交易的金額",
+            "en": "Assuming the difference at a check point must equal the amount of the missed transaction"
+          }
+        },
+        {
+          "id": "mc_s6cm",
+          "text": {
+            "zh-TW": "以為一格填錯只會讓直接比對它的那個勾稽點亮紅燈",
+            "en": "Thinking a wrong cell only turns red the check point that compares it directly"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "single_choice",
+        "five_step_fill"
+      ],
+      "termRefs": [
+        "tm_chbctb2d",
+        "tm_ftp19fkf",
+        "tm_c4sh8k2p",
+        "tm_4c6v99nn"
+      ]
+    },
+    {
+      "id": "obj_pynkwp",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_67350j",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能預測一筆交易對現金、存貨與五層利益的方向與金額，並填出勾稽點兩邊應該出現的數字",
+        "en": "Predict the direction and amount of a transaction’s effect on cash, inventories and the five profit levels, and fill in the figures that should appear on both sides of a check point"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_kqew",
+          "text": {
+            "zh-TW": "以為賒銷沒收到現金，所以五層利益不會變",
+            "en": "Thinking a credit sale leaves the five profit levels unchanged because no cash was received"
+          }
+        },
+        {
+          "id": "mc_p744",
+          "text": {
+            "zh-TW": "以為進貨的當下營業成本就會增加",
+            "en": "Thinking cost of sales rises the moment goods are purchased"
+          }
+        },
+        {
+          "id": "mc_17fs",
+          "text": {
+            "zh-TW": "以為付利息會讓營業利益減少",
+            "en": "Thinking paying interest reduces operating profit"
+          }
+        },
+        {
+          "id": "mc_e40t",
+          "text": {
+            "zh-TW": "以為提列折舊會讓現金減少",
+            "en": "Thinking depreciation reduces cash"
+          }
+        }
+      ],
+      "plannedQuestions": 6,
+      "suggestedTypes": [
+        "five_step_fill",
+        "transaction_effect"
+      ],
+      "termRefs": [
+        "tm_c4sh8k2p",
+        "tm_n7v3k8pq",
+        "tm_g8p4w1rz",
+        "tm_z3vbt800",
+        "tm_z971merj",
+        "tm_n4e8t2jy"
+      ]
+    }
+  ]
+}

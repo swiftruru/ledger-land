@@ -1,0 +1,39 @@
+{
+  "id": "q_jq98k3hw",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "true_false",
+  "objectiveId": "obj_33hdss",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "solvency"
+  ],
+  "termRefs": [
+    "tm_h3c7v1xe",
+    "tm_n4e8t2jy",
+    "tm_k6t2e9wr",
+    "tm_z971merj"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "利息保障倍數的分子可以直接用本期淨利，因為淨利就是公司賺的錢。",
+    "en": "The numerator of times interest earned can simply be profit for the period, because that is what the company earned."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "你想用「賺的錢」去比利息，方向沒錯。不過本期淨利已經扣掉利息與所得稅；要衡量「賺的錢夠付幾次利息」，得用還沒付利息和稅之前的利益，也就是稅前淨利加回利息費用。",
+    "en": "Comparing earnings with interest is the right idea. But profit for the period has already had interest and tax deducted; to measure how many times earnings cover interest you need the profit before interest and tax, that is profit before tax plus interest expense (finance costs)."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。分子要用付利息和所得稅之前的利益：稅前淨利加回利息費用，才不會把利息扣掉之後又拿去比利息。",
+    "en": "Correct. The numerator is profit before interest and tax: profit before tax plus interest expense (finance costs), so that interest is not deducted first and then compared with itself."
+  },
+  "misconceptionId": "mc_8ee3",
+  "explanation": {
+    "zh-TW": "{{term:tm_h3c7v1xe}}的分子是{{term:tm_z971merj}}加{{term:tm_k6t2e9wr}}。用{{term:tm_n4e8t2jy}}會低估倍數，讓一家付息能力正常的公司看起來吃緊。",
+    "en": "The numerator of {{term:tm_h3c7v1xe}} is {{term:tm_z971merj}} plus {{term:tm_k6t2e9wr}}. Using {{term:tm_n4e8t2jy}} understates the multiple and makes a company that services its interest comfortably look stretched."
+  }
+}

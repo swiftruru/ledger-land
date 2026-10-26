@@ -2,23 +2,44 @@
   "id": "tm_5xm3qcz9",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "預付費用", "en": "Prepayments" },
+  "label": {
+    "zh-TW": "預付費用",
+    "en": "Prepayments"
+  },
   "teacherLabel": "預付費用",
   "currentTwLabel": "預付款項",
   "ifrsEnglish": "Prepayments",
-  "aliases": { "zh-TW": [], "en": ["Prepaid expenses"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Prepaid expenses"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "網站補充的延伸科目，老師的模板沒有這一列；不列入期中考範圍。",
-    "en": "An extension account added by the site; the teacher's template has no such line and it is outside the mid-term scope."
+    "zh-TW": "網站補充的延伸科目，課程模板沒有這一列；不列入期中考範圍。",
+    "en": "An extension account added by the site; the course template has no such line and it is outside the midterm scope."
   },
   "definition": {
-    "zh-TW": "先付了錢、服務或權利還沒用到的部分，例如預繳的租金或保險費。它先列為流動資產，隨著時間經過再轉成費用。",
-    "en": "Payments made before the related service or right has been used, such as rent or insurance paid in advance. It is a current asset first and becomes an expense as time passes."
+    "zh-TW": "先付了錢、但服務或權利要在之後才享用到的支出，例如預繳的保險費或房租。\n\n在享用之前它是資產，因為公司握有「之後可以使用」的權利；隨時間經過再一點一點轉成費用。",
+    "en": "Payments made in advance for services or rights that will only be used later, such as insurance premiums or rent paid ahead.\n\nUntil they are used they are an asset, because the company holds the right to future use; they are turned into expenses gradually as time passes."
   },
-  "accountRef": "prepaid_expenses"
+  "example": {
+    "zh-TW": "位置：資產負債表流動資產；這是網站補充的延伸科目，課程模板沒有這一列，也不列入期中考範圍。付款時現金減少、預付費用增加；到期轉列費用時預付費用減少、費用增加。速動比率的年報版本會把它從流動資產扣掉。",
+    "en": "Where it sits: current assets on the balance sheet; it is an extension account added by the site, absent from the course template and outside the midterm scope. Paying reduces cash and increases prepayments; as the period is used up, prepayments fall and the expense rises. The annual report version of the quick ratio deducts it from current assets."
+  },
+  "misconception": {
+    "zh-TW": "以為付了錢就一定是當期費用。錢雖然出去了，但效益還沒用到，所以它先是資產；等真的用到那段期間才變成費用。這正是權責發生制和現金收付制的差別。",
+    "en": "Assuming that money paid out is always an expense of the period. The cash has gone, but the benefit has not yet been consumed, so it is first an asset and becomes an expense only in the period it is used. This is exactly the difference between the accrual basis and the cash basis."
+  },
+  "accountRef": "prepaid_expenses",
+  "related": [
+    "tm_n8ysnw1m",
+    "tm_05t9wphy",
+    "tm_bcs4fvmn"
+  ]
 }

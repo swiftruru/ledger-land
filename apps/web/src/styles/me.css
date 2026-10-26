@@ -1,0 +1,614 @@
+/* 「我的」這一組頁面（站規 2.8 到 2.12）：我的、玩家卡、徽章摘要卡、收藏區、徽章頁、設定、備份。
+   Me 在首次載入的 chunk 裡，這個檔案跟著進首次載入的 CSS；CSS 預算算的是全部 CSS 的 gzip 總和，所以不拆成多個 lazy 小檔（每個檔都有 gzip 的固定開銷），
+   共同的字級、卡片外觀與強制色彩寫成一組選擇器。只排版面與頁面自己的區塊；元件（NavList、NavCard、Button、StatChip、Badge、Switch、ProgressBar）的外觀不在這裡改。 */
+
+/* ---- 共同：小標（footnote 600）、說明（body-sm）、卡片標題（title-3）、頁面自己的卡片 ---- */
+.ll-backup__label,
+.ll-settings__title,
+.ll-settings-page .ll-settings > h2,
+.ll-settings__label,
+.ll-badges__eyebrow,
+.ll-badges__group-title,
+.ll-favourites__title {
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+}
+.ll-backup__aside,
+.ll-backup__note,
+.ll-backup__hint,
+.ll-settings__hint,
+.ll-badges__rules,
+.ll-favourites__empty-text {
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-backup__title,
+.ll-badges__count,
+.ll-badges__title {
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+}
+.ll-player,
+.ll-badges__summary,
+.ll-badges__item,
+.ll-favourites__empty {
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+}
+.ll-backup__title:focus,
+.ll-favourites__title:focus {
+  outline: none;
+}
+/* 強制色彩的框線在檔案最後 */
+
+/* ---- 我的（2.8）：手機一欄；桌面左 5/12（固定在畫面上）右 7/12，上緣對齊 ---- */
+.ll-me {
+  display: grid;
+  gap: var(--ll-space-6);
+  align-items: start;
+}
+.ll-me__side,
+.ll-me__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ll-space-4);
+  min-width: 0;
+}
+.ll-me__main {
+  gap: var(--ll-space-6);
+}
+/* 欄內的間距一律由 gap 決定（元件自帶的上下 margin 歸零，兩欄的上緣才對得齊；權重要蓋過 div.ll-navcard 與 .ll-navlist__group 的 margin） */
+.ll-me .ll-me__side > *,
+.ll-me .ll-me__main > *,
+.ll-favourites__list > li > * {
+  margin-block: 0;
+}
+/* 1024 起的兩欄（「關於」只渲染一份，Me.tsx 的 useExpanded：手機與平板在右欄，1024 起在左欄）與左欄固定在畫面上，寫在檔案最後 */
+
+/* ---- 玩家卡（1.15）：鈴與問候一列，三個統計膠囊在下面一列；600 到 1023（單欄，卡片很寬）：鈴、問候、膠囊排成一列。
+   第 4 輪看圖驗收：膠囊靠左、右側留下不對稱的空位，問候右邊也空了一大塊，鈴的圖只佔外框約八成（72px 的外框畫出來約 60px）。
+   改成：問候是鈴說的話（對話框撐滿鈴右邊的整欄，尾巴指向鈴）；三個膠囊平分整列（flex 1 1 0，最窄是自己的內容寬，放大字級時自然換行）；
+   鈴的外框 375 時 92px、600 起 104px（圖約 72 與 81px） ---- */
+/* 卡片本身是容器（第 7 輪看圖驗收：文字放大 200% 時對話框只剩四個中文字寬），格線在裡面的 .ll-player__body（容器查詢改不了容器自己的版面） */
+.ll-player {
+  container-type: inline-size;
+  padding: var(--ll-space-4);
+  --_glow-c: color-mix(in oklab, var(--ll-star) 16%, transparent);
+  background: radial-gradient(110% 100% at 0% 0%, var(--_glow-c), transparent 62%), var(--ll-surface);
+}
+.ll-player__body {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  grid-template-areas:
+    'bell greet'
+    'stats stats';
+  align-items: center;
+  gap: var(--ll-space-3) var(--ll-space-4);
+}
+.ll-player__bell {
+  grid-area: bell;
+  width: 92px;
+  height: 92px;
+}
+/* 對話框：surface-2 底，左邊一個轉 45 度的同色小方塊當尾巴 */
+.ll-player__greet {
+  grid-area: greet;
+  position: relative;
+  margin: 0 0 0 6px;
+  padding: var(--ll-space-3) var(--ll-space-4);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+  font-weight: 600;
+  text-wrap: balance;
+}
+.ll-player__greet::before {
+  content: '';
+  position: absolute;
+  top: calc(50% - 6px);
+  left: -5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: inherit;
+  rotate: 45deg;
+}
+.ll-player__stats {
+  grid-area: stats;
+}
+/* 統計列：玩家卡與備份頁「這台裝置」卡同一套排法（第 5 輪看圖驗收：備份頁的膠囊原本各自縮到內容寬、靠左，右側空一大片）。
+   三個膠囊平分整列（flex 1 1 0，最窄是自己的內容寬，放大字級時自然換行），膠囊撐滿自己那一格、內容置中；
+   每個膠囊下面一行短標籤（第 2 輪看圖驗收：只有數字與圖示，2／14、1／107 只能靠圖示猜），標籤只是畫面上的說明（aria-hidden），
+   膠囊本身的可讀名稱已經有完整的字 */
+.ll-player__stats,
+.ll-backup__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ll-player__stat,
+.ll-backup__stat {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  flex: 1 1 0;
+  min-width: max-content;
+}
+/* StatChip 的 className，只排版面 */
+.ll-player__chip,
+.ll-backup__chip {
+  justify-self: stretch;
+  justify-content: center;
+}
+.ll-player__cap,
+.ll-backup__cap {
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+}
+/* 600 起、600 到 1023 與卡片窄時（容器查詢）的排法在檔案最後 */
+
+/* ---- 徽章摘要卡（NavCard 的 media）：徽章橫排加 ProgressBar sm。手機一列 6 格等寬撐滿（最多 48px）；
+   600 起兩列、每列 7 格（14 章剛好排滿，第 2 輪看圖驗收：768 原本靠 overflow 截在 11 格，右邊留一段缺口）。
+   排不下的格子落到高度 0 的列，被 overflow 裁掉；任何寬度都是整列 ---- */
+.ll-me-badges {
+  display: grid;
+  gap: var(--ll-space-3);
+  padding: var(--ll-space-4) var(--ll-space-4) var(--ll-space-3);
+  --_glow-c: color-mix(in oklab, var(--ll-star) 14%, var(--ll-surface));
+  background: linear-gradient(180deg, var(--_glow-c), var(--ll-surface));
+}
+.ll-me-badges__row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 48px));
+  grid-template-rows: auto;
+  grid-auto-rows: 0;
+  justify-content: space-between;
+  column-gap: var(--ll-space-1);
+  min-height: 48px;
+  overflow: hidden;
+}
+.ll-me-badges__badge {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+.ll-me-badges__badge.is-empty {
+  opacity: 0.55;
+}
+
+/* ---- 深色三風味：星星金的光暈疊在深底上會變成橄欖灰（第 1 輪看圖驗收），玩家卡與徽章摘要卡改成強調色的淡光，徽章頁的摘要卡不畫光暈 ---- */
+html[data-theme='dark'] .ll-player {
+  --_glow-c: color-mix(in oklab, var(--ll-accent) 12%, transparent);
+}
+html[data-theme='dark'] .ll-me-badges {
+  --_glow-c: color-mix(in oklab, var(--ll-accent) 10%, var(--ll-surface));
+}
+
+/* ---- 收藏區（2.12）：區塊標題和 NavList 的群組標題同一種小標（footnote 600，共同規則在檔案最上面），右邊是題數的 Badge ---- */
+.ll-favourites__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0 0 var(--ll-space-2);
+  padding-inline: 4px;
+}
+.ll-favourites__title:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+  border-radius: var(--ll-radius-sm);
+}
+.ll-favourites__list {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* 關卡名：兩行時上下等長。中文用 Phrased 依詞換行（FavouritesSection.tsx，第 9 輪），只在詞與詞之間斷，balance 不會在詞中間平分 */
+.ll-favourites__name {
+  display: block;
+  text-wrap: balance;
+}
+/* 說明：關卡代號的 Badge 接題目摘錄，整段最多兩行（完整文字仍在連結的可讀名稱裡） */
+/* 第 5 輪看圖驗收：摘要是會被截斷的散文，不沿用 NavRow 說明的 keep-all（只在標點處換行時，代號 Badge 單獨佔一行、摘要被推到下一行，
+   兩行排不滿就截斷，相鄰的卡排成三種外形）。改回一般的中文換行（pretty 也不用），代號 Badge 和摘錄的第一個字在同一行、兩行都排滿。
+   第 7 輪起 NavRow 的說明不再是 keep-all（word-break 與 overflow-wrap: anywhere 由 .ll-navrow__desc 繼承），這裡只蓋掉 pretty。
+   第 9 輪：摘錄用 ProseWords 依詞換行（6 個字以內的單位包成 .ll-nowrap，375 不再斷成「申請一／筆」），每行最多短一個詞，仍是兩行排滿 */
+.ll-favourites__desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-wrap: wrap;
+}
+.ll-favourites__code {
+  margin-inline-end: 2px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+.ll-favourites__empty {
+  display: grid;
+  justify-items: start;
+  gap: var(--ll-space-3);
+  padding: var(--ll-space-4);
+}
+.ll-favourites__empty-text {
+  margin: 0;
+}
+
+/* ---- 徽章頁（2.11）：摘要卡加徽章格（375 兩欄、600 三欄、1024 四欄）。每格是收集冊的一格：徽章 72、眉標（第幾章，一行）、
+   名稱、狀態（加已取得的日期）；四列用 subgrid 和同一排的卡片對齊（第 1 輪看圖驗收） ---- */
+.ll-badges {
+  display: grid;
+  gap: var(--ll-space-6);
+}
+.ll-badges__summary {
+  display: grid;
+  gap: var(--ll-space-3);
+  padding: var(--ll-space-5);
+  --_glow-c: color-mix(in oklab, var(--ll-star) 18%, transparent);
+  background: radial-gradient(90% 120% at 100% 0%, var(--_glow-c), transparent 60%), var(--ll-surface);
+}
+html[data-theme='dark'] .ll-badges__summary {
+  --_glow-c: transparent;
+}
+.ll-badges__count,
+.ll-badges__rules,
+.ll-badges__cond {
+  margin: 0;
+}
+.ll-badges__count {
+  font-variant-numeric: tabular-nums;
+}
+/* 主線與延伸兩段：各有一個小標（footnote 600，共同規則在檔案最上面）與已取得數的 Badge；延伸段一定從新的一列開始 */
+.ll-badges__group {
+  display: grid;
+  gap: var(--ll-space-2);
+}
+.ll-badges__group-title {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0;
+  padding-inline: 4px;
+}
+.ll-badges__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ll-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ll-badges__item {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 4;
+  justify-items: center;
+  align-content: start;
+  row-gap: var(--ll-space-2);
+  padding: var(--ll-space-4) var(--ll-space-3);
+  text-align: center;
+}
+.ll-badges__icon {
+  width: 72px;
+  height: 72px;
+}
+.ll-badges__item[data-state='mastery'] {
+  --_glow-c: color-mix(in oklab, var(--ll-star) 16%, var(--ll-surface));
+  --_ring: color-mix(in oklab, var(--ll-star) 55%, transparent);
+  background: linear-gradient(180deg, var(--_glow-c), var(--ll-surface) 70%);
+  box-shadow:
+    var(--ll-shadow-1),
+    inset 0 0 0 1.5px var(--_ring);
+}
+/* 深色：精通卡的邊框用星星本色（不和卡片色混成橄欖色），底色不畫光暈 */
+html[data-theme='dark'] .ll-badges__item[data-state='mastery'] {
+  --_glow-c: var(--ll-surface);
+  --_ring: var(--ll-star);
+}
+/* 完成卡：和精通卡對稱（第 2 輪看圖驗收：原本除了獎牌顏色以外和未取得一樣是白底），淡底加 1.5px 內框。
+   框與底用「完成」Badge 的成功色（第 4 輪看圖驗收：原本是強調色，深色三風味的紫框紫底讀起來像「被選取」，accent 只給動作與選取；
+   一張卡又同時有強調色、綠色 Badge 與獎牌三種語意色）。規則和精通卡一樣：卡的框和狀態 Badge 同一個色系，四個主題都一樣 */
+.ll-badges__item[data-state='done'] {
+  --_glow-c: var(--ll-success-tint);
+  --_ring: color-mix(in oklab, var(--ll-success-ink) 50%, transparent);
+  background: linear-gradient(180deg, var(--_glow-c), var(--ll-surface) 70%);
+  box-shadow:
+    var(--ll-shadow-1),
+    inset 0 0 0 1.5px var(--_ring);
+}
+/* 深色：淡底減半（深色的 success-tint 是 15% 的綠，整片漸層太濃），框線用 70% 的成功色 */
+html[data-theme='dark'] .ll-badges__item[data-state='done'] {
+  --_glow-c: color-mix(in oklab, var(--ll-success-tint) 50%, var(--ll-surface));
+  --_ring: color-mix(in oklab, var(--ll-success-ink) 70%, transparent);
+}
+.ll-badges__eyebrow {
+  align-self: end;
+  white-space: nowrap;
+}
+/* 徽章名：兩行時上下等長（balance）。中文用 Phrased 依詞換行（BadgesSection.tsx，第 9 輪：沒切詞的 keep-all 在 320 把「資金來源偵探」硬斷成「資金來源偵／探」），
+   內容用 U+200B 標好的斷點之間整塊不拆（「看懂​股東權益​與融資」：375 時「看懂股東權益／與融資」，320 時「看懂／股東權益／與融資」）；
+   只在詞與詞之間斷，balance 不會再把它平分在「權」與「益」中間（第 2 輪看圖驗收當初只給英文 balance 的原因） */
+.ll-badges__title {
+  align-self: start;
+  text-wrap: balance;
+}
+.ll-badges__state {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--ll-space-1);
+}
+.ll-badges__cond {
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-variant-numeric: tabular-nums;
+  text-wrap: balance;
+}
+
+/* ---- 設定（2.9）：卡片小標、分段控制的小標與說明；計時的開關列之間留 16 ---- */
+.ll-settings__title,
+.ll-settings-page .ll-settings > h2 {
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-settings__label {
+  margin: var(--ll-space-4) 0 var(--ll-space-2);
+}
+.ll-settings__hint {
+  margin: var(--ll-space-2) 0 0;
+}
+.ll-settings-page .ll-settings > .ll-switch-row + .ll-switch-row {
+  margin-top: var(--ll-space-4);
+}
+/* 依附在上一個開關的子選項（計時的「寬鬆」）：縮排、左側 2px 髮絲線；上一個開關關閉時停用，標籤與說明也轉淡（開關本身的停用樣式在元件） */
+.ll-settings__sub {
+  padding-inline-start: var(--ll-space-4);
+  box-shadow: inset 2px 0 0 var(--ll-border);
+}
+.ll-settings-page .ll-settings > .ll-switch-row + .ll-settings__sub {
+  margin-top: var(--ll-space-2);
+}
+.ll-settings__sub:has(.ll-switch:disabled) .ll-switch-row__label {
+  color: var(--ll-text-2);
+}
+/* 420 以下：設定頁的分段控制（語言、外觀、深色風味、玻璃效果）左右內距 12、字級 body-sm 15，全部一起改，同一頁的膠囊同一種大小。
+   第 4 輪看圖驗收：375 時「玻璃效果」四個選項放不下一列，元件改排成 2×2 格子，選取鈕佔半寬，和同頁的單列膠囊像兩種元件；
+   縮小後中文四個選項約 270px，放得進卡片內寬 311px（英文仍放不下一列時由元件排成格子） */
+@media (max-width: 420px) {
+  .ll-settings-page .ll-seg--keys > button {
+    padding-inline: 12px;
+    font-size: var(--ll-type-body-sm-size);
+  }
+}
+/* 深色風味的色票（AppearanceSetting）：實心的 16px 圓角方塊，左上是該風味的底色、右下是它的標誌色（inline 的 --_sw-a、--_sw-b，取自 tokens）。
+   它是分段控制按鈕（inline-flex、align-items: center）的直接子項，本來就是區塊盒、垂直置中，不寫 display 與 vertical-align */
+.ll-flavor-swatch {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-inline-end: 6px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, var(--_sw-a) 0 50%, var(--_sw-b) 50% 100%);
+  box-shadow: inset 0 0 0 1.5px var(--ll-text-3);
+}
+
+/* ---- 說明句的換行（features/me/Phrased.tsx）：.ll-phrased 在 web-ui 的 03-core-utils.css（全站一套，第 7 輪 handoff 刪掉這裡的重複規則）；
+   block 版只要自己排成區塊（text-wrap: pretty 由 html 繼承） ---- */
+.ll-phrased--block {
+  display: block;
+}
+
+/* ---- 備份（2.10）：錯誤只有一種紅色（FieldError 與 .ll-input 的 aria-invalid，元件的樣式）；這裡只排版面 ---- */
+.ll-backup__intro {
+  margin: 0 0 var(--ll-space-4);
+  color: var(--ll-text-2);
+}
+.ll-backup__card,
+.ll-backup__actions,
+.ll-backup__field {
+  display: grid;
+  gap: var(--ll-space-2);
+}
+.ll-backup__card {
+  gap: var(--ll-space-3);
+}
+/* 卡片內的間距由 gap 決定；按鈕不在這裡（它下方保留 4px 立體底邊的位置） */
+.ll-backup__card > :is(h2, p, dl, div, details),
+.ll-backup__ok {
+  margin-block: 0;
+}
+/* 每張卡片的標題都是 title-3 700 加主要文字色（第 3 輪看圖驗收：「這台裝置」原本是 footnote 灰字，和欄位標籤分不出來） */
+.ll-backup__card > h2 {
+  color: var(--ll-text);
+}
+/* 學習紀錄：三個統計膠囊（排法和玩家卡共用，見玩家卡那一段；600 起整列最寬 30rem，見檔案最後） */
+/* 其餘三項：任何寬度都是兩欄（標籤 footnote 600 次要色、值 body 17/600），和膠囊之間一條細線 */
+.ll-backup__dl {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--ll-space-2) var(--ll-space-4);
+  margin: 0;
+  padding-top: var(--ll-space-3);
+  border-top: 1px solid var(--ll-border);
+}
+.ll-backup__dl dt {
+  color: var(--ll-text-3);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+}
+.ll-backup__dl dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--ll-text);
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+/* 值後面的補充說明（保留許可的來源與日期）是一般字重 */
+.ll-backup__dl .ll-backup__aside {
+  font-weight: 400;
+}
+/* 備份碼：等寬字（第 2 輪看圖驗收：Chromium 不支援 ui-monospace，原本落到 Courier 襯線字，像瀏覽器的預設控制項）。
+   字型堆疊用 --ll-font-mono token，和診斷頁同一組。字級 16px（iOS 聚焦文字框時小於 16px 會放大畫面），
+   行高維持 --ll-type-input-line（文字框的高度是整數行，見 web-ui 的 textarea.ll-input） */
+.ll-backup__code {
+  font-family: var(--ll-font-mono);
+  font-size: max(1rem, var(--ll-type-body-sm-size));
+  letter-spacing: 0.02em;
+  word-break: break-all;
+}
+.ll-backup__status:empty {
+  display: none;
+}
+/* 成功訊息和錯誤訊息（FieldError）同一種排法：前面 16px 圖示（勾）、間距 6、body-sm */
+.ll-backup__ok {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--ll-success-ink);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-backup__ok svg {
+  flex: none;
+  margin-top: 4px;
+}
+.ll-backup__summary {
+  font-weight: 600;
+}
+.ll-backup__preview {
+  box-shadow:
+    var(--ll-shadow-2),
+    inset 0 0 0 2px var(--ll-accent);
+}
+
+/* ---- 依寬度、容器與強制色彩的規則：各段的 @media 集中在這裡，同一個條件只寫一個區塊（入口 CSS 的預算，第 8 輪看圖驗收前）。
+   順序就是層疊順序：600 起、600 到 1023、1024 起，然後是玩家卡的容器查詢（要蓋過 600 到 1023 的一列排法），最後是強制色彩
+   （色票的 box-shadow 要蓋過一般規則） ---- */
+@media (min-width: 600px) {
+  /* 玩家卡：鈴的外框 104px，問候 title-3 */
+  .ll-player {
+    padding: var(--ll-space-5);
+  }
+  .ll-player__body {
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: var(--ll-space-4) var(--ll-space-5);
+  }
+  .ll-player__bell {
+    width: 104px;
+    height: 104px;
+  }
+  .ll-player__greet {
+    font-size: var(--ll-type-title-3-size);
+    line-height: var(--ll-type-title-3-line);
+    font-weight: 700;
+  }
+  /* 徽章摘要卡：兩列、每列 7 格 */
+  .ll-me-badges__row {
+    grid-template-columns: repeat(7, minmax(0, 48px));
+    grid-template-rows: auto auto;
+    row-gap: var(--ll-space-2);
+  }
+  /* 徽章頁：三欄 */
+  .ll-badges__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--ll-space-4);
+  }
+  .ll-badges__item {
+    padding: var(--ll-space-5) var(--ll-space-4);
+  }
+  /* 備份：標籤和值之間多留一點（第 3 輪看圖驗收：最長的標籤和「72 KB」只隔 16px）；
+     卡片很寬（1280 時 688px）時三個統計膠囊整列最寬 30rem，不會拉成按鈕那麼長的橫條 */
+  .ll-backup__dl {
+    column-gap: var(--ll-space-6);
+  }
+  .ll-backup__stats {
+    max-inline-size: 30rem;
+  }
+  .ll-backup__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* 600 到 1023 是單欄、卡片很寬：玩家卡的鈴、問候、膠囊排成一列；徽章摘要卡每格放大到 56，格子之間不會空得太開 */
+@media (min-width: 600px) and (max-width: 1023.98px) {
+  .ll-player__body {
+    grid-template-columns: 104px minmax(0, 1fr) auto;
+    grid-template-areas: 'bell greet stats';
+  }
+  .ll-me-badges__row {
+    grid-template-columns: repeat(7, minmax(0, 56px));
+  }
+}
+@media (min-width: 1024px) {
+  .ll-me {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+  /* 左欄：玩家卡、徽章卡、關於；上緣讓出右欄第一組的群組標題高度（footnote 一行加 8），兩欄的卡片上緣對齊 */
+  .ll-me__side {
+    padding-top: calc(var(--ll-type-footnote-line) + var(--ll-space-2));
+    gap: var(--ll-space-6);
+  }
+  /* 徽章頁：四欄 */
+  .ll-badges__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+/* 左欄固定在畫面上（只在視窗夠高、整欄放得下時；矮的橫向視窗捲動時不會把左欄下半部藏住） */
+@media (min-width: 1024px) and (min-height: 760px) {
+  .ll-me__side {
+    position: sticky;
+    top: var(--ll-space-4);
+  }
+}
+/* 玩家卡窄（鈴的右邊放不下「今天也一起」五個字；文字放大 200% 時 320 到 1280 都是）：改成直排，鈴在上面置中，
+   對話框在鈴的下面置中（寬度貼著文字，最寬是整張卡）、文字置中、尾巴朝上；膠囊列仍占滿整列。直排用 flex（align-items: center 沿用格線的設定），
+   比重寫格線的欄與區域短。門檻用容器的 em，字放大時門檻跟著變大；一般字級時 320 的卡片仍是鈴在左邊（對話框兩行「今天也一起／闖關吧」） */
+@container (max-width: 14em) {
+  .ll-player__body {
+    display: flex;
+    flex-direction: column;
+  }
+  .ll-player__stats {
+    align-self: stretch;
+  }
+  .ll-player__greet {
+    margin: 0;
+    text-align: center;
+  }
+  .ll-player__greet::before {
+    top: -5px;
+    left: calc(50% - 6px);
+  }
+}
+@media (forced-colors: active) {
+  .ll-player,
+  .ll-player__greet,
+  .ll-badges__summary,
+  .ll-badges__item,
+  .ll-favourites__empty {
+    border: 1px solid CanvasText;
+  }
+  .ll-flavor-swatch {
+    forced-color-adjust: none;
+    box-shadow: inset 0 0 0 1.5px CanvasText;
+  }
+  .ll-backup__preview {
+    border: 2px solid Highlight;
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "q_14c8b659",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_qrvy9c",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "capital_surplus",
+    "not_investment_advice"
+  ],
+  "termRefs": [
+    "tm_qpw1px47",
+    "tm_yka0razf",
+    "tm_wd3fx6rh"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "阿哲把綠茵運動用品的「資本公積÷股本」算出來，發現比率很高，於是說：「市場給它的估值很高，可以買。」哪一個回應最恰當？",
+    "en": "Che works out Greenfield Sports’ capital surplus divided by share capital, finds the ratio is high, and says: ‘The market values it highly, so it is a buy.’ Which response is the most appropriate?"
+  },
+  "options": [
+    {
+      "id": "o_k4m5",
+      "text": {
+        "zh-TW": "這個比率反映的是歷史發行溢價的累積，不是現在的市值",
+        "en": "This ratio reflects issue premiums accumulated in the past, not today’s market value"
+      },
+      "feedback": {
+        "zh-TW": "答對了。資本公積是過去某幾次發行股票時留下的紀錄，股價早已和它脫鉤；課程把它當成一種觀察方式，網站標為非標準比率。要看當下的市場估值，通常用股價算的本益比或股價淨值比，而這些比率也只是觀察的起點。",
+        "en": "That is right. Capital surplus is a record left by past share issues, and the share price has long since decoupled from it; the course treats it as an observation, and the site marks it as a non-standard ratio. Today’s market valuation is usually read from the price-based P/E or price-to-book ratio, and even those are only a starting point."
+      }
+    },
+    {
+      "id": "o_n6p7",
+      "text": {
+        "zh-TW": "這是年報揭露的標準估值指標，比率高就是估值高",
+        "en": "This is a standard valuation measure disclosed in annual reports; a high ratio means a high valuation"
+      },
+      "feedback": {
+        "zh-TW": "你把它當成正式指標，這是常見誤會。年報的財務分析沒有這個比率；它是課程自訂的觀察方式。",
+        "en": "Treating it as an official measure is a common misunderstanding. Annual report financial analysis does not include this ratio; it is an observation defined by the course."
+      },
+      "misconceptionId": "mc_std5"
+    },
+    {
+      "id": "o_q8r9",
+      "text": {
+        "zh-TW": "比率高代表公司最近幾年很賺錢，盈餘都累積在資本公積",
+        "en": "A high ratio means profits from recent good years have built up in capital surplus"
+      },
+      "feedback": {
+        "zh-TW": "你想把它和獲利連起來。但資本公積與盈餘無關，它來自股東投入；公司可能很久沒賺錢，比率仍然很高。",
+        "en": "You are trying to link it to profit. But capital surplus has nothing to do with earnings; it comes from shareholder contributions, and the ratio can stay high even if the company has not made a profit for years."
+      },
+      "misconceptionId": "mc_rct7"
+    }
+  ],
+  "correctOptionId": "o_k4m5",
+  "explanation": {
+    "zh-TW": "{{option:o_k4m5}}說明了這個比率能看到什麼、看不到什麼。{{option:o_n6p7}}把課程的觀察方式當成標準指標；{{option:o_q8r9}}把投入資本和獲利混為一談。本章是會計觀念練習，不是投資建議。",
+    "en": "{{option:o_k4m5}} explains what the ratio can and cannot show. {{option:o_n6p7}} mistakes a course observation for a standard measure; {{option:o_q8r9}} confuses contributed capital with profit. This chapter is an accounting concept exercise, not investment advice."
+  }
+}

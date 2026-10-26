@@ -1,0 +1,84 @@
+{
+  "id": "q_dcnsrd66",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_erqmw9",
+  "difficulty": 2,
+  "tags": [
+    "elements",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_s5b8r3hd",
+    "tm_h6p2k9wd",
+    "tm_c4sh8k2p"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_skx6ss"
+  },
+  "vars": {
+    "loan": 150000
+  },
+  "prompt": {
+    "zh-TW": "小山咖啡向銀行借了 {{money:vars.loan}}，錢已經進了店的帳戶。這筆錢在資產負債表上要怎麼記？",
+    "en": "Hillside Coffee borrows {{money:vars.loan}} from the bank, and the money is now in the shop’s account. How is it recorded on the balance sheet?"
+  },
+  "options": [
+    {
+      "id": "o_y8aj",
+      "text": {
+        "zh-TW": "現金增加，同時短期借款（負債）增加同樣的金額",
+        "en": "Cash rises, and short-term borrowings (a liability) rise by the same amount"
+      },
+      "short": {
+        "zh-TW": "現金與短期借款一起增加",
+        "en": "Cash and borrowings both rise"
+      },
+      "feedback": {
+        "zh-TW": "答對了。錢在店裡，但它是欠銀行的，所以右邊記負債。",
+        "en": "Nice work. The money is in the shop, but it is owed to the bank, so it goes on the right as a liability."
+      }
+    },
+    {
+      "id": "o_swgc",
+      "text": {
+        "zh-TW": "現金增加，股東權益也增加，因為錢已經是店的了",
+        "en": "Cash rises and equity rises too, because the money now belongs to the shop"
+      },
+      "short": {
+        "zh-TW": "記成股東權益",
+        "en": "Recorded as equity"
+      },
+      "feedback": {
+        "zh-TW": "現金確實變多了，這點沒錯。不過這筆錢要還給銀行，不是股東的；股東權益只記股東投入和店自己賺來的錢，借來的錢記在負債。",
+        "en": "Cash has indeed grown, that much is right. But this money must be repaid to the bank and does not belong to the shareholders; equity records only what the shareholders put in and what the shop earned, while borrowed money is a liability."
+      },
+      "misconceptionId": "mc_drhv"
+    },
+    {
+      "id": "o_n855",
+      "text": {
+        "zh-TW": "現金增加，營業收入也增加",
+        "en": "Cash rises and revenue rises too"
+      },
+      "short": {
+        "zh-TW": "記成營業收入",
+        "en": "Recorded as revenue"
+      },
+      "feedback": {
+        "zh-TW": "你看到有錢進來，這點沒錯。不過收入是賣咖啡賺來的錢；借款只是暫時放在店裡、以後要還的錢，和賺錢無關。",
+        "en": "You can see money coming in, which is right. But revenue is money earned by selling coffee; a loan is money parked in the shop that must be repaid later, and has nothing to do with earning."
+      }
+    }
+  ],
+  "correctOptionId": "o_y8aj",
+  "explanation": {
+    "zh-TW": "店裡的錢有三種來源：賺來的、股東出的、借來的。借來的錢在資產負債表右邊記成{{term:tm_h6p2k9wd}}，所以是{{option:o_y8aj}}。{{option:o_swgc}}把欠銀行的錢當成股東的，{{option:o_n855}}把借錢當成賺錢。",
+    "en": "Money in the shop comes from three sources: earned, put in by shareholders, or borrowed. Borrowed money is recorded on the right of the balance sheet under {{term:tm_h6p2k9wd}}, so the answer is {{option:o_y8aj}}. {{option:o_swgc}} treats money owed to the bank as the shareholders’, and {{option:o_n855}} treats borrowing as earning."
+  }
+}

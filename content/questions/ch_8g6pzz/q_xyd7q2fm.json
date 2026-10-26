@@ -1,0 +1,64 @@
+{
+  "id": "q_xyd7q2fm",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "single_choice",
+  "objectiveId": "obj_6f1csw",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "cash_flow"
+  ],
+  "termRefs": [
+    "tm_35qb8and",
+    "tm_e61ht6yh"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "現金流量允當比率想回答的是：本業賺進的現金，夠不夠支應哪三件事？",
+    "en": "The cash flow adequacy ratio asks whether operating cash is enough to cover which three things?"
+  },
+  "options": [
+    {
+      "id": "o_qa10",
+      "text": {
+        "zh-TW": "購置設備、增加存貨與發放現金股利",
+        "en": "Buying equipment, building up inventory and paying cash dividends"
+      },
+      "feedback": {
+        "zh-TW": "答對了。這三項是公司維持與成長一定要用現金的地方，允當比率看本業的現金夠不夠支應。",
+        "en": "That’s right. These three are the cash needs of keeping the business running and growing; the adequacy ratio asks whether operating cash covers them."
+      }
+    },
+    {
+      "id": "o_ntjz",
+      "text": {
+        "zh-TW": "償還借款、支付利息與繳納所得稅",
+        "en": "Repaying loans, paying interest and paying income tax"
+      },
+      "feedback": {
+        "zh-TW": "這些確實都要用現金，你的方向沒錯。不過利息與所得稅已經在營業活動的現金裡扣掉了，還款屬於籌資活動；允當比率的分母定義的是另外三項。",
+        "en": "These do all use cash, so your thinking is on the right track. But interest and income tax are already deducted within operating cash, and loan repayments belong to financing; the adequacy denominator is defined as three other items."
+      },
+      "misconceptionId": "mc_7mqm"
+    },
+    {
+      "id": "o_qwpy",
+      "text": {
+        "zh-TW": "購買存貨、支付薪資與支付房租",
+        "en": "Buying inventory, paying wages and paying rent"
+      },
+      "feedback": {
+        "zh-TW": "存貨確實和分母有關，這點你想得沒錯。不過分母不是把整筆進貨放進去，只算本期存貨淨增加的部分（存貨增加額）；薪資與房租是日常營運支出，只會讓分子（營業活動的現金）變少，不在分母裡。允當比率的分母只有三項：資本支出、存貨增加額與現金股利。",
+        "en": "You’re right that inventory matters here. But the denominator does not take every purchase, only the net increase in inventories for the period; wages and rent are day-to-day operating payments that only reduce the numerator (operating cash flow) and are not in the denominator. The denominator has just three items: capital expenditure, the increase in inventories and cash dividends."
+      }
+    }
+  ],
+  "correctOptionId": "o_qa10",
+  "explanation": {
+    "zh-TW": "{{term:tm_35qb8and}}的分母就是{{option:o_qa10}}，公式只指定這三項。{{option:o_ntjz}}裡的利息與稅屬於分子那一邊（已經在營業活動的現金裡扣掉），還款也不在這三項裡；{{option:o_qwpy}}裡的薪資與房租同樣只影響分子，進貨也不是整筆列入，只有存貨的淨增加（存貨增加額）才算進分母。",
+    "en": "The denominator of the {{term:tm_35qb8and}} is exactly {{option:o_qa10}}; the formula names only these three. In {{option:o_ntjz}}, interest and tax sit on the numerator side (already deducted within operating cash) and loan repayments are not among the three items. In {{option:o_qwpy}}, wages and rent likewise only affect the numerator, and purchases do not go in whole: only the net increase in inventories enters the denominator."
+  }
+}

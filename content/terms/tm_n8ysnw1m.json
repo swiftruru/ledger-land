@@ -2,27 +2,57 @@
   "id": "tm_n8ysnw1m",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "速動比率", "en": "Quick ratio" },
+  "label": {
+    "zh-TW": "速動比率",
+    "en": "Quick ratio"
+  },
   "teacherLabel": "速動比率",
   "currentTwLabel": "速動比率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": ["Acid-test ratio"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Acid-test ratio"
+    ]
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T24", "T28"],
+  "pendingRefs": [
+    "T24",
+    "T28"
+  ],
   "note": {
-    "zh-TW": "課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）；流動負債為 0 時網站顯示 N/A，不顯示無限大（設計說明見 T28）。",
-    "en": "The course threshold is shown only as a course reference value and is not scored (see the design note T24); when current liabilities are nil the site shows N/A rather than infinity (see the design note T28)."
+    "zh-TW": "課程的門檻只當「課程參考值」顯示，不計分；流動負債為 0 時網站顯示 N/A，不顯示無限大。",
+    "en": "The course threshold is shown only as a course reference value and is not scored; when current liabilities are nil the site shows N/A rather than infinity."
   },
   "definition": {
-    "zh-TW": "扣掉存貨與預付費用後的速動資產，相對於流動負債的倍數，看不靠賣存貨能不能馬上還清短期債務。數值越高，短期償債能力越強。",
-    "en": "Quick assets (current assets less inventories and prepayments) relative to current liabilities: whether short-term debts could be met without selling stock. Higher means stronger short-term solvency."
+    "zh-TW": "只拿能很快變成現金的流動資產來和流動負債相比，看短期債務能被涵蓋幾倍；存貨和預付費用不容易馬上變現，不算在內。\n\n它比流動比率保守，英文又叫 acid-test ratio，也就是酸性測試比率。",
+    "en": "Compares only the current assets that can quickly be turned into cash with current liabilities, showing how many times short-term debts are covered; inventories and prepayments, which cannot be realised quickly, are left out.\n\nIt is more conservative than the current ratio and is also called the acid-test ratio."
+  },
+  "example": {
+    "zh-TW": "所有數字都在資產負債表上。流動負債為 0 時比率沒有定義，網站顯示 N/A，不顯示無限大。",
+    "en": "All figures are on the balance sheet. When current liabilities are zero the ratio is undefined and the site shows N/A rather than infinity."
+  },
+  "misconception": {
+    "zh-TW": "以為存貨很快就能賣掉，所以不必扣。存貨要先賣出、再等客戶付款才變成現金，中間可能卡很久甚至賣不掉，所以速動比率把它排除。",
+    "en": "Assuming inventory can be left in because it will sell soon. Inventory must first be sold and then collected before it becomes cash, which can take a long time or never happen. That is why the quick ratio leaves it out."
+  },
+  "formula": {
+    "zh-TW": "速動比率 ＝ 速動資產 ÷ 流動負債。課程版的速動資產是現金及約當現金 ＋ 應收帳款 ＋ 短期放款；年報版用流動資產 － 存貨 － 預付費用。",
+    "en": "Quick ratio = quick assets ÷ current liabilities. The course version defines quick assets as cash and cash equivalents + trade receivables + short-term loans receivable; the annual report version uses current assets － inventories － prepayments."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "quick_ratio@excel"
+  "ratioRef": "quick_ratio@excel",
+  "related": [
+    "tm_c8r1t4zm",
+    "tm_c4sh8k2p",
+    "tm_r7x2c9fa",
+    "tm_n7v3k8pq",
+    "tm_c2y9b5ex"
+  ]
 }

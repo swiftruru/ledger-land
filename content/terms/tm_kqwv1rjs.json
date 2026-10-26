@@ -2,28 +2,55 @@
   "id": "tm_kqwv1rjs",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "非常利益", "en": "Extraordinary gains" },
+  "label": {
+    "zh-TW": "非常利益",
+    "en": "Extraordinary gains"
+  },
   "teacherLabel": "非常利益",
   "currentTwLabel": null,
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
-  "flags": ["not_ifrs_line", "ifrs_treatment_differs", "unused"],
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [
+    "not_ifrs_line",
+    "ifrs_treatment_differs",
+    "unused"
+  ],
   "confidence": "high",
-  "pendingRefs": ["T02", "T06"],
+  "pendingRefs": [
+    "T02",
+    "T06"
+  ],
   "ifrsBasis": "IAS 1.87",
   "note": {
-    "zh-TW": "故事第 16 筆的存貨盤盈預設不放這一列，屬推論（T06）。",
-    "en": "The inventory count surplus in step 16 of the story is by default not placed here; that is an inference (T06)."
+    "zh-TW": "故事第 16 筆的存貨盤盈依課程政策沖減營業成本，不放這一列。",
+    "en": "Under the course policy, the inventory count surplus in step 16 of the story reduces cost of sales and is not shown here."
   },
   "definition": {
-    "zh-TW": "教材損益表裡放少見、不會經常發生的利益的一列。現行報表沒有這一列；本課的故事也沒有用到。",
-    "en": "A line in the course income statement for rare, non-recurring gains. Current statements have no such line and the course story does not use it."
+    "zh-TW": "課程版面中，本業以外、不常發生的重大利益，例如土地被政府徵收，拿到的補償金高出帳面金額的部分；放在經常利益之後、稅前淨利之前。\n\n判斷方式和非常損失相同：不是本業、也不會一再發生，才放這一列。",
+    "en": "In the course layout, a large gain that is outside the main business and does not recur, such as the part of the compensation for land taken by the government that exceeds its carrying amount; it sits after ordinary profit and before profit before tax.\n\nThe test is the same as for extraordinary losses: only a gain that is neither part of the main business nor recurring belongs here."
+  },
+  "example": {
+    "zh-TW": "位置：損益表經常利益的下一列。本課故事沒有用到，實驗室預設隱藏；故事裡的存貨盤盈依課程政策沖減營業成本，不放這一列。",
+    "en": "Where it sits: the line right after ordinary profit on the income statement. The course story does not use it, so the lab hides it by default; the inventory count surplus in the story reduces cost of sales under the course policy and is not shown here."
+  },
+  "misconception": {
+    "zh-TW": "把偶爾出現的業外收入都當成非常利益。出租閒置空間的租金、持有股票領到的股利，這類每年都可能出現的項目屬於營業外收入，會算進經常利益。",
+    "en": "Treating every occasional non-operating item as an extraordinary gain. Rent from letting out spare space or dividends received on shares held can turn up every year; they belong in non-operating income and are counted in ordinary profit."
   },
   "ifrsNote": {
-    "zh-TW": "IAS 1.87 禁止在損益表或附註把任何收益或費損列為非常項目；改用 IFRS 時這類項目併入營業外收支或其他利益及損失，稅前淨利不變。",
-    "en": "IAS 1.87 prohibits presenting any item of income or expense as extraordinary. Under IFRS such items are included in non-operating or other gains and losses, and profit before tax is unchanged."
+    "zh-TW": "IAS 1.87 禁止在損益表或附註中把任何收益或費損列為非常項目，台灣現行報表沒有這一列。IFRS 對照的版面不顯示它，這類利益併入營業外收入或其他利益；稅前淨利不變，但經常利益這一層消失。",
+    "en": "IAS 1.87 prohibits presenting any item of income or expense as extraordinary, in the statement of profit or loss or in the notes, and current Taiwanese statements have no such line. The IFRS comparison layout hides it and folds such gains into non-operating or other income; profit before tax is unchanged, but the ordinary profit layer disappears."
   },
-  "accountRef": "extraordinary_gains"
+  "accountRef": "extraordinary_gains",
+  "related": [
+    "tm_jbt23kpz",
+    "tm_9hg0gb2b",
+    "tm_6nmfxa10",
+    "tm_n7v3k8pq"
+  ]
 }

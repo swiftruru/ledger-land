@@ -8,7 +8,8 @@ test.describe('離線與統計（06 第 3、8.3 節；10 M0b 完成標準）', (
     await page.goto('/');
     await waitForSw(page);
     await page.goto('/en/terms/');
-    await expect(page.getByTestId('term-list')).toBeVisible();
+    // 名詞圖鑑依章節分組後每組一個列表，看第一組就好
+    await expect(page.getByTestId('term-list').first()).toBeVisible();
     await context.setOffline(true);
     await page.goto('/en/terms/tm_h6p2k9wd/');
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
@@ -51,7 +52,8 @@ test.describe('離線與統計（06 第 3、8.3 節；10 M0b 完成標準）', (
     await page.goto('/?ll-analytics=stub');
     await page.waitForTimeout(2500);
     await page.getByRole('navigation').getByRole('link', { name: '圖鑑', exact: true }).click();
-    await expect(page.getByTestId('term-list')).toBeVisible();
+    // 名詞圖鑑依章節分組後每組一個列表，看第一組就好
+    await expect(page.getByTestId('term-list').first()).toBeVisible();
     const errors = await page.evaluate(
       () =>
         new Promise<number>((resolve) => {

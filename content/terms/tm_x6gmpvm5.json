@@ -1,6 +1,6 @@
 {
   "id": "tm_x6gmpvm5",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -13,7 +13,7 @@
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "三大活動現金流量的合計，也就是這段期間現金總共增加或減少了多少。它必須等於帳上現金的實際變動。",
-    "en": "The three activity totals added together: how much cash rose or fell over the period. It must equal the actual movement in the cash account."
+    "zh-TW": "營業、投資、籌資三區淨額相加的結果。期初現金加上它就是期末現金，而期末現金必須和資產負債表上的現金相同，這就是步驟③（勾稽點 C）。",
+    "en": "The sum of the net amounts of the operating, investing and financing sections. Added to opening cash it gives closing cash, which must equal cash on the balance sheet: that is step 3 (check C)."
   }
 }

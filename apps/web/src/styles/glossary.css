@@ -1,0 +1,452 @@
+/* 名詞圖鑑與名詞頁的版面（站規 2.6、2.7）。元件本身的外觀（名詞卡、膠囊、搜尋框、按鈕）在 packages/web-ui，這裡只排版、
+   只用 tokens 的變數；不選取設計系統的 class 改外觀（站規 1.2.1、4.1 R11）。名詞圖鑑是寬版頁（main[data-layout='wide']，1040）。 */
+
+/* ---- 名詞圖鑑 /terms/ ---- */
+.ll-glossary {
+  display: block;
+}
+/* 收集進度卡與搜尋列：手機上下排；600 起搜尋框與分組切換同一列；1024 起進度卡 4/12、搜尋與分組 8/12 同一列 */
+.ll-glossary__top {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin: 0 0 var(--ll-space-6);
+}
+/* 進度卡橫跨整列時（小於 1024）壓成一列：左邊大的百分比，右邊小標加撐滿的進度條，說明行在下面；內距 12，整張約 80px。
+   1024 起和搜尋列並排，改回上下排（小標、百分比、進度條、說明）。「0／107」只寫在頁首的統計膠囊，進度卡不重複（看圖驗收第 2 輪） */
+.ll-glossary__progress {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'count eyebrow'
+    'count bar'
+    'hint hint';
+  align-items: center;
+  gap: 2px var(--ll-space-4);
+  margin: 0;
+  padding: var(--ll-space-3) var(--ll-space-4);
+}
+.ll-glossary__eyebrow {
+  grid-area: eyebrow;
+  align-self: end;
+  margin: 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ll-glossary__count {
+  grid-area: count;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin: 0;
+}
+/* 收集進度卡的大數字（百分比） */
+.ll-glossary__done {
+  display: inline-block;
+  font-size: var(--ll-type-number-lg-size);
+  line-height: var(--ll-type-number-lg-line);
+  font-weight: var(--ll-type-number-lg-weight);
+  color: var(--ll-text);
+}
+.ll-glossary__bar {
+  grid-area: bar;
+  align-self: start;
+  margin: 4px 0 0;
+}
+.ll-glossary__hint {
+  grid-area: hint;
+  margin: var(--ll-space-1) 0 0;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+}
+/* 搜尋與分組：搜尋框撐滿；分段控制和搜尋框同高 48（44 的選項加 1px 內距與 1px 外框，選項仍是 44 的觸控目標） */
+.ll-glossary__tools {
+  display: grid;
+  gap: var(--ll-space-3);
+  align-content: end;
+  min-width: 0;
+}
+.ll-glossary__search {
+  margin: 0;
+  min-width: 0;
+}
+.ll-glossary__seg {
+  display: flex;
+  width: 100%;
+  padding: 1px;
+}
+@media (min-width: 600px) {
+  .ll-glossary__tools {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+  .ll-glossary__seg {
+    width: auto;
+  }
+}
+@media (min-width: 1024px) {
+  .ll-glossary__top {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    align-items: stretch;
+  }
+  .ll-glossary__progress {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'eyebrow'
+      'count'
+      'bar'
+      'hint';
+    align-items: start;
+    gap: var(--ll-space-2);
+    padding: var(--ll-space-4);
+  }
+  .ll-glossary__bar {
+    margin: var(--ll-space-1) 0;
+  }
+  .ll-glossary__hint {
+    margin: 0;
+  }
+  /* 寬版：搜尋與分組也是一張卡，和進度卡並排、上下緣相同（看圖驗收第 4 輪：沒有外框的搜尋列懸在進度卡旁邊，上下緣都對不齊）。
+     卡片的外觀和 Card 相同（只用 tokens），標籤、搜尋框與分段控制在卡裡垂直置中 */
+  .ll-glossary__tools {
+    align-self: stretch;
+    align-content: center;
+    padding: var(--ll-space-4);
+    border-radius: var(--ll-radius-lg);
+    background: var(--ll-surface);
+    box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  }
+}
+@media (min-width: 1024px) and (forced-colors: active) {
+  .ll-glossary__tools {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* 分組：區段之間 32；標題列左邊章號小膠囊與章名、右邊「3／7 已收進」 */
+.ll-glossary__group {
+  margin: var(--ll-space-8) 0 0;
+}
+.ll-glossary__group:first-of-type {
+  margin-top: 0;
+}
+.ll-glossary__ghead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ll-space-1) var(--ll-space-3);
+}
+.ll-glossary__heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+}
+.ll-glossary__gtitle {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.ll-glossary__chno {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--ll-space-2);
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-surface-2);
+  box-shadow: inset 0 0 0 1px var(--ll-border);
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: 1;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+/* 延伸章：六角形，和地圖上延伸章的節點同一個形狀語言 */
+.ll-glossary__chno--ext {
+  min-width: 38px;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--ll-surface-2);
+  clip-path: polygon(22% 0, 78% 0, 100% 50%, 78% 100%, 22% 100%, 0 50%);
+}
+.ll-glossary__gcount {
+  flex: none;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+  font-variant-numeric: tabular-nums;
+}
+/* 有章號膠囊的分組標題：章名太長、收集數換到第二行時，從章名的左緣開始（膠囊寬加 h2 的間距 10），不貼到膠囊下方歪一邊
+   （看圖驗收第 4 輪，英文 375 的「A map of the three statements」）。整列左邊內縮這個寬度、h2 再用負的外距拉回原位：
+   換行後的收集數從內縮處開始；同一行時 h2 占的寬度少了同樣多，換不換行的條件和原本一樣（中文短章名照舊一行，收集數在右邊）。
+   膠囊寬：一般章 32、延伸章的六角形 38（.ll-glossary__chno 的 min-width） */
+.ll-glossary__ghead--pill {
+  padding-inline-start: calc(32px + 10px);
+}
+.ll-glossary__ghead--pill > .ll-glossary__heading {
+  margin-inline-start: calc(-1 * (32px + 10px));
+}
+.ll-glossary__ghead--ext {
+  padding-inline-start: calc(38px + 10px);
+}
+.ll-glossary__ghead--ext > .ll-glossary__heading {
+  margin-inline-start: calc(-1 * (38px + 10px));
+}
+.ll-glossary__gnote {
+  margin: var(--ll-space-2) 0 0;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  color: var(--ll-text-2);
+}
+.ll-glossary__group--reference {
+  margin-top: var(--ll-space-8);
+}
+.ll-glossary__refnote {
+  margin: 0;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  color: var(--ll-text-2);
+}
+
+/* ---- 名詞頁 /terms/<id>/（一般 720 寬） ---- */
+.ll-termpage {
+  display: block;
+}
+.ll-termpage__bar {
+  display: flex;
+  align-items: center;
+  min-height: var(--ll-target-min);
+  padding: var(--ll-space-1) 0 0;
+}
+.ll-termpage__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2) var(--ll-space-3);
+  margin: calc(-1 * var(--ll-space-1)) 0 var(--ll-space-4);
+}
+/* 類別膠囊與註記標籤是一組（間距 8）：375 寬換行時註記跟著類別留在第一列，另一種語言的名稱才換到下一列 */
+.ll-termpage__tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+}
+.ll-termpage__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ll-termpage__alt {
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+  color: var(--ll-text-2);
+}
+
+/* 解鎖任務卡：44px 虛線空位加鎖頭、標題與關卡名稱、primary「前往這一關」（手機在下面撐滿一列，600 起在右邊） */
+.ll-unlock {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ll-space-3) var(--ll-space-3);
+}
+.ll-unlock__slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  border: 1.5px dashed var(--ll-border-strong);
+  border-radius: var(--ll-radius-full);
+  color: var(--ll-text-3);
+}
+.ll-unlock__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.ll-unlock__eyebrow {
+  margin: 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ll-unlock__title {
+  margin: 0;
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+  font-weight: 600;
+  color: var(--ll-text);
+}
+.ll-unlock__sub {
+  margin: 0;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  color: var(--ll-text-2);
+}
+.ll-unlock__go {
+  grid-column: 1 / -1;
+}
+@media (min-width: 600px) {
+  .ll-unlock {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+  }
+  .ll-unlock__go {
+    grid-column: 3;
+    justify-self: end;
+  }
+}
+@media (forced-colors: active) {
+  .ll-unlock__slot {
+    border-color: CanvasText;
+  }
+}
+
+/* 已收進：32px 金色印章加「已收進圖鑑」 */
+.ll-collected {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-3);
+}
+.ll-collected__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.ll-collected__title {
+  margin: 0;
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+  font-weight: 600;
+}
+.ll-collected__date {
+  margin: 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+}
+
+/* 參考名詞與還沒有關卡用到：一行 footnote 加 InfoIcon */
+.ll-termnote {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ll-space-2);
+  margin: 0 0 var(--ll-space-3);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+}
+.ll-termnote__icon {
+  display: inline-flex;
+  flex: none;
+  margin-top: 1px;
+  /* 和章節頁主卡的說明行（.ch-hero__note-icon）同一個灰：同一種說明行在兩頁同色 */
+  color: var(--ll-text-3);
+}
+
+/* 定義：本文字級，段落之間有間距（glossary-scope.spec 驗段與段不重疊） */
+.ll-term-definition p {
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-term-definition p:last-child {
+  margin-bottom: 0;
+}
+
+/* 用語對照：手機上下排；600 起左欄是欄位名、右欄是用語，列之間一條髮絲線 */
+.ll-termnames__list {
+  display: grid;
+  margin: 0;
+}
+.ll-termnames__row {
+  display: grid;
+  gap: 2px;
+  padding: var(--ll-space-2) 0;
+  border-top: 1px solid var(--ll-border);
+}
+.ll-termnames__row:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.ll-termnames__row:last-child {
+  padding-bottom: 0;
+}
+.ll-termnames__row dt {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ll-termnames__row dd {
+  margin: 0;
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+  overflow-wrap: break-word;
+}
+@media (min-width: 600px) {
+  .ll-termnames__row {
+    grid-template-columns: 10em minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--ll-space-3);
+  }
+}
+
+/* 其餘段落（用語說明、公式、例子、常見誤解、IFRS 怎麼處理；Term.tsx 的 TermSections）與相關名詞 */
+.ll-term-section,
+.ll-term-related {
+  margin-top: var(--ll-space-3);
+}
+.ll-term-section__title {
+  margin: 0 0 var(--ll-space-2);
+  font-size: var(--ll-type-callout-size);
+  line-height: var(--ll-type-callout-line);
+  font-weight: 700;
+}
+.ll-term-section p {
+  margin: 0 0 var(--ll-space-2);
+}
+.ll-term-section p:last-child {
+  margin-bottom: 0;
+}
+/* 公式：淡底的算式框，和說明文字分開 */
+.ll-term-section__formula {
+  padding: var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+}
+.ll-term-related .ll-term-section__title {
+  margin-bottom: 0;
+}
+/* 膠囊雲的下緣不再加間距（卡片本身已有內距） */
+.ll-term-related__pills {
+  margin-bottom: 0;
+}
+/* 名詞頁頁尾的「回到名詞圖鑑」：手機撐滿（grid 子項預設拉伸），600 起照內容寬、靠左（第 5 輪：720 寬的整條按鈕在大螢幕上太重） */
+.ll-termpage__foot {
+  display: grid;
+  margin-top: var(--ll-space-6);
+}
+@media (min-width: 600px) {
+  .ll-termpage__foot {
+    justify-items: start;
+  }
+}
+
+/* 強制色彩：章號小膠囊沒有背景色可看，改用系統色外框 */
+@media (forced-colors: active) {
+  .ll-glossary__chno {
+    border: 1px solid CanvasText;
+  }
+}

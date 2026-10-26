@@ -1,0 +1,86 @@
+{
+  "id": "q_6k5w2mje",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_0x64wz",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "share_capital",
+    "issue_shares"
+  ],
+  "termRefs": [
+    "tm_5e3py55a",
+    "tm_4c6v99nn",
+    "tm_c4sh8k2p",
+    "tm_n4e8t2jy"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_9htcrg"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 50000,
+        "inventory": 30000,
+        "share_capital": 80000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.issue_shares_cash",
+        "params": {
+          "amount": 200000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_share_capital",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_retained_earnings",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_net_income",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "為了開第二家店，海風衝浪店的股東再投入 {{money:e1.amount}}，錢已經進了公司帳戶。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "To open a second shop, the shareholders of Seabreeze Surf put in a further {{money:e1.amount}}, and the money is now in the company account. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金增加 {{money:e1.amount}}，{{term:tm_5e3py55a}}增加同樣的金額。股東投入的錢不是店賺來的，所以本期淨利不變，{{term:tm_4c6v99nn}}也不變。",
+    "en": "Cash rises by {{money:e1.amount}} and {{term:tm_5e3py55a}} rises by the same amount. Money put in by shareholders is not something the shop earned, so profit for the period is unchanged and so are {{term:tm_4c6v99nn}}."
+  }
+}

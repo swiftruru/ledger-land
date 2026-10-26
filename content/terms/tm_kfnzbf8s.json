@@ -1,0 +1,43 @@
+{
+  "id": "tm_kfnzbf8s",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "process",
+  "label": {
+    "zh-TW": "T 字帳",
+    "en": "T-account"
+  },
+  "teacherLabel": "T 字帳",
+  "currentTwLabel": "T 字帳",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "T 帳",
+      "丁字帳"
+    ],
+    "en": [
+      "Ledger account (T form)"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "屬「借貸與分錄」延伸章，不列入期中考範圍；實驗室每一步的「看分錄與 T 字帳」預設收合。",
+    "en": "Part of the debits, credits and journal entries extension chapter, which is outside the midterm; in the lab, each step’s entries and T-accounts panel is collapsed by default."
+  },
+  "definition": {
+    "zh-TW": "把一個科目畫成 T 字形的表格：左邊放這個科目所有分錄的借方金額，右邊放貸方金額，兩邊相減就是餘額。資產與費用通常是借方餘額，負債、股東權益與收入通常是貸方餘額；餘額再對到報表上的那一列。",
+    "en": "One account drawn as a T-shaped table: all the account’s debit amounts on the left, credit amounts on the right, and the difference is the balance. Assets and expenses usually carry debit balances, liabilities, equity and revenue credit balances; the balance then maps to a line on the statements."
+  },
+  "related": [
+    "tm_b9e9vjct",
+    "tm_50v66dt7",
+    "tm_p5yjwmnm"
+  ],
+  "ifrsNote": {
+    "zh-TW": "T 字帳是教學與簿記的工具，不是 IFRS 名詞。",
+    "en": "A T-account is a teaching and bookkeeping tool, not an IFRS term."
+  }
+}

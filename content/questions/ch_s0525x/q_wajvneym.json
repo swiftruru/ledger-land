@@ -1,0 +1,80 @@
+{
+  "id": "q_wajvneym",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_s0525x",
+  "objectiveId": "obj_vfc2zz",
+  "difficulty": 2,
+  "tags": [
+    "non_operating",
+    "interest_income"
+  ],
+  "termRefs": [
+    "tm_6nmfxa10",
+    "tm_v3n8q2ye",
+    "tm_z3vbt800"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "interest": 15000
+  },
+  "prompt": {
+    "zh-TW": "晨光補習班今年收到銀行定存的利息 {{money:vars.interest}}。這筆錢在損益表上屬於哪裡？它能不能說明補習班的本業變好了？",
+    "en": "Morning Light Tutoring received {{money:vars.interest}} of interest on a bank deposit this year. Where does it belong on the income statement, and does it show that the tutoring business itself improved?"
+  },
+  "options": [
+    {
+      "id": "o_pze3",
+      "text": {
+        "zh-TW": "營業外收入；它和教學本業無關，不能說明本業變好",
+        "en": "Non-operating income; it has nothing to do with teaching and says nothing about the core business"
+      },
+      "feedback": {
+        "zh-TW": "答對了。利息來自存款，不是來自上課，放在營業利益之後。",
+        "en": "Nice work. The interest comes from a deposit, not from lessons, and sits after operating profit."
+      },
+      "short": {
+        "zh-TW": "營業外收入，與本業無關",
+        "en": "Non-operating income, unrelated to the core business"
+      }
+    },
+    {
+      "id": "o_tayf",
+      "text": {
+        "zh-TW": "營業收入；只要是補習班收到的錢都算",
+        "en": "Revenue; any money the tutoring centre receives counts"
+      },
+      "feedback": {
+        "zh-TW": "這筆錢確實是補習班收到的收益，這點沒錯。不過營業收入只放本業賺來的錢，也就是學費；存款利息是把錢存在銀行得到的，放營業外收入，才不會讓營業利益看起來比本業實際的成績好。",
+        "en": "It is indeed income the centre received, that much is right. But revenue holds only what the core business earns, which here means tuition fees; deposit interest comes from money kept on deposit at the bank and goes under non-operating income, so that operating profit does not look better than the business really did."
+      },
+      "short": {
+        "zh-TW": "營業收入",
+        "en": "Revenue"
+      },
+      "misconceptionId": "mc_w3wz"
+    },
+    {
+      "id": "o_f2hf",
+      "text": {
+        "zh-TW": "不用列在損益表上，因為它不是學費",
+        "en": "It does not go on the income statement at all, because it is not tuition"
+      },
+      "feedback": {
+        "zh-TW": "你看出它不是本業收入，這點沒錯。不過這類收益一樣要列進損益表，只是放的位置不同；利息收入列在營業外收入，一樣算進稅前淨利。",
+        "en": "You can see it is not core revenue, which is right. But income like this still goes on the income statement; only the position differs. Interest income is shown under non-operating income and still counts towards profit before tax."
+      },
+      "short": {
+        "zh-TW": "不用列在損益表",
+        "en": "Not on the income statement"
+      }
+    }
+  ],
+  "correctOptionId": "o_pze3",
+  "explanation": {
+    "zh-TW": "{{term:tm_v3n8q2ye}}只放本業賺的錢，其他收益放{{term:tm_6nmfxa10}}，在{{term:tm_z3vbt800}}之後才加進來，所以答案是{{option:o_pze3}}。選{{option:o_tayf}}會讓營業利益失真，選{{option:o_f2hf}}則漏掉了一筆真實的收益。",
+    "en": "{{term:tm_v3n8q2ye}} holds only what the core business earns; other gains go under {{term:tm_6nmfxa10}} and are added after {{term:tm_z3vbt800}}, so the answer is {{option:o_pze3}}. Choosing {{option:o_tayf}} would distort operating profit, and choosing {{option:o_f2hf}} leaves out a real gain."
+  }
+}

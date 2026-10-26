@@ -1,0 +1,85 @@
+{
+  "id": "q_1s17g127",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_k9548t",
+  "objectiveId": "obj_xkyrq9",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "stakeholders",
+    "judgment",
+    "shareholder",
+    "creditor",
+    "receivables"
+  ],
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_r7x2c9fa",
+    "tm_c4sh8k2p",
+    "tm_e61ht6yh"
+  ],
+  "scored": false,
+  "prompt": {
+    "zh-TW": "綠茵運動用品的營收成長很快，但應收帳款也越積越多，營業活動的現金流量轉為負數。股東覺得生意很好，往來銀行卻開始緊張。如果你是總經理，會怎麼做？",
+    "en": "Greenfield Sports’ revenue is growing fast, but trade receivables keep piling up and net cash from operating activities has turned negative. Shareholders think business is great; the bank is getting nervous. If you were the general manager, what would you do?"
+  },
+  "options": [
+    {
+      "id": "o_k1n2",
+      "text": {
+        "zh-TW": "縮短客戶的付款期限，並加強催收",
+        "en": "Shorten customers’ payment terms and tighten collection"
+      },
+      "upside": {
+        "zh-TW": "應收帳款變成現金，營業現金流量改善，銀行安心；呆帳風險也下降。",
+        "en": "Receivables turn into cash, operating cash flow improves, the bank relaxes and bad-debt risk falls."
+      },
+      "downside": {
+        "zh-TW": "部分客戶可能轉向條件寬鬆的競爭者，營收成長放慢，股東看到的「生意很好」會降溫。",
+        "en": "Some customers may switch to competitors with looser terms; revenue growth slows and the shareholders’ ‘great business’ cools."
+      }
+    },
+    {
+      "id": "o_m3p4",
+      "text": {
+        "zh-TW": "維持現在的信用條件，用短期借款撐過現金缺口",
+        "en": "Keep current credit terms and bridge the cash gap with short-term borrowing"
+      },
+      "upside": {
+        "zh-TW": "不犧牲成長，等客戶陸續付款，現金自然回來。",
+        "en": "Growth is not sacrificed; as customers pay in turn, cash returns on its own."
+      },
+      "downside": {
+        "zh-TW": "負債與利息增加，而且如果客戶付款比預期慢，缺口會越來越大。",
+        "en": "Debt and interest rise, and if customers pay more slowly than expected, the gap widens."
+      }
+    },
+    {
+      "id": "o_pdkv",
+      "text": {
+        "zh-TW": "對已經逾期未付的客戶暫停出貨，直到結清舊帳",
+        "en": "Suspend deliveries to customers who are already overdue until their old balances are settled"
+      },
+      "upside": {
+        "zh-TW": "直接處理最拖款的那幾家，應收帳款不再繼續膨脹，也讓其他客戶知道付款期限是認真的。",
+        "en": "Deals directly with the slowest payers, stops receivables swelling further, and shows other customers that payment terms are meant seriously."
+      },
+      "downside": {
+        "zh-TW": "被暫停的客戶可能就此流失，業務部門也會反彈；已經逾期的帳款不一定因此收回。",
+        "en": "Suspended customers may leave for good and the sales team will push back; overdue balances are not necessarily collected as a result."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "股東看到的是損益表上的成長，債權人看到的是現金流量表上的缺口，兩邊都沒有看錯，只是看的表不同。賒銷做出來的營收在賣出當下就已經認列，但要等收到現金，才能拿來付帳與還款；應收帳款越滾越大時，成長本身就會吃掉現金。你偏向哪個做法，取決於你更擔心失去客戶，還是更擔心付不出錢。",
+    "en": "Shareholders see growth on the income statement; creditors see a gap on the statement of cash flows. Neither is wrong; they are reading different statements. Revenue from credit sales is recognised at the sale, but it can only pay bills and repay debt once the cash arrives, and when receivables keep growing, growth itself consumes cash. Which option you lean towards depends on whether you fear losing customers more, or running out of cash."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

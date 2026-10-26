@@ -1,6 +1,8 @@
 // 匯入的合併與覆蓋規則（06 第 4.6 節的合併表）。全部是純函式，輸出一律排序成決定性的順序，
 // 所以 attempts 與 unlocks 的合併可交換、整體可冪等（merge(a, a) 與正規化後的 a 相同）。
+// settings 裡的學習資料（LEARNING_SETTING_KEYS，目前只有收藏）另有規則：不受「也套用設定」控制，合併取聯集、覆蓋取備份（core-2，2026-10-25）。
 import { recomputeWrongCount } from './derive.ts';
+import { LEARNING_SETTING_KEYS, idListOf } from './model.ts';
 import type {
   Attempt,
   ImportHistoryEntry,
@@ -13,13 +15,15 @@ import type {
   ReviewQueueEntry,
   SettingEntry,
   Unlock,
-} from './model.ts';
+} from './schemas.ts';
 import { compareIso, earliestIso, latestIso } from './time.ts';
 import { canonicalJson, compareCodeUnits, compareNumbers } from './util.ts';
 
 export interface MergeOptions {
-  /** 是否也套用備份裡的設定（匯入畫面的「也套用語言與計時設定」；預設不匯入） */
+  /** 是否也套用備份裡的設定（匯入畫面的「也套用語言與計時設定」；預設不匯入）；學習資料的鍵（收藏）不受這個選項控制 */
   readonly settings: boolean;
+  /** 合併（預設）或覆蓋；只影響學習資料的鍵：合併取聯集、覆蓋取來源的值 */
+  readonly mode?: ImportMode;
 }
 
 /** 匯入來源的描述，寫進 meta.importHistory */
@@ -137,11 +141,29 @@ export function mergeLabSandbox(a: readonly LabSandbox[], b: readonly LabSandbox
   return [...map.values()].sort((x, y) => compareCodeUnits(x.id, y.id));
 }
 
-/** 設定：套用時以來源的值覆蓋同鍵（不比較時間，使用者是明確勾選要套用）；不套用時保留本機 */
-export function mergeSettings(current: readonly SettingEntry[], incoming: readonly SettingEntry[], apply: boolean): SettingEntry[] {
+const isLearningKey = (key: string): boolean => LEARNING_SETTING_KEYS.includes(key);
+
+/** 學習資料的 ID 清單取聯集：本機的順序在前，來源新的接在後面；updatedAt 取較晚 */
+function unionIdList(local: SettingEntry, incoming: SettingEntry): SettingEntry {
+  const list = idListOf(local.value);
+  const seen = new Set(list);
+  for (const id of idListOf(incoming.value)) if (!seen.has(id)) list.push(id);
+  return { key: local.key, value: list, updatedAt: latestIso(local.updatedAt, incoming.updatedAt) };
+}
+
+/**
+ * 設定：偏好的鍵在套用時以來源的值覆蓋同鍵（不比較時間，使用者是明確勾選要套用）、不套用時保留本機。
+ * 學習資料的鍵（LEARNING_SETTING_KEYS）不看 apply：合併模式兩邊都有就取聯集、只有一邊就用那一邊；覆蓋模式取來源的值，來源沒有就移除。
+ */
+export function mergeSettings(current: readonly SettingEntry[], incoming: readonly SettingEntry[], apply: boolean, mode: ImportMode = 'merge'): SettingEntry[] {
   const map = new Map<string, SettingEntry>();
-  for (const x of current) map.set(x.key, x);
-  if (apply) for (const x of incoming) map.set(x.key, x);
+  for (const x of current) if (mode === 'merge' || !isLearningKey(x.key)) map.set(x.key, x);
+  for (const x of incoming) {
+    if (isLearningKey(x.key)) {
+      const local = map.get(x.key);
+      map.set(x.key, local === undefined ? x : unionIdList(local, x));
+    } else if (apply) map.set(x.key, x);
+  }
   return [...map.values()].sort((x, y) => compareCodeUnits(x.key, y.key));
 }
 
@@ -155,7 +177,7 @@ export function mergeData(current: ProgressData, incoming: ProgressData, options
     unlocks: mergeUnlocks(current.unlocks, incoming.unlocks),
     labState: mergeLabState(current.labState, incoming.labState),
     labSandbox: mergeLabSandbox(current.labSandbox, incoming.labSandbox),
-    settings: mergeSettings(current.settings, incoming.settings, options.settings),
+    settings: mergeSettings(current.settings, incoming.settings, options.settings, options.mode ?? 'merge'),
   };
 }
 
@@ -176,7 +198,7 @@ function historyEntry(incoming: ProgressData, options: ImportOptions): ImportHis
 
 /** 合併模式：meta.deviceId 保留本機、importHistory 加一筆；errors 與 snapshots 不匯入 */
 export function mergeSnapshots(current: ProgressSnapshot, incoming: ProgressData, options: ImportOptions): ProgressSnapshot {
-  const data = mergeData(current, incoming, options);
+  const data = mergeData(current, incoming, { ...options, mode: 'merge' });
   return {
     ...data,
     meta: { ...current.meta, importHistory: [...current.meta.importHistory, historyEntry(incoming, { ...options, mode: 'merge' })] },
@@ -185,10 +207,11 @@ export function mergeSnapshots(current: ProgressSnapshot, incoming: ProgressData
   };
 }
 
-/** 覆蓋模式（進階選項）：除了設定之外全部取代；meta.deviceId 保留本機並記下來源 */
+/** 覆蓋模式（進階選項）：除了偏好設定之外全部取代（收藏等學習資料也取備份的值）；meta.deviceId 保留本機並記下來源 */
 export function replaceSnapshot(current: ProgressSnapshot, incoming: ProgressData, options: ImportOptions): ProgressSnapshot {
-  const empty: ProgressData = { attempts: [], levelProgress: [], reviewQueue: [], unlocks: [], labState: [], labSandbox: [], settings: current.settings };
-  const data = mergeData(empty, incoming, options);
+  const preferences = current.settings.filter((s) => !isLearningKey(s.key));
+  const empty: ProgressData = { attempts: [], levelProgress: [], reviewQueue: [], unlocks: [], labState: [], labSandbox: [], settings: preferences };
+  const data = mergeData(empty, incoming, { ...options, mode: 'replace' });
   return {
     ...data,
     meta: { ...current.meta, importHistory: [...current.meta.importHistory, historyEntry(incoming, { ...options, mode: 'replace' })] },

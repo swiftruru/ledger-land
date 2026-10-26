@@ -1,0 +1,11 @@
+{
+  "id": "lv_ths19g8w",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "order": 3,
+  "title": { "zh-TW": "哪一格填錯了", "en": "Which cell is wrong" },
+  "objectiveIds": ["obj_8jjgc4", "obj_wt6czr"],
+  "questionIds": ["q_2x3r18wq", "q_sftsh8d4", "q_qvx7atn2", "q_2z2rpnss", "q_gyw8h1vd", "q_aq1r6hgk"]
+}

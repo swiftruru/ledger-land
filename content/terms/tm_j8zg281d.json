@@ -2,7 +2,7 @@
   "id": "tm_j8zg281d",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
   "label": {
     "zh-TW": "ME leverage",
@@ -19,16 +19,33 @@
   "confidence": "medium",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "老師自訂的說法。教材只用文字說明、沒有公式；這一點尚未向老師提出，網站的補充定義標「網站補充定義」，不計分。",
-    "en": "A teacher-defined term. The course describes it in words without a formula; the point has not yet been raised with the teacher, so the site's supplementary definition is labelled as such and not scored."
+    "zh-TW": "老師自訂的說法。課程只用文字說明這個概念，沒有給公式；網站補上計算公式，並標示「網站補充定義」。",
+    "en": "A teacher-defined term. The course explains the idea in words only, without a formula; the site adds a formula and labels it as a site definition."
   },
   "definition": {
-    "zh-TW": "行銷投入帶動營業收入成長的效果。網站的補充定義需要兩期資料，單期時顯示 N/A。",
-    "en": "The effect of marketing spending on revenue growth. The site's supplementary definition needs two periods of data and shows N/A for a single period."
+    "zh-TW": "課程自訂的說法：把營收比上一期增加的金額，和本期的行銷費用相比，觀察營收的成長相對於行銷投入有多大。\n\n課程只用文字說明這個概念，沒有給公式；網站補充一個定義供計算器使用，屬於延伸內容，目前不出計分題。",
+    "en": "A term coined in the course: the increase in revenue over the previous period, set against marketing expenses for this period, to see how large the growth is relative to marketing spending.\n\nThe course explains the idea in words without a formula; the site supplies a working definition for the calculator as extension content, and it is not currently used in scored questions."
+  },
+  "example": {
+    "zh-TW": "需要輸入前期營業收入才能計算；沒有輸入或行銷費用為 0 時顯示 N/A。本課故事沒有行銷費用。",
+    "en": "The calculator needs last period’s revenue as an input; without it, or when marketing spending is zero, the result is N/A. The course story has no marketing expense."
+  },
+  "misconception": {
+    "zh-TW": "看到營收成長就全部歸功於行銷。營收成長還受景氣、產品與通路影響，這個比率只是把成長和行銷支出放在一起比較，不是因果證明。",
+    "en": "Crediting all revenue growth to marketing. Growth also depends on the economy, the product and distribution; this ratio merely sets growth beside marketing spend and does not prove cause and effect."
+  },
+  "formula": {
+    "zh-TW": "網站補充定義：ME leverage ＝（本期營業收入 － 前期營業收入）÷ 本期行銷費用。分子是兩期營收的差額，所以要另外輸入前期營業收入。網站不採用「營業收入 ÷ 行銷費用」：它正好是 ME intensity 的倒數，資訊相同。另一種寫法是把兩期營收的差額除以兩期行銷費用的差額（邊際版本），需要兩期的行銷費用，費用持平時無法計算，所以也不採用。",
+    "en": "Site definition: ME leverage = (revenue this period － revenue last period) ÷ marketing expenses this period. The numerator is the difference between the two periods’ revenue, so last period’s revenue has to be entered separately. The site does not use revenue ÷ marketing expenses, because that is simply the reciprocal of ME intensity and carries the same information. Another version divides the change in revenue by the change in marketing expenses (a marginal version); it needs marketing expenses for both periods and cannot be calculated when the spending stays flat, so the site does not use it either."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是課程自訂的說法；網站的公式標示「網站補充定義」。",
+    "en": "IFRS does not define financial ratios, and this name was coined in the course; the site formula is marked as a site definition."
   },
-  "ratioRef": "me_leverage@slides02"
+  "ratioRef": "me_leverage@slides02",
+  "related": [
+    "tm_x6e56fqp",
+    "tm_k1tghpyd",
+    "tm_1vxjew8q"
+  ]
 }

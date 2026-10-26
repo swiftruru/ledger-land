@@ -1,6 +1,6 @@
 // content:check（08 第 5.8 節）：讀 content/ 與核心內建範本（ContentAdapter 的 files 實作），交給 packages/content-schema 的 validateBundle
 // （結構、多語系、引用、佔位符），再跑 tools/lib/content-rules.mjs 的會計與答案規則（08 第 5.4、5.5 節，呼叫核心）與
-// tools/lib/content-text.mjs 的文字與結構規則（檔名、關卡題數提醒、字母引用、寫死數字、頁碼樣式），最後比對 content/published.lock.json（08 第 5.6 節的八條 id.* 規則，與 content:lock --check 同一套）。
+// tools/lib/content-text.mjs 的文字與結構規則（檔名、關卡題數提醒、字母引用、寫死數字、頁碼樣式與學習端文字的內部編號、題目的名詞佔位符要列在 termRefs），最後比對 content/published.lock.json（08 第 5.6 節的八條 id.* 規則，與 content:lock --check 同一套）。
 // 錯誤訊息一律「檔案、JSON 路徑、規則、訊息」；警告不讓指令失敗。這支腳本只負責讀檔與列印，規則都在 lib/。
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -14,7 +14,7 @@ import { ROOT, fail, readJson } from './lib/fs.mjs';
 const started = performance.now();
 const bundle = loadContentFiles();
 const schemaIssues = validateBundle(bundle);
-for (const i of schemaIssues) fail(`content:check：${i.file} ${i.path}：${i.message}`);
+for (const i of schemaIssues) fail(`content:check：${i.file} ${i.path}：${i.rule ? `${i.rule}：` : ''}${i.message}`);
 
 const parsed = parseBundle(bundle);
 const acct = runAccountingChecks(parsed);

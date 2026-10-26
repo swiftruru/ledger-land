@@ -2,7 +2,7 @@
   "id": "tm_2s4hterv",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
   "label": {
     "zh-TW": "應收款項週轉率",
@@ -28,12 +28,30 @@
     "en": "The template uses a variant character and the closing balance; the interface uses one spelling and keeps the template wording as an alias."
   },
   "definition": {
-    "zh-TW": "一年內應收帳款被收回、再重新賒出去幾次。次數越多表示收款越快，賒銷的錢卡在客戶手上的時間越短。",
-    "en": "How many times a year receivables are collected and extended again through new credit sales. More turns mean faster collection and less money tied up with customers."
+    "zh-TW": "公司在一段期間內把應收帳款收回、再賒出新帳的次數。\n\n次數越多，表示客戶付款越快，賣出去的東西越快變成現金。",
+    "en": "How many times during a period the company collects its receivables and extends new credit.\n\nMore turns mean customers pay sooner and sales turn into cash faster."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表，分母來自資產負債表。期末應收帳款為 0 時顯示 N/A。把 365 天除以它，就是平均收現日數。",
+    "en": "The numerator comes from the income statement and the denominator from the balance sheet. When closing receivables are zero the result is N/A. Dividing 365 days by it gives the average collection period."
+  },
+  "misconception": {
+    "zh-TW": "以為營收成長時這個比率一定會變好。如果為了衝營收放寬賒銷條件，應收帳款會成長得比營收更快，週轉率反而下降。",
+    "en": "Expecting the ratio to improve whenever revenue grows. If credit terms are loosened to chase sales, receivables grow faster than revenue and the turnover actually falls."
+  },
+  "formula": {
+    "zh-TW": "應收款項週轉率 ＝ 營業收入 ÷ 應收帳款。課程版用期末應收帳款；年報版用平均應收款項（含應收票據）。",
+    "en": "Receivables turnover = revenue ÷ trade receivables. The course version uses closing receivables; the annual report version uses average notes and accounts receivable."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "ar_turnover@excel"
+  "ratioRef": "ar_turnover@excel",
+  "related": [
+    "tm_gysqtps0",
+    "tm_r7x2c9fa",
+    "tm_v3n8q2ye",
+    "tm_2jyfy0hn"
+  ]
 }

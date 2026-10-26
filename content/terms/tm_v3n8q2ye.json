@@ -1,6 +1,6 @@
 {
   "id": "tm_v3n8q2ye",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -29,8 +29,8 @@
   "pendingRefs": [],
   "ifrsBasis": "IFRS 15",
   "note": {
-    "zh-TW": "0-2 以 TR 代表；名詞卡的說明寫成「本期認列（賣出）的生意」，不等於收現。",
-    "en": "Represented by TR in the 0-2 slides; the card describes it as the business recognised (sold) in the period, which is not the same as cash received."
+    "zh-TW": "部分課程公式以 TR 代表營業收入；它指本期認列的生意，不等於收到的現金。",
+    "en": "Some course formulas write it as TR; it means the business recognised in the period, not the cash received."
   },
   "definition": {
     "zh-TW": "本期賣出商品或提供服務所認列的金額，也就是這段期間做成的生意。它不等於收到的現金：賒銷也算收入。",

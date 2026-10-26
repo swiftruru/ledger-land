@@ -1,0 +1,42 @@
+{
+  "id": "q_vvzmggjk",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_33hdss",
+  "difficulty": 1,
+  "tags": [
+    "ratio",
+    "solvency"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_k52yxb68",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ca": 1800000,
+    "cl": 1200000
+  },
+  "compute": {
+    "ratioRef": "current_ratio@excel",
+    "measures": {
+      "bs_current_assets": "vars.ca",
+      "bs_current_liabilities": "vars.cl"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "綠丘單車行年底流動資產 {{money:vars.ca}}，流動負債 {{money:vars.cl}}。計算流動比率（Excel 口徑），以「倍」作答。",
+    "en": "Green Hill Cycles had current assets of {{money:vars.ca}} and current liabilities of {{money:vars.cl}} at year end. What is the current ratio (Excel basis)? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}＝{{term:tm_k52yxb68}} ÷ {{term:tm_c2y9b5ex}}，回答「一年內能變現的資產，是一年內要還的債的幾倍」。網站以倍數顯示，也可以切換成百分比。",
+    "en": "{{term:tm_c8r1t4zm}} = {{term:tm_k52yxb68}} ÷ {{term:tm_c2y9b5ex}}: how many times the assets that can be turned into cash within a year cover the debts due within a year. The site shows it as a multiple and can switch to a percentage."
+  }
+}

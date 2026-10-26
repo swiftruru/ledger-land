@@ -1,0 +1,43 @@
+{
+  "id": "tm_9nf1gghz",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": {
+    "zh-TW": "利害關係人",
+    "en": "Stakeholders"
+  },
+  "teacherLabel": "利害關係人",
+  "currentTwLabel": "利害關係人",
+  "ifrsEnglish": "Stakeholders",
+  "aliases": {
+    "zh-TW": [
+      "利益關係人",
+      "關係人（口語）"
+    ],
+    "en": [
+      "Interested parties"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T37"],
+  "note": {
+    "zh-TW": "延伸章「利害關係人觀點」的核心名詞；取捨題的解說一律以網站的觀點呈現，不是課程的標準答案。",
+    "en": "The central term of the stakeholder extension chapter; commentary on judgement questions is always given as the site’s own view, not as the course’s model answer."
+  },
+  "definition": {
+    "zh-TW": "會被一家公司的經營結果影響、也因此關心它財務報表的人或團體，例如股東、債權人、員工、客戶、供應商與主管機關。每一種利害關係人在意的數字不同：股東看報酬與成長，債權人看現金與償債能力，員工看公司能不能持續經營，客戶看供應商會不會出事。",
+    "en": "People or groups affected by a company’s results who therefore care about its financial statements: shareholders, creditors, employees, customers, suppliers and regulators, for example. Each cares about different figures: shareholders about return and growth, creditors about cash and solvency, employees about whether the company can keep going, customers about whether a supplier might fail."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 觀念架構把財務報告的主要使用者定為現有及潛在的投資人、放款人與其他債權人；「利害關係人」是較廣的管理學用語。",
+    "en": "The IFRS Conceptual Framework names existing and potential investors, lenders and other creditors as the primary users of financial reports; ‘stakeholders’ is the broader management term."
+  },
+  "related": [
+    "tm_n4e8t2jy",
+    "tm_67e7f0mn",
+    "tm_sf72dfsv"
+  ]
+}

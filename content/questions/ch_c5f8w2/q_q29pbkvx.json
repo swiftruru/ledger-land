@@ -1,6 +1,6 @@
 {
   "id": "q_q29pbkvx",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -23,7 +23,7 @@
   },
   "prompt": {
     "zh-TW": "小山咖啡上個月底的現金是 {{money:vars.cashBefore}}，這個月底變成 {{money:vars.cashAfter}}，但這個月的本期淨利幾乎是零。最可能發生了哪一類交易？",
-    "en": "Hillside Coffee had {{money:vars.cashBefore}} in cash at the end of last month and {{money:vars.cashAfter}} at the end of this month, yet this month's profit was close to zero. What kind of transaction most likely happened?"
+    "en": "Hillside Coffee had {{money:vars.cashBefore}} in cash at the end of last month and {{money:vars.cashAfter}} at the end of this month, yet this month’s profit was close to zero. What kind of transaction most likely happened?"
   },
   "options": [
     {

@@ -1,0 +1,68 @@
+{
+  "id": "q_x71b8w2r",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_2a6vbq",
+  "difficulty": 2,
+  "tags": [
+    "department_ratio",
+    "capex"
+  ],
+  "termRefs": [
+    "tm_1hgn004m",
+    "tm_jcbwesg8",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "ce": 0.15
+  },
+  "prompt": {
+    "zh-TW": "晨霧茶行今年的 CE intensity 是 {{percent:vars.ce}}。下列哪一個說法正確？",
+    "en": "Morning Mist Tea’s capex intensity this year is {{percent:vars.ce}}. Which statement is correct?"
+  },
+  "options": [
+    {
+      "id": "o_bhtb",
+      "text": {
+        "zh-TW": "今年營收的 {{percent:vars.ce}} 用來取得設備等非流動資產",
+        "en": "{{percent:vars.ce}} of this year’s revenue went on acquiring equipment and other non-current assets"
+      },
+      "feedback": {
+        "zh-TW": "答對了。CE intensity ＝ 資本支出 ÷ 營收，資本支出就是現金流量表投資活動裡「取得非流動資產」付出的錢。比例高可能是正在擴充，也可能是產業本來就需要大量設備，要配合同業與歷年的數字判斷。",
+        "en": "Correct. Capex intensity = capital expenditure ÷ revenue, where capital expenditure is the cash paid to acquire non-current assets under investing activities on the statement of cash flows. A high figure may mean the business is expanding or that its industry simply needs a lot of equipment, so read it against peers and past years."
+      }
+    },
+    {
+      "id": "o_frsc",
+      "text": {
+        "zh-TW": "公司的設備已經有 {{percent:vars.ce}} 提列了折舊",
+        "en": "{{percent:vars.ce}} of the company’s equipment has been depreciated"
+      },
+      "feedback": {
+        "zh-TW": "折舊的比例要看累計折舊對設備成本，和 CE intensity 無關。CE intensity 的分子是今年買設備付出的現金，分母是營收。",
+        "en": "The depreciated share would come from accumulated depreciation against equipment cost and has nothing to do with capex intensity, whose numerator is this year’s cash spent on equipment and whose denominator is revenue."
+      }
+    },
+    {
+      "id": "o_aj6d",
+      "text": {
+        "zh-TW": "想知道資本支出的效率，還要另外看 CE turnover，它提供的是不同的資訊",
+        "en": "To judge the efficiency of capital spending you also need capex turnover, which gives different information"
+      },
+      "feedback": {
+        "zh-TW": "課程會用 CE turnover 來談效率，因為「每一元資本支出帶出幾元營收」讀起來比較直觀。但 CE turnover ＝ 營收 ÷ 資本支出，正好是 CE intensity 的倒數；一個是幾成、一個是幾倍，兩家公司誰高誰低的結論都一樣，不是另一份資訊。",
+        "en": "The course does use capex turnover to talk about efficiency, because ‘how much revenue each unit of capital spending brings in’ reads more naturally. But capex turnover = revenue ÷ capital expenditure, exactly the reciprocal of capex intensity; one is a share and the other a multiple, and comparing two companies gives the same conclusion either way, so it is not extra information."
+      },
+      "misconceptionId": "mc_zwm6"
+    }
+  ],
+  "correctOptionId": "o_bhtb",
+  "explanation": {
+    "zh-TW": "{{option:o_bhtb}}。RD intensity、ME intensity 與 CE intensity 的寫法都是「投入 ÷ 營收」，分子分別是研究發展費用、行銷費用與資本支出。行銷費用與研究發展費用都在銷管費用裡，不是營業成本；而 CE turnover 只是把 CE intensity 倒過來寫（營收 ÷ 資本支出），資訊相同。",
+    "en": "{{option:o_bhtb}}. R&D intensity, marketing intensity and capex intensity all take the form input ÷ revenue, with research and development expenses, marketing expenses and capital expenditure as the respective numerators. Marketing and research costs sit within distribution costs and administrative expenses, not cost of sales; and capex turnover is simply capex intensity written the other way up (revenue ÷ capital expenditure), carrying the same information."
+  }
+}

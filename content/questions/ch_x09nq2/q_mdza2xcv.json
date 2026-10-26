@@ -1,0 +1,68 @@
+{
+  "id": "q_mdza2xcv",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_cqxamf",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "margin",
+    "solvency"
+  ],
+  "termRefs": [
+    "tm_n70k1r9t",
+    "tm_whmbqrr8",
+    "tm_c8r1t4zm",
+    "tm_h3c7v1xe"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "佩珊在分析晨光印刷還不還得出錢時，把「融資維持率」和公司自己的償債指標排在一起比較。哪一個提醒最正確？",
+    "en": "While analysing whether Morning Light Printing can pay its debts, Pei-shan lists the margin maintenance ratio alongside the company’s own solvency measures. Which reminder is correct?"
+  },
+  "options": [
+    {
+      "id": "o_f4g5",
+      "text": {
+        "zh-TW": "它是投資人信用交易帳戶的指標，和公司的償債能力無關",
+        "en": "It belongs to an investor’s margin account and says nothing about the company’s solvency"
+      },
+      "feedback": {
+        "zh-TW": "答對了。融資維持率算的是投資人的擔保品夠不夠抵借款，不是公司的資產與負債；公司還不還得出錢，要看公司自己的流動比率與利息保障倍數。",
+        "en": "That is right. The margin maintenance ratio measures whether an investor’s collateral covers the loan, not the company’s assets and liabilities; whether the company can pay its debts is read from its own current ratio and times interest earned."
+      }
+    },
+    {
+      "id": "o_h6j7",
+      "text": {
+        "zh-TW": "它和流動比率一樣，都在衡量公司短期還得出錢的能力",
+        "en": "Like the current ratio, it measures the company’s ability to pay in the short term"
+      },
+      "feedback": {
+        "zh-TW": "你抓到了「比率越低越危險」的共通感覺。但危險的對象不同：維持率低是投資人要被追繳，不是公司還不出錢。",
+        "en": "You picked up the shared sense that lower is riskier. But the party at risk differs: a low maintenance ratio means the investor faces a margin call, not that the company cannot pay."
+      },
+      "misconceptionId": "mc_s1v2"
+    },
+    {
+      "id": "o_k8m9",
+      "text": {
+        "zh-TW": "它衡量的是公司自己借了多少錢來放大獲利",
+        "en": "It measures how much the company itself has borrowed to magnify its profit"
+      },
+      "feedback": {
+        "zh-TW": "融資的確是一種槓桿，但那是投資人的槓桿；公司的財務槓桿看它自己借了多少錢，和投資人用不用融資無關。",
+        "en": "Margin is indeed leverage, but it is the investor’s leverage; a company’s financial leverage depends on how much it borrowed itself, regardless of whether investors use margin."
+      },
+      "misconceptionId": "mc_s1v2"
+    }
+  ],
+  "correctOptionId": "o_f4g5",
+  "explanation": {
+    "zh-TW": "{{option:o_f4g5}}把兩套帳分開了。{{option:o_h6j7}}與{{option:o_k8m9}}都把投資人的指標套到公司身上。",
+    "en": "{{option:o_f4g5}} keeps the two sets of accounts apart. {{option:o_h6j7}} and {{option:o_k8m9}} both apply an investor’s measure to the company."
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "id": "q_k4k77mya",
+  "rev": 4,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_m3fgww",
+  "difficulty": 2,
+  "tags": [
+    "roa",
+    "roe",
+    "leverage"
+  ],
+  "termRefs": [
+    "tm_r0a5t3kq",
+    "tm_0k8vegyr",
+    "tm_2ggtxnaz",
+    "tm_1ebm48ca"
+  ],
+  "scored": true,
+  "type": "ratio_interpret",
+  "ratioRef": "roa@slides02",
+  "vars": {
+    "netIncome": 180000,
+    "totalAssets": 2000000,
+    "totalEquity": 1000000
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "roa@slides02",
+      "roe@slides02",
+      "equity_multiplier@slides02"
+    ],
+    "measures": {
+      "is_net_income": "vars.netIncome",
+      "bs_total_assets": "vars.totalAssets",
+      "bs_total_equity": "vars.totalEquity"
+    }
+  },
+  "prompt": {
+    "zh-TW": "雲梯軟體今年的本期淨利是 {{money:vars.netIncome}}，年底的資產總計 {{money:vars.totalAssets}}、股東權益總額 {{money:vars.totalEquity}}。上方表格是算好的 ROA、ROE 與權益倍數（簡化版，期末值），表格裡的 ROE 剛好是 ROA 的兩倍。為什麼會剛好是兩倍？",
+    "en": "Cloud Ladder Software earned a profit for the period of {{money:vars.netIncome}} this year, with total assets of {{money:vars.totalAssets}} and total equity of {{money:vars.totalEquity}} at year end. The table above shows ROA, ROE and the equity multiplier (simplified, closing values), and ROE is exactly twice ROA. Why is it exactly twice?"
+  },
+  "options": [
+    {
+      "id": "o_vw0m",
+      "text": {
+        "zh-TW": "資產總計剛好是股東權益總額的兩倍，也就是權益倍數兩倍；這和公司今年賺多少無關",
+        "en": "Total assets are exactly twice total equity, an equity multiplier of two; it has nothing to do with how much the company earned this year"
+      },
+      "feedback": {
+        "zh-TW": "答對了。ROE ＝ ROA × 權益倍數，所以 ROE 除以 ROA 一定等於權益倍數。權益倍數兩倍，也表示資產有一半來自負債。",
+        "en": "Correct. ROE = ROA × equity multiplier, so ROE divided by ROA always equals the multiplier. A multiplier of two also means half the assets come from liabilities."
+      }
+    },
+    {
+      "id": "o_s5f6",
+      "text": {
+        "zh-TW": "雲梯軟體的本業特別會賺錢，淨利越高，ROE 就會是 ROA 的越多倍",
+        "en": "Cloud Ladder’s core business is especially profitable, and the higher the profit, the more times over ROE exceeds ROA"
+      },
+      "feedback": {
+        "zh-TW": "本期淨利同時是 ROE 和 ROA 的分子，兩者相除時就消掉了。就算淨利多賺一倍，ROA 和 ROE 會一起翻倍，ROE 仍然只是 ROA 的兩倍。本業會不會賺，要看 ROA 或純益率本身。",
+        "en": "Profit for the period is the numerator of both ROE and ROA, so it cancels out when you divide one by the other. Even if profit doubled, ROA and ROE would both double and ROE would still be twice ROA. Whether the core business earns well shows in ROA or the net profit margin itself."
+      },
+      "misconceptionId": "mc_8780"
+    },
+    {
+      "id": "o_akm8",
+      "text": {
+        "zh-TW": "雲梯軟體沒有任何負債，資產全部是股東出的錢",
+        "en": "Cloud Ladder has no liabilities at all; the shareholders paid for every asset"
+      },
+      "feedback": {
+        "zh-TW": "剛好相反。沒有負債時資產總計等於股東權益總額，權益倍數是一倍，ROE 會和 ROA 一樣。比值是兩倍，表示 {{money:vars.totalAssets}} 的資產裡只有 {{money:vars.totalEquity}} 是股東出的錢，其餘來自負債。",
+        "en": "The opposite. With no liabilities, total assets equal total equity, the equity multiplier is one and ROE equals ROA. A ratio of two means only {{money:vars.totalEquity}} of the {{money:vars.totalAssets}} in assets came from the shareholders; the rest comes from liabilities."
+      },
+      "misconceptionId": "mc_0c1v"
+    }
+  ],
+  "correctOptionId": "o_vw0m",
+  "explanation": {
+    "zh-TW": "{{option:o_vw0m}}。把兩個比率相除：ROE ÷ ROA ＝（本期淨利 ÷ 股東權益總額）÷（本期淨利 ÷ 資產總計）＝ 資產總計 ÷ 股東權益總額。這兩個簡化版的分子都是本期淨利，相除時消掉，所以比值只取決於資產裡有多少是股東出的錢，和今年賺多少無關。想知道本業會不會賺，要看 ROA 或純益率本身；比值大於一，就表示有一部分資產來自負債。",
+    "en": "{{option:o_vw0m}}. Divide one ratio by the other: ROE ÷ ROA = (profit for the period ÷ total equity) ÷ (profit for the period ÷ total assets) = total assets ÷ total equity. Both simplified ratios have profit for the period as the numerator, so it cancels out and the result depends only on how much of the assets the shareholders paid for, not on how much the company earned this year. To judge whether the core business earns well, look at ROA or the net profit margin itself; a ratio above one means part of the assets comes from liabilities."
+  }
+}

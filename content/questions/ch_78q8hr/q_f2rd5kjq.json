@@ -1,0 +1,83 @@
+{
+  "id": "q_f2rd5kjq",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_0x64wz",
+  "difficulty": 1,
+  "tags": [
+    "balance_sheet",
+    "share_capital",
+    "retained_earnings"
+  ],
+  "termRefs": [
+    "tm_5e3py55a",
+    "tm_4c6v99nn",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "capital": 500000,
+    "re": 260000
+  },
+  "prompt": {
+    "zh-TW": "海風衝浪店開業三年，股本一直是 {{money:vars.capital}}，未分配盈餘則從零累積到 {{money:vars.re}}。這兩個數字的來源有什麼不同？",
+    "en": "Seabreeze Surf has been open for three years. Its share capital has stayed at {{money:vars.capital}}, while unappropriated retained earnings have grown from nil to {{money:vars.re}}. How do the sources of these two figures differ?"
+  },
+  "options": [
+    {
+      "id": "o_jb2d",
+      "text": {
+        "zh-TW": "股本是股東投入的錢；未分配盈餘是店自己賺來、還沒分給股東的錢",
+        "en": "Share capital is money the shareholders put in; unappropriated retained earnings are profit the shop earned and has not yet distributed"
+      },
+      "feedback": {
+        "zh-TW": "答對了。一個來自股東的口袋，一個來自店的經營成果。",
+        "en": "Nice work. One comes from the shareholders’ pockets, the other from the shop’s own results."
+      },
+      "short": {
+        "zh-TW": "股本來自股東，未分配盈餘來自經營",
+        "en": "Capital from shareholders, retained earnings from operations"
+      }
+    },
+    {
+      "id": "o_bwcj",
+      "text": {
+        "zh-TW": "兩者都是股東投入的錢，未分配盈餘是股東後來追加的部分",
+        "en": "Both are money from the shareholders; unappropriated retained earnings are what they added later"
+      },
+      "feedback": {
+        "zh-TW": "你知道兩者都屬於股東權益，這點沒錯。不過股東後來追加的錢仍然記在股本（高於面額發行時，超過面額的部分記在資本公積）；未分配盈餘不是誰投入的，而是三年來一期一期的本期淨利累積出來的。",
+        "en": "You know both belong to equity, which is right. But money the shareholders add later is still recorded as share capital (any premium above par goes to capital surplus); unappropriated retained earnings were not contributed by anyone. They are the profits of three years added up period by period."
+      },
+      "short": {
+        "zh-TW": "未分配盈餘是股東追加的錢",
+        "en": "Retained earnings are later contributions"
+      },
+      "misconceptionId": "mc_qntk"
+    },
+    {
+      "id": "o_7qzd",
+      "text": {
+        "zh-TW": "股本是店賺來的錢，未分配盈餘是股東投入的錢",
+        "en": "Share capital is profit the shop earned; unappropriated retained earnings are money the shareholders put in"
+      },
+      "feedback": {
+        "zh-TW": "你知道兩者的來源不同，這點沒錯，只是剛好反了。股本在開業那天就有了，那時店還沒賺任何錢；會隨著經營成果長大的是未分配盈餘。",
+        "en": "You know the two have different sources, which is right, but they are the other way round. Share capital existed on opening day, before the shop had earned anything; it is unappropriated retained earnings that grow with the results."
+      },
+      "short": {
+        "zh-TW": "股本是賺來的，未分配盈餘是投入的",
+        "en": "Capital is earned, retained earnings contributed"
+      },
+      "misconceptionId": "mc_aha5"
+    }
+  ],
+  "correctOptionId": "o_jb2d",
+  "explanation": {
+    "zh-TW": "股東權益有兩個來源：{{term:tm_5e3py55a}}是股東拿出來的本錢，{{term:tm_4c6v99nn}}是公司用本錢做生意賺到、還留在公司裡的錢。股本三年不變、未分配盈餘從零長大，正好說明了{{option:o_jb2d}}。{{option:o_bwcj}}與{{option:o_7qzd}}都把兩個來源混在一起。",
+    "en": "Equity has two sources: {{term:tm_5e3py55a}} is the stake the shareholders put up, and {{term:tm_4c6v99nn}} is what the company earned with that stake and has kept. Capital staying flat for three years while unappropriated retained earnings grew from nil illustrates exactly {{option:o_jb2d}}. {{option:o_bwcj}} and {{option:o_7qzd}} both mix the two sources up."
+  }
+}

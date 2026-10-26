@@ -1,0 +1,26 @@
+{
+  "id": "lv_3ssvj0h2",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "order": 4,
+  "title": {
+    "zh-TW": "綜合挑戰：交叉檢查再下結論",
+    "en": "Final challenge: cross-check before you conclude"
+  },
+  "objectiveIds": [
+    "obj_am21nv",
+    "obj_33hdss",
+    "obj_mj1tas",
+    "obj_32ab85"
+  ],
+  "questionIds": [
+    "q_85rmeb5z",
+    "q_0cejsben",
+    "q_3e4wbse2",
+    "q_gtp6ax6c",
+    "q_6x2htnhg",
+    "q_4k762daf"
+  ]
+}

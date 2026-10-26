@@ -1,0 +1,42 @@
+{
+  "id": "q_cqgck4d9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_am21nv",
+  "difficulty": 1,
+  "tags": [
+    "ratio",
+    "profitability"
+  ],
+  "termRefs": [
+    "tm_r0a5t3kq",
+    "tm_n4e8t2jy",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ni": 360000,
+    "assets": 4500000
+  },
+  "compute": {
+    "ratioRef": "roa@excel",
+    "measures": {
+      "is_net_income": "vars.ni",
+      "bs_total_assets": "vars.assets"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "晨光健身房今年本期淨利 {{money:vars.ni}}，年底資產總計 {{money:vars.assets}}。依課程 Excel 口徑（本期淨利 ÷ 期末資產總計）計算資產報酬率（ROA），以百分比作答。",
+    "en": "Morning Light Gym had profit for the period of {{money:vars.ni}} and total assets of {{money:vars.assets}} at year end. Using the course Excel basis (profit for the period ÷ closing total assets), what is the return on assets (ROA)? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "Excel 口徑的{{term:tm_r0a5t3kq}}＝{{term:tm_n4e8t2jy}} ÷ {{term:tm_t7a3s6wb}}，回答「公司用全部的資產賺回多少」。年報版會把稅後利息加回分子、分母用平均資產，數字會不同，所以題目一定指定版本。",
+    "en": "On the Excel basis, {{term:tm_r0a5t3kq}} = {{term:tm_n4e8t2jy}} ÷ {{term:tm_t7a3s6wb}}: how much the company earns on all of its assets. The annual-report version adds after-tax interest back to the numerator and uses average assets, which gives a different figure, so every question names its version."
+  }
+}

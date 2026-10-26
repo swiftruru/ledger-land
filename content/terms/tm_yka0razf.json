@@ -2,23 +2,50 @@
   "id": "tm_yka0razf",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "資本公積", "en": "Capital surplus" },
+  "label": {
+    "zh-TW": "資本公積",
+    "en": "Capital surplus"
+  },
   "teacherLabel": "資本公積",
   "currentTwLabel": null,
   "ifrsEnglish": "Capital surplus",
-  "aliases": { "zh-TW": [], "en": ["Share premium", "Additional paid-in capital"] },
-  "flags": ["unused"],
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Share premium",
+      "Additional paid-in capital"
+    ]
+  },
+  "flags": [
+    "unused"
+  ],
   "confidence": "medium",
-  "pendingRefs": ["T16"],
+  "pendingRefs": [
+    "T16"
+  ],
   "note": {
-    "zh-TW": "台灣用語，IFRS 沒有單一對應名詞；教材列出的來源與用途標「舊制分類」，教學以現行公司法與 IFRS 為主（設計說明見 T16）。",
-    "en": "A Taiwanese term with no single IFRS equivalent; the sources and uses listed in the course are marked as the older classification, and teaching follows the current Company Act and IFRS (see the design note T16)."
+    "zh-TW": "台灣用語；英文沿用台灣英文財報常見的 Capital surplus，IFRS 原文沒有單一對應名詞，最接近的是股本溢價（share premium）。課程列出的來源是舊公司法的分類，用途則省略了現行公司法的順序與條件；網站以現行公司法與 IFRS 為主，來源與用途的細節屬於延伸內容，不列入期中考範圍。",
+    "en": "A Taiwanese term; the English follows the usual wording of Taiwanese financial statements in English, and IFRS has no single equivalent, the closest being share premium. The sources listed in the course follow the classification of the former Company Act, and its list of uses leaves out the order and conditions set by the current Act; the site follows the current Company Act and IFRS, and the details of the sources and uses are extension content outside the midterm scope."
   },
   "definition": {
-    "zh-TW": "股東投入超過股票面額的部分，以及其他不是來自營業的權益增加。本課的故事沒有用到。",
-    "en": "The part of shareholders' contributions above par value, and other increases in equity that do not come from operations. The course story does not use it."
+    "zh-TW": "股東投入超過股票面額的部分，以及其他依法令列入的項目；它屬於權益，但不是公司賺來的盈餘。\n\n白話說，股本記的是「面額那一份」，資本公積記的是股東多付的「溢價那一份」。",
+    "en": "The amount shareholders paid in above the par value of their shares, plus other items the law assigns here; it is part of equity but is not profit the company has earned.\n\nIn plain terms, share capital records the par value portion and capital surplus records the premium shareholders paid on top."
   },
-  "accountRef": "capital_surplus"
+  "example": {
+    "zh-TW": "位置：資產負債表股東權益區，股本的下一列。本課故事以面額發行股票，所以這一列是 0；若以高於面額的價格現金增資，現金增加，股本增加面額的部分，資本公積增加溢價的部分。",
+    "en": "Where it sits: the equity section of the balance sheet, right below share capital. The course story issues shares at par, so this line is zero; if shares were issued for cash above par, cash would rise, share capital by the par portion and capital surplus by the premium."
+  },
+  "misconception": {
+    "zh-TW": "以為資本公積是公司賺來的錢，可以像未分配盈餘一樣拿來發股利。它來自股東的投入，用途受公司法限制：原則上只能用來彌補虧損，而且要先用盈餘公積彌補，不足時才能動用資本公積（第 239 條）；公司沒有虧損時，才能依法定程序把發行股票溢價或受領贈與所得的資本公積，按股東持股比例發給新股或現金（第 241 條）。（現行規定，查證於 {{raw:2026-10-24}}）",
+    "en": "Treating capital surplus as earned profit that can be paid out like unappropriated retained earnings. It comes from shareholders’ contributions and the Company Act restricts its use: in principle it may only offset losses, and only once the reserves built from earnings have been used and still fall short (Article 239); when the company has no losses, the surplus from share premiums or gifts received may, through the statutory procedure, be distributed to shareholders as new shares or cash in proportion to their holdings (Article 241). (Current rules, checked on {{raw:2026-10-24}}.)"
+  },
+  "accountRef": "capital_surplus",
+  "related": [
+    "tm_5e3py55a",
+    "tm_qpw1px47",
+    "tm_4n517fc3",
+    "tm_x3n8v5tc"
+  ]
 }

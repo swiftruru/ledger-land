@@ -1,0 +1,39 @@
+{
+  "id": "q_4z386trc",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "true_false",
+  "objectiveId": "obj_6x06z2",
+  "difficulty": 1,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_08g66t9j",
+    "tm_g5c2m8tw",
+    "tm_v3n8q2ye",
+    "tm_n7v3k8pq"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "存貨週轉率的分子是營業收入，因為存貨賣出去之後就變成收入。",
+    "en": "The numerator of inventory turnover is revenue, because inventory becomes revenue once it is sold."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "存貨賣出確實會帶來收入，這個連結沒錯。但存貨帳上記的是成本，營業收入裡還含著毛利；拿按售價計算的營業收入，去除以按成本記帳的存貨，等於把毛利也算進去，會高估週轉次數，所以分子要用營業成本。",
+    "en": "Selling inventory does bring in revenue, so the link is right. But inventory is recorded at cost while revenue includes the gross margin; dividing revenue, which is at selling price, by inventory, which is at cost, counts the margin as well and overstates the turns, so the numerator has to be cost of sales."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。存貨以成本入帳，賣出時轉成營業成本，所以分子用營業成本，才是「成本比成本」。",
+    "en": "Correct. Inventory is recorded at cost and becomes cost of sales when sold, so the numerator is cost of sales: cost compared with cost."
+  },
+  "misconceptionId": "mc_mms2",
+  "explanation": {
+    "zh-TW": "{{term:tm_08g66t9j}}的分子是{{term:tm_g5c2m8tw}}，分母是{{term:tm_n7v3k8pq}}。應收款項週轉率才用營業收入當分子，因為應收帳款是按售價記的。",
+    "en": "The numerator of {{term:tm_08g66t9j}} is {{term:tm_g5c2m8tw}} and the denominator is {{term:tm_n7v3k8pq}}. Receivables turnover is the one that uses revenue, because receivables are recorded at selling price."
+  }
+}

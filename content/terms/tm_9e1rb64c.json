@@ -2,27 +2,62 @@
   "id": "tm_9e1rb64c",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "負債比率", "en": "Debt ratio" },
+  "label": {
+    "zh-TW": "負債比率",
+    "en": "Debt ratio"
+  },
   "teacherLabel": "負債比率",
   "currentTwLabel": "負債比率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["負債占比", "負債佔資產比率", "負債比例", "負債占資產比率"], "en": ["Liabilities to assets ratio"] },
+  "aliases": {
+    "zh-TW": [
+      "負債占比",
+      "負債佔資產比率",
+      "負債比例",
+      "負債占資產比率"
+    ],
+    "en": [
+      "Liabilities to assets ratio"
+    ]
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T24", "T38"],
+  "pendingRefs": [
+    "T24",
+    "T38"
+  ],
   "note": {
-    "zh-TW": "模板寫「負債比例」；年報的財務分析稱負債占資產比率。課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）；與權益倍數的換算關係在解說中補上（設計說明見 T38）。",
-    "en": "The template says debt proportion; annual reports call it the liabilities to assets ratio. The course threshold is shown only as a course reference value and is not scored (see the design note T24); the conversion to the equity multiplier is given in the explanation (see the design note T38)."
+    "zh-TW": "模板寫「負債比例」；主管機關的財務分析格式稱負債占資產比率。課程的門檻是經驗值，只當「課程參考值」顯示，不計分；與權益倍數的換算關係寫在相關題目的解說中。",
+    "en": "The template says debt proportion; the regulator’s financial analysis format calls it the liabilities to assets ratio. The course threshold is a rule of thumb, shown only as a course reference value and not scored; the conversion to the equity multiplier is given in the explanations of related questions."
   },
   "definition": {
-    "zh-TW": "負債總額占資產總計的比率，衡量公司的資產有多少是靠借來的錢撐起來的。數值越高，財務風險越大；越低表示靠股東的錢比較多。",
-    "en": "Total liabilities as a share of total assets: how much of the company's assets are funded by borrowed money. A higher value means more financial risk; a lower value means more of the funding comes from shareholders."
+    "zh-TW": "公司的資產有多大比例是靠負債買來的。\n\n比率越高，債權人出的錢越多、股東出的越少；利息負擔和還款壓力也越大。",
+    "en": "What share of the company’s assets is financed by liabilities.\n\nThe higher it is, the more the creditors have put in relative to the owners, and the heavier the interest and repayment burden."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在資產負債表上。公司剛成立、只有股東出資時比率是 0；借款之後上升，還款之後下降。模板稱它為負債比例，主管機關的財務分析格式稱負債占資產比率。課程的門檻只當參考值顯示，不計分。",
+    "en": "Both figures come from the balance sheet. A newly formed company funded only by its owners has a ratio of zero; it rises when the company borrows and falls when it repays. The template calls it the debt proportion and the regulator’s financial analysis format calls it liabilities to assets. The course threshold is shown as a reference value only and is not scored."
+  },
+  "misconception": {
+    "zh-TW": "把負債比率高一律當成壞事。負債的資金成本通常比股東的資金低，也能放大股東報酬，適度的槓桿很常見；關鍵在還不還得起，所以要搭配利息保障倍數和現金流量比率一起看。",
+    "en": "Treating a high debt ratio as bad in every case. Debt usually costs less than equity and can magnify shareholder returns, so some leverage is common; the real question is whether it can be serviced, which is why you read it with the times interest earned and cash flow ratios."
+  },
+  "formula": {
+    "zh-TW": "負債比率 ＝ 負債總額 ÷ 資產總計。它和權益倍數可以互相換算：權益倍數 ＝ 1 ÷（1 － 負債比率）。",
+    "en": "Debt ratio = total liabilities ÷ total assets. It converts to the equity multiplier: equity multiplier = 1 ÷ (1 － debt ratio)."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "debt_ratio@excel"
+  "ratioRef": "debt_ratio@excel",
+  "related": [
+    "tm_2ggtxnaz",
+    "tm_fwys72qx",
+    "tm_t7a3s6wb",
+    "tm_h3c7v1xe",
+    "tm_8eyx0srs"
+  ]
 }

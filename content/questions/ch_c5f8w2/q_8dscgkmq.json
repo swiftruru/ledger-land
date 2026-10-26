@@ -1,6 +1,6 @@
 {
   "id": "q_8dscgkmq",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -75,6 +75,6 @@
   },
   "explanation": {
     "zh-TW": "現金增加 {{money:expected.t1.delta}}，短期借款也增加 {{money:expected.t2.delta}}，所以負債及股東權益總計跟著增加；股東權益總額完全不變，因為借來的錢不是股東的錢。",
-    "en": "Cash rises by {{money:expected.t1.delta}} and short-term borrowings rise by {{money:expected.t2.delta}}, so total liabilities and equity rise with them. Total equity does not change at all, because borrowed money is not the owner's money."
+    "en": "Cash rises by {{money:expected.t1.delta}} and short-term borrowings rise by {{money:expected.t2.delta}}, so total liabilities and equity rise with them. Total equity does not change at all, because borrowed money is not the owner’s money."
   }
 }

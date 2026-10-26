@@ -1,0 +1,59 @@
+{
+  "id": "q_xe82q5n3",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_8e479x",
+  "difficulty": 1,
+  "tags": [
+    "balance_sheet",
+    "elements",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_r4w8n2qe",
+    "tm_h6p2k9wd",
+    "tm_x3n8v5tc",
+    "tm_gt8g4afe",
+    "tm_a3p9y6kc",
+    "tm_4c6v99nn"
+  ],
+  "scored": true,
+  "type": "classify",
+  "prompt": {
+    "zh-TW": "阿凱在整理海風衝浪店的資產負債表。下面這些項目各屬於資產、負債還是股東權益？把每張卡片放進正確的格子。",
+    "en": "Kai is tidying up Seabreeze Surf’s balance sheet. Is each of these items an asset, a liability or equity? Put each card in the right box."
+  },
+  "dimension": "element",
+  "items": [
+    {
+      "id": "it_xdr4",
+      "account": "accounts_receivable"
+    },
+    {
+      "id": "it_sbgb",
+      "account": "machinery_equipment"
+    },
+    {
+      "id": "it_qxkc",
+      "account": "accounts_payable"
+    },
+    {
+      "id": "it_0ex0",
+      "account": "short_term_borrowings"
+    },
+    {
+      "id": "it_jmq4",
+      "account": "retained_earnings"
+    },
+    {
+      "id": "it_889r",
+      "account": "inventory"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "應收帳款是客人還沒付的錢、存貨是還沒賣出的衝浪板、{{term:tm_gt8g4afe}}是修理衝浪板用、要用好幾年的機台，都是店擁有的資源，放資產。{{term:tm_a3p9y6kc}}是還沒付給供應商的貨款、短期借款是欠銀行的錢，放負債。{{term:tm_4c6v99nn}}是店自己賺來還沒分給股東的錢，放股東權益。",
+    "en": "Trade receivables are money customers have not yet paid, inventories are boards not yet sold and {{term:tm_gt8g4afe}} is the board-repair rig the shop will use for years: all resources the shop holds, so assets. {{term:tm_a3p9y6kc}} are owed to suppliers and short-term borrowings are owed to the bank, so liabilities. {{term:tm_4c6v99nn}} are profit the shop earned and has not yet distributed to its shareholders, so equity."
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "q_sejs0djz",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "true_false",
+  "objectiveId": "obj_fbc0kw",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_2s4hterv",
+    "tm_r7x2c9fa",
+    "tm_gysqtps0"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "應收款項週轉率越高，表示公司收款越快，被客戶占用的資金越少。",
+    "en": "The higher the receivables turnover, the faster the company collects and the less of its money is tied up by customers."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。週轉率高表示同樣的營收只需要比較少的應收帳款就做到了，收款快、資金壓力小。",
+    "en": "Correct. High turnover means the same revenue is achieved with a smaller receivables balance: faster collection and less cash pressure."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你可能擔心「越高越好」太絕對，這份警覺是好的。不過這句話只說收款快、資金占用少，這是對的；要補充的是收款條件太緊也可能嚇跑客戶，所以高到什麼程度合理要看行業。",
+    "en": "You may have worried that ‘higher is better’ is too absolute, and that caution is healthy. But the statement only says collection is faster and less money is tied up, which is true; the caveat is that very tight terms can drive customers away, so how high is reasonable depends on the trade."
+  },
+  "misconceptionId": "mc_21sh",
+  "explanation": {
+    "zh-TW": "{{term:tm_2s4hterv}}高、{{term:tm_gysqtps0}}短，資金回籠快。這是指標本身的意義；是否「越高越好」還要看客戶關係與行業慣例。",
+    "en": "High {{term:tm_2s4hterv}} and a short {{term:tm_gysqtps0}} mean cash comes back quickly. That is what the ratio itself means; whether higher is always better also depends on customer relationships and trade practice."
+  }
+}

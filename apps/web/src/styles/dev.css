@@ -1,0 +1,6 @@
+/* 開發模式標示（站規 1.12 規則 4）：只在開發伺服器載入（Root.tsx 的 import.meta.env.DEV），正式建置不輸出。
+   沒有 class 的裸連結只會套到 base.css 的保底樣式；開發時加上紅色虛線外框，一眼就看得出漏網的連結 */
+html[data-dev] a:is(:not([class]), [class='']) {
+  outline: 2px dashed var(--ll-danger-ink);
+  outline-offset: 2px;
+}

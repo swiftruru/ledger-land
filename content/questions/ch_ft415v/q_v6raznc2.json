@@ -1,0 +1,42 @@
+{
+  "id": "q_v6raznc2",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "objectiveId": "obj_6x06z2",
+  "difficulty": 1,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_2s4hterv",
+    "tm_v3n8q2ye",
+    "tm_r7x2c9fa"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "revenue": 4380000,
+    "ar": 730000
+  },
+  "compute": {
+    "ratioRef": "ar_turnover@excel",
+    "measures": {
+      "is_revenue": "vars.revenue",
+      "bs_accounts_receivable": "vars.ar"
+    }
+  },
+  "answerUnit": "turnover",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "初陽貿易今年營業收入 {{money:vars.revenue}}，年底應收帳款 {{money:vars.ar}}。依課程 Excel 口徑（用期末餘額）計算應收款項週轉率，以「次」作答。",
+    "en": "First Light Trading had revenue of {{money:vars.revenue}} this year and trade receivables of {{money:vars.ar}} at year end. Using the course Excel basis (closing balance), what is the receivables turnover? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_2s4hterv}}＝{{term:tm_v3n8q2ye}} ÷ {{term:tm_r7x2c9fa}}，意思是一年之中應收帳款「賒出去、收回來」大約轉了幾輪。年報用平均餘額，課程 Excel 用期末餘額近似；分子是營收、分母是餘額，不要顛倒。",
+    "en": "{{term:tm_2s4hterv}} = {{term:tm_v3n8q2ye}} ÷ {{term:tm_r7x2c9fa}}: roughly how many times in a year receivables are extended and collected. Annual reports use the average balance; the course Excel uses the closing balance as an approximation. Revenue on top, balance underneath, never the other way round."
+  }
+}

@@ -1,10 +1,15 @@
-// 「我的 › 備份」（06 第 4.5、4.6 節；路由 /me/backup/，noindex）：存成備份檔或複製備份碼；選擇備份檔或貼上備份碼匯入。
-// 匯入先驗證（packages/progress 的 validateBackup）並顯示預覽摘要，確認後才寫入；預設合併，「覆蓋」放在進階選項（先自動匯出一份再二次確認）。
-// 另外顯示 persist() 的結果、estimate() 的用量與上次匯出時間。所有文字欄位當純文字顯示。
+// 「我的 › 備份」（站規 2.10、06 第 4.5、4.6 節；路由 /me/backup/，noindex）：TopBar 返回「我的」；狀態卡（上次匯出、統計、保護進度與用量）、
+// 匯出卡（主按鈕「匯出備份檔」、次要「複製備份碼」）、匯入卡（「選擇備份檔」按鈕代替瀏覽器的檔案欄位、備份碼文字框與「檢查備份碼」）。
+// 匯入先驗證（packages/progress 的 validateBackup）並顯示預覽卡（含收藏數），確認後才寫入；預設合併，「覆蓋現有進度」在進階選項裡，
+// 是 danger 按鈕，按下先開確認面板，確認後先自動匯出一份目前的進度、匯出沒有完成就不覆蓋（06 第 4.6 節）。
+// 錯誤只有一種紅色（站規 1.2.4）：備份碼的錯誤在文字框下方（框變紅），檔案的錯誤在「選擇備份檔」下方，同樣的圖示與顏色。所有文字欄位當純文字顯示。
+// 第 5 輪看圖驗收：頁首與卡片的說明句用 Phrased（中文只在詞與詞之間換行）；「附上錯誤紀錄」的用途移到開關的說明行；三個統計膠囊和玩家卡同一套排法（me.css）。
+// 統計（作答、關卡、徽章、上次匯出、用量）與保留許可的現況讀齊才經 usePageReady 回報、整頁一次出現（維護者 2026-10-26）；
+// 讀到之前整頁看不見，所以膠囊沒有「…」、上次匯出沒有骨架。
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { formatDate, formatNumber } from '@ledgerland/i18n';
+import { formatDate, formatNumber, localePath } from '@ledgerland/i18n';
 import {
   DB_SCHEMA_VERSION,
   MAX_BACKUP_CODE_LENGTH,
@@ -17,32 +22,48 @@ import {
   type BackupFile,
   type BackupMode,
   type BackupReminderState,
-  type ImportMode,
-  type PersistResult,
   type ProgressErrorCode,
   type ValidatedBackup,
 } from '@ledgerland/progress';
-import { Banner, Button, Card } from '@ledgerland/web-ui';
+import {
+  Badge,
+  Button,
+  Card,
+  CheckCircleIcon,
+  ConfirmSheet,
+  Disclosure,
+  ExportIcon,
+  FieldError,
+  FileIcon,
+  SearchIcon,
+  StarIcon,
+  StatChip,
+  Switch,
+  TopBar,
+  TrashIcon,
+} from '@ledgerland/web-ui';
+import { CopyIcon, MedalIcon } from '@ledgerland/web-ui/map';
+import { Phrased, PhrasedRich } from '../features/me/Phrased.tsx';
+import { readBackupStats, type BackupStats } from '../features/me/progress-reads.ts';
 import { environmentKind } from '../lib/env.ts';
 import { appVersion, getContentVersion, nowIso, todayLocal } from '../lib/progress/app-info.ts';
 import { deflateRaw, hasCompressionStream, inflateRaw, sha256 } from '../lib/progress/codec.ts';
 import { getProgressStore } from '../lib/progress/index.ts';
 import { refreshPersisted } from '../lib/progress/persist.ts';
 import { useStorageStatus } from '../lib/progress/status.ts';
+import { usePageReady, useRevealed } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
-
-interface Stats {
-  attempts: number;
-  levels: number;
-  badges: number;
-  persistResult: PersistResult | null;
-  lastExportedAt: string | null;
-  usageBytes: number | null;
-}
+import '../styles/me.css';
 
 function backupMode(): BackupMode {
   const kind = environmentKind();
   return kind === 'app' ? 'app' : kind === 'in-app-browser' ? 'in-app-browser' : 'browser';
+}
+
+/** 已達成、但還沒寫進進度的章節徽章先補寫（03 第 2.10 節；features/badges/award.ts），統計與匯出檔才會帶著它們。
+ *  只在打開備份頁讀統計時做（refresh）；按下匯出時不再多等，分享表單要在使用者手勢後盡快呼叫 */
+async function reconcileBadges(locale: 'zh-TW' | 'en'): Promise<void> {
+  await import('../features/badges/award.ts').then(({ awardChapterBadges }) => awardChapterBadges(locale)).catch(() => undefined);
 }
 
 async function buildCurrentBackup(includeErrors: boolean): Promise<BackupFile> {
@@ -77,14 +98,13 @@ async function saveFile(text: string, name: string): Promise<SaveOutcome> {
       // 分享失敗就改用下載
     }
   }
+  // 程式產生的下載連結（站規 2.10、4.1 的例外清單、R9）：不插進 DOM，直接 click()（目前的 Chromium、Firefox、Safari 都支援分離的連結下載）
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
   a.download = name;
   a.rel = 'noopener';
-  document.body.appendChild(a);
   a.click();
-  a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
   return 'downloaded';
 }
@@ -93,64 +113,76 @@ function dateOf(iso: string, locale: 'zh-TW' | 'en'): string {
   return formatDate(iso.slice(0, 10), locale, 'medium');
 }
 
+type Notice = { readonly kind: 'ok' | 'error'; readonly text: string };
+type ImportError = { readonly source: 'file' | 'code'; readonly text: string };
+
 export default function Backup() {
   const locale = useLocale();
   const { t } = useLingui();
   const [params] = useSearchParams();
   const status = useStorageStatus();
-  const [stats, setStats] = useState<Stats | null>(null);
+  const [stats, setStats] = useState<BackupStats | null>(null);
+  // navigator.storage.persisted() 問過一次了（status.persisted 才是現況，不然「保護進度」那一行會在頁面出現後才換字）
+  const [persistChecked, setPersistChecked] = useState(false);
   const [includeErrors, setIncludeErrors] = useState(false);
   const [code, setCode] = useState<string | null>(null);
-  const [exportMessage, setExportMessage] = useState<string | null>(null);
+  const [exportNotice, setExportNotice] = useState<Notice | null>(null);
   const [pasted, setPasted] = useState('');
-  const [importError, setImportError] = useState<string | null>(null);
+  const [importError, setImportError] = useState<ImportError | null>(null);
   const [validated, setValidated] = useState<ValidatedBackup | null>(null);
   const [applySettings, setApplySettings] = useState(false);
-  const [mode, setMode] = useState<ImportMode>('merge');
-  const [replaceStep, setReplaceStep] = useState<0 | 1>(0);
-  const [importMessage, setImportMessage] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [importNotice, setImportNotice] = useState<Notice | null>(null);
+  const [busy, setBusy] = useState<null | 'file' | 'code' | 'check' | 'pick' | 'merge' | 'replace'>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const codeInput = useRef<HTMLTextAreaElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const previewHeading = useRef<HTMLHeadingElement>(null);
+  const replaceTrigger = useRef<HTMLElement | null>(null);
+  const uid = useId();
+  const ids = {
+    fileButton: `${uid}-file`,
+    fileError: `${uid}-file-error`,
+    codeLabel: `${uid}-code-label`,
+    codeError: `${uid}-code-error`,
+    exportError: `${uid}-export-error`,
+    outLabel: `${uid}-out-label`,
+  };
 
   const refresh = useCallback(async () => {
-    const store = await getProgressStore();
-    const [attempts, levels, badges, persist, reminder] = await Promise.all([
-      store.listAttempts(),
-      store.listLevelProgress(),
-      store.listUnlocks('badge'),
-      store.getSetting('persistResult'),
-      store.getSetting('backupReminder'),
-    ]);
-    let usageBytes: number | null = null;
-    try {
-      usageBytes = (await navigator.storage?.estimate?.())?.usage ?? null;
-    } catch {
-      usageBytes = null;
-    }
-    setStats({
-      attempts: attempts.length,
-      levels: levels.length,
-      badges: badges.length,
-      persistResult: (persist?.value as PersistResult | undefined) ?? null,
-      lastExportedAt: (reminder?.value as BackupReminderState | undefined)?.lastExportedAt ?? null,
-      usageBytes,
-    });
-  }, []);
+    await reconcileBadges(locale);
+    setStats(await readBackupStats(await getProgressStore()));
+  }, [locale]);
 
   useEffect(() => {
     void refresh();
-    void refreshPersisted();
+    let alive = true;
+    void refreshPersisted().finally(() => alive && setPersistChecked(true));
+    return () => {
+      alive = false;
+    };
   }, [refresh]);
+  usePageReady(stats !== null && persistChecked);
+  const revealed = useRevealed();
 
+  // 匯入提示卡（ImportPromptCard）帶 ?import=code 或 ?import=file 進來：焦點放到對應的欄位或按鈕。
+  // 等布幕真的掀開（useRevealed）才移：隱形的元素拿不到焦點，自己回報齊了的那一次 commit 畫面還沒換
   useEffect(() => {
+    if (!revealed) return;
     const target = params.get('import');
     if (target === 'code') codeInput.current?.focus();
-    else if (target === 'file') fileInput.current?.focus();
-  }, [params]);
+    else if (target === 'file') document.getElementById(ids.fileButton)?.focus();
+  }, [params, ids.fileButton, revealed]);
 
-  const errorText = (code: ProgressErrorCode): string => {
-    switch (code) {
+  // 預覽出現時把預覽卡捲到畫面上緣、焦點移到它的標題（螢幕閱讀器知道下一步在哪裡；畫面上同時只看得到一顆主按鈕「合併匯入」）
+  useEffect(() => {
+    const h = previewHeading.current;
+    if (!validated || !h) return;
+    h.closest('section')?.scrollIntoView({ block: 'start' });
+    h.focus({ preventScroll: true });
+  }, [validated]);
+
+  const errorText = (c: ProgressErrorCode): string => {
+    switch (c) {
       case 'backup.schema_newer':
         return t({ id: 'backup.error.newer', message: '這份備份的版本比網站新，請先更新網站再匯入。' });
       case 'backup.checksum':
@@ -170,38 +202,43 @@ export default function Backup() {
         return t({ id: 'backup.error.format', message: '格式不是 LedgerLand 備份。' });
     }
   };
+  const exportFailed = () => t({ id: 'backup.export.failed', message: '匯出失敗，請再試一次。' });
 
   const exportFile = async () => {
-    setBusy(true);
-    setExportMessage(null);
+    if (busy) return;
+    setBusy('file');
+    setExportNotice(null);
     try {
       const backup = await buildCurrentBackup(includeErrors);
       const outcome = await saveFile(serialiseBackup(backup), backupFileName(todayLocal().replaceAll('-', '')));
       if (outcome !== 'cancelled') {
         await markExported();
         await refresh();
-        setExportMessage(
-          outcome === 'shared'
-            ? t({ id: 'backup.export.shared', message: '已交給分享表單。' })
-            : t({ id: 'backup.export.downloaded', message: '備份檔已開始下載。' }),
-        );
+        setExportNotice({
+          kind: 'ok',
+          text:
+            outcome === 'shared'
+              ? t({ id: 'backup.export.shared', message: '已交給分享表單。' })
+              : t({ id: 'backup.export.downloaded', message: '備份檔已開始下載。' }),
+        });
       }
     } catch {
-      setExportMessage(t({ id: 'backup.export.failed', message: '匯出失敗，請再試一次。' }));
+      setExportNotice({ kind: 'error', text: exportFailed() });
     } finally {
-      setBusy(false);
+      setBusy(null);
     }
   };
 
   const copyCode = async () => {
-    setBusy(true);
-    setExportMessage(null);
+    if (busy) return;
+    setBusy('code');
+    setExportNotice(null);
     try {
       const backup = await buildCurrentBackup(includeErrors);
       const encoded = await encodeBackupCode(backup, deflateRaw);
       if (!encoded.ok) {
         setCode(null);
-        setExportMessage(errorText(encoded.error.code));
+        setExportNotice({ kind: 'error', text: errorText(encoded.error.code) });
         return;
       }
       setCode(encoded.value.code);
@@ -214,107 +251,132 @@ export default function Backup() {
       }
       await markExported();
       await refresh();
-      setExportMessage(
-        copied
+      setExportNotice({
+        kind: 'ok',
+        text: copied
           ? t({ id: 'backup.code.copied', message: '備份碼已複製，貼到另一台裝置或 App 的「貼上備份碼」就能匯入。' })
           : t({ id: 'backup.code.copyFailed', message: '無法自動複製，請自己選取下方的備份碼。' }),
-      );
+      });
     } catch {
-      setExportMessage(t({ id: 'backup.export.failed', message: '匯出失敗，請再試一次。' }));
+      setExportNotice({ kind: 'error', text: exportFailed() });
     } finally {
-      setBusy(false);
+      setBusy(null);
     }
   };
 
-  const validateText = async (text: string) => {
+  const validateText = async (text: string, source: ImportError['source']) => {
     setImportError(null);
     setValidated(null);
-    setImportMessage(null);
-    setReplaceStep(0);
+    setImportNotice(null);
     const result = await validateBackup(text, { currentSchemaVersion: DB_SCHEMA_VERSION, sha256, now: nowIso() });
     if (!result.ok) {
-      setImportError(errorText(result.error.code));
+      setImportError({ source, text: errorText(result.error.code) });
       return;
     }
+    setApplySettings(false);
     setValidated(result.value);
   };
 
   const checkCode = async () => {
-    setBusy(true);
+    if (busy) return;
+    setBusy('check');
     try {
       const decoded = await decodeBackupCode(pasted, inflateRaw);
       if (!decoded.ok) {
         setValidated(null);
-        setImportMessage(null);
-        setImportError(errorText(decoded.error.code));
+        setImportNotice(null);
+        setImportError({ source: 'code', text: errorText(decoded.error.code) });
         return;
       }
-      await validateText(decoded.value);
+      await validateText(decoded.value, 'code');
     } finally {
-      setBusy(false);
+      setBusy(null);
     }
   };
 
   const pickFile = async (file: File | undefined) => {
     if (file === undefined) return;
-    setBusy(true);
+    setBusy('pick');
     try {
-      await validateText(await file.text());
+      await validateText(await file.text(), 'file');
+    } catch {
+      setImportError({ source: 'file', text: t({ id: 'backup.error.incomplete', message: '檔案不完整，請重新選擇或重新貼上。' }) });
     } finally {
-      setBusy(false);
+      setBusy(null);
+      // 同一個檔案可以再選一次
+      if (fileInput.current) fileInput.current.value = '';
     }
   };
 
-  const doImport = async () => {
+  const writeImport = async (mode: 'merge' | 'replace') => {
     if (validated === null) return;
-    if (mode === 'replace' && replaceStep === 0) {
-      // 覆蓋前自動匯出一份目前的進度，再要求二次確認（06 第 4.6 節）
-      setBusy(true);
-      try {
-        const backup = await buildCurrentBackup(false);
-        await saveFile(serialiseBackup(backup), backupFileName(todayLocal().replaceAll('-', '')));
-        setReplaceStep(1);
-      } catch {
-        setImportError(t({ id: 'backup.export.failed', message: '匯出失敗，請再試一次。' }));
-      } finally {
-        setBusy(false);
-      }
-      return;
-    }
-    setBusy(true);
-    try {
-      const store = await getProgressStore();
-      const b = validated.backup;
-      await store.importAll(validated.data, {
-        mode,
-        settings: applySettings,
-        importedAt: nowIso(),
-        source: { deviceId: b.deviceId, origin: b.origin, mode: b.mode, exportedAt: b.exportedAt },
-      });
-      setValidated(null);
-      setPasted('');
-      setReplaceStep(0);
-      setMode('merge');
-      setImportMessage(
+    const store = await getProgressStore();
+    const b = validated.backup;
+    await store.importAll(validated.data, {
+      mode,
+      settings: applySettings,
+      importedAt: nowIso(),
+      source: { deviceId: b.deviceId, origin: b.origin, mode: b.mode, exportedAt: b.exportedAt },
+    });
+    setValidated(null);
+    setPasted('');
+    setImportNotice({
+      kind: 'ok',
+      text:
         mode === 'replace'
           ? t({ id: 'backup.import.replaced', message: '已覆蓋為備份裡的進度。' })
           : t({ id: 'backup.import.merged', message: '已合併，兩邊的紀錄都保留。' }),
-      );
-      await refresh();
+    });
+    await refresh();
+  };
+
+  const doMerge = async () => {
+    if (busy) return;
+    setBusy('merge');
+    try {
+      await writeImport('merge');
     } catch {
-      setImportError(t({ id: 'backup.import.failed', message: '寫入失敗，請重新整理後再試一次。' }));
+      setImportNotice({ kind: 'error', text: t({ id: 'backup.import.failed', message: '寫入失敗，請重新整理後再試一次。' }) });
     } finally {
-      setBusy(false);
+      setBusy(null);
     }
   };
 
-  const attempts = stats?.attempts ?? 0;
-  const levels = stats?.levels ?? 0;
-  const badges = stats?.badges ?? 0;
-  const usageKb = stats?.usageBytes === null || stats?.usageBytes === undefined ? null : formatNumber(Math.round(stats.usageBytes / 1024), locale);
-  const previewAttempts = validated?.preview.attempts ?? 0;
-  const previewLevels = validated?.preview.levels ?? 0;
-  const previewBadges = validated?.preview.badges ?? 0;
+  // 覆蓋：先自動匯出一份目前的進度（06 第 4.6 節），匯出沒有完成（例如分享表單被取消）就不覆蓋
+  const doReplace = async () => {
+    if (busy) return;
+    setBusy('replace');
+    try {
+      const current = await buildCurrentBackup(false);
+      const outcome = await saveFile(serialiseBackup(current), backupFileName(todayLocal().replaceAll('-', '')));
+      if (outcome === 'cancelled') {
+        setConfirmOpen(false);
+        setImportNotice({
+          kind: 'error',
+          text: t({ id: 'backup.replace.cancelled', message: '目前的進度沒有匯出，所以沒有覆蓋。', comment: '覆蓋前的自動匯出被取消（例如關掉分享表單）' }),
+        });
+        return;
+      }
+      await writeImport('replace');
+      setConfirmOpen(false);
+    } catch {
+      setConfirmOpen(false);
+      setImportNotice({ kind: 'error', text: t({ id: 'backup.import.failed', message: '寫入失敗，請重新整理後再試一次。' }) });
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const fmt = (n: number) => formatNumber(n, locale);
+  // 狀態卡的三個統計膠囊：讀到之前整頁看不見，先用 0 排版面
+  const attempts = fmt(stats?.attempts ?? 0);
+  const levels = fmt(stats?.levels ?? 0);
+  const badges = fmt(stats?.badges ?? 0);
+  const usageKb = stats?.usageBytes === null || stats?.usageBytes === undefined ? null : fmt(Math.round(stats.usageBytes / 1024));
+  const previewAttempts = fmt(validated?.preview.attempts ?? 0);
+  const previewLevels = fmt(validated?.preview.levels ?? 0);
+  const previewBadges = fmt(validated?.preview.badges ?? 0);
+  const previewFavourites = fmt(validated?.preview.favourites ?? 0);
   const triggerLabel =
     stats?.persistResult === null || stats?.persistResult === undefined
       ? null
@@ -333,41 +395,107 @@ export default function Backup() {
           ? t({ id: 'backup.mode.inApp', message: 'App 內建瀏覽器' })
           : t({ id: 'backup.mode.browser', message: '瀏覽器分頁' });
   const sourceDate = validated === null ? '' : dateOf(validated.backup.exportedAt, locale);
+  const canCode = hasCompressionStream();
+  const codeError = importError?.source === 'code' ? importError.text : null;
+  const fileError = importError?.source === 'file' ? importError.text : null;
 
   return (
-    <>
-      <h1>
-        <Trans id="backup.title">備份</Trans>
-      </h1>
-      <p className="ll-muted ll-small">
-        <Trans id="backup.intro">進度只存在這台裝置。換裝置、重灌，或把 Safari 的進度搬進主畫面 App 時，用備份檔或備份碼轉移。</Trans>
+    <div className="ll-backup">
+      <TopBar
+        title={t({ id: 'backup.title', message: '備份' })}
+        backHref={localePath(locale, '/me/')}
+        backLabel={t({ id: 'me.back', message: '回到我的', comment: '子頁返回「我的」的可讀名稱（必須包含短字「我的」）' })}
+        backShortLabel={t({ id: 'me.back.short', message: '我的', comment: '子頁返回「我的」在畫面上的短字' })}
+      />
+      <p className="ll-backup__intro">
+        <Phrased text={t({ id: 'backup.intro', message: '進度只存在這台裝置。換裝置、重灌，或把 Safari 的進度搬進主畫面 App 時，用備份檔或備份碼轉移。' })} />
       </p>
 
-      <Card as="section" aria-labelledby="ll-backup-status">
-        <h2 id="ll-backup-status" className="ll-small ll-muted">
+      {/* 狀態卡（第 3 輪看圖驗收）：標題和其他卡片同一種 title-3；學習紀錄改成三個統計膠囊（和玩家卡同一種語言，膠囊下面一行短標籤），
+          其餘三項是兩欄的清單（標籤 footnote、值 body 600） */}
+      <Card as="section" aria-labelledby="ll-backup-status" className="ll-backup__card">
+        <h2 id="ll-backup-status" className="ll-backup__title">
           <Trans id="backup.status.title">這台裝置</Trans>
         </h2>
-        <p data-testid="backup-stats">
-          <Trans id="backup.status.counts" comment="attempts、levels、badges 是數字">
-            {attempts} 筆作答紀錄、{levels} 個關卡的星星、{badges} 個徽章
-          </Trans>
-        </p>
-        <dl className="ll-dl">
+        <ul
+          className="ll-backup__stats"
+          aria-label={t({ id: 'backup.status.records', message: '學習紀錄', comment: '備份頁狀態卡：這台裝置上的學習紀錄數（三個統計膠囊的清單名稱）' })}
+          data-testid="backup-stats"
+        >
+          <li className="ll-backup__stat">
+            <StatChip
+              icon={<CheckCircleIcon />}
+              value={attempts}
+              label={t({
+                id: 'backup.stat.attempts',
+                message: `${attempts} 筆作答紀錄`,
+                comment: '備份頁狀態卡的作答紀錄數；attempts 已格式化',
+              })}
+              data-testid="backup-stat-attempts"
+              className="ll-backup__chip"
+            />
+            <span className="ll-backup__cap" aria-hidden="true">
+              {t({ id: 'backup.stat.attempts.cap', message: '作答紀錄', comment: '備份頁作答紀錄膠囊下面的短標籤' })}
+            </span>
+          </li>
+          <li className="ll-backup__stat">
+            <StatChip
+              icon={<StarIcon filled />}
+              tone="star"
+              value={levels}
+              label={t({
+                id: 'backup.stat.levels',
+                message: `${levels} 個有星星的關卡`,
+                comment: '備份頁狀態卡：拿到星星的關卡數；levels 已格式化',
+              })}
+              data-testid="backup-stat-levels"
+              className="ll-backup__chip"
+            />
+            <span className="ll-backup__cap" aria-hidden="true">
+              {t({ id: 'backup.stat.levels.cap', message: '有星星的關卡', comment: '備份頁關卡膠囊下面的短標籤（數字是拿到星星的關卡數，不是星星總數）' })}
+            </span>
+          </li>
+          <li className="ll-backup__stat">
+            <StatChip
+              icon={<MedalIcon />}
+              tone="badge"
+              value={badges}
+              label={t({ id: 'backup.stat.badges', message: `${badges} 個徽章`, comment: '備份頁狀態卡的徽章數；badges 已格式化' })}
+              data-testid="backup-stat-badges"
+              className="ll-backup__chip"
+            />
+            <span className="ll-backup__cap" aria-hidden="true">
+              {t({ id: 'backup.stat.badges.cap', message: '徽章', comment: '備份頁徽章膠囊下面的短標籤' })}
+            </span>
+          </li>
+        </ul>
+        <dl className="ll-backup__dl">
           <dt>
             <Trans id="backup.status.lastExport">上次匯出</Trans>
           </dt>
-          <dd>{stats?.lastExportedAt ? dateOf(stats.lastExportedAt, locale) : t({ id: 'backup.status.never', message: '還沒匯出過' })}</dd>
+          <dd>
+            {stats?.lastExportedAt ? (
+              <span className="ll-num">{dateOf(stats.lastExportedAt, locale)}</span>
+            ) : (
+              <Badge kind="warning">{t({ id: 'me.backup.never', message: '還沒備份', comment: '「我的」備份列右側與備份頁：從來沒有匯出過' })}</Badge>
+            )}
+          </dd>
           <dt>
             <Trans id="backup.status.persist">保護進度</Trans>
           </dt>
           <dd>
-            {status.persisted === true
-              ? t({ id: 'backup.status.persisted', message: '瀏覽器已同意保留' })
-              : status.persisted === false
-                ? t({ id: 'backup.status.notPersisted', message: '尚未取得保留許可' })
-                : t({ id: 'backup.status.persistUnknown', message: '這個瀏覽器無法查詢' })}
+            {/* 依詞換行（第 9 輪：375 加 200% 的「尚未取得保／留許可」） */}
+            <Phrased
+              text={
+                status.persisted === true
+                  ? t({ id: 'backup.status.persisted', message: '瀏覽器已同意保留' })
+                  : status.persisted === false
+                    ? t({ id: 'backup.status.notPersisted', message: '尚未取得保留許可' })
+                    : t({ id: 'backup.status.persistUnknown', message: '這個瀏覽器無法查詢' })
+              }
+            />
             {triggerLabel !== null && persistDate !== null && (
-              <span className="ll-small ll-muted">
+              <span className="ll-backup__aside">
                 {' '}
                 <Trans id="backup.status.persistDetail" comment="triggerLabel 是觸發來源的文字，persistDate 是已格式化的日期">
                   （{triggerLabel}，{persistDate}）
@@ -378,9 +506,11 @@ export default function Backup() {
           {usageKb !== null && (
             <>
               <dt>
-                <Trans id="backup.status.usage">已使用的儲存空間</Trans>
+                <Trans id="backup.status.usage" comment="備份頁狀態卡的欄位標籤，後面是 KB 數（保持短字：320 寬時標籤欄太寬會把日期擠成兩行）">
+                  已用空間
+                </Trans>
               </dt>
-              <dd>
+              <dd className="ll-num">
                 <Trans id="backup.status.usageValue" comment="usageKb 是已格式化的 KB 數字">
                   {usageKb} KB
                 </Trans>
@@ -390,174 +520,266 @@ export default function Backup() {
         </dl>
       </Card>
 
-      <Card as="section" aria-labelledby="ll-backup-export">
-        <h2 id="ll-backup-export">
+      <Card as="section" aria-labelledby="ll-backup-export" className="ll-backup__card">
+        <h2 id="ll-backup-export" className="ll-backup__title">
           <Trans id="backup.export.title">匯出</Trans>
         </h2>
-        <div className="ll-row">
-          <Button variant="primary" onClick={() => void exportFile()} disabled={busy}>
-            <Trans id="backup.export.file">存成備份檔</Trans>
+        <div className="ll-backup__actions">
+          {/* 有預覽卡時它的「合併匯入」是這一步唯一的主按鈕，匯出降成 secondary（第 1 輪看圖驗收） */}
+          <Button
+            variant={validated === null ? 'primary' : 'secondary'}
+            block
+            icon={<ExportIcon />}
+            busy={busy === 'file'}
+            disabled={busy !== null && busy !== 'file'}
+            onClick={() => void exportFile()}
+          >
+            <Trans id="backup.export.fileButton" comment="備份頁的主按鈕：存成備份檔（手機上交給分享表單）">
+              匯出備份檔
+            </Trans>
           </Button>
-          <Button onClick={() => void copyCode()} disabled={busy || !hasCompressionStream()}>
+          <Button block icon={<CopyIcon />} busy={busy === 'code'} disabled={!canCode || (busy !== null && busy !== 'code')} onClick={() => void copyCode()}>
             <Trans id="backup.export.code">複製備份碼</Trans>
           </Button>
         </div>
-        <label className="ll-check">
-          <input type="checkbox" checked={includeErrors} onChange={(e) => setIncludeErrors(e.target.checked)} />{' '}
-          <Trans id="backup.export.includeErrors">附上錯誤紀錄（只用於回報問題）</Trans>
-        </label>
-        {exportMessage && (
-          <output className="ll-small" data-testid="export-message">
-            {exportMessage}
-          </output>
+        {!canCode && (
+          <p className="ll-backup__note">
+            <Trans id="backup.export.codeUnsupported" comment="瀏覽器不支援壓縮（備份碼要壓縮），「複製備份碼」停用時的說明">
+              這個瀏覽器不支援備份碼，請改用備份檔。
+            </Trans>
+          </p>
         )}
+        <Switch
+          checked={includeErrors}
+          onChange={setIncludeErrors}
+          label={t({ id: 'backup.export.includeErrors', message: '附上錯誤紀錄', comment: '匯出卡的開關標籤（用途寫在下面的說明行）' })}
+          description={
+            <Phrased block text={t({ id: 'backup.export.includeErrorsDesc', message: '只用於回報問題。', comment: '「附上錯誤紀錄」開關的說明' })} />
+          }
+          className="ll-backup__switch"
+        />
+        <div role="status" className="ll-backup__status" data-testid="export-message">
+          {exportNotice?.kind === 'ok' && (
+            <p className="ll-backup__ok">
+              <CheckCircleIcon size={16} />
+              <span>{exportNotice.text}</span>
+            </p>
+          )}
+          {exportNotice?.kind === 'error' && <FieldError id={ids.exportError}>{exportNotice.text}</FieldError>}
+        </div>
         {code !== null && (
-          <div className="ll-field">
-            <span className="ll-small ll-muted" id="ll-backup-code-label">
+          <div className="ll-backup__field">
+            <label className="ll-backup__label" id={ids.outLabel} htmlFor={`${uid}-out`}>
               <Trans id="backup.code.label">備份碼</Trans>
-            </span>
+            </label>
             <textarea
-              className="ll-code"
+              id={`${uid}-out`}
+              className="ll-input ll-backup__code"
               readOnly
               value={code}
               rows={4}
-              aria-labelledby="ll-backup-code-label"
               data-testid="backup-code"
-              onFocus={(e) => e.currentTarget.select()}
+              onFocus={(e) => {
+                const el = e.currentTarget;
+                el.select();
+                // 聚焦時全選會讓 Chrome 略過聚焦本身的捲動（E2E 量到：375 寬時框停在 Tab bar 後面）；自己捲進 scroll-padding 以內
+                el.scrollIntoView({ block: 'nearest' });
+              }}
             />
           </div>
         )}
       </Card>
 
-      <Card as="section" aria-labelledby="ll-backup-import">
-        <h2 id="ll-backup-import">
+      <Card as="section" aria-labelledby="ll-backup-import" className="ll-backup__card">
+        <h2 id="ll-backup-import" className="ll-backup__title">
           <Trans id="backup.import.title">匯入</Trans>
         </h2>
-        <p className="ll-small ll-muted">
-          <Trans id="backup.import.hint">預設會和這台裝置的紀錄合併：作答紀錄取聯集、星星取最高、徽章只會變多。</Trans>
+        {/* 第 6 輪看圖驗收：375 斷成「…合併：作答／紀錄取聯集…」。「作答紀錄」包成不斷開的 span（PhrasedRich），冒號後面一句縮到 20 個字
+            （「作答紀錄都保留、星星取最高、徽章不會少。」），375 排成「…合併：」與規則一句兩行，320 是三行、每行都斷在標點後 */}
+        <p className="ll-backup__hint">
+          <Trans
+            id="backup.import.hint"
+            comment="匯入卡的說明。<0> 包住的「作答紀錄」在窄螢幕不拆成兩行；冒號後面一句保持 20 個字以內，375 寬時排成冒號前後兩行"
+            render={PhrasedRich}
+          >
+            預設會和這台裝置的紀錄合併：<span className="ll-nowrap">作答紀錄</span>都保留、星星取最高、徽章不會少。
+          </Trans>
         </p>
-        <div className="ll-field">
-          <span id="ll-import-file-label">
-            <Trans id="backup.import.file">選擇備份檔</Trans>
-          </span>
-          <input
-            ref={fileInput}
-            type="file"
-            accept="application/json,.json"
-            aria-labelledby="ll-import-file-label"
-            onChange={(e) => void pickFile(e.target.files?.[0])}
-            disabled={busy}
-          />
-        </div>
-        <div className="ll-field">
-          <span id="ll-import-code-label">
+        <input
+          ref={fileInput}
+          type="file"
+          accept="application/json,.json"
+          hidden
+          tabIndex={-1}
+          aria-hidden="true"
+          data-testid="import-file"
+          onChange={(e) => void pickFile(e.target.files?.[0])}
+        />
+        <Button
+          id={ids.fileButton}
+          block
+          icon={<FileIcon />}
+          busy={busy === 'pick'}
+          disabled={busy !== null && busy !== 'pick'}
+          aria-describedby={fileError ? ids.fileError : undefined}
+          onClick={() => fileInput.current?.click()}
+        >
+          <Trans id="backup.import.file">選擇備份檔</Trans>
+        </Button>
+        {fileError && (
+          <div data-testid="import-error-file">
+            <FieldError id={ids.fileError}>{fileError}</FieldError>
+          </div>
+        )}
+        <div className="ll-backup__field">
+          <label className="ll-backup__label" id={ids.codeLabel} htmlFor={`${uid}-code`}>
             <Trans id="backup.import.code">貼上備份碼</Trans>
-          </span>
+          </label>
           <textarea
+            id={`${uid}-code`}
             ref={codeInput}
-            aria-labelledby="ll-import-code-label"
-            className="ll-code"
+            className="ll-input ll-backup__code"
             value={pasted}
             onChange={(e) => setPasted(e.target.value)}
             rows={4}
             autoCapitalize="off"
             autoComplete="off"
             spellCheck={false}
+            aria-invalid={codeError ? 'true' : undefined}
+            aria-describedby={codeError ? ids.codeError : undefined}
             data-testid="paste-code"
           />
-        </div>
-        <div className="ll-row">
-          <Button onClick={() => void checkCode()} disabled={busy || pasted.trim() === '' || !hasCompressionStream()}>
-            <Trans id="backup.import.check">檢查備份碼</Trans>
-          </Button>
-        </div>
-        {pasted.length > MAX_BACKUP_CODE_LENGTH && (
-          <p className="ll-small ll-muted">
-            <Trans id="backup.import.codeLong">備份碼比預期長，貼上時請確認沒有夾帶其他文字。</Trans>
-          </p>
-        )}
-        {importError && (
-          <Banner kind="danger" role="alert">
-            <p data-testid="import-error">{importError}</p>
-          </Banner>
-        )}
-        {validated && (
-          <Card as="section" className="ll-preview" aria-labelledby="ll-backup-preview">
-            <h3 id="ll-backup-preview" className="ll-small ll-muted">
-              <Trans id="backup.preview.title">預覽</Trans>
-            </h3>
-            <p data-testid="import-preview">
-              <Trans id="backup.preview.summary" comment="previewAttempts、previewLevels、previewBadges 是數字">
-                將匯入 {previewAttempts} 筆作答紀錄、{previewLevels} 個關卡的星星、{previewBadges} 個徽章
-              </Trans>
+          {codeError && (
+            <FieldError id={ids.codeError} className="ll-backup__error">
+              <span data-testid="import-error">{codeError}</span>
+            </FieldError>
+          )}
+          {pasted.length > MAX_BACKUP_CODE_LENGTH && (
+            <p className="ll-backup__note">
+              <Trans id="backup.import.codeLong">備份碼比預期長，貼上時請確認沒有夾帶其他文字。</Trans>
             </p>
-            {validated.migratedFrom !== undefined && (
-              <p className="ll-small ll-muted">
-                <Trans id="backup.preview.migrated">這份備份來自較舊的版本，已先轉成目前的格式。</Trans>
+          )}
+        </div>
+        <Button
+          icon={<SearchIcon />}
+          busy={busy === 'check'}
+          disabled={!canCode || pasted.trim() === '' || (busy !== null && busy !== 'check')}
+          onClick={() => void checkCode()}
+        >
+          <Trans id="backup.import.check">檢查備份碼</Trans>
+        </Button>
+        {importNotice && (
+          <div role="status" className="ll-backup__status" data-testid="import-message">
+            {importNotice.kind === 'ok' ? (
+              <p className="ll-backup__ok">
+                <CheckCircleIcon size={16} />
+                <span>{importNotice.text}</span>
               </p>
+            ) : (
+              <FieldError id={`${uid}-import-notice`}>{importNotice.text}</FieldError>
             )}
-            <p className="ll-small ll-muted">
-              <Trans id="backup.preview.source" comment="sourceLabel 是來源環境的文字，sourceDate 是已格式化的日期">
-                來源：{sourceLabel}，{sourceDate}
-              </Trans>
-            </p>
-            <label className="ll-check">
-              <input type="checkbox" checked={applySettings} onChange={(e) => setApplySettings(e.target.checked)} />{' '}
-              <Trans id="backup.preview.applySettings">也套用語言與計時設定</Trans>
-            </label>
-            <details className="ll-advanced">
-              <summary>
-                <Trans id="backup.preview.advanced">進階</Trans>
-              </summary>
-              <label className="ll-check">
-                <input
-                  type="checkbox"
-                  checked={mode === 'replace'}
-                  onChange={(e) => {
-                    setMode(e.target.checked ? 'replace' : 'merge');
-                    setReplaceStep(0);
-                  }}
-                />{' '}
-                <Trans id="backup.preview.replace">覆蓋：除了設定之外，全部改成備份裡的內容（會先自動匯出一份目前的進度）</Trans>
-              </label>
-            </details>
-            {mode === 'replace' && replaceStep === 1 && (
-              <Banner kind="warning" role="alert">
-                <p>
-                  <Trans id="backup.preview.replaceConfirm">目前的進度已匯出。確定要覆蓋嗎？這個動作無法復原。</Trans>
-                </p>
-              </Banner>
-            )}
-            <div className="ll-row">
-              <Button variant="primary" onClick={() => void doImport()} disabled={busy} data-testid="import-confirm">
-                {mode === 'replace' ? (
-                  replaceStep === 1 ? (
-                    <Trans id="backup.preview.confirmReplace">確定覆蓋</Trans>
-                  ) : (
-                    <Trans id="backup.preview.exportThenReplace">先匯出，再覆蓋</Trans>
-                  )
-                ) : (
-                  <Trans id="backup.preview.confirmMerge">合併匯入</Trans>
-                )}
-              </Button>
-              <Button
-                onClick={() => {
-                  setValidated(null);
-                  setReplaceStep(0);
-                }}
-                disabled={busy}
-              >
-                <Trans id="backup.preview.cancel">取消</Trans>
-              </Button>
-            </div>
-          </Card>
-        )}
-        {importMessage && (
-          <output className="ll-ok" data-testid="import-message">
-            {importMessage}
-          </output>
+          </div>
         )}
       </Card>
-    </>
+
+      {validated && (
+        <Card as="section" aria-labelledby="ll-backup-preview" className="ll-backup__card ll-backup__preview" data-testid="import-preview-card">
+          <h2 id="ll-backup-preview" ref={previewHeading} tabIndex={-1} className="ll-backup__title">
+            <Trans id="backup.preview.title">預覽</Trans>
+          </h2>
+          <p className="ll-backup__summary" data-testid="import-preview">
+            {/* 依詞換行（PhrasedRich，第 9 輪：375 加 200% 的「作答紀／錄」「星／星」）；數字和後面的量詞之間是不換行空白（U+00A0） */}
+            <Trans
+              id="backup.preview.summaryWithFavourites"
+              comment="previewAttempts、previewLevels、previewBadges、previewFavourites 是已格式化的數字；數字和量詞（筆、個、題）之間是不換行空白"
+              render={PhrasedRich}
+            >
+              將匯入 {previewAttempts} 筆作答紀錄、{previewLevels} 個關卡的星星、{previewBadges} 個徽章、{previewFavourites} 題收藏
+            </Trans>
+          </p>
+          {validated.migratedFrom !== undefined && (
+            <p className="ll-backup__note">
+              <Trans id="backup.preview.migrated">這份備份來自較舊的版本，已先轉成目前的格式。</Trans>
+            </p>
+          )}
+          <p className="ll-backup__note">
+            <Trans id="backup.preview.source" comment="sourceLabel 是來源環境的文字，sourceDate 是已格式化的日期">
+              來源：{sourceLabel}，{sourceDate}
+            </Trans>
+          </p>
+          {validated.preview.hasSettings && (
+            <Switch
+              checked={applySettings}
+              onChange={setApplySettings}
+              label={t({ id: 'backup.preview.applySettings', message: '也套用語言與計時設定' })}
+              className="ll-backup__switch"
+            />
+          )}
+          <div className="ll-backup__actions">
+            <Button
+              variant="primary"
+              block
+              busy={busy === 'merge'}
+              disabled={busy !== null && busy !== 'merge'}
+              onClick={() => void doMerge()}
+              data-testid="import-confirm"
+            >
+              <Trans id="backup.preview.confirmMerge">合併匯入</Trans>
+            </Button>
+            <Button variant="quiet" block disabled={busy !== null} onClick={() => setValidated(null)}>
+              <Trans id="backup.preview.cancel">取消</Trans>
+            </Button>
+          </div>
+          <Disclosure
+            variant="plain"
+            summary={t({ id: 'backup.preview.advancedOptions', message: '進階選項', comment: '備份預覽卡的展開列：覆蓋現有進度' })}
+            className="ll-backup__advanced"
+          >
+            <p className="ll-backup__hint">
+              <Phrased
+                text={t({
+                  id: 'backup.preview.replaceHint',
+                  message: '覆蓋：除了語言、計時這類偏好設定之外，全部（包括收藏）改成備份裡的內容。覆蓋之前會先自動匯出一份目前的進度。',
+                  comment: '進階選項裡覆蓋的說明',
+                })}
+              />
+            </p>
+            <Button
+              variant="danger"
+              block
+              icon={<TrashIcon />}
+              disabled={busy !== null}
+              onClick={(e) => {
+                replaceTrigger.current = e.currentTarget;
+                setConfirmOpen(true);
+              }}
+              data-testid="import-replace"
+            >
+              <Trans id="backup.preview.replaceButton" comment="進階選項裡的破壞性按鈕；按下先開確認面板">
+                覆蓋現有進度
+              </Trans>
+            </Button>
+          </Disclosure>
+        </Card>
+      )}
+      <ConfirmSheet
+        open={confirmOpen}
+        onClose={() => {
+          if (busy !== 'replace') setConfirmOpen(false);
+        }}
+        onConfirm={() => void doReplace()}
+        title={t({ id: 'backup.confirm.title', message: '要覆蓋現有進度嗎？', comment: '覆蓋現有進度的確認面板標題' })}
+        description={t({
+          id: 'backup.confirm.body',
+          message: '這台裝置上的星星、錯題本與收藏會換成備份檔裡的內容。按下後會先自動匯出一份目前的進度；覆蓋之後不能復原。',
+          comment: '覆蓋現有進度的確認面板說明',
+        })}
+        confirmLabel={t({ id: 'backup.preview.replaceButton', message: '覆蓋現有進度' })}
+        confirmIcon={<TrashIcon />}
+        busy={busy === 'replace'}
+        returnFocusTo={replaceTrigger}
+        data-testid="replace-confirm"
+      />
+    </div>
   );
 }

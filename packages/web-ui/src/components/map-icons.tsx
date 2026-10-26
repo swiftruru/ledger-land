@@ -69,6 +69,20 @@ export const CopyIcon = (p: IconProps) => (
     <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
   </Svg>
 );
+/** 下載（給老師的關卡 QR） */
+export const DownloadIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 4v11m0 0 4-4m-4 4-4-4" />
+    <path d="M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2" />
+  </Svg>
+);
+/** 連結（複製這一關的網址） */
+export const LinkIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5" />
+    <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5" />
+  </Svg>
+);
 /** 徽章：獎章 */
 export const MedalIcon = (p: IconProps) => (
   <Svg {...p}>

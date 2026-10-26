@@ -5,6 +5,7 @@ import { Direction, LineId, RatioStatus, TargetId, idSchema } from '@ledgerland/
 import type { EntryLine, Result } from '@ledgerland/core';
 import { err, ok } from '@ledgerland/core';
 import { z } from 'zod';
+import { normaliseMultiChoiceAnswer } from './normalise.ts';
 
 const optionId = idSchema('option');
 
@@ -80,11 +81,6 @@ export interface AnswerParseError {
   readonly type: QuestionType;
   /** Zod 的問題清單，路徑與訊息；給開發與匯入驗證用，介面不直接顯示 */
   readonly issues: readonly { readonly path: string; readonly message: string }[];
-}
-
-/** 多正解題的作答正規化（03 第 2.12 節）：去重並依 ID 排序，any_correct 與 all_correct 共用 */
-export function normaliseMultiChoiceAnswer(ids: readonly string[]): string[] {
-  return [...new Set(ids)].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 }
 
 /** 把儲存或介面送來的未知值解析成該題型的作答；形狀不對是預期內的錯誤（例如匯入舊備份），以 Result 回傳 */

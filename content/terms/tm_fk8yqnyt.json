@@ -2,13 +2,19 @@
   "id": "tm_fk8yqnyt",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "長期借款收入(+)", "en": "Proceeds from long-term borrowings (+)" },
+  "label": {
+    "zh-TW": "長期借款收入(+)",
+    "en": "Proceeds from long-term borrowings (+)"
+  },
   "teacherLabel": "長期借款收入(+)",
   "currentTwLabel": "舉借長期借款",
   "ifrsEnglish": "Proceeds from long-term borrowings",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
@@ -16,5 +22,22 @@
     "zh-TW": "網站補充的延伸列，模板沒有；金額不為零時才顯示，並標「模板無此列」。",
     "en": "An extension row added by the site. The template has no such line; it is shown only when the amount is not nil, marked as absent from the template."
   },
-  "definition": { "zh-TW": "借入一年以上才到期的款項時收到的現金。", "en": "Cash received when the company takes out borrowings that fall due more than a year ahead." }
+  "definition": {
+    "zh-TW": "向銀行等債權人借入長期借款時收到的現金。\n\n這是籌資活動的流入，公司的現金與非流動負債同時增加。",
+    "en": "Cash received when the company takes out a long-term loan.\n\nIt is a financing inflow: cash and non-current liabilities rise together."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表籌資活動區；這是網站補充的延伸列，課程模板沒有，也不列入期中考範圍；金額不為 0 時才顯示並標「模板無此列」。本課故事只有短期借款，所以用不到。",
+    "en": "Where it sits: the financing activities section of the statement of cash flows; it is an extension line added by the site, absent from the course template and outside the midterm scope, shown only when the amount is non-zero and marked as not in the template. The course story has only short-term borrowing, so it is not used."
+  },
+  "misconception": {
+    "zh-TW": "把借到的錢當成收入。借款要還，所以是負債；它讓現金變多，但本期淨利一毛錢都不會增加。",
+    "en": "Treating loan proceeds as income. The money must be repaid, so it is a liability; it increases cash but adds nothing to profit for the period."
+  },
+  "related": [
+    "tm_gcp2zeys",
+    "tm_tfmnrp7r",
+    "tm_s0b4f89c",
+    "tm_f9a4c6md"
+  ]
 }

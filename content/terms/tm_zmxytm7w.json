@@ -2,7 +2,7 @@
   "id": "tm_zmxytm7w",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "評價及換算差額",
@@ -26,12 +26,25 @@
     "T15"
   ],
   "note": {
-    "zh-TW": "直譯自日文的評価・換算差額等；台灣現行報表稱其他權益，網站維持課程名稱為主要顯示並加現行對照（設計說明見 T15）。",
-    "en": "A direct translation of the Japanese equity caption; current Taiwanese statements call it other components of equity, and the site keeps the course name as the main display with the current caption alongside (see the design note T15)."
+    "zh-TW": "直譯自日文的評価・換算差額等；台灣現行報表稱其他權益，網站維持課程名稱為主要顯示並加現行對照。",
+    "en": "A direct translation of the Japanese equity caption; current Taiwanese statements call it other components of equity, and the site keeps the course name as the main display with the current caption alongside."
   },
   "definition": {
-    "zh-TW": "模板裡放資產評價與外幣換算差額的權益項目。本課未用。",
-    "en": "A template equity item for revaluation and currency translation differences. Not used in this course."
+    "zh-TW": "日本會計基準版面中，資產按公允價值評價與外幣換算所產生、還沒實現而直接放在權益的差額。\n\n這些差額不算進本期淨利。台灣現行報表依 IFRS 把當期的變動列在綜合損益表的其他綜合損益，累積數放在權益的其他權益。",
+    "en": "A heading from the Japanese GAAP layout for unrealised differences from measuring assets at fair value and translating foreign currency, which are taken straight to equity.\n\nThey are not part of profit for the period. Under IFRS, current Taiwanese statements show each period’s movement in other comprehensive income within the statement of comprehensive income and carry the accumulated amount in equity as other components of equity."
   },
-  "accountRef": "valuation_translation_adjustments"
+  "example": {
+    "zh-TW": "位置：資產負債表股東權益區，未分配盈餘之後。本課故事沒有用到，實驗室預設隱藏，展開時標示「本課未使用」並附現行對照。",
+    "en": "Where it sits: the equity section of the balance sheet, after unappropriated retained earnings. The course story does not use it, so the lab hides it by default; when expanded it is marked as not used in this course and shows the current equivalent."
+  },
+  "misconception": {
+    "zh-TW": "以為這些評價差額已經算進本期淨利。它們先列在其他綜合損益、累積在權益，不算進本期淨利；依台灣現行的 IFRS，之後會不會轉入損益要看項目：國外營運機構的換算差額在處分該機構時重分類到損益，指定透過其他綜合損益按公允價值衡量的股票投資則不會轉入損益，處分時在權益內轉入保留盈餘。",
+    "en": "Assuming these valuation differences are already part of profit for the period. They are first reported in other comprehensive income and accumulated in equity, not in profit for the period. Under IFRS as applied in Taiwan, whether they later reach profit or loss depends on the item: exchange differences on a foreign operation are reclassified to profit or loss when the operation is disposed of, whereas gains and losses on equity investments designated at fair value through other comprehensive income never are; on disposal they are transferred within equity to retained earnings."
+  },
+  "accountRef": "valuation_translation_adjustments",
+  "related": [
+    "tm_x3n8v5tc",
+    "tm_752w5xzd",
+    "tm_yka0razf"
+  ]
 }

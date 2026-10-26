@@ -1,0 +1,77 @@
+/* 作答組：選項群組、選項卡、回饋。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* 選項群組：fieldset 維持 block（Safari 17 的 legend 問題），選項另包一層 grid */
+.ll-choice {
+  display: block;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.ll-choice__list {
+  display: grid;
+  gap: var(--ll-space-2);
+}
+.ll-choice legend {
+  padding: 0;
+  font-weight: 600;
+  margin-bottom: var(--ll-space-2);
+}
+.ll-option {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  min-height: var(--ll-target-min);
+  padding: 12px 14px;
+  border: 1px solid var(--ll-border-strong);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  cursor: pointer;
+}
+.ll-option input {
+  margin-top: 4px;
+  accent-color: var(--ll-accent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-option:has(input:not(:checked):not(:disabled)):hover {
+    border-color: var(--ll-accent);
+    background: var(--ll-quiet-hover);
+  }
+}
+.ll-option:has(input:not(:checked):not(:disabled)):active {
+  background: var(--ll-chrome-pressed);
+}
+.ll-option:has(input:checked) {
+  background: var(--ll-accent-tint);
+  border-color: var(--ll-accent);
+  box-shadow: inset 0 0 0 1px var(--ll-accent);
+}
+.ll-option.is-correct,
+.ll-option.is-correct:has(input:checked) {
+  background: var(--ll-success-tint);
+  border-color: var(--ll-success-ink);
+  box-shadow: none;
+}
+.ll-option.is-wrong,
+.ll-option.is-wrong:has(input:checked) {
+  background: var(--ll-danger-tint);
+  border-color: var(--ll-danger-ink);
+  box-shadow: none;
+}
+.ll-option.is-correct .ll-option__status {
+  color: var(--ll-success-ink);
+}
+.ll-option.is-wrong .ll-option__status {
+  color: var(--ll-danger-ink);
+}
+.ll-option__status {
+  display: block;
+  font-weight: 700;
+  font-size: var(--ll-type-footnote-size);
+}
+.ll-option__feedback {
+  display: block;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+  margin-top: 4px;
+}
+/* 回饋面板的樣式在 04-quiz-types.css 的「回饋面板」一段（標題區帶結果色、內容在 surface 上） */

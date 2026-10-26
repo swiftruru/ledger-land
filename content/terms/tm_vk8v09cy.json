@@ -2,7 +2,7 @@
   "id": "tm_vk8v09cy",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "籌資活動的現金流量總計",
@@ -30,7 +30,25 @@
     "en": "The template label uses a wrong word for total; the site shows the corrected wording and keeps the original as a searchable alias."
   },
   "definition": {
-    "zh-TW": "籌資活動各列的合計。正數表示這段期間從股東與銀行拿進來的錢多於還出去的；新公司成立時通常是大額的正數。",
-    "en": "The sum of the financing lines. A positive figure means more money came in from shareholders and lenders than went back out; a newly founded company usually shows a large inflow."
-  }
+    "zh-TW": "籌資活動所有流入與流出加總之後的淨額。\n\n它告訴你公司這段期間從股東與債權人淨拿到或淨還回多少現金。",
+    "en": "The net of all financing inflows and outflows.\n\nIt tells you how much cash the company netted from, or returned to, shareholders and lenders during the period."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表籌資活動區的最後一列。故事剛成立時股東出資讓它是正數；借款再還清之後，借款的部分互相抵銷。它和營業、投資活動的總計相加就是現金及約當現金增減額。",
+    "en": "Where it sits: the last line of the financing section of the statement of cash flows. At the start of the story the owners’ investment makes it positive; once the loan is taken and repaid, the borrowing lines cancel out. Added to the operating and investing totals it gives the net change in cash and cash equivalents."
+  },
+  "misconception": {
+    "zh-TW": "以為籌資活動為正代表公司賺錢。它只是表示公司這段期間淨借入或募到了錢；賺不賺錢要看損益表，本業現金要看營業活動。",
+    "en": "Reading a positive financing total as a sign of profit. It only means the company raised more than it returned during the period; profit is on the income statement and core cash generation is in operating activities."
+  },
+  "formula": {
+    "zh-TW": "籌資活動的現金流量總計 ＝ 短期借款收入 ＋ 長期借款收入 ＋ 發行股票收入 － 短期借款返還 － 長期借款返還 － 支付股息。",
+    "en": "Net cash from financing activities = proceeds from short-term and long-term borrowings + proceeds from issuing shares － repayments of short-term and long-term borrowings － dividends paid."
+  },
+  "related": [
+    "tm_f9a4c6md",
+    "tm_e61ht6yh",
+    "tm_fkpb3evq",
+    "tm_x6gmpvm5"
+  ]
 }

@@ -154,7 +154,7 @@
       },
       "slides03": {
         "numerator": "line.cf_operating_total + line.cf_dividends_paid",
-        "denominator": "line.bs_ppe_gross + line.bs_investments_other + line.bs_intangible_assets + line.bs_current_assets - line.bs_current_liabilities",
+        "denominator": "line.bs_ppe_gross + line.bs_investments_other + line.bs_intangible_assets + line.bs_deferred_org_costs + line.bs_deferred_dev_costs + line.bs_current_assets - line.bs_current_liabilities",
         "unit": "percent",
         "displayDecimals": 2,
         "naWhen": ["denominator_zero"],

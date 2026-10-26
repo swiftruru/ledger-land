@@ -6,7 +6,7 @@ import { useLingui } from '@lingui/react/macro';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@ledgerland/web-ui';
 import type { QrDecoded, QrFrame } from './qr-worker.ts';
-import type { QrScannerProps } from './ScanOverlay.tsx';
+import type { QrScannerProps } from './scan.ts';
 import './QrScanner.css';
 
 const FRAME_INTERVAL_MS = 200;
@@ -139,18 +139,20 @@ export default function QrScanner({ onResult, onCancel, onUseCode }: QrScannerPr
                 comment: '掃描畫面：拒絕相機權限或相機打不開時的提示（06 第 4.9 節）',
               })}
         </p>
-        <p className="ll-muted ll-small">
+        <p className="qm-overlay__hint">
           {t({
             id: 'play.scan.deniedHint',
             message: '之後想用相機掃描，可以在系統設定裡找到這個 App（或 Safari）的相機權限，改成允許後再回來。',
             comment: '掃描畫面：如何在系統設定重新允許相機',
           })}
         </p>
-        <div className="ll-row ll-actions">
-          <Button variant="primary" onClick={onUseCode}>
+        <div className="qm-overlay__actions">
+          <Button variant="primary" block onClick={onUseCode}>
             {useCodeLabel}
           </Button>
-          <Button onClick={onCancel}>{cancelLabel}</Button>
+          <Button variant="quiet" block onClick={onCancel}>
+            {cancelLabel}
+          </Button>
         </div>
       </div>
     );
@@ -171,7 +173,7 @@ export default function QrScanner({ onResult, onCancel, onUseCode }: QrScannerPr
           data-testid="qr-video"
         />
       </div>
-      <p className="ll-muted" role="status">
+      <p className="qm-overlay__hint" role="status">
         {phase.kind === 'starting'
           ? t({ id: 'play.scan.starting', message: '正在開啟相機。', comment: '掃描畫面：等待相機權限與串流時的文字' })
           : t({ id: 'play.scan.aim', message: '把課堂 QR 對準畫面，辨識後會自動前往。', comment: '掃描畫面：掃描中的說明' })}
@@ -181,9 +183,13 @@ export default function QrScanner({ onResult, onCancel, onUseCode }: QrScannerPr
           {t({ id: 'play.scan.notSite', message: '這不是 LedgerLand 的課堂 QR。', comment: '掃描畫面：掃到非本站網址時的提示（絕不開啟）' })}
         </p>
       )}
-      <div className="ll-row ll-actions">
-        <Button onClick={onCancel}>{cancelLabel}</Button>
-        <Button onClick={onUseCode}>{useCodeLabel}</Button>
+      <div className="qm-overlay__actions">
+        <Button variant="secondary" block onClick={onUseCode}>
+          {useCodeLabel}
+        </Button>
+        <Button variant="quiet" block onClick={onCancel}>
+          {cancelLabel}
+        </Button>
       </div>
     </div>
   );

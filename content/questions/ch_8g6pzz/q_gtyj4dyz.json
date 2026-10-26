@@ -1,0 +1,46 @@
+{
+  "id": "q_gtyj4dyz",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "objectiveId": "obj_6f1csw",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "cash_flow"
+  ],
+  "termRefs": [
+    "tm_35qb8and",
+    "tm_e61ht6yh",
+    "tm_67e7f0mn"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ocf": 960000,
+    "capex": -500000,
+    "invIncrease": -140000,
+    "dividends": -160000
+  },
+  "compute": {
+    "ratioRef": "cash_flow_adequacy@excel",
+    "measures": {
+      "cf_operating_total": "vars.ocf",
+      "cf_capex": "vars.capex",
+      "cf_inventory_increase": "vars.invIncrease",
+      "cf_dividends_paid": "vars.dividends"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "青田農產今年的現金流量表上，{{term:tm_e61ht6yh|plain}}是 {{money:vars.ocf}}；投資活動的「取得非流動資產(-)」列是 {{money:vars.capex}}；營業活動調整項的「存貨增加(-)」列是 {{money:vars.invIncrease}}；籌資活動的「支付股息(-)」列是 {{money:vars.dividends}}。依課程 Excel 口徑（只用本期數字，標示「單期近似」）計算現金流量允當比率，以百分比作答。",
+    "en": "On Green Field Produce’s statement of cash flows this year, {{term:tm_e61ht6yh|plain}} is {{money:vars.ocf}}; the investing line ‘payments to acquire non-current assets (-)’ shows {{money:vars.capex}}; the operating adjustment ‘increase in inventories (-)’ shows {{money:vars.invIncrease}}; the financing line ‘dividends paid (-)’ shows {{money:vars.dividends}}. Using the course Excel basis (this period only, marked as a single-period approximation), what is the cash flow adequacy ratio? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_35qb8and}}的分母是三項「要用現金的地方」：資本支出、存貨增加額與現金股利，三項都取支出的正值相加；分子是{{term:tm_e61ht6yh}}。年報用最近五年合計，這裡只有一期的數字，所以叫單期近似。",
+    "en": "The denominator of the {{term:tm_35qb8and}} is the three uses of cash: capital expenditure, the increase in inventories and cash dividends, each taken as a positive outflow and added together; the numerator is {{term:tm_e61ht6yh}}. Annual reports use the latest five years in total; here there is only one period, hence ‘single-period approximation’."
+  }
+}

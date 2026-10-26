@@ -1,6 +1,6 @@
 {
   "id": "q_9qhm28ea",
-  "rev": 1,
+  "rev": 3,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -19,7 +19,7 @@
   "type": "single_choice",
   "prompt": {
     "zh-TW": "佩佩的「日暮文具社」這個月賣出一批筆記本。從損益表最上面的營業收入出發，扣掉哪一項之後，得到的第一層利益是營業毛利？",
-    "en": "Pei's shop Sunset Stationery sold a batch of notebooks this month. Starting from revenue at the top of the income statement, what is deducted to reach the first profit level, gross profit?"
+    "en": "Pei’s shop Sunset Stationery sold a batch of notebooks this month. Starting from revenue at the top of the income statement, what is deducted to reach the first profit level, gross profit?"
   },
   "options": [
     {
@@ -27,6 +27,10 @@
       "text": {
         "zh-TW": "營業成本：賣出去那些筆記本的進貨成本",
         "en": "Cost of sales: the cost of the notebooks that were sold"
+      },
+      "short": {
+        "zh-TW": "營業成本",
+        "en": "Cost of sales"
       },
       "feedback": {
         "zh-TW": "答對了。收入減掉賣出商品本身的成本，就是營業毛利。",
@@ -38,6 +42,10 @@
       "text": {
         "zh-TW": "營業成本加上店員薪水、運費等所有費用",
         "en": "Cost of sales plus all expenses such as staff wages and delivery"
+      },
+      "short": {
+        "zh-TW": "營業成本加所有費用",
+        "en": "Cost of sales plus all expenses"
       },
       "feedback": {
         "zh-TW": "你知道薪水與運費也要扣，這點沒錯，只是那是下一層。營業毛利只扣商品本身的成本，薪水與運費要到營業利益那一層才扣。",
@@ -59,7 +67,7 @@
   ],
   "correctOptionId": "o_yxqy",
   "explanation": {
-    "zh-TW": "五層利益從上往下，每一層只扣一類東西。第一層營業毛利＝營業收入－營業成本，所以是{{option:o_yxqy}}。{{option:o_e3jy}}多扣了下一層的銷管費用，{{option:o_9gt4}}則跳到了最後一層。",
-    "en": "Each of the five levels deducts one kind of item. The first level, gross profit = revenue less cost of sales, so {{option:o_yxqy}} is right. {{option:o_e3jy}} also deducts the next level's distribution costs and administrative expenses, and {{option:o_9gt4}} jumps to the last level."
+    "zh-TW": "五層利益從上往下，每一層處理一類項目。第一層是{{term:tm_g8p4w1rz}}：{{term:tm_v3n8q2ye}}減掉{{term:tm_g5c2m8tw}}，所以是{{option:o_yxqy}}。{{option:o_e3jy}}多扣了下一層的銷管費用，{{option:o_9gt4}}則跳到了最後一層。",
+    "en": "Each of the five levels deals with one kind of item. The first level is {{term:tm_g8p4w1rz}}: {{term:tm_v3n8q2ye}} less {{term:tm_g5c2m8tw}}, so the answer is {{option:o_yxqy}}. {{option:o_e3jy}} also deducts the next level’s distribution costs and administrative expenses, and {{option:o_9gt4}} jumps to the last level."
   }
 }

@@ -1,0 +1,84 @@
+{
+  "id": "q_aj146w6y",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_k9548t",
+  "objectiveId": "obj_bkfrmc",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "stakeholders",
+    "judgment",
+    "customer",
+    "supplier"
+  ],
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_sf72dfsv",
+    "tm_h6p2k9wd",
+    "tm_n4e8t2jy"
+  ],
+  "scored": false,
+  "prompt": {
+    "zh-TW": "暖木家具要和晨光印刷簽三年的包裝印刷合約，先付一筆預付款。採購經理美玲拿到晨光的財報，只有時間先看一件事。如果你是客戶，會先確認什麼？",
+    "en": "Warm Timber Furniture is about to sign a three-year packaging contract with Morning Light Printing and pay a deposit up front. Purchasing manager Mei-ling has Morning Light’s statements but time to check only one thing first. As the customer, what would you confirm first?"
+  },
+  "options": [
+    {
+      "id": "o_s4v5",
+      "text": {
+        "zh-TW": "短期償債能力：流動比率與現金是否充足",
+        "en": "Liquidity: the current ratio and whether cash is adequate"
+      },
+      "upside": {
+        "zh-TW": "預付款最怕供應商倒閉；短期付得出錢的公司，三年內突然停擺的機率較低。",
+        "en": "The deposit’s biggest risk is the supplier failing; a company that can pay its short-term bills is less likely to shut down suddenly."
+      },
+      "downside": {
+        "zh-TW": "短期流動性好不代表長期有競爭力，品質與交期還是要另外評估。",
+        "en": "Good short-term liquidity does not guarantee long-term competitiveness; quality and delivery still need separate assessment."
+      }
+    },
+    {
+      "id": "o_t6w7",
+      "text": {
+        "zh-TW": "獲利是否穩定：最近幾年的淨利有沒有大起大落",
+        "en": "Whether profit is stable: have recent years’ results swung widely"
+      },
+      "upside": {
+        "zh-TW": "穩定獲利的供應商比較有能力投資設備、留住人才，三年的合作比較可靠。",
+        "en": "A steadily profitable supplier is better able to invest in equipment and keep staff, making a three-year relationship more reliable."
+      },
+      "downside": {
+        "zh-TW": "獲利穩定的公司也可能因為現金週轉不過來而出問題；獲利不等於現金。",
+        "en": "A steadily profitable company can still run into trouble through poor cash management; profit is not cash."
+      }
+    },
+    {
+      "id": "o_v8x9",
+      "text": {
+        "zh-TW": "負債與資金結構：借了多少錢、什麼時候到期",
+        "en": "Debt and funding structure: how much is borrowed and when it falls due"
+      },
+      "upside": {
+        "zh-TW": "負債很重、集中在近期到期的供應商，一旦銀行抽銀根就可能停工，客戶會被牽連。",
+        "en": "A heavily indebted supplier with debt maturing soon may halt production if the bank pulls back, dragging customers down with it."
+      },
+      "downside": {
+        "zh-TW": "負債高不一定危險，要配合獲利與現金一起看；單看這一項容易誤判。",
+        "en": "High debt is not necessarily dangerous; it has to be read with profit and cash, and on its own it can mislead."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "客戶也是利害關係人：預付款、備料與整條供應鏈都押在供應商能不能持續經營上，所以客戶看供應商的財報，重點是「它會不會在合約期內出事」。三個角度分別對應倒閉的三種前兆：短期付不出錢、本業長期不賺錢、債務壓垮。先看哪一個，取決於你的預付款有多大、替代供應商有多難找。",
+    "en": "Customers are stakeholders too: deposits, materials and the whole supply chain depend on the supplier staying in business, so a customer reads a supplier’s statements to ask whether it will get into trouble during the contract. The three angles match three warning signs of failure: inability to pay in the short term, a core business that does not earn, and crushing debt. Which to check first depends on how large your deposit is and how hard a substitute supplier would be to find."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

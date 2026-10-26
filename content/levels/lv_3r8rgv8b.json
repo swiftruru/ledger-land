@@ -1,0 +1,27 @@
+{
+  "id": "lv_3r8rgv8b",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "order": 4,
+  "title": {
+    "zh-TW": "綜合挑戰：看清題目要的版本",
+    "en": "Final challenge: answer in the version asked"
+  },
+  "objectiveIds": [
+    "obj_6x06z2",
+    "obj_fbc0kw",
+    "obj_6r5ph7",
+    "obj_qr0bbx"
+  ],
+  "questionIds": [
+    "q_shym7yq8",
+    "q_m7heakkn",
+    "q_hczmrwjp",
+    "q_96qpbr3p",
+    "q_ch8rwkh0",
+    "q_vrwhc932",
+    "q_dfhzgbk2"
+  ]
+}

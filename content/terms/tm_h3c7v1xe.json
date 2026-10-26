@@ -2,27 +2,56 @@
   "id": "tm_h3c7v1xe",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "利息保障倍數", "en": "Times interest earned" },
+  "label": {
+    "zh-TW": "利息保障倍數",
+    "en": "Times interest earned"
+  },
   "teacherLabel": "利息保障倍數",
   "currentTwLabel": "利息保障倍數",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": ["Interest coverage ratio", "Interest guarantee"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Interest coverage ratio",
+      "Interest guarantee"
+    ]
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T24"],
+  "pendingRefs": [
+    "T24"
+  ],
   "note": {
-    "zh-TW": "教材英文寫 interest guarantee，不是通用說法，列為別名；課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）。",
-    "en": "The course's English term interest guarantee is not standard usage and is kept as an alias; the course threshold is shown only as a course reference value and is not scored (see the design note T24)."
+    "zh-TW": "教材英文寫 interest guarantee，不是通用說法，列為別名；課程的門檻只當「課程參考值」顯示，不計分。",
+    "en": "The course’s English term interest guarantee is not standard usage and is kept as an alias; the course threshold is shown only as a course reference value and is not scored."
   },
   "definition": {
-    "zh-TW": "扣利息與所得稅前的獲利是利息費用的幾倍，看公司賺的錢夠不夠付利息。倍數越高，付息越沒有壓力。",
-    "en": "Profit before interest and tax as a multiple of interest expense: whether earnings comfortably cover the interest bill. A higher multiple means less strain."
+    "zh-TW": "公司繳稅和付利息之前賺到的利潤，夠付幾倍的利息。\n\n倍數越高，就算獲利下滑也還付得起利息；倍數接近一倍時，利息幾乎吃掉全部利潤。",
+    "en": "How many times the profit earned before tax and interest covers the interest charge.\n\nThe higher the multiple, the more profit can fall before interest becomes unaffordable; near one, interest consumes almost all of the profit."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上。沒有利息費用時分母為 0，顯示 N/A。",
+    "en": "Both figures are on the income statement. With no interest expense the denominator is zero and the result is N/A."
+  },
+  "misconception": {
+    "zh-TW": "用本期淨利當分子。淨利已經扣掉利息和所得稅，用它會低估公司付利息的能力；要把利息和稅加回去，看的是繳稅付息之前有多少錢可以付利息。",
+    "en": "Using profit for the period as the numerator. Profit is already after interest and tax and would understate the ability to pay interest; add both back to see how much is available before interest and tax."
+  },
+  "formula": {
+    "zh-TW": "利息保障倍數 ＝（稅前淨利 ＋ 利息費用）÷ 利息費用。分子就是息前稅前盈餘。",
+    "en": "Times interest earned = (profit before tax + interest expense) ÷ interest expense. The numerator is earnings before interest and tax."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "interest_coverage@excel"
+  "ratioRef": "interest_coverage@excel",
+  "related": [
+    "tm_z971merj",
+    "tm_k6t2e9wr",
+    "tm_9e1rb64c",
+    "tm_gkmknxh4"
+  ]
 }

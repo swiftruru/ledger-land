@@ -1,0 +1,46 @@
+{
+  "id": "q_d3b6e1q3",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_33hdss",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "solvency",
+    "na_vs_zero"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_c2y9b5ex",
+    "tm_k52yxb68"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ca": 650000,
+    "cl": 0
+  },
+  "compute": {
+    "ratioRef": "current_ratio@excel",
+    "measures": {
+      "bs_current_assets": "vars.ca",
+      "bs_current_liabilities": "vars.cl"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "acceptStatus": [
+    "na"
+  ],
+  "prompt": {
+    "zh-TW": "海風民宿年底沒有任何流動負債（{{money:vars.cl}}），流動資產 {{money:vars.ca}}。依課程 Excel 口徑，流動比率是多少？算不出來時請按「N/A」。",
+    "en": "Sea Breeze Guesthouse has no current liabilities at all at year end ({{money:vars.cl}}) and current assets of {{money:vars.ca}}. Using the course Excel basis, what is the current ratio? If it cannot be calculated, press ‘N/A’."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}的分母{{term:tm_c2y9b5ex}}是零，除法沒有定義，所以網站顯示 N/A（分母不存在），不顯示無限大。這不是無限大、也不是滿分，只是沒有東西可以比。",
+    "en": "The denominator of the {{term:tm_c8r1t4zm}}, {{term:tm_c2y9b5ex}}, is zero, so the division is undefined: the site shows N/A (no denominator) rather than infinity. It is neither infinity nor a perfect score; there is simply nothing to compare against."
+  }
+}

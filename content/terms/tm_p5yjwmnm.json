@@ -1,0 +1,42 @@
+{
+  "id": "tm_p5yjwmnm",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "process",
+  "label": {
+    "zh-TW": "過帳",
+    "en": "Posting"
+  },
+  "teacherLabel": "過帳",
+  "currentTwLabel": "過帳",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "過入分類帳",
+      "入帳"
+    ],
+    "en": [
+      "Posting to the ledger"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "note": {
+    "zh-TW": "屬「借貸與分錄」延伸章，不列入期中考範圍。",
+    "en": "Part of the debits, credits and journal entries extension chapter, which is outside the midterm."
+  },
+  "definition": {
+    "zh-TW": "把分錄裡每一行的金額抄到對應科目的 T 字帳（分類帳）裡。過完帳之後，每個科目的餘額就能算出來，三張報表就是由這些餘額整理而成。口語說的「入帳」範圍比較廣，通常指從記分錄到過帳的整個流程。",
+    "en": "Copying each line of an entry into the T-account (ledger) of the account concerned. Once posted, every account’s balance can be worked out, and the three statements are assembled from those balances. The everyday Chinese word for entering something in the books is broader, usually covering the whole process from journal entry to posting."
+  },
+  "related": [
+    "tm_b9e9vjct",
+    "tm_kfnzbf8s"
+  ],
+  "ifrsNote": {
+    "zh-TW": "過帳是簿記程序，IFRS 沒有規範。",
+    "en": "Posting is a bookkeeping procedure not governed by IFRS."
+  }
+}

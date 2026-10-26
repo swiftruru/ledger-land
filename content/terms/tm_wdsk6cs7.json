@@ -1,0 +1,44 @@
+{
+  "id": "tm_wdsk6cs7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": {
+    "zh-TW": "庫藏股",
+    "en": "Treasury shares"
+  },
+  "teacherLabel": "庫藏股",
+  "currentTwLabel": "庫藏股票",
+  "ifrsEnglish": "Treasury shares",
+  "aliases": {
+    "zh-TW": [
+      "庫藏股票",
+      "買回自家股票"
+    ],
+    "en": [
+      "Treasury stock",
+      "Own shares held"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "ifrsBasis": "IAS 32",
+  "note": {
+    "zh-TW": "課程只在說明每股盈餘的股數變化時提到庫藏股，故事沒有用到；這張卡是網站補充的延伸內容，不列入期中考範圍。",
+    "en": "The course mentions treasury shares only when explaining changes in the share count for earnings per share; the story does not use them. This card is extension content added by the site and is outside the midterm scope."
+  },
+  "definition": {
+    "zh-TW": "公司用自己的現金從市場買回來、還沒註銷的自家股票。買回時現金減少、權益也減少（以減項列示），不是資產；買回後流通在外的股數變少，計算每股盈餘的股數時要扣除。",
+    "en": "A company’s own shares that it has bought back with its cash and not yet cancelled. On the buyback, cash falls and equity falls (shown as a deduction); treasury shares are not an asset. Fewer shares remain outstanding afterwards, so they are excluded from the share count when earnings per share is calculated."
+  },
+  "ifrsNote": {
+    "zh-TW": "IAS 32 規定庫藏股自權益中扣除，買賣自家股票不認列損益。",
+    "en": "Under IAS 32 treasury shares are deducted from equity, and no gain or loss is recognised on buying or selling a company’s own shares."
+  },
+  "related": [
+    "tm_5e3py55a",
+    "tm_knqbr6g4"
+  ]
+}

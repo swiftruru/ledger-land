@@ -1,0 +1,23 @@
+{
+  "id": "lv_rxgnwsf0",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "order": 1,
+  "title": {
+    "zh-TW": "獲利能力：每一元換回多少",
+    "en": "Profitability: what each dollar brings back"
+  },
+  "objectiveIds": [
+    "obj_am21nv"
+  ],
+  "questionIds": [
+    "q_cqgck4d9",
+    "q_nv4w92y8",
+    "q_kyafcnba",
+    "q_dnqwe133",
+    "q_89f6ajr1",
+    "q_wkk52f0j"
+  ]
+}

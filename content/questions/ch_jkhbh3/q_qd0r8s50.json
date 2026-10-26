@@ -1,0 +1,87 @@
+{
+  "id": "q_qd0r8s50",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_3ddr90",
+  "difficulty": 2,
+  "tags": [
+    "working_capital",
+    "credit_sale"
+  ],
+  "termRefs": [
+    "tm_r7x2c9fa",
+    "tm_v3n8q2ye",
+    "tm_e61ht6yh",
+    "tm_05t9wphy",
+    "tm_873r9bx9",
+    "tm_bpt2kp5c"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_aw2j4t"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 80000,
+        "inventory": 60000,
+        "share_capital": 140000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_credit",
+        "params": {
+          "price": 100000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "is_revenue",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_accounts_receivable",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "阿邦的「速達機車行」把倉庫裡全部的零件以 {{money:e1.price}} 賒銷給一家車隊，貨款下個月才收。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "Bang’s workshop Swift Scooter Repairs sells all the parts in its storeroom to a delivery fleet on credit for {{money:e1.price}}, to be collected next month. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "營業收入增加 {{money:e1.price}}，應收帳款也增加同樣的金額，現金一毛都沒動。間接法裡這筆交易牽動三列：稅前淨利因毛利而增加 {{money:e1.grossProfit}}；「{{term:tm_873r9bx9}}」這一列扣掉整筆還沒收到的貨款 {{money:e1.price}}；存貨減少 {{money:e1.costOfAllInventory}}，在「{{term:tm_bpt2kp5c}}」這一列以正數加回。三列合計為零，所以{{term:tm_e61ht6yh}}不變。應收帳款變多，代表的是錢還沒進來。",
+    "en": "Revenue rises by {{money:e1.price}} and trade receivables rise by the same amount, while cash does not move at all. In the indirect method this transaction touches three lines: profit before tax rises by the gross profit of {{money:e1.grossProfit}}; the {{term:tm_873r9bx9}} line deducts the whole uncollected price of {{money:e1.price}}; and inventories fall by {{money:e1.costOfAllInventory}}, which is added back as a positive figure on the {{term:tm_bpt2kp5c}} line. The three lines net to nil, so {{term:tm_e61ht6yh}} is unchanged. A rise in receivables means the money has not arrived."
+  }
+}

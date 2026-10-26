@@ -1,0 +1,67 @@
+{
+  "id": "q_xg9hwa7d",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_81e8f8",
+  "difficulty": 2,
+  "tags": [
+    "roe",
+    "roa",
+    "formula"
+  ],
+  "termRefs": [
+    "tm_0k8vegyr",
+    "tm_r0a5t3kq",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "阿凱想算北風單車行的 ROE，他把本期淨利除以年底的資產總計。他算出來的其實是什麼？",
+    "en": "Kai wants North Wind Cycles’ ROE and divides profit for the period by year-end total assets. What has he actually worked out?"
+  },
+  "options": [
+    {
+      "id": "o_gj70",
+      "text": {
+        "zh-TW": "ROA（簡化版）。ROE 的分母要用股東權益總額",
+        "en": "ROA (simplified). The denominator of ROE must be total equity"
+      },
+      "feedback": {
+        "zh-TW": "答對了。淨利除以資產是 ROA，看全部資產的報酬；ROE 要除以股東權益，看股東自己的錢賺了多少。",
+        "en": "Correct. Profit over assets is ROA, the return on all the assets; ROE divides by equity to show what the shareholders’ own money earned."
+      }
+    },
+    {
+      "id": "o_pxpj",
+      "text": {
+        "zh-TW": "就是 ROE，因為資產總計等於負債加權益，用哪一個當分母都一樣",
+        "en": "It is ROE; since total assets equal liabilities plus equity, either works as the denominator"
+      },
+      "feedback": {
+        "zh-TW": "資產總計等於負債加權益沒錯，但正因為資產裡包含借來的錢，用資產當分母算出來的報酬率會比用權益算的低。兩者不一樣：ROE 是 ROA 乘上權益倍數。",
+        "en": "Total assets do equal liabilities plus equity, but precisely because assets include borrowed money, the return on assets is lower than the return on equity. They differ: ROE equals ROA multiplied by the equity multiplier."
+      },
+      "misconceptionId": "mc_6gj4"
+    },
+    {
+      "id": "o_yfdy",
+      "text": {
+        "zh-TW": "資產週轉率，因為分母是資產",
+        "en": "Asset turnover, because the denominator is assets"
+      },
+      "feedback": {
+        "zh-TW": "資產週轉率的分子是營收，不是淨利。分母同樣是資產，但分子不同，意思完全不同：一個看效率，一個看報酬。",
+        "en": "The numerator of asset turnover is revenue, not profit. The denominator is the same, but a different numerator gives a completely different meaning: one measures efficiency, the other return."
+      },
+      "misconceptionId": "mc_tfxp"
+    }
+  ],
+  "correctOptionId": "o_gj70",
+  "explanation": {
+    "zh-TW": "{{option:o_gj70}}。三個常被搞混的公式：ROA ＝ 本期淨利 ÷ 資產總計，ROE ＝ 本期淨利 ÷ 股東權益總額，資產週轉率 ＝ 營收 ÷ 資產總計。本章的簡化版都用期末值，並標示「簡化」。",
+    "en": "{{option:o_gj70}}. Three formulas that are easily mixed up: ROA = profit for the period ÷ total assets, ROE = profit for the period ÷ total equity, and asset turnover = revenue ÷ total assets. The simplified versions in this chapter all use closing values and are marked as simplified."
+  }
+}

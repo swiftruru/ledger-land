@@ -1,0 +1,37 @@
+{
+  "id": "q_0q9cm8kq",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "true_false",
+  "objectiveId": "obj_6r5ph7",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "leverage"
+  ],
+  "termRefs": [
+    "tm_tspyazrx",
+    "tm_gkmknxh4"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "槓桿度越高越好，因為營收成長時營業利益會被放大更多倍。",
+    "en": "The higher the degree of leverage the better, because operating profit is magnified more when revenue grows."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "營收成長時高槓桿確實讓利益跳得更快，這部分沒錯。但倍數只是放大器：好年放大獲利，壞年也放大虧損；它告訴你風險有多大，不是一個成績。",
+    "en": "When revenue grows, high leverage does make profit jump faster, that much is right. But the multiple is only an amplifier: it magnifies profit in good years and losses in bad ones, and it tells you how much risk there is rather than giving a grade."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。放大是雙向的：營收下滑時，營業利益也會以同樣的倍數縮水，所以高槓桿表示高風險，不等於好。",
+    "en": "Correct. Magnification works both ways: when revenue falls, operating profit shrinks by the same multiple, so high leverage signals high risk rather than being good in itself."
+  },
+  "misconceptionId": "mc_04wj",
+  "explanation": {
+    "zh-TW": "{{term:tm_tspyazrx}}與{{term:tm_gkmknxh4}}都是「敏感度」。固定費用與利息讓好年更好、壞年更壞；讀槓桿度時要同時想像營收下滑的情境。",
+    "en": "{{term:tm_tspyazrx}} and {{term:tm_gkmknxh4}} are both measures of sensitivity. Fixed costs and interest make good years better and bad years worse; whenever you read a degree of leverage, imagine the downturn as well."
+  }
+}

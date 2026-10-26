@@ -2,7 +2,7 @@
   "id": "tm_3sy1gk7c",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "短期放款",
@@ -32,8 +32,22 @@
     "en": "The course writes this account with a typo; the site shows the usual wording short-term loans and keeps the original as an alias. The term comes from the Japanese short-term loans receivable."
   },
   "definition": {
-    "zh-TW": "公司把錢借給別人、預計一年內收回的債權。它是流動資產，也是速動比率的一項；本課的故事沒有用到。",
-    "en": "Money the business has lent to others and expects to collect within a year. It is a current asset and one of the quick assets; the course story does not use it."
+    "zh-TW": "公司把自己的資金借給別人、預計一年內收回的債權。\n\n它是公司的資產，因為錢將來會回來；一般台灣公司多把這類款項列在其他應收款。",
+    "en": "Money the company has lent to another party and expects to collect within a year.\n\nIt is an asset, because the cash is due to come back; most Taiwanese companies present such amounts under other receivables."
   },
-  "accountRef": "short_term_loans_receivable"
+  "example": {
+    "zh-TW": "位置：資產負債表流動資產。借出時現金減少、短期放款增加，現金流量表列在投資活動的放貸支出；收回時走相反方向。課程的速動比率把它算進速動資產。本課故事沒有用到這個科目。",
+    "en": "Where it sits: current assets on the balance sheet. Lending reduces cash and increases this line, shown as loans advanced under investing activities in the statement of cash flows; collection reverses it. The course version of the quick ratio counts it as a quick asset. The course story does not use this account."
+  },
+  "misconception": {
+    "zh-TW": "把「放款」和「借款」弄反。短期放款是公司借錢給別人，是資產；短期借款是公司向別人借錢，是負債。兩者方向相反，不能互抵。",
+    "en": "Mixing up loans receivable with borrowings. Short-term loans receivable are money the company has lent out, an asset; short-term borrowings are money the company owes, a liability. They run in opposite directions and are not netted."
+  },
+  "accountRef": "short_term_loans_receivable",
+  "related": [
+    "tm_s5b8r3hd",
+    "tm_wqc6rnsx",
+    "tm_tgfsn0x3",
+    "tm_n8ysnw1m"
+  ]
 }

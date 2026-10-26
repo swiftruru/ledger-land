@@ -1,0 +1,86 @@
+{
+  "id": "q_rdpsx06w",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_k9548t",
+  "objectiveId": "obj_xt5tdk",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "stakeholders",
+    "judgment",
+    "conflict"
+  ],
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_c4sh8k2p",
+    "tm_s5b8r3hd",
+    "tm_4c6v99nn"
+  ],
+  "scored": false,
+  "vars": {
+    "cash": 1500000
+  },
+  "prompt": {
+    "zh-TW": "年底，初陽貿易帳上只有 {{money:vars.cash}} 可以動用，卻同時面對三個要求：員工期待年終獎金、銀行希望提前還一部分借款、股東想要股利。錢只夠做一件事，你會先滿足誰？",
+    "en": "At year end First Light Trading has only {{money:vars.cash}} available, yet faces three demands at once: staff expect a year-end bonus, the bank would like part of the loan repaid early, and shareholders want a dividend. There is only enough for one. Whom would you satisfy first?"
+  },
+  "options": [
+    {
+      "id": "o_w1y2",
+      "text": {
+        "zh-TW": "發年終獎金給員工",
+        "en": "Pay the staff bonus"
+      },
+      "upside": {
+        "zh-TW": "留住人才、維持士氣；明年的營收靠的是這群人。",
+        "en": "Keeps people and morale; next year’s revenue depends on them."
+      },
+      "downside": {
+        "zh-TW": "銀行與股東都落空；若明年景氣轉差，提前還款的機會也錯過了。",
+        "en": "Both the bank and shareholders go without; if next year turns down, the chance to reduce debt early is lost."
+      }
+    },
+    {
+      "id": "o_x3z4",
+      "text": {
+        "zh-TW": "提前償還部分借款",
+        "en": "Repay part of the loan early"
+      },
+      "upside": {
+        "zh-TW": "利息負擔下降、信用紀錄變好，未來的借款條件更有利。",
+        "en": "Interest falls, the credit record improves, and future borrowing terms get better."
+      },
+      "downside": {
+        "zh-TW": "員工士氣受挫，可能流失；股東覺得公司只顧銀行。",
+        "en": "Staff morale suffers and people may leave; shareholders feel the company only looks after the bank."
+      }
+    },
+    {
+      "id": "o_y5a6",
+      "text": {
+        "zh-TW": "配發股利給股東",
+        "en": "Pay a dividend to shareholders"
+      },
+      "upside": {
+        "zh-TW": "回應出資者的期待，維持股東對公司的信心與支持。",
+        "en": "Answers the expectations of those who put up the capital and keeps their confidence and support."
+      },
+      "downside": {
+        "zh-TW": "員工與債權人都會問：為什麼錢先給了股東？下一次需要他們配合時會更難。",
+        "en": "Staff and creditors will ask why shareholders came first; the next time their cooperation is needed, it will be harder to get."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "這類情境沒有讓三方都滿意的方案，重點是說清楚優先順序的理由：例如哪一項已經有約定或快要到期、哪一項延後的代價最小（股利由公司決定是否發放）。許多公司會把一筆錢拆開、各給一部分，但那只是把取捨變小，不是消除取捨。能說出「我為什麼先選這個、其他人要怎麼補償」，就是這一題要練的能力。",
+    "en": "In situations like this no option satisfies all three; what matters is a clear reason for the order of priority: for example, which item is already promised or about to fall due, and which costs least to defer (whether to pay a dividend is the company’s decision). Many companies split the money and give each party a part, but that shrinks the trade-off rather than removing it. Being able to say why you chose this first and how the others will be made good is the skill this question practises."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

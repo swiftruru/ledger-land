@@ -1,7 +1,7 @@
 {
   "id": "lv_k51ne1k1",
-  "rev": 1,
-  "revKind": "text",
+  "rev": 2,
+  "revKind": "answer",
   "status": "published",
   "chapterId": "ch_c5f8w2",
   "order": 3,
@@ -20,6 +20,9 @@
     "q_53rg357p",
     "q_8dscgkmq",
     "q_1krr530f",
+    "q_5pak0cd3",
+    "q_0yhf7rbw",
+    "q_55ddybbc",
     "q_ytrpj345"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "id": "tm_cfghjxzq",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "concept",
@@ -24,12 +24,12 @@
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "資產＝負債＋股東權益。式子右邊列的是左邊這些資產的錢從哪裡來：向別人借的算負債，股東投入與歷年留下的算股東權益。任何一筆交易記完之後，這條式子一定還是成立。",
-    "en": "Assets = liabilities + equity. The right-hand side shows where the money for the assets on the left came from: what was borrowed from others is liabilities, and what the shareholders put in or left in over the years is equity. After any transaction is recorded, the equation still holds."
+    "zh-TW": "資產＝負債＋股東權益。式子右邊列的是左邊這些資產的錢從哪裡來：欠別人的（例如向銀行借的錢、還沒付的貨款）算負債，股東投入與歷年留下的盈餘算股東權益。任何一筆交易記完之後，這條式子一定還是成立。",
+    "en": "Assets = liabilities + equity. The right-hand side shows where the money for the assets on the left came from: what is owed to others (bank loans or unpaid suppliers, for example) is liabilities, and what the shareholders put in plus the profits kept in the business over the years is equity. After any transaction is recorded, the equation still holds."
   },
   "ifrsNote": {
-    "zh-TW": "這不是 IFRS 的名詞，而是編製財務狀況表的基本關係；IFRS 的觀念架構分別定義資產、負債與權益。",
-    "en": "This is not an IFRS term but the basic relationship behind the statement of financial position; the IFRS Conceptual Framework defines assets, liabilities and equity separately."
+    "zh-TW": "這不是 IFRS 的名詞，而是編製資產負債表（IFRS 稱財務狀況表）的基本關係；IFRS 的觀念架構分別定義資產、負債與權益。",
+    "en": "This is not an IFRS term but the basic relationship behind the balance sheet (the statement of financial position in IFRS terms); the IFRS Conceptual Framework defines assets, liabilities and equity separately."
   },
   "related": [
     "tm_r4w8n2qe",

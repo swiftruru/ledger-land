@@ -1,0 +1,400 @@
+/* 首頁（站規 2.1）與目前章節小地圖（1.16）。只用 tokens；元件（NavCard、NavList、Button）的外觀不在這裡改，這裡只排版面。
+   地景與路線用地圖的 scene tokens（圖規 5 節），和地圖頁同色。 */
+
+.ll-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ll-space-4);
+  align-items: start;
+}
+.ll-home__main,
+.ll-home__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ll-space-4);
+  min-width: 0;
+}
+/* 欄內的間距一律由 gap 決定（元件自帶的上下 margin 歸零，兩欄的上緣才對得齊；權重要蓋過 div.ll-navcard 與 .ll-navlist 的 margin） */
+.ll-home .ll-home__main > *,
+.ll-home .ll-home__side > * {
+  margin-block: 0;
+}
+
+/* ---- 主卡：鈴、問候、唯一一顆主按鈕 ---- */
+.ll-home-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  grid-template-areas:
+    'bell text'
+    'cta cta';
+  align-items: center;
+  column-gap: var(--ll-space-4);
+  row-gap: var(--ll-space-5);
+  padding: var(--ll-space-5) var(--ll-space-4) var(--ll-space-4);
+  border-radius: var(--ll-radius-lg);
+  --_glow: 120% 90% at 0% 0%;
+  /* 鈴後面的光暈：淺色是星星金；深色疊在深底上會變成橄欖灰的污漬（第 1 輪看圖驗收），改成強調色的淡光 */
+  --_glow-c: color-mix(in oklab, var(--ll-star) 18%, transparent);
+  background:
+    radial-gradient(var(--_glow), var(--_glow-c), transparent 62%),
+    linear-gradient(180deg, var(--ll-surface), color-mix(in oklab, var(--ll-accent-tint) 58%, var(--ll-surface)));
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  overflow: clip;
+}
+html[data-theme='dark'] .ll-home-hero {
+  --_glow-c: color-mix(in oklab, var(--ll-accent) 16%, transparent);
+}
+/* 鈴站在一小塊地面上（橢圓的影子），像角色站在舞台上 */
+.ll-home-hero__stage {
+  grid-area: bell;
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+.ll-home-hero__stage::after {
+  content: '';
+  width: 70%;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--ll-text) 22%, transparent), transparent);
+}
+.ll-home-hero__bell {
+  width: 72px;
+  height: 72px;
+}
+.ll-home-hero__text {
+  grid-area: text;
+  display: grid;
+  gap: var(--ll-space-1);
+  min-width: 0;
+}
+.ll-home-hero__greet {
+  margin: 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+  text-wrap: balance;
+}
+.ll-home-hero__tag {
+  margin: 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+/* 有進度時第二行是下一關的關名：兩行時上下等長，不讓一個字單獨掉到第二行 */
+.ll-home-hero__tag--next {
+  font-weight: 600;
+  text-wrap: balance;
+}
+.ll-home-hero__cta {
+  grid-area: cta;
+}
+/* 「這一章的進度」只在寬版（1024 起）的主卡顯示；手機與平板的主卡維持精簡（進度在小地圖卡的說明） */
+.ll-home-hero__progress {
+  display: none;
+}
+/* 匯入提示卡或儲存層橫幅出現時（Home.tsx 的 quiet）：主卡按鈕讓位成 secondary sm、不滿版（第 4 輪看圖驗收：lg 滿版比提示卡的 primary 大很多）。
+   手機與平板排在問候下面、鈴的右邊（鈴跨兩列、垂直置中），左緣對齊問候；1024 起主卡是置中的海報，按鈕跟著置中 */
+@media (max-width: 1023.98px) {
+  .ll-home-hero--quiet {
+    grid-template-areas:
+      'bell text'
+      'bell cta';
+    row-gap: var(--ll-space-3);
+  }
+  .ll-home-hero--quiet .ll-home-hero__cta {
+    justify-self: start;
+  }
+}
+/* 小地圖卡的說明（有進度時，ChapterMiniMap.tsx 的 MiniMapProgress）：進度條 sm 接「2／3 關」與星星（16px 實心星加 4／9），一行排完；
+   1024 起主卡已有同一組進度，這段不顯示，卡片只留章名 */
+.ll-home-mmprog {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-3);
+  padding-block: 4px 2px;
+}
+.ll-home-mmprog__bar {
+  flex: 1 1 auto;
+  min-width: 48px;
+  max-width: 140px;
+}
+/* 不換行（flex 項目的最小寬度就是整串字，不會被擠窄，不必再寫 flex: none；首頁 CSS 在首次載入的那一份，省下的位元組給主卡的進度區） */
+.ll-home-mmprog__text {
+  white-space: nowrap;
+}
+.ll-home-mmprog__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ll-home-mmprog__stars svg {
+  color: var(--ll-star);
+}
+@media (min-width: 1024px) {
+  .ll-home-mmprog {
+    display: none;
+  }
+}
+/* ---- 目前章節小地圖（站規 1.16）：NavCard 的 media，高 240，aria-hidden ---- */
+.ll-minimap {
+  position: relative;
+  display: block;
+  height: 240px;
+  overflow: hidden;
+  /* 預設是第 1 章的沙灘；畫好之後由元件依章節換成地圖頁同一張表的底色（inline 的 --mm-ground: var(--ll-scene-…)） */
+  background: var(--mm-ground, var(--ll-scene-sand));
+}
+/* 地圖區和下面的章名列之間的 1px 分隔（畫在 svg 與鈴的上面，路線經過下緣時也看得到） */
+.ll-minimap::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: var(--ll-border);
+  pointer-events: none;
+}
+/* 深色：底色和地圖頁同一片地（不往前景色混，混了會變成一塊灰褐色，第 3 輪看圖驗收）；
+   和卡片分層靠一層帶風味色相的光與 1px 細框。色相取 --ll-border-strong（夜空、莓果、紅酒各自的色相；
+   低彩度的地面色，比強調色安靜，小地圖上的強調色留給路線與節點） */
+html[data-theme='dark'] .ll-minimap {
+  background-image: radial-gradient(120% 90% at 50% 40%, color-mix(in oklab, var(--ll-border-strong) 14%, transparent), transparent 70%);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ll-border-strong) 24%, transparent);
+}
+/* 路線、節點與鈴（小地圖畫好之後才有；首頁的 CSS 不拆小檔，CSS 預算算的是全部檔案的 gzip 總和）。
+   取景會縮小整張圖（svg 上的 --mm-z）：線寬與字級除以縮放，畫面上維持固定的 px（圓的半徑在元件裡算） */
+.ll-minimap__svg {
+  display: block;
+  overflow: visible;
+  --_z: var(--mm-z, 1);
+}
+.ll-minimap__route path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ll-minimap__edge {
+  stroke: var(--ll-scene-road-edge);
+  stroke-width: calc(16px / var(--_z));
+}
+.ll-minimap__road {
+  stroke: var(--ll-scene-road);
+  stroke-width: calc(14px / var(--_z));
+}
+/* 路邊與路面平頭（區段交界平接，不在下一章的路面畫出 U 形弧線）；已走與未走維持圓頭 */
+.ll-minimap__route .ll-minimap__edge,
+.ll-minimap__route .ll-minimap__road {
+  stroke-linecap: butt;
+}
+circle.ll-minimap__edge {
+  fill: var(--ll-scene-road-edge);
+  stroke: none;
+}
+circle.ll-minimap__road {
+  fill: var(--ll-scene-road);
+  stroke: none;
+}
+.ll-minimap__walked {
+  stroke: var(--ll-scene-route-walked);
+  stroke-width: calc(5px / var(--_z));
+}
+.ll-minimap__ahead {
+  stroke: var(--ll-scene-route-ahead);
+  stroke-width: calc(5px / var(--_z));
+  stroke-dasharray: 0 16;
+}
+/* 縮得比較小時圓點隔一個畫一個（畫面上的間距維持約 10 到 16px，不擠成一條虛線） */
+.ll-minimap__route.is-far .ll-minimap__ahead {
+  stroke-dasharray: 0 32;
+}
+/* 第 1 章入口的起點石（和地圖頁的 .qm-stone 同色） */
+.ll-minimap__stone {
+  fill: var(--ll-scene-rock-deep);
+  stroke: var(--ll-scene-line);
+  stroke-width: calc(1.5px / var(--_z));
+}
+/* 節點：和地圖的節點同一套代幣造型（站規 0.4 的 A1：4px 立體底邊；完成與目前關是 primary 的底邊，其他是 secondary） */
+.ll-minimap__ledge {
+  fill: var(--ll-node-ledge);
+}
+.ll-minimap__disc {
+  fill: var(--ll-surface);
+  stroke: var(--ll-border-strong);
+  stroke-width: calc(2px / var(--_z));
+}
+.ll-minimap__node.is-done .ll-minimap__ledge,
+.ll-minimap__node.is-current .ll-minimap__ledge {
+  fill: var(--ll-btn-primary-ledge);
+}
+.ll-minimap__node.is-done .ll-minimap__disc,
+.ll-minimap__node.is-current .ll-minimap__disc {
+  fill: var(--ll-accent);
+  stroke: none;
+}
+/* 目前關：和地圖頁的節點一樣是 4px 淡色內圈加 2px 強調色外圈 */
+.ll-minimap__halo {
+  fill: none;
+  stroke: var(--ll-accent-tint);
+  stroke-width: calc(4px / var(--_z));
+}
+.ll-minimap__ring {
+  fill: none;
+  stroke: var(--ll-accent);
+  stroke-width: calc(2px / var(--_z));
+}
+.ll-minimap__num {
+  fill: var(--ll-text-2);
+  font-size: calc(var(--ll-type-footnote-size) / var(--_z));
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.ll-minimap__node.is-done .ll-minimap__num,
+.ll-minimap__node.is-current .ll-minimap__num {
+  fill: var(--ll-accent-contrast);
+}
+.ll-minimap__bell {
+  position: absolute;
+  pointer-events: none;
+}
+/* 完成的節點下方的星星籤：地圖頁 .ll-node__stars（60 × 22、16px 星星）的約 0.7 倍，同一組顏色。
+   寬 42（minimap-frame.ts 的 starsW）；三顆 10px 星星加間距共 34px，置中排，不另加左右內距 */
+.ll-minimap__stars {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 42px;
+  height: 16px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-scene-card);
+  box-shadow: var(--ll-card-ring), var(--ll-shadow-1);
+  pointer-events: none;
+}
+/* flex 項目一律是區塊盒，不必寫 display: block */
+.ll-minimap__stars svg {
+  flex: none;
+}
+.ll-minimap__stars .is-on path {
+  fill: var(--ll-star);
+  stroke: color-mix(in srgb, var(--ll-star) 70%, var(--ll-text));
+  stroke-width: 1.5;
+}
+.ll-minimap__stars .is-off path {
+  fill: var(--ll-surface-2);
+  stroke: var(--ll-border-strong);
+  stroke-width: 2.25;
+}
+html[data-theme='dark'] .ll-minimap__stars {
+  box-shadow:
+    inset 0 0 0 1px var(--ll-border-strong),
+    var(--ll-shadow-2);
+}
+/* 強制色彩：主卡加系統色外框；小地圖是裝飾（aria-hidden），整塊插圖隱藏，卡片只剩章名與下一關的文字（和地圖頁隱藏地景、場景一樣） */
+@media (forced-colors: active) {
+  .ll-home-hero {
+    border: 1px solid CanvasText;
+  }
+  .ll-minimap__svg,
+  .ll-minimap__bell,
+  .ll-minimap__stars {
+    display: none;
+  }
+}
+
+/* ---- 600 起：主卡的鈴大一點 ---- */
+@media (min-width: 600px) {
+  .ll-home-hero {
+    grid-template-columns: 96px minmax(0, 1fr);
+    padding: var(--ll-space-6);
+  }
+  .ll-home-hero__bell {
+    width: 96px;
+    height: 96px;
+  }
+  .ll-home-hero__greet {
+    font-size: var(--ll-type-title-2-size);
+    line-height: var(--ll-type-title-2-line);
+  }
+}
+
+/* ---- 桌面（1024 起）：兩欄 7/12 與 5/12，上緣對齊；主卡是左欄的整張海報，高度跟右欄一樣。
+   第 2 輪看圖驗收：主卡內容只佔中間約 330px、上下兩大片空白，鈴放大到 180，加「這一章的進度」（小標與關數、進度條 md、星星膠囊） ---- */
+@media (min-width: 1024px) {
+  .ll-home {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--ll-space-6);
+    align-items: stretch;
+  }
+  .ll-home__side {
+    gap: var(--ll-space-6);
+  }
+  .ll-home-hero {
+    flex: 1 1 auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'bell'
+      'text'
+      'progress'
+      'cta';
+    align-content: center;
+    justify-items: center;
+    row-gap: var(--ll-space-4);
+    padding: var(--ll-space-10) var(--ll-space-8);
+    text-align: center;
+    --_glow: 60% 45% at 50% 30%;
+  }
+  .ll-home-hero__bell {
+    width: 180px;
+    height: 180px;
+  }
+  .ll-home-hero__greet {
+    font-size: var(--ll-type-title-1-size);
+    line-height: var(--ll-type-title-1-line);
+  }
+  .ll-home-hero__text {
+    gap: var(--ll-space-2);
+    max-width: 30em;
+  }
+  .ll-home-hero__cta {
+    max-width: 420px;
+    margin-top: var(--ll-space-2);
+  }
+  /* 進度區是兩欄（第 6 輪看圖驗收：小標列橫跨整排時，「2／3 關」落在星星膠囊正上方，像兩個疊起來的分數）：
+     左欄上面是小標列（「這一章的進度」靠左、關數靠右，正好對齊進度條尾端），下面是進度條；右欄是星星膠囊，跨兩列垂直置中。
+     這段在首次載入的 CSS（首頁），用最少的規則排：膠囊明確放在第 1 到 2 列的第 2 欄，小標列自動排在第 1 列第 1 欄，
+     進度條指定第 1 欄、自動落到第 2 列。沒有計分關卡（不顯示膠囊）時右欄寬 0，左欄照樣上下對齊 */
+  .ll-home-hero__progress {
+    grid-area: progress;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ll-space-2) var(--ll-space-3);
+    width: 100%;
+    max-width: 420px;
+    margin-top: var(--ll-space-2);
+    text-align: start;
+  }
+  /* 小標與關數同一個字級，預設的上緣對齊就等於基線對齊 */
+  .ll-home-hero__prog-head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ll-space-3);
+    margin: 0;
+    padding-inline: 2px;
+    color: var(--ll-text-2);
+    font-size: var(--ll-type-footnote-size);
+    line-height: var(--ll-type-footnote-line);
+    font-weight: 600;
+  }
+  .ll-home-hero__bar {
+    grid-column: 1;
+  }
+  .ll-home-hero__stars {
+    grid-area: 1 / 2 / 3;
+  }
+}

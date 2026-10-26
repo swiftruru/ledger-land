@@ -1,0 +1,164 @@
+{
+  "chapterId": "ch_155y47",
+  "items": [
+    {
+      "id": "obj_7j31n2",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_155y47",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能從本期淨利、股本與每股面額算出每股盈餘，並說明它是本益比的分母",
+        "en": "Work out earnings per share from profit for the period, share capital and par value per share, and explain that it is the denominator of the P/E ratio"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_sh4m",
+          "text": {
+            "zh-TW": "把股本金額直接當成股數來除",
+            "en": "Dividing by the amount of share capital as if it were the number of shares"
+          }
+        },
+        {
+          "id": "mc_prc3",
+          "text": {
+            "zh-TW": "以為算每股盈餘要用到股價",
+            "en": "Thinking the share price is needed to calculate earnings per share"
+          }
+        },
+        {
+          "id": "mc_rev7",
+          "text": {
+            "zh-TW": "把營業收入當成每股盈餘的分子",
+            "en": "Using revenue instead of profit as the numerator of earnings per share"
+          }
+        },
+        {
+          "id": "mc_g6p3",
+          "text": {
+            "zh-TW": "用本期淨利總額而不是每股盈餘當本益比的分母",
+            "en": "Using total profit for the period instead of earnings per share as the denominator of the P/E ratio"
+          }
+        }
+      ],
+      "plannedQuestions": 4,
+      "suggestedTypes": [
+        "ratio_numeric",
+        "single_choice"
+      ],
+      "termRefs": [
+        "tm_knqbr6g4",
+        "tm_n4e8t2jy",
+        "tm_5e3py55a"
+      ]
+    },
+    {
+      "id": "obj_000wkh",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_155y47",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能用股價與每股盈餘說明本益比的意思，判讀倍數高低代表市場為每一元盈餘付出的價格，並分辨每股盈餘為零時本益比算不出來（N/A），為負時算出的倍數不具解釋意義",
+        "en": "Explain the P/E ratio in terms of share price and earnings per share, read a high or low multiple as the price the market pays per unit of profit, and tell apart zero earnings per share, where the ratio cannot be computed (N/A), from negative earnings per share, where the multiple is not meaningful"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_hp9k",
+          "text": {
+            "zh-TW": "以為本益比越高，公司就越賺錢",
+            "en": "Thinking a higher P/E ratio means the company is more profitable"
+          }
+        },
+        {
+          "id": "mc_1w2b",
+          "text": {
+            "zh-TW": "以為本益比低一定代表便宜、值得買",
+            "en": "Thinking a low P/E ratio always means a bargain worth buying"
+          }
+        },
+        {
+          "id": "mc_z0ng",
+          "text": {
+            "zh-TW": "以為虧損公司的本益比是零或負數仍可比較",
+            "en": "Thinking a loss-making company has a P/E ratio of zero or a negative one that can still be compared"
+          }
+        },
+        {
+          "id": "mc_st8f",
+          "text": {
+            "zh-TW": "以為本益比是財務報表上的一列",
+            "en": "Thinking the P/E ratio is a line on the financial statements"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "ratio_interpret",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_wd3fx6rh",
+        "tm_knqbr6g4",
+        "tm_tkj8x3a7"
+      ]
+    },
+    {
+      "id": "obj_e2942m",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_155y47",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能說明用本益比估價的前提與限制（歷史或預估每股盈餘、產業差異、一次性損益），並分辨會計觀念練習與投資建議",
+        "en": "Explain the assumptions and limits of valuing with a P/E multiple (trailing or forward earnings, industry differences, one-off items), and tell an accounting concept exercise apart from investment advice"
+      },
+      "skill": "judge",
+      "misconceptions": [
+        {
+          "id": "mc_tf6d",
+          "text": {
+            "zh-TW": "以為歷史每股盈餘與預估每股盈餘可以互換使用",
+            "en": "Treating trailing and forward earnings per share as interchangeable"
+          }
+        },
+        {
+          "id": "mc_jnd2",
+          "text": {
+            "zh-TW": "以為不同產業的本益比可以直接比高低",
+            "en": "Comparing P/E ratios across industries as if they were directly comparable"
+          }
+        },
+        {
+          "id": "mc_0ne5",
+          "text": {
+            "zh-TW": "把一次性的處分利益也當成本業的賺錢能力",
+            "en": "Counting a one-off disposal gain as core earning power"
+          }
+        },
+        {
+          "id": "mc_adv1",
+          "text": {
+            "zh-TW": "以為算出「合理價」就等於買賣建議",
+            "en": "Thinking that a calculated fair price amounts to a recommendation to buy or sell"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "ratio_interpret",
+        "single_choice",
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_wd3fx6rh",
+        "tm_knqbr6g4"
+      ]
+    }
+  ]
+}

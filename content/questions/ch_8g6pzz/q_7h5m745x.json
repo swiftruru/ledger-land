@@ -1,0 +1,45 @@
+{
+  "id": "q_7h5m745x",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "objectiveId": "obj_fyd5cv",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "cash_flow",
+    "na_vs_zero"
+  ],
+  "termRefs": [
+    "tm_555a7d2s",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ocf": 420000,
+    "cl": 0
+  },
+  "compute": {
+    "ratioRef": "cash_flow_ratio@excel",
+    "measures": {
+      "cf_operating_total": "vars.ocf",
+      "bs_current_liabilities": "vars.cl"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "acceptStatus": [
+    "na"
+  ],
+  "prompt": {
+    "zh-TW": "海風民宿年底把短期借款和應付帳款全部付清，資產負債表上的流動負債是 {{money:vars.cl}}；今年營業活動的現金流量總計 {{money:vars.ocf}}。現金流量比率是多少？算不出來時請按「N/A」。",
+    "en": "Sea Breeze Guesthouse paid off all its short-term borrowings and trade payables at year end, so current liabilities on the balance sheet are {{money:vars.cl}}; net cash from operating activities this year is {{money:vars.ocf}}. What is the cash flow ratio? If it cannot be calculated, press ‘N/A’."
+  },
+  "explanation": {
+    "zh-TW": "分母{{term:tm_c2y9b5ex}}是零，除法沒有定義，所以{{term:tm_555a7d2s}}不存在，顯示 N/A。這不是零，也不是無限大，只是「目前沒有流動負債可以拿來比」。",
+    "en": "The denominator, {{term:tm_c2y9b5ex}}, is zero, so the division is undefined: the {{term:tm_555a7d2s}} does not exist and shows N/A. That is not zero and not infinity; there are simply no current liabilities to compare against."
+  }
+}

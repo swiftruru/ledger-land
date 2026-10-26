@@ -2,19 +2,41 @@
   "id": "tm_85pkjrv0",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "折舊費用(+)", "en": "Depreciation (+)" },
+  "label": {
+    "zh-TW": "折舊費用(+)",
+    "en": "Depreciation (+)"
+  },
   "teacherLabel": "折舊費用(+)",
   "currentTwLabel": "折舊費用",
   "ifrsEnglish": "Depreciation",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T12"],
+  "pendingRefs": [
+    "T12"
+  ],
   "ifrsBasis": "IAS 7.20",
   "definition": {
-    "zh-TW": "間接法的加回列。折舊是費用卻沒有付出現金，所以從稅前淨利往現金調整時要把它加回來。",
-    "en": "An add-back line in the indirect method. Depreciation is an expense with no cash payment, so it is added back when moving from profit before tax to cash."
-  }
+    "zh-TW": "間接法裡的第一個加回項：本期認列的折舊費用。\n\n折舊讓稅前淨利減少，但沒有任何現金流出，所以從稅前淨利回推現金時要把它加回來。",
+    "en": "The first add-back in the indirect method: the depreciation expense recognised for the period.\n\nDepreciation lowers profit before tax without any cash leaving, so when working back from profit to cash it is added back."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動區，稅前淨利的下一列。金額和損益表銷管費用裡的折舊費用相同。故事裡年底提列折舊時，這一列和損益表的折舊費用同時出現，營業活動的現金流量總計不變。",
+    "en": "Where it sits: operating activities in the statement of cash flows, right after profit before tax. The amount equals depreciation expense within distribution costs and administrative expenses on the income statement. When the story records year-end depreciation, this line and the income statement expense appear together and net cash from operating activities is unchanged."
+  },
+  "misconception": {
+    "zh-TW": "以為折舊是現金的來源，加回之後公司就「多了」這筆錢。加回只是抵銷它對淨利的影響，現金早在買設備時就付掉了；折舊本身不會讓現金增加。",
+    "en": "Thinking depreciation is a source of cash and the add-back gives the company extra money. The add-back only cancels its effect on profit; the cash went out when the equipment was bought, and depreciation itself never increases cash."
+  },
+  "related": [
+    "tm_d4p7x2mv",
+    "tm_a8d5c1pz",
+    "tm_z971merj",
+    "tm_gcgcmf3y"
+  ]
 }
