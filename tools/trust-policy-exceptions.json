@@ -23,6 +23,41 @@
       "added": "2026-10-22",
       "expires": null,
       "review": "Workbox 改用有 provenance 的版本（例如 4.x）或回到其他實作時移除；每個里程碑開工時重新確認。"
+    },
+    {
+      "entry": "sharp",
+      "setting": "overrides",
+      "pinnedTo": "0.35.5",
+      "declaredBy": "miniflare 5.20261006.0-alpha（0.35.4），經由 wrangler 4.148.0",
+      "reason": "GHSA-wq5f-xc86-pv6w（librsvg 相依的弱點，high）；修正版 0.35.5 於 2026-09-27 發布（已滿兩週）。只在 wrangler 本機與 CI 執行，不進網站。",
+      "approvedBy": "使用者（2026-10-26，每週檢查 issue 20）",
+      "added": "2026-10-26",
+      "expires": null,
+      "review": "wrangler 升到帶 miniflare 5.20261019 以上（宣告 sharp 0.35.5）時移除。"
+    },
+    {
+      "entry": "undici@7",
+      "setting": "overrides",
+      "pinnedTo": "7.30.1",
+      "declaredBy": "miniflare 5.20261006.0-alpha（7.29.1），經由 wrangler 4.148.0",
+      "reason": "GHSA-xjj6-f33q-929c（content-encoding 過多時的阻斷服務，high）；7.30.1 是 7.x 的修正版，2026-10-15 發布（未滿兩週，另有 minimumReleaseAgeExclude）。只在 wrangler 本機與 CI 執行，不進網站。",
+      "approvedBy": "使用者（2026-10-26，每週檢查 issue 20）",
+      "added": "2026-10-26",
+      "expires": null,
+      "review": "miniflare 自己宣告 7.30.1 以上時移除（4.152.0 的 miniflare 仍是 7.29.1）。"
+    }
+  ],
+  "auditIgnores": [
+    {
+      "entry": "GHSA-mrhx-c7xc-m3w5",
+      "setting": "auditConfig.ignoreGhsas",
+      "package": "zod@3.25.76",
+      "declaredBy": "chromium-bidi 17.0.2（^3.24.1），經由 lighthouse 13.5.0 → puppeteer-core 25.12.0",
+      "reason": "zod 驗證過大的受限集合時可耗盡記憶體（high），受影響範圍是 4.6.6 以下全部版本，3.x 沒有修正版。專案自己的 zod 已升到 4.6.6；這一份 zod 3 只在 Lighthouse 量測時由 chromium-bidi 用來驗證它自己和瀏覽器之間的訊息，輸入不來自網路上的第三方，不進網站。改用 zod 4 的 chromium-bidi 157.0.8090-0（puppeteer-core 25.13 以上）沒有 provenance，pnpm 的 trustPolicy 判為信任降級，不接受。",
+      "approvedBy": "規劃者依 09 第 2.2 節的原則決定（2026-10-26，每週檢查 issue 20；使用者同意處理 audit）",
+      "added": "2026-10-26",
+      "expires": "2027-01-31",
+      "review": "lighthouse 的新版宣告的 puppeteer-core 帶有 provenance 且不含 zod 3 的 chromium-bidi 時，升級並移除這一條。"
     }
   ]
 }

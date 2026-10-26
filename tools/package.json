@@ -13,7 +13,7 @@
     "@ledgerland/core": "workspace:*",
     "@ledgerland/i18n": "workspace:*",
     "@ledgerland/tokens": "workspace:*",
-    "zod": "4.6.5"
+    "zod": "4.6.6"
   },
   "devDependencies": {
     "lightningcss": "1.33.0",
