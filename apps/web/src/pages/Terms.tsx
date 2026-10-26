@@ -7,7 +7,7 @@
 // 一次出現（維護者 2026-10-26）：名詞索引、章節索引與進度一掛載就一起讀，三樣都到了才向 usePageReady 回報齊了、整頁一次淡入；在那之前只有頁首標題，
 // 沒有骨架、沒有「…」的數字，印章和卡片同一次繪製出現。另一語系的名詞索引只給搜尋用（第一屏看不到），不算進 ready 的條件，到了也不改版面。
 import { useLingui } from '@lingui/react/macro';
-import { useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState, type MouseEvent } from 'react';
+import { startTransition, useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState, type MouseEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { formatNumber, formatPercent, getLocale, localePath, type Locale } from '@ledgerland/i18n';
 import {
@@ -127,7 +127,8 @@ function TermsPage({ onRetry }: { onRetry: () => void }) {
     setTerms(null);
     setError(null);
     loadTermIndex(locale).then(
-      (list) => alive && setTerms(list),
+      // transition：163 張名詞卡一次畫出來讓 React 切成短任務（2026-10-26 PR 21：GitHub 執行器量到 TBT 197ms，門檻 200）
+      (list) => alive && startTransition(() => setTerms(list)),
       (e: unknown) => alive && setError(e instanceof ContentLoadError ? e : new ContentLoadError(String(e), 'network')),
     );
     return () => {
@@ -144,7 +145,7 @@ function TermsPage({ onRetry }: { onRetry: () => void }) {
     let alive = true;
     const otherLocale: Locale = locale === 'en' ? 'zh-TW' : 'en';
     loadTermIndex(otherLocale).then(
-      (list) => alive && setOther({ locale, list }),
+      (list) => alive && startTransition(() => setOther({ locale, list })),
       () => {},
     );
     return () => {

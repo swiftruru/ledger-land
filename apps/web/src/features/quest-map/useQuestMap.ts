@@ -2,7 +2,7 @@
 // 章節快照與進度一起讀、一起到才是 ready（維護者 2026-10-26：點進任何一頁都要直接看到完整的資訊，不可以先畫地圖、數字顯示「…」，進度到了再補星星）；
 // 進度資料庫由 main.tsx 和頁面一起開始開啟，這裡不再延後。取不到進度（儲存壞掉）時是空的進度，地圖照樣要出來。
 // ?ll-fixture=quest 時用 fixtures.ts 的 3 章 12 關（動態 import，不進正式 chunk）；?ll-fixture=quest-full 是 14 章的場景展示；?ll-fixture-progress= 選 fixture 進度。
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { startTransition, useCallback, useEffect, useRef, useState } from 'react';
 import type { Locale } from '@ledgerland/i18n';
 import { contentSource, type LevelMeta, type QuestMapData, type QuestMapSource } from './data.ts';
 import { EMPTY_PROGRESS, loadMapProgress, type MapProgress } from './progress.ts';
@@ -60,7 +60,9 @@ export function useQuestMap(locale: Locale, req: FixtureRequest) {
       (ready) => {
         if (!alive) return;
         sourceRef.current = ready.source;
-        setState(ready);
+        // transition：整張地圖（章節、節點、路線、HUD）一次畫出來是這一頁最大的一段工作，讓 React 分成幾個短任務畫（每 5ms 讓出主執行緒），
+        // 不是一個兩三百毫秒的長任務（2026-10-26 PR 21：GitHub 執行器量到 TBT 270ms，門檻 200）。布幕要等 commit 之後才掀，畫面不會先出現一半
+        startTransition(() => setState(ready));
       },
       (error: unknown) => {
         if (alive) setState({ status: 'error', error });
@@ -85,8 +87,10 @@ export function useQuestMap(locale: Locale, req: FixtureRequest) {
         const done = () => setMetaDone((prev) => (prev.has(l.id) ? prev : new Set(prev).add(l.id)));
         sourceRef.current.levelMeta(l.id, locale).then(
           (m) => {
-            setMetas((prev) => (prev.get(l.id) === m ? prev : new Map(prev).set(l.id, m)));
-            done();
+            startTransition(() => {
+              setMetas((prev) => (prev.get(l.id) === m ? prev : new Map(prev).set(l.id, m)));
+              done();
+            });
           },
           () => {
             requested.current.delete(l.id);
