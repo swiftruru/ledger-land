@@ -8,7 +8,10 @@
 // - 第 3 到 9 章頂端的陸接陸交界（第 7、8 輪看圖驗收，scene-seam 的 seamEdge）：路面底下同一個 y、路的兩緣一樣高；凹口以外斜率不超過 1、沒有平頂；
 //   凹口由章節決定、相鄰兩處同一翼錯開 120px 以上；有兩翼時起伏的大小沿 x 變化；交界往下不碰物件、保護框與其他地形塊；凹口尖端的物件站在對的地上，不碰物件與保護框。
 import { readFileSync, readdirSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+// 幾何檢查是純計算但要跑全部版型；CI 的執行器比本機慢好幾倍（2026-10-27 PR 24 一條超過預設的 5 秒），放寬到 60 秒不會漏掉錯誤
+vi.setConfig({ testTimeout: 60_000 });
 import {
   geometryFor,
   inflate,
