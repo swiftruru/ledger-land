@@ -1064,7 +1064,7 @@ document.addEventListener('focusout', () => {
 | LCP（低階） | 盡量 ≤ 4 秒 | low-tier 節流 | 正式發布前檢查一次，不擋 CI |
 | INP | ≤ 200ms | 作答、分類、實驗室改數字等實際互動 | 超過 500ms 為差 |
 | CLS | ≤ 0.1 | Chromium | 超過 0.25 為差；Safari 量不到 |
-| TBT | ≤ 200ms | Lighthouse 行動版 | Lighthouse 導覽模式量不到 INP，用 TBT 當代理指標 |
+| TBT | ≤ 200ms | Lighthouse 行動版 | Lighthouse 導覽模式量不到 INP，用 TBT 當代理指標。門檻依執行器速度校正（2026-10-26）：benchmarkIndex 低於參考值 3000 時乘上 (3000 / 實測)²、最多 2 倍，`tools/perf.mjs` 會印出校正後的門檻；參考速度的機器上仍是 200ms |
 | Lighthouse 效能分數 | ≥ 90 | 行動版、5 次中位數 | |
 | Lighthouse 無障礙分數 | ≥ 95 | 同上 | 另有人工檢查，見 07 第 8 節 |
 | 首次載入 JS | ≤ 150 KB（gzip 後，暫定）；CI 的檢查值 152 KB（2026-10-26 放寬，見 8.2 的收尾紀錄） | 首頁與 QR 落地頁 | 從 M0b 起由 CI 把關；M0a 實測後調整，只能附理由放寬。放寬的理由：M3 收尾的頁面布幕進了入口 chunk，給老師的說明與關卡 QR 的介面字串進了兩種語言的 catalog，/en/ 入口實測 150.4 KB；英文作答頁的 LCP 實測 2420ms |

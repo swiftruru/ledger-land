@@ -387,12 +387,6 @@ export function LevelSession({ snapshot, notes }: { snapshot: LevelSnapshot; not
     document.querySelector<HTMLElement>('.ll-timer__toggle')?.focus();
   }, [timerShown]);
   useEffect(() => (timerRunning ? startTicker((ms) => useQuiz.getState().tick(ms)) : undefined), [timerRunning]);
-  useScrollAnchor(
-    session !== null && !completed && termsReady,
-    () => useQuiz.getState().getAnchor(),
-    (anchor) => useQuiz.getState().setAnchor(anchor),
-  );
-
   // 完成關卡：更新 levelProgress（星星取最大），第一次完成任何關卡時呼叫 persist
   const items: LevelItem[] = useMemo(
     () => (session === null ? [] : session.questionIds.map((id) => ({ scored: byId.get(id)?.scored === true, score: session.questions[id]?.score ?? 0 }))),
@@ -447,6 +441,13 @@ export function LevelSession({ snapshot, notes }: { snapshot: LevelSnapshot; not
   const questionReady = completed || loadFailed || (!needsRescore && !area.pending);
   const pageReady = session !== null && termsReady && resultReady && questionReady;
   usePageReady(pageReady);
+  // 捲動位置依錨點還原：要等這一頁的內容齊了（pageReady）那一次排版才做，太早做頁面還太短、捲不到，布幕一掀開就會從頂端跳到還原的位置
+  //（2026-10-26 CI 的 Linux WebKit：切換語言後先停在 6px，一個影格後才到 324px）
+  useScrollAnchor(
+    session !== null && !completed && pageReady,
+    () => useQuiz.getState().getAnchor(),
+    (anchor) => useQuiz.getState().setAnchor(anchor),
+  );
 
   // 回饋期間預載下一題要的模組（四種題型的元件與核心資料）與報表卡片的名詞定義，換題時第一次渲染就完整
   const currentIndex = session?.currentIndex ?? -1;

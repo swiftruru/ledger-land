@@ -384,10 +384,12 @@ test.describe('闖關地圖', () => {
     const look = await page.evaluate(() => (window as unknown as { __llLook: string[] }).__llLook);
     expect(look).toContain('wave/joy');
     const hud = await page.evaluate(() => (window as unknown as { __llHud: string[] }).__llHud.map(Number));
-    // 星星點亮前先扣掉這一關的 2 顆（5），再滾過 6 到 7
+    // 星星點亮前先扣掉這一關的 2 顆（5），再滾到 7：滾動中的數字只增不減、不超過 7。中間的 6 不一定畫得到：
+    // Linux 的 WebKit（CI）只在有畫面更新時跑 rAF，600ms 的滾動可能只有兩三個影格（2026-10-26 實測）
     expect(hud).toContain(5);
-    expect(hud).toContain(6);
     expect(hud.indexOf(5)).toBeLessThan(hud.lastIndexOf(7));
+    const rolling = hud.slice(hud.indexOf(5), hud.lastIndexOf(7) + 1);
+    expect(rolling.every((v, i) => i === 0 || (v >= rolling[i - 1]! && v <= 7))).toBe(true);
   });
 
   test('?from= 播放中途打開關卡面板或切到清單：角色仍到目前關卡、恢復托腮、徽章 Toast 出現、網址移除 from（finding map-1）', async ({ page }) => {

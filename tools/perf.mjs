@@ -109,7 +109,17 @@ try {
     if (m.performance < a['categories.performance'].min) fail(`perf：${u.name} 效能 ${m.performance} 低於 ${a['categories.performance'].min}`);
     if (m.accessibility < a['categories.accessibility'].min) fail(`perf：${u.name} 無障礙 ${m.accessibility} 低於 ${a['categories.accessibility'].min}`);
     if (m.lcpMs > a['largest-contentful-paint'].maxMs) fail(`perf：${u.name} LCP ${m.lcpMs}ms 超過 ${a['largest-contentful-paint'].maxMs}ms`);
-    if (m.tbtMs > a['total-blocking-time'].maxMs) fail(`perf：${u.name} TBT ${m.tbtMs}ms 超過 ${a['total-blocking-time'].maxMs}ms`);
+    // TBT 的門檻依執行器速度校正（06 第 8.2 節）：Lighthouse 的 benchmarkIndex 低於參考值（維護者的 Mac 約 3000）時，門檻乘上 (參考 / 實測)²，
+    // 最多 2 倍。TBT 是長任務超過 50ms 的部分加總，執行器慢 1.2 倍、長任務就超過 2 倍（2026-10-26 GitHub 執行器 benchmarkIndex 2430 時
+    // 名詞圖鑑 211 到 243ms、同一份建置在 4119 時 104ms），所以用平方；benchmarkIndex 在參考值以上時門檻不放寬
+    const ref = cfg.lighthouse.benchmarkRef ?? null;
+    const tbtFactor = ref === null || !(m.benchmarkIndex > 0) ? 1 : Math.min(2, Math.max(1, (ref / m.benchmarkIndex) ** 2));
+    const tbtMax = Math.round(a['total-blocking-time'].maxMs * tbtFactor);
+    if (m.tbtMs > tbtMax)
+      fail(
+        `perf：${u.name} TBT ${m.tbtMs}ms 超過 ${tbtMax}ms（benchmarkIndex ${m.benchmarkIndex}，參考 ${ref}，門檻 ${a['total-blocking-time'].maxMs} 乘 ${tbtFactor.toFixed(2)}）`,
+      );
+    else if (tbtFactor > 1) console.log(`perf：${u.name} TBT ${m.tbtMs}ms（門檻依 benchmarkIndex ${m.benchmarkIndex} 校正為 ${tbtMax}ms）`);
     if (m.cls > a['cumulative-layout-shift'].max) fail(`perf：${u.name} CLS ${m.cls} 超過 ${a['cumulative-layout-shift'].max}`);
     console.log('perf:', JSON.stringify(m));
   }

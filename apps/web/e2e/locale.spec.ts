@@ -44,8 +44,8 @@ test.describe('語言切換（05 第 7.5、8 節；10 M0b 完成標準）', () =
     await expect(page.getByRole('radio', { name: /^Assets: / })).toBeChecked();
     await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Quest' })).toHaveAttribute('href', '/en/play/');
     // M2 起以錨點還原（05 第 8.5 節）：同一個錨點元素留在畫面裡差不多的位置（兩種語言的文字高度不同，容許一段文字的差距），而且沒有被重設到頂端
-    const scrollAfter = await page.evaluate(() => window.scrollY);
-    expect(scrollAfter).toBeGreaterThan(100);
+    // 還原在新語言的頁面資料齊了那一次排版才做得到（之前頁面還太短、捲不到），慢的執行器（CI 的 Linux WebKit）要等一下
+    await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 5000 }).toBeGreaterThan(100);
     const anchorAfterTop = await page.evaluate((id) => document.getElementById(id)?.getBoundingClientRect().top ?? null, anchorBefore!.id);
     expect(anchorAfterTop).not.toBeNull();
     // 失敗時附上診斷：捲動量、各提示的高度、記錄的錨點（CI 的 WebKit 曾差 483px，本機重現不了時靠這個判斷）
