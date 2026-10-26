@@ -1,128 +1,345 @@
-/* 闖關地圖頁（17 第 2、6、7、8 節）：由 Play 頁 import，隨地圖 chunk 一起載入。只用 tokens。
-   章節區段在 DOM 裡第 1 章在前，視覺用 column-reverse 反轉（評估一採 A）；每章 content-visibility: auto 分段渲染。 */
-.qm-page {
-  /* 頁面本身不留 main 的左右內距以外的空間；路線置中、最大 480px（評估五） */
-  --qm-width: min(100%, 480px);
+/* 闖關地圖頁（17、圖規第 1 到 4、6、7 節）：由 Play 頁 import，隨地圖 chunk 一起載入。只用 tokens。
+   幾何只有一個來源（features/quest-map/layout.ts）：Play 把 --qm-band-w、--qm-track-w、--qm-track-left、--qm-list-w 寫到 .qm-page，
+   這裡只讀這些變數與元素上的 px，不再自己算寬度。章節區段在 DOM 裡第 1 章在前，視覺用 column-reverse 反轉；每章 content-visibility: auto 分段渲染。 */
+
+/* 全幅出血（圖規第 7 節）：地圖頁的 main 沒有最大寬與內距，地景鋪到視窗左右邊緣，左側延伸到 rail 底下（rail 是浮動卡片，不改）。
+   底部也沒有內距：Tab bar 與 safe area 底下由地圖底部的地面（.qm-ground，第 1 章的地景往下延伸）鋪滿，不是直線切口加紙色；
+   清單、載入、錯誤與空狀態自己留 Tab bar 的安全區 */
+main.ll-main--map {
+  --qm-bottom-safe: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + 24px);
+  max-width: none;
+  padding: 0;
 }
-.qm-hud {
+@media (min-width: 1024px) {
+  main.ll-main--map {
+    --qm-bottom-safe: 24px;
+  }
+}
+/* 殼層在 main 裡的其他提示（地圖頁之外的橫幅改用提示條之前）：保留一般頁的內距，不貼到視窗邊。
+   頁面內容包在殼層的 .ll-page（頁面布幕，lib/page-ready.tsx）裡，所以是 .ll-page 的子元素 */
+main.ll-main--map > .ll-page > :not(.qm-page) {
+  margin: var(--ll-space-4);
+}
+@media (min-width: 1024px) {
+  main.ll-main--map > .ll-page > :not(.qm-page) {
+    margin-left: calc(var(--ll-tabbar-rail-w) + 32px);
+  }
+}
+.qm-page {
+  position: relative;
+  width: 100%;
+}
+
+/* sticky 區塊（圖規 4.8、4.9）：頂部統計列加提示條，背景 bg、底線橫跨全寬；內層對齊軌道。
+   下緣 20px 淡出：底下的章名或章節牌被 sticky 區塊切到時是慢慢消失，不是一刀切齊的殘影（第 1、2 輪看圖驗收；捲動定位另外避開地標，見 Play.tsx） */
+.qm-sticky {
   position: sticky;
   top: 0;
   z-index: var(--ll-z-sticky);
-  margin: calc(-1 * var(--ll-space-4)) calc(-1 * var(--ll-space-4)) 0;
-  padding: var(--ll-space-2) var(--ll-space-4);
   background: var(--ll-bg);
   box-shadow: 0 1px 0 var(--ll-border);
 }
-.qm-toolbar {
-  position: fixed;
-  right: max(var(--ll-space-4), env(safe-area-inset-right, 0px));
-  bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--ll-space-4));
-  z-index: var(--ll-z-sticky);
-  display: flex;
-  flex-direction: column;
-  gap: var(--ll-space-2);
+.qm-sticky::after {
+  content: '';
+  position: absolute;
+  inset: calc(100% + 1px) 0 auto;
+  height: 20px;
+  background: linear-gradient(var(--ll-bg), transparent);
+  pointer-events: none;
 }
-@media (min-width: 1024px) {
-  .qm-toolbar {
-    bottom: var(--ll-space-6);
+.qm-hud {
+  margin: 0;
+}
+.qm-hud .ll-pagehead__inner {
+  box-sizing: border-box;
+  width: var(--qm-track-w);
+  margin-left: var(--qm-track-left);
+}
+/* 清單檢視的寬度等於軌道寬（layout.ts 的 listW），頂部統計列的內層兩種檢視都一樣：切換檢視時工具按鈕不會左右移動，
+   滑鼠留在原處再按一次就切回來（第 2 輪看圖驗收） */
+/* compact（視窗小於 600）時標題一律只給螢幕閱讀器：中欄放不下置中的「闖關」，會貼在第三個統計膠囊旁邊讀成第四顆統計
+   （430 寬實測）；Tab bar 已經標出「闖關」，h1 仍在 DOM 裡。medium 以上維持置中 */
+@media (max-width: 599px) {
+  .qm-hud .ll-pagehead__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
+/* 提示條的位置（pages-b 組以 portal 把 HintBar 放進來）：一次一則、寬度對齊軌道 */
+.qm-hint-slot {
+  box-sizing: border-box;
+  width: var(--qm-track-w);
+  margin-left: var(--qm-track-left);
+}
+.qm-hint-slot:not(:empty) {
+  padding: 0 0 var(--ll-space-2);
+}
+/* 完整的 Banner（儲存層、更新、相機預覽）不貼著頂部統計列的下緣，上面留 8px（單行的 HintBar 維持貼齊） */
+.qm-hint-slot:has(> .ll-map-banner) {
+  padding-top: var(--ll-space-2);
+}
+
+/* 地圖本體（圖規第 3 節的層次） */
 .qm-map {
   position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column-reverse;
-  width: var(--qm-width);
-  margin: var(--ll-space-4) auto 0;
-}
-.qm-ch {
-  position: relative;
   width: 100%;
-  overflow: visible;
+  overflow: hidden;
+}
+.qm-ch,
+.qm-strait {
+  position: relative;
+  flex: none;
+  width: 100%;
   content-visibility: auto;
 }
-.qm-scene {
+/* 地景層：整章滿鋪的底色（第一次繪製就有） */
+.qm-terrain {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0.85;
+  z-index: 0;
+  background: var(--_terrain, var(--ll-bg));
 }
-.qm-scene__stars {
-  display: none;
+/* 地圖底部的地面（第 1 章的地景往下延伸）：起點與章節牌立柱站在地上，Tab bar 與 safe area 底下也是地景。
+   多留 128px：第一關的捲動定位要避開地標時（第 2 輪看圖驗收：第 1 章的紙籤與拱門被 HUD 切一半），頁面還能再往下捲，不被頁尾卡住。
+   第 1 章的場景也畫到這裡（頂端 160 + 24 = layout.ts 的 GROUND，第 3 輪看圖驗收：起點下方是一條空白的沙地）；自成一層，場景的 z-index 不跑出去 */
+.qm-ground {
+  position: relative;
+  isolation: isolate;
+  height: calc(160px + var(--qm-bottom-safe, 24px));
+  background: var(--_terrain, var(--ll-bg));
 }
-html[data-theme='dark'] .qm-scene__stars {
+/* 超寬螢幕的地紋（第 6.6 節，第 1 輪看圖驗收）：區帶鋪滿，用遮罩在離軌道 400 到 240px 之間漸隱，不一刀切齊。
+   顏色是 token（陸地 scene-line、海 scene-foam），形狀是遮罩：陸地每 64px 兩顆交錯的 3px 小點；海是 128 × 72 裡三個位置不規則的「～」小浪，
+   第二層（::after）104 × 88、小一號、錯開半格，兩層週期不同，看不出整齊的格子。場景不畫虛線或點線（6.5）：浪是彎的，不是一排短槓。軌道兩側 240px 以內不畫 */
+@media (min-width: 1600px) {
+  .qm-terrain::before,
+  .qm-terrain::after,
+  .qm-ground::before {
+    --_fade: linear-gradient(
+      to right,
+      #000 0,
+      #000 calc(var(--qm-track-left) - 400px),
+      transparent calc(var(--qm-track-left) - 240px),
+      transparent calc(var(--qm-track-left) + var(--qm-track-w) + 240px),
+      #000 calc(var(--qm-track-left) + var(--qm-track-w) + 400px)
+    );
+    content: '';
+    position: absolute;
+    inset: 24px 0 0;
+    background: var(--_tex-color);
+    pointer-events: none;
+    mask-image: var(--_tex), var(--_fade);
+    mask-size:
+      var(--_tex-size),
+      100% 100%;
+    mask-position:
+      var(--_tex-pos, 0 0),
+      0 0;
+    mask-repeat: repeat, no-repeat;
+    mask-composite: intersect;
+  }
+  .qm-ground::before {
+    inset: 0;
+  }
+  .qm-ch,
+  .qm-strait,
+  .qm-ground {
+    /* 和清單的地紋同一組數值（--qm-tex-mix，圓點半徑 2 = --qm-tex-dot，第 5 輪看圖驗收） */
+    --_tex-color: color-mix(in srgb, var(--ll-scene-line) var(--qm-tex-mix), transparent);
+    --_tex: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ccircle cx='16' cy='16' r='2'/%3E%3Ccircle cx='48' cy='48' r='2'/%3E%3C/svg%3E");
+    --_tex-size: 64px 64px;
+  }
+  .qm-terrain::after {
+    display: none;
+  }
+  .qm-ch:is([data-terrain='sea'], [data-terrain='sea-deep']),
+  .qm-strait[data-terrain='sea-deep'],
+  .qm-ground:is([data-terrain='sea'], [data-terrain='sea-deep']) {
+    --_tex-color: var(--ll-scene-foam);
+    --_tex: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='72'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M12 18q3.5-4 7 0t7 0'/%3E%3Cpath d='M78 38q3.5-4 7 0t7 0t7 0'/%3E%3Cpath d='M38 60q3.5-4 7 0t7 0'/%3E%3C/g%3E%3C/svg%3E");
+    --_tex-size: 128px 72px;
+  }
+  :is(.qm-ch, .qm-strait):is([data-terrain='sea'], [data-terrain='sea-deep']) .qm-terrain::before {
+    opacity: 0.55;
+  }
+  :is(.qm-ch, .qm-strait):is([data-terrain='sea'], [data-terrain='sea-deep']) .qm-terrain::after {
+    display: block;
+    opacity: 0.35;
+    --_tex: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='88'%3E%3Cpath d='M20 30q3-3.5 6 0t6 0M70 74q3-3.5 6 0t6 0' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E");
+    --_tex-size: 104px 88px;
+    --_tex-pos: 52px 20px;
+  }
+}
+[data-terrain='sea'] {
+  --_terrain: var(--ll-scene-sea);
+}
+[data-terrain='sea-deep'] {
+  --_terrain: var(--ll-scene-sea-deep);
+}
+[data-terrain='sand'] {
+  --_terrain: var(--ll-scene-sand);
+}
+[data-terrain='meadow'] {
+  --_terrain: var(--ll-scene-meadow);
+}
+[data-terrain='meadow-deep'] {
+  --_terrain: var(--ll-scene-meadow-deep);
+}
+[data-terrain='field'] {
+  --_terrain: var(--ll-scene-field);
+}
+[data-terrain='plaza'] {
+  --_terrain: var(--ll-scene-plaza);
+}
+[data-terrain='rock'] {
+  --_terrain: var(--ll-scene-rock);
+}
+/* 頂端接縫（第 6.3 節）：波浪以上填上方那一章的底色；陸地同色時是一條 2px 的石緣線，海接同一種海時不畫（第 5 輪看圖驗收）。svg 高 48（波浪加下方的海岸或圓點漸層） */
+.qm-seam {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
 }
+.qm-seam__line {
+  fill: none;
+  stroke: var(--ll-scene-line);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+/* 海接陸的海岸（第 4 輪看圖驗收）：淺灘帶 9px（浪花色 0.4）加 2.5px 浪花線，和島嶼的海岸同一種樣式 */
+.qm-seam__shallow {
+  fill: var(--ll-scene-foam);
+  opacity: 0.4;
+}
+.qm-seam__foam {
+  fill: var(--ll-scene-foam);
+}
+/* 場景蓋回接縫之後再畫一次的海岸（第 10 章的岩坡）：和場景同一層，DOM 順序在場景之後，在路線之下 */
+.qm-seam--over {
+  z-index: 1;
+  pointer-events: none;
+}
+/* 物件層（延後載入）：真實 px、不設 opacity */
+.qm-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* 路線（第 4.3 節）：路邊 20、路面 18，已走實線 6、未走 6px 的正圓點（pathLength 是 16 的倍數，0 16 讓兩端各落一顆）。
+   路邊與路面是平頭：區段交界上下兩半平接（圓頭會在下一章的路面上畫出 U 形弧線）；地圖終點另外補圓頭（QuestMap 的 circle） */
 .qm-route {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: block;
   overflow: visible;
   pointer-events: none;
 }
-.qm-route__seg {
+.qm-route path {
   fill: none;
-  stroke-width: 10;
   stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
 }
-.qm-route__seg--walked {
-  stroke: var(--ll-accent);
+.qm-route__edge path {
+  stroke: var(--ll-scene-road-edge);
+  stroke-width: 20;
+  stroke-linecap: butt;
 }
-.qm-route__seg--ahead {
-  stroke: var(--ll-border-strong);
-  stroke-dasharray: 2 18;
+.qm-route__road path {
+  stroke: var(--ll-scene-road);
+  stroke-width: 18;
+  stroke-linecap: butt;
 }
-.qm-ch__banner {
+.qm-route__edge circle {
+  fill: var(--ll-scene-road-edge);
+}
+.qm-route__road circle {
+  fill: var(--ll-scene-road);
+}
+.qm-route__walked {
+  stroke: var(--ll-scene-route-walked);
+  stroke-width: 6;
+}
+.qm-route__ahead {
+  stroke: var(--ll-scene-route-ahead);
+  stroke-width: 6;
+  stroke-dasharray: 0 16;
+}
+/* 第 1 章的起點（第 2 輪看圖驗收）：路線從圓頭開始，入口走廊外側一根木樁加一面燕尾旗，腳下一小片影子 */
+.qm-stone {
   position: absolute;
-  right: var(--ll-space-2);
-  bottom: var(--ll-space-2);
-  left: var(--ll-space-2);
-  height: calc(120px - var(--ll-space-2) * 2);
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: block;
+  pointer-events: none;
+}
+.qm-stone__shadow {
+  fill: var(--ll-scene-line);
+  opacity: 0.35;
+}
+html[data-theme='dark'] .qm-stone__shadow {
+  fill: var(--ll-bg);
+  opacity: 0.55;
+}
+.qm-stone__stake {
+  fill: var(--ll-scene-wood);
+  stroke: var(--ll-scene-line);
+  stroke-width: 1;
+}
+.qm-stone__flag {
+  fill: var(--ll-scene-roof);
+  stroke: var(--ll-scene-line);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+/* 章末區（拱門與紙籤）、節點、章節牌：位置都是元素上的 px。章末區外層不是疊放層（z-index auto），
+   拱門與紙籤在路線之上（3），拱門的地面陰影在路線之下（1，DOM 順序在場景之後）：拱門讀起來是跨在路上，不是平放在地上（第 2 輪看圖驗收） */
+.qm-ch__end {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+.qm-ch__end .ll-chend__arch,
+.qm-ch__end .ll-chend__plaque {
+  z-index: 3;
+}
+.qm-ch__end .ll-chend__floor {
+  z-index: 1;
+}
+/* 文字放大時的長柱子：在路線之上（立在地上的實物）、紙籤之下 */
+.qm-ch__end .ll-chend__post {
+  z-index: 3;
 }
 .qm-ch__nodes {
   position: absolute;
-  right: 0;
-  bottom: 120px;
-  left: 0;
+  inset: 0;
+  z-index: 4;
   margin: 0;
   padding: 0;
   list-style: none;
-}
-.qm-ch__end {
-  position: absolute;
-  top: var(--ll-space-2);
-  right: 0;
-  left: 0;
-  height: calc(160px - var(--ll-space-2));
-}
-.qm-gap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  text-align: center;
-}
-.qm-gap__sea {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
 }
-.qm-gap__text {
-  position: relative;
-  max-width: 280px;
-  margin: 0;
-  padding: var(--ll-space-2) var(--ll-space-3);
-  border-radius: var(--ll-radius-md);
-  background: var(--ll-surface);
-  box-shadow: var(--ll-card-ring);
-  font-size: var(--ll-type-footnote-size);
-  color: var(--ll-text-2);
+.qm-ch__nodes > li {
+  pointer-events: auto;
+}
+.qm-ch__banner {
+  position: absolute;
+  z-index: 5;
 }
 .qm-marker {
   position: absolute;
@@ -134,54 +351,399 @@ html[data-theme='dark'] .qm-scene__stars {
 .qm-marker.is-hidden {
   visibility: hidden;
 }
-/* 清單檢視：章節折疊區段 */
+
+/* 延伸區海峽（第 4.6 節）：深海、兩條浪線、沿走廊的棧橋（路面與圓點畫在橋上）、唯一一張延伸說明卡 */
+.qm-strait__sea,
+.qm-strait__pier {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  pointer-events: none;
+}
+.qm-strait__sea {
+  z-index: 0;
+}
+.qm-strait__foam {
+  fill: none;
+  stroke: var(--ll-scene-foam);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.qm-strait__pier {
+  z-index: 1;
+}
+.qm-strait__deck {
+  fill: var(--ll-scene-wood);
+}
+.qm-strait__plank {
+  stroke: var(--ll-scene-line);
+  stroke-width: 1;
+}
+.qm-strait__rope {
+  fill: none;
+  stroke: var(--ll-scene-line);
+  stroke-width: 1.5;
+}
+.qm-strait__post rect {
+  fill: var(--ll-scene-rock-deep);
+  stroke: var(--ll-scene-line);
+  stroke-width: 1;
+}
+.qm-strait__card {
+  position: absolute;
+  z-index: 5;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-scene-card);
+  box-shadow: var(--ll-card-ring), var(--ll-shadow-1);
+}
+/* 深色：卡片比地景亮 1.25 倍以上（scene-card），外框 1px border-strong、陰影加深，像立在地上的實物（第 1 輪看圖驗收） */
+html[data-theme='dark'] .qm-strait__card {
+  box-shadow:
+    inset 0 0 0 1px var(--ll-border-strong),
+    var(--ll-shadow-3);
+}
+/* 整段平衡兩行的長度；標題依詞換行（QuestMap 用 phrased 切詞加 .ll-phrased），說明句照全站換行規則 */
+.qm-strait__card {
+  container-type: inline-size;
+  text-wrap: balance;
+}
+/* 窄的說明卡（320 寬時內容約 160px）：第二行改 caption 字級，「期中考範圍以老師公告為準。」一行放得下，句號不會掉到下一行 */
+@container (max-width: 200px) {
+  .qm-strait__card .qm-strait__note {
+    font-size: var(--ll-type-caption-size);
+  }
+}
+.qm-strait__card::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  width: 4px;
+  height: 16px;
+  translate: -50% 0;
+  border-radius: 0 0 2px 2px;
+  background: var(--ll-scene-wood);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ll-scene-line) 70%, transparent);
+}
+.qm-strait__title {
+  margin: 0;
+  font-size: var(--ll-type-callout-size);
+  line-height: 1.375;
+  font-weight: 600;
+  color: var(--ll-text);
+}
+.qm-strait__note {
+  margin: 2px 0 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: 1.4;
+  color: var(--ll-text-2);
+}
+
+/* 取得徽章的提示：常駐的 ToastRegion，固定在 sticky 區塊下方 8px、和軌道同一條中線 */
+.qm-toasts {
+  position: fixed;
+  top: calc(var(--qm-sticky-h, 64px) + var(--ll-space-2));
+  left: calc(var(--qm-track-left) + var(--qm-track-w) / 2);
+  z-index: var(--ll-z-toast);
+  display: grid;
+  gap: var(--ll-space-2);
+  width: min(var(--qm-track-w), 420px);
+  translate: -50% 0;
+}
+
+/* 清單檢視（第 4.11 節、站規 2.2.2）：和軌道同寬、同一條中線（第 2 輪看圖驗收改的，原本 medium 560、expanded 720）；底部留 Tab bar 的安全區。
+   底色就是 --ll-bg（第 3 輪看圖驗收：每章後面的全幅地景色帶上下都是硬邊，14 章疊成一條條水平橫紋，拿掉）。
+   第 4 輪看圖驗收（1440 與 1920 是 560 寬的窄欄放在一整片素色中間，從地圖切過來像換到另一個網站）：expanded 以上整頁鋪地圖第 6.6 節
+   同一層地紋，不做色帶、沒有硬邊；章節卡左緣一條 4px 的那一章地景色（取代原本看不到的 10px 圓點）。
+   第 5 輪看圖驗收（3px、25% 的小點在 100% 下幾乎看不到，1920 兩側仍讀成素色奶油底）：和地圖 6.6 的地紋同一組數值（--qm-tex-dot、--qm-tex-mix，
+   每 64px 兩顆交錯的 4px 小點、地景線色 38%），點對底色約 1.3:1，切換檢視時兩邊是同一張紙 */
+.qm-page {
+  --qm-tex-dot: 2px;
+  --qm-tex-mix: 38%;
+}
+@media (min-width: 1024px) {
+  .qm-page--list {
+    --_dot: color-mix(in oklab, var(--ll-scene-line) var(--qm-tex-mix), transparent);
+    min-height: 100dvh;
+    background-image:
+      radial-gradient(circle at 16px 16px, var(--_dot) var(--qm-tex-dot), transparent calc(var(--qm-tex-dot) + 0.5px)),
+      radial-gradient(circle at 48px 48px, var(--_dot) var(--qm-tex-dot), transparent calc(var(--qm-tex-dot) + 0.5px));
+    background-size: 64px 64px;
+    background-position: calc(var(--qm-track-left) + var(--qm-track-w) / 2 - 32px) 0;
+  }
+}
 .qm-list {
-  width: var(--qm-width);
-  margin: var(--ll-space-4) auto 0;
+  box-sizing: border-box;
+  width: var(--qm-list-w);
+  margin: var(--ll-space-4) 0 0 calc(var(--qm-track-left) + (var(--qm-track-w) - var(--qm-list-w)) / 2);
+  padding-bottom: var(--qm-bottom-safe, var(--ll-space-4));
+}
+.qm-list__scope {
+  margin: 0 0 var(--ll-space-3);
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+.qm-list__item {
+  margin: 0 0 var(--ll-space-3);
+}
+/* 章節卡左緣的地景色條。顏色是那一章地圖的底色加深、加彩度（原色對卡片只有 1.2 到 1.3:1，看不出是什麼），淺色往暗、深色往亮，對卡片約 1.6:1 以上。
+   第 5 輪看圖驗收（原本是 summary 的 4px 內陰影：展開時在章名列下方一刀切斷，下面的卡片左緣沒有色條；疊在圓角上，兩端是細尖的月牙形）：
+   改成整張卡的 ::before，收合與展開都貫穿整張卡（上下各讓出 16px，避開 20px 的圓角），兩端是圓頭。
+   手機的目前關卡不再畫左緣強調色條（同一個左緣不疊兩種顏色），改成淡淡的強調色底加「建議下一關」膠囊。
+   summary 有鍵盤焦點時色條讓開，不蓋住 3px 的焦點框 */
+.qm-list__item[data-terrain] {
+  --_bar: oklch(from var(--_terrain) calc(l - 0.14) calc(c * 2.6 + 0.01) h);
+  position: relative;
+}
+html[data-theme='dark'] .qm-list__item[data-terrain] {
+  --_bar: oklch(from var(--_terrain) calc(l + 0.14) calc(c * 1.8 + 0.01) h);
+}
+.qm-list__item[data-terrain]::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset-block: 16px;
+  inset-inline-start: 0;
+  width: 4px;
+  border-radius: 0 2px 2px 0;
+  background: var(--_bar);
+  pointer-events: none;
+}
+.qm-list__item[data-terrain]:has(.qm-chsum:focus-visible)::before {
+  visibility: hidden;
 }
 .qm-list__chapter {
-  margin-bottom: var(--ll-space-3);
+  margin: 0;
 }
-.qm-list__chapter summary {
-  display: flex;
-  align-items: center;
-  gap: var(--ll-space-2);
-  min-height: var(--ll-target-min);
-  padding: var(--ll-space-2) var(--ll-space-3);
-  border-radius: var(--ll-radius-md);
-  background: var(--ll-surface);
-  box-shadow: var(--ll-card-ring);
-  cursor: pointer;
+.qm-chsum {
+  min-height: 64px;
+  align-items: flex-start;
+}
+.qm-sum {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: 'no title' '. meta';
+  column-gap: var(--ll-space-3);
+  row-gap: var(--ll-space-1);
+  align-items: baseline;
+}
+.qm-sum__no {
+  grid-area: no;
+  font-size: var(--ll-type-footnote-size);
+  font-weight: 600;
+  color: var(--ll-text-2);
+  white-space: nowrap;
+}
+.qm-sum__title {
+  grid-area: title;
+  font-size: var(--ll-type-callout-size);
+  line-height: 1.375;
   font-weight: 600;
 }
-.qm-list__chapter summary .ll-badge {
-  margin-left: auto;
+.qm-sum__meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+}
+.qm-sum__meta > * {
+  max-width: 100%;
+}
+/* 進度膠囊（Badge）可以換行：320 英文的「3 of 7 levels done」在窄欄裡不換行會撐出 9 到 11px 的水平捲動 */
+.qm-sum__meta > :not(.ll-badge) {
+  white-space: nowrap;
+}
+/* compact：第二列（標籤、徽章、本章進度）從第一欄開始排，膠囊有整列的寬度（320 英文不再撐出水平捲動） */
+.qm-list--compact .qm-sum {
+  grid-template-areas: 'no title' 'meta meta';
+}
+/* 320 寬（視窗小於 360）：章序改成標題上方的一行眉標，章名用整列的寬（英文「Extension chapter 1」不換行時會把章名擠成一行一個字） */
+@media (max-width: 359px) {
+  .qm-list--compact .qm-sum {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'no' 'title' 'meta';
+    row-gap: 2px;
+  }
+  .qm-list--compact .qm-sum__meta {
+    margin-top: var(--ll-space-1);
+  }
+}
+/* compact 的關卡列：不再是卡片包卡片，改成上下 12px、以分隔線隔開的列；建議下一關整列鋪淡淡的強調色底（到卡片左右緣），加上「建議下一關」膠囊
+   （第 5 輪看圖驗收：原本左緣一條 4px 強調色，和章節卡的地景色條疊在同一個左緣，成為金色接紅色的雙色條） */
+.qm-list--compact .qm-levels {
+  gap: 0;
+}
+.qm-list--compact .qm-levels > .ll-levelcard {
+  padding: 12px 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.qm-list--compact .qm-levels > .ll-levelcard + .ll-levelcard {
+  border-top: 1px solid var(--ll-border);
+}
+.qm-list--compact .qm-levels > .ll-levelcard.is-current {
+  margin-inline: -16px;
+  padding-inline: 16px;
+  background: color-mix(in oklab, var(--ll-accent) 7%, transparent);
+  box-shadow: none;
+}
+html[data-theme='dark'] .qm-list--compact .qm-levels > .ll-levelcard.is-current {
+  background: color-mix(in oklab, var(--ll-accent) 14%, transparent);
+}
+/* 淡底上的「建議下一關」膠囊：膠囊的淺底和淡底幾乎同色，改成卡片色加一圈細框（和列表滑過時的數量膠囊同一種做法） */
+.qm-list--compact .qm-levels > .ll-levelcard.is-current .ll-badge--accent {
+  background: var(--ll-surface);
+  box-shadow: inset 0 0 0 1px var(--ll-border);
+}
+/* 淡底的上下緣不畫分隔線（底色本身就是界線） */
+.qm-list--compact .qm-levels > .ll-levelcard.is-current,
+.qm-list--compact .qm-levels > .ll-levelcard.is-current + .ll-levelcard {
+  border-top-color: transparent;
+}
+.qm-sum__badge {
+  display: inline-flex;
 }
 .qm-levels {
   display: grid;
   gap: var(--ll-space-2);
-  margin: var(--ll-space-2) 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
-/* 章節頁 */
-.qm-chapter__summary {
+/* 每章最後的「章節資訊」列（站規 2.2.2：NavRow compact、inset={false}、上方一條分隔線）。第 4 輪看圖驗收：圖示比關卡編號多內縮約 15px、
+   卡片底下多出約 20px 空白。分隔線下方留 6px、Disclosure 內容區的下內距收成 0（列本身上下 12），字頂到分隔線與字底到卡片底緣相等（各約 25）；
+   列往左移，圖示左緣對齊關卡編號（compact 的關卡列沒有左右內距，其他寬度的關卡卡片內距 12） */
+.qm-list__info {
+  margin-top: var(--ll-space-3);
+  padding-top: 6px;
+  border-top: 1px solid var(--ll-border);
+}
+/* 清單的上下外距（12）被包住它的這一層用 −12 抵掉（外距合併），左右往外 4：圖示左緣對齊關卡編號 */
+.qm-list__inforow {
+  margin: calc(-1 * var(--ll-space-3)) calc(-1 * var(--ll-space-1));
+  /* 列的底邊就是卡片底緣、左右離卡片邊 12：滑過的底色收成 8px 的下緣圓角，不從卡片的 20px 圓角外露出來 */
+  clip-path: inset(0 round 0 0 calc(var(--ll-radius-lg) - 12px) calc(var(--ll-radius-lg) - 12px));
+}
+/* compact：列寬到卡片左右緣（關卡列沒有左右內距）；滑過與按下的底色用 clip-path 收進卡片底部的圓角（列的底邊就是卡片底緣，下緣圓角 = 卡片圓角），
+   不會從卡片的圓角外露出來（clip-path 不影響外距合併，這一層的外框就是那一列） */
+.qm-list--compact .qm-list__inforow {
+  margin-inline: calc(-1 * var(--ll-space-4));
+  clip-path: inset(0 round 0 0 var(--ll-radius-lg) var(--ll-radius-lg));
+}
+/* Disclosure 內容區的下內距 16 收成 0：這一列是內容區的最後一個子項，往下拉 16（權重要高過元件的 :last-child 外距 0），列的底邊就是卡片底緣。
+   第 5 輪看圖驗收（分隔線到標題字頂約 20、說明字底到卡片底緣約 30）：上方內距 4 → 6、下方再收 4，量到字頂 24.9、字底 25.5 */
+.qm-list .qm-list__info:last-child {
+  margin-bottom: calc(-1 * var(--ll-space-4));
+}
+.qm-list__ext {
+  margin: var(--ll-space-6) 0 var(--ll-space-3);
+  padding: 10px 12px;
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-card-ring), var(--ll-shadow-1);
+}
+.qm-list__ext-title {
+  margin: 0;
+  font-size: var(--ll-type-callout-size);
+  line-height: 1.375;
+  font-weight: 600;
+}
+.qm-list__ext-note {
+  margin: 2px 0 0;
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+
+/* 錯誤、空狀態（站規 2.2.7）：和軌道同寬。載入中沒有骨架，整頁在布幕後面（lib/page-ready.tsx） */
+.qm-state {
+  box-sizing: border-box;
+  width: var(--qm-track-w);
+  margin-left: var(--qm-track-left);
+  padding: var(--ll-space-6) 0 var(--qm-bottom-safe, var(--ll-space-6));
+}
+
+/* 地圖疊加層（站規 2.2.5）：說明、按鈕一欄排開（block） */
+.qm-overlay__text {
   margin: 0 0 var(--ll-space-3);
 }
-.qm-chapter__objectives {
-  margin: 0;
-  padding-left: 1.2em;
+.qm-overlay__hint {
+  margin: 0 0 var(--ll-space-4);
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
 }
-/* 強制色彩：場景隱藏，只留路線、節點與文字 */
+.qm-overlay__actions {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin-top: var(--ll-space-4);
+}
+.qm-scanart {
+  display: block;
+  margin: 0 auto var(--ll-space-4);
+}
+.qm-scanart__card {
+  fill: var(--ll-surface-2);
+  stroke: var(--ll-border-strong);
+  stroke-width: 1.5;
+}
+.qm-scanart__code {
+  fill: var(--ll-text-2);
+}
+.qm-scanart__phone {
+  fill: var(--ll-surface);
+  fill-opacity: 0.72;
+  stroke: var(--ll-text-2);
+  stroke-width: 2;
+}
+.qm-scanart__frame {
+  fill: none;
+  stroke: var(--ll-accent-ink);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.qm-scanart__beam {
+  fill: none;
+  stroke: var(--ll-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* 強制色彩（圖規第 8 節）：地景、場景、路邊、路面與棧橋隱藏；已走路線 Highlight、未走圓點 CanvasText；說明卡是 Canvas 加 1px 邊框 */
 @media (forced-colors: active) {
+  .qm-terrain,
   .qm-scene,
-  .qm-gap__sea {
+  .qm-seam--over,
+  .qm-route__edge,
+  .qm-route__road,
+  .qm-strait__pier {
     display: none;
   }
-  .qm-route__seg--walked {
+  .qm-route__walked {
     stroke: Highlight;
   }
-  .qm-route__seg--ahead {
+  .qm-route__ahead {
     stroke: CanvasText;
+  }
+  .qm-stone__shadow {
+    display: none;
+  }
+  .qm-stone__stake,
+  .qm-stone__flag {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .qm-strait__card,
+  .qm-list__ext {
+    background: Canvas;
+    border: 1px solid CanvasText;
+    box-shadow: none;
+  }
+  .qm-strait__card::after {
+    display: none;
   }
 }

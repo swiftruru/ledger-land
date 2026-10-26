@@ -1,13 +1,15 @@
 // 「輸入關卡代號」疊加層（02 第 4.7 節、06 第 4.9 節）：正規化後查 manifest 與墓碑，找到就導到 /level/lv_…/、已下架導所屬章節頁、找不到提示。
-// 全部在本機完成，離線也能用（manifest 與墓碑都在預先快取）。
-import { useLingui } from '@lingui/react/macro';
-import { useState } from 'react';
+// 全部在本機完成，離線也能用（manifest 與墓碑都在預先快取）。按鈕依站規 2.2.5：送出是 primary md block；已下架時錯誤句下一行是
+// secondary sm「前往所屬章節」（LevelCodeInput 處理）。
+// 放在 quest-map 資料夾外（第 5 輪看圖驗收後的體積調整）：不進地圖的共用 chunk，Play 在地圖畫好 1.5 秒後（或第一次打開時）才載入
+import { Trans, useLingui } from '@lingui/react/macro';
+import { useState, type RefObject } from 'react';
 import { localePath, type Locale } from '@ledgerland/i18n';
 import { LevelCodeInput, type LevelCodeStatus } from '@ledgerland/web-ui/map';
-import type { QuestMapData, QuestMapSource } from './data.ts';
-import { levelIdFromCode, normalizeLevelCode } from './level-code.ts';
-import { Overlay } from './Overlay.tsx';
-import { retiredChaptersOf } from './progress.ts';
+import type { QuestMapData, QuestMapSource } from '../quest-map/data.ts';
+import { levelIdFromCode, normalizeLevelCode } from '../quest-map/level-code.ts';
+import { Overlay } from '../quest-map/Overlay.tsx';
+import { retiredChaptersOf } from '../quest-map/progress.ts';
 
 export interface LevelCodeOverlayProps {
   open: boolean;
@@ -18,9 +20,11 @@ export interface LevelCodeOverlayProps {
   onNavigate: (href: string) => void;
   /** 已下架關卡所屬章節（由進度反查；沒有時只提示已下架） */
   retiredChapterOf?: ReadonlyMap<string, string>;
+  /** 關閉後焦點要回到的元素 */
+  returnFocusTo?: RefObject<HTMLElement | null>;
 }
 
-export function LevelCodeOverlay({ open, onClose, locale, data, source, onNavigate, retiredChapterOf }: LevelCodeOverlayProps) {
+export function LevelCodeOverlay({ open, onClose, locale, data, source, onNavigate, retiredChapterOf, returnFocusTo }: LevelCodeOverlayProps) {
   const { t } = useLingui();
   const [status, setStatus] = useState<LevelCodeStatus>({ kind: 'idle' });
   const submit = async (raw: string) => {
@@ -67,12 +71,16 @@ export function LevelCodeOverlay({ open, onClose, locale, data, source, onNaviga
         onClose();
       }}
       title={t({ id: 'play.code.title', message: '輸入關卡代號', comment: '關卡代號疊加層的標題' })}
+      returnFocusTo={returnFocusTo}
       testId="code-overlay"
     >
-      <p className="ll-muted ll-small">
-        {t({ id: 'play.code.hint', message: '老師寫在黑板或投影片上的 8 碼代號；大小寫、空白與連字號都可以省略。', comment: '關卡代號疊加層的說明' })}
+      <p className="qm-overlay__hint">
+        {/* 詞包成 .ll-nowrap（全站換行規則，M3 驗收第 6 輪：375 寬斷成「連字／號」） */}
+        <Trans id="play.code.hint" comment="關卡代號疊加層的說明；標籤包住的詞不換行">
+          老師寫在黑板或投影片上的 <span className="ll-nowrap">8 碼代號</span>；大小寫、空白與<span className="ll-nowrap">連字號</span>都可以省略。
+        </Trans>
       </p>
-      <LevelCodeInput status={status} onSubmit={(raw) => void submit(raw)} onNavigate={onNavigate} focusOnOpen={open} />
+      <LevelCodeInput status={status} onSubmit={(raw) => void submit(raw)} focusOnOpen={open} />
     </Overlay>
   );
 }

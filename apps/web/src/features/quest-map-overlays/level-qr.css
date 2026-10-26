@@ -1,0 +1,29 @@
+/* 給老師的關卡 QR（LevelQr.tsx）：和 Play 的 CSS 一起載入，只用 tokens；QR 本身是黑白 SVG（屬性在元件裡，QR 要高對比、不跟主題走） */
+.ll-levelqr {
+  display: grid;
+  gap: var(--ll-space-2);
+  justify-items: start;
+  margin-top: var(--ll-space-2);
+}
+.ll-levelqr__panel {
+  display: grid;
+  gap: var(--ll-space-2);
+  justify-items: start;
+}
+.ll-levelqr__svg {
+  width: 200px;
+  height: 200px;
+  max-width: 100%;
+  border-radius: var(--ll-radius-sm);
+  box-shadow: var(--ll-card-ring);
+}
+.ll-levelqr__url {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  overflow-wrap: anywhere;
+}
+.ll-levelqr__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+}
