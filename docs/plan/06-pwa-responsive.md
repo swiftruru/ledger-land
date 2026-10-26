@@ -1083,6 +1083,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
 
 - 用 **lighthouse 13 CLI**（13.5.0，2026-09-18 發布，需要 Node 22.19 以上；09 選定的 Node 24 LTS 符合），不用 Lighthouse CI：`@lhci/cli` 0.15.1 內建的仍是 Lighthouse 12.6.1，audit ID 與 DevTools、PageSpeed Insights 用的 13.x 不同。
 - 每個網址跑 **5 次取中位數**。CI runner 效能浮動大，只跑一次的結果時好時壞。
+- 每週對正式網址的檢查（`scheduled.yml`，`pnpm perf --observed`，2026-10-27 起）：LCP 看實測值（網路不節流、CPU 4 倍降速）≤ 3000ms（闖關地圖最重，單次實測 2.3 到 2.6 秒；web.dev 的 2.5 秒是不降速的真實使用者數字），模擬值與效能分數只記錄當趨勢。真實邊緣每個請求約 50 到 60ms 的伺服器延遲會被 Lighthouse 的模擬逐層放大，swift.moe 這個 zone 的 Web Analytics 自動注入又在 HTML 多一段第三方 script（維護者決定留著，其他子網域要用），正式站模擬 LCP 3.5 到 4.2 秒、實測 0.3 到 1.6 秒；比較建置好壞用本機伺服器的模擬值（PR 與 main），正式站用實測值看使用者真的等多久。
 - assertion 只看 metric 數值（LCP、TBT、CLS、總傳輸量）與類別分數，不依賴會改名的 insight 或 opportunity audit（Lighthouse 13.0 已把舊的效能 audit 換成 insights，另移除 8 個沒有替代的 audit；效能計分方式不變）。
 - 記錄每次報告的 `benchmarkIndex`，據此校準 `--throttling.cpuSlowdownMultiplier`。Lighthouse 預設的行動節流是 simulated：RTT 150ms、下行 1.6 Mbps、上行 750 Kbps、CPU 4 倍減速，模擬中階行動裝置；`benchmarkIndex` 125 到 800 為中階、低於 125 為低階。另加一組 6 倍減速的低階設定，代表較舊的 Android 手機。
 - **M0b 的兩個實測教訓（2026-10-22）**：(1) 會插入到內容上方的元素（語言切換提示、橫幅）必須在首次繪製就決定要不要顯示或預留空間，不能在 effect 裡才插入，否則會把下面的卡片往下推，首頁與作答頁的 CLS 曾因此到 0.073 與 0.097；(2) 內容頁不能在頁面 chunk 載入後才開始串行請求 manifest 與內容快照，名詞頁曾因此比列表頁多約 450ms、LCP 超過 2.5 秒；做法是殼層 `preload` manifest、App 啟動就讀 manifest、路由在載入 chunk 的同時讀快照。
