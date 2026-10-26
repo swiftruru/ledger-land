@@ -16,7 +16,7 @@
 - 已決定（2026-10-20）：網站與未來的 App 放在同一個 repo（monorepo）。根目錄保持精簡，程式依「app」（`apps/web`、M7 的 `apps/admin`、預留的 `apps/mobile`）與「共用套件」（`packages/tokens`、`i18n`、`content-schema`、`core`、`quiz`、`progress`、`web-ui`）分層；npm 套件名稱一律 `@ledgerland/<資料夾名>`；依賴只能往下、不能循環，`packages/` 永遠不引用 `apps/`；除了 `web-ui`，其他套件都是純 TypeScript，由 tsconfig、lint 與依賴方向檢查三道機制把關（第 8 節，已決定六）。
 - 已決定（2026-10-20）：學習端的 wrangler 設定從根目錄移到 `apps/web/wrangler.jsonc`，每個要部署的 app 自己帶部署設定；Worker 名稱維持 `ledgerland`（第 7.3 節）。
 - 已決定（2026-10-20）：套件、工具與快取都裝在專案自己的資料夾裡（`.pnpm-store/`、`.cache/`），不做全域安裝，整個環境可以刪掉重建；重建與部署需要的東西都在 repo 裡，部署維持 GitHub Actions 執行 wrangler，不使用 Cloudflare 儀表板的 Git 整合（Workers Builds）（第 7.5 節，已決定七）。
-- repo 公開（已決定 D3）。repo 初始化依第 9 節的固定步驟在 M0b 執行；`.gitignore` 只用附加的方式補充，不整份取代。附加的規則包含 `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 AI 設定的整段排除規則；這些檔案都留在原位、只存在本機，不搬移；不使用 `docs/private/`。
+- repo 公開（已決定 D3）。repo 初始化依第 9 節的固定步驟在 M0b 執行；`.gitignore` 只用附加的方式補充，不整份取代。附加的規則包含 `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 本機工具設定的整段排除規則；這些檔案都留在原位、只存在本機，不搬移；不使用 `docs/private/`。
 - 主機用 Cloudflare Workers Static Assets，正式網域 `ledgerland.swift.moe`，base path 為 `/`（已決定 D4）。用 `_headers` 設定 CSP、`frame-ancestors` 與快取；深層連結以 SPA fallback 回傳殼層 `index.html`（狀態碼 200）；PR 有預覽網址；部署用 wrangler（第 7 節）。GitHub Pages 不使用。
 - 授權（已決定 D6）：根目錄 `LICENSE` 為 MIT（程式碼）；原創教學內容用 CC BY-SA 4.0，全文放在 `LICENSES/`；老師的故事情境與金額不在 CC 授權範圍內，標示「經陳彥宏老師授權使用」；名稱與標誌另外保留，寫在 `NOTICE`（第 8 節，細節見 [11 風險與授權](11-risks-license.md) 第 4 節）。
 - 流量統計（已決定 D7）：M0b 一併加入不用 cookie、不收集個資的統計；服務在 M0b 開工前查證後提出（候選：Cloudflare 的網頁分析）。同步修改 CSP 的 `script-src` 與 `connect-src`、隱私說明頁與 debug 頁，統計腳本不得影響離線使用與效能預算（第 11 節）。
@@ -29,7 +29,7 @@
 
 ## 需評估
 
-本文件沒有需評估的項目。原本的五項評估（D5、D4、D3、D7、D8）都已在 2026-10-20 決定，決定內容已併入「確定要做」與各節；以下保留每一項的決定、做法與未採用的選項，供日後查考。已決定六與已決定七是你在 2026-10-20 另外提出的需求與決定（repo 結構、隔離環境與部署），沒有 registry 編號。唯一還沒決定的是 `apps/mobile` 的技術，屬於沒有 registry 編號、由你決定的事項，建議 M3 完成後決定（見已決定六與 [14 待確認](14-open-questions.md) 第 5.2 節）。
+本文件沒有需評估的項目。原本的五項評估（D5、D4、D3、D7、D8）都已在 2026-10-20 決定，決定內容已併入「確定要做」與各節；以下保留每一項的決定、做法與未採用的選項，供日後查考。已決定六與已決定七是我在 2026-10-20 另外提出的需求與決定（repo 結構、隔離環境與部署），沒有 registry 編號。唯一還沒決定的是 `apps/mobile` 的技術，屬於沒有 registry 編號、由我決定的事項，建議 M3 完成後決定（見已決定六與 [14 待確認](14-open-questions.md) 第 5.2 節）。
 
 ### 已決定一：框架路線與網址策略（D5）
 
@@ -53,17 +53,17 @@
   - base path 已定為 `/`，CI 不再以根路徑與子路徑各建置一次。
   - M0a 的技術驗證可以先用暫時的 HTTPS 預覽網址（例如 `workers.dev`），資料一律視為測試資料；正式網域確定後才印發給學生的 QR（第 7.1 節）。
 - 未採用的選項：
-  - GitHub Pages：不使用。不能自訂 header（CSP 只能用 meta，無法設定 `frame-ancestors`）、深層連結第一次開啟回 404、沒有 PR 預覽，而且 `swiftruru.github.io` 這個 origin 已被你其他的專案共用。
+  - GitHub Pages：不使用。不能自訂 header（CSP 只能用 meta，無法設定 `frame-ancestors`）、深層連結第一次開啟回 404、沒有 PR 預覽，而且 `swiftruru.github.io` 這個 origin 已被我其他的專案共用。
   - Cloudflare Pages：可以接外部 DNS 的子網域，但 Cloudflare 官方建議新專案改用 Workers，而 `swift.moe` 的 DNS 本來就在 Cloudflare。
   - 學校子網域：DNS 不在 Cloudflare，不能當 Workers 的自訂網域；另購網域：多一筆年費與管理。
   - 三種主機的比較表保留在第 7.2 節，作為決定時的依據。
 
 ### 已決定三：repo 公開與教材衍生內容（D3）
 
-- 已決定（D3，2026-10-20）：repo 公開。`docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md` 留在原位，以 `.gitignore` 排除、只存在本機（由你備份），不搬移任何檔案；不使用 `docs/private/`。
+- 已決定（D3，2026-10-20）：repo 公開。`docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md` 留在原位，以 `.gitignore` 排除、只存在本機（由我備份），不搬移任何檔案；不使用 `docs/private/`。
 - 目前事實（2026-10-20 查詢）：專案資料夾還不是 git repo；GitHub 上的 `swiftruru/ledger-land` 是公開的空 repo。第一次 push 就等於公開，而且 git 歷史無法撤回。
 - 影響：
-  - 第 9 節第 3 步附加的 `.gitignore` 規則加入這兩個檔案，並保留 AI 設定的整段排除規則；第 4、5、7 步與 CI 的 hygiene 檢查都把這兩個檔案列入比對；第 9 步的 push 就是公開。
+  - 第 9 節第 3 步附加的 `.gitignore` 規則加入這兩個檔案，並保留 本機工具設定的整段排除規則；第 4、5、7 步與 CI 的 hygiene 檢查都把這兩個檔案列入比對；第 9 步的 push 就是公開。
   - 測試仍用自編數字。老師的故事情境與金額只出現在內容資料中（D2 已同意，屬於公開內容），repo 內只對故事資料做性質測試；與老師 Excel 的逐格比對只在本機執行（`*.local.test.ts`，第 8 節）。
   - repo 公開與網站能不能被開啟是兩件事：部署出去的網址（包括 M0a 的暫時網址與 PR 預覽）本來就任何人都能開啟。另外，公開 repo 中的內容草稿一建立就公開（見 [08 題庫與後台](08-content-admin.md)）。
 - 未採用的選項：(a) repo 先改私有（M8 公開前要稽核整個 git 歷史，私有 repo 的 Actions 也有免費分鐘數上限；改為直接排除兩份教材衍生文件即可）；(b) 原案的 `docs/private/` 資料夾（要搬移檔案，而且放錯位置就會永久留在公開歷史；改為在原位以 `.gitignore` 排除）。
@@ -100,19 +100,19 @@
   - 共用套件：`packages/tokens`、`packages/i18n`（原名 `i18n-config`，已決定改名）、`packages/content-schema`、`packages/core`、`packages/quiz`、`packages/progress`、`packages/web-ui`。各套件放什麼、不放什麼與建立的里程碑見第 8.1 節。
   - npm 套件名稱一律 `@ledgerland/<資料夾名>`（例如 `@ledgerland/core`）。每個套件有 `src/`、`test/`、`package.json`（`exports` 直接指向 `src`，不另外 build）、`README.md`（寫明範圍與允許的依賴）；套件在需要時才建立，用同一份套件樣板。
   - 依賴只能往下、不能循環，`packages/` 永遠不引用 `apps/`（依賴方向見第 8.2 節）。除了 `web-ui`，其他套件都是純 TypeScript（不碰 DOM、不碰 React、不用 Node 專屬 API），由 tsconfig、lint 規則與 `tools/` 的依賴方向檢查三道機制自動把關（第 8.3 節）。
-  - 已決定（2026-10-20）：`packages/web-ui` 在 M0b 就建立（你的選擇），元件一開始就寫在這裡，後台日後直接使用。
+  - 已決定（2026-10-20）：`packages/web-ui` 在 M0b 就建立（我的選擇），元件一開始就寫在這裡，後台日後直接使用。
   - `packages/core` 只放會計；多正解題判分 `scoreMultiChoice`（從 04 原本 `core` 的判分子目錄移過來）、數字題比對、分錄題計分、星星與錯題本排程改放 `packages/quiz`（分錄的正規化比對仍留在 `core`）。
   - 設計 token 改以 `packages/tokens` 的 TypeScript 原始檔為唯一來源，建置時產生 CSS 變數檔、TS 常數、manifest 色碼與首次繪製背景色（見 [07 設計系統](07-design-system.md) 第 2.1 節）。
   - `web-ui` 有自己的 Lingui 字串檔，`apps/web` 的字串檔只放頁面與殼層的文字，兩者在載入時合併（第 5 節）。
-- 尚未決定：`apps/mobile` 的技術（Capacitor 包裝網站、React Native 的 Expo、原生 Swift／Kotlin）現在不選，建議在 M3 完成後決定；這是沒有 registry 編號、由你決定的事項（見 [14 待確認](14-open-questions.md) 第 5.2 節）。比較重點：Capacitor 工作量最小，畫面直接用 `apps/web` 的建置結果，進度可存原生儲存而避開 Safari 的清除規則與分頁／主畫面不共享的風險，但 App Store 審查準則 4.2（最低功能要求）對只是包裝網站的 App 較嚴；Expo 有原生手感並能用 iOS 原生玻璃元件，但畫面要重寫一次，Hermes 引擎的 Intl 支援要查證；原生 Swift／Kotlin 要用別的語言重寫會計核心，單人維運不建議。選定技術後，在 `apps/mobile` 做小型試作，比照 M0a 先驗證再開工。
+- 尚未決定：`apps/mobile` 的技術（Capacitor 包裝網站、React Native 的 Expo、原生 Swift／Kotlin）現在不選，建議在 M3 完成後決定；這是沒有 registry 編號、由我決定的事項（見 [14 待確認](14-open-questions.md) 第 5.2 節）。比較重點：Capacitor 工作量最小，畫面直接用 `apps/web` 的建置結果，進度可存原生儲存而避開 Safari 的清除規則與分頁／主畫面不共享的風險，但 App Store 審查準則 4.2（最低功能要求）對只是包裝網站的 App 較嚴；Expo 有原生手感並能用 iOS 原生玻璃元件，但畫面要重寫一次，Hermes 引擎的 Intl 支援要查證；原生 Swift／Kotlin 要用別的語言重寫會計核心，單人維運不建議。選定技術後，在 `apps/mobile` 做小型試作，比照 M0a 先驗證再開工。
 - 影響：M0b 的完成標準加入結構驗收（從乾淨的 clone 安裝、全部套件的型別檢查與測試、依賴方向與 DOM 禁用檢查、`apps/web/dist/` 的建置產物、在 `apps/web` 用 `wrangler dev` 確認深層連結與 `_headers`、PR 預覽網址上的 E2E、`web-ui` 的字串抽取與編譯），見 [10 里程碑](10-milestones.md)。
 
 ### 已決定七：專案隔離環境與部署方式（2026-10-20）
 
-- 已決定（2026-10-20）：套件、工具與快取都裝在專案自己的資料夾裡，不做全域安裝，整個環境可以刪掉重建（和 Python 的 `.venv` 一樣）；程式相關內容一律不寫到 `ledger-land/` 以外（你的規則，2026-10-20）。做法見第 7.5 節。
+- 已決定（2026-10-20）：套件、工具與快取都裝在專案自己的資料夾裡，不做全域安裝，整個環境可以刪掉重建（和 Python 的 `.venv` 一樣）；程式相關內容一律不寫到 `ledger-land/` 以外（我的規則，2026-10-20）。做法見第 7.5 節。
 - 已決定（2026-10-20）：重建與部署需要的東西都在 repo 裡，不依賴任何人電腦上的狀態；部署維持 GitHub Actions 執行 wrangler（第 10 節），平常由 CI 在 main 通過檢查後自動部署。
 - 代價：不同專案之間不共用快取，比較佔硬碟空間。
-- 你要手動做的事只有兩次：M0a 部署預覽前執行一次 `wrangler login`；M0b 第一次正式部署前建立 API token 並存進 GitHub repo 的 Actions secrets（第 7.5 節）。之後任何目錄調整都不需要手動改 Cloudflare 設定。
+- 我要手動做的事只有兩次：M0a 部署預覽前執行一次 `wrangler login`；M0b 第一次正式部署前建立 API token 並存進 GitHub repo 的 Actions secrets（第 7.5 節）。之後任何目錄調整都不需要手動改 Cloudflare 設定。
 - 未採用的選項：Cloudflare 儀表板的 Git 整合（Workers Builds）。採用它就要在儀表板設定根目錄、建置指令與部署指令，之後每次搬目錄都要手動改；而 GitHub Actions 讓部署前的 CSP 雜湊檢查與測試在同一條流程，目錄調整只改 repo 裡的 wrangler 設定與 workflow。
 
 ---
@@ -481,7 +481,7 @@ Catalog 位置：已決定（2026-10-20）：`apps/web/src/locales/{locale}/mess
 
 - 舊版 `@dnd-kit/core` 最後一次發布是 6.3.1（2024-12-05），新專案不用。新架構 `@dnd-kit/react` 仍是 0.x，包在自家 adapter 後面，隔離 API 變動。
 - 依 WCAG 2.2 的 2.5.7，分類題的主要操作是「點選卡片，再點選目標」與鍵盤；拖放是漸進增強。
-- Safari 拖曳偏移的 issue #1910（2026-02-20 開立）查詢時仍 open，M0a 要在 iPhone 實機驗證（【待實測 V07】）。不通過時回報，由你決定先只做點選與鍵盤，或改用備案。
+- Safari 拖曳偏移的 issue #1910（2026-02-20 開立）查詢時仍 open，M0a 要在 iPhone 實機驗證（【待實測 V07】）。不通過時回報，由我決定先只做點選與鍵盤，或改用備案。
 
 ### 6.6 金額與格式化
 
@@ -539,8 +539,8 @@ Catalog 位置：已決定（2026-10-20）：`apps/web/src/locales/{locale}/mess
 學習進度只存在 IndexedDB 與 localStorage；它們、SW 的註冊、已安裝的主畫面 App、已經印出來的 QR code，全部綁定 origin（協定加主機名稱加連接埠）。換網域就是換 origin，學生的進度不會跟著搬過去。所以：
 
 - 已決定（D4，2026-10-20）：正式的 origin 是 `https://ledgerland.swift.moe`，base path 為 `/`（base、basename、manifest scope、SW scope 都是 `/`）。這個 origin 從第一次讓學生使用（包括課堂試用與印 QR）起就不再更換。
-- `ledgerland.swift.moe` 和你在 `swift.moe` 底下的其他網站是不同的 origin，不共用 IndexedDB、localStorage 與 SW。Workers 的自訂網域不能建立在已有記錄的主機名稱上。M0b 查證（2026-10-22）：`ledgerland.swift.moe` 在 DNS 上已經有指向 Cloudflare 的 A 與 AAAA 記錄（不是萬用字元），綁定前要先由你處理既有記錄（刪除，或確認它屬於哪個服務）；`apps/web/wrangler.jsonc` 的 `routes` 先註解掉，等你決定。
-- 不使用 GitHub Pages 的原因之一：`swiftruru.github.io` 這個 origin 已經被你其他的 GitHub Pages 專案共用，IndexedDB 與 localStorage 是同一個命名空間，配額與淘汰判斷也是同一份；其他專案的腳本（包括它們可能有的 XSS）都能讀寫 LedgerLand 的進度；若有專案在根 scope 註冊 SW，也會攔截子路徑底下的請求。
+- `ledgerland.swift.moe` 和我在 `swift.moe` 底下的其他網站是不同的 origin，不共用 IndexedDB、localStorage 與 SW。Workers 的自訂網域不能建立在已有記錄的主機名稱上。M0b 查證（2026-10-22）：`ledgerland.swift.moe` 在 DNS 上已經有指向 Cloudflare 的 A 與 AAAA 記錄（不是萬用字元），綁定前要先由我處理既有記錄（刪除，或確認它屬於哪個服務）；`apps/web/wrangler.jsonc` 的 `routes` 先註解掉，等我決定。
+- 不使用 GitHub Pages 的原因之一：`swiftruru.github.io` 這個 origin 已經被我其他的 GitHub Pages 專案共用，IndexedDB 與 localStorage 是同一個命名空間，配額與淘汰判斷也是同一份；其他專案的腳本（包括它們可能有的 XSS）都能讀寫 LedgerLand 的進度；若有專案在根 scope 註冊 SW，也會攔截子路徑底下的請求。
 - M0a 的技術驗證可以先用暫時的 HTTPS 預覽網址（例如 `workers.dev` 底下的網址），那是另一個 origin，資料一律視為測試資料，不印發給學生的 QR。base path 已定為 `/`，CI 只以根路徑建置與測試。
 - 不得不搬家時的遷移流程（舊網址保留匯出頁、`sw.js` 不刪除而改部署會自我解除的版本、新網址主動提供匯入）寫在 [06 PWA 與響應式](06-pwa-responsive.md)。
 
@@ -606,7 +606,7 @@ D4 已選 Cloudflare Workers Static Assets；GitHub Pages 與 Cloudflare Pages �
 ### 7.4 部署安全
 
 - 部署只用整批替換的方式：CI 在 `apps/web` 目錄執行 wrangler（例如 `pnpm --filter @ledgerland/web exec wrangler deploy`），上傳整份建置產物（wrangler 列在 devDependencies，受兩週規則管）。不逐檔同步。
-- M0b 的教訓（2026-10-22，正式網域停機約 40 分鐘）：任何會改變正式網域綁定的變更（加回 `routes`、換 Worker）之前，先確認 main 最新一次 `ci` 是綠的，不能只看 PR 分支的結果，否則 deploy 被跳過時舊綁定已經移除、網站就斷線；要用本機 wrangler 緊急部署前，先跑 `wrangler whoami` 確認 OAuth 登入沒有過期（過期時非互動環境無法重新整理，要由你執行 `wrangler login`）。
+- M0b 的教訓（2026-10-22，正式網域停機約 40 分鐘）：任何會改變正式網域綁定的變更（加回 `routes`、換 Worker）之前，先確認 main 最新一次 `ci` 是綠的，不能只看 PR 分支的結果，否則 deploy 被跳過時舊綁定已經移除、網站就斷線；要用本機 wrangler 緊急部署前，先跑 `wrangler whoami` 確認 OAuth 登入沒有過期（過期時非互動環境無法重新整理，要由我執行 `wrangler login`）。
 - `sw.js` 的路徑固定，絕不刪檔或改名：Safari 27.0 修正了「主腳本不存在時解除 SW 註冊」，代表 `sw.js` 一旦暫時消失，iOS 27 使用者的 SW 會被直接移除；反過來，`sw.js` 回 404 時其他環境可能保留舊 SW，永遠停在舊版。要停用 SW 時，部署一個會自我解除並清除快取的版本。
 - 舊頁面之後才 lazy 載入的 chunk 或內容 JSON，可能在新部署後已經不存在。每條路由都設 ErrorBoundary，偵測到動態載入失敗時先寫入進度，再提示「網站已更新，重新整理即可」（細節見 [06 PWA 與響應式](06-pwa-responsive.md)）。
 - CI 在部署前檢查：`sw.js` 存在；manifest 的 `id` 與上一版相同；`apps/web/wrangler.jsonc` 的 `not_found_handling` 是 `single-page-application`、`assets.directory` 指向建置產物（`./dist`）；`_headers` 存在，而且其中 CSP 的雜湊與這次建置的 `index.html` 兩段 inline 腳本（head 的 boot 腳本、`nav` 之後的殼層在地化腳本）及首次繪製的 `<style>` 一致（第 11.1 節）。
@@ -614,7 +614,7 @@ D4 已選 Cloudflare Workers Static Assets；GitHub Pages 與 Cloudflare Pages �
 
 ### 7.5 專案隔離環境與重新部署
 
-已決定（2026-10-20）：套件、工具與快取都裝在專案自己的資料夾裡，不做全域安裝；整個環境可以刪掉重建（和 Python 的 `.venv` 一樣）。程式相關內容一律不寫到 `ledger-land/` 以外（你的規則，2026-10-20）。
+已決定（2026-10-20）：套件、工具與快取都裝在專案自己的資料夾裡，不做全域安裝；整個環境可以刪掉重建（和 Python 的 `.venv` 一樣）。程式相關內容一律不寫到 `ledger-land/` 以外（我的規則，2026-10-20）。
 
 **做法**：
 
@@ -632,13 +632,13 @@ D4 已選 Cloudflare Workers Static Assets；GitHub Pages 與 Cloudflare Pages �
 
 **部署方式**：維持 GitHub Actions 執行 wrangler（第 10 節），不使用 Cloudflare 儀表板的 Git 整合（Workers Builds）。理由：部署前的 CSP 雜湊檢查與測試在同一條流程；目錄調整只改 repo 裡的 wrangler 設定與 workflow，Cloudflare 儀表板沒有「根目錄、建置指令、輸出目錄」要改。若改用 Workers Builds，就要在儀表板設定根目錄、建置指令與部署指令，之後每次搬目錄都要手動改（未採用）。
 
-**憑證**：`wrangler login` 的憑證存在你自己的帳號設定裡（帳號憑證不是套件，放專案外比較安全，不會被誤 commit）；CI 用存在 GitHub repo secrets 的 API token，本機不需要憑證。
+**憑證**：`wrangler login` 的憑證存在我自己的帳號設定裡（帳號憑證不是套件，放專案外比較安全，不會被誤 commit）；CI 用存在 GitHub repo secrets 的 API token，本機不需要憑證。
 
-**你要手動做的事與時機**：
+**我要手動做的事與時機**：
 
 | 時機 | 要做的事 | 備註 |
 | --- | --- | --- |
-| M0a 部署預覽前 | 執行一次 `wrangler login` | 憑證存在你自己的帳號設定裡，不在專案內 |
+| M0a 部署預覽前 | 執行一次 `wrangler login` | 憑證存在我自己的帳號設定裡，不在專案內 |
 | M0b 第一次正式部署前 | 在 Cloudflare 建立只有 Workers 與 `swift.moe` 必要權限的 API token，並把 token 與 Account ID 存進 GitHub repo 的 Actions secrets（`CLOUDFLARE_API_TOKEN`、`CLOUDFLARE_ACCOUNT_ID`） | 畫面名稱以當時介面為準 |
 | 之後 | 不需要；任何目錄調整都只改 repo 裡的 wrangler 設定與 workflow | 不需要手動改 Cloudflare 設定 |
 
@@ -687,7 +687,7 @@ ledger-land/
   vendor/                      （只有選用 SheetJS 時才建立）
   LICENSES/                    （內容授權全文）
   docs/
-    plan/                      （01、13、15 只存在本機，不 commit）
+    plan/                      （01、13 只存在本機，不 commit）
   references/                  （老師教材，永遠不 commit）
   prototypes/                  （M0a 試作與本機工具快取，不 commit）
   .pnpm-store/                 （pnpm 的 store，不 commit）
@@ -721,12 +721,11 @@ ledger-land/
 | `schemas/` | Zod 以 draft-07 產生的 JSON Schema；CI 重新產生後 `git diff --exit-code` | commit |
 | `vendor/` | SheetJS 0.20.3 tarball（只有 M6 選用時才建立） | commit |
 | `docs/` | 規劃與技術文件 | commit（下兩列的檔案除外，D3） |
-| `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` | 教材整理與教材疑義（教材衍生內容：頁碼、答案、向老師確認的問句） | 不 commit（以 `.gitignore` 排除，檔案留在原位，只存在本機，由你備份；D3） |
+| `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` | 教材整理與教材疑義（教材衍生內容：頁碼、答案、向老師確認的問句） | 不 commit（以 `.gitignore` 排除，檔案留在原位，只存在本機，由我備份；D3） |
 | `references/` | 老師的投影片與 Excel | 永遠不 commit |
 | `prototypes/` | M0a 試作程式與本機工具快取；需要產生器時的暫存資料夾（第 9 節） | 不 commit（M0a 已以 `/prototypes/` 排除） |
-| `CLAUDE.md`、`CLAUDE.local.md`、`.claude/`（含 settings、rules、agents、skills、hooks、交接狀態、報告） | 本機 AI 設定，留在工具預設的位置，以 `.gitignore` 排除（見 [15 AI 協作與本機設定](15-ai-workflow.md)（本機專用）） | 永遠不 commit |
-| 其他 AI 工具設定（`AGENTS.md`、`GEMINI.md`、`.mcp.json`、`.cursor/`、`.github/copilot-instructions.md` 等） | 若日後使用其他 AI 工具 | 永遠不 commit |
-| `docs/plan/15-ai-workflow.md` | AI 協作規劃（屬於 AI 相關內容） | 不 commit（以 `.gitignore` 排除，檔案留在原位） |
+| 本機開發工具的設定檔與目錄（含 rules、交接狀態、報告） | 本機專用設定，留在工具預設的位置，以 `.gitignore` 排除 | 永遠不 commit |
+| 其他本機工具的設定檔（`.gitignore` 本機工具段落列出的路徑） | 若日後使用其他工具 | 永遠不 commit |
 | `coverage/`、`playwright-report/`、`test-results/`、`.local-reports/` | 測試與本機驗證的輸出 | 不 commit |
 | `.wrangler/`、`.dev.vars*` | wrangler 在本機執行時產生的暫存資料與本機 secrets | 不 commit |
 | `node_modules/` | 依賴套件 | 不 commit |
@@ -770,7 +769,7 @@ wrangler 設定不放在根目錄：每個要部署的 app 自己帶部署設定
 | `packages/tokens` | 色彩（淺色、深色）、間距、圓角、陰影、字級、動態時長與曲線、斷點、層級的原始檔（TypeScript）；產生網站的 CSS 變數檔、TS 常數、manifest 的 `theme_color` 與 `background_color`、首次繪製的背景色；日後也能產生 App 用的常數 | 元件樣式；玻璃規則（Tab bar 的玻璃在 `apps/web`，其他玻璃元件的樣式在 `packages/web-ui`） | M0b |
 | `packages/i18n`（原名 `i18n-config`，已決定改名） | 語系登錄檔、網址的語系函式（`localeFromPath`、`stripLocale`、`localePath`）、金額與百分比等格式化函式、作答輸入正規化 | Lingui 的介面字串檔 | M0b |
 | `packages/content-schema` | 題目、名詞、交易範本、章節、故事的 Zod schema、ID 產生、佔位符文法、內容驗證規則 | 內容本身（在 `content/`）、會計計算 | M0b |
-| `packages/web-ui` | 網站與後台共用的 React 元件與其樣式：題目（ChoiceGroup 等）、回饋（FeedbackPanel）、名詞卡、報表表格、實驗室的步驟元件等；元件自己的 Lingui 字串檔 | 路由、頁面、殼層、Service Worker；App 的畫面 | 已決定（2026-10-20）：M0b 就建立（你的選擇），元件一開始就寫在這裡，後台日後直接使用 |
+| `packages/web-ui` | 網站與後台共用的 React 元件與其樣式：題目（ChoiceGroup 等）、回饋（FeedbackPanel）、名詞卡、報表表格、實驗室的步驟元件等；元件自己的 Lingui 字串檔 | 路由、頁面、殼層、Service Worker；App 的畫面 | 已決定（2026-10-20）：M0b 就建立（我的選擇），元件一開始就寫在這裡，後台日後直接使用 |
 | `packages/core` | 只放會計：科目表、交易範本、過帳、三表、指標、五步驟勾稽、追蹤、IFRS 政策；分錄的正規化比對（合併同科目同方向的行、多重集合比對）屬於會計知識，留在這裡 | 選擇題與數字題的判分、星星、錯題本 | M1 建立（2026-10-23）；資料放 `packages/core/data/` |
 | `packages/quiz` | 12 種題型的判分入口：多正解題判分 `scoreMultiChoice`（從 04 原本規劃在 `core` 的判分子目錄移過來）、數字題比對（含 N/A 與位數規則）、分錄題計分 `scoreJournalEntry`（呼叫 `core` 的分錄比對）；以固定種子打散選項；星星計算；錯題本的間隔複習排程；題目改版後（`id` 加 `rev`）的處理規則 | 畫面、儲存 | M2 建立（2026-10-23） |
 | `packages/progress` | 進度資料模型（作答紀錄、關卡、星星、徽章、設定含 `labView`）、備份檔與文字備份碼的格式、匯入合併規則（作答紀錄取聯集、星星取最大值等）、資料版本升級（migration）、儲存介面的定義 | IndexedDB 的實作（在 `apps/web`）、原生儲存的實作（日後在 `apps/mobile`） | M2 建立（2026-10-23） |
@@ -817,10 +816,10 @@ tools       -> content-schema、core、quiz、i18n、tokens
 **目前事實**（2026-10-20）：
 
 - 專案資料夾還不是 git repo。
-- 根目錄的 `.gitignore` 原本只有 `references/` 一行；M0a 開工時（2026-10-20）已依第 3 步附加建置輸出、01 與 13、`/prototypes/`（M0a 試作程式與本機工具快取）與 AI 工具設定的排除規則，第一行不變。`.pnpm-store/` 與 `.cache/` 還沒有附加，M0b 補上（第 3 步）。
+- 根目錄的 `.gitignore` 原本只有 `references/` 一行；M0a 開工時（2026-10-20）已依第 3 步附加建置輸出、01 與 13、`/prototypes/`（M0a 試作程式與本機工具快取）與 本機工具設定的排除規則，第一行不變。`.pnpm-store/` 與 `.cache/` 還沒有附加，M0b 補上（第 3 步）。
 - 根目錄與 `references/` 底下都有 `.DS_Store`；M0a 附加的規則已經忽略它們。
 - GitHub 上的 `swiftruru/ledger-land` 是公開的空 repo（沒有任何 ref），沒有東西要合併；第一次 push 就等於公開。
-- `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 `docs/plan/15-ai-workflow.md` 已經存在於本機，必須在任何 `git add` 之前就被 `.gitignore` 排除。
+- `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 已經存在於本機，必須在任何 `git add` 之前就被 `.gitignore` 排除。
 
 **開工前提**：D3（repo 公開，01、13 以 `.gitignore` 排除）與 D6（授權）都已在 2026-10-20 決定，所以第一次 commit 可以放授權檔。
 
@@ -832,15 +831,15 @@ tools       -> content-schema、core、quiz、i18n、tokens
    - 建置與本機輸出：`.DS_Store`、`node_modules/`、`build/`、`dist/`、`coverage/`、`playwright-report/`、`test-results/`、`.local-reports/`、`.wrangler/`、`.dev.vars*`、`.env*`、`*.local`，以及專案內的 pnpm store 與快取 `.pnpm-store/`、`.cache/`（已決定七，第 7.5 節）。
    - 教材衍生文件（D3）：`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`。
    - M0a 試作程式與本機工具快取：`/prototypes/`。
-   - AI 工具設定的整段排除規則（`**/.claude/`、`**/CLAUDE.md`、`**/CLAUDE.local.md`、`.mcp.json`、`docs/plan/15-ai-workflow.md` 等，完整區塊見 [15 AI 協作與本機設定](15-ai-workflow.md)（本機專用）第 9.1 節），整段照抄，不刪減。M0a 開工時已附加過這三段與 `/prototypes/`（2026-10-20），這裡只確認這些段落完整存在，不重複附加。M0a 附加的建置與本機輸出規則還沒有 `.pnpm-store/` 與 `.cache/`，M0b 另外以附加的方式補上這兩條（寫在檔案末尾，不改動既有的行）。
+   - 本機工具設定的整段排除規則，整段照抄，不刪減。M0a 開工時已附加過這三段與 `/prototypes/`（2026-10-20），這裡只確認這些段落完整存在，不重複附加。M0a 附加的建置與本機輸出規則還沒有 `.pnpm-store/` 與 `.cache/`，M0b 另外以附加的方式補上這兩條（寫在檔案末尾，不改動既有的行）。
 
-   附加後確認第一行仍是 `references/`。教材衍生文件與 AI 設定一律留在原位，只靠這些規則排除，不搬移任何檔案，也不建立 `docs/private/`。這一步必須在任何 `git add` 之前完成。
-4. 對 `references/` 底下的每一個檔案、根目錄與 `references/` 內的 `.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，以及每一個已存在的 AI 設定路徑（例如 `CLAUDE.md`、`.claude/settings.json`、`docs/plan/15-ai-workflow.md`），執行 `git check-ignore -v`，全部都要命中規則才繼續。
-5. 執行 `git status --porcelain`，輸出不能出現 `references/`、`.DS_Store`、`01-materials.md`、`13-material-questions.md`，也不能出現任何 AI 設定路徑。
-6. 第一次 commit 只明確加入指定的檔案，例如 `git add .gitignore README.md LICENSE LICENSES/CC-BY-SA-4.0.txt NOTICE`；`docs/` 底下的文件逐一列出檔名加入（01、13、15 已被排除，也不要列出）。不使用 `git add -A` 或 `git add .`。README 的致謝段落要等老師看過文字與位置後才加入（第 8 節）。
-7. push 前執行 `git ls-files`，用 grep 比對 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`01-materials.md`、`13-material-questions.md` 與 AI 設定路徑（`.claude/`、`CLAUDE`、`AGENTS.md`、`.mcp.json`、`15-ai-workflow.md` 等），結果必須是空的；再用 `git log --all --name-only --format=` 對所有分支的歷史紀錄做同樣的比對，結果也必須是空的。
+   附加後確認第一行仍是 `references/`。教材衍生文件與 本機工具設定一律留在原位，只靠這些規則排除，不搬移任何檔案，也不建立 `docs/private/`。這一步必須在任何 `git add` 之前完成。
+4. 對 `references/` 底下的每一個檔案、根目錄與 `references/` 內的 `.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，以及每一個已存在的本機工具設定路徑（`.gitignore` 本機工具段落列出的），執行 `git check-ignore -v`，全部都要命中規則才繼續。
+5. 執行 `git status --porcelain`，輸出不能出現 `references/`、`.DS_Store`、`01-materials.md`、`13-material-questions.md`，也不能出現任何 本機工具設定路徑。
+6. 第一次 commit 只明確加入指定的檔案，例如 `git add .gitignore README.md LICENSE LICENSES/CC-BY-SA-4.0.txt NOTICE`；`docs/` 底下的文件逐一列出檔名加入（01、13 已被排除，也不要列出）。不使用 `git add -A` 或 `git add .`。README 的致謝段落要等老師看過文字與位置後才加入（第 8 節）。
+7. push 前執行 `git ls-files`，用 grep 比對 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`01-materials.md`、`13-material-questions.md` 與本機工具設定路徑（`.gitignore` 本機工具段落列出的），結果必須是空的；再用 `git log --all --name-only --format=` 對所有分支的歷史紀錄做同樣的比對，結果也必須是空的。
 8. 執行 `git ls-remote` 確認遠端狀態。若遠端已經有 commit，先 fetch 再 rebase；若遠端也有 `.gitignore`，合併方式是「保留本機每一行，再附加遠端新增的行」，禁止 `checkout --theirs` 或整份取代。絕不 force push。
-9. push 前停下來，由你確認。repo 是公開的（D3），這一步就是公開，git 歷史無法撤回。
+9. push 前停下來，由我確認。repo 是公開的（D3），這一步就是公開，git 歷史無法撤回。
 10. 以上完成後，才執行 `pnpm install`、加入 pre-commit hook（工具於 M0b 選定）與 CI。pre-commit hook 要等 `pnpm install` 之後才存在，CI 要等 push 之後才執行，所以兩者都只是後續的防線，前面的步驟才是第一道防線。
 
 **建立骨架的規則**（第 10 步之後，加入 `apps/web`、`packages/*` 等目錄時）：
@@ -860,9 +859,9 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | `ci.yml` | pull request、push 到 main | 第 10.2 節的全部工作；只跑受影響的套件（`pnpm --filter "...[origin/main]"`），改到 `packages/` 時，用到它的 app 測試也一起跑；`apps/web` 的建置輸入（`content/`、`schemas/`、`tools/`）有變動也算受影響，所以只改內容時同樣執行 `content:check` | 是 |
 | `deploy.yml` | `ci.yml` 在 main 上全部通過後，而且 `apps/web` 或它依賴的套件有變動（`apps/web` 的建置輸入 `content/`、`schemas/`、`tools/` 有變動也算，所以只改內容的合併同樣部署） | 在 `apps/web` 目錄執行 wrangler（`pnpm --filter @ledgerland/web exec wrangler deploy`，或 workflow 的 `working-directory: apps/web`），整批部署到 Cloudflare Workers（`ledgerland.swift.moe`）；`concurrency` 確保同時只有一個部署；部署後執行第 7.4 節的煙霧測試 | 不適用 |
 | `preview.yml` | pull request | 同樣在 `apps/web` 目錄以 `wrangler versions upload` 上傳不切換正式流量的版本，取得預覽網址並留言在 PR 上（指令與預覽網址的存取保護於 M0b 查證）；上傳後對預覽網址執行 Playwright E2E，全部通過才允許合併與部署；fork 的 PR 拿不到 secrets，不部署預覽，只靠 `ci.yml` 的 e2e 工作；Dependabot 的 PR 同樣拿不到 secrets（M0b 實測，2026-10-22，第一個 Dependabot PR 的 preview 工作因此失敗），workflow 以 `github.actor` 跳過 Dependabot 的 PR | 是 |
-| `scheduled.yml` | 每週一次 | 例外清單到期檢查、`pnpm audit`、對正式網址的 Lighthouse 趨勢紀錄（含 D7 的統計腳本） | 失敗時開 issue 提醒 |
+| `scheduled.yml` | 每週一次 | 例外清單到期檢查、`pnpm audit`、對正式網址的 Lighthouse 趨勢紀錄（含 D7 的統計腳本；門檻用實測 LCP，模擬值只記錄，06 第 8.2 節） | 失敗時開 issue 提醒 |
 
-所有 workflow 預設 `permissions: contents: read`；`actions/checkout` 一律設 `persist-credentials: false`。部署到 Cloudflare 不需要 GitHub 的額外權限，只需要 repo secrets 中的 `CLOUDFLARE_API_TOKEN`（權限只限這個帳號的 Workers 與 `swift.moe` 這個 zone 的必要範圍）與 `CLOUDFLARE_ACCOUNT_ID`；token 由你在 Cloudflare 建立並存進 repo secrets。若部署流程要建立 [08 題庫與後台](08-content-admin.md) 的 `content/v{n}` tag，只有 `deploy.yml` 另外加 `contents: write`。預覽網址是另一個 origin，進度不會和正式網址共用，一律視為測試資料，也不啟用統計。M7 的管理後台另有自己的部署 workflow（獨立的 Worker、`apps/admin/wrangler.jsonc` 與 D1 migration），細節在 M7 開工前定案。
+所有 workflow 預設 `permissions: contents: read`；`actions/checkout` 一律設 `persist-credentials: false`。部署到 Cloudflare 不需要 GitHub 的額外權限，只需要 repo secrets 中的 `CLOUDFLARE_API_TOKEN`（權限只限這個帳號的 Workers 與 `swift.moe` 這個 zone 的必要範圍）與 `CLOUDFLARE_ACCOUNT_ID`；token 由我在 Cloudflare 建立並存進 repo secrets。若部署流程要建立 [08 題庫與後台](08-content-admin.md) 的 `content/v{n}` tag，只有 `deploy.yml` 另外加 `contents: write`。預覽網址是另一個 origin，進度不會和正式網址共用，一律視為測試資料，也不啟用統計。M7 的管理後台另有自己的部署 workflow（獨立的 Worker、`apps/admin/wrangler.jsonc` 與 D1 migration），細節在 M7 開工前定案。
 
 已決定（2026-10-20）：部署維持由 GitHub Actions 執行 wrangler，不使用 Cloudflare 儀表板的 Git 整合（Workers Builds），理由見第 7.5 節。學習端的 workflow 一律在 `apps/web` 目錄執行 wrangler（M7 的後台 workflow 在 `apps/admin` 執行），所以目錄調整只改 repo 裡的 wrangler 設定與 workflow，不需要改 Cloudflare 的設定。
 
@@ -881,7 +880,7 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | e2e | Playwright 專案：`iphone-webkit`（iPhone 裝置設定加 WebKit）、`desktop-chromium`、`desktop-firefox`，另有 `reducedMotion: 'reduce'` 的專案並做截圖比對；純鍵盤操作流程；直接開啟中文與 `/en/` 的深層連結；作答中切換語言後題目、已選選項、計時與捲動位置都保留；離線測試（SW 就緒後切離線，冷啟動與導覽，含 `/en/` 網址）；把統計服務的網域攔截成失敗時，功能與離線測試都不受影響；更新提示測試（作答中不出現）；監聽 `securitypolicyviolation`，有任何 CSP 違規就失敗；INP 用腳本實際操作量測（作答一題、分類、在實驗室改一個數字）；PR 另由 `preview.yml` 對預覽網址再跑一次（第 10.1 節）。已決定（2026-10-23）：PR 的 ci 與 preview 只跑 Chromium 的兩個專案，push 到 main 才跑三個瀏覽器，縮短 PR 的等待時間 | 全部通過 |
 | axe | `@axe-core/playwright` 掃描固定頁面清單，兩種語系、淺色與深色各一次 | 沒有 serious 或 critical 問題 |
 | lighthouse | lighthouse 13 CLI 對本機伺服器跑固定網址，伺服器要重現 Workers 的行為（沒有對應檔案的路徑回 `index.html`、狀態碼 200，並套用 `_headers`；候選做法是在 `apps/web` 執行 `wrangler dev`，不穩定時改用自寫的靜態伺服器），每個網址 5 次取中位數（PR 上 3 次，2026-10-23 決定）；以 metric 做 assertion，不依賴 audit ID；記錄 `benchmarkIndex` 並據此校準 `cpuSlowdownMultiplier`。量測時照正式網站的方式載入 D7 的統計腳本，但送出目的地指向 stub 端點（不送出真實資料，設定見 06 第 8.2 節的 `perf/urls.json`），讓統計腳本的成本計入效能預算；正式網址的長期趨勢由 `scheduled.yml` 量測 | 行動版效能至少 90、無障礙至少 95；LCP 不超過 2.5 秒；CLS 不超過 0.1（只有 Chromium 量得到） |
-| hygiene | `git ls-files` 不得出現 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也不得出現 AI 設定路徑（`.claude/`、`CLAUDE.md`、`CLAUDE.local.md`、`AGENTS.md`、`.mcp.json`、`docs/plan/15-ai-workflow.md` 等）；`.gitignore` 仍包含上述排除規則；`release-age-exceptions.json` 與 `pnpm-workspace.yaml` 一致且沒有過期條目；`tools/` 的依賴方向檢查（各套件 `package.json` 的依賴符合第 8.2 節的方向，`packages/` 不引用 `apps/`）；純 TypeScript 套件的 DOM 禁用檢查（`web-ui` 以外的套件 tsconfig 的 `lib` 不列 `DOM`，第 8.3 節） | 全部通過 |
+| hygiene | `git ls-files` 不得出現 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也不得出現本機工具設定路徑（`.gitignore` 本機工具段落列出的）；`.gitignore` 仍包含上述排除規則；`release-age-exceptions.json` 與 `pnpm-workspace.yaml` 一致且沒有過期條目；`tools/` 的依賴方向檢查（各套件 `package.json` 的依賴符合第 8.2 節的方向，`packages/` 不引用 `apps/`）；純 TypeScript 套件的 DOM 禁用檢查（`web-ui` 以外的套件 tsconfig 的 `lib` 不列 `DOM`，第 8.3 節） | 全部通過 |
 
 固定量測網址：首頁 `/`、一個章節頁 `/chapter/<chapterId>/`（頁面上是該章的關卡列表，例如 `/chapter/ch_c5f8w2/`）、一個作答頁 `/level/<levelId>/`（例如 `/level/lv_k7m2q9xd/`）、實驗室故事第 7 筆 `/lab/story/<storyId>/<stepId>/`（例如 `/lab/story/story_k8p3x6/st_r2x9k4/`），另加同一個關卡的英文作答頁 `/en/level/<levelId>/`（例如 `/en/level/lv_k7m2q9xd/`，D5），確認英文殼層與英文 catalog 同樣達標。實際清單寫在 06 的 `perf/urls.json`，兩份文件一致。路由格式以 [02 網站架構](02-site-architecture.md) 為準，所有路徑都帶結尾斜線，ID 格式依 [08 題庫與後台](08-content-admin.md) 第 4.1 節（以上 ID 為示意）。作答頁與實驗室都經由 SPA fallback 直接開啟。還沒有對應頁面的里程碑，只量已存在的頁面。
 
@@ -963,12 +962,12 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 路徑依 [02 網站架構](02-site-architecture.md) 的頁面地圖，中文是 `/privacy/`，英文是 `/en/privacy/`（D5），內容至少包括：
 
 - 不需要登入，不收集姓名、email 或任何個人資料。
-- 學習進度、設定與錯誤紀錄只存在你的裝置上（IndexedDB 與 localStorage），不會上傳。
+- 學習進度、設定與錯誤紀錄只存在我的裝置上（IndexedDB 與 localStorage），不會上傳。
 - 網站本身不寫入 cookie，也沒有廣告。
 - 流量統計（D7）：寫明服務名稱、收集的內容（例如瀏覽的頁面路徑、瀏覽器類型與載入效能，以查證結果為準；網址只送路徑，查詢字串一律去掉）、不使用 cookie、不收集個資，以及資料由誰保存；只在正式網址啟用。
 - 相機（D10(a)）：只在你按下「掃描 QR」時才要求相機權限；影像只在裝置上解碼，不上傳也不保存。
 - 主機業者（Cloudflare）會記錄存取紀錄（包括 IP 位址），依主機業者的政策保存。
-- 匯出的備份檔只包含學習進度；錯誤紀錄要不要附在匯出檔裡由你選擇。
+- 匯出的備份檔只包含學習進度；錯誤紀錄要不要附在匯出檔裡由我選擇。
 - 如何刪除資料：「我的 › 設定」的「清除這台裝置上的資料」（需再次確認，見 02 第 7 節），或在瀏覽器清除網站資料；提醒刪除後無法復原，建議先到「我的 › 備份」（`/me/backup/`）匯出。
 - Safari 分頁與主畫面 App 的資料很可能是分開的，以及「降低被清除的機率」的說明（不承諾不會被清除，見 [06 PWA 與響應式](06-pwa-responsive.md)）。
 
@@ -987,11 +986,11 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 - Workers 預覽網址（`wrangler versions upload`）的存取保護、是否預設公開與費用，本次沒有查證。
 - oxlint-tsgolint 是否內建自己的 TypeScript 7 引擎，以及它和 `tsc` 6 結果不一致的程度（研究標為 UNCERTAIN）。
 - 匯出備份檔（blob 下載與分享表單）在本文件的 CSP 下是否正常運作。
-- M0a 的 HTTPS 預覽與 M0b 的部署，要在 `swift.moe` 所在的 Cloudflare 帳號建立 API token（權限只限 Workers 與這個 zone 的必要範圍）；token 要由你建立並存進 repo secrets。
+- M0a 的 HTTPS 預覽與 M0b 的部署，要在 `swift.moe` 所在的 Cloudflare 帳號建立 API token（權限只限 Workers 與這個 zone 的必要範圍）；token 要由我建立並存進 repo secrets。
 - data mode 下「中文沒有語系段、英文在 `/en/`」由同一個函式產生兩組路由的寫法是否順利（不順利時才改用 `en?` 選用路由段的退路），以及 Workers 的 SPA fallback 是否套用 `_headers`、遺失的 `/assets/` 檔案回 404 還是殼層、沒有結尾斜線的網址如何補斜線，建議列為 M0a 的實測事項。
 - D7 統計服務（候選 Cloudflare 網頁分析）的腳本與回報網域、單頁應用換頁的計入方式、在 `Referrer-Policy: no-referrer` 下能否運作、能否關閉邊緣自動插入腳本，本次沒有查證，要在 M0b 開工前查證。
 - 是否在設定頁提供「不傳送統計」的開關（D7 沒有要求，屬於額外的隱私選項），供統一審稿時決定。
 - D12 的 Excel 範本需要「判分方式」下拉欄：哪一個符合授權白名單的函式庫能寫出含資料驗證清單的 `.xlsx`，或改為手工維護範本檔，要在 M6 開工前查證。
 - D10(a) 的 QR 解碼器是否需要 WebAssembly 或 `blob:` Worker（會影響 CSP），以及 iOS 主畫面 App 與 iOS 17 上相機權限的實際行為，要在 M2 開工前查證。
 - `Strict-Transport-Security` 是否啟用與 max-age 數值，以及 `ledgerland` 這個主機名稱在 DNS 上沒有既有記錄，要在 M0b 確認。
-- 2026-10-20 的 repo 結構與隔離環境決定（已決定六、七）帶來的查證與驗證事項，已列在 [14 待確認](14-open-questions.md) 第 5 節，不新增 registry 編號：`apps/mobile` 的技術（建議 M3 完成後由你決定，第 5.2 節）；Lingui macroTransform 對 workspace 套件原始碼的處理（M0b，第 5.3 節）；pnpm 11 由專案管理 Node 版本的寫法、Cloudflare Workers 退回上一版的指令、pnpm store 放在 repo 內時 CI 快取的設定（都在 M0b，第 5.4 節）。
+- 2026-10-20 的 repo 結構與隔離環境決定（已決定六、七）帶來的查證與驗證事項，已列在 [14 待確認](14-open-questions.md) 第 5 節，不新增 registry 編號：`apps/mobile` 的技術（建議 M3 完成後由我決定，第 5.2 節）；Lingui macroTransform 對 workspace 套件原始碼的處理（M0b，第 5.3 節）；pnpm 11 由專案管理 Node 版本的寫法、Cloudflare Workers 退回上一版的指令、pnpm store 放在 repo 內時 CI 快取的設定（都在 M0b，第 5.4 節）。

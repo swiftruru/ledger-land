@@ -497,8 +497,8 @@ describe('Segmented（findings foundation-1、foundation-3）', () => {
       expect(r.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
       expect(r.getBoundingClientRect().right).toBeLessThanOrEqual(group.getBoundingClientRect().right + 0.5);
     }
-    // 放不下一列：改成等寬格子（英文「Reduce transparency」兩欄也放不下，每列一個）
-    expect(group.classList.contains('ll-seg--stack')).toBe(true);
+    // 放不下一列：改成等寬格子（英文「Reduce transparency」兩欄也放不下，每列一個）。量是在 ResizeObserver 第一次回呼時做（不在掛載的同一個任務裡），用 poll 等
+    await expect.poll(() => group.classList.contains('ll-seg--stack')).toBe(true);
     screen.unmount();
   });
   function Zh({ width }: { width: number }) {

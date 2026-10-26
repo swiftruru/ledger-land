@@ -69,7 +69,7 @@ origin 一旦讓學生用了就很難換（第 5 節），這也是 D4 要在第
 | A 自有網域的子網域，DNS 在 Cloudflare | Cloudflare Workers Static Assets | 採用（`ledgerland.swift.moe`） | 可用 `_headers` 設定 CSP、快取分層與安全標頭；深層連結回 200；靜態請求免費且不限量；網域續約與 DNS 要長期維護 |
 | B 學校子網域，DNS 由學校管理 | Cloudflare Pages 或 GitHub Pages 自訂網域 | 未採用 | Workers 自訂網域需要自己擁有且啟用的 Cloudflare zone；DNS 變更要經過學校；GitHub Pages 無法自訂 header（CSP 只能用 meta）、SPA 退路只能用 404.html（狀態碼 404）、快取固定 `max-age=600` |
 | C 另購專用網域 | 同 A | 未採用 | 每年費用、要另外管理；已有 DNS 在 Cloudflare 的 `swift.moe`，不需要另購 |
-| 不建議 | `swiftruru.github.io/ledger-land/` | 未採用，只適合內部測試 | 這個 origin 已被你其他的 GitHub Pages 專案共用：IndexedDB、localStorage、配額與淘汰判斷都是同一份，其他專案的腳本（包括它們的 XSS）能讀寫 LedgerLand 的進度；其他專案若在根 scope 註冊 SW，也會攔截 `/ledger-land/` 的請求 |
+| 不建議 | `swiftruru.github.io/ledger-land/` | 未採用，只適合內部測試 | 這個 origin 已被我其他的 GitHub Pages 專案共用：IndexedDB、localStorage、配額與淘汰判斷都是同一份，其他專案的腳本（包括它們的 XSS）能讀寫 LedgerLand 的進度；其他專案若在根 scope 註冊 SW，也會攔截 `/ledger-land/` 的請求 |
 
 未採用的選項：B（學校 DNS 與主機限制多）、C（成本與管理負擔，沒有必要）、`swiftruru.github.io`（共用 origin 的安全與儲存問題）。
 
@@ -282,7 +282,7 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 2. 真正決定顏色的三個來源要一致：`html`／`body` 背景、頂部區域的背景、`theme-color`。頂部用 `padding-top: env(safe-area-inset-top)` 加上與 `body` 同色的實色區域，這樣不論狀態列是否透明、safe area 是否回傳 0，畫面都不會破。
 3. 浮動 Tab bar 不貼齊螢幕底邊（離 safe area 至少 8px），避免被 Safari 當成取色來源；隱藏的覆蓋層用 `display: none`，不要只設 `visibility: hidden` 或 `opacity: 0`（細節見 07 第 6.6 節）。
 4. **Android 啟動畫面**：由 `name`、`background_color` 與 512 圖示自動產生，確定要做。
-5. **iOS 啟動畫面**：M0a 用 assets-generator 產生淺深兩套 `apple-touch-startup-image`，在 iOS 26 與 27 實機上確認是否生效。M0a 結果（2026-10-21，iOS 27 與 18.6 Simulator，實機待重測）：有效，但有三個條件。(a) 頁面必須有 `<meta name="apple-mobile-web-app-capable" content="yes">`，iOS 才會下載啟動圖，只靠 manifest 的 `display: standalone` 不夠（另加 `mobile-web-app-capable`，避免 Chromium 的棄用警告）；(b) 啟動圖在「加入主畫面」那一刻依 iPhone 系統當時的淺色或深色固定一張，之後切換系統外觀或網站自己的外觀設定都不會跟著變（WebKit bug 259328），網站的外觀設定也不會帶進新加入的 App，因為 Safari 的網站資料不會複製到 App；(c) `media` 條件不要測 `device-height`（WebKit bug 326500，iOS 27.0.1），只用寬度與像素比。實機（iOS 27）的「深色啟動圖失敗」在 2026-10-22 查明不是 bug：你的 iPhone 系統其實是淺色，Safari 分頁看起來是深色是因為網站自己的外觀設定選了深色；新加入的 App 從空的 localStorage 開始（V02 的儲存隔離），所以跟隨系統顯示淺色，iOS 也正確選了淺色啟動圖。結論兩條：測深色啟動圖要用「設定 › 螢幕顯示與亮度 › 深色」，不是網站的外觀設定；Safari 裡手動選的外觀不會帶進新加入的 App，App 第一次啟動一律跟隨系統，所以 App 內要提供外觀選項（16 第 7 節的設定頁已涵蓋），安裝教學可以提一句。系統切成深色後重新加入，實機（iOS 27）看到深色啟動圖，V05 淺色與深色都已通過（2026-10-22）。若無效或效果不佳，退路是不提供啟動圖，改由 HTML 內聯的單色背景加置中圖示（inline SVG）當作載入畫面，React 掛載後移除；這個載入畫面要固定尺寸，不能造成版面位移。
+5. **iOS 啟動畫面**：M0a 用 assets-generator 產生淺深兩套 `apple-touch-startup-image`，在 iOS 26 與 27 實機上確認是否生效。M0a 結果（2026-10-21，iOS 27 與 18.6 Simulator，實機待重測）：有效，但有三個條件。(a) 頁面必須有 `<meta name="apple-mobile-web-app-capable" content="yes">`，iOS 才會下載啟動圖，只靠 manifest 的 `display: standalone` 不夠（另加 `mobile-web-app-capable`，避免 Chromium 的棄用警告）；(b) 啟動圖在「加入主畫面」那一刻依 iPhone 系統當時的淺色或深色固定一張，之後切換系統外觀或網站自己的外觀設定都不會跟著變（WebKit bug 259328），網站的外觀設定也不會帶進新加入的 App，因為 Safari 的網站資料不會複製到 App；(c) `media` 條件不要測 `device-height`（WebKit bug 326500，iOS 27.0.1），只用寬度與像素比。實機（iOS 27）的「深色啟動圖失敗」在 2026-10-22 查明不是 bug：我的 iPhone 系統其實是淺色，Safari 分頁看起來是深色是因為網站自己的外觀設定選了深色；新加入的 App 從空的 localStorage 開始（V02 的儲存隔離），所以跟隨系統顯示淺色，iOS 也正確選了淺色啟動圖。結論兩條：測深色啟動圖要用「設定 › 螢幕顯示與亮度 › 深色」，不是網站的外觀設定；Safari 裡手動選的外觀不會帶進新加入的 App，App 第一次啟動一律跟隨系統，所以 App 內要提供外觀選項（16 第 7 節的設定頁已涵蓋），安裝教學可以提一句。系統切成深色後重新加入，實機（iOS 27）看到深色啟動圖，V05 淺色與深色都已通過（2026-10-22）。若無效或效果不佳，退路是不提供啟動圖，改由 HTML 內聯的單色背景加置中圖示（inline SVG）當作載入畫面，React 掛載後移除；這個載入畫面要固定尺寸，不能造成版面位移。
 6. M0a 完成標準：Android 與 iPhone 實機安裝截圖，涵蓋主畫面圖示、啟動畫面、狀態列顏色，淺色與深色各一張【待實測 V05】。
 
 來源：https://bugs.webkit.org/show_bug.cgi?id=301994 、https://bugs.webkit.org/show_bug.cgi?id=305546 、https://github.com/mdn/browser-compat-data/pull/28503 （查證日期 2026-10-20）
@@ -1083,6 +1083,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
 
 - 用 **lighthouse 13 CLI**（13.5.0，2026-09-18 發布，需要 Node 22.19 以上；09 選定的 Node 24 LTS 符合），不用 Lighthouse CI：`@lhci/cli` 0.15.1 內建的仍是 Lighthouse 12.6.1，audit ID 與 DevTools、PageSpeed Insights 用的 13.x 不同。
 - 每個網址跑 **5 次取中位數**。CI runner 效能浮動大，只跑一次的結果時好時壞。
+- 每週對正式網址的檢查（`scheduled.yml`，`pnpm perf --observed`，2026-10-27 起）：LCP 看實測值（網路不節流、CPU 4 倍降速）≤ 3000ms（闖關地圖最重，單次實測 2.3 到 2.6 秒；web.dev 的 2.5 秒是不降速的真實使用者數字），模擬值與效能分數只記錄當趨勢。真實邊緣每個請求約 50 到 60ms 的伺服器延遲會被 Lighthouse 的模擬逐層放大，swift.moe 這個 zone 的 Web Analytics 自動注入又在 HTML 多一段第三方 script（維護者決定留著，其他子網域要用），正式站模擬 LCP 3.5 到 4.2 秒、實測 0.3 到 1.6 秒；比較建置好壞用本機伺服器的模擬值（PR 與 main），正式站用實測值看使用者真的等多久。
 - assertion 只看 metric 數值（LCP、TBT、CLS、總傳輸量）與類別分數，不依賴會改名的 insight 或 opportunity audit（Lighthouse 13.0 已把舊的效能 audit 換成 insights，另移除 8 個沒有替代的 audit；效能計分方式不變）。
 - 記錄每次報告的 `benchmarkIndex`，據此校準 `--throttling.cpuSlowdownMultiplier`。Lighthouse 預設的行動節流是 simulated：RTT 150ms、下行 1.6 Mbps、上行 750 Kbps、CPU 4 倍減速，模擬中階行動裝置；`benchmarkIndex` 125 到 800 為中階、低於 125 為低階。另加一組 6 倍減速的低階設定，代表較舊的 Android 手機。
 - **M0b 的兩個實測教訓（2026-10-22）**：(1) 會插入到內容上方的元素（語言切換提示、橫幅）必須在首次繪製就決定要不要顯示或預留空間，不能在 effect 裡才插入，否則會把下面的卡片往下推，首頁與作答頁的 CLS 曾因此到 0.073 與 0.097；(2) 內容頁不能在頁面 chunk 載入後才開始串行請求 manifest 與內容快照，名詞頁曾因此比列表頁多約 450ms、LCP 超過 2.5 秒；做法是殼層 `preload` manifest、App 啟動就讀 manifest、路由在載入 chunk 的同時讀快照。
@@ -1271,7 +1272,7 @@ iPhone 實機測試 SW 需要 secure context，`http://` 加區網 IP 不算，�
 - iPhone 上的 Chrome、Edge 等瀏覽器加入主畫面的實際步驟與結果（是否同樣以 web app 開啟、是否與 Safari 分頁共享儲存）。屬於實機驗證。
 - iOS 26、27 在 Compact 與 Top／Bottom 分頁列版面下，「加入主畫面」的實際步驟與按鈕位置（圖解教學的依據目前只有第三方教學），以及從 iOS 18 升級的裝置是否保留原本的分頁列設定。屬於實機驗證。
 - iOS 26、27 主畫面 App 中，`navigator.share({ files })` 分享 JSON 時是否出現「儲存到檔案」，以及 `<a download>` 是否正常。屬於實機驗證。
-- 給老師分享用的連結是否加上 LINE 的「以外部瀏覽器開啟」參數：先查證 LINE 現行行為，再由你決定。
+- 給老師分享用的連結是否加上 LINE 的「以外部瀏覽器開啟」參數：先查證 LINE 現行行為，再由我決定。
 - Safari 26 擴大套用的進階指紋保護，是否影響第一方學習網站的 localStorage 或 IndexedDB 存活時間（目前只知道它針對已知的指紋腳本）。屬於查證。
 - iOS 17、26、27 的主畫面 App 與 Safari 分頁中，`getUserMedia` 的相機權限提示頻率（是否每次啟動都重新詢問）、拒絕後如何重新允許，以及後鏡頭的選擇是否可靠（App 內掃描課堂 QR，4.9）。屬於實機驗證。
 - Cloudflare Workers 的 `single-page-application` 模式下，非導覽請求（舊的 chunk、內容 JSON）找不到檔案時回 404 還是殼層 HTML（3.5、9.1）。屬於部署後實測。
