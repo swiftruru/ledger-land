@@ -130,10 +130,13 @@ function useCentredLabel(on: boolean) {
     };
     const ro = new ResizeObserver(fit);
     ro.observe(label);
-    void document.fonts?.ready.then(fit);
+    // 字型載入完成再量一次：loadingdone 事件而不是 document.fonts.ready（後者的 getter 會強制同步排版，見 Segmented.tsx）
+    const fonts = document.fonts;
+    fonts?.addEventListener('loadingdone', fit);
     return () => {
       live = false;
       ro.disconnect();
+      fonts?.removeEventListener('loadingdone', fit);
       icon.style.transform = label.style.transform = '';
     };
   }, [on]);

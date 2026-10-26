@@ -75,12 +75,25 @@ export function Segmented<T extends string>({ value, options, onChange, label, l
       if (stacked) el.classList.add('ll-seg--stack');
       setCols(next);
     };
-    measure();
+    // 不在掛載的同一個任務裡量：量寬度會強制排版，掛載時整頁的第一次樣式計算與排版就被拉進啟動的 JS 長任務（名詞圖鑑 2026-10-26 CI
+    // 量到 TBT 279ms，剖析裡這個函式自耗 125ms）。ResizeObserver 開始觀察後會在下一次排版之後先回呼一次，就用那一次當第一次量；
+    // 沒有 ResizeObserver 時退到下一個影格。量到之前 flex-wrap 的換列保底不會溢出（檔頭）
     const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
-    if (el.parentElement) ro?.observe(el.parentElement);
-    void document.fonts?.ready.then(measure);
-    return () => ro?.disconnect();
-  });
+    let raf = 0;
+    if (ro && el.parentElement) ro.observe(el.parentElement);
+    else raf = requestAnimationFrame(measure);
+    // 字型載入完成再量一次：用 loadingdone 事件，不用 document.fonts.ready（那個 getter 在 Chromium 會強制一次同步排版，
+    // 第一次 commit 時等於把整頁的第一次樣式計算與排版拉進啟動的 JS 長任務，2026-10-26 trace 量到 95ms（4 倍降速））
+    const fonts = typeof document !== 'undefined' ? document.fonts : undefined;
+    fonts?.addEventListener('loadingdone', measure);
+    return () => {
+      ro?.disconnect();
+      cancelAnimationFrame(raf);
+      fonts?.removeEventListener('loadingdone', measure);
+    };
+    // 只在掛載與選項數改變時重新接上量測：原本沒有相依陣列，父層每一次重繪都切換 class 再量寬度。尺寸（size）改變時 ResizeObserver 會回呼；
+    // 選項文字換語言時路徑也換、整頁重新掛載，不用列入
+  }, [n]);
   return (
     <div
       ref={group}
