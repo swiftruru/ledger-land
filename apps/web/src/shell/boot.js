@@ -26,6 +26,64 @@
   }
   root.lang = /^\/en(\/|$)/i.test(path) ? 'en' : 'zh-TW';
 
+  // 依路徑預先載入（06 第 8.2 節、14 第 5.2 節）：這一頁的頁面 chunk（含靜態 import）、目前語言的訊息 catalog 與第一次繪製要讀的內容快照，
+  // 和殼層入口 chunk 同時開始下載，不必等入口執行完、路由解析完才一層一層發請求。表格由 tools/postbuild.mjs 在建置後填入
+  // （tools/lib/preload-table.mjs，路由表在 src/shell/route-preload.json）；開發模式與沒有表格時是 null，什麼都不做。
+  // 內容快照用 as=fetch 加 crossorigin，和 lib/content.ts 的 fetch() 同一組 mode 與 credentials 才會被重用。
+  var PRELOAD = __LL_PRELOAD__;
+  if (PRELOAD) {
+    try {
+      var lang = root.lang;
+      var langIndex = PRELOAD.m.l.indexOf(lang);
+      var rel = path.replace(/^\/en(?=\/|$)/i, '').toLowerCase() || '/';
+      if (rel.charAt(rel.length - 1) !== '/') rel += '/';
+      var head = document.head;
+      var addLink = function (href, kind) {
+        var l = document.createElement('link');
+        if (kind === 'js') l.rel = 'modulepreload';
+        else {
+          l.rel = 'preload';
+          l.as = kind === 'css' ? 'style' : 'fetch';
+          if (kind === 'json') l.crossOrigin = 'anonymous';
+        }
+        l.href = href;
+        head.appendChild(l);
+      };
+      var addAssets = function (list) {
+        for (var i = 0; i < list.length; i++) {
+          var f = PRELOAD.a[list[i]];
+          addLink('/assets/' + f, /\.css$/.test(f) ? 'css' : 'js');
+        }
+      };
+      addAssets(PRELOAD.c[lang] || []);
+      addAssets(PRELOAD.w || []);
+      for (var r = 0; r < PRELOAD.r.length; r++) {
+        var route = PRELOAD.r[r];
+        var hit = new RegExp(route[0]).exec(rel);
+        if (!hit) continue;
+        addAssets(route[1]);
+        var id = hit[1];
+        for (var k = 0; k < route[2].length; k++) {
+          var kind = route[2][k];
+          var cm = PRELOAD.m;
+          if (kind === 'chapterIndex') addLink('/' + cm.ci[lang], 'json');
+          else if (kind === 'termIndex') addLink('/' + cm.ti[lang], 'json');
+          else if (kind === 'tombstones') addLink('/' + cm.tb, 'json');
+          else if (kind === 'level' && id && cm.lv[id]) addLink('/content/' + lang + '/' + id + '.' + cm.lv[id][langIndex] + '.json', 'json');
+          else if (kind === 'termDetail' && id)
+            for (var t = 0; t < cm.l.length; t++) {
+              var bucket = id.slice(-1);
+              var h = cm.td[cm.l[t]] && cm.td[cm.l[t]][bucket];
+              if (h) addLink('/content/' + cm.l[t] + '/terms-' + bucket + '.' + h + '.json', 'json');
+            }
+        }
+        break;
+      }
+    } catch (e) {
+      /* 預先載入失敗不影響頁面：之後照常由路由載入 */
+    }
+  }
+
   // isAppMode()（06 第 2.7 節）：三種訊號都看，原始值留給 debug 頁
   var dm = {
     standalone: mq('(display-mode: standalone)'),

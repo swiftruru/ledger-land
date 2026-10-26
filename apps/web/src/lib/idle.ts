@@ -37,3 +37,14 @@ export function afterFirstPaint(fn: () => void, settleMs = 400, timeout = 2000):
     if (timer !== null) clearTimeout(timer);
   };
 }
+
+let settled: Promise<void> | null = null;
+
+/** App 第一次繪製送出之後（afterFirstPaint 的時間點）才 resolve 的單例 Promise：只有冷啟動的第一頁要等，之後換頁時早就 resolve 了。
+ *  給「畫面上看得到、但不是主要內容」的裝飾性資源用（地圖的章節場景），讓它們不排在 LCP 前面（06 第 8.2 節） */
+export function firstPaintSettled(): Promise<void> {
+  settled ??= new Promise<void>((resolve) => {
+    afterFirstPaint(resolve);
+  });
+  return settled;
+}

@@ -1,5 +1,8 @@
 // ProgressStore 的 IndexedDB 實作（06 第 4.1 到 4.4 節）。每個寫入都是一個交易、立刻 await 完成（每答一題就寫一次）。
-// 錯誤處理（4.4）：QuotaExceededError 通知畫面並把這筆寫入排進暫存佇列；其他錯誤重開連線再試一次，仍失敗就排進暫存佇列、寫精簡快照並通知畫面。
+// 快速跳頁的補強（14 第 5.2 節）：有對應 PendingOp 的寫入在開交易之前先同步排進暫存佇列（localStorage 的 ll:pending），交易 complete 後才移除；
+// 頁面在 complete 前被關閉（作答後馬上整頁跳轉、pagehide、visibilitychange 轉 hidden 後被回收）時這一筆留在佇列，下次啟動 replayPending 補寫。
+// 不需要另外監聽 pagehide：IndexedDB 沒有同步提交的辦法，能做的只有「先留底、再開交易」。appendError 重放會多一筆，所以只在失敗時才排進佇列。
+// 錯誤處理（4.4）：QuotaExceededError 通知畫面並把這筆寫入留在暫存佇列；其他錯誤重開連線再試一次，仍失敗就留在暫存佇列、寫精簡快照並通知畫面。
 // 其他分頁要升級（blocking）時 suspend()：關閉連線，之後的寫入全部進暫存佇列，讀取會 throw StoreSuspendedError（畫面提示重新整理）。
 import { dueToday } from '@ledgerland/quiz';
 import {
@@ -7,6 +10,7 @@ import {
   DATA_STORES,
   DB_SCHEMA_VERSION,
   ERRORS_MAX,
+  LEARNING_SETTING_KEYS,
   META_KEY,
   compareCodeUnits,
   compareIso,
@@ -58,6 +62,11 @@ export function isQuotaExceeded(e: unknown): boolean {
   return (
     (e instanceof Error && e.name === 'QuotaExceededError') || (typeof e === 'object' && e !== null && (e as { name?: unknown }).name === 'QuotaExceededError')
   );
+}
+
+/** 重放兩次結果相同的操作才在交易前先排進佇列；appendError 重放會多一筆錯誤紀錄，只在失敗時才留 */
+function replaysIdempotently(op: PendingOp): boolean {
+  return op.op !== 'appendError';
 }
 
 function sortAttempts(list: Attempt[]): Attempt[] {
@@ -127,37 +136,49 @@ export class IndexedDBProgressStore implements ProgressStore {
     }
   }
 
-  /** 寫入：有對應的 PendingOp 時失敗不 throw（已排進佇列）；沒有的操作（匯入、重建）失敗會 throw */
+  /**
+   * 寫入：有對應的 PendingOp 時先同步排進暫存佇列、交易 complete 後移除，失敗也不 throw（留在佇列）；
+   * 沒有 PendingOp 的操作（匯入、重建、meta）失敗會 throw。
+   */
   private async write(pendingOp: PendingOp | undefined, op: (db: ProgressDB) => Promise<void>): Promise<void> {
+    const queue = pendingOp === undefined ? undefined : this.hooks.pending;
     if (this.suspended) {
-      if (pendingOp !== undefined && this.hooks.pending !== undefined) {
-        this.hooks.pending.push(pendingOp);
+      if (pendingOp !== undefined && queue !== undefined) {
+        // 不是進行中的寫入：留給重新整理後（或其他分頁下次啟動時）重放，不持有鎖
+        queue.disown(queue.push(pendingOp, this.hooks.now()));
         return;
       }
       throw new StoreSuspendedError();
     }
+    // 先留底再開交易（同步寫 localStorage，記下排入時間）；交易完成後只移除自己這一筆
+    const ticket = pendingOp !== undefined && queue !== undefined && replaysIdempotently(pendingOp) ? queue.push(pendingOp, this.hooks.now()) : undefined;
+    const settle = (): void => {
+      if (ticket !== undefined) queue?.remove(ticket);
+    };
+    /** 失敗時確保這一筆在佇列裡（並放掉進行中的標記，讓下次啟動的任何分頁都能重放）；回傳 false 表示沒有佇列可留（呼叫端要 throw） */
+    const keep = (): boolean => {
+      if (pendingOp === undefined || queue === undefined) return false;
+      queue.disown(ticket ?? queue.push(pendingOp, this.hooks.now()));
+      return true;
+    };
     try {
       await op(await this.conn());
+      settle();
       return;
     } catch (e) {
       if (isQuotaExceeded(e)) {
         this.hooks.onQuotaExceeded?.();
-        if (pendingOp !== undefined && this.hooks.pending !== undefined) {
-          this.hooks.pending.push(pendingOp);
-          return;
-        }
+        if (keep()) return;
         throw e;
       }
       this.dropConnection();
     }
     try {
       await op(await this.conn());
+      settle();
     } catch (e2) {
       this.hooks.onWriteFailed?.(await this.liteSnapshot());
-      if (pendingOp !== undefined && this.hooks.pending !== undefined) {
-        this.hooks.pending.push(pendingOp);
-        return;
-      }
+      if (keep()) return;
       throw e2;
     }
   }
@@ -382,7 +403,8 @@ export class IndexedDBProgressStore implements ProgressStore {
       }
       await tx.done;
     });
-    if (options.settings) for (const s of next.settings) this.hooks.onSettingChanged?.(s.key, s.value);
+    // 偏好只有勾選套用時才會變；學習資料的鍵（收藏）不論選項都可能變，一併通知（目前的鏡像只收 locale 與 timerEnabled，收藏不經過這個 hook 讀）
+    for (const s of next.settings) if (options.settings || LEARNING_SETTING_KEYS.includes(s.key)) this.hooks.onSettingChanged?.(s.key, s.value);
     return next;
   }
 

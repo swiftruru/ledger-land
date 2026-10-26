@@ -5,6 +5,8 @@ export const site = {
   base: '/',
   /** manifest 的 id：設定後永遠不改（06 第 2.1 節） */
   manifestId: '/',
+  /** manifest 的檔名（vite-plugin-pwa 的 manifestFilename）；殼層在第一次繪製送出後才插入 <link rel="manifest">（app/manifest-link.ts） */
+  manifestFile: 'manifest.webmanifest',
   /** 正式 origin（D4）：只有這個 origin 的建置會把統計送到正式端點 */
   productionOrigin: 'https://ledgerland.swift.moe',
   name: 'LedgerLand 會計樂園',

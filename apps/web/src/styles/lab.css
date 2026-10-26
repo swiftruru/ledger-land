@@ -1,0 +1,81 @@
+/* 實驗室占位頁（Placeholder.tsx，Tab bar 的頂層頁；頁面組 pages-b）。第 5 輪驗收後從 notices.css 搬出來：
+   notices.css 由 Banners.tsx 匯入、在首次載入的 CSS 裡，實驗室頁是懶載入的路由，這些規則不必跟著首頁一起下載（首次載入 CSS 預算 30 KB）。 */
+.ll-lab-soon {
+  margin: var(--ll-space-4) 0 0;
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+}
+/* 實驗室占位頁的三張預告小卡（第 1 輪驗收）：不可點，所以不像 NavRow（沒有卡片陰影、沒有 card-ring、圖示不加底色方塊、沒有箭頭與滑過效果）；
+   虛線外框加透明底是「還沒開放的空位」（和名詞圖鑑的「還沒收進」同一種語言），右上角 Badge「即將開放」。
+   手機一欄：圖示、標題、標示同一列，說明在下面；600 以上三欄：圖示與標示在第一列，標題與說明各一列 */
+.ll-lab-features {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ll-space-3);
+  margin: var(--ll-space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ll-lab-feature {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'icon title badge'
+    '. desc desc';
+  column-gap: var(--ll-space-3);
+  row-gap: var(--ll-space-1);
+  align-items: center;
+  align-content: start;
+  padding: var(--ll-space-4);
+  border: 1.5px dashed var(--ll-border-strong);
+  border-radius: var(--ll-radius-lg);
+  background: transparent;
+}
+.ll-lab-feature__icon {
+  grid-area: icon;
+  display: inline-flex;
+  color: var(--ll-text-2);
+}
+.ll-lab-feature__icon svg {
+  width: 24px;
+  height: 24px;
+}
+.ll-lab-feature__title {
+  grid-area: title;
+  margin: 0;
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+  font-weight: 600;
+}
+.ll-lab-feature__badge {
+  grid-area: badge;
+  justify-self: end;
+  white-space: nowrap;
+}
+.ll-lab-feature__desc {
+  grid-area: desc;
+  margin: 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  /* 斷行用全站預設（第 7 輪：基礎組定在 web-ui，逐字換行、line-break: strict、base.css 的 p 有 pretty）；
+     不再用 keep-all（只在標點處斷時一行短好幾個字，分句比一行長還會把句號硬斷到下一行） */
+}
+/* 600 以上三欄：欄寬窄，標題自己一整列（不會斷成「三張報表一起／動」） */
+@media (min-width: 600px) {
+  .ll-lab-features {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .ll-lab-feature {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'icon badge'
+      'title title'
+      'desc desc';
+    row-gap: var(--ll-space-2);
+  }
+  .ll-lab-feature__icon {
+    margin-bottom: var(--ll-space-1);
+  }
+}

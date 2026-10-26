@@ -17,7 +17,7 @@ export const TABS: TabDef[] = [
   { id: 'play', path: 'play/', also: ['level/', 'chapter/', 'review/'], label: { 'zh-TW': '闖關', en: 'Quest' }, icon: 'map-trifold' },
   { id: 'lab', path: 'lab/', also: [], label: { 'zh-TW': '實驗室', en: 'Lab' }, icon: 'flask' },
   { id: 'terms', path: 'terms/', also: [], label: { 'zh-TW': '圖鑑', en: 'Terms' }, icon: 'cards' },
-  { id: 'me', path: 'me/', also: ['install/', 'privacy/', 'about/'], label: { 'zh-TW': '我的', en: 'Me' }, icon: 'user-circle' },
+  { id: 'me', path: 'me/', also: ['install/', 'privacy/', 'about/', 'design/', 'debug/'], label: { 'zh-TW': '我的', en: 'Me' }, icon: 'user-circle' },
 ];
 
 export const NAV_LABEL = { 'zh-TW': '主要導覽', en: 'Main' } as const;

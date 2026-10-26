@@ -2,6 +2,7 @@
 // 規則：不寫在殼層 HTML；App 掛載完成、load 事件之後，用 requestIdleCallback 插入 async 腳本；離線不插入；
 // 只有正式 origin 送到正式端點；CI 的效能量測帶 ?ll-analytics=stub 時照正式方式載入腳本，但把送出目的地改到同源的 stub 端點；
 // 失敗一律略過：不重試、不顯示、不寫錯誤紀錄。SW 不 precache 它（generateSW 不處理跨來源）。
+import { afterFirstPaint } from './idle.ts';
 import { site } from '../../site.config.ts';
 
 export type AnalyticsState = {
@@ -76,7 +77,8 @@ export function loadAnalytics(): void {
     };
     document.head.appendChild(s);
   };
-  const idle = () => (typeof requestIdleCallback === 'function' ? requestIdleCallback(insert, { timeout: 4000 }) : setTimeout(insert, 1500));
+  // 第一次繪製送出、閒置、再等一下才插入（afterFirstPaint）：只等 load 與 idle 時，作答頁與地圖的腳本請求仍會排在 LCP 前面（06 第 8.2、8.3 節，2026-10-24 實測）
+  const idle = () => void afterFirstPaint(insert, 400, 4000);
   if (document.readyState === 'complete') idle();
   else window.addEventListener('load', idle, { once: true });
 }

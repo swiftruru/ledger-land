@@ -17,7 +17,9 @@
   bottom: max(8px, calc(env(safe-area-inset-bottom, 0px) - 13px));
   max-width: 480px;
   margin-inline: auto;
-  height: 64px;
+  /* 高度至少 64px；文字放大時標籤跟著根字級變大、可以換行，底盤跟著長高（M3 驗收第 2 輪）。清單用 flex 撐滿底盤的高度 */
+  display: flex;
+  min-block-size: 64px;
   border-radius: 999px;
   background: var(--ll-tabbar-solid-bg);
   color: var(--ll-text);
@@ -36,8 +38,16 @@
   /* 膠囊寬度是 Tab 間距的幾倍（LINE：間距 64pt、膠囊 83pt）。膠囊離底盤內緣 4px，Tab 間距 S = (寬 - 8px) / (4 + 這個值)，
      清單左右留 4px + (這個值 - 1) / 2 × S，第一格與最後一格的膠囊剛好貼齊 4px 的內緣 */
   --ll-pill-w: 1.3;
+  /* 標籤字級（英文另外跟著視窗寬變小，見下面的 :lang(en)） */
+  --ll-tab-fs: min(0.75rem, 16px);
+  /* 膠囊每邊超出一格的寬度 o（M3 驗收第 5 輪）：預設是上面的 0.15 格；標籤放不下時縮小，讓相鄰的標籤和膠囊至少隔 4px。
+     最寬的標籤當 3 個字寬（實驗室、Terms 量到 2.76 倍字級），清單左右留 4px + o 時 S = (W - 8 - 2o) / 5，
+     要 (S - 3 × 字級) / 2 - o ≥ 4px，解出 o ≤ (W - 48px - 15 × 字級) / 12；最少 -2px（膠囊在格子裡往內縮 2px）。
+     W 用 100cqw（底盤是 inline-size 容器，cqw 只在子元素裡算）。320 寬放大 200% 的英文是 2.7px、375 中文 8.6px（原本 9.1），390 以上不變 */
+  --ll-tab-o: clamp(-2px, (100cqw - 48px - 15 * var(--ll-tab-fs)) / 12, (100cqw - 8px) * (var(--ll-pill-w) - 1) / 2 / (4 + var(--ll-pill-w)));
+  container-type: inline-size;
 }
-.ll-tabbar a,
+.ll-tabbar__link,
 .ll-tabbar svg {
   -webkit-user-drag: none;
 }
@@ -78,10 +88,10 @@ html[data-glass='refract'] .ll-tabbar::after {
 .ll-tabbar__list {
   position: relative;
   display: grid;
+  flex: 1;
   grid-template-columns: repeat(5, 1fr);
-  height: 100%;
   margin: 0;
-  padding: 6px calc(4px + (100% - 8px) * (var(--ll-pill-w) - 1) / 2 / (4 + var(--ll-pill-w)));
+  padding: 6px calc(4px + max(var(--ll-tab-o), 0px));
   list-style: none;
 }
 .ll-tabbar__list > li {
@@ -94,12 +104,13 @@ html[data-glass='refract'] .ll-tabbar::after {
   /* 四周各留 4px：膠囊約是底盤高度的 87%（LINE 截圖量到 54 / 62.5pt）；寬度是 Tab 間距的 --ll-pill-w 倍 */
   top: 4px;
   bottom: 4px;
-  left: 4px;
-  width: calc((100% - 8px) * var(--ll-pill-w) / (4 + var(--ll-pill-w)));
+  /* 一格寬 S 加兩邊各 o；o 小於 0 時往格子裡縮（左緣 4px + |o|） */
+  left: calc(4px + max(0px, -1 * var(--ll-tab-o)));
+  width: calc((100% - 8px - 2 * max(var(--ll-tab-o), 0px)) / 5 + 2 * var(--ll-tab-o));
   border-radius: 999px;
   pointer-events: none;
-  /* 靜止位置：tabbar.ts 掛上後寫入 px 值（--ll-pill-x），百分比（膠囊寬度除以倍數，等於 Tab 間距）只用在第一次繪製 */
-  transform: translateX(var(--ll-pill-x, calc(var(--ll-pill-i, 0) * 100% / var(--ll-pill-w))));
+  /* 靜止位置：tabbar.ts 掛上後寫入 px 值（--ll-pill-x），百分比（膠囊寬度減兩邊的 o，等於 Tab 間距）只用在第一次繪製 */
+  transform: translateX(var(--ll-pill-x, calc(var(--ll-pill-i, 0) * (100% - 2 * var(--ll-tab-o)))));
 }
 .ll-tabbar:not([data-current]) .ll-tabbar__pill {
   display: none;
@@ -337,11 +348,21 @@ html:not([data-glass='frost']):not([data-glass='refract']) .ll-tabbar.is-raised 
 .ll-tabbar__label {
   /* 16 第 5 節：標籤一律用主要文字色 */
   color: var(--ll-text);
-  font-size: 12px;
+  /* 跟著根字級放大（M3 驗收第 2 輪：文字放大 200% 時固定 12px 只剩內文的一半大），但最多 16px：
+     320 寬時一格約 50.9px，三個字的「實驗室」16px（48px）才放得進一行；放到 0.75rem（24px）時標籤擠成一串、還要換行，比放大前更難讀。
+     其他語言的長標籤仍可換行（底盤用 min-block-size 跟著長高） */
+  font-size: var(--ll-tab-fs);
   /* 07 的 --ll-type-caption（12px、600）；LINE 的標籤也是半粗體。選取的 Tab 是 700 */
   font-weight: 600;
   line-height: 1.2;
-  white-space: nowrap;
+  max-inline-size: 100%;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+/* 英文標籤比中文寬（Home、Quest、Terms 約 3 字寬）：320 寬時一格約 51px，文字放大到 16px 時「Home」「Quest」只差約 1.5px，
+   「Home」的尾端還壓到選取膠囊（M3 驗收第 4 輪）。英文的上限再跟著視窗寬變小：320 時 13.5px（相鄰標籤至少隔 8px），375 起回到 16px */
+.ll-tabbar:lang(en) {
+  --ll-tab-fs: min(0.75rem, 16px, calc(5vw - 2.5px));
 }
 /* 選取樣式跟著 data-current（真的 Tab 與分身共用）：拖曳放開時指示可以先移到新 Tab，aria-current 等路由真的換頁才改 */
 :is(

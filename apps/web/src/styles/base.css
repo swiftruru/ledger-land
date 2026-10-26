@@ -21,30 +21,61 @@ body {
   line-height: 1.6;
   touch-action: manipulation;
 }
-a {
-  color: var(--ll-link);
+/* 連結（站規 1.12）。1. 重設：權重 0，任何有 class 的元件（Button、NavRow、名詞卡、Tab bar）都蓋得過，不會帶瀏覽器預設的藍色底線 */
+:where(a) {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
+/* 2. 漏網裸連結（沒有 class 的 a）的保底和 TextLink 的 .ll-link 是同一組規則，在 web-ui 的 07-core-components.css（第 8 輪 handoff，省入口 CSS；
+   tools/link-rules.json 的 globalAnchorFiles 准那個檔用型別選擇器 a） */
 :focus-visible {
   outline: 3px solid var(--ll-focus);
   outline-offset: 2px;
 }
+/* 跳到主要內容（站規 1.12 規則 7）：殼層不載入元件，保留自己的 class，直接套主按鈕 md 的 token；取得焦點時從頂端滑入，減少動態時直接出現 */
 .ll-skiplink {
   position: absolute;
   left: 12px;
-  top: -100px;
+  top: 0;
   z-index: var(--ll-z-skiplink);
-  padding: 8px 12px;
-  background: var(--ll-surface);
-  color: var(--ll-text);
-  border-radius: var(--ll-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ll-btn-h-md);
+  padding: 0 20px;
+  border: 1.5px solid transparent;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-btn-primary-bg);
+  color: var(--ll-btn-primary-fg);
+  box-shadow: 0 var(--ll-btn-depth) 0 0 var(--ll-btn-primary-ledge);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform var(--ll-dur-base) var(--ll-ease-standard);
 }
-.ll-skiplink:focus {
-  top: calc(env(safe-area-inset-top, 0px) + 8px);
+.ll-skiplink:focus,
+.ll-skiplink:focus-visible {
+  transform: translateY(calc(env(safe-area-inset-top, 0px) + 8px));
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-skiplink {
+    transition: none;
+  }
+}
+html[data-motion='reduced'] .ll-skiplink {
+  transition: none;
 }
 .ll-topbar {
   /* 頂部實色區域，不依賴 black-translucent（06 第 2.4 節、07 第 6.6 節） */
   background: var(--ll-bg);
   padding-top: env(safe-area-inset-top, 0px);
+}
+/* Root 最上方的空白 .ll-topbar 只負責 safe area 的實色，不再撐出 52px 的空白帶（TopBar 元件的 min-height 不該套到它） */
+.ll-topbar:empty {
+  min-height: 0;
+  padding-block-end: 0;
 }
 main {
   display: block;
@@ -52,6 +83,10 @@ main {
   margin: 0 auto;
   padding: var(--ll-space-4) max(var(--ll-space-4), env(safe-area-inset-left)) calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + 24px)
     max(var(--ll-space-4), env(safe-area-inset-right));
+}
+/* 寬版頁（站規 2.0，路由 handle 的 layout: 'wide'，Root 寫到 data-layout）：內容最寬 1040px（加上左右內距） */
+main[data-layout='wide'] {
+  max-width: calc(var(--ll-layout-wide) + 2 * var(--ll-space-4));
 }
 h1 {
   font-size: var(--ll-type-title-1-size);
@@ -65,9 +100,65 @@ h2 {
   font-weight: var(--ll-type-title-3-weight);
   margin: var(--ll-space-6) 0 var(--ll-space-2);
 }
+/* 中文斷行不要只留一兩個字在最後一行（M3 驗收第 1 輪）：標題平衡各行長度。逐步增強，不支援的瀏覽器維持原樣；
+   權重 0,0,1，元件自己有設定時以元件為準。段落與其他文字的 pretty、strict 是全站規則（web-ui 的 03-core-utils.css，第 7 輪起寫在 html，繼承） */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+/* 換到行首的全形左括號、引號不再多出半個字寬的空白（M3 驗收第 4 輪：延伸章學習目標的「（N/A）」換到行首時像縮排錯誤）。
+   Chromium 123 起支援；Safari 不支援時維持原樣 */
+:lang(zh-TW) {
+  text-spacing-trim: trim-start;
+}
 /* 換頁後由程式把焦點移到頁面標題（07 第 8.2 節）：標題不是互動元素，不畫焦點框 */
 main h1[tabindex='-1']:focus {
   outline: none;
+}
+/* 頁面布幕（lib/page-ready.tsx，維護者 2026-10-26）：頁面回報資料齊了之前整頁隱形（版面照排、不跳動），齊了整頁淡入一次；
+   減少動態時直接出現。等超過 0.7 秒才顯示載入圈（置中、不佔版面），全站沒有骨架畫面 */
+.ll-page[data-ready='false'] {
+  visibility: hidden;
+}
+.ll-page[data-ready='true'] {
+  animation: ll-page-in var(--ll-dur-base) var(--ll-ease-enter) both;
+}
+@keyframes ll-page-in {
+  from {
+    opacity: 0;
+  }
+}
+.ll-page__wait {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.ll-page__spinner {
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  border: 3px solid color-mix(in srgb, var(--ll-accent) 25%, transparent);
+  border-top-color: var(--ll-accent);
+  border-radius: var(--ll-radius-full);
+  animation: ll-page-spin var(--ll-dur-slow) linear infinite;
+}
+@keyframes ll-page-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-page[data-ready='true'],
+  .ll-page__spinner {
+    animation: none;
+  }
+}
+html[data-motion='reduced'] .ll-page[data-ready='true'],
+html[data-motion='reduced'] .ll-page__spinner {
+  animation: none;
 }
 .ll-muted {
   color: var(--ll-text-2);
@@ -83,14 +174,6 @@ main h1[tabindex='-1']:focus {
 }
 .ll-list li {
   margin: var(--ll-space-2) 0;
-}
-.ll-dl dt {
-  font-weight: 600;
-  color: var(--ll-text-2);
-  font-size: var(--ll-type-body-sm-size);
-}
-.ll-dl dd {
-  margin: 0 0 var(--ll-space-3);
 }
 pre {
   white-space: pre-wrap;
@@ -110,67 +193,8 @@ input:not([type]) {
   background: var(--ll-surface);
   color: var(--ll-text);
 }
-.ll-notice__title {
-  margin: 0 0 6px;
-  font-size: var(--ll-type-callout-size);
-}
-.ll-locale-suggest {
-  display: flex;
-  gap: var(--ll-space-2);
-  align-items: center;
-  flex-wrap: wrap;
-}
-.ll-update {
-  position: fixed;
-  z-index: var(--ll-z-toast);
-  left: 12px;
-  right: 12px;
-  top: calc(env(safe-area-inset-top, 0px) + 12px);
-  max-width: 480px;
-  margin-inline: auto;
-}
 .ll-settings .ll-seg {
   margin-bottom: var(--ll-space-2);
-}
-/* 外觀設定的風味圓點：該風味的卡片色（由 tokens 的 surface 值而來） */
-.ll-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 6px;
-  box-shadow: 0 0 0 1px var(--ll-border-strong);
-  vertical-align: -1px;
-}
-.ll-dot--violet {
-  background: #22212c;
-}
-.ll-dot--berry {
-  background: #2a212c;
-}
-.ll-dot--wine {
-  background: #2c2122;
-}
-/* 最糟背景測試區（07 第 6.4 節） */
-.ll-stress {
-  height: 220px;
-  border-radius: var(--ll-radius-md);
-  margin: var(--ll-space-3) 0;
-}
-.ll-stress--black {
-  background: #000000;
-}
-.ll-stress--white {
-  background: #ffffff;
-}
-.ll-stress--stripes {
-  background: repeating-linear-gradient(
-    45deg,
-    var(--ll-highlight-ring) 0 16px,
-    var(--ll-link) 16px 32px,
-    var(--ll-star) 32px 48px,
-    var(--ll-success-ink) 48px 64px
-  );
 }
 /* debug 頁讀取 safe area 用的探針（不可見） */
 .ll-safearea-probe {
@@ -192,42 +216,20 @@ input:not([type]) {
     padding-left: calc(var(--ll-tabbar-rail-w) + 32px);
     padding-bottom: var(--ll-space-8);
   }
+  main[data-layout='wide'] {
+    max-width: calc(var(--ll-layout-wide) + var(--ll-tabbar-rail-w) + 32px + var(--ll-space-4));
+  }
+  /* 一般 720px 的頁面（站規 2.0：設定、備份、作答、錯題本、名詞頁等）：和寬版一樣把 rail 的左內距與右內距加回去，
+     內容寬才真的是 720（M3 驗收第 4 輪：原本 720 裡扣掉 rail 120 與右邊 16，只剩 584，1280 時左右各空約 300px） */
+  main:not([data-layout]) {
+    max-width: calc(720px + var(--ll-tabbar-rail-w) + 32px + var(--ll-space-4));
+  }
 }
-/* 備份頁與儲存提示（06 第 4.6 節、第 9.1 節） */
-.ll-storage-banner p {
+/* 作答頁標題下的範圍標示（延伸章、非投資建議；Level.tsx） */
+.ll-level-notes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
   margin: 0 0 var(--ll-space-2);
-}
-.ll-field {
-  display: block;
-  margin: var(--ll-space-3) 0;
-}
-.ll-field > span {
-  display: block;
-  margin-bottom: var(--ll-space-1);
-}
-.ll-check {
-  display: block;
-  margin: var(--ll-space-3) 0;
-  min-height: var(--ll-target-min);
-  line-height: var(--ll-target-min);
-}
-.ll-code {
-  display: block;
-  width: 100%;
-  font-size: 16px;
-  font-family: ui-monospace, monospace;
-  word-break: break-all;
-  padding: 8px 12px;
-  border-radius: var(--ll-radius-sm);
-  border: 1px solid var(--ll-border-strong);
-  background: var(--ll-surface);
-  color: var(--ll-text);
-}
-.ll-preview {
-  margin-top: var(--ll-space-3);
-}
-.ll-advanced summary {
-  cursor: pointer;
-  min-height: var(--ll-target-min);
-  line-height: var(--ll-target-min);
 }
