@@ -12,6 +12,12 @@
   padding: 0;
   list-style: none;
 }
+/* 畫面外的格子不排版、不繪製（content-visibility）：名詞圖鑑 163 個名詞一次畫出來時，排版與繪製是第二個長任務（2026-10-26 CI 的 TBT 279ms）；
+   contain-intrinsic-size 給畫面外的格子一個估計高度（實測 44 到 148px、中位數 110px），捲動條長度才不會跳 */
+.ll-termgrid__cell {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 110px;
+}
 .ll-termgrid__cell {
   display: grid;
   margin: 0;
