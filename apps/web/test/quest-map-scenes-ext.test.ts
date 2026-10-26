@@ -5,7 +5,10 @@
 // 第 6 輪看圖驗收：最上面那一章的紙籤整張在島上、跨過交界的橋上下兩截欄杆同一個 x 且重疊、手機水道的岸線與淺水外緣沒有 20px 以上的水平段。
 // 掃描範圍和 quest-map-scenes.test.ts 相同（軌道寬 288 到 440 每 1px，區帶寬 320 到 2560 的常見寬度，字級 200% 與 125%），另外加上兩組 fixture。
 import { readFileSync, readdirSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+// 幾何檢查是純計算但要跑全部版型；CI 的執行器比本機慢好幾倍（2026-10-27 PR 24 一條超過預設的 5 秒），放寬到 60 秒不會漏掉錯誤
+vi.setConfig({ testTimeout: 60_000 });
 import {
   geometryFor,
   layoutMap,

@@ -28,11 +28,11 @@
 | @jridgewell/resolve-uri | 3.1.2 | MIT | https://github.com/jridgewell/resolve-uri#readme |
 | @jridgewell/sourcemap-codec | 1.6.0 | MIT | https://github.com/jridgewell/sourcemaps/tree/main/packages/sourcemap-codec |
 | @jridgewell/trace-mapping | 0.3.31 | MIT | https://github.com/jridgewell/sourcemaps/tree/main/packages/trace-mapping |
-| @lingui/babel-plugin-lingui-macro | 6.9.0 | MIT | https://lingui.dev |
-| @lingui/conf | 6.9.0 | MIT | https://lingui.dev |
-| @lingui/core | 6.9.0 | MIT | https://lingui.dev |
-| @lingui/message-utils | 6.9.0 | MIT | https://lingui.dev |
-| @lingui/react | 6.9.0 | MIT | https://lingui.dev |
+| @lingui/babel-plugin-lingui-macro | 6.9.1 | MIT | https://lingui.dev |
+| @lingui/conf | 6.9.1 | MIT | https://lingui.dev |
+| @lingui/core | 6.9.1 | MIT | https://lingui.dev |
+| @lingui/message-utils | 6.9.1 | MIT | https://lingui.dev |
+| @lingui/react | 6.9.1 | MIT | https://lingui.dev |
 | @messageformat/date-skeleton | 1.1.0 | MIT | http://messageformat.github.io/messageformat/api/date-skeleton/ |
 | @messageformat/parser | 5.1.1 | MIT | http://messageformat.github.io/messageformat/api/parser/ |
 | @remix-run/route-pattern | 0.22.1 | MIT | https://github.com/remix-run/remix/tree/main/packages/route-pattern#readme |
