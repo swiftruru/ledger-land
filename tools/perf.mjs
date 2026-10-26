@@ -1,6 +1,9 @@
 // Lighthouse 13 CLI（06 第 8.2 節、09 第 10.2 節）：對重現 Workers 行為的本機伺服器（apps/web 的 wrangler dev）跑固定網址，
 // 每個網址 runs 次取中位數，以 metric 做 assertion；記錄 benchmarkIndex。統計腳本照正式方式載入但指向 stub 端點（?ll-analytics=stub）。
-// 用法：node tools/perf.mjs [--base http://127.0.0.1:8787] [--runs 5] [--out .local-reports/perf] [--only home,terms]
+// 用法：node tools/perf.mjs [--base http://127.0.0.1:8787] [--runs 5] [--out .local-reports/perf] [--only home,terms] [--observed]
+// --observed（每週對正式網址用，06 第 8.2 節）：LCP 以實測值（網路不節流、CPU 仍降速）比 assertionsObserved 的門檻，模擬值與效能分數只記錄當趨勢。
+// 真實邊緣上每個請求有伺服器延遲、zone 又可能注入統計腳本，Lighthouse 的模擬會逐層放大（2026-10-27：正式站模擬 LCP 3.5 到 4.2 秒、實測 0.3 到 1.6 秒）；
+// 比較建置好壞用本機伺服器的模擬值（PR 與 main），正式站用實測值看使用者真的等多久。
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -9,7 +12,8 @@ import { ROOT, fail } from './lib/fs.mjs';
 const args = Object.fromEntries(
   process.argv
     .slice(2)
-    .map((a, i, arr) => (a.startsWith('--') ? [a.slice(2), arr[i + 1] ?? 'true'] : []))
+    // 旗標後面接的是另一個旗標（--observed --out …）或沒有東西時，值是 'true'
+    .map((a, i, arr) => (a.startsWith('--') ? [a.slice(2), arr[i + 1] === undefined || arr[i + 1].startsWith('--') ? 'true' : arr[i + 1]] : []))
     .filter((x) => x.length),
 );
 const app = join(ROOT, 'apps/web');
@@ -80,7 +84,9 @@ try {
         continue;
       }
       const r = JSON.parse(readFileSync(file, 'utf8'));
+      const observed = r.audits['metrics']?.details?.items?.[0] ?? {};
       results.push({
+        observedLcp: observed.observedLargestContentfulPaint ?? observed.observedLargestContentfulPaintAllFrames ?? null,
         perf: r.categories.performance.score,
         a11y: r.categories.accessibility.score,
         bp: r.categories['best-practices']?.score ?? null,
@@ -99,6 +105,7 @@ try {
       accessibility: median(results.map((r) => r.a11y)),
       bestPractices: median(results.map((r) => r.bp ?? 0)),
       lcpMs: Math.round(median(results.map((r) => r.lcp))),
+      observedLcpMs: results.every((r) => r.observedLcp !== null) ? Math.round(median(results.map((r) => r.observedLcp))) : null,
       tbtMs: Math.round(median(results.map((r) => r.tbt))),
       cls: median(results.map((r) => r.cls)),
       benchmarkIndex: Math.round(median(results.map((r) => r.benchmarkIndex))),
@@ -106,9 +113,19 @@ try {
     summary.push(m);
     // 個別網址可以覆寫門檻（urls.json 的 urls[].assertions，M2 的地圖與作答頁 LCP 暫放寬到 3000ms，見 14 第 5 節）
     const a = { ...cfg.assertions, ...(u.assertions ?? {}) };
-    if (m.performance < a['categories.performance'].min) fail(`perf：${u.name} 效能 ${m.performance} 低於 ${a['categories.performance'].min}`);
+    const observedMode = args.observed === 'true';
     if (m.accessibility < a['categories.accessibility'].min) fail(`perf：${u.name} 無障礙 ${m.accessibility} 低於 ${a['categories.accessibility'].min}`);
-    if (m.lcpMs > a['largest-contentful-paint'].maxMs) fail(`perf：${u.name} LCP ${m.lcpMs}ms 超過 ${a['largest-contentful-paint'].maxMs}ms`);
+    if (observedMode) {
+      const ao = cfg.assertionsObserved ?? {};
+      const maxObserved = ao['largest-contentful-paint']?.maxMs ?? a['largest-contentful-paint'].maxMs;
+      if (m.observedLcpMs === null) fail(`perf：${u.name} 沒有實測 LCP（metrics audit 缺 observedLargestContentfulPaint）`);
+      else if (m.observedLcpMs > maxObserved)
+        fail(`perf：${u.name} 實測 LCP ${m.observedLcpMs}ms 超過 ${maxObserved}ms（模擬 ${m.lcpMs}ms、效能 ${m.performance} 只記錄）`);
+      else console.log(`perf：${u.name} 實測 LCP ${m.observedLcpMs}ms（門檻 ${maxObserved}ms；模擬 ${m.lcpMs}ms、效能 ${m.performance} 只記錄）`);
+    } else {
+      if (m.performance < a['categories.performance'].min) fail(`perf：${u.name} 效能 ${m.performance} 低於 ${a['categories.performance'].min}`);
+      if (m.lcpMs > a['largest-contentful-paint'].maxMs) fail(`perf：${u.name} LCP ${m.lcpMs}ms 超過 ${a['largest-contentful-paint'].maxMs}ms`);
+    }
     // TBT 的門檻依執行器速度校正（06 第 8.2 節）：Lighthouse 的 benchmarkIndex 低於參考值（維護者的 Mac 約 3000）時，門檻乘上 (參考 / 實測)²，
     // 最多 2 倍。TBT 是長任務超過 50ms 的部分加總，執行器慢 1.2 倍、長任務就超過 2 倍（2026-10-26 GitHub 執行器 benchmarkIndex 2430 時
     // 名詞圖鑑 211 到 243ms、同一份建置在 4119 時 104ms），所以用平方；benchmarkIndex 在參考值以上時門檻不放寬

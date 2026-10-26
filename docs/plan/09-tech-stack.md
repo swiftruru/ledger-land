@@ -860,7 +860,7 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | `ci.yml` | pull request、push 到 main | 第 10.2 節的全部工作；只跑受影響的套件（`pnpm --filter "...[origin/main]"`），改到 `packages/` 時，用到它的 app 測試也一起跑；`apps/web` 的建置輸入（`content/`、`schemas/`、`tools/`）有變動也算受影響，所以只改內容時同樣執行 `content:check` | 是 |
 | `deploy.yml` | `ci.yml` 在 main 上全部通過後，而且 `apps/web` 或它依賴的套件有變動（`apps/web` 的建置輸入 `content/`、`schemas/`、`tools/` 有變動也算，所以只改內容的合併同樣部署） | 在 `apps/web` 目錄執行 wrangler（`pnpm --filter @ledgerland/web exec wrangler deploy`，或 workflow 的 `working-directory: apps/web`），整批部署到 Cloudflare Workers（`ledgerland.swift.moe`）；`concurrency` 確保同時只有一個部署；部署後執行第 7.4 節的煙霧測試 | 不適用 |
 | `preview.yml` | pull request | 同樣在 `apps/web` 目錄以 `wrangler versions upload` 上傳不切換正式流量的版本，取得預覽網址並留言在 PR 上（指令與預覽網址的存取保護於 M0b 查證）；上傳後對預覽網址執行 Playwright E2E，全部通過才允許合併與部署；fork 的 PR 拿不到 secrets，不部署預覽，只靠 `ci.yml` 的 e2e 工作；Dependabot 的 PR 同樣拿不到 secrets（M0b 實測，2026-10-22，第一個 Dependabot PR 的 preview 工作因此失敗），workflow 以 `github.actor` 跳過 Dependabot 的 PR | 是 |
-| `scheduled.yml` | 每週一次 | 例外清單到期檢查、`pnpm audit`、對正式網址的 Lighthouse 趨勢紀錄（含 D7 的統計腳本） | 失敗時開 issue 提醒 |
+| `scheduled.yml` | 每週一次 | 例外清單到期檢查、`pnpm audit`、對正式網址的 Lighthouse 趨勢紀錄（含 D7 的統計腳本；門檻用實測 LCP，模擬值只記錄，06 第 8.2 節） | 失敗時開 issue 提醒 |
 
 所有 workflow 預設 `permissions: contents: read`；`actions/checkout` 一律設 `persist-credentials: false`。部署到 Cloudflare 不需要 GitHub 的額外權限，只需要 repo secrets 中的 `CLOUDFLARE_API_TOKEN`（權限只限這個帳號的 Workers 與 `swift.moe` 這個 zone 的必要範圍）與 `CLOUDFLARE_ACCOUNT_ID`；token 由你在 Cloudflare 建立並存進 repo secrets。若部署流程要建立 [08 題庫與後台](08-content-admin.md) 的 `content/v{n}` tag，只有 `deploy.yml` 另外加 `contents: write`。預覽網址是另一個 origin，進度不會和正式網址共用，一律視為測試資料，也不啟用統計。M7 的管理後台另有自己的部署 workflow（獨立的 Worker、`apps/admin/wrangler.jsonc` 與 D1 migration），細節在 M7 開工前定案。
 

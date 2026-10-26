@@ -50,9 +50,9 @@ jobs:
           path: .cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       - run: pnpm exec playwright install --with-deps chromium
-      - name: 正式網址的 Lighthouse 趨勢（統計腳本照正式方式載入但指向 stub）
+      - name: 正式網址的 Lighthouse 趨勢（統計腳本照正式方式載入但指向 stub；門檻用實測 LCP，模擬值只記錄，見 06 第 8.2 節）
         id: perf
-        run: pnpm perf --base "$LL_PRODUCTION_ORIGIN" --runs 3 --out .local-reports/perf-production
+        run: pnpm perf --base "$LL_PRODUCTION_ORIGIN" --runs 3 --observed --out .local-reports/perf-production
         continue-on-error: true
         env:
           LL_PRODUCTION_ORIGIN: ${{ vars.LL_PRODUCTION_ORIGIN || 'https://ledgerland.swift.moe' }}
