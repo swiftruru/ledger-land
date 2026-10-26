@@ -24,7 +24,21 @@ export async function waitForSw(page: Page): Promise<void> {
 
 /** 等 React 掛載完成（main 裡出現 h1）。殼層的連結在掛載前是一般連結，按 Enter 會整頁載入，鍵盤測試要先等這一步 */
 export async function waitForApp(page: Page): Promise<void> {
-  await page.locator('main h1').first().waitFor();
+  // 頁面布幕（lib/page-ready.tsx）：資料齊了才整頁出現，所以等「h1 已掛上」且「布幕掀開或 0.7 秒後的載入圈出現」（載入中狀態只有載入圈），
+  // 再等淡入動畫播完（axe 的對比與焦點外框的檢查不能量到半透明的那幾格）
+  await page.locator('main h1').first().waitFor({ state: 'attached' });
+  await page.locator('.ll-page[data-ready="true"], .ll-page__wait').first().waitFor({ state: 'attached' });
+  // 只等布幕的淡入（ll-page-in）：地圖節點的呼吸、載入圈是無限循環的動畫，finished 永遠不會 resolve
+  await page
+    .evaluate(() =>
+      Promise.all(
+        document
+          .getAnimations()
+          .filter((a) => a instanceof CSSAnimation && a.animationName === 'll-page-in')
+          .map((a) => a.finished.catch(() => undefined)),
+      ),
+    )
+    .catch(() => undefined);
 }
 
 /** 等 App 把進度資料庫的結構建好（App 在第一次繪製送出之後約半秒才開啟資料庫，apps/web/src/lib/idle.ts）：

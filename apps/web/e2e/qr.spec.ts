@@ -67,7 +67,13 @@ async function openScanner(page: Page): Promise<void> {
   await page.goto(MAP);
   await waitForApp(page);
   await page.getByTestId('quest-map').waitFor();
-  await page.getByTestId('map-scan').click();
+  // 「掃描課堂 QR」在頂部統計列：medium 以上直接排開，compact 收在「更多」選單（圖規 4.8）
+  const inline = page.locator('.ll-hud__tools [data-testid="map-scan"]:not([role="menuitem"])');
+  if (await inline.count()) await inline.click();
+  else {
+    await page.getByTestId('map-more').click();
+    await page.getByRole('menuitem', { name: '掃描課堂 QR' }).click();
+  }
   const overlay = page.getByTestId('scan-overlay');
   await expect(overlay).toBeVisible();
   await expect(overlay).toContainText('不會拍照，也不會上傳');

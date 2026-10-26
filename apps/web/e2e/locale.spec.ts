@@ -26,9 +26,13 @@ test.describe('語言切換（05 第 7.5、8 節；10 M0b 完成標準）', () =
     expect(scrollBefore).toBeGreaterThan(100);
     // 記下畫面最上方的錨點元素與它在視窗裡的位置（useScrollAnchor 就是這樣還原的）。不能只比 scrollY：上方的提示（例如相機預覽的暫存情境提示
     // 要等 storage.estimate 才插入）可能在切換前後才出現，這時題目留在畫面同一個位置，scrollY 卻會多出提示的高度（CI 的 WebKit 曾差 600 到 740px）
+    // 和 captureScrollAnchor 同一條規則：TopBar（捲出畫面時是視窗上緣）之下的第一個錨點；整組頁首只在完整露出時才算
     const anchorBefore = await page.evaluate(() => {
-      const top = document.querySelector('.ll-topbar')?.getBoundingClientRect().bottom ?? 0;
-      const el = Array.from(document.querySelectorAll<HTMLElement>('[data-ll-anchor]')).find((e) => e.id !== '' && e.getBoundingClientRect().bottom > top);
+      const bar = document.querySelector('.ll-topbar');
+      const top = Math.max(0, bar?.getBoundingClientRect().bottom ?? 0);
+      const el = Array.from(document.querySelectorAll<HTMLElement>('[data-ll-anchor]')).find(
+        (e) => e.id !== '' && !(bar && e.contains(bar) && e.getBoundingClientRect().top < 0) && e.getBoundingClientRect().bottom > top,
+      );
       return el ? { id: el.id, top: el.getBoundingClientRect().top } : null;
     });
     expect(anchorBefore).not.toBeNull();
@@ -73,6 +77,16 @@ test.describe('語言切換（05 第 7.5、8 節；10 M0b 完成標準）', () =
   test('沒有偏好時根路徑維持中文；英文瀏覽器開中文網址只出現一次切換提示', async ({ browser }) => {
     const context = await browser.newContext({ locale: 'en-GB' });
     const page = await context.newPage();
+    // iphone-webkit 專案的 context 也是 iPhone Safari：相機預覽的暫存情境提示（配額約 1 GB）與 Safari 分頁提示都比語言建議優先
+    // （一次只展開一條），這裡只測語言建議，先把前者標成已關閉、後者標成已收合
+    await page.addInitScript(() => {
+      try {
+        sessionStorage.setItem('ll:ephemeral-notice-dismissed', '1');
+        sessionStorage.setItem('ll:safari-notice-collapsed', '1');
+      } catch {
+        /* 沒有 sessionStorage 時照常跑 */
+      }
+    });
     await page.goto('/');
     await expect(page).toHaveURL(/\/$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'zh-TW');
@@ -98,11 +112,15 @@ test.describe('語言切換（05 第 7.5、8 節；10 M0b 完成標準）', () =
 // 讓相機預覽的暫存情境提示在每個瀏覽器都穩定地「晚一步」出現（延遲 4 秒、quota 1 GB）；useScrollAnchor 要在使用者捲動前用原錨點再還原，題目留在畫面同一個位置
 test.describe('切換語言後上方提示才插入', () => {
   test.use({
-    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1',
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1',
   });
   test.skip(({ browserName }) => browserName === 'firefox', '環境模擬只在 Chromium 與 WebKit 跑');
 
   test('暫存情境提示晚一步插入時，題目仍留在畫面同一個位置', async ({ page }) => {
+    // iPhone Safari 的 UA 會先顯示 Safari 分頁提示（一次只展開一條），暫存情境提示出現時會「換掉」它而不是插入新的一條；
+    // 換掉一條捲到一半的橫幅時 WebKit 自己的 scroll anchoring 會多捲約 256px（2026-10-25 實測，沒有任何 scrollTo）。
+    // 這裡測的是「上方晚一步插入一條提示」，先把 Safari 分頁提示收合成膠囊（暫存情境提示出現時膠囊讓位，整條提示都在畫面上方）
+    await page.addInitScript(() => sessionStorage.setItem('ll:safari-notice-collapsed', '1'));
     await page.addInitScript(() => {
       // WebKit 在初始化腳本階段還沒有 navigator.storage，改從 Navigator.prototype 覆寫 getter 才攔得到
       const slow = () => new Promise<StorageEstimate>((resolve) => setTimeout(() => resolve({ quota: 1024 ** 3, usage: 0 }), 4000));
@@ -114,9 +132,13 @@ test.describe('切換語言後上方提示才插入', () => {
     await page.getByRole('radio', { name: /資產：都是店裡擁有/ }).check();
     await page.evaluate(() => window.scrollTo(0, 300));
     await page.waitForTimeout(300);
+    // 和 captureScrollAnchor 同一條規則（提示插在整組頁首之後，頁首捲出畫面時錨定下面的題目）
     const before = await page.evaluate(() => {
-      const top = document.querySelector('.ll-topbar')?.getBoundingClientRect().bottom ?? 0;
-      const el = Array.from(document.querySelectorAll<HTMLElement>('[data-ll-anchor]')).find((e) => e.id !== '' && e.getBoundingClientRect().bottom > top);
+      const bar = document.querySelector('.ll-topbar');
+      const top = Math.max(0, bar?.getBoundingClientRect().bottom ?? 0);
+      const el = Array.from(document.querySelectorAll<HTMLElement>('[data-ll-anchor]')).find(
+        (e) => e.id !== '' && !(bar && e.contains(bar) && e.getBoundingClientRect().top < 0) && e.getBoundingClientRect().bottom > top,
+      );
       return el ? { id: el.id, top: el.getBoundingClientRect().top, notice: document.querySelector('.ll-ephemeral-notice') !== null } : null;
     });
     expect(before).not.toBeNull();
