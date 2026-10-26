@@ -740,7 +740,7 @@ iOS 17.4 曾有「Connection to Indexed Database server lost」的回歸（bug 2
 | --- | --- | --- |
 | `launch` | 每次啟動，`isAppMode()` 為 true 且 `persisted()` 仍為 false 時 | 主畫面 App（iOS、Android、電腦的已安裝 Chromium App） |
 | `first-level-complete` | 第一次完成一個關卡、進入結算頁時，只觸發一次 | Safari 分頁、Chrome 等一般分頁與 App 模式；Firefox 與 App 內建瀏覽器除外 |
-| `settings-button` | 使用者在設定頁按「保護我的進度」 | Firefox 的唯一入口；其他瀏覽器在 `persisted()` 為 false 時也顯示，當作手動重試；App 內建瀏覽器不顯示 |
+| `settings-button` | 使用者在設定頁按「保護我的進度」 | Firefox 的唯一入口；其他瀏覽器在 `persisted()` 為 false 時也顯示，當作手動重試；App 內建瀏覽器不顯示。被拒時不能只說「沒有同意」就停住（2026-10-27）：一般分頁被拒的下一步是加到主畫面、從主畫面開啟再按一次，結果旁附「看安裝教學」的按鈕；已是主畫面 App 仍被拒才只剩定期備份。狀態每次進設定頁與切回分頁時都重新問 `persisted()`（主畫面 App 與分頁的儲存是分開的，移除 App 後分頁顯示的是分頁自己的狀態） |
 
 ```ts
 type PersistTrigger = 'launch' | 'first-level-complete' | 'settings-button';

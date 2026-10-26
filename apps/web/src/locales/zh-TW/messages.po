@@ -2373,10 +2373,17 @@ msgstr "瀏覽器分頁"
 msgid "backup.status.persisted"
 msgstr "瀏覽器已同意保留"
 
+#. 已經是主畫面 App 仍被拒
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.state.denied"
 msgstr "瀏覽器沒有同意，請定期匯出備份。"
+
+#. 一般瀏覽器分頁被拒：下一步是加到主畫面再試，旁邊有安裝教學的按鈕
+#. js-lingui-explicit-id
+#: src/components/ProtectProgress.tsx
+msgid "settings.protect.state.denied.tab"
+msgstr "瀏覽器還沒有同意。加到主畫面、從主畫面開啟後再按一次，瀏覽器通常就會同意；定期匯出備份最保險。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2543,6 +2550,12 @@ msgstr "看名詞圖鑑"
 #: src/components/InstallPrompt.tsx
 msgid "install.guide.show"
 msgstr "看圖解教學"
+
+#. 被拒後的下一步：連到安裝教學
+#. js-lingui-explicit-id
+#: src/components/ProtectProgress.tsx
+msgid "settings.protect.install"
+msgstr "看安裝教學"
 
 #. 結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績，都包在不換行的標籤裡）
 #. js-lingui-explicit-id

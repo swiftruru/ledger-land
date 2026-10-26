@@ -612,3 +612,7 @@ html[data-theme='dark'] .ll-badges__item[data-state='done'] {
     border: 2px solid Highlight;
   }
 }
+/* 保護我的進度被拒後的下一步（安裝教學按鈕）：和上面的按鈕列隔一點 */
+.ll-protect__next {
+  margin-top: var(--ll-space-2);
+}
