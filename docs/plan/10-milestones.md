@@ -187,7 +187,7 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 10. CSP：data mode 的 `index.html` 有兩段 inline 腳本（head 裡的 boot 腳本、緊接在 `<nav>` 之後的殼層在地化腳本）與一段首次繪製的 `<style>`。驗證 sha256 方案能涵蓋這三段 inline 內容、完整的 CSP 放在 `_headers` 的 header，且沒有違規；同時確認殼層裡靜態 Tab bar 的標記沒有任何 `style` 屬性（【待實測 V15】）。framework mode 的離線導覽（【待實測 V08】）暫不需要。
 11. 量測：首次載入 JS、precache 體積、固定網址的 Lighthouse 初測，據此提出 M0b 要用的預算數字。
 12. 時間允許才做：LINE 等 App 內建瀏覽器的 SW 與儲存（【待實測 V11】）；Tier 2 的像素比對（【待實測 V12】）；React `<ViewTransition>` 在不支援的瀏覽器上的表現；主畫面 App 中相機權限（`getUserMedia`）的詢問行為，供 M2 的 App 內掃描 QR 參考。沒做的部分移到之後的里程碑，並在報告中註明。
-13. 本機 AI 設定（見 [15 AI 協作與本機設定](15-ai-workflow.md)（本機專用）第 12 節）：第一步先把 AI 工具設定的排除規則附加到 `.gitignore`（只附加，不改既有內容），再建立 `CLAUDE.md`、永遠載入的 rules、M0a 需要的 agents、skills、hooks 與交接狀態檔。所有 AI 設定都留在工具預設的位置，不搬移，只靠 `.gitignore` 排除。用 `/context`、`/hooks`、`/skills` 確認載入正常（【待實測 V17】），並逐一試驗權限規則與 hooks 的攔截效果（【待實測 V18】）。例外（同 15 第 12 節）：M0a 的試作程式放在 repo 之外的獨立資料夾時（見下方「試作程式放哪裡」），本機 AI 設定與 V17、V18 可以延到 M0b 再做，但一定要在第一次 commit 之前完成；試作程式放在本 repo 內時，第一步一定是附加排除規則。附加排除規則時，可以一併加入 D3 的 `docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md`；最晚在 M0b 第一次 `git add` 之前完成。
+13. 本機工具設定（見 15（本機專用）第 12 節）：第一步先把本機工具設定的排除規則附加到 `.gitignore`（只附加，不改既有內容），再建立本機的設定、永遠載入的 rules 與交接狀態檔。所有本機設定都留在工具預設的位置，不搬移，只靠 `.gitignore` 排除。確認載入正常（【待實測 V17】），並逐一試驗守門規則的攔截效果（【待實測 V18】）。例外（同 15 第 12 節）：M0a 的試作程式放在 repo 之外的獨立資料夾時（見下方「試作程式放哪裡」），本機工具設定與 V17、V18 可以延到 M0b 再做，但一定要在第一次 commit 之前完成；試作程式放在本 repo 內時，第一步一定是附加排除規則。附加排除規則時，可以一併加入 D3 的 `docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md`；最晚在 M0b 第一次 `git add` 之前完成。
 
 **測試流程**：先在 iOS Simulator 用 localhost 跑一輪（localhost 屬於 secure context，可以測 SW）；再部署到 Cloudflare Workers 的暫時預覽網址（HTTPS），用 iPhone 實機測試（區網 IP 加 http 不是 secure context，不能測 SW）。預覽網址是暫時的 origin，不是正式網域 `ledgerland.swift.moe`，也不讓學生使用。實機至少一台 iOS 26 與一台 iOS 27 的 iPhone、一台 iOS 17 裝置（D8；沒有實機時用 Simulator 補，並在報告中註明），加一支中低階 Android；每個結果都記錄機型與系統版本，並顯示在原型的 debug 頁。
 
@@ -269,7 +269,7 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 
 **完成標準**：
 
-- [ ] 初始化步驟第 1、4、5、7、8 步的指令輸出已附在回報中；`git ls-files` 沒有 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也沒有任何 AI 設定路徑（`.claude/`、`CLAUDE.md`、`CLAUDE.local.md`、`AGENTS.md`、`.mcp.json`、`docs/plan/15-ai-workflow.md` 等）；所有分支的歷史紀錄掃描結果也是空的。
+- [ ] 初始化步驟第 1、4、5、7、8 步的指令輸出已附在回報中；`git ls-files` 沒有 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也沒有任何本機工具設定路徑（`.gitignore` 本機工具段落列出的）；所有分支的歷史紀錄掃描結果也是空的。
 - [ ] 本機 AI 設定、`docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md` 仍在原位，`git check-ignore -v` 對每一個路徑都回報命中的規則。
 - [ ] `.gitignore` 第一行仍是 `references/`，其餘規則都是附加的。
 - [ ] 若本機 AI 設定從 M0a 延到 M0b：排除規則、AI 設定的建立與 V17、V18 的紀錄，都在第一次 commit 之前完成，回報中附上先後順序的證據。

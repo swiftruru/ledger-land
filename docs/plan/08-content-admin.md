@@ -112,7 +112,7 @@ D 系列與本文件有關的項目已在 2026-10-20 全部決定，內容併入
 用途是輔助人工判斷，不是自動放行或擋下。
 
 - **位置**：腳本本身（例如 `tools/local/similarity.local.ts`）可以 commit，因為它不含教材內容；它的輸入（`references/` 的文字擷取）與輸出都放在 gitignored 的 `.local-reports/originality/` 底下（目錄規劃見 [09 技術選擇](09-tech-stack.md)），絕不 commit。`references/` 不存在時腳本直接結束並說明原因。CI 不執行這支腳本。
-- **兩種本機輸出的分工**：比對工具產生的原始結果（分數、重疊片段、教材文字擷取）一律寫到 `.local-reports/originality/`，和 i18n 報表等其他工具報表同樣放在 `.local-reports/`；AI Agent 自己的判讀摘要與筆記寫在 `.claude/reports/`（例如 `.claude/reports/originality/`），整個 `.claude/` 以 `.gitignore` 排除、只存在本機（見 15 AI 工作流程）。兩處都不 commit、不公開。
+- **兩種本機輸出的分工**：比對工具產生的原始結果（分數、重疊片段、教材文字擷取）一律寫到 `.local-reports/originality/`，和 i18n 報表等其他工具報表同樣放在 `.local-reports/`；判讀摘要與筆記寫在本機工具的筆記目錄（以 `.gitignore` 排除、只存在本機，見 15）。兩處都不 commit、不公開。
 - **方法**：
   1. 把教材題目頁的文字擷取到 `.local-reports/originality/source/`（只在本機）。
   2. 兩邊都做正規化：NFKC、去除空白與標點、把所有數字換成同一個記號。
@@ -224,7 +224,7 @@ content/
 | `tools/local/originality-check.mjs`（實際路徑） | 只在本機執行的相似度檢查（1.5 節） | 腳本 commit，輸出不 commit |
 | 建置輸出的內容快照 | 依語系、章節切分的 JSON 與 `content-manifest.json` | 不 commit |
 | `.local-reports/` | 工具產生的報表：相似度比對的原始結果與教材文字擷取（`.local-reports/originality/`）、i18n 報表等 | 不 commit（gitignored） |
-| `.claude/reports/` | AI Agent 自己的筆記與摘要，例如原創比對的判讀摘要（`.claude/reports/originality/`） | 不 commit（整個 `.claude/` 以 `.gitignore` 排除，只存在本機） |
+| 本機工具的筆記目錄 | 判讀摘要與筆記，例如原創比對的判讀摘要 | 不 commit（以 `.gitignore` 排除，只存在本機） |
 | `apps/admin/`（M7 才建立） | 已決定（2026-10-20）：後台前端與 Worker 的程式碼、D1 migration、自己的 `apps/admin/wrangler.jsonc`（另一個 Worker，獨立 origin） | commit（只有程式，不含任何內容資料或帳號） |
 | 後台的 D1 資料庫（M7 起） | 後台的草稿、`revisions` 表、角色表、稽核紀錄、發布工作（11.6 節） | 不 commit；只有已發布內容會由發布 workflow 匯出到 `content/` |
 | D1 的本機備份（M7 起） | 定期以 `wrangler d1 export` 匯出的完整資料庫，含草稿與帳號 | 不 commit；存在 repo 以外的本機備份位置 |

@@ -995,7 +995,7 @@ W 系列是會計審閱提出、不需要問老師的處理建議，採用與否
 
 ## 4. V 系列：待實測
 
-V 系列在對應的里程碑執行，結果寫進該里程碑的回報（M0a 是 go / no-go 報告）。先用 iOS Simulator 跑一輪，再部署到根路徑的 HTTPS 預覽網址，用實機測試（iPhone 測試 Service Worker 需要 secure context，區網 IP 的 http 不算）。實機需要你準備：iOS 26 與 iOS 27 的 iPhone（只有一個版本時，另一個用 Simulator 補並在報告中註明）、一台 iOS 17 裝置（D8；沒有實機時用 Simulator，並在報告中註明）、一支中低階 Android；效能量測用 iOS 26 支援清單中最舊的 iPhone。V17、V18 是本機 AI 設定的驗證，只需要本機的開發環境（Claude Code 與 git），不需要手機或其他帳號。V19 到 V22 於 2026-10-23（M2 實作完成時）新增，都在 M2 試用前於實機完成；V23 於 2026-10-25（M3 選項 B 實作時）新增。技術事實的查證日期是 2026-10-20（V19 到 V22 為 2026-10-23），細節與來源在各對應文件。
+V 系列在對應的里程碑執行，結果寫進該里程碑的回報（M0a 是 go / no-go 報告）。先用 iOS Simulator 跑一輪，再部署到根路徑的 HTTPS 預覽網址，用實機測試（iPhone 測試 Service Worker 需要 secure context，區網 IP 的 http 不算）。實機需要你準備：iOS 26 與 iOS 27 的 iPhone（只有一個版本時，另一個用 Simulator 補並在報告中註明）、一台 iOS 17 裝置（D8；沒有實機時用 Simulator，並在報告中註明）、一支中低階 Android；效能量測用 iOS 26 支援清單中最舊的 iPhone。V17、V18 是本機工具設定的驗證，只需要本機的開發環境與 git，不需要手機或其他帳號。V19 到 V22 於 2026-10-23（M2 實作完成時）新增，都在 M2 試用前於實機完成；V23 於 2026-10-25（M3 選項 B 實作時）新增。技術事實的查證日期是 2026-10-20（V19 到 V22 為 2026-10-23），細節與來源在各對應文件。
 
 | 編號 | 主題 | 里程碑 | 依結果決定的事 |
 | --- | --- | --- | --- |
@@ -1015,7 +1015,7 @@ V 系列在對應的里程碑執行，結果寫進該里程碑的回報（M0a �
 | V14 | iOS 上的 Intl 金額格式 | M0a | 格式化設定與測試期望值 |
 | V15 | CSP 的 sha256 方案 | M0a | CSP 基準（Workers `_headers`） |
 | V16 | GitHub Free 組織的安全 2FA 選項 | M7 不需要（只在改用 GitHub 當 IdP 時才測） | GitHub 當 IdP 時的安全基準 |
-| V17 | 從被 `.gitignore` 排除的 `.claude/` 載入 AI 設定 | M0a | AI 設定能否維持原位、只靠 `.gitignore` 排除 |
+| V17 | 從被 `.gitignore` 排除的目錄載入本機工具設定 | M0a | 本機工具設定能否維持原位、只靠 `.gitignore` 排除 |
 | V18 | 權限 deny 規則與 `guard-bash.sh` 的攔截效果 | M0a | 攔截規則的寫法，以及第一次 commit 前能否依賴這些攔截 |
 | V19 | App 內掃描課堂 QR 的實機辨識率與速度 | M2 | 影格間隔與縮放尺寸；是否改用退路 jsQR |
 | V20 | 主畫面 App 每次重新開啟是否再問相機權限 | M2 | 說明卡與隱私說明的文字；是否算阻礙 |
@@ -1165,28 +1165,21 @@ V 系列在對應的里程碑執行，結果寫進該里程碑的回報（M0a �
 - **依結果決定的事**：以 GitHub 當 IdP 時，兩步驟驗證的強度是否足夠，或改用其他 IdP。
 - **對應文件**：08 第 11.3 節。
 
-### V17 Claude Code 是否從被 `.gitignore` 排除的 `.claude/` 正常載入 agents、skills、rules 與 hooks
+### V17 本機開發工具是否從被 `.gitignore` 排除的設定目錄正常載入設定
 
-- **測什麼**：Claude Code 是否從被 `.gitignore` 排除的 `.claude/` 正常載入 agents、skills、rules 與 hooks，以 `/context`、`/hooks`、`/skills` 確認：`/context` 是否列出 `CLAUDE.md` 與永遠載入的 rules；`/hooks` 是否列出規劃中的四支 hooks（`guard-bash.sh`、`guard-edit.sh`、`check-gitignore.sh`、`session-start.sh`）；`/skills` 是否列出 M0a 建立的 skills；M0a 需要的 agents 能否呼叫。同時用 `git check-ignore -v` 與 `git status --porcelain --ignored` 確認這些路徑確實被排除，沒有出現在待 commit 的清單中。
-- **裝置或工具**：本機開發環境的 Claude Code 與 git；不需要手機或其他帳號。
-- **里程碑**：M0a（M0a 開工時建立本機 AI 設定之後立即測）。已決定（2026-10-20）：AI 設定延到 M0b 才建立，所以在 M0b 第一次 commit 之前測。
-- **目前已知**：AI 設定的格式依 2026-10-20 查證的官方文件規劃，之後可能改變；「被 `.gitignore` 排除時照常載入」是這套做法的前提，查證時沒有實際確認。
-- **依結果決定的事**：AI 設定能否維持「留在工具預設的位置、只靠 `.gitignore` 排除、不搬移任何檔案」的做法；V18 的攔截測試是否可以開始（hooks 要先確認有載入）。有項目沒有載入時停下回報，提出退路與取捨，由你決定，不自動搬移檔案或改寫既有的 `.gitignore` 內容。
-- **對應文件**：15 AI 協作與本機設定（`docs/plan/15-ai-workflow.md`，只存在本機、以 `.gitignore` 排除）第 12 節與第 14 節、[10 里程碑](10-milestones.md) M0a 範圍第 13 項、[11 風險與授權](11-risks-license.md) 風險 29。
+- **測什麼**：本機工具的設定目錄被 `.gitignore` 排除後是否照常載入（設定、rules、守門與交接），同時用 `git check-ignore -v` 與 `git status --porcelain --ignored` 確認這些路徑確實被排除，沒有出現在待 commit 的清單中。
+- **裝置或工具**：本機開發環境與 git；不需要手機或其他帳號。
+- **里程碑**：M0b 第一次 commit 之前（已決定 2026-10-20：本機工具設定延到 M0b 才建立）。
+- **依結果決定的事**：本機工具設定能否維持「留在工具預設的位置、只靠 `.gitignore` 排除、不搬移任何檔案」的做法；V18 的攔截測試是否可以開始。有項目沒有載入時停下回報，提出退路與取捨，由你決定，不自動搬移檔案或改寫既有的 `.gitignore` 內容。
+- **對應文件**：15（只存在本機）第 12 節與第 14 節、[10 里程碑](10-milestones.md) M0a 範圍第 13 項、[11 風險與授權](11-risks-license.md) 風險 29。
 
-### V18 權限 deny 規則與 `guard-bash.sh` 是否確實擋下強制推送、`git add -f`、寫入 `references/` 等動作
+### V18 本機守門規則是否確實擋下強制推送、`git add -f`、寫入 `references/` 等動作
 
-- **測什麼**：逐一建立測試案例，確認權限 deny 規則與 `guard-bash.sh` 是否確實擋下強制推送、`git add -f`、寫入 `references/` 等動作，每一案記錄是否被擋、擋下的是 deny 規則還是 hook，以及 Claude 收到的理由：
-  - `git add -f`、`git add --force`。
-  - `git push --force`、`git push -f`、`git push --force-with-lease`，以及 deny 規則比對不到的寫法（例如 `git -C . push --force`，要靠 `guard-bash.sh` 解析完整指令）。
-  - 暫存區含禁止路徑（AI 設定、`references/`、`.xlsx`、`.pdf`、`.DS_Store`）時的 `git commit`。
-  - 寫入或刪除 `references/` 底下的檔案（Edit 的 deny 規則與 `guard-edit.sh`）。
-  - 修改 `.gitignore` 後，`check-gitignore.sh` 是否提醒基準中的每一行都要保留。
-  測試在沒有設定遠端的測試用 repo（套用同一套 `.claude/` 設定）中進行；推送與寫入 `references/` 的案例只確認會被擋下，不對真正的遠端或教材檔案執行。
-- **裝置或工具**：本機開發環境的 Claude Code 與 git；不需要手機或其他帳號。
-- **里程碑**：M0a（在 V17 確認 hooks 已載入之後）。AI 設定延到 M0b 才建立時，在 M0b 第一次 commit 之前完成。
-- **目前已知**：15 第 8.1 節指出，deny 規則只比對指令開頭，`git -C . push --force` 這類寫法可以繞過，所以強制推送的攔截主要靠 `guard-bash.sh`；強制推送的 deny 寫法是依官方萬用字元規則推導，還沒有實測。兩者都是輔助，最終以 git 的檢查與第一次 commit 前的手動步驟為準。
-- **依結果決定的事**：deny 規則與 hooks 的寫法是否需要修正；第一次 commit 與 push 前（見 D3 與 15 第 9.2 節）能否依賴這些攔截，或完全改靠手動檢查。不通過時停下回報，提出修正方式或退路，由你決定。
+- **測什麼**：逐一建立測試案例，記錄每一案是否被擋：`git add -f`、`git add --force`；`git push --force`、`git push -f`、`git push --force-with-lease`，以及 `git -C . push --force` 這類寫法；暫存區含禁止路徑（本機工具設定、`references/`、`.xlsx`、`.pdf`、`.DS_Store`）時的 `git commit`；寫入或刪除 `references/` 底下的檔案；修改 `.gitignore` 後是否提醒基準中的每一行都要保留。測試在沒有設定遠端的測試用 repo 中進行；推送與寫入 `references/` 的案例只確認會被擋下，不對真正的遠端或教材檔案執行。
+- **裝置或工具**：本機開發環境與 git；不需要手機或其他帳號。
+- **里程碑**：M0b 第一次 commit 之前（在 V17 之後）。
+- **目前已知**：守門規則是輔助，最終以 git 的檢查與第一次 commit 前的手動步驟為準。
+- **依結果決定的事**：守門規則的寫法是否需要修正；第一次 commit 與 push 前（見 D3 與 15 第 9.2 節）能否依賴這些攔截，或完全改靠手動檢查。不通過時停下回報，提出修正方式或退路，由你決定。
 - **對應文件**：15 第 8 節、第 9.2 節與第 14 節（只存在本機）、[10 里程碑](10-milestones.md) M0a、[11 風險與授權](11-risks-license.md) 風險 29、[09 技術選擇](09-tech-stack.md)（repo 初始化步驟）。
 
 ### V19 App 內掃描課堂 QR 的實機辨識率與速度

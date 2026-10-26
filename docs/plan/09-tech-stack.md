@@ -724,9 +724,9 @@ ledger-land/
 | `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` | 教材整理與教材疑義（教材衍生內容：頁碼、答案、向老師確認的問句） | 不 commit（以 `.gitignore` 排除，檔案留在原位，只存在本機，由你備份；D3） |
 | `references/` | 老師的投影片與 Excel | 永遠不 commit |
 | `prototypes/` | M0a 試作程式與本機工具快取；需要產生器時的暫存資料夾（第 9 節） | 不 commit（M0a 已以 `/prototypes/` 排除） |
-| `CLAUDE.md`、`CLAUDE.local.md`、`.claude/`（含 settings、rules、agents、skills、hooks、交接狀態、報告） | 本機 AI 設定，留在工具預設的位置，以 `.gitignore` 排除（見 [15 AI 協作與本機設定](15-ai-workflow.md)（本機專用）） | 永遠不 commit |
-| 其他 AI 工具設定（`AGENTS.md`、`GEMINI.md`、`.mcp.json`、`.cursor/`、`.github/copilot-instructions.md` 等） | 若日後使用其他 AI 工具 | 永遠不 commit |
-| `docs/plan/15-ai-workflow.md` | AI 協作規劃（屬於 AI 相關內容） | 不 commit（以 `.gitignore` 排除，檔案留在原位） |
+| 本機開發工具的設定檔與目錄（含 rules、交接狀態、報告） | 本機專用設定，留在工具預設的位置，以 `.gitignore` 排除（見 15，本機專用） | 永遠不 commit |
+| 其他本機工具的設定檔（`.gitignore` 本機工具段落列出的路徑） | 若日後使用其他工具 | 永遠不 commit |
+| 15 本機工作流程 | 本機專用規劃 | 不 commit（以 `.gitignore` 排除，檔案留在原位） |
 | `coverage/`、`playwright-report/`、`test-results/`、`.local-reports/` | 測試與本機驗證的輸出 | 不 commit |
 | `.wrangler/`、`.dev.vars*` | wrangler 在本機執行時產生的暫存資料與本機 secrets | 不 commit |
 | `node_modules/` | 依賴套件 | 不 commit |
@@ -820,7 +820,7 @@ tools       -> content-schema、core、quiz、i18n、tokens
 - 根目錄的 `.gitignore` 原本只有 `references/` 一行；M0a 開工時（2026-10-20）已依第 3 步附加建置輸出、01 與 13、`/prototypes/`（M0a 試作程式與本機工具快取）與 AI 工具設定的排除規則，第一行不變。`.pnpm-store/` 與 `.cache/` 還沒有附加，M0b 補上（第 3 步）。
 - 根目錄與 `references/` 底下都有 `.DS_Store`；M0a 附加的規則已經忽略它們。
 - GitHub 上的 `swiftruru/ledger-land` 是公開的空 repo（沒有任何 ref），沒有東西要合併；第一次 push 就等於公開。
-- `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 `docs/plan/15-ai-workflow.md` 已經存在於本機，必須在任何 `git add` 之前就被 `.gitignore` 排除。
+- `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 15（本機工作流程）已經存在於本機，必須在任何 `git add` 之前就被 `.gitignore` 排除。
 
 **開工前提**：D3（repo 公開，01、13 以 `.gitignore` 排除）與 D6（授權）都已在 2026-10-20 決定，所以第一次 commit 可以放授權檔。
 
@@ -832,13 +832,13 @@ tools       -> content-schema、core、quiz、i18n、tokens
    - 建置與本機輸出：`.DS_Store`、`node_modules/`、`build/`、`dist/`、`coverage/`、`playwright-report/`、`test-results/`、`.local-reports/`、`.wrangler/`、`.dev.vars*`、`.env*`、`*.local`，以及專案內的 pnpm store 與快取 `.pnpm-store/`、`.cache/`（已決定七，第 7.5 節）。
    - 教材衍生文件（D3）：`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`。
    - M0a 試作程式與本機工具快取：`/prototypes/`。
-   - AI 工具設定的整段排除規則（`**/.claude/`、`**/CLAUDE.md`、`**/CLAUDE.local.md`、`.mcp.json`、`docs/plan/15-ai-workflow.md` 等，完整區塊見 [15 AI 協作與本機設定](15-ai-workflow.md)（本機專用）第 9.1 節），整段照抄，不刪減。M0a 開工時已附加過這三段與 `/prototypes/`（2026-10-20），這裡只確認這些段落完整存在，不重複附加。M0a 附加的建置與本機輸出規則還沒有 `.pnpm-store/` 與 `.cache/`，M0b 另外以附加的方式補上這兩條（寫在檔案末尾，不改動既有的行）。
+   - 本機工具設定的整段排除規則（完整區塊見 15（本機專用）第 9.1 節），整段照抄，不刪減。M0a 開工時已附加過這三段與 `/prototypes/`（2026-10-20），這裡只確認這些段落完整存在，不重複附加。M0a 附加的建置與本機輸出規則還沒有 `.pnpm-store/` 與 `.cache/`，M0b 另外以附加的方式補上這兩條（寫在檔案末尾，不改動既有的行）。
 
    附加後確認第一行仍是 `references/`。教材衍生文件與 AI 設定一律留在原位，只靠這些規則排除，不搬移任何檔案，也不建立 `docs/private/`。這一步必須在任何 `git add` 之前完成。
-4. 對 `references/` 底下的每一個檔案、根目錄與 `references/` 內的 `.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，以及每一個已存在的 AI 設定路徑（例如 `CLAUDE.md`、`.claude/settings.json`、`docs/plan/15-ai-workflow.md`），執行 `git check-ignore -v`，全部都要命中規則才繼續。
+4. 對 `references/` 底下的每一個檔案、根目錄與 `references/` 內的 `.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，以及每一個已存在的本機工具設定路徑（`.gitignore` 本機工具段落列出的），執行 `git check-ignore -v`，全部都要命中規則才繼續。
 5. 執行 `git status --porcelain`，輸出不能出現 `references/`、`.DS_Store`、`01-materials.md`、`13-material-questions.md`，也不能出現任何 AI 設定路徑。
 6. 第一次 commit 只明確加入指定的檔案，例如 `git add .gitignore README.md LICENSE LICENSES/CC-BY-SA-4.0.txt NOTICE`；`docs/` 底下的文件逐一列出檔名加入（01、13、15 已被排除，也不要列出）。不使用 `git add -A` 或 `git add .`。README 的致謝段落要等老師看過文字與位置後才加入（第 8 節）。
-7. push 前執行 `git ls-files`，用 grep 比對 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`01-materials.md`、`13-material-questions.md` 與 AI 設定路徑（`.claude/`、`CLAUDE`、`AGENTS.md`、`.mcp.json`、`15-ai-workflow.md` 等），結果必須是空的；再用 `git log --all --name-only --format=` 對所有分支的歷史紀錄做同樣的比對，結果也必須是空的。
+7. push 前執行 `git ls-files`，用 grep 比對 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`01-materials.md`、`13-material-questions.md` 與本機工具設定路徑（`.gitignore` 本機工具段落列出的），結果必須是空的；再用 `git log --all --name-only --format=` 對所有分支的歷史紀錄做同樣的比對，結果也必須是空的。
 8. 執行 `git ls-remote` 確認遠端狀態。若遠端已經有 commit，先 fetch 再 rebase；若遠端也有 `.gitignore`，合併方式是「保留本機每一行，再附加遠端新增的行」，禁止 `checkout --theirs` 或整份取代。絕不 force push。
 9. push 前停下來，由你確認。repo 是公開的（D3），這一步就是公開，git 歷史無法撤回。
 10. 以上完成後，才執行 `pnpm install`、加入 pre-commit hook（工具於 M0b 選定）與 CI。pre-commit hook 要等 `pnpm install` 之後才存在，CI 要等 push 之後才執行，所以兩者都只是後續的防線，前面的步驟才是第一道防線。
@@ -881,7 +881,7 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | e2e | Playwright 專案：`iphone-webkit`（iPhone 裝置設定加 WebKit）、`desktop-chromium`、`desktop-firefox`，另有 `reducedMotion: 'reduce'` 的專案並做截圖比對；純鍵盤操作流程；直接開啟中文與 `/en/` 的深層連結；作答中切換語言後題目、已選選項、計時與捲動位置都保留；離線測試（SW 就緒後切離線，冷啟動與導覽，含 `/en/` 網址）；把統計服務的網域攔截成失敗時，功能與離線測試都不受影響；更新提示測試（作答中不出現）；監聽 `securitypolicyviolation`，有任何 CSP 違規就失敗；INP 用腳本實際操作量測（作答一題、分類、在實驗室改一個數字）；PR 另由 `preview.yml` 對預覽網址再跑一次（第 10.1 節）。已決定（2026-10-23）：PR 的 ci 與 preview 只跑 Chromium 的兩個專案，push 到 main 才跑三個瀏覽器，縮短 PR 的等待時間 | 全部通過 |
 | axe | `@axe-core/playwright` 掃描固定頁面清單，兩種語系、淺色與深色各一次 | 沒有 serious 或 critical 問題 |
 | lighthouse | lighthouse 13 CLI 對本機伺服器跑固定網址，伺服器要重現 Workers 的行為（沒有對應檔案的路徑回 `index.html`、狀態碼 200，並套用 `_headers`；候選做法是在 `apps/web` 執行 `wrangler dev`，不穩定時改用自寫的靜態伺服器），每個網址 5 次取中位數（PR 上 3 次，2026-10-23 決定）；以 metric 做 assertion，不依賴 audit ID；記錄 `benchmarkIndex` 並據此校準 `cpuSlowdownMultiplier`。量測時照正式網站的方式載入 D7 的統計腳本，但送出目的地指向 stub 端點（不送出真實資料，設定見 06 第 8.2 節的 `perf/urls.json`），讓統計腳本的成本計入效能預算；正式網址的長期趨勢由 `scheduled.yml` 量測 | 行動版效能至少 90、無障礙至少 95；LCP 不超過 2.5 秒；CLS 不超過 0.1（只有 Chromium 量得到） |
-| hygiene | `git ls-files` 不得出現 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也不得出現 AI 設定路徑（`.claude/`、`CLAUDE.md`、`CLAUDE.local.md`、`AGENTS.md`、`.mcp.json`、`docs/plan/15-ai-workflow.md` 等）；`.gitignore` 仍包含上述排除規則；`release-age-exceptions.json` 與 `pnpm-workspace.yaml` 一致且沒有過期條目；`tools/` 的依賴方向檢查（各套件 `package.json` 的依賴符合第 8.2 節的方向，`packages/` 不引用 `apps/`）；純 TypeScript 套件的 DOM 禁用檢查（`web-ui` 以外的套件 tsconfig 的 `lib` 不列 `DOM`，第 8.3 節） | 全部通過 |
+| hygiene | `git ls-files` 不得出現 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也不得出現本機工具設定路徑（`.gitignore` 本機工具段落列出的）；`.gitignore` 仍包含上述排除規則；`release-age-exceptions.json` 與 `pnpm-workspace.yaml` 一致且沒有過期條目；`tools/` 的依賴方向檢查（各套件 `package.json` 的依賴符合第 8.2 節的方向，`packages/` 不引用 `apps/`）；純 TypeScript 套件的 DOM 禁用檢查（`web-ui` 以外的套件 tsconfig 的 `lib` 不列 `DOM`，第 8.3 節） | 全部通過 |
 
 固定量測網址：首頁 `/`、一個章節頁 `/chapter/<chapterId>/`（頁面上是該章的關卡列表，例如 `/chapter/ch_c5f8w2/`）、一個作答頁 `/level/<levelId>/`（例如 `/level/lv_k7m2q9xd/`）、實驗室故事第 7 筆 `/lab/story/<storyId>/<stepId>/`（例如 `/lab/story/story_k8p3x6/st_r2x9k4/`），另加同一個關卡的英文作答頁 `/en/level/<levelId>/`（例如 `/en/level/lv_k7m2q9xd/`，D5），確認英文殼層與英文 catalog 同樣達標。實際清單寫在 06 的 `perf/urls.json`，兩份文件一致。路由格式以 [02 網站架構](02-site-architecture.md) 為準，所有路徑都帶結尾斜線，ID 格式依 [08 題庫與後台](08-content-admin.md) 第 4.1 節（以上 ID 為示意）。作答頁與實驗室都經由 SPA fallback 直接開啟。還沒有對應頁面的里程碑，只量已存在的頁面。
 
