@@ -40,6 +40,8 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      # 容器裡是 root、工作目錄屬於執行器的使用者，git 會拒絕（dubious ownership）；check:hygiene 與 content:build 都要跑 git
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -88,6 +90,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -126,6 +129,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
