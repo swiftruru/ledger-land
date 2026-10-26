@@ -1,0 +1,15 @@
+/* 作答組：回饋區（FeedbackView）自己的樣式，跟著回饋區的 chunk 載入（按下確認後才載入，不在入口 CSS、不在作答頁第一次繪製的路徑上）。 */
+
+/* 解說裡引用的選項（Markup 的 {{option:…}}，M3 驗收第 6 輪）：選項原文接進句子時讀者分不出選項在哪裡結束（選項本身常有冒號與逗號），
+   改成 <q>：引號由 CSS 加，選項自己帶的引號在 Markup 換成第二層（placeholders.ts 的 nestOptionQuotes，是文字不是巢狀的 <q>，
+   所以這裡只寫一層）；字重 600（字色和解說同一個 --ll-text，不另外設）。
+   英文用英式的 ‘ ’（M3 驗收第 7 輪：瀏覽器預設是 “ ”，和章節頁徽章名的 ‘Open for business’ 不一致），句末標點留在引號外；
+   中文明寫「」（Chromium 與 WebKit 的 zh-TW 預設也是 “ ”，2026-10-25 實測；:lang(zh) 也涵蓋 zh-TW、zh-Hant-TW）。
+   引號是產生的內容：複製文字時不會帶上，螢幕閱讀器照樣念出選項文字 */
+.ll-optref {
+  font-weight: 600;
+  quotes: '\2018' '\2019';
+}
+.ll-optref:lang(zh) {
+  quotes: '\300C' '\300D';
+}

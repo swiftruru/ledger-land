@@ -5,12 +5,19 @@ import type { ScrollAnchor } from '@ledgerland/progress';
 
 const SELECTOR = '[data-ll-anchor]';
 
+/**
+ * 畫面最上方的錨點：下緣在 TopBar 之下（TopBar 捲出畫面時是視窗上緣之下）的第一個錨點。
+ * 包著 TopBar 的整組頁首（#ll-level-head）只有完整在畫面裡時才算：上方的提示插在整組頁首之後（Banners 的 data-ll-banner-after），
+ * 頁首已經捲出畫面一部分時要錨定下面的題目，提示晚一步插入時題目才會留在原位（以頁首當錨點，題目會被推下去）。
+ */
 export function captureScrollAnchor(root: Document = document): ScrollAnchor | undefined {
-  const top = root.querySelector('.ll-topbar')?.getBoundingClientRect().bottom ?? 0;
+  const bar = root.querySelector('.ll-topbar');
+  const top = Math.max(0, bar?.getBoundingClientRect().bottom ?? 0);
   const anchors = Array.from(root.querySelectorAll<HTMLElement>(SELECTOR)).filter((el) => el.id !== '');
   let best: HTMLElement | undefined;
   for (const el of anchors) {
     const rect = el.getBoundingClientRect();
+    if (bar && el.contains(bar) && rect.top < 0) continue;
     if (rect.bottom > top) {
       best = el;
       break;
