@@ -69,7 +69,7 @@ origin 一旦讓學生用了就很難換（第 5 節），這也是 D4 要在第
 | A 自有網域的子網域，DNS 在 Cloudflare | Cloudflare Workers Static Assets | 採用（`ledgerland.swift.moe`） | 可用 `_headers` 設定 CSP、快取分層與安全標頭；深層連結回 200；靜態請求免費且不限量；網域續約與 DNS 要長期維護 |
 | B 學校子網域，DNS 由學校管理 | Cloudflare Pages 或 GitHub Pages 自訂網域 | 未採用 | Workers 自訂網域需要自己擁有且啟用的 Cloudflare zone；DNS 變更要經過學校；GitHub Pages 無法自訂 header（CSP 只能用 meta）、SPA 退路只能用 404.html（狀態碼 404）、快取固定 `max-age=600` |
 | C 另購專用網域 | 同 A | 未採用 | 每年費用、要另外管理；已有 DNS 在 Cloudflare 的 `swift.moe`，不需要另購 |
-| 不建議 | `swiftruru.github.io/ledger-land/` | 未採用，只適合內部測試 | 這個 origin 已被你其他的 GitHub Pages 專案共用：IndexedDB、localStorage、配額與淘汰判斷都是同一份，其他專案的腳本（包括它們的 XSS）能讀寫 LedgerLand 的進度；其他專案若在根 scope 註冊 SW，也會攔截 `/ledger-land/` 的請求 |
+| 不建議 | `swiftruru.github.io/ledger-land/` | 未採用，只適合內部測試 | 這個 origin 已被我其他的 GitHub Pages 專案共用：IndexedDB、localStorage、配額與淘汰判斷都是同一份，其他專案的腳本（包括它們的 XSS）能讀寫 LedgerLand 的進度；其他專案若在根 scope 註冊 SW，也會攔截 `/ledger-land/` 的請求 |
 
 未採用的選項：B（學校 DNS 與主機限制多）、C（成本與管理負擔，沒有必要）、`swiftruru.github.io`（共用 origin 的安全與儲存問題）。
 
@@ -282,7 +282,7 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 2. 真正決定顏色的三個來源要一致：`html`／`body` 背景、頂部區域的背景、`theme-color`。頂部用 `padding-top: env(safe-area-inset-top)` 加上與 `body` 同色的實色區域，這樣不論狀態列是否透明、safe area 是否回傳 0，畫面都不會破。
 3. 浮動 Tab bar 不貼齊螢幕底邊（離 safe area 至少 8px），避免被 Safari 當成取色來源；隱藏的覆蓋層用 `display: none`，不要只設 `visibility: hidden` 或 `opacity: 0`（細節見 07 第 6.6 節）。
 4. **Android 啟動畫面**：由 `name`、`background_color` 與 512 圖示自動產生，確定要做。
-5. **iOS 啟動畫面**：M0a 用 assets-generator 產生淺深兩套 `apple-touch-startup-image`，在 iOS 26 與 27 實機上確認是否生效。M0a 結果（2026-10-21，iOS 27 與 18.6 Simulator，實機待重測）：有效，但有三個條件。(a) 頁面必須有 `<meta name="apple-mobile-web-app-capable" content="yes">`，iOS 才會下載啟動圖，只靠 manifest 的 `display: standalone` 不夠（另加 `mobile-web-app-capable`，避免 Chromium 的棄用警告）；(b) 啟動圖在「加入主畫面」那一刻依 iPhone 系統當時的淺色或深色固定一張，之後切換系統外觀或網站自己的外觀設定都不會跟著變（WebKit bug 259328），網站的外觀設定也不會帶進新加入的 App，因為 Safari 的網站資料不會複製到 App；(c) `media` 條件不要測 `device-height`（WebKit bug 326500，iOS 27.0.1），只用寬度與像素比。實機（iOS 27）的「深色啟動圖失敗」在 2026-10-22 查明不是 bug：你的 iPhone 系統其實是淺色，Safari 分頁看起來是深色是因為網站自己的外觀設定選了深色；新加入的 App 從空的 localStorage 開始（V02 的儲存隔離），所以跟隨系統顯示淺色，iOS 也正確選了淺色啟動圖。結論兩條：測深色啟動圖要用「設定 › 螢幕顯示與亮度 › 深色」，不是網站的外觀設定；Safari 裡手動選的外觀不會帶進新加入的 App，App 第一次啟動一律跟隨系統，所以 App 內要提供外觀選項（16 第 7 節的設定頁已涵蓋），安裝教學可以提一句。系統切成深色後重新加入，實機（iOS 27）看到深色啟動圖，V05 淺色與深色都已通過（2026-10-22）。若無效或效果不佳，退路是不提供啟動圖，改由 HTML 內聯的單色背景加置中圖示（inline SVG）當作載入畫面，React 掛載後移除；這個載入畫面要固定尺寸，不能造成版面位移。
+5. **iOS 啟動畫面**：M0a 用 assets-generator 產生淺深兩套 `apple-touch-startup-image`，在 iOS 26 與 27 實機上確認是否生效。M0a 結果（2026-10-21，iOS 27 與 18.6 Simulator，實機待重測）：有效，但有三個條件。(a) 頁面必須有 `<meta name="apple-mobile-web-app-capable" content="yes">`，iOS 才會下載啟動圖，只靠 manifest 的 `display: standalone` 不夠（另加 `mobile-web-app-capable`，避免 Chromium 的棄用警告）；(b) 啟動圖在「加入主畫面」那一刻依 iPhone 系統當時的淺色或深色固定一張，之後切換系統外觀或網站自己的外觀設定都不會跟著變（WebKit bug 259328），網站的外觀設定也不會帶進新加入的 App，因為 Safari 的網站資料不會複製到 App；(c) `media` 條件不要測 `device-height`（WebKit bug 326500，iOS 27.0.1），只用寬度與像素比。實機（iOS 27）的「深色啟動圖失敗」在 2026-10-22 查明不是 bug：我的 iPhone 系統其實是淺色，Safari 分頁看起來是深色是因為網站自己的外觀設定選了深色；新加入的 App 從空的 localStorage 開始（V02 的儲存隔離），所以跟隨系統顯示淺色，iOS 也正確選了淺色啟動圖。結論兩條：測深色啟動圖要用「設定 › 螢幕顯示與亮度 › 深色」，不是網站的外觀設定；Safari 裡手動選的外觀不會帶進新加入的 App，App 第一次啟動一律跟隨系統，所以 App 內要提供外觀選項（16 第 7 節的設定頁已涵蓋），安裝教學可以提一句。系統切成深色後重新加入，實機（iOS 27）看到深色啟動圖，V05 淺色與深色都已通過（2026-10-22）。若無效或效果不佳，退路是不提供啟動圖，改由 HTML 內聯的單色背景加置中圖示（inline SVG）當作載入畫面，React 掛載後移除；這個載入畫面要固定尺寸，不能造成版面位移。
 6. M0a 完成標準：Android 與 iPhone 實機安裝截圖，涵蓋主畫面圖示、啟動畫面、狀態列顏色，淺色與深色各一張【待實測 V05】。
 
 來源：https://bugs.webkit.org/show_bug.cgi?id=301994 、https://bugs.webkit.org/show_bug.cgi?id=305546 、https://github.com/mdn/browser-compat-data/pull/28503 （查證日期 2026-10-20）
@@ -1272,7 +1272,7 @@ iPhone 實機測試 SW 需要 secure context，`http://` 加區網 IP 不算，�
 - iPhone 上的 Chrome、Edge 等瀏覽器加入主畫面的實際步驟與結果（是否同樣以 web app 開啟、是否與 Safari 分頁共享儲存）。屬於實機驗證。
 - iOS 26、27 在 Compact 與 Top／Bottom 分頁列版面下，「加入主畫面」的實際步驟與按鈕位置（圖解教學的依據目前只有第三方教學），以及從 iOS 18 升級的裝置是否保留原本的分頁列設定。屬於實機驗證。
 - iOS 26、27 主畫面 App 中，`navigator.share({ files })` 分享 JSON 時是否出現「儲存到檔案」，以及 `<a download>` 是否正常。屬於實機驗證。
-- 給老師分享用的連結是否加上 LINE 的「以外部瀏覽器開啟」參數：先查證 LINE 現行行為，再由你決定。
+- 給老師分享用的連結是否加上 LINE 的「以外部瀏覽器開啟」參數：先查證 LINE 現行行為，再由我決定。
 - Safari 26 擴大套用的進階指紋保護，是否影響第一方學習網站的 localStorage 或 IndexedDB 存活時間（目前只知道它針對已知的指紋腳本）。屬於查證。
 - iOS 17、26、27 的主畫面 App 與 Safari 分頁中，`getUserMedia` 的相機權限提示頻率（是否每次啟動都重新詢問）、拒絕後如何重新允許，以及後鏡頭的選擇是否可靠（App 內掃描課堂 QR，4.9）。屬於實機驗證。
 - Cloudflare Workers 的 `single-page-application` 模式下，非導覽請求（舊的 chunk、內容 JSON）找不到檔案時回 404 還是殼層 HTML（3.5、9.1）。屬於部署後實測。

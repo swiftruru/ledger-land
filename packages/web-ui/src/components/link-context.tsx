@@ -1,4 +1,4 @@
-// 站內連結的注入點（站規 1.17）：web-ui 不依賴 react-router（.claude/rules/web.md），由 apps/web 用 LinkProvider 注入 RouterLink。
+// 站內連結的注入點（站規 1.17）：web-ui 不依賴 react-router（09 第 7.5 節的套件切分），由 apps/web 用 LinkProvider 注入 RouterLink。
 // web-ui 裡所有站內連結（Button、IconButton、BackButton、StatChip、TextLink…）都經 UiLink 渲染：有 provider 時是 provider 的元件
 // （react-router 的 Link，不會整頁重新載入），沒有時退回原生 <a>。站外網址（external）一律是 <a rel="noopener">，不經 provider。
 import { createContext, createElement, useContext, type AnchorHTMLAttributes, type ComponentType, type ReactNode, type Ref } from 'react';
