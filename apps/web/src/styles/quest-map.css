@@ -571,6 +571,11 @@ html[data-theme='dark'] .qm-list__item[data-terrain] {
   .qm-list--compact .qm-sum__meta {
     margin-top: var(--ll-space-1);
   }
+  /* 眉標自己占一列就可以換行：200% 的「Extension chapter 1」在 Linux 的字型（CI）比 macOS 寬，nowrap 會撐出 3 到 5px 的水平捲動（2026-10-26 PR 21） */
+  .qm-list--compact .qm-sum__no {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 }
 /* compact 的關卡列：不再是卡片包卡片，改成上下 12px、以分隔線隔開的列；建議下一關整列鋪淡淡的強調色底（到卡片左右緣），加上「建議下一關」膠囊
    （第 5 輪看圖驗收：原本左緣一條 4px 強調色，和章節卡的地景色條疊在同一個左緣，成為金色接紅色的雙色條） */

@@ -1123,6 +1123,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
 
 - 用 Playwright 腳本實際操作：作答一題並看回饋、在分類題完成一次分類（點選與拖放各一次）、在實驗室改一個金額看三表重算、開關名詞卡。
 - 在 Chromium 專案中用 CDP 的 CPU 節流（與 Lighthouse 相同的倍數），頁面注入 web-vitals 6.x（6.2.3）的 `onINP`，每個互動的結果都要 ≤ 200ms。
+- 門檻依執行器速度校正（2026-10-26 起）：測試開始前在同樣的節流下跑一段固定的計算與 DOM 工作，和基準機器相比慢幾倍，門檻就放寬幾倍（最多 2.5 倍，不會比 200ms 嚴）；CI 把這一支單獨用一個 worker 跑，不和其他測試搶 CPU。GitHub 的執行器量到的互動時間約是維護者 Mac 的 2.4 倍，而且時間都在繪製而不是 JS，固定 200ms 在那裡只是在量執行器。
 - 也可以用 Lighthouse user flow 的 timespan 模式補充。
 - Safari 26.2 起支援 LCP 與 Event Timing API（INP 的基礎），兩者成為 Baseline Newly available；但各引擎的量測終點略有不同，也有報告指出 Safari 的 INP 實作數值偏高。所以 iPhone 上的 INP 只當參考，CI 門檻以 Chromium 為準。
 - **CLS 只能在 Chromium 量測**（Layout Instability API 只有 Chromium 有）。

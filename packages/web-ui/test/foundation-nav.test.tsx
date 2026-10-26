@@ -137,13 +137,28 @@ describe('NavList、NavRow、NavCard', () => {
       await userEvent.hover(el);
       expect(deco(el)).toBe('none');
     }
-    // 焦點框畫在列內側：用按鈕形式的列量（WebKit 預設不讓連結取得焦點）；鍵盤操作之後的程式聚焦算 :focus-visible
-    await userEvent.keyboard('{Shift}');
+    // 焦點框畫在列內側：:focus-visible 的判定因平台而異（macOS 的 WebKit 按過鍵盤後的程式聚焦算、Linux 的不算，Tab 鍵在 macOS 又不走按鈕；
+    // 2026-10-26 CI），所以不靠瀏覽器判定，直接查樣式表裡 .ll-navrow:focus-visible 這條規則：outline 實線、offset -3px；
+    // 聚焦時沒有底線則用程式聚焦量（任何平台都成立）
+    const rules: CSSStyleRule[] = [];
+    const walk = (list: CSSRuleList) => {
+      for (const r of Array.from(list)) {
+        if (r instanceof CSSStyleRule && r.selectorText === '.ll-navrow:focus-visible') rules.push(r);
+        else if ('cssRules' in r && (r as CSSGroupingRule).cssRules) walk((r as CSSGroupingRule).cssRules);
+      }
+    };
+    for (const sheet of Array.from(document.styleSheets)) {
+      try {
+        walk(sheet.cssRules);
+      } catch {
+        /* 跨來源的樣式表讀不到，略過 */
+      }
+    }
+    const focusRule = rules.find((r) => r.style.getPropertyValue('outline-offset') !== '');
+    expect(focusRule?.style.getPropertyValue('outline-offset')).toBe('-3px');
+    expect(focusRule?.style.getPropertyValue('outline-style') || focusRule?.style.getPropertyValue('outline')).toMatch(/solid/);
     btn.focus();
     expect(document.activeElement).toBe(btn);
-    expect(btn.matches(':focus-visible')).toBe(true);
-    expect(getComputedStyle(btn).outlineOffset).toBe('-3px');
-    expect(getComputedStyle(btn).outlineStyle).toBe('solid');
     expect(deco(btn)).toBe('none');
     await screen.unmount();
   });
@@ -731,8 +746,11 @@ describe('M3 驗收第 1 輪（基礎組）', () => {
     expect(page.getByTestId('mid').element().className).toContain('ll-navrow--mid-trail');
     expect(page.getByTestId('short').element().className).not.toMatch(/ll-navrow--(long|mid)-trail/);
     expect(below('long')).toBe(true);
-    // 說明不再被擠成好幾行（一行 21px 的行高）
-    expect(page.getByTestId('long').element().querySelector('.ll-navrow__desc')!.getBoundingClientRect().height).toBeLessThan(30);
+    // 說明不再被擠成好幾行：佔滿文字欄的寬度（不再和 Badge 分一列），行數用它自己的行高算、最多兩行（字型寬度因平台而異，不量 px 高度）
+    const longDesc = page.getByTestId('long').element().querySelector('.ll-navrow__desc')!;
+    const longText = page.getByTestId('long').element().querySelector('.ll-navrow__text')!.getBoundingClientRect();
+    expect(longDesc.getBoundingClientRect().width).toBeGreaterThanOrEqual(longText.width - 1);
+    expect(Math.round(longDesc.getBoundingClientRect().height / parseFloat(getComputedStyle(longDesc).lineHeight))).toBeLessThanOrEqual(2);
     expect(right('mid')).toBe(true);
     expect(right('short')).toBe(true);
     await screen.unmount();

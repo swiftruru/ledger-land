@@ -4,7 +4,7 @@
 // 掃描範圍：軌道寬 288 到 440 每 1px，區帶寬 320 到 2560 的常見寬度（含 600 到 767 這段沒有兩翼的 medium），字級 200% 與 125%。
 // 第 1 章和地圖上一樣延伸到底部的地面（sceneGeo 的 below = GROUND，第 3 輪 handoff）。
 import { readFileSync, readdirSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   geometryFor,
   GROUND,
@@ -82,6 +82,9 @@ const SCENES: readonly { readonly name: string; readonly index: number; readonly
 ];
 
 const layouts = GEOMETRIES.map(({ label, g }) => ({ label, g, map: layoutMap(contentChapters, g) }));
+// 幾何檢查是純計算，但每一條都要跑全部版型與章節；CI 的執行器比本機慢好幾倍（2026-10-26 PR 21 三條超過預設的 5 秒），放寬到 60 秒不會漏掉任何錯誤
+vi.setConfig({ testTimeout: 60_000 });
+
 const sceneCases = SCENES.flatMap((s) =>
   layouts.map(({ label, g, map }) => ({ scene: s, label: `${s.name} ${label}`, g, geo: sceneGeo(map.chapters[s.index]!, g, s.index === 0 ? GROUND : 0) })),
 );
