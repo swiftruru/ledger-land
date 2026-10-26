@@ -1,0 +1,859 @@
+/* 基礎組（第二段）：選單列 NavList、NavRow、NavCard，展開列 Disclosure，選單 Menu，搜尋框 SearchField 與共用欄位 .ll-input、欄位錯誤，
+   進度條 ProgressBar，地圖頁提示條 HintBar。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。
+   這些都是新的 class，不和 01 到 13 的規則重疊；頁面與其他組的 CSS 只准包一層自己的 class 排版，不得選取這裡的 class 改外觀。 */
+
+/* ---- 選單列 NavList（站規 1.7）---- */
+.ll-navlist__group {
+  margin: var(--ll-space-6) 0;
+}
+.ll-navlist__title {
+  margin: 0 0 var(--ll-space-2);
+  padding-inline: 4px;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ll-navlist {
+  display: grid;
+  margin: var(--ll-space-3) 0;
+  padding: 0;
+  list-style: none;
+}
+.ll-navlist__group > .ll-navlist {
+  margin: 0;
+}
+.ll-navlist--inset {
+  background: var(--ll-surface);
+  border-radius: var(--ll-radius-lg);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  overflow: clip;
+}
+/* NavCard 放在 inset={false} 的清單裡：卡片之間 12px */
+.ll-navlist:not(.ll-navlist--inset):has(> .ll-navcard) {
+  gap: var(--ll-space-3);
+}
+.ll-navlist__item {
+  margin: 0;
+}
+.ll-navrow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto 20px;
+  align-items: center;
+  gap: var(--ll-space-3);
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--ll-navrow-h);
+  margin: 0;
+  padding: var(--ll-space-3) var(--ll-space-4);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ll-text);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-navrow--static {
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  cursor: default;
+}
+/* 頁內錨點（NavRow chevron="none"）：不畫右箭頭（那是前往別頁的記號），少一欄 20px；沒有右側狀態時文字欄用到列的右內距 */
+.ll-navrow--no-chev {
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+}
+.ll-navrow--no-chev:not(:has(> .ll-navrow__trail)) {
+  grid-template-columns: 36px minmax(0, 1fr);
+}
+.ll-navrow--compact {
+  min-height: var(--ll-target-min);
+  padding-block: 4px;
+}
+/* 分隔線：從標題欄開始（跳過圖示欄），畫在下一列的上緣 */
+.ll-navlist__item + .ll-navlist__item > .ll-navrow::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: calc(var(--ll-space-4) + 36px + var(--ll-space-3)) 0;
+  height: 1px;
+  background: var(--ll-border);
+  pointer-events: none;
+}
+/* inset 清單的第一列與最後一列跟著卡片圓角：滑過的底色與內側焦點框不會被卡片的圓角切掉 */
+.ll-navlist--inset > .ll-navlist__item:first-child > .ll-navrow {
+  border-start-start-radius: var(--ll-radius-lg);
+  border-start-end-radius: var(--ll-radius-lg);
+}
+.ll-navlist--inset > .ll-navlist__item:last-child > .ll-navrow {
+  border-end-start-radius: var(--ll-radius-lg);
+  border-end-end-radius: var(--ll-radius-lg);
+}
+.ll-navrow__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--ll-radius-sm);
+  background: var(--ll-accent-tint);
+  /* 圖示和次要按鈕裡的圖示同一個 token（M3 驗收第 7 輪）：淺色等於強調墨色（不變）；深色是各風味的色相，
+     莓果、紅酒的玫瑰色方塊裡不再放紫色圖示（收藏卡的愛心也是這一格） */
+  color: var(--ll-btn-secondary-icon);
+}
+.ll-navrow__icon svg {
+  width: 20px;
+  height: 20px;
+}
+.ll-navlist--neutral .ll-navrow__icon {
+  background: var(--ll-surface-2);
+  color: var(--ll-text-2);
+}
+/* 目前頁：圖示方塊加選取色的框（淺色是強調色；深色隨風味，和分段控制、開關同一個色相，M3 驗收第 4 輪） */
+.ll-navrow.is-current .ll-navrow__icon {
+  box-shadow: inset 0 0 0 1.5px var(--ll-selected);
+}
+.ll-navrow__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.ll-navrow__title {
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-sm-line);
+  font-weight: 600;
+  /* 窄欄裡的長英文字也要能斷，不壓到右側的狀態 */
+  overflow-wrap: anywhere;
+}
+/* 說明的換行用全站規則（03-core-utils.css：strict 加 pretty；第 7 輪拿掉 keep-all，320 加 200% 時「進度存在哪／裡、」是它在行尾硬斷）。
+   不該拆開的詞由字串包 .ll-nowrap，數字和量詞之間用不換行空白（「1 題」） */
+.ll-navrow__desc {
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+  overflow-wrap: anywhere;
+}
+/* 右側短字與箭頭各自固定欄位：沒有 trailing 的列，箭頭不會被自動排進第三欄（同一份清單裡箭頭的右緣才會對齊） */
+.ll-navrow__trail {
+  grid-column: 3;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--ll-space-1);
+  /* 右側的短字最多約 9 個字寬，再長就換行（不把標題擠到一兩個字寬） */
+  max-width: min(9.5em, 36vw);
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-footnote-line);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  overflow-wrap: break-word;
+}
+.ll-navrow__chev {
+  grid-column: 4;
+  display: inline-flex;
+  color: var(--ll-text-3);
+  transition: transform var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-navrow__chev svg {
+  width: 20px;
+  height: 20px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-navrow:not(.ll-navrow--static):hover {
+    background: var(--ll-surface-2);
+  }
+  .ll-navrow:not(.ll-navrow--static):hover .ll-navrow__chev {
+    transform: translateX(2px);
+  }
+}
+/* 按下：--ll-row-pressed（M3 驗收第 2 輪：紙質的 accent-tint 等於滑過的 surface-2，按下去畫面不變） */
+.ll-navrow:not(.ll-navrow--static):active {
+  background: var(--ll-row-pressed);
+}
+/* 滑過與按下時，和列底同色的小方塊（圖示底、中性與 accent 的 Badge）改成卡片色加一圈細框，不會消失在列底裡 */
+@media (hover: hover) and (pointer: fine) {
+  .ll-navrow:not(.ll-navrow--static):hover .ll-navrow__icon {
+    background: var(--ll-surface);
+    box-shadow: inset 0 0 0 1px var(--ll-border);
+  }
+  .ll-navrow:not(.ll-navrow--static):hover :is(.ll-badge--neutral, .ll-badge--accent) {
+    background: var(--ll-surface);
+    box-shadow: inset 0 0 0 1px var(--ll-border);
+  }
+}
+.ll-navrow:not(.ll-navrow--static):active .ll-navrow__icon,
+.ll-navrow:not(.ll-navrow--static):active :is(.ll-badge--neutral, .ll-badge--accent) {
+  background: var(--ll-surface);
+  box-shadow: inset 0 0 0 1px var(--ll-border);
+}
+.ll-navrow.is-current:not(.ll-navrow--static):is(:hover, :active) .ll-navrow__icon {
+  box-shadow: inset 0 0 0 1.5px var(--ll-selected);
+}
+/* 減少動態：滑過時箭頭不位移（只換底色，站規 1.0 原則 9）。底色與箭頭的過渡是 --ll-dur-fast，減少動態時 tokens 已經是 0ms（不會開始過渡），
+   不用再寫 transition: none（第 7 輪為了入口 CSS 的預算刪掉） */
+@media (prefers-reduced-motion: reduce) {
+  .ll-navrow:not(.ll-navrow--static):hover .ll-navrow__chev {
+    transform: none;
+  }
+}
+html[data-motion='reduced'] .ll-navrow:not(.ll-navrow--static):hover .ll-navrow__chev {
+  transform: none;
+}
+/* 焦點框畫在列的內側（不被卡片的 overflow: clip 切掉） */
+.ll-navrow:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: -3px;
+}
+/* 窄的列：右側是 Badge 的列依 Badge 的估計寬度（NavList.tsx 的 trailClass）把 Badge 移到說明下方，說明不會被擠成一行兩三個字
+   （M3 驗收第 1 輪：英文「Backup」的說明換成三行、200% 時中文一行只剩三個字）。長的（5em 以上，--long-trail）在列寬 25em 以下、
+   中的（3em 以上，例如「還沒備份」，--mid-trail）在 19em 以下（320 寬或字級放大）才移下去；計數這類短的一律在右側（第 5 輪）。
+   用 em，字級放大到 200% 時門檻跟著變大。容器是清單的 li（NavRow 一定在 li 裡；NavCard 的外層不設容器，避免撐寬由內容決定時寬度歸零） */
+.ll-navlist__item {
+  container-type: inline-size;
+}
+@container (max-width: 25em) {
+  .ll-navrow--long-trail:has(> .ll-navrow__trail > .ll-badge) {
+    grid-template-columns: 36px minmax(0, 1fr) 20px;
+    row-gap: 4px;
+  }
+  .ll-navrow--long-trail:is(.ll-navrow--static, .ll-navrow--no-chev):has(> .ll-navrow__trail > .ll-badge) {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+  .ll-navrow--long-trail:has(> .ll-navrow__trail > .ll-badge) > .ll-navrow__icon {
+    grid-row: 1 / span 2;
+  }
+  .ll-navrow--long-trail:has(> .ll-navrow__trail > .ll-badge) > .ll-navrow__text {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .ll-navrow--long-trail:has(> .ll-navrow__trail > .ll-badge) > .ll-navrow__trail {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+    justify-content: flex-start;
+    max-width: none;
+    text-align: start;
+  }
+  .ll-navrow--long-trail:has(> .ll-navrow__trail > .ll-badge) > .ll-navrow__chev {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+}
+@container (max-width: 19em) {
+  .ll-navrow--mid-trail:has(> .ll-navrow__trail > .ll-badge) {
+    grid-template-columns: 36px minmax(0, 1fr) 20px;
+    row-gap: 4px;
+  }
+  .ll-navrow--mid-trail:is(.ll-navrow--static, .ll-navrow--no-chev):has(> .ll-navrow__trail > .ll-badge) {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+  .ll-navrow--mid-trail:has(> .ll-navrow__trail > .ll-badge) > .ll-navrow__icon {
+    grid-row: 1 / span 2;
+  }
+  .ll-navrow--mid-trail:has(> .ll-navrow__trail > .ll-badge) > .ll-navrow__text {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .ll-navrow--mid-trail:has(> .ll-navrow__trail > .ll-badge) > .ll-navrow__trail {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+    justify-content: flex-start;
+    max-width: none;
+    text-align: start;
+  }
+  .ll-navrow--mid-trail:has(> .ll-navrow__trail > .ll-badge) > .ll-navrow__chev {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+}
+/* 窄的 NavCard（M3 驗收第 6 輪：英文 320 寬加 200% 字級，收藏卡的標題欄只剩約 140px，「Sharehol／ders」從字中間斷）：
+   卡片寬不到 16em（文字放大 200% 的手機；字級 17px 時 272px，320 寬的卡片 288px 不受影響）時不畫左側的圖示格（裝飾：收藏卡每張都是同一個愛心），標題與說明用到整列寬。
+   容器是卡片本身（收藏卡是 li 裡的 div，寬度由清單決定，不由內容決定）；有插圖的卡片（首頁、我的）不設容器、不變 */
+.ll-navcard:not(.ll-navcard--media) {
+  container-type: inline-size;
+}
+@container (max-width: 16em) {
+  .ll-navcard:not(.ll-navcard--media) .ll-navrow__icon {
+    display: none;
+  }
+  /* 文字欄左右再各借 4px 內距（字離卡片左緣 12px）：英文 34px 的「Shareholders」要 206px，原本的欄寬 204px */
+  .ll-navcard:not(.ll-navcard--media) .ll-navrow__text {
+    grid-column: 1 / span 2;
+    margin-inline: -4px;
+  }
+}
+
+/* NavCard：單獨一張卡（內距 16）；media 在上、滿寬；aside 在右側垂直置中，和連結相距 8px */
+.ll-navcard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  margin: 0;
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  list-style: none;
+}
+div.ll-navcard {
+  margin: var(--ll-space-3) 0;
+}
+.ll-navcard--aside {
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--ll-space-2);
+  padding-inline-end: var(--ll-space-2);
+}
+.ll-navcard .ll-navrow--card {
+  min-height: 72px;
+  padding: var(--ll-space-4);
+  border-radius: var(--ll-radius-lg);
+}
+.ll-navcard--aside .ll-navrow--card {
+  padding-inline-end: var(--ll-space-2);
+}
+.ll-navcard--media .ll-navrow--card {
+  grid-template-areas:
+    'media media media media'
+    'icon text trail chev';
+  overflow: clip;
+}
+.ll-navrow__media {
+  grid-area: media;
+  display: block;
+  margin: calc(-1 * var(--ll-space-4)) calc(-1 * var(--ll-space-4)) var(--ll-space-1);
+  overflow: clip;
+  border-start-start-radius: var(--ll-radius-lg);
+  border-start-end-radius: var(--ll-radius-lg);
+}
+.ll-navcard--media .ll-navrow__icon {
+  grid-area: icon;
+}
+.ll-navcard--media .ll-navrow__text {
+  grid-area: text;
+}
+.ll-navcard--media .ll-navrow__trail {
+  grid-area: trail;
+}
+.ll-navcard--media .ll-navrow__chev {
+  grid-area: chev;
+}
+.ll-navcard__aside {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-1);
+}
+/* 卡片旁的圖示按鈕（收藏卡的移除鈕）：靜止時和左側圖示、箭頭同一個彩度（btn-secondary-icon；淺色等於強調墨色，紙質不變）。
+   深色三個風味的垃圾桶原本是強調墨色，比愛心鮮豔，刪除反而是卡片上最搶眼的東西（M3 驗收第 8 輪）；滑過與鍵盤焦點換回強調墨色 */
+.ll-navcard__aside > :not(:hover, :focus-visible) {
+  color: var(--ll-btn-secondary-icon);
+}
+/* chevron="wide"：600 以下不畫箭頭，文字欄用到圖示欄之後的整列寬（收藏卡：箭頭和連結外的垃圾桶擠在一起，文字欄只剩約 165px） */
+@media (max-width: 599.98px) {
+  .ll-navcard--chev-wide > .ll-navrow {
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+  }
+  .ll-navcard--chev-wide > .ll-navrow:not(:has(> .ll-navrow__trail)) {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+  .ll-navcard--chev-wide > .ll-navrow > .ll-navrow__chev {
+    display: none;
+  }
+}
+/* 強制色彩（站規 1.2.3、5.1，E2E 第 9 項）：每一列本身有系統色外框，畫在列的內側（outline，不改版面）；
+   和清單、卡片的外框疊起來，列與列之間、列與清單邊緣都是一樣粗的 2px 線，所以不再畫列之間的分隔線 */
+@media (forced-colors: active) {
+  .ll-navrow {
+    outline: 1px solid CanvasText;
+    outline-offset: -1px;
+  }
+  .ll-navlist__item + .ll-navlist__item > .ll-navrow::before {
+    display: none;
+  }
+  .ll-navrow:focus-visible {
+    outline-color: Highlight;
+  }
+  .ll-navlist--inset,
+  .ll-navcard {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* ---- 展開列 Disclosure（站規 1.8）---- */
+.ll-disclosure {
+  margin: var(--ll-space-3) 0;
+}
+.ll-disclosure--card {
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+}
+.ll-disclosure--plain {
+  border-block: 1px solid var(--ll-border);
+}
+.ll-disclosure--plain + .ll-disclosure--plain {
+  margin-top: -1px;
+}
+.ll-disclosure__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-3);
+  box-sizing: border-box;
+  min-height: 48px;
+  padding: var(--ll-space-3) var(--ll-space-4);
+  color: var(--ll-text);
+  list-style: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-disclosure__summary::-webkit-details-marker {
+  display: none;
+}
+.ll-disclosure__summary::marker {
+  content: '';
+}
+/* 圓角要寫明（不能用 inherit：summary 在 details 的 shadow DOM 裡是 slot 的子元素，inherit 拿到的是 slot 的 0） */
+.ll-disclosure--card > .ll-disclosure__summary {
+  border-radius: var(--ll-radius-lg);
+}
+/* plain：滑過與按下的色塊左右和髮絲線兩端切齊、上下各離線 2px（浮在兩條線之間，不碰線；色塊 48px，兩線之間 52px）。
+   字與箭頭離色塊邊 16px，和下面的 NavCard、NavRow 同一個內距，箭頭上下對齊。
+   M3 驗收第 6 輪：色塊往外多出 8px 時細線像斷在半空，色塊左右緣也比旁邊的卡片多出 8px */
+.ll-disclosure--plain > .ll-disclosure__summary {
+  margin-block: 2px;
+  border-radius: var(--ll-radius-sm);
+}
+/* 展開時 summary 下緣不是圓角（內容接在下面） */
+.ll-disclosure--card[open] > .ll-disclosure__summary {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+.ll-disclosure__icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--ll-btn-icon);
+}
+.ll-disclosure__icon svg {
+  width: 20px;
+  height: 20px;
+}
+.ll-disclosure__title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-sm-line);
+  font-weight: 600;
+  overflow-wrap: break-word;
+}
+.ll-disclosure__trail {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+}
+.ll-disclosure__chev {
+  display: inline-flex;
+  flex: none;
+  color: var(--ll-text-3);
+  transition: transform var(--ll-dur-base) var(--ll-ease-standard);
+}
+.ll-disclosure__chev svg {
+  width: 20px;
+  height: 20px;
+}
+.ll-disclosure[open] > .ll-disclosure__summary .ll-disclosure__chev {
+  transform: rotate(180deg);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-disclosure__summary:hover {
+    background: var(--ll-surface-2);
+  }
+  /* 數量徽章（例如「64」）的底等於滑過的列底：改成卡片色加一圈細框（M3 驗收第 2 輪） */
+  .ll-disclosure__summary:hover .ll-disclosure__trail :is(.ll-badge--neutral, .ll-badge--accent) {
+    background: var(--ll-surface);
+    box-shadow: inset 0 0 0 1px var(--ll-border);
+  }
+}
+.ll-disclosure__summary:active {
+  background: var(--ll-row-pressed);
+}
+.ll-disclosure__summary:active .ll-disclosure__trail :is(.ll-badge--neutral, .ll-badge--accent) {
+  background: var(--ll-surface);
+  box-shadow: inset 0 0 0 1px var(--ll-border);
+}
+.ll-disclosure__summary:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: -3px;
+}
+/* 展開的內容左右 16px：card 和 plain 一樣，和 summary 的字對齊（第 7 輪起 plain 的 summary 也是 16px，原本的 4px 內距規則已刪） */
+.ll-disclosure__body {
+  padding: 0 var(--ll-space-4) var(--ll-space-4);
+}
+.ll-disclosure__body > :first-child {
+  margin-top: 0;
+}
+.ll-disclosure__body > :last-child {
+  margin-bottom: 0;
+}
+/* 減少動態：箭頭直接換角度（--ll-dur-base 在減少動態時是 120ms，要明寫）；summary 底色的過渡是 dur-fast（已是 0ms） */
+@media (prefers-reduced-motion: reduce) {
+  .ll-disclosure__chev {
+    transition: none;
+  }
+}
+html[data-motion='reduced'] .ll-disclosure__chev {
+  transition: none;
+}
+@media (forced-colors: active) {
+  .ll-disclosure--card {
+    border: 1px solid CanvasText;
+  }
+  .ll-disclosure__summary:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+/* ---- 選單 MenuButton、MenuItem（站規 1.9）---- */
+.ll-menu {
+  position: relative;
+  display: inline-flex;
+}
+.ll-menu__panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--ll-space-2));
+  z-index: var(--ll-z-sticky);
+  display: grid;
+  box-sizing: border-box;
+  min-width: 220px;
+  max-width: min(320px, calc(100vw - 2 * var(--ll-space-4)));
+  padding: 6px;
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-elevated);
+  box-shadow: var(--ll-shadow-3), var(--ll-card-ring);
+}
+.ll-menu__panel--end {
+  inset-inline-end: 0;
+}
+.ll-menu__panel--start {
+  inset-inline-start: 0;
+}
+.ll-menuitem {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ll-space-3);
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--ll-target-min);
+  margin: 0;
+  padding: 0 var(--ll-space-4);
+  border: 0;
+  border-radius: var(--ll-radius-sm);
+  background: transparent;
+  color: var(--ll-text);
+  font: inherit;
+  font-size: var(--ll-type-body-size);
+  font-weight: 400;
+  line-height: var(--ll-type-body-sm-line);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ll-menuitem__icon {
+  display: inline-flex;
+  color: var(--ll-btn-icon);
+}
+.ll-menuitem__icon svg {
+  width: 20px;
+  height: 20px;
+}
+.ll-menuitem__label {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-menuitem:hover {
+    background: var(--ll-surface-2);
+  }
+}
+.ll-menuitem:focus {
+  background: var(--ll-surface-2);
+}
+.ll-menuitem:active {
+  background: var(--ll-row-pressed);
+}
+.ll-menuitem:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: -3px;
+}
+.ll-menuitem[aria-disabled='true'] {
+  color: var(--ll-btn-disabled-fg);
+  cursor: not-allowed;
+}
+.ll-menuitem[aria-disabled='true'] .ll-menuitem__icon {
+  color: inherit;
+}
+@media (forced-colors: active) {
+  .ll-menu__panel {
+    border: 1px solid CanvasText;
+  }
+  .ll-menuitem:focus {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+/* ---- 欄位：搜尋框 SearchField（站規 1.14）、共用文字欄位 .ll-input 與錯誤（站規 1.2.4）---- */
+.ll-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid var(--ll-border-strong);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1);
+  color: var(--ll-text);
+  font: inherit;
+  font-size: var(--ll-type-input-size);
+  line-height: var(--ll-type-input-line);
+}
+html[data-theme='dark'] .ll-input {
+  background: var(--ll-surface-2);
+  box-shadow: none;
+}
+/* 欄位與搜尋框的焦點框是 base.css 的全站 :focus-visible（3px、外移 2px） */
+/* 錯誤：邊框 2px、聚焦框也是同一個紅（只有一種顏色） */
+.ll-input[aria-invalid='true'] {
+  border: 2px solid var(--ll-danger-ink);
+}
+.ll-input[aria-invalid='true']:focus-visible {
+  outline-color: var(--ll-danger-ink);
+}
+/* 多行欄位（備份碼）：五行高、不能拖曳改大小（M3 驗收第 1 輪：原生的拖曳把手、最後一行只露出半行）。
+   捲動的內容會畫進 padding，所以上下左右的留白改用透明的 border（border 會裁切內容），看得見的外框是貼在外緣的 1px 陰影；
+   高度是整數行加上下各 12px，靜止時與捲到底時都不會切到半行 */
+textarea.ll-input {
+  --_frame: var(--ll-border-strong);
+  --_frame-w: 1px;
+  display: block;
+  block-size: calc(5 * var(--ll-type-input-line) + 24px);
+  min-height: 0;
+  padding: 0;
+  border: solid transparent;
+  border-width: 12px 14px;
+  box-shadow:
+    0 0 0 var(--_frame-w) var(--_frame),
+    var(--ll-shadow-1);
+  resize: none;
+}
+html[data-theme='dark'] textarea.ll-input {
+  box-shadow: 0 0 0 var(--_frame-w) var(--_frame);
+}
+textarea.ll-input[aria-invalid='true'] {
+  --_frame: var(--ll-danger-ink);
+  --_frame-w: 2px;
+  border: solid transparent;
+  border-width: 12px 14px;
+}
+.ll-fielderror {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: var(--ll-space-2) 0 0;
+  color: var(--ll-danger-ink);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-fielderror svg {
+  flex: none;
+  margin-top: 4px;
+}
+.ll-search {
+  display: grid;
+  gap: var(--ll-space-2);
+  margin: var(--ll-space-3) 0;
+}
+.ll-search__label {
+  padding-inline: 4px;
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ll-search__field {
+  position: relative;
+}
+.ll-search__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 14px;
+  display: flex;
+  align-items: center;
+  color: var(--ll-text-3);
+  pointer-events: none;
+}
+.ll-search__icon svg {
+  width: 20px;
+  height: 20px;
+}
+/* 紙質：淺底疊在更淺的紙上看不出來，靠陰影與 1px 邊浮起；深色：surface-2 底加 border-strong */
+.ll-search__input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 var(--ll-space-4) 0 44px;
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1);
+  color: var(--ll-text);
+  font: inherit;
+  font-size: var(--ll-type-input-size);
+  line-height: var(--ll-type-input-line);
+  -webkit-appearance: none;
+  appearance: none;
+}
+html[data-theme='dark'] .ll-search__input {
+  border-color: var(--ll-border-strong);
+  background: var(--ll-surface-2);
+  box-shadow: none;
+}
+.ll-search__input::placeholder {
+  color: var(--ll-text-3);
+  opacity: 1;
+}
+.ll-search__input::-webkit-search-cancel-button,
+.ll-search__input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+.ll-search__field.has-value .ll-search__input {
+  padding-inline-end: 48px;
+}
+.ll-search__clear {
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-end: 2px;
+}
+@media (forced-colors: active) {
+  .ll-search__input,
+  .ll-input {
+    border-color: CanvasText;
+  }
+  /* 強制色彩會把透明的 border 畫成系統色：多行欄位改回 1px 外框加內距 */
+  textarea.ll-input,
+  textarea.ll-input[aria-invalid='true'] {
+    border: 1px solid CanvasText;
+    padding: 11px 13px;
+  }
+}
+
+/* ---- 進度條 ProgressBar（站規 1.13）：填色整條在軌道裡，用 translateX 往左移出去；右端維持圓頭 ---- */
+/* 軌道加一圈 1px 的 --ll-border（M3 驗收第 1 輪：surface-2 疊在卡片或徽章條的金色漸層上幾乎看不到，0／14 時整條像不存在） */
+.ll-progress {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: var(--ll-progress-h-md);
+  border-radius: var(--ll-radius-full);
+  /* 深色的軌道與外框另有 token（M3 驗收第 5 輪：surface-2 加 border 在深色卡片上只有 1.06 到 1.12:1，空進度條像不存在） */
+  background: var(--ll-progress-track);
+  box-shadow: inset 0 0 0 1px var(--ll-progress-rim);
+}
+.ll-progress--sm {
+  height: var(--ll-progress-h-sm);
+}
+.ll-progress__fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--ll-star-fill);
+  box-shadow: inset 0 0 0 1px var(--ll-star-edge);
+  transform: translateX(calc((var(--ll-progress-ratio, 0) - 1) * 100%));
+  transition: transform var(--ll-dur-base) var(--ll-ease-standard);
+}
+.ll-progress__fill.is-empty {
+  visibility: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-progress__fill {
+    transition: none;
+  }
+}
+html[data-motion='reduced'] .ll-progress__fill {
+  transition: none;
+}
+@media (forced-colors: active) {
+  .ll-progress {
+    border: 1px solid CanvasText;
+  }
+  .ll-progress__fill {
+    background: Highlight;
+  }
+}
+
+/* ---- 地圖頁提示條 HintBar（地圖規格 4.9、站規 1.20）：44px、info-tint 底，一行字與兩顆 44px 圖示按鈕 ---- */
+.ll-hintbar {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--ll-space-3);
+  box-sizing: border-box;
+  min-height: var(--ll-target-min);
+  padding-inline: var(--ll-space-3) 0;
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-info-tint);
+  color: var(--ll-text);
+}
+.ll-hintbar--warning {
+  background: var(--ll-warning-tint);
+}
+.ll-hintbar__icon {
+  display: inline-flex;
+  color: var(--ll-info-ink);
+}
+.ll-hintbar--warning .ll-hintbar__icon {
+  color: var(--ll-warning-ink);
+}
+/* 深色：和 Banner 同一條規則（M3 驗收第 1 輪），底是卡片色帶 8% 的狀態色加 card-ring，只有圖示帶色；
+   info 是各風味的外框色 12%（第 4 輪：青色 8% 在夜空上是冷調藍灰板，和紫調的卡片分家） */
+html[data-theme='dark'] .ll-hintbar {
+  background: color-mix(in oklab, var(--ll-border-strong) 12%, var(--ll-surface));
+  box-shadow: var(--ll-card-ring);
+}
+html[data-theme='dark'] .ll-hintbar--warning {
+  background: color-mix(in oklab, var(--ll-warning-ink) 8%, var(--ll-surface));
+}
+.ll-hintbar__icon svg {
+  width: 20px;
+  height: 20px;
+}
+.ll-hintbar__text {
+  min-width: 0;
+  margin: 0;
+  padding-block: 10px;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  overflow-wrap: break-word;
+}
+.ll-hintbar__actions {
+  display: inline-flex;
+  align-items: center;
+}
+@media (forced-colors: active) {
+  .ll-hintbar {
+    border: 1px solid CanvasText;
+  }
+}

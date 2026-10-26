@@ -179,6 +179,14 @@ describe('Segmented', () => {
       .element()
       .dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await expect.element(page.getByRole('radio', { name: 'EN' })).toHaveAttribute('aria-checked', 'true');
+    // 焦點跟著新選的項目（finding foundation-1），再按一次右鍵繞回「中」
+    expect(document.activeElement).toBe(page.getByRole('radio', { name: 'EN' }).element());
+    await page
+      .getByRole('radio', { name: 'EN' })
+      .element()
+      .dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    await expect.element(page.getByRole('radio', { name: '中' })).toHaveAttribute('aria-checked', 'true');
+    expect(document.activeElement).toBe(page.getByRole('radio', { name: '中' }).element());
     screen.unmount();
   });
 });

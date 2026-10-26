@@ -1,0 +1,418 @@
+/* 名詞卡組：GlossaryItem、TermPill、GlossaryGrid（站規 1.11）。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* ==== 元件本體（基礎組第二段寫，2026-10-25）：徽記、金色印章、虛線空位、蓋章動畫、卡片格、參考名詞膠囊。
+   名詞卡組要補的版面或狀態請加在這一段的後面（同權重時後面的蓋過前面），不要改這一段；要改元件外觀先找基礎組。 ==== */
+
+/* 名詞卡格（站規 1.11.3）：手機一欄、600 起兩欄、寬版（1040）三欄。欄數看格子本身有多寬（不看視窗寬）：
+   每張卡至少 264px，所以 375 一欄、600 到 1023 兩欄、寬版 1040 三欄；放在一般 720 寬的頁面裡也不會擠成三條窄柱 */
+.ll-termgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 264px), 1fr));
+  gap: var(--ll-space-3);
+  margin: var(--ll-space-3) 0;
+  padding: 0;
+  list-style: none;
+}
+.ll-termgrid__cell {
+  display: grid;
+  margin: 0;
+}
+
+/* 徽記：44×44 圓形（名詞頁的狀態卡用 32）。科目類有要素時用要素的 tint 底、ink 圖示；其他類別是中性底 */
+.ll-termemblem {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-surface-2);
+  color: var(--ll-text-2);
+}
+.ll-termemblem--s32 {
+  width: 32px;
+  height: 32px;
+}
+.ll-termemblem--asset {
+  background: var(--ll-element-asset-tint);
+  color: var(--ll-element-asset-ink);
+}
+.ll-termemblem--liability {
+  background: var(--ll-element-liability-tint);
+  color: var(--ll-element-liability-ink);
+}
+.ll-termemblem--equity {
+  background: var(--ll-element-equity-tint);
+  color: var(--ll-element-equity-ink);
+}
+.ll-termemblem--revenue {
+  background: var(--ll-element-revenue-tint);
+  color: var(--ll-element-revenue-ink);
+}
+.ll-termemblem--expense {
+  background: var(--ll-element-expense-tint);
+  color: var(--ll-element-expense-ink);
+}
+/* 未收進：空位（透明底、1.5px 虛線、淡圖示）；pending（只剩設計系統的狀態板在用，名詞圖鑑在進度讀到後才畫卡片）：實心的 surface-2、淡圖示 */
+.ll-termemblem--locked {
+  border: 1.5px dashed var(--ll-border-strong);
+  background: transparent;
+  color: var(--ll-text-3);
+}
+.ll-termemblem--pending {
+  background: var(--ll-surface-2);
+  color: var(--ll-text-3);
+}
+
+/* 金色印章：--ll-star-fill 圓（深色是暖金，不是檸檬黃）、--ll-star-ink 勾號。外圈、斜度、內側虛線與蓋章動畫的關鍵影格（ll-seal-in）
+   在檔尾名詞卡組那一段（第 2 輪看圖驗收全站覆寫）；這裡原本的外圈 box-shadow 與 ll-stamp-in 動畫都被它蓋過，第 8 輪刪掉省入口 CSS */
+.ll-stamp {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-star-fill);
+  color: var(--ll-star-ink);
+}
+.ll-stamp--s32 {
+  width: 32px;
+  height: 32px;
+}
+.ll-stamp.is-stamping {
+  animation: ll-seal-in var(--ll-dur-slow) var(--ll-ease-spring-snappy) both;
+}
+
+/* 名詞卡（站規 1.11.2）：整張卡是一個連結；88px 高、內距 16、44px 徽記、標題 20/700、說明 15、20px 箭頭 */
+.ll-termitem {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: var(--ll-space-3);
+  box-sizing: border-box;
+  min-height: 88px;
+  padding: var(--ll-space-4);
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  color: var(--ll-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    transform var(--ll-dur-fast) var(--ll-ease-standard),
+    box-shadow var(--ll-dur-fast) var(--ll-ease-standard),
+    background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+/* 已收進的外觀（金邊、金底、印章）在檔尾名詞卡組那一段（第 2 輪看圖驗收）；這裡原本的 1.5px 淡金外圈被它蓋過，第 8 輪刪掉 */
+.ll-termitem__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  /* 右上角的印章不壓到長名稱 */
+  padding-inline-end: 4px;
+}
+/* overflow-wrap 用 anywhere：中文名稱加的是全站的 .ll-phrased（03-core-utils.css，層疊在前面），這裡的值會蓋過它；
+   break-word 不讓最小寬度變小，文字放大 200% 的 320 寬時「融資（證券信用交易）」把卡片撐出 88px（第 7 輪 handoff 實測） */
+.ll-termitem__name {
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.ll-termitem--locked .ll-termitem__name {
+  color: var(--ll-text-2);
+}
+.ll-termitem__en {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+  overflow-wrap: break-word;
+}
+.ll-termitem__desc {
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+  overflow-wrap: break-word;
+}
+.ll-termitem__flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-1);
+  margin-top: 4px;
+}
+.ll-termitem__chev {
+  display: inline-flex;
+  color: var(--ll-text-3);
+  transition: transform var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-termitem__chev svg {
+  width: 20px;
+  height: 20px;
+}
+/* 印章的位置：右上角。位置與大小（32px、離邊 8px）在檔尾名詞卡組那一段 */
+.ll-termitem__stampslot {
+  position: absolute;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-termitem:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ll-shadow-2), var(--ll-card-ring);
+  }
+  .ll-termitem:hover .ll-termitem__chev {
+    transform: translateX(2px);
+  }
+}
+.ll-termitem:active {
+  transform: none;
+  background: var(--ll-surface-2);
+  box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-termitem,
+  .ll-termitem__chev {
+    transition: none;
+  }
+  .ll-termitem:hover,
+  .ll-termitem:hover .ll-termitem__chev {
+    transform: none;
+  }
+}
+html[data-motion='reduced'] .ll-termitem,
+html[data-motion='reduced'] .ll-termitem__chev {
+  transition: none;
+}
+html[data-motion='reduced'] .ll-termitem:hover,
+html[data-motion='reduced'] .ll-termitem:hover .ll-termitem__chev {
+  transform: none;
+}
+/* 印章在減少動態時不播蓋章動畫：規則在檔尾名詞卡組那一段（和 ll-seal-in 放在一起） */
+@media (forced-colors: active) {
+  .ll-termitem {
+    border: 1px solid CanvasText;
+  }
+  .ll-stamp {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+  .ll-termemblem--locked {
+    border-color: CanvasText;
+  }
+}
+
+/* 參考名詞膠囊 TermPill（站規 1.11.3）：44px、chrome 底、前置 16px 書本圖示；放在 .ll-termpills 裡排成雲 */
+.ll-termpills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+  margin: var(--ll-space-3) 0;
+  padding: 0;
+  list-style: none;
+}
+.ll-termpills__item {
+  display: flex;
+  margin: 0;
+  max-width: 100%;
+}
+.ll-termpill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: var(--ll-target-min);
+  padding: 0 var(--ll-space-4);
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-chrome-bg);
+  box-shadow: inset 0 0 0 1px transparent;
+  color: var(--ll-text);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--ll-dur-fast) var(--ll-ease-standard),
+    box-shadow var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-termpill svg {
+  flex: none;
+  color: var(--ll-text-2);
+}
+.ll-termpill__label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-termpill:hover {
+    background: var(--ll-quiet-hover);
+    box-shadow: inset 0 0 0 1px var(--ll-border-strong);
+  }
+}
+/* 名詞卡與名詞膠囊的焦點框是 base.css 的全站 :focus-visible */
+.ll-termpill:active {
+  background: var(--ll-chrome-pressed);
+}
+@media (forced-colors: active) {
+  .ll-termpill {
+    border: 1px solid CanvasText;
+  }
+  /* svg 預設 preserve-parent-color：自己設了 color 的圖示不會換成系統色，明寫連結的系統色 */
+  .ll-termpill svg {
+    color: LinkText;
+  }
+}
+
+/* ==== 名詞卡組的細修（2026-10-25 看圖驗收第 1 輪） ==== */
+/* 名稱：長名稱平均成兩行，不留「餘／額」「比／率」這種單字孤行。中文名稱由元件切好詞、詞之間放 <wbr>，再加全站的 .ll-phrased
+   （03-core-utils.css：keep-all 只在詞與詞之間斷，真的放不下才在任何地方斷，不溢出卡片）；這裡不另寫一套 */
+.ll-termitem__name {
+  text-wrap: balance;
+}
+/* 說明列：類別一行、遇到的關卡另起一行；本文的小字行高（15/24），不再用 footnote 的 18 擠在一起 */
+.ll-termitem__desc {
+  display: grid;
+  gap: 0;
+  line-height: var(--ll-type-body-sm-line);
+}
+/* 遇到的關卡：元件把字串切好詞（詞之間 <wbr>）、外層加 .ll-phrased，只在詞與詞、標點與空白處斷（不切成「誰的／錢」）。
+   第 7 輪 handoff：原本這裡對沒有切詞的整句寫 keep-all 加 anywhere（第 7 輪禁止的組合），已刪 */
+/* 關卡名那一塊（「誰的東西、誰的錢」遇到，GlossaryItem 只在放得進一行時才包）：放不下前段就整塊換到下一行 */
+.ll-termitem__keep {
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* ==== 名詞卡組的細修（2026-10-25 看圖驗收第 2 輪） ==== */
+/* 遇到的關卡：代號是小膠囊（NoteTag 的外觀：caption、--ll-surface-2 底），依名稱與搜尋結果後面接關卡名。
+   關卡名在詞與詞之間斷（元件放 <wbr>），最多兩行；不會再留下「在 6-1」單獨一行、下一行才是關卡名 */
+.ll-termitem__code {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: var(--ll-radius-xs);
+  background: var(--ll-surface-2);
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-caption-size);
+  line-height: var(--ll-type-caption-line);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+.ll-termitem__meet--level {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  /* 兩行時平均分（「綜合挑戰：」「部門指標與取捨」，不留「與取捨」短尾） */
+  text-wrap: balance;
+}
+@media (forced-colors: active) {
+  .ll-termitem__code {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* 已收進：不用讀字也分得出來。2px 金邊、極淡的金底、徽記實心（要素色或中性底加深色圖示）、右上角 32px 的雙圈金色印章。
+   最矮 108px：只有名稱與類別的卡（英文介面）在 88px 時，垂直置中的箭頭會頂到印章的下緣（108 時箭頭和印章之間約留 8px） */
+.ll-termitem--unlocked {
+  min-height: 108px;
+  background: color-mix(in oklab, var(--ll-star) 6%, var(--ll-surface));
+  box-shadow:
+    var(--ll-shadow-1),
+    inset 0 0 0 2px color-mix(in oklab, var(--ll-star) 70%, var(--ll-surface));
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-termitem--unlocked:hover {
+    box-shadow:
+      var(--ll-shadow-2),
+      inset 0 0 0 2px color-mix(in oklab, var(--ll-star) 70%, var(--ll-surface));
+  }
+}
+.ll-termitem--unlocked:active {
+  background: var(--ll-surface-2);
+  box-shadow:
+    var(--ll-shadow-1),
+    inset 0 0 0 2px color-mix(in oklab, var(--ll-star) 70%, var(--ll-surface));
+}
+/* 中性類別（報表、指標、觀念、流程）收進後：圖示改深色，加一圈實線（未收進是虛線空位、淡圖示） */
+.ll-termemblem--neutral.ll-termemblem--unlocked {
+  color: var(--ll-text);
+  box-shadow: inset 0 0 0 1.5px var(--ll-border-strong);
+}
+/* 印章：金色實心圓、2px 深一階的金色外圈、內側一圈 1px 虛線，斜 8 度，像蓋上去的章 */
+.ll-termitem__stampslot {
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  width: 32px;
+  height: 32px;
+}
+.ll-stamp {
+  position: relative;
+  transform: rotate(-8deg);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in oklab, var(--ll-star-fill) 72%, var(--ll-star-ink)),
+    0 0 0 2px var(--ll-surface),
+    0 0 0 3.5px var(--ll-collected-ring);
+}
+.ll-stamp::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed color-mix(in oklab, var(--ll-star-ink) 45%, transparent);
+  border-radius: var(--ll-radius-full);
+  pointer-events: none;
+}
+.ll-stamp--s32 svg {
+  width: 16px;
+  height: 16px;
+}
+@keyframes ll-seal-in {
+  from {
+    opacity: 0;
+    transform: scale(1.4) rotate(-20deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-8deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-stamp.is-stamping {
+    animation: none;
+  }
+}
+html[data-motion='reduced'] .ll-stamp.is-stamping {
+  animation: none;
+}
+@media (forced-colors: active) {
+  .ll-termitem--unlocked {
+    border-width: 2px;
+  }
+  .ll-stamp::before {
+    border-color: HighlightText;
+  }
+}
+
+/* ==== 名詞卡組的細修（2026-10-25 看圖驗收第 4 輪） ==== */
+/* 兩欄、三欄的卡片格：grid 把同一列拉成同高，文字塊各自垂直置中時，同一列的名稱會高低不一（內容 2 到 4 行）。
+   600 起（GlossaryGrid 在名詞圖鑑是兩欄以上）文字欄從內距 16 處開始排，同一列的名稱在同一條線上；徽記也靠上，和名稱的第一行對齊
+   （置中時，只有名稱加類別的短卡在被拉高的列裡，徽記會掛在文字下方）；箭頭維持置中（靠上會撞到右上角的印章）。手機一欄不受影響 */
+@media (min-width: 600px) {
+  .ll-termitem {
+    align-items: start;
+  }
+  .ll-termitem__chev {
+    align-self: center;
+  }
+}
+/* 按下時卡片換成 surface-2 底，和代號膠囊同色、膠囊會消失：按下時膠囊改 surface 底加 1px 邊（四個主題都看得到膠囊的邊界） */
+.ll-termitem:active .ll-termitem__code {
+  background: var(--ll-surface);
+  box-shadow: inset 0 0 0 1px var(--ll-border);
+}

@@ -1,0 +1,368 @@
+/* 作答組：五步驟、指標計算、指標小表格、借貸分錄。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* 五步驟勾稽填格：每格一個數字框，燈號是圖示加文字加顏色 */
+.ll-fivestep {
+  display: grid;
+  gap: var(--ll-space-3);
+}
+.ll-fivestep__cell {
+  padding: var(--ll-space-3);
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+}
+.ll-fivestep__cell.is-ok {
+  border-color: var(--ll-success-ink);
+}
+.ll-fivestep__cell.is-off {
+  border-color: var(--ll-danger-ink);
+}
+.ll-fivestep__hint {
+  margin: 6px 0 0;
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+.ll-fivestep__light {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin: var(--ll-space-2) 0 0;
+}
+.ll-fivestep__light.is-ok {
+  color: var(--ll-success-ink);
+}
+.ll-fivestep__light.is-off {
+  color: var(--ll-danger-ink);
+}
+.ll-fivestep__light.is-empty {
+  color: var(--ll-text-2);
+}
+.ll-fivestep__icon {
+  display: inline-flex;
+  margin-top: 2px;
+}
+/* 指標計算：公式用原生 details，結果列同交易影響題 */
+.ll-ratio-numeric {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ll-space-2);
+}
+/* 「看公式」是 Disclosure plain（外觀在 14-core-nav.css），這裡只留內容的字 */
+.ll-ratio-numeric__formula-text {
+  margin: 4px 0 0;
+  font-weight: 600;
+}
+.ll-ratio-numeric__formula-version,
+.ll-ratio-numeric__formula-note {
+  margin: 4px 0 0;
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+.ll-ratio-numeric__result {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin: 0;
+}
+.ll-ratio-numeric__result.is-correct {
+  color: var(--ll-success-ink);
+}
+.ll-ratio-numeric__result.is-wrong {
+  color: var(--ll-danger-ink);
+}
+.ll-ratio-numeric__icon {
+  display: inline-flex;
+  margin-top: 2px;
+}
+/* 指標小表格：沿用迷你報表的表格樣式 */
+.ll-ratio-table {
+  margin-bottom: var(--ll-space-4);
+}
+.ll-ratio-table__row.is-na td,
+.ll-ratio-table__row.is-not_meaningful td {
+  color: var(--ll-text-2);
+}
+.ll-ratio-table__note {
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+/* 借貸分錄：原生表格與表單元件，貸方科目縮排。外層寬度決定排法（container query）：寬的時候是表格；窄（手機）時每一行是兩列的小卡 */
+.ll-journal {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ll-space-3);
+}
+/* 表格比卡片寬時在這裡水平捲動（07 第 8.3 節）；留一點內距，裡面輸入框的焦點框不會被裁掉。
+   contain: inline-size 讓表格的最小寬度不往外傳：外層的 grid、flex 不會為了它把整張卡片撐寬；
+   position: relative 讓表格裡只給螢幕閱讀器的標籤（ll-sr-only 是 absolute）以這裡為定位基準、一起被裁切，不會把整頁撐寬 */
+.ll-journal__scroll {
+  position: relative;
+  overflow-x: auto;
+  padding: 4px;
+  contain: inline-size;
+}
+.ll-journal__table {
+  width: 100%;
+  min-width: 32em;
+  border-collapse: collapse;
+  font-size: var(--ll-type-body-sm-size);
+}
+.ll-journal__table tbody th,
+.ll-journal__table thead th {
+  white-space: nowrap;
+}
+/* 科目欄：常見的科目名稱（現金及約當現金、未分配盈餘）一行放得下 */
+.ll-journal__account {
+  min-width: 8em;
+}
+.ll-journal__table th,
+.ll-journal__table td {
+  padding: 6px;
+  border-bottom: 1px solid var(--ll-border);
+  text-align: left;
+  vertical-align: middle;
+}
+.ll-journal__table thead th {
+  font-size: var(--ll-type-caption-size);
+  color: var(--ll-text-2);
+}
+.ll-journal__table .ll-num {
+  text-align: right;
+}
+.ll-journal__table tfoot th {
+  font-weight: 600;
+  text-align: right;
+}
+/* 借貸下拉（quiz-20）：WebKit 的 appearance: auto 會忽略 min-height（iPhone 上只有 25 到 29px），所以拿掉原生外觀、自己畫向下箭頭，
+   高度在所有瀏覽器都是 44px。箭頭用兩段 linear-gradient 畫（--ll-text-2），不放圖片 */
+.ll-journal__side {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  height: var(--ll-target-min);
+  min-height: var(--ll-target-min);
+  min-width: 5.5em;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--ll-border-strong);
+  border-radius: var(--ll-radius-md);
+  background-color: var(--ll-surface);
+  background-image: linear-gradient(45deg, transparent 50%, var(--ll-text-2) 50%), linear-gradient(135deg, var(--ll-text-2) 50%, transparent 50%);
+  background-position:
+    calc(100% - 17px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--ll-text);
+  font: inherit;
+  font-size: max(16px, var(--ll-type-input-size));
+  line-height: 1.2;
+  cursor: pointer;
+}
+.ll-journal__side:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-journal__side:disabled {
+  background-image: none;
+  padding-inline-end: 12px;
+  background-color: var(--ll-surface-2);
+  color: var(--ll-text-2);
+  cursor: default;
+  opacity: 1;
+}
+@media (forced-colors: active) {
+  .ll-journal__side {
+    -webkit-appearance: auto;
+    appearance: auto;
+    background-image: none;
+  }
+}
+/* 窄的分錄（手機）：每一行排成兩列 ──「第 1 行、科目、刪除」與「借或貸、金額」，不必左右捲動；欄標題只給螢幕閱讀器 */
+@container (max-width: 520px) {
+  .ll-journal__table {
+    display: block;
+    min-width: 0;
+  }
+  .ll-journal__table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .ll-journal__table tbody,
+  .ll-journal__table tfoot {
+    display: block;
+  }
+  .ll-journal__row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'no acct del'
+      'side amt amt';
+    align-items: center;
+    gap: var(--ll-space-2) var(--ll-space-3);
+    padding: var(--ll-space-3) 0;
+    border-bottom: 1px solid var(--ll-border);
+  }
+  .ll-journal__row > th,
+  .ll-journal__row > td {
+    padding: 0;
+    border: 0;
+  }
+  .ll-journal__row > .ll-journal__no {
+    grid-area: no;
+    font-size: var(--ll-type-footnote-size);
+    color: var(--ll-text-2);
+  }
+  .ll-journal__row > .ll-journal__account {
+    grid-area: acct;
+    min-width: 0;
+    font-weight: 600;
+  }
+  .ll-journal__row > .ll-journal__sidecell {
+    grid-area: side;
+  }
+  .ll-journal__row > .ll-journal__amount {
+    grid-area: amt;
+  }
+  .ll-journal__row > .ll-journal__delcell {
+    grid-area: del;
+  }
+  .ll-journal__row > .ll-journal__amount .ll-numinput__input {
+    min-width: 0;
+  }
+  .ll-journal__total {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ll-space-3);
+    padding: var(--ll-space-2) 0;
+    border-bottom: 1px solid var(--ll-border);
+  }
+  .ll-journal__total > th,
+  .ll-journal__total > td {
+    padding: 0;
+    border: 0;
+  }
+}
+.ll-journal__account.is-credit > span:first-child {
+  padding-inline-start: var(--ll-space-4);
+}
+/* 金額欄：數字框與「±」在同一行（表格版面時欄寬夠；窄的小卡版面金額佔整列） */
+.ll-journal__amount .ll-numinput__row {
+  flex-wrap: nowrap;
+}
+.ll-journal__amount .ll-numinput__input {
+  min-width: 6.5em;
+}
+.ll-journal__row.is-correct .ll-journal__fb {
+  color: var(--ll-success-ink);
+}
+.ll-journal__row.is-wrong .ll-journal__fb {
+  color: var(--ll-danger-ink);
+}
+.ll-journal__fb {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-top: 4px;
+  font-size: var(--ll-type-footnote-size);
+}
+.ll-journal__icon {
+  display: inline-flex;
+}
+.ll-journal__balance {
+  margin: 0;
+  font-weight: 600;
+}
+.ll-journal__balance.is-balanced {
+  color: var(--ll-success-ink);
+}
+.ll-journal__balance.is-unbalanced {
+  color: var(--ll-warning-ink);
+}
+.ll-journal__missing {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  color: var(--ll-danger-ink);
+}
+.ll-journal__missing-item {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.ll-journal__add {
+  display: grid;
+  gap: var(--ll-space-2);
+}
+/* 刪除一行：IconButton quiet（TrashIcon），在表格最後一欄 */
+.ll-journal__remove {
+  vertical-align: middle;
+}
+/* 科目面板：surface 卡片，選項借用選單項目（MenuItem）的外觀，排成自動欄數的格子 */
+.ll-journal__panel {
+  padding: var(--ll-space-3);
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1);
+}
+.ll-journal__search-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.ll-journal__search {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--ll-target-min);
+  padding: 8px 12px;
+  border: 1px solid var(--ll-border-strong);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  color: var(--ll-text);
+  font-size: max(16px, var(--ll-type-input-size));
+}
+.ll-journal__search:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-journal__group {
+  margin-top: var(--ll-space-3);
+}
+.ll-journal__group-title {
+  margin: 0 0 4px;
+  padding-inline-start: var(--ll-space-2);
+  font-size: var(--ll-type-footnote-size);
+  font-weight: 700;
+  color: var(--ll-text-2);
+}
+.ll-journal__options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11em, 1fr));
+  gap: 2px var(--ll-space-1);
+}
+.ll-journal__option-icon {
+  display: inline-flex;
+  color: var(--ll-accent-ink);
+}
+.ll-journal__option-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.ll-journal__option-label {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.ll-journal__note {
+  margin: 0;
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}

@@ -1,6 +1,7 @@
 // 金額與指標輸入（05 第 11.2 節、03 第 2.4 節表二）：type="text" 加 inputmode="decimal"、16px 以上、「±」按鈕（iOS 數字鍵盤沒有負號）、
 // 選填的「N/A」切換（aria-pressed，按下時數字框停用並說明原因）、單位後綴，以及判分前的「系統讀到：…」預覽。
 // 原始文字由父層保存（切換語言要保留）；正規化交給 @ledgerland/i18n 的 normalizeNumericInput，判分不在這裡。
+// 天數（days）的單位字樣（天、日、day、days）也由 normalizeNumericInput 處理，和 apps/web 判分（ratio-units.ts）用同一個規則。
 import {
   BASE_LOCALE,
   formatMoney,
@@ -10,14 +11,16 @@ import {
   isLocale,
   normalizeNumericInput,
   type Locale,
+  type NormalizeResult,
   type NumericUnit,
 } from '@ledgerland/i18n';
 import { useLingui } from '@lingui/react/macro';
 import { useId, useLayoutEffect, useRef, type ReactNode } from 'react';
+import { Button } from './Button.tsx';
 
 export interface NumberInputProps {
   id?: string;
-  /** 可見的標籤（例如「勾稽點③，資產負債表的現金」） */
+  /** 可見的標籤（例如「步驟③（勾稽點 C），資產負債表的現金」） */
   label: ReactNode;
   /** 標籤只給螢幕閱讀器（列已有可見標題時） */
   hideLabel?: boolean;
@@ -25,7 +28,7 @@ export interface NumberInputProps {
   value: string;
   onChange: (raw: string) => void;
   /** 決定接受哪些單位字樣與預覽的格式；預設 plain */
-  unit?: NumericUnit;
+  unit?: InputUnit;
   /** 顯示在輸入框後的單位後綴（例如「元」「%」「倍」） */
   suffix?: ReactNode;
   /** 顯示「N/A」切換按鈕（指標題） */
@@ -44,13 +47,21 @@ export interface NumberInputProps {
 
 const NEG = /^[-−－]/;
 
+/** 數字輸入接受的單位（i18n 的 NumericUnit，含天數） */
+export type InputUnit = NumericUnit;
+
+/** 依單位正規化輸入（天數接受結尾的單位字樣；只有單位字樣、沒有數字時讀不懂） */
+export function normalizeInput(raw: string, unit: InputUnit): NormalizeResult {
+  return normalizeNumericInput(raw, unit);
+}
+
 export function useUiLocale(): Locale {
   const { i18n } = useLingui();
   return isLocale(i18n.locale) ? i18n.locale : BASE_LOCALE;
 }
 
 /** 依單位把正規化後的數值格式化成「系統讀到」的文字 */
-export function formatParsed(value: number, unit: NumericUnit, locale: Locale): string {
+export function formatParsed(value: number, unit: InputUnit, locale: Locale): string {
   switch (unit) {
     case 'money':
       return formatMoney(value, locale);
@@ -58,6 +69,10 @@ export function formatParsed(value: number, unit: NumericUnit, locale: Locale): 
       return formatPercent(value / 100, locale);
     case 'times':
       return formatUnit(value, locale, 'times');
+    case 'turns':
+      return formatUnit(value, locale, 'turns');
+    case 'days':
+      return formatUnit(value, locale, 'day');
     default:
       return formatNumber(value, locale);
   }
@@ -108,7 +123,7 @@ export function NumberInput({
     }
     el?.focus();
   };
-  const result = value.trim() === '' ? null : normalizeNumericInput(value, unit);
+  const result = value.trim() === '' ? null : normalizeInput(value, unit);
   let parsedText: string | null = null;
   if (showParsed && !na && result) {
     const value = result.ok ? formatParsed(result.value, unit, locale) : '';
@@ -146,26 +161,29 @@ export function NumberInput({
           onChange={(e) => onChange(e.target.value)}
         />
         {suffix && <span className="ll-numinput__suffix">{suffix}</span>}
-        <button
-          type="button"
-          className="ll-btn ll-numinput__sign"
-          onClick={toggleSign}
-          disabled={disabled || na}
-          aria-label={t({ id: 'input.toggleSign', message: '切換正負號', comment: '「±」按鈕的可讀名稱' })}
-        >
-          <span aria-hidden="true">±</span>
-        </button>
-        {allowNa && (
-          <button
-            type="button"
-            className={`ll-btn ll-numinput__na${na ? ' is-on' : ''}`}
-            aria-pressed={na}
+        {/* 作答後（停用）不再顯示「±」：數字框已經停用，留一顆停用的按鈕只是雜訊。N/A 按下過的話仍顯示（是作答的一部分） */}
+        {!disabled && (
+          <Button
+            size="sm"
+            className="ll-numinput__sign"
+            onClick={toggleSign}
+            disabled={na}
+            aria-label={t({ id: 'input.toggleSign', message: '切換正負號', comment: '「±」按鈕的可讀名稱' })}
+          >
+            <span aria-hidden="true">±</span>
+          </Button>
+        )}
+        {allowNa && (!disabled || na) && (
+          <Button
+            size="sm"
+            className="ll-numinput__na"
+            pressed={na}
             disabled={disabled}
             onClick={() => onNaChange?.(!na)}
             aria-label={t({ id: 'input.na', message: 'N/A，分母不存在', comment: '「N/A」切換按鈕的可讀名稱' })}
           >
             <span aria-hidden="true">N/A</span>
-          </button>
+          </Button>
         )}
       </div>
       {naHelp && (

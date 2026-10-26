@@ -1,0 +1,635 @@
+/* 基礎組：星星、Badge、開關、頂部列、Toast、空狀態、骨架、減少動態。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* 星星、徽章、開關、頂部列、提示、空狀態、骨架 */
+.ll-stars {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--ll-star);
+}
+.ll-stars .is-off {
+  color: var(--ll-text-4);
+}
+/* 長的 Badge（英文「0/3 levels in this chapter」）在窄欄裡換行，不撐出外層（max-width 100%）；
+   外層不要對 Badge 設 white-space: nowrap（M3 驗收第 1 輪：320 英文的清單檢視因此多出 11px 的水平捲動） */
+.ll-badge {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  padding: 2px 8px;
+  border-radius: var(--ll-radius-full);
+  font-size: var(--ll-type-caption-size);
+  font-weight: 600;
+  background: var(--ll-surface-2);
+  color: var(--ll-text-2);
+}
+.ll-badge--accent {
+  background: var(--ll-accent-tint);
+  color: var(--ll-text);
+}
+.ll-badge--success {
+  background: var(--ll-success-tint);
+  color: var(--ll-success-ink);
+}
+.ll-badge--warning {
+  background: var(--ll-warning-tint);
+  color: var(--ll-warning-ink);
+}
+.ll-badge--danger {
+  background: var(--ll-danger-tint);
+  color: var(--ll-danger-ink);
+}
+.ll-badge--info {
+  background: var(--ll-info-tint);
+  color: var(--ll-info-ink);
+}
+/* 收集類（kind="star"）：淡淡的星星色底加一圈金色細框。深色主題直接疊 26% 的星星色會變成一塊土褐色，所以底色淡、靠細框帶出金色。
+   前面放一枚小勾章 .ll-stamp 時（作答回饋的「新收進 N」），章和字相距 6px、左內距縮到 5px、右側內距多 2px，章和膠囊圓弧的距離看起來才平均 */
+.ll-badge--star {
+  gap: 6px;
+  background: color-mix(in oklab, var(--ll-star) 16%, var(--ll-surface));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ll-star) 55%, transparent);
+  color: var(--ll-text);
+}
+.ll-badge--star:has(> .ll-stamp:first-child) {
+  padding-inline: 5px 10px;
+}
+@media (forced-colors: active) {
+  .ll-badge--star {
+    border: 1px solid CanvasText;
+  }
+}
+.ll-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ll-space-3);
+  min-height: var(--ll-target-min);
+}
+.ll-switch-row__label {
+  display: block;
+  font-weight: 600;
+}
+/* 說明和同頁其他說明同一種字（body-sm 15、次要色）；狀態字「開」「關」footnote 13/600（第 4 輪看圖驗收，第 5 輪起是元件預設） */
+.ll-switch-row__desc {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  color: var(--ll-text-2);
+}
+/* 焦點框是 base.css 的全站 :focus-visible（3px、外移 2px）；圓角給焦點框用（底與框線都是透明的，靜止時看不出來） */
+.ll-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  min-height: var(--ll-target-min);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ll-radius-sm);
+  background: transparent;
+  color: var(--ll-text);
+  font: inherit;
+  cursor: pointer;
+}
+/* 軌道：關是中性灰加 1.5px 外框，開是選取色實心（淺色是強調色；深色隨風味，和分段控制的選取段同一個色相，M3 驗收第 4 輪：
+   莓果與紅酒的同一張卡上原本是豆沙粉的分段選取加紫色的開關）。圓鈕：淺色一律白；深色關時是淺色圓鈕、開時是深色圓鈕
+   （M3 驗收第 1 輪：深色的關原本是 comment 色軌道加深色圓鈕，莓果與紅酒上和開看起來一樣） */
+.ll-switch__knob {
+  position: relative;
+  width: 50px;
+  height: 30px;
+  border-radius: var(--ll-radius-full);
+  background: color-mix(in oklab, var(--ll-text) 20%, var(--ll-surface-2));
+  box-shadow: inset 0 0 0 1.5px var(--ll-border-strong);
+  transition:
+    background-color var(--ll-dur-fast) var(--ll-ease-standard),
+    box-shadow var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-switch__knob::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-shadow-1);
+  transition:
+    transform var(--ll-dur-fast) var(--ll-ease-standard),
+    background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+html[data-theme='dark'] .ll-switch__knob::after {
+  background: var(--ll-text-2);
+}
+.ll-switch.is-on .ll-switch__knob {
+  background: var(--ll-selected);
+  box-shadow: none;
+}
+.ll-switch.is-on .ll-switch__knob::after {
+  transform: translateX(20px);
+}
+html[data-theme='dark'] .ll-switch.is-on .ll-switch__knob::after {
+  background: var(--ll-btn-primary-fg);
+}
+.ll-switch:disabled {
+  cursor: not-allowed;
+}
+/* 停用：和停用按鈕同一種語言（M3 驗收第 4 輪：淺色的停用軌道和卡片幾乎同色，只剩一顆白圓點）：中性灰底、1.5px 虛線外框、
+   圓鈕 text-4。虛線用 outline 往內縮，軌道與圓鈕的位置不變（outline 跟著圓角） */
+.ll-switch:disabled .ll-switch__knob,
+.ll-switch:disabled.is-on .ll-switch__knob {
+  background: var(--ll-btn-disabled-bg);
+  box-shadow: none;
+  outline: 1.5px dashed var(--ll-border-strong);
+  outline-offset: -1.5px;
+}
+.ll-switch:disabled .ll-switch__knob::after {
+  background: var(--ll-text-4);
+  box-shadow: none;
+}
+/* 深色的 text-4 是各風味的 comment 色（莓果是紫紅、紅酒是豆沙粉），和開啟軌道的選取色太像：圓鈕再混一半軌道色，讀起來是「暗掉的」 */
+html[data-theme='dark'] .ll-switch:disabled .ll-switch__knob::after {
+  background: color-mix(in oklab, var(--ll-text-4) 50%, var(--ll-btn-disabled-bg));
+  box-shadow: none;
+}
+.ll-switch:disabled .ll-switch__state {
+  color: var(--ll-text-3);
+}
+@media (forced-colors: active) {
+  .ll-switch__knob {
+    border: 1px solid CanvasText;
+  }
+  .ll-switch__knob::after {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+  .ll-switch.is-on .ll-switch__knob {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+  .ll-switch.is-on .ll-switch__knob::after {
+    background: HighlightText;
+  }
+}
+.ll-switch__state {
+  min-width: 2em;
+  font-size: var(--ll-type-footnote-size);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+/* 子頁的頁首 TopBar（站規 1.4）。.ll-topbar 本身（Root 最上方的實色區域也用這個 class）維持原本的一列；
+   .ll-topbar--page 是兩列：第一列返回與動作、第二列 h1；.ll-topbar--compact 是一列：返回（圖示）、標題、動作 */
+.ll-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  min-height: 52px;
+  padding: var(--ll-space-1) 0;
+}
+.ll-topbar--page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  row-gap: var(--ll-space-2);
+  min-height: 0;
+  padding: var(--ll-space-1) 0 0;
+}
+.ll-topbar__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  min-height: var(--ll-target-min);
+}
+.ll-topbar__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--ll-type-title-2-size);
+  line-height: var(--ll-type-title-2-line);
+  font-weight: 700;
+  overflow-wrap: break-word;
+}
+.ll-topbar--page .ll-topbar__title {
+  margin: 0 0 var(--ll-space-2);
+}
+@media (min-width: 600px) {
+  .ll-topbar--page .ll-topbar__title {
+    font-size: var(--ll-type-title-1-size);
+    line-height: var(--ll-type-title-1-line);
+  }
+}
+.ll-topbar--compact .ll-topbar__bar {
+  flex: none;
+}
+.ll-topbar--compact .ll-topbar__title {
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+}
+.ll-topbar__actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin-inline-start: auto;
+}
+/* 左側色條（M3 驗收第 4 輪）：原本是圓角卡片上的 border-left，兩端被圓角削成一彎月牙。改成 ::before 畫的 4px 圓頭色條，
+   上下各留 12px、離左緣 8px，左內距補到 20px */
+.ll-toast {
+  --_bar: var(--ll-info-ink);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  padding: 10px 12px 10px 20px;
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-elevated);
+  color: var(--ll-text);
+  box-shadow: var(--ll-shadow-2);
+}
+.ll-toast::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 8px;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--_bar);
+}
+.ll-toast--success {
+  --_bar: var(--ll-success-ink);
+}
+.ll-toast--warning {
+  --_bar: var(--ll-warning-ink);
+}
+.ll-toast--danger {
+  --_bar: var(--ll-danger-ink);
+}
+.ll-toast__text {
+  flex: 1;
+  min-width: 0;
+}
+.ll-toast__action {
+  flex: none;
+  margin-block-end: 0;
+}
+/* 收集類（取得徽章、收進名詞）：星星色的左側色條、40px 圖像、title-3 標題加一行說明（M3 驗收第 1 輪） */
+.ll-toast--collect {
+  --_bar: var(--ll-star);
+}
+.ll-toast--media {
+  gap: var(--ll-space-3);
+  padding-block: 12px;
+}
+/* 40px 寬的圖像槽；圖像自己決定高度（ChapterBadge 是 48:56，給 size 34 時約 34×40），不壓扁 */
+.ll-toast__media {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  min-height: 40px;
+}
+.ll-toast__title {
+  margin: 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 600;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+.ll-toast__body {
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+  overflow-wrap: break-word;
+}
+.ll-toast--collect .ll-toast__media {
+  animation: ll-toast-pop var(--ll-dur-slow) var(--ll-ease-spring-snappy) both;
+}
+@keyframes ll-toast-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-toast--collect .ll-toast__media {
+    animation: none;
+  }
+}
+html[data-motion='reduced'] .ll-toast--collect .ll-toast__media {
+  animation: none;
+}
+@media (forced-colors: active) {
+  .ll-toast {
+    border: 1px solid CanvasText;
+  }
+  .ll-toast::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
+/* 常駐的播報區（ToastRegion）：空的時候沒有高度、看不到 */
+.ll-toasts {
+  display: grid;
+  gap: var(--ll-space-2);
+}
+/* 空狀態與錯誤狀態（站規 1.20、2.18）：鈴 96px 在上，標題 title-3、說明最多 22em（置中的短段落），按鈕列置中（主要的在前）。
+   標題與說明用 balance 讓各行等長；換行用全站規則（03-core-utils.css，第 7 輪拿掉 keep-all 加 anywhere），
+   不該拆開的詞（「闖關地圖」）由字串包 .ll-nowrap */
+.ll-state {
+  display: grid;
+  justify-items: center;
+  gap: var(--ll-space-2);
+  padding: var(--ll-space-8) var(--ll-space-4);
+  text-align: center;
+}
+.ll-state__art {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--ll-space-2);
+  color: var(--ll-text-3);
+}
+.ll-state--error .ll-state__art {
+  color: var(--ll-warning-ink);
+}
+.ll-state__title {
+  margin: 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+  text-wrap: balance;
+}
+.ll-state__title:focus {
+  outline: none;
+}
+.ll-state__desc {
+  max-inline-size: 22em;
+  margin: 0 auto;
+  color: var(--ll-text-2);
+  text-wrap: balance;
+}
+.ll-state__action {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--ll-space-3);
+  margin-top: var(--ll-space-3);
+}
+/* 兩顆以上（M3 驗收第 2 輪：375 時直排置中的兩顆寬度不同，看起來沒對齊）：窄螢幕直排、同寬（最多 280px）；
+   寬螢幕橫排，每欄都是最寬那顆的寬度（grid 的 1fr 欄在內容寬度下取最大的那格），整列仍置中。
+   用 grid 而不是 flex: 1 1 0：外層的寬度由內容決定時，flex-basis 0 的項目算不出等寬 */
+.ll-state__action--pair {
+  display: grid;
+  grid-auto-flow: row;
+  justify-content: stretch;
+  width: min(100%, 280px);
+  gap: var(--ll-space-3);
+}
+@media (min-width: 520px) {
+  .ll-state__action--pair {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    width: auto;
+    max-width: 100%;
+  }
+}
+/* 整頁狀態（標題是 h1、直接放在 main 裡：找不到頁面、路由錯誤）在 1024 以上（M3 驗收第 4 輪：1280 時只是一小團內容浮在
+   約 1180×900 的空畫布正中央）：畫成最寬 480px 的卡片（surface、radius-lg、shadow-1），鈴 120px、標題 title-2，
+   卡片的中心大約在視窗 40% 的高度（上緣 40dvh 減約半張卡）。頁面為了置中加的 min-height 在這裡歸零（卡片不撐滿視窗）。
+   只用 :has() 判斷，不在元件加元素或 class（首次載入的 JS 不增加）；頁面內容包在殼層的 .ll-page 裡（頁面布幕），直接放在 main 裡的（元件測試）也算 */
+@media (min-width: 1024px) {
+  :is(main, main > .ll-page) > .ll-state:has(> h1.ll-state__title) {
+    box-sizing: border-box;
+    width: min(480px, 100%);
+    min-height: 0;
+    margin: max(var(--ll-space-6), calc(40dvh - 220px)) auto var(--ll-space-6);
+    padding: var(--ll-space-8);
+    gap: var(--ll-space-3);
+    border-radius: var(--ll-radius-lg);
+    background: var(--ll-surface);
+    box-shadow: var(--ll-shadow-1), var(--ll-card-ring);
+  }
+  :is(main, main > .ll-page) > .ll-state:has(> h1.ll-state__title) .ll-state__art svg {
+    width: 120px;
+    height: 120px;
+  }
+  :is(main, main > .ll-page) > .ll-state:has(> h1.ll-state__title) .ll-state__title {
+    font-size: var(--ll-type-title-2-size);
+    line-height: var(--ll-type-title-2-line);
+  }
+}
+@media (min-width: 1024px) and (forced-colors: active) {
+  :is(main, main > .ll-page) > .ll-state:has(> h1.ll-state__title) {
+    border: 1px solid CanvasText;
+  }
+}
+/* 減少動態：分類格不做過渡（開關的過渡是 --ll-dur-fast，tokens 在減少動態時是 0ms，不用另外關）。骨架畫面已全站移除（維護者 2026-10-26） */
+@media (prefers-reduced-motion: reduce) {
+  .ll-classify__zone,
+  .ll-seg__item {
+    transition: none;
+  }
+}
+
+/* ---- 頂層頁的頁首 PageHeader（站規 1.5）：三欄 grid、中間 h1；只有闖關頁 sticky ---- */
+.ll-pagehead {
+  margin: 0 0 var(--ll-space-4);
+  background: var(--ll-bg);
+  box-shadow: 0 1px 0 var(--ll-border);
+}
+/* 左右欄至少放得下自己的內容，多出來的空間兩邊平分（標題置中）；放不下置中時標題往寬鬆的一側讓，不重疊 */
+.ll-pagehead__inner {
+  display: grid;
+  grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+  align-items: center;
+  gap: var(--ll-space-2);
+  min-height: 64px;
+}
+.ll-pagehead__start,
+.ll-pagehead__end {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  min-width: 0;
+}
+/* 左右欄固定在第一與第三欄：標題只給螢幕閱讀器時（絕對定位、不佔格子），右欄不會被自動排進中間欄，仍然靠右 */
+.ll-pagehead__start {
+  grid-column: 1;
+}
+.ll-pagehead__end {
+  grid-column: 3;
+  justify-content: flex-end;
+}
+.ll-pagehead__title {
+  margin: 0;
+  font-size: var(--ll-type-title-2-size);
+  line-height: var(--ll-type-title-2-line);
+  font-weight: 700;
+  text-align: center;
+}
+.ll-pagehead__title:focus {
+  outline: none;
+}
+.ll-pagehead--compact .ll-pagehead__inner {
+  min-height: 56px;
+}
+.ll-pagehead--compact .ll-pagehead__title {
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+}
+@media (max-width: 599px) {
+  .ll-pagehead__inner {
+    min-height: 56px;
+  }
+  .ll-pagehead__title {
+    font-size: var(--ll-type-title-3-size);
+    line-height: var(--ll-type-title-3-line);
+  }
+}
+.ll-pagehead--sticky {
+  position: sticky;
+  top: 0;
+  z-index: var(--ll-z-sticky);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@media (max-width: 339px) {
+  .ll-pagehead--narrow-hide .ll-pagehead__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ---- 統計膠囊 StatChip（站規 1.6）：平的、44px；圖示實心彩色；連結形式才有滑過與按下 ---- */
+.ll-statchip {
+  --_tone: var(--ll-text-2);
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  min-height: var(--ll-target-min);
+  min-width: var(--ll-target-min);
+  padding: 0 12px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-chrome-bg);
+  color: var(--ll-text);
+  font-size: var(--ll-type-body-size);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-statchip--star {
+  --_tone: var(--ll-star);
+}
+.ll-statchip--badge {
+  --_tone: var(--ll-warning-ink);
+}
+.ll-statchip--review {
+  --_tone: var(--ll-danger-ink);
+}
+.ll-statchip--terms {
+  --_tone: var(--ll-success-ink);
+}
+.ll-statchip__icon {
+  display: inline-flex;
+  color: var(--_tone);
+}
+.ll-statchip__icon svg {
+  width: 20px;
+  height: 20px;
+}
+/* 連結形式才有滑過與按下（[href]，不用型別選擇器 a，check:links R11） */
+@media (hover: hover) and (pointer: fine) {
+  .ll-statchip[href]:hover {
+    background: color-mix(in oklab, var(--ll-chrome-bg) 50%, var(--ll-chrome-pressed));
+  }
+}
+/* 焦點框是 base.css 的全站 :focus-visible */
+.ll-statchip[href]:active {
+  background: var(--ll-chrome-pressed);
+}
+.ll-statchip__dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-danger-ink);
+  box-shadow: 0 0 0 2px var(--ll-chrome-bg);
+}
+@media (forced-colors: active) {
+  .ll-statchip {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* ---- 文中連結 TextLink（站規 1.12）：顏色加底線；中文底線位置較高（中文字身沒有下伸部，0.24em 會像一條浮線）。
+   同一組規則也是漏網裸連結（沒有 class 的 a）的保底：a:is(…) 的權重是 0,1,1，一定蓋過 apps/web base.css 的 :where(a) 重設。
+   保底只是安全網，畫面上不該有元素套到它（E2E link-style 會檢查）；tools/link-rules.json 的 globalAnchorFiles 准這個檔用型別選擇器 a（第 8 輪 handoff） ---- */
+.ll-link,
+a:is(:not([class]), [class='']) {
+  color: var(--ll-link);
+  text-decoration-line: underline;
+  text-decoration-thickness: max(1.5px, 0.08em);
+  text-underline-offset: 0.24em;
+  text-decoration-color: var(--ll-link-underline);
+  text-decoration-skip-ink: auto;
+  border-radius: 4px;
+  transition:
+    color var(--ll-dur-fast) var(--ll-ease-standard),
+    text-decoration-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-link:lang(zh),
+a:is(:not([class]), [class='']):lang(zh) {
+  text-underline-offset: 0.16em;
+}
+.ll-link:visited,
+a:is(:not([class]), [class='']):visited {
+  color: var(--ll-link);
+}
+.ll-link:hover,
+a:is(:not([class]), [class='']):hover {
+  color: var(--ll-link-hover);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: max(2px, 0.1em);
+}
+.ll-link:active {
+  color: var(--ll-link-hover);
+}
+/* 焦點框是 base.css 的全站 :focus-visible；底線換成文字色 */
+.ll-link:focus-visible,
+a:is(:not([class]), [class='']):focus-visible {
+  text-decoration-color: currentColor;
+}
+.ll-link__ext {
+  white-space: nowrap;
+}
+.ll-link__ext svg {
+  width: 0.9em;
+  height: 0.9em;
+  margin-inline-start: 2px;
+  vertical-align: -0.1em;
+}
+@media (forced-colors: active) {
+  .ll-link,
+  a:is(:not([class]), [class='']) {
+    text-decoration-color: LinkText;
+  }
+}

@@ -1,0 +1,1177 @@
+/* 地圖組：節點與星星籤、章節牌、章末拱門與紙籤、鈴、頂部統計列、關卡列、關卡代號、關卡介紹面板。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* ---- 闖關地圖元件（17 第 3、6、7 節，圖規第 4 節，站規 0.4 的 A1、A2）。只用 tokens；強制色彩下用系統色；減少動態時不位移、不縮放 ---- */
+
+/* 關卡節點（圖規 4.1、A1）：<li> 64 × 64，圓心在 (x, y)；圓盤 56px 置中，立體底邊和按鈕同一組（--ll-btn-depth），按下沉 4px、底邊歸零 */
+.ll-node {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform: translate(-50%, 50%);
+}
+.ll-node__btn {
+  position: relative;
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.ll-node__disc {
+  --_ledge: var(--ll-node-ledge);
+  --_face: var(--ll-surface);
+  --_press: var(--ll-btn-secondary-pressed);
+  --_d: var(--ll-btn-depth);
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--ll-radius-full);
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-callout-size);
+  font-weight: 700;
+  transition:
+    translate var(--ll-dur-fast) var(--ll-ease-standard),
+    scale var(--ll-dur-base) var(--ll-ease-standard);
+}
+.ll-node__shape {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--_face);
+  box-shadow:
+    inset 0 0 0 2px var(--ll-border-strong),
+    0 var(--_d) 0 0 var(--_ledge),
+    var(--ll-shadow-1);
+  transition: box-shadow var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-node__rim,
+.ll-node__face {
+  display: none;
+}
+.ll-node__no {
+  position: relative;
+  /* 文字放大時上限 18px：最寬的「10-1」離圓盤內緣仍留 6px 以上（圓盤大小與保護框不變） */
+  font-size: min(var(--ll-type-callout-size), 18px);
+  white-space: nowrap;
+}
+.ll-node--done .ll-node__disc,
+.ll-node--current .ll-node__disc {
+  --_ledge: var(--ll-btn-primary-ledge);
+  --_face: var(--ll-accent);
+  --_press: var(--ll-btn-primary-pressed);
+  color: var(--ll-accent-contrast);
+}
+.ll-node--done .ll-node__shape {
+  box-shadow:
+    0 var(--_d) 0 0 var(--_ledge),
+    var(--ll-shadow-1);
+}
+/* 目前關卡：底邊畫在外圈裡面（外圈 3px 淡底加 2px 強調色），呼吸只縮放 1 到 1.04。
+   外圈往下移 2px：圓盤加 4px 底邊的實體高 61px，外圈要以這塊實體為中心，圓盤才不會看起來偏在外圈下方（維護者 2026-10-26 指出）；
+   外圈下緣離星星籤上緣 1px */
+.ll-node--current .ll-node__shape {
+  box-shadow:
+    0 var(--_d) 0 0 var(--_ledge),
+    0 2px 0 3px var(--ll-accent-tint),
+    0 2px 0 5px var(--ll-accent),
+    var(--ll-shadow-2);
+}
+.ll-node--current .ll-node__disc {
+  animation: ll-node-breathe 2.4s var(--ll-ease-standard) infinite alternate;
+}
+@keyframes ll-node-breathe {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 1.04;
+  }
+}
+/* 深色的未完成節點（第 2 輪看圖驗收）：地景調亮之後，surface 色的圓盤比地面暗，像地上的洞；改用地圖卡片色（scene-card，和星星籤同一個），
+   是立在地上的實物。完成與目前關卡仍是強調色 */
+html[data-theme='dark'] .ll-node:not(.ll-node--done, .ll-node--current) .ll-node__disc {
+  --_face: var(--ll-scene-card);
+}
+/* 延伸章：圓角六邊形。外框與面各是一層裁成六邊形的元素，底邊用 drop-shadow（跟著六邊形的形狀） */
+.ll-node--ext .ll-node__shape {
+  isolation: isolate;
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 var(--_d) 0 var(--_ledge));
+  transition: filter var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-node--ext .ll-node__rim,
+.ll-node--ext .ll-node__face,
+.ll-node--ext.ll-node--current .ll-node__shape::before,
+.ll-node--ext.ll-node--current .ll-node__shape::after {
+  display: block;
+  position: absolute;
+  clip-path: polygon(50% 0, 96% 25%, 96% 75%, 50% 100%, 4% 75%, 4% 25%);
+}
+.ll-node--ext .ll-node__rim {
+  inset: 0;
+  background: var(--ll-border-strong);
+}
+.ll-node--ext .ll-node__face {
+  inset: 2px;
+  background: var(--_face);
+}
+.ll-node--ext.ll-node--done .ll-node__rim,
+.ll-node--ext.ll-node--current .ll-node__rim {
+  background: var(--_face);
+}
+.ll-node--ext.ll-node--current .ll-node__shape::before {
+  content: '';
+  inset: -7px;
+  z-index: -2;
+  background: var(--ll-accent);
+}
+.ll-node--ext.ll-node--current .ll-node__shape::after {
+  content: '';
+  inset: -5px;
+  z-index: -1;
+  background: var(--ll-accent-tint);
+}
+/* 滑過（只在有滑鼠的裝置）：浮起 1px、底邊 5px；按下：沉 4px、底邊歸零、面換按下色 */
+@media (hover: hover) and (pointer: fine) {
+  .ll-node__btn:hover .ll-node__disc {
+    translate: 0 -1px;
+    --_d: calc(var(--ll-btn-depth) + 1px);
+  }
+}
+.ll-node__btn:active .ll-node__disc {
+  translate: 0 var(--ll-btn-depth);
+  --_d: 0px;
+  --_face: var(--_press);
+}
+/* 點下去的回饋（LevelNode 的 is-pressed，維護者 2026-10-26）：點一下（滑鼠放開、觸控結束）就看不到 :active，所以 click 後另外播一次
+   「沉 4px、底邊歸零，再彈回」，面板開啟時透過背景也看得到。--_d 用 @property 登記成長度才能在關鍵影格裡動 */
+@property --_d {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 4px;
+}
+.ll-node.is-pressed .ll-node__disc {
+  animation: ll-node-press var(--ll-dur-base) var(--ll-ease-standard);
+}
+@keyframes ll-node-press {
+  40%,
+  60% {
+    translate: 0 var(--ll-btn-depth);
+    --_d: 0px;
+  }
+}
+.ll-node__btn:focus-visible {
+  outline: none;
+}
+.ll-node__btn:focus-visible .ll-node__disc {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 3px;
+}
+/* 星星籤（圖規 4.2）：60 × 22，圓心下方 36 到 58；按鈕的子元素，點它等於點節點 */
+.ll-node__stars {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-sizing: border-box;
+  min-width: 60px;
+  height: 22px;
+  padding: 0 4px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-scene-card);
+  box-shadow: var(--ll-card-ring), var(--ll-shadow-1);
+}
+.ll-node__stars svg {
+  display: block;
+  flex: none;
+}
+.ll-node__stars .is-on path {
+  fill: var(--ll-star);
+  stroke: color-mix(in srgb, var(--ll-star) 70%, var(--ll-text));
+  stroke-width: 1.5;
+}
+.ll-node__stars .is-off path {
+  fill: var(--ll-surface-2);
+  stroke: var(--ll-border-strong);
+  stroke-width: 2.25;
+}
+.ll-node__read {
+  padding: 0 2px;
+  font-size: var(--ll-type-caption-size);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ll-text-2);
+  white-space: nowrap;
+}
+.ll-node__read.is-read {
+  color: var(--ll-success-ink);
+}
+
+/* 章節牌（圖規 4.4、站規 1.20）：立在地景上的告示牌；位置由頁面給（left、bottom、width） */
+.ll-chbanner {
+  position: relative;
+  box-sizing: border-box;
+  padding: var(--ll-space-3) var(--ll-space-4);
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-scene-card);
+  box-shadow: var(--ll-card-ring), var(--ll-shadow-2);
+  transition: background-color var(--ll-dur-fast) var(--ll-ease-standard);
+}
+/* 深色：地圖上的卡片（章節牌、紙籤、星星籤）用 scene-card（比任何地景亮 1.25 倍以上）、1px border-strong 外框與較深的陰影，
+   看起來是立在地上的實物，不是地上的洞（第 1 輪看圖驗收）；海峽說明卡同一套，在 quest-map.css */
+html[data-theme='dark'] .ll-chbanner {
+  box-shadow:
+    inset 0 0 0 1px var(--ll-border-strong),
+    var(--ll-shadow-3);
+}
+html[data-theme='dark'] .ll-chend__plaque {
+  box-shadow:
+    inset 0 0 0 1px var(--ll-border-strong),
+    var(--ll-shadow-3);
+}
+html[data-theme='dark'] .ll-node__stars {
+  box-shadow:
+    inset 0 0 0 1px var(--ll-border-strong),
+    var(--ll-shadow-2);
+}
+/* 兩根 6 × 16 的木柱，距卡片左右緣 24px，柱腳各一片 28 × 6 的地面陰影（裝飾；第 2 輪看圖驗收：6 × 12 的淡木柱像兩根牙籤，卡片像浮在地上） */
+.ll-chbanner__legs {
+  position: absolute;
+  top: 100%;
+  right: 24px;
+  left: 24px;
+  display: flex;
+  justify-content: space-between;
+  height: 16px;
+  pointer-events: none;
+}
+.ll-chbanner__leg {
+  position: relative;
+  width: 6px;
+  height: 16px;
+  border-radius: 0 0 2px 2px;
+  background: var(--ll-scene-wood);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ll-scene-line) 80%, transparent);
+}
+.ll-chbanner__leg::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  z-index: -1;
+  width: 28px;
+  height: 6px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--ll-scene-line);
+  opacity: 0.35;
+}
+.ll-chbanner:has(.ll-chbanner__link:active) {
+  background: var(--ll-surface-2);
+}
+.ll-chbanner__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 var(--ll-space-2);
+}
+.ll-chbanner__eyebrow {
+  margin: 0;
+  font-size: var(--ll-type-caption-size);
+  line-height: 1.34;
+  font-weight: 600;
+  color: var(--ll-text-2);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.ll-chbanner__progress {
+  /* 放不下時整個換到下一列，還放不下時在裡面換行（文字放大 200% 的英文），不被卡片裁掉 */
+  min-width: 0;
+  margin: 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: 1.24;
+  color: var(--ll-text-2);
+  overflow-wrap: anywhere;
+}
+.ll-chbanner__title {
+  margin: 4px 0 0;
+  font-size: var(--ll-type-body-size);
+  line-height: 1.3;
+  font-weight: 700;
+  /* 兩行時兩行等長，不留單字成行（中文章名的最後兩個字與箭頭綁在一起，見 ChapterBanner.tsx 的 splitTail） */
+  text-wrap: balance;
+}
+@media (min-width: 600px) {
+  .ll-chbanner__title {
+    font-size: var(--ll-type-title-3-size);
+    line-height: 1.3;
+  }
+}
+.ll-chbanner__link {
+  display: flex;
+  align-items: center;
+  min-height: var(--ll-target-min);
+  border-radius: var(--ll-radius-sm);
+  color: var(--ll-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ll-chbanner__name {
+  min-width: 0;
+}
+/* 章名與紙籤：兩行時兩行等長。中文章名依詞換行（ChapterBanner 用 phrased 切詞加 .ll-phrased，全站換行規則，不在這裡另寫 keep-all）；
+   紙籤的「第 N 章終點」與徽章文字很短，照全站規則（line-break: strict），徽章名稱整組 inline-block。
+   章名的 balance 由 .ll-chbanner__title 繼承（text-wrap 是繼承屬性），這裡只寫紙籤 */
+.ll-chend__lines {
+  text-wrap: balance;
+}
+.ll-chbanner__tail {
+  white-space: nowrap;
+}
+.ll-chbanner__caret {
+  display: inline-block;
+  margin-inline-start: 4px;
+  vertical-align: -2px;
+  color: var(--ll-text-3);
+  transition: translate var(--ll-dur-fast) var(--ll-ease-standard);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-chbanner__link:hover {
+    color: var(--ll-accent-ink);
+  }
+  .ll-chbanner__link:hover .ll-chbanner__caret {
+    translate: 2px 0;
+    color: var(--ll-accent-ink);
+  }
+}
+.ll-chbanner__link:focus-visible {
+  outline: 3px solid var(--ll-focus);
+  outline-offset: 2px;
+}
+.ll-chbanner__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+  margin-top: var(--ll-space-2);
+}
+
+/* 章末區（圖規 4.5）：外層蓋住章末區、不擋點按；拱門與紙籤的位置由頁面給 */
+.ll-chend {
+  pointer-events: none;
+}
+.ll-chend__arch,
+.ll-chend__floor {
+  position: absolute;
+  width: 96px;
+  height: 104px;
+}
+.ll-chend__floor svg {
+  display: block;
+  overflow: visible;
+}
+.ll-chend__arch-svg {
+  position: relative;
+  display: block;
+  overflow: visible;
+}
+.ll-chend__ground {
+  fill: var(--ll-scene-line);
+  opacity: 0.3;
+}
+/* 深色的描線比地面亮，拿來畫影子會變成一片亮斑：深色的地面陰影改用 bg（拱門、章節牌立柱、起點小旗同一套） */
+html[data-theme='dark'] .ll-chend__ground {
+  fill: var(--ll-bg);
+  opacity: 0.5;
+}
+html[data-theme='dark'] .ll-chbanner__leg::after {
+  background: var(--ll-bg);
+  opacity: 0.55;
+}
+/* 拱門的石材（第 3 輪看圖驗收：石材對地景只有 1.4 到 1.7:1、描邊同色系，手機上像一個淡掉的灰色馬蹄鐵）：
+   專用的 scene-arch-stone（對所有地景 2.5:1 以上）、更深的描線，柱身各兩道 1px 石縫，拱心石上一個 10px 的徽章外框 */
+.ll-chend__stone,
+.ll-chend__key {
+  fill: var(--ll-scene-arch-stone);
+  stroke: var(--ll-scene-arch-line);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+/* 門洞的陰影（第 4 輪看圖驗收）：拱門外框的 ::before，裁成門洞的形狀（x 21 到 75、拱頂內弧到台座），拱頂下 45%、到柱子中段漸淡成 0；
+   在石材之下（svg 在它後面畫），在路線之上（拱門整個在路線之上） */
+.ll-chend__arch::before {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: 21px;
+  width: 54px;
+  height: 77px;
+  background: linear-gradient(color-mix(in srgb, var(--_shade) 45%, transparent), transparent 80%);
+  clip-path: path('M0 77V27a27 27 0 0 1 54 0v50Z');
+  pointer-events: none;
+  --_shade: var(--ll-scene-arch-line);
+}
+html[data-theme='dark'] .ll-chend__arch::before {
+  --_shade: var(--ll-bg);
+  background: linear-gradient(color-mix(in srgb, var(--_shade) 60%, transparent), transparent 80%);
+}
+/* 拱腹陰影（第 4 輪看圖驗收）：開口裡拱頂下方的彎月形暗面，蓋在路面上，路是從拱頂底下穿過去的 */
+.ll-chend__soffit {
+  fill: var(--ll-scene-arch-line);
+  opacity: 0.55;
+}
+/* 深色的描線比地面亮，陰影改用 bg（和地面陰影同一套） */
+html[data-theme='dark'] .ll-chend__soffit {
+  fill: var(--ll-bg);
+  opacity: 0.65;
+}
+/* 拱體外緣 2px 較淺的頂面線：看得出是石頭 */
+.ll-chend__crest {
+  fill: none;
+  stroke: var(--ll-scene-arch-crest);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+/* 深色（第 5 輪看圖驗收：外緣一條近白色的高光，配上灰石材像金屬馬蹄磁鐵）：高光只疊 40%，是比石材亮一點的同色系石面，不是一條白線 */
+html[data-theme='dark'] .ll-chend__crest {
+  opacity: 0.4;
+}
+.ll-chend__joint {
+  fill: none;
+  stroke: var(--ll-scene-arch-line);
+  stroke-width: 1;
+}
+.ll-chend__slot {
+  fill: none;
+  stroke: var(--ll-scene-arch-crest);
+  stroke-width: 1.5;
+}
+.ll-chend__ribbon {
+  fill: none;
+  stroke: var(--ll-accent);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.ll-chend__ribbon.is-mastery {
+  stroke: var(--ll-star);
+}
+.ll-chend__pennant {
+  fill: var(--ll-scene-roof);
+  stroke: var(--ll-scene-line);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+/* 深色的三角旗（第 4 輪看圖驗收：暗紫紅的 scene-roof 在深色地景上幾乎看不到）：完成用 accent-ink、精通用星星色，1px 拱門描線 */
+html[data-theme='dark'] .ll-chend__pennant {
+  fill: var(--ll-accent-ink);
+  stroke: var(--ll-scene-arch-line);
+}
+html[data-theme='dark'] .ll-chend__pennants.is-mastery .ll-chend__pennant {
+  fill: var(--ll-star);
+}
+html[data-theme='dark'] .ll-chend__pennants .ll-chend__pole {
+  stroke: var(--ll-scene-arch-crest);
+}
+.ll-chend__keystar {
+  fill: var(--ll-star);
+  stroke: var(--ll-warning-ink);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+.ll-chend__pole {
+  stroke: var(--ll-scene-line);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.ll-chend__flagcloth {
+  fill: var(--ll-scene-roof);
+  stroke: var(--ll-scene-line);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+.ll-chend__flagcloth.is-done {
+  fill: var(--ll-star);
+}
+/* 紙籤：surface、圓角 md、木樁在下緣中央；卡片本身是 container，格線在內層 body */
+.ll-chend__plaque {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-scene-card);
+  box-shadow: var(--ll-card-ring), var(--ll-shadow-1);
+  pointer-events: auto;
+  container-type: inline-size;
+}
+.ll-chend__body {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  column-gap: 10px;
+  align-items: start;
+}
+.ll-chend__plaque--plain .ll-chend__body {
+  grid-template-columns: minmax(0, 1fr);
+}
+/* 最窄的英文紙籤（320 寬時卡片內寬 160px；375 是 215px，不受影響）：徽章 32px、間距 8px，文字欄往兩側各借 2px，從 110px 變成 124px。
+   英文「End of Extension chapter 4」原本排成三行，紙籤 138px 高出保留的 128px，上緣只離區段頂端 14px（第 7 輪 handoff）；現在兩行。
+   只給英文（第 7 輪看圖驗收：中文紙籤最高 97px，縮了也沒有變矮，只是同一張地圖上 320 與 375 的徽章變成兩種尺寸）。
+   :where 不加權重，寫在下面 9rem 那一段之前：兩段都成立時（文字放大）徽章自成一列的規則優先 */
+@container (max-width: 180px) {
+  .ll-chend__body:where(:lang(en)) {
+    grid-template-columns: 32px minmax(0, 1fr);
+    column-gap: 8px;
+    margin-inline: -2px;
+  }
+  .ll-chend__medal:where(:lang(en)) {
+    width: 32px;
+    height: 32px;
+  }
+}
+/* 文字放大時（第 2 輪看圖驗收的 200%：320 寬時文字欄只剩約 110px，斷成「第 1／章終點」「可獲得徽／章」）：卡片內寬不到 9rem（字級 100% 是 144px，
+   200% 是 288px）時徽章縮成 32px 自成一列，文字拿到整張卡寬。字級 100% 時 320 寬的紙籤（內寬 160）維持兩欄 */
+@container (max-width: 9rem) {
+  .ll-chend__body {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 6px;
+  }
+  .ll-chend__medal {
+    width: 32px;
+    height: 32px;
+  }
+}
+.ll-chend__plaque::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  width: 4px;
+  height: 16px;
+  translate: -50% 0;
+  border-radius: 0 0 2px 2px;
+  background: var(--ll-scene-wood);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ll-scene-line) 70%, transparent);
+}
+/* 文字放大時的長柱子（紙籤貼齊章末區上緣，第 4 輪看圖驗收：200% 時紙籤和下一章的章節牌相隔 270px，不再像同一組路牌）：
+   4px 寬、立在地上（柱腳一片 18 × 4 的地面陰影），畫在紙籤後面；紙籤自己的 16px 木樁不畫 */
+.ll-chend__post {
+  position: absolute;
+  width: 4px;
+  border-radius: 1px 1px 2px 2px;
+  background: var(--ll-scene-wood);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ll-scene-line) 70%, transparent);
+}
+.ll-chend__post::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 18px;
+  height: 4px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--ll-scene-line);
+  opacity: 0.35;
+}
+html[data-theme='dark'] .ll-chend__post::after {
+  background: var(--ll-bg);
+  opacity: 0.55;
+}
+.ll-chend__plaque--post::after {
+  display: none;
+}
+.ll-chend__medal {
+  display: block;
+}
+.ll-chend__lines {
+  min-width: 0;
+}
+.ll-chend__text {
+  margin: 0;
+  font-size: var(--ll-type-callout-size);
+  line-height: 1.375;
+  font-weight: 600;
+  color: var(--ll-text);
+}
+.ll-chend.is-done .ll-chend__text {
+  color: var(--ll-accent-ink);
+}
+/* 深色卡片上強調紫不到 4.5:1：「完成」改用答對色；精通不套這一條（第 2 輪看圖驗收：原本這條的權重 0,4,1 蓋過精通的 warning-ink，深色的精通變成綠字） */
+html[data-theme='dark'] .ll-chend.is-done:not([data-badge-state='mastery']) .ll-chend__text {
+  color: var(--ll-success-ink);
+}
+/* 窄的紙籤（320 寬時右欄約 110px）：第一行改 15px，「延伸第 4 章終點」放得下一行 */
+@container (max-width: 220px) {
+  .ll-chend__text {
+    font-size: var(--ll-type-body-sm-size);
+  }
+}
+/* 精通：兩種主題都是 warning-ink（淺色金棕、深色橙金，對紙籤底色都在 4.5:1 以上，tokens 的 scene.test.ts 有驗），和金色彩帶、金色徽章同一個意思 */
+html .ll-chend[data-badge-state='mastery'] .ll-chend__text {
+  color: var(--ll-warning-ink);
+}
+.ll-chend__badge {
+  margin: 2px 0 0;
+  font-size: var(--ll-type-footnote-size);
+  line-height: 1.4;
+  color: var(--ll-text-2);
+  overflow-wrap: anywhere;
+}
+/* 整組一起換行的子句：紙籤的徽章名稱（含引號），以及 phrased 切出來的子句（章名、關卡名稱、海峽說明卡；第 7 輪看圖驗收）：
+   放得進一行的子句整段移到下一行，標題只在「：」「，」「、」後面斷；比一行長時（文字放大）在詞與詞之間斷，兩行等長，不留「版本」這種短的一行 */
+.ll-phrased__clause {
+  display: inline-block;
+  text-wrap: balance;
+}
+.ll-chend__lab {
+  margin: 4px 0 0 -12px;
+}
+.ll-chend.is-celebrating .ll-chend__text,
+.ll-chend.is-celebrating .ll-chend__key,
+.ll-chend.is-celebrating .ll-chend__keystar,
+.ll-chend.is-celebrating .ll-chend__flag {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ll-chend-pop var(--ll-dur-slow) var(--ll-ease-spring-snappy) both;
+}
+@keyframes ll-chend-pop {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* 角色「鈴」：幣身 star 系、臉部墨色依主題用深色 token（淺色 text、深色 surface），眼睛高光反之 */
+.ll-marker {
+  --ll-mk-gold: var(--ll-star);
+  --ll-mk-gold-2: color-mix(in srgb, var(--ll-star) 72%, var(--ll-text));
+  --ll-mk-gold-3: color-mix(in srgb, var(--ll-star) 55%, var(--ll-surface));
+  --ll-mk-ink: var(--ll-text);
+  --ll-mk-white: var(--ll-surface);
+  display: block;
+  pointer-events: none;
+  filter: drop-shadow(var(--ll-shadow-1));
+}
+.ll-marker--grounded {
+  overflow: visible;
+}
+html[data-theme='dark'] .ll-marker {
+  --ll-mk-ink: var(--ll-bg);
+  --ll-mk-white: var(--ll-text);
+  --ll-mk-gold-2: color-mix(in srgb, var(--ll-star) 72%, var(--ll-bg));
+}
+
+/* 頂部統計列（圖規 4.8、A2）：PageHeader 的地圖實例；統計是 StatChip、工具是 IconButton chrome，全部平的 */
+.ll-hud__stats,
+.ll-hud__tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ll-hud__tools {
+  justify-content: flex-end;
+}
+/* compact 的統計膠囊左右內距 12 改 8：320 寬時「跳到目前關卡」與「更多」兩顆都放得下（圖規 4.8）。寫在 HUD 元件自己的 class（StatChip 的 className），不從頁面改 .ll-statchip */
+@media (max-width: 599px) {
+  .ll-hud__stat {
+    padding-inline: 8px;
+  }
+}
+.ll-hud__tool {
+  position: relative;
+  display: inline-flex;
+}
+/* medium 以上的文字提示：滑過與鍵盤焦點時在按鈕下方顯示（elevated 小卡；減少動態時不淡入） */
+.ll-hud__tool--tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 1;
+  translate: -50% 0;
+  padding: 4px 10px;
+  border-radius: var(--ll-radius-sm);
+  background: var(--ll-elevated);
+  color: var(--ll-text);
+  box-shadow: var(--ll-card-ring), var(--ll-shadow-2);
+  font-size: var(--ll-type-footnote-size);
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ll-dur-fast) var(--ll-ease-standard);
+}
+.ll-hud__tool--tip:last-child::after {
+  left: auto;
+  right: 0;
+  translate: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-hud__tool--tip:hover::after {
+    opacity: 1;
+  }
+}
+.ll-hud__tool--tip:has(:focus-visible)::after {
+  opacity: 1;
+}
+/* 按下之後先不顯示提示，指標離開或再次取得焦點才恢復（第 2 輪看圖驗收：切到清單後提示一直掛在按鈕下面，壓到清單第一張卡） */
+.ll-hud__tool--tip[data-tip-off]::after {
+  opacity: 0;
+}
+
+/* 關卡列（清單檢視與章節頁，站規 1.20）：編號、名稱與狀態、介紹與動作鈕。看卡片自己的寬度排版：
+   文字放大到不到 12 個字寬（320 與 375 寬加 200%）時編號改成名稱上方的眉標（見下面的 12em 容器查詢）；
+   很窄（< 17.5rem，320 寬）三列：編號、名稱、介紹鈕一列，狀態一列，動作鈕自己一列靠右；中等兩列（375 寬的內寬約 295 到 319，
+   第 2 輪看圖驗收：原本的門檻 340 讓 375 一律三列、左邊一大片空白）；寬的（>= 440）一列。
+   編號欄依內容加寬（minmax(36px, max-content)：E1-1 不會頂到關名），欄距 12；沒有介紹鈕時名稱跨到第三欄，不替不存在的按鈕留位置 */
+.ll-levelcard {
+  container-type: inline-size;
+  box-sizing: border-box;
+  padding: var(--ll-space-2) var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-card-ring);
+}
+.ll-levelcard__grid {
+  display: grid;
+  grid-template-columns: minmax(36px, max-content) minmax(0, 1fr) 44px;
+  grid-template-areas:
+    'no title info'
+    '. meta meta'
+    'go go go';
+  align-items: center;
+  column-gap: var(--ll-space-3);
+  row-gap: 4px;
+  min-height: 48px;
+}
+.ll-levelcard__grid:not(:has(.ll-levelcard__info)) {
+  grid-template-areas:
+    'no title title'
+    '. meta meta'
+    'go go go';
+}
+.ll-levelcard.is-current {
+  box-shadow: 0 0 0 2px var(--ll-accent);
+}
+.ll-levelcard--retired {
+  background: var(--ll-surface-2);
+  color: var(--ll-text-2);
+}
+.ll-levelcard__no {
+  grid-area: no;
+  align-self: start;
+  padding-top: 10px;
+  text-align: start;
+  font-weight: 700;
+  color: var(--ll-text-2);
+  white-space: nowrap;
+}
+.ll-levelcard__main,
+.ll-levelcard__actions {
+  display: contents;
+}
+.ll-levelcard__title {
+  grid-area: title;
+  margin: 0;
+  padding-top: 10px;
+  font-size: var(--ll-type-body-size);
+  line-height: 1.4;
+  font-weight: 600;
+}
+.ll-levelcard__meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px var(--ll-space-2);
+  margin: 0;
+  font-size: var(--ll-type-footnote-size);
+  color: var(--ll-text-2);
+}
+/* 狀態文字與「建議下一關」膠囊：放不下時先整個換到下一列（flex-wrap），單獨一列還放不下時才在裡面換行（膠囊變成兩行的圓角框），
+   不再 nowrap（第 6 輪看圖驗收：英文 320 寬加 200% 的「Suggested next level」字跑出膠囊底色與卡片外框，頁面水平捲動 14 到 18px） */
+.ll-levelcard__meta > * {
+  text-wrap: balance;
+}
+.ll-levelcard__info {
+  grid-area: info;
+  justify-self: end;
+  align-self: start;
+}
+.ll-levelcard__go {
+  grid-area: go;
+  justify-self: end;
+}
+.ll-levelcard__read {
+  font-size: var(--ll-type-caption-size);
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ll-levelcard__read.is-read {
+  color: var(--ll-success-ink);
+}
+/* 文字放大（卡片內寬不到 12 個字寬：320 與 375 寬加 200%）：編號改成關名上方的一行眉標，關名、狀態與膠囊都用整張卡的寬度
+   （第 6 輪看圖驗收：編號欄加介紹鈕只剩 100px 左右，「Meet the assets」排成一行一個字） */
+@container (max-width: 12em) {
+  .ll-levelcard__grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'no info'
+      'title title'
+      'meta meta'
+      'go go';
+  }
+  .ll-levelcard__grid:not(:has(.ll-levelcard__info)) {
+    grid-template-areas:
+      'no no'
+      'title title'
+      'meta meta'
+      'go go';
+  }
+  .ll-levelcard__no,
+  .ll-levelcard__info {
+    align-self: center;
+    padding-top: 0;
+  }
+  .ll-levelcard__title {
+    padding-top: 0;
+  }
+}
+@container (min-width: 17.5rem) {
+  .ll-levelcard__grid {
+    grid-template-columns: minmax(32px, max-content) minmax(0, 1fr) auto;
+    grid-template-areas:
+      'no title info'
+      'no meta go';
+  }
+  .ll-levelcard__grid:not(:has(.ll-levelcard__info)) {
+    grid-template-areas:
+      'no title title'
+      'no meta go';
+  }
+  .ll-levelcard__go {
+    align-self: end;
+  }
+  /* 中間欄放不下時，「尚未挑戰」與「建議下一關」膠囊各自換到下一列（單獨一列還放不下時才在裡面換行） */
+  .ll-levelcard__meta {
+    align-self: center;
+  }
+}
+@container (min-width: 440px) {
+  .ll-levelcard__grid,
+  .ll-levelcard__grid:not(:has(.ll-levelcard__info)) {
+    grid-template-columns: minmax(40px, max-content) minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      'no title info go'
+      'no meta info go';
+  }
+  .ll-levelcard__no {
+    align-self: center;
+    padding-top: 0;
+  }
+  .ll-levelcard__title {
+    padding-top: 0;
+  }
+  .ll-levelcard__info {
+    align-self: center;
+  }
+}
+
+/* 關卡代號：等寬、4 個一組 */
+/* 「給老師：關卡代號」展開列裡代號下方的一句說明 */
+.ll-levelsheet__hint {
+  margin: var(--ll-space-2) 0 0;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-levelcode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+}
+.ll-levelcode__label {
+  font-size: var(--ll-type-caption-size);
+  color: var(--ll-text-2);
+}
+.ll-levelcode__code {
+  padding: 2px 8px;
+  border-radius: var(--ll-radius-xs);
+  background: var(--ll-surface-2);
+  font-size: var(--ll-type-callout-size);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+/* 載入前的佔位（LevelCodeText.tsx）：和 Button quiet sm 同尺寸的骨架膠囊，裡面的字看不見 */
+.ll-levelcode__slot {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  box-sizing: border-box;
+  width: auto;
+  min-width: var(--ll-target-min);
+  height: var(--ll-btn-h-sm);
+  padding: 0 17px;
+  font-size: var(--ll-type-body-sm-size);
+  font-weight: 600;
+  line-height: 1.3;
+  color: transparent;
+  user-select: none;
+}
+.ll-levelcode__icon-slot {
+  display: inline-block;
+  inline-size: 18px;
+  block-size: 18px;
+}
+
+/* 輸入關卡代號（站規 1.2.4、2.2.5） */
+.ll-codeinput__label {
+  display: block;
+  margin-bottom: var(--ll-space-2);
+  font-weight: 600;
+}
+.ll-codeinput__input {
+  letter-spacing: 0.06em;
+  font-size: var(--ll-type-input-size);
+}
+.ll-codeinput__chapter {
+  margin-top: var(--ll-space-2);
+}
+.ll-codeinput__submit {
+  margin-top: var(--ll-space-4);
+}
+
+/* 關卡介紹面板（站規 1.10、1.20）：頭部三欄（關卡圓章、標題與章名、關閉鈕）、學習目標、最佳成績、給老師的代號。
+   第 4 輪看圖驗收：圓章、星星、標題、章名原本由上往下疊成四列，左邊一條窄柱、右邊一大片空白；改成圓章在左欄、跨標題與章名兩列，垂直置中。
+   第 9 輪：文字放大 200% 時 44px 的圓章放不下「3-1」，原本斷成「3-」換行「1」、字跑出圓外。編號整塊不斷（ll-nowrap），字級最大 16px，
+   圓章維持 44px：改成跟著編號變寬的膠囊時，320 寬的標題欄只剩約 150px，英文標題的長字在字中間斷。
+   圓章直接放在 Sheet 的 .ll-sheet__lead（flex）裡，不再多包一層 span（原本的 .ll-levelsheet__lead） */
+.ll-sheet--level .ll-sheet__heading:has(> .ll-sheet__lead) {
+  grid-template-columns: 44px minmax(0, 1fr);
+  column-gap: var(--ll-space-3);
+  align-items: center;
+}
+.ll-sheet--level .ll-sheet__heading > .ll-sheet__lead {
+  grid-row: 1 / span 2;
+  grid-column: 1;
+  margin: 0 0 3px;
+}
+.ll-sheet--level .ll-sheet__heading:has(> .ll-sheet__lead) > :not(.ll-sheet__lead) {
+  grid-column: 2;
+}
+.ll-levelsheet__node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-surface);
+  box-shadow:
+    inset 0 0 0 2px var(--ll-border-strong),
+    0 3px 0 0 var(--ll-node-ledge);
+  color: var(--ll-text-2);
+  font-size: min(var(--ll-type-footnote-size), 16px);
+  font-weight: 700;
+}
+.ll-levelsheet__node--done,
+.ll-levelsheet__node--current {
+  background: var(--ll-accent);
+  color: var(--ll-accent-contrast);
+  box-shadow: 0 3px 0 0 var(--ll-btn-primary-ledge);
+}
+.ll-levelsheet__node--ext {
+  border-radius: 30% / 22%;
+}
+.ll-levelsheet__suggest {
+  margin: 0 0 var(--ll-space-4);
+  padding: 8px 12px;
+  border-radius: var(--ll-radius-sm);
+  background: var(--ll-info-tint);
+  color: var(--ll-text);
+  font-size: var(--ll-type-footnote-size);
+}
+.ll-levelsheet__section {
+  margin: 0 0 var(--ll-space-4);
+}
+.ll-levelsheet__h {
+  margin: 0 0 var(--ll-space-1);
+  font-size: var(--ll-type-footnote-size);
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--ll-text-2);
+}
+.ll-levelsheet__objectives {
+  margin: 0;
+  padding-left: 1.2em;
+}
+.ll-levelsheet__value {
+  margin: 0;
+}
+.ll-levelsheet__best {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0;
+}
+.ll-levelsheet__code {
+  margin-top: var(--ll-space-2);
+}
+/* 腳：「章節資訊」列與主按鈕之間 12；內文最後一段到腳 24 */
+.ll-sheet--level .ll-sheet__foot {
+  gap: var(--ll-space-3);
+  margin-top: var(--ll-space-6);
+}
+.ll-sheet--level .ll-levelsheet__code {
+  margin-bottom: 0;
+}
+.ll-sheet--level .ll-levelsheet__chapter {
+  margin: 0;
+}
+
+/* 減少動態：節點不呼吸、按下不位移（只換色、底邊剩 1px），紙籤與拱心石不彈出。
+   只用 --ll-dur-fast 的過渡（節點外框、章節牌、箭頭、工具提示的淡入）在減少動態時 tokens 是 0ms，不用再寫 transition: none；
+   圓盤的 scale 用 dur-base（減少動態時 120ms），仍要關掉 */
+@media (prefers-reduced-motion: reduce) {
+  .ll-node--current .ll-node__disc,
+  .ll-chend.is-celebrating .ll-chend__text,
+  .ll-chend.is-celebrating .ll-chend__key,
+  .ll-chend.is-celebrating .ll-chend__keystar,
+  .ll-chend.is-celebrating .ll-chend__flag {
+    animation: none;
+  }
+  .ll-node__disc {
+    transition: none;
+  }
+  .ll-node__btn:hover .ll-node__disc,
+  .ll-chbanner__link:hover .ll-chbanner__caret {
+    translate: none;
+  }
+  .ll-node__btn:hover .ll-node__disc {
+    --_d: var(--ll-btn-depth);
+  }
+  .ll-node__btn:active .ll-node__disc {
+    translate: none;
+    --_d: 1px;
+  }
+  .ll-node.is-pressed .ll-node__disc {
+    animation: none;
+  }
+}
+html[data-motion='reduced'] .ll-node--current .ll-node__disc,
+html[data-motion='reduced'] .ll-node.is-pressed .ll-node__disc,
+html[data-motion='reduced'] .ll-chend.is-celebrating .ll-chend__text,
+html[data-motion='reduced'] .ll-chend.is-celebrating .ll-chend__key,
+html[data-motion='reduced'] .ll-chend.is-celebrating .ll-chend__keystar,
+html[data-motion='reduced'] .ll-chend.is-celebrating .ll-chend__flag {
+  animation: none;
+}
+html[data-motion='reduced'] .ll-node__disc {
+  transition: none;
+}
+html[data-motion='reduced'] .ll-node__btn:hover .ll-node__disc,
+html[data-motion='reduced'] .ll-chbanner__link:hover .ll-chbanner__caret {
+  translate: none;
+}
+html[data-motion='reduced'] .ll-node__btn:hover .ll-node__disc {
+  --_d: var(--ll-btn-depth);
+}
+html[data-motion='reduced'] .ll-node__btn:active .ll-node__disc {
+  translate: none;
+  --_d: 1px;
+}
+
+/* 強制色彩（圖規第 8 節）：節點依 17 第 6 節；章節牌與紙籤是 Canvas 底加 1px CanvasText 邊框；拱門用 CanvasText 描線 */
+@media (forced-colors: active) {
+  .ll-node__shape,
+  .ll-node--ext .ll-node__rim,
+  .ll-node--ext .ll-node__face {
+    background: Canvas;
+    border: 2px solid CanvasText;
+    box-shadow: none;
+    filter: none;
+  }
+  /* 圓盤自己指定系統色：不讓瀏覽器在編號後面墊一塊 Canvas 底（Highlight 上的 HighlightText 會變成一塊白）。
+     圓盤本身也是實心的系統色底（不靠 background-image 或帶透明度的顏色），路線怎樣都不會從圓盤裡透出來 */
+  .ll-node__disc {
+    forced-color-adjust: none;
+    color: CanvasText;
+  }
+  .ll-node:not(.ll-node--ext) .ll-node__disc {
+    background-color: Canvas;
+  }
+  .ll-node:not(.ll-node--ext).ll-node--done .ll-node__disc,
+  .ll-node:not(.ll-node--ext).ll-node--current .ll-node__disc {
+    background-color: Highlight;
+  }
+  .ll-node--done .ll-node__shape,
+  .ll-node--current .ll-node__shape {
+    background: Highlight;
+    border-color: Highlight;
+    /* 圓盤是 forced-color-adjust: none：一般模式的強調色外圈不會被瀏覽器拿掉，要自己清掉，目前關卡改用下面的 CanvasText 外框 */
+    box-shadow: none;
+  }
+  .ll-node--done .ll-node__disc,
+  .ll-node--current .ll-node__disc {
+    color: HighlightText;
+  }
+  .ll-node--current .ll-node__disc {
+    outline: 3px solid CanvasText;
+    outline-offset: 3px;
+  }
+  .ll-node__stars,
+  .ll-levelcard,
+  .ll-chbanner,
+  .ll-chend__plaque {
+    background: Canvas;
+    border: 1px solid CanvasText;
+    box-shadow: none;
+  }
+  .ll-chbanner__legs,
+  .ll-chend__plaque::after,
+  .ll-chend__post,
+  .ll-chend__floor,
+  .ll-chend__arch::before,
+  .ll-chend__soffit {
+    display: none;
+  }
+  .ll-chend__stone,
+  .ll-chend__key,
+  .ll-chend__keystar,
+  .ll-chend__pennants path,
+  .ll-chend__flagcloth {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .ll-chend__ribbon,
+  .ll-chend__pole,
+  .ll-chend__joint,
+  .ll-chend__slot,
+  .ll-chend__crest {
+    stroke: CanvasText;
+  }
+  .ll-marker {
+    filter: none;
+  }
+}

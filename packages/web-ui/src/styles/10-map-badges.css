@@ -1,0 +1,150 @@
+/* 地圖組：章節徽章、鈴的星光、數字滾動、延伸與期中考標籤。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
+/* ---- 闖關地圖 M3：章節徽章、角色星光、數字滾動、延伸標籤（17 第 3.4 到 3.6 節、03 第 2.10 節）；徽章在章末紙籤，章節牌不再放徽章（圖規 4.4） ---- */
+/* 章節徽章：三種外觀都用 tokens；未取得只有灰階外框，完成是強調色，精通是星星黃加月桂 */
+.ll-chbadge {
+  --ll-cb-face: var(--ll-surface);
+  --ll-cb-rim: var(--ll-border-strong);
+  --ll-cb-ring: var(--ll-border);
+  --ll-cb-star: transparent;
+  --ll-cb-star-rim: var(--ll-border-strong);
+  --ll-cb-ribbon: var(--ll-surface-2);
+  --ll-cb-ribbon-rim: var(--ll-border-strong);
+  --ll-cb-laurel: var(--ll-success-ink);
+  display: block;
+  flex: 0 0 auto;
+}
+/* 深色的未取得：border-strong 在深色帶風味的紫，和已取得的強調紫只差在有沒有填色；改成中性的灰，和淺色一樣一眼分得出未取得與已取得（第 1 輪看圖驗收）。
+   第 4 輪看圖驗收（紙籤裡是一顆近黑色的實心圓，像一個洞；清單上只有 2.3:1，幾乎隱形）：幣面填它所在的卡片色、緞帶不填色（和淺色一樣只是外框），
+   外框是前景色 55% 混進卡片色（對地圖卡片 3:1、對一般卡片 4.9:1）。幣面要填色：緞帶的上端在幣面後面，透明時會從幣面裡透出來 */
+html[data-theme='dark'] .ll-chbadge--locked {
+  --ll-cb-ribbon: transparent;
+  --ll-cb-rim: color-mix(in oklab, var(--ll-text) 55%, var(--ll-surface));
+  --ll-cb-star-rim: color-mix(in oklab, var(--ll-text) 55%, var(--ll-surface));
+  --ll-cb-ribbon-rim: color-mix(in oklab, var(--ll-text) 55%, var(--ll-surface));
+  --ll-cb-ring: color-mix(in oklab, var(--ll-text) 35%, var(--ll-surface));
+}
+/* 地圖上的紙籤是 scene-card（比 surface 亮）：幣面跟著卡片色，不是一個暗洞 */
+html[data-theme='dark'] .ll-chend__plaque .ll-chbadge--locked {
+  --ll-cb-face: var(--ll-scene-card);
+}
+.ll-chbadge--done {
+  --ll-cb-face: var(--ll-accent);
+  --ll-cb-rim: var(--ll-accent-pressed);
+  --ll-cb-ring: var(--ll-accent-contrast);
+  --ll-cb-star: var(--ll-star);
+  --ll-cb-star-rim: var(--ll-accent-pressed);
+  --ll-cb-ribbon: var(--ll-accent-pressed);
+  --ll-cb-ribbon-rim: var(--ll-accent-pressed);
+}
+.ll-chbadge--mastery {
+  --ll-cb-face: var(--ll-star);
+  --ll-cb-rim: var(--ll-warning-ink);
+  --ll-cb-ring: var(--ll-warning-ink);
+  --ll-cb-star: var(--ll-accent);
+  --ll-cb-star-rim: var(--ll-accent-pressed);
+  --ll-cb-ribbon: var(--ll-accent);
+  --ll-cb-ribbon-rim: var(--ll-accent-pressed);
+}
+.ll-chbadge__face {
+  fill: var(--ll-cb-face);
+  stroke: var(--ll-cb-rim);
+  stroke-width: 2;
+}
+.ll-chbadge__ring {
+  fill: none;
+  stroke: var(--ll-cb-ring);
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+.ll-chbadge__star {
+  fill: var(--ll-cb-star);
+  stroke: var(--ll-cb-star-rim);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+.ll-chbadge__ribbon {
+  fill: var(--ll-cb-ribbon);
+  stroke: var(--ll-cb-ribbon-rim);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+.ll-chbadge__laurel {
+  fill: none;
+  stroke: var(--ll-cb-laurel);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.ll-chbadge__leaf {
+  fill: var(--ll-cb-laurel);
+}
+/* 角色答對時的星光：輪流閃爍；減少動態時靜止 */
+.ll-marker__spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ll-spark 1.1s var(--ll-ease-standard) infinite alternate;
+}
+.ll-marker__spark:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.ll-marker__spark:nth-child(3) {
+  animation-delay: 0.6s;
+}
+@keyframes ll-spark {
+  from {
+    opacity: 0.35;
+    scale: 0.75;
+  }
+  to {
+    opacity: 1;
+    scale: 1.1;
+  }
+}
+/* 數字滾動：等寬數字，寬度不跳 */
+.ll-rollnum {
+  display: inline-block;
+  min-width: 1ch;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+/* 延伸標籤 */
+.ll-notetag--extension {
+  color: var(--ll-info-ink);
+  background: var(--ll-info-tint);
+}
+/* 期中考範圍標籤（T32）：和延伸標籤不同色，文字本身就說明範圍，顏色不是唯一資訊 */
+.ll-notetag--midterm {
+  color: var(--ll-success-ink);
+  background: var(--ll-success-tint);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ll-marker__spark {
+    animation: none;
+  }
+}
+html[data-motion='reduced'] .ll-marker__spark {
+  animation: none;
+}
+@media (forced-colors: active) {
+  .ll-chbadge__face,
+  .ll-chbadge__ribbon {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .ll-chbadge--done .ll-chbadge__face,
+  .ll-chbadge--mastery .ll-chbadge__face {
+    fill: Highlight;
+  }
+  .ll-chbadge__star {
+    fill: CanvasText;
+    stroke: CanvasText;
+  }
+  .ll-chbadge--done .ll-chbadge__star,
+  .ll-chbadge--mastery .ll-chbadge__star {
+    fill: HighlightText;
+    stroke: HighlightText;
+  }
+  .ll-chbadge__laurel,
+  .ll-chbadge__leaf {
+    stroke: CanvasText;
+    fill: CanvasText;
+  }
+}

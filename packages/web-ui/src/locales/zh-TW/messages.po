@@ -13,11 +13,27 @@ msgstr ""
 msgid "quiz.classify.takeBackHint"
 msgstr "，再按一次拿回"
 
-#. 章末區：本章已完成；chapter 是「第 N 章」
+#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明
+#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明
+#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/Button.tsx
+#: ../../packages/web-ui/src/components/TextLink.tsx
+#: ../../packages/web-ui/src/components/ui-labels.ts
+msgid "ui.externalSite"
+msgstr "（外部網站）"
+
+#. 章末紙籤：本章已完成；chapter 是「第 N 章」
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/ChapterEnd.tsx
 msgid "map.end.completed"
 msgstr "{chapter}完成"
+
+#. 章末紙籤：本章尚未完成；chapter 是「第 N 章」，英文寫成 End of Chapter N
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterEnd.tsx
+msgid "map.end.goal"
+msgstr "{chapter}終點"
 
 #. 交易影響題每一列的名稱；label 是目標名稱
 #. js-lingui-explicit-id
@@ -45,6 +61,18 @@ msgstr "{label}的金額"
 msgid "stars.label"
 msgstr "{max} 顆星中的 {n} 顆"
 
+#. 方向下拉的可讀名稱；name 是「第 N 行」
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.sideOf"
+msgstr "{name}的借或貸"
+
+#. 金額輸入框的可讀名稱；name 是「第 N 行」
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.amountOf"
+msgstr "{name}的金額"
+
 #. 註記標籤按鈕的可讀名稱；text 是標籤文字、line 是列名或名詞
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/NoteTag.tsx
@@ -56,6 +84,30 @@ msgstr "{text}：{line}。查看說明"
 #: ../../packages/web-ui/src/components/ClassifyBoard.tsx
 msgid "quiz.classify.placed"
 msgstr "{text}放入{label}，第 {n} 張，共 {total} 張"
+
+#. 章末區尚未取得的徽章；badgeTitle 是徽章名稱，<0> 是不換行的詞，<1> 包住引號與名稱（整組一起換行）；英文用英式彎引號
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterEnd.tsx
+msgid "map.end.badgeAhead"
+msgstr "<0>可獲得徽章</0><1>「{badgeTitle}」</1>"
+
+#. 章末區已達精通的徽章；badgeTitle 是徽章名稱，<0> 是不換行的詞，<1> 包住名稱（整組一起換行）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterEnd.tsx
+msgid "map.end.badgeMastery"
+msgstr "<0>精通徽章</0>：<1>{badgeTitle}</1>"
+
+#. 指標表格：分子為 0 的狀態文字
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioTable.tsx
+msgid "ratio.status.zero"
+msgstr "0（分子是 0）"
+
+#. 延伸章節點與關卡列的編號：E 是 Extension（延伸），c 章序、l 關序；兩個語言都寫成 E1-1
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelNode.tsx
+msgid "map.node.extNo"
+msgstr "E{c}-{l}"
 
 #. 切到 IFRS 對照時的標記（D10(f)）
 #. js-lingui-explicit-id
@@ -75,6 +127,12 @@ msgstr "IFRS 怎麼處理"
 msgid "input.na"
 msgstr "N/A，分母不存在"
 
+#. 指標表格：分母為 0 或缺少輸入的狀態文字
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioTable.tsx
+msgid "ratio.status.na"
+msgstr "N/A（分母不存在）"
+
 #. 回饋之後前往下一題
 #. 回饋之後前往下一題
 #. js-lingui-explicit-id
@@ -82,6 +140,12 @@ msgstr "N/A，分母不存在"
 #: ../../packages/web-ui/src/components/QuestionCard.tsx
 msgid "quiz.next"
 msgstr "下一題"
+
+#. 指標表格：分母為負時的狀態文字
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioTable.tsx
+msgid "ratio.status.notMeaningful"
+msgstr "不具意義（分母為負）"
 
 #. 交易影響題逐目標的結果
 #. js-lingui-explicit-id
@@ -99,6 +163,12 @@ msgstr "不對"
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/ImpactPicker.tsx
 msgid "quiz.impact.expected"
+msgstr "不對，正解是 {expected}"
+
+#. 指標計算題的結果；expected 是已格式化的正解
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioNumeric.tsx
+msgid "quiz.ratio.wrong"
 msgstr "不對，正解是 {expected}"
 
 #. js-lingui-explicit-id
@@ -130,11 +200,11 @@ msgstr "不變"
 msgid "quiz.choice.status.alsoReasonable"
 msgstr "也是合理答案"
 
-#. 清單檢視裡開啟關卡介紹的按鈕
+#. 清單檢視裡開啟關卡介紹的按鈕的可讀名稱；no 是關卡編號（例如 1-1）、name 是關卡名稱
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelCard.tsx
-msgid "map.card.info"
-msgstr "介紹"
+msgid "map.card.infoLabel"
+msgstr "介紹：{no} {name}"
 
 #. 關卡代號格式不符時的提示
 #. js-lingui-explicit-id
@@ -153,6 +223,42 @@ msgstr "你的答案與正解"
 #: ../../packages/web-ui/src/components/TermSheet.tsx
 msgid "term.example"
 msgstr "例子"
+
+#. 分錄表格的方向欄表頭
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.col.side"
+msgstr "借或貸"
+
+#. 分錄的借方
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.side.debit"
+msgstr "借方"
+
+#. 分錄表格的合計列
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.total.debit"
+msgstr "借方合計"
+
+#. 分錄借貸合計不相等時的文字；diffText 是已格式化的差額
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.unbalanced"
+msgstr "借貸不平衡，差 {diffText}"
+
+#. 分錄借方合計等於貸方合計時的文字
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.balanced"
+msgstr "借貸平衡"
+
+#. 指標表格的備註欄表頭
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioTable.tsx
+msgid "ratio.col.note"
+msgstr "備註"
 
 #. 還沒拿起卡片時分類格的提示
 #. js-lingui-explicit-id
@@ -198,11 +304,35 @@ msgstr "再挑戰"
 msgid "quiz.retry"
 msgstr "再試一次"
 
+#. 錯誤狀態的主要按鈕：重新讀取
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ui-labels.ts
+msgid "ui.retry"
+msgstr "再試一次"
+
+#. 已讀完的不計分關卡的主要按鈕
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelNode.tsx
+msgid "map.sheet.reread"
+msgstr "再讀一次"
+
 #. 關卡介紹表單的最佳成績段落標題
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelSheet.tsx
 msgid "map.sheet.best"
 msgstr "最佳成績"
+
+#. 分錄表格的標題（只給螢幕閱讀器）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.caption"
+msgstr "分錄"
+
+#. 分錄表格外層可水平捲動區域的名稱（07 第 8.3 節；窄螢幕時可以用鍵盤左右捲動）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.region"
+msgstr "分錄表格"
 
 #. 「±」按鈕的可讀名稱
 #. js-lingui-explicit-id
@@ -210,23 +340,54 @@ msgstr "最佳成績"
 msgid "input.toggleSign"
 msgstr "切換正負號"
 
+#. 刪除分錄行的按鈕；name 是「第 N 行」
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.remove"
+msgstr "刪除{name}"
+
+#. 章末紙籤連到實驗室故事步驟的按鈕
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterEnd.tsx
+msgid "map.end.labLink"
+msgstr "到實驗室看這一章的故事步驟"
+
 #. 送出關卡代號的按鈕
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelCodeInput.tsx
 msgid "map.code.go"
 msgstr "前往"
 
-#. 已下架關卡提示後的連結文字
+#. 已下架關卡提示下面的按鈕
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelCodeInput.tsx
 msgid "map.code.goChapter"
 msgstr "前往所屬章節"
 
-#. 章末區尚未取得的徽章；badgeTitle 是徽章名稱
+#. 倒數文字；minutes、seconds 是已格式化的數字
 #. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/ChapterEnd.tsx
-msgid "map.end.badgeAhead"
-msgstr "可獲得徽章「{badgeTitle}」"
+#: ../../packages/web-ui/src/components/TimerDisplay.tsx
+msgid "timer.remaining"
+msgstr "剩 {m} 分 {s} 秒"
+
+#. 不到一分鐘時的倒數文字；seconds 是已格式化的數字
+#. 不到一分鐘時的倒數文字；seconds 是已格式化的數字
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TimerDisplay.tsx
+msgid "timer.remainingSeconds"
+msgstr "剩 {s} 秒"
+
+#. 剩一分鐘時的螢幕閱讀器提醒（只播一次）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TimerDisplay.tsx
+msgid "timer.oneMinute"
+msgstr "剩 1 分鐘"
+
+#. 確認面板的取消按鈕
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ui-labels.ts
+msgid "ui.cancel"
+msgstr "取消"
 
 #. 名詞卡 chip 的可讀名稱；label 是名詞
 #. js-lingui-explicit-id
@@ -234,17 +395,47 @@ msgstr "可獲得徽章「{badgeTitle}」"
 msgid "term.chip"
 msgstr "名詞卡：{label}"
 
+#. 這一題剛收進圖鑑的名詞 chip 的可讀名稱（最前面是金色勾章，和名詞圖鑑已收進的印章同一種）；label 是名詞
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TermChip.tsx
+msgid "term.chipNew"
+msgstr "名詞卡：{label}，剛收進圖鑑"
+
 #. 指標的註記標籤（W12）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/NoteTag.tsx
 msgid "note.singlePeriod"
 msgstr "單期近似"
 
+#. 名詞卡腳部：前往名詞頁看完整說明（只在名詞圖鑑與名詞頁裡打開時出現，作答中不顯示）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TermSheet.tsx
+msgid "term.fullDetail"
+msgstr "在圖鑑看完整說明"
+
+#. 闖關地圖頂部工具列的可讀名稱
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/MapHud.tsx
+msgid "map.hud.tools"
+msgstr "地圖工具"
+
+#. 工具與「更多」選單：從清單切回地圖的按鈕
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/MapListToggle.tsx
+msgid "map.tool.map"
+msgstr "地圖檢視"
+
 #. 交易影響題的方向按鈕
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/ImpactPicker.tsx
 msgid "quiz.direction.up"
 msgstr "增加"
+
+#. 分錄題逐行回饋：正解沒有這一行
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.status.extra"
+msgstr "多了這一行"
 
 #. 關卡介紹表單的學習目標段落標題
 #. js-lingui-explicit-id
@@ -258,13 +449,47 @@ msgstr "學習目標"
 msgid "quiz.tf.true"
 msgstr "對"
 
-#. 尚未挑戰關卡的狀態字
-#. 尚未挑戰關卡的狀態字
+#. 分錄題回饋：正解有、作答沒有的行的清單名稱
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.missing.title"
+msgstr "少了的行"
+
+#. 分錄題逐行回饋：正解有、作答沒有的行；side 是借方或貸方、account 是科目、amount 是已格式化的金額
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.status.missing"
+msgstr "少了這一行：{side} {account} {amount}"
+
+#. 關卡列上單獨顯示的狀態標籤（英文開頭大寫 Not attempted yet；節點可讀名稱用的是 map.node.todo）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelCard.tsx
+msgid "map.card.todo"
+msgstr "尚未挑戰"
+
+#. 尚未挑戰關卡的狀態字
+#. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelNode.tsx
 msgid "map.node.todo"
 msgstr "尚未挑戰"
+
+#. 不計分關卡還沒看過時的狀態字；放在 60px 寬的星星籤裡，英文要短
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelNode.tsx
+msgid "map.node.unread"
+msgstr "尚未讀"
+
+#. 五步驟勾稽的燈號：填的數字與核心不同；difference 是已格式化的差額
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FiveStepFill.tsx
+msgid "quiz.fiveStep.off"
+msgstr "差 {difference}"
+
+#. 五步驟勾稽的燈號：填的數字與核心不同；difference 是差額、expected 是正解，都已格式化
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FiveStepFill.tsx
+msgid "quiz.fiveStep.offExpected"
+msgstr "差 {difference}，正解是 {expected}"
 
 #. 已下架關卡的狀態標籤
 #. js-lingui-explicit-id
@@ -272,11 +497,23 @@ msgstr "尚未挑戰"
 msgid "map.card.retired"
 msgstr "已下架"
 
+#. 刪除分錄行後的播報；index 是行號
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.removed"
+msgstr "已刪除第 {index} 行"
+
 #. 徽章已取得時的可讀名稱；name 是徽章名稱
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/ChapterBanner.tsx
 msgid "map.chapter.badgeUnlocked"
 msgstr "已取得徽章「{name}」"
+
+#. 徽章達到精通（每關三星）時的可讀名稱；name 是徽章名稱
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterBanner.tsx
+msgid "map.chapter.badgeMastery"
+msgstr "已取得精通徽章「{name}」"
 
 #. 分類題把已放入的卡片拿回時的播報；text 是卡片文字
 #. js-lingui-explicit-id
@@ -308,10 +545,22 @@ msgstr "已放下：{text}"
 msgid "quiz.feedback.mistakeAdded"
 msgstr "已放進錯題本"
 
-#. 複製成功時按鈕旁的短提示
+#. 新增分錄行後的播報；index 是行號、label 是科目
 #. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/LevelCode.tsx
-msgid "map.code.copiedShort"
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.added"
+msgstr "已新增第 {index} 行：{label}"
+
+#. 計時暫停中的狀態文字
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TimerDisplay.tsx
+msgid "timer.pausedLabel"
+msgstr "已暫停"
+
+#. 複製成功後按鈕上的短字（兩秒後換回原本的字）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ui-labels.ts
+msgid "ui.copied"
 msgstr "已複製"
 
 #. 複製成功時的狀態訊息
@@ -319,6 +568,12 @@ msgstr "已複製"
 #: ../../packages/web-ui/src/components/LevelCode.tsx
 msgid "map.code.copied"
 msgstr "已複製關卡代號"
+
+#. 不計分關卡（全是取捨題）已完成時的狀態字；放在 60px 寬的星星籤裡，英文要短
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelNode.tsx
+msgid "map.node.read"
+msgstr "已讀完"
 
 #. N/A 按下時數字框旁的說明
 #. js-lingui-explicit-id
@@ -340,9 +595,15 @@ msgstr "常見誤解"
 
 #. 延伸章的標籤
 #. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/ChapterBanner.tsx
+#: ../../packages/web-ui/src/components/NoteTag.tsx
 msgid "map.chapter.extensionTag"
 msgstr "延伸，不列入期中考"
+
+#. 主線與延伸區之間的分隔文字
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterBanner.tsx
+msgid "play.extensionGap"
+msgstr "延伸區：不列入期中考，想多學再來"
 
 #. 延伸章節點的可讀名稱開頭；c 章序、l 關序、name 關卡名稱
 #. 延伸章節點的可讀名稱開頭；c 章序、l 關序、name 關卡名稱
@@ -358,10 +619,14 @@ msgstr "延伸第 {c} 章第 {l} 關 {name}"
 msgid "map.chapter.extNo"
 msgstr "延伸第 {n} 章"
 
-#. 目前建議關卡的狀態字
-#. 目前建議關卡的狀態字
+#. 關卡列上單獨顯示的「建議下一關」膠囊（英文開頭大寫 Suggested next level；節點可讀名稱用的是 map.node.current）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelCard.tsx
+msgid "map.card.suggested"
+msgstr "建議下一關"
+
+#. 目前建議關卡的狀態字
+#. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelNode.tsx
 msgid "map.node.current"
 msgstr "建議下一關"
@@ -371,7 +636,7 @@ msgstr "建議下一關"
 #. placeholder {0}: level.suggestedPrevTitle
 #: ../../packages/web-ui/src/components/LevelSheet.tsx
 msgid "map.sheet.suggestPrev"
-msgstr "建議先完成『{0}』，也可以直接開始"
+msgstr "建議先完成「{0}」，也可以直接開始"
 
 #. 分類題尚未放入的卡片區標題；count 是張數
 #. js-lingui-explicit-id
@@ -379,17 +644,17 @@ msgstr "建議先完成『{0}』，也可以直接開始"
 msgid "quiz.classify.pool"
 msgstr "待分類（{count}）"
 
-#. 頂部徽章按鈕的可讀名稱；badges 是數量
+#. 頂部徽章連結的可讀名稱；badges 是數量，連到「我的 › 徽章」
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/MapHud.tsx
-msgid "map.hud.badges"
-msgstr "徽章 {badges} 個，看我的進度"
+msgid "map.hud.badgesLink"
+msgstr "徽章 {badges} 個，看我的徽章"
 
-#. 章末區已取得的徽章；badgeTitle 是徽章名稱
+#. 章末區已取得的徽章；badgeTitle 是徽章名稱，<0> 包住名稱（整組一起換行）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/ChapterEnd.tsx
 msgid "map.end.badgeGot"
-msgstr "徽章：{badgeTitle}"
+msgstr "徽章：<0>{badgeTitle}</0>"
 
 #. 徽章未取得時的可讀名稱；name 是徽章名稱
 #. js-lingui-explicit-id
@@ -403,11 +668,17 @@ msgstr "徽章「{name}」尚未取得"
 msgid "quiz.classify.shouldBe"
 msgstr "應該放在：{expectedLabel}"
 
-#. 答對時可自行加入錯題本的小按鈕
+#. 答對時可自行加入錯題本的小按鈕；標籤包住的詞不換行。譯文要短：320 寬的回饋區一行只放得下約 160px 的標籤（英文 15px 粗體約 20 個字元）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/FeedbackPanel.tsx
-msgid "quiz.feedback.addMistake"
-msgstr "我是猜的，加入錯題本"
+msgid "quiz.feedback.addMistakeGuess"
+msgstr "我是<0>猜的</0>，<1>加入</1><2>錯題本</2>"
+
+#. 關卡介紹面板腳部「章節資訊」列的群組可讀名稱
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelSheet.tsx
+msgid "map.sheet.chapterNav"
+msgstr "所屬章節"
 
 #. 關卡代號查無資料時的提示
 #. js-lingui-explicit-id
@@ -421,11 +692,41 @@ msgstr "找不到這個代號，請再確認一次"
 msgid "quiz.classify.putInto"
 msgstr "把「{heldText}」放入{label}"
 
+#. 關卡介紹面板「給老師：關卡代號」展開列裡的說明
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelSheet.tsx
+msgid "map.sheet.teacherCodeHint"
+msgstr "把代號寫在黑板上，學生在闖關地圖按「輸入關卡代號」就會直接到這一關；或按「顯示 QR」做成 QR 放在投影片上給學生掃。大小寫、空白與連字號都可以省略。"
+
+#. 指標表格的名稱欄表頭
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioTable.tsx
+msgid "ratio.col.name"
+msgstr "指標"
+
+#. 科目選擇面板的搜尋框標籤
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.search"
+msgstr "搜尋科目"
+
 #. 三張報表的名稱
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/PickStatement.tsx
 msgid "statement.is"
 msgstr "損益表"
+
+#. 分錄表格的操作欄表頭
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.col.actions"
+msgstr "操作"
+
+#. 取捨題「收藏」切換按鈕（按下時 aria-pressed），放進「我的」頁的收藏清單
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FeedbackPanel.tsx
+msgid "quiz.feedback.favourite"
+msgstr "收藏"
 
 #. 分類題作答後每張卡片的結果
 #. js-lingui-explicit-id
@@ -451,16 +752,77 @@ msgstr "放錯了"
 msgid "term.teacherLabel"
 msgstr "教材用語"
 
-#. 頂部星星按鈕的可讀名稱；stars 是總數
+#. 名詞卡：教材用語與現行用語相同時合併成一列的欄位標題
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TermSheet.tsx
+msgid "term.bothLabels"
+msgstr "教材用語與現行用語"
+
+#. 指標表格的數值欄表頭
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioTable.tsx
+msgid "ratio.col.value"
+msgstr "數值"
+
+#. 開啟科目選擇面板的按鈕
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.addLine"
+msgstr "新增一行"
+
+#. 回饋區「相關名詞」小標旁的星星色標籤：這一題剛收進圖鑑的名詞個數；count 是已格式化的個數
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FeedbackPanel.tsx
+msgid "quiz.feedback.newTerms"
+msgstr "新收進 {count}"
+
+#. 頂部的星星總數（不是連結）；stars 是總數
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/MapHud.tsx
-msgid "map.hud.stars"
-msgstr "星星總數 {stars}，看我的進度"
+msgid "map.hud.starsTotal"
+msgstr "星星總數 {stars}"
+
+#. 計時結束的提示（不送出、不影響星星）
+#. 計時結束的提示（不送出、不影響星星）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TimerDisplay.tsx
+msgid "timer.expired"
+msgstr "時間到了，你可以繼續作答"
+
+#. 計時的暫停按鈕
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TimerDisplay.tsx
+msgid "timer.pause"
+msgstr "暫停"
+
+#. 頁首「更多」選單按鈕的可讀名稱
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ui-labels.ts
+msgid "ui.more"
+msgstr "更多"
+
+#. 主線章節（examScope 為 midterm）的標籤；範圍以老師公告為準的說明另外放在章節頁、清單檢視與延伸區分隔（T32）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/NoteTag.tsx
+msgid "map.chapter.midtermTag"
+msgstr "期中考範圍"
+
+#. 章節頁、清單檢視與延伸區分隔的說明：網站標的期中考範圍只是參考，學生以老師的公告為準（T32）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterBanner.tsx
+msgid "map.examScopeNote"
+msgstr "期中考範圍以老師公告為準。"
 
 #. 章節牌的完成進度；done 已完成、total 總關數
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/ChapterBanner.tsx
 msgid "map.chapter.progress"
+msgstr "本章 {done}/{total} 關"
+
+#. 窄螢幕的章節牌與清單用的短版進度；done 已完成、total 總關數；英文寫成 0/3 levels（不加 in this chapter）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterBanner.tsx
+msgid "map.chapter.countShort"
 msgstr "本章 {done}/{total} 關"
 
 #. js-lingui-explicit-id
@@ -485,11 +847,23 @@ msgstr "正確答案，你選了"
 msgid "term.noIfrs"
 msgstr "沒有對應的 IFRS 名稱"
 
-#. 工具列：切換成清單檢視的按鈕
+#. 科目搜尋沒有結果
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.noMatch"
+msgstr "沒有符合的科目"
+
+#. 工具：從地圖切換成清單檢視的按鈕（清單裡改叫地圖檢視）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/MapListToggle.tsx
 msgid "map.tool.list"
 msgstr "清單檢視"
+
+#. 搜尋框右側清除按鈕的可讀名稱
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ui-labels.ts
+msgid "ui.search.clear"
+msgstr "清除搜尋"
 
 #. 交易影響題的方向按鈕
 #. js-lingui-explicit-id
@@ -515,11 +889,35 @@ msgstr "現行用語"
 msgid "statement.cf"
 msgstr "現金流量表"
 
+#. 名詞卡：用語本身的說明段落標題（教材異寫、舊稱或日式用語的原因）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TermSheet.tsx
+msgid "term.note"
+msgstr "用語說明"
+
+#. 五步驟勾稽的燈號：這一格與核心的數字相同
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FiveStepFill.tsx
+msgid "quiz.fiveStep.match"
+msgstr "相符，差額 0"
+
+#. 回饋區名詞卡 chip 的小標
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FeedbackPanel.tsx
+msgid "quiz.feedback.terms"
+msgstr "相關名詞"
+
 #. 名詞卡：相關名詞段落標題
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/TermSheet.tsx
 msgid "term.related"
 msgstr "相關名詞"
+
+#. 指標計算題展開公式的按鈕；只顯示公式不代入數字
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioNumeric.tsx
+msgid "quiz.ratio.showFormula"
+msgstr "看公式"
 
 #. 回饋區收合其他選項說明的展開鈕
 #. js-lingui-explicit-id
@@ -541,6 +939,12 @@ msgstr "看動畫"
 msgid "quiz.submit"
 msgstr "確認答案"
 
+#. 分錄表格的科目欄表頭
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.col.account"
+msgstr "科目"
+
 #. 節點的可讀名稱開頭；c 章序、l 關序、name 關卡名稱
 #. 節點的可讀名稱開頭；c 章序、l 關序、name 關卡名稱
 #. js-lingui-explicit-id
@@ -548,6 +952,12 @@ msgstr "確認答案"
 #: ../../packages/web-ui/src/components/LevelNode.tsx
 msgid "map.node.head"
 msgstr "第 {c} 章第 {l} 關 {name}"
+
+#. 分錄表格的列標題；index 從 1 起算
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.line"
+msgstr "第 {index} 行"
 
 #. 題目外框頂端的進度文字；index 與 total 是題號與題數
 #. js-lingui-explicit-id
@@ -573,6 +983,12 @@ msgstr "第 {n} 章"
 msgid "quiz.impact.correct"
 msgstr "答對了"
 
+#. 指標計算題的結果；expected 是已格式化的正解
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/RatioNumeric.tsx
+msgid "quiz.ratio.correct"
+msgstr "答對了，正解是 {expected}"
+
 #. 答對時的回饋標題
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/FeedbackPanel.tsx
@@ -591,15 +1007,33 @@ msgstr "簡化"
 msgid "input.parsed"
 msgstr "系統讀到：{value}"
 
+#. 關卡介紹面板裡收起關卡代號的展開列標題（老師在課堂上請學生輸入代號）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelSheet.tsx
+msgid "map.sheet.teacherCode"
+msgstr "給老師：關卡代號"
+
+#. 計時暫停後的繼續按鈕
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/TimerDisplay.tsx
+msgid "timer.resume"
+msgstr "繼續"
+
 #. 名詞或報表列的註記標籤（W07）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/NoteTag.tsx
 msgid "note.oldName"
 msgstr "舊稱"
 
+#. 分錄表格的行號欄表頭
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.col.line"
+msgstr "行"
+
 #. 複製關卡代號的按鈕
 #. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/LevelCode.tsx
+#: ../../packages/web-ui/src/components/LevelCodeText.tsx
 msgid "map.code.copy"
 msgstr "複製"
 
@@ -627,6 +1061,12 @@ msgstr "解說觀點"
 msgid "note.designNote"
 msgstr "設計說明"
 
+#. 地圖頁提示條右側「前往說明頁」圖示按鈕的可讀名稱
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ui-labels.ts
+msgid "ui.details"
+msgstr "詳細"
+
 #. 名詞卡：英文譯名本身還不確定時的標示
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/TermSheet.tsx
@@ -651,17 +1091,29 @@ msgstr "變成 N/A"
 msgid "input.error.parentheses"
 msgstr "負數請用 - 號或 ± 按鈕"
 
+#. 分錄的貸方
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.side.credit"
+msgstr "貸方"
+
+#. 分錄表格的合計列
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.total.credit"
+msgstr "貸方合計"
+
 #. 三張報表的名稱
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/PickStatement.tsx
 msgid "statement.bs"
 msgstr "資產負債表"
 
-#. 章末區：本章尚未完成；chapter 是「第 N 章」
+#. 內容還在載入時給螢幕閱讀器的文字（整頁布幕的載入圈、延後載入的區塊）
 #. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/ChapterEnd.tsx
-msgid "map.end.ahead"
-msgstr "走完這一章，就到{chapter}的終點"
+#: ../../packages/web-ui/src/components/ui-labels.ts
+msgid "ui.loading"
+msgstr "載入中"
 
 #. 關卡介紹還在載入時的標題
 #. js-lingui-explicit-id
@@ -674,6 +1126,12 @@ msgstr "載入關卡中"
 #: ../../packages/web-ui/src/components/TopBar.tsx
 msgid "ui.back"
 msgstr "返回"
+
+#. 分錄題逐行回饋
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.status.ok"
+msgstr "這一行正確"
 
 #. 輸入無法正規化時的提示
 #. js-lingui-explicit-id
@@ -711,17 +1169,41 @@ msgstr "進度統計"
 msgid "quiz.multi.hint.allCorrect"
 msgstr "選出所有正確答案（可複選）。"
 
+#. 科目選擇面板的名稱
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.panel"
+msgstr "選擇科目"
+
+#. 五步驟勾稽的燈號：這一格沒有填
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/FiveStepFill.tsx
+msgid "quiz.fiveStep.empty"
+msgstr "還沒填"
+
 #. 還沒挑戰過這一關時的文字
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/LevelSheet.tsx
 msgid "map.sheet.notPlayed"
 msgstr "還沒挑戰過"
 
+#. 分錄表格的金額欄表頭
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.col.amount"
+msgstr "金額"
+
 #. 迷你報表的金額欄表頭
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/PickLine.tsx
 msgid "report.col.amount"
 msgstr "金額"
+
+#. 分錄題逐行回饋：科目與方向對、金額不對
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/JournalEntryEditor.tsx
+msgid "journal.status.amount"
+msgstr "金額不對"
 
 #. 頂部錯題本按鈕的可讀名稱；due 是待複習題數
 #. js-lingui-explicit-id
@@ -743,43 +1225,47 @@ msgstr "開"
 msgid "map.sheet.start"
 msgstr "開始"
 
+#. 關卡介紹表單裡不計分關卡取代最佳成績的段落標題
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelNode.tsx
+msgid "map.sheet.readState"
+msgstr "閱讀狀態"
+
 #. 開關的狀態文字
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/Switch.tsx
 msgid "switch.off"
 msgstr "關"
 
+#. 輸入關卡代號的欄位標籤（說明句在疊加層上方）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelCodeInput.tsx
+msgid "map.code.fieldLabel"
+msgstr "關卡代號"
+
 #. 關卡介紹表單裡代號的欄位標題
 #. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/LevelCode.tsx
+#: ../../packages/web-ui/src/components/LevelCodeText.tsx
 msgid "map.code.label"
 msgstr "關卡代號"
 
 #. 代號的可讀名稱；code 是 8 碼代號
 #. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/LevelCode.tsx
+#: ../../packages/web-ui/src/components/LevelCodeText.tsx
 msgid "map.code.a11y"
 msgstr "關卡代號 {code}"
 
-#. 輸入關卡代號的欄位標籤
-#. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/LevelCodeInput.tsx
-msgid "map.code.inputLabel"
-msgstr "關卡代號（8 碼，黑板或投影片上）"
-
-#. 對話框關閉按鈕的可讀名稱
-#. 對話框關閉按鈕的可讀名稱
-#. 對話框關閉按鈕的可讀名稱
 #. 對話框關閉按鈕的可讀名稱
 #. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/LevelSheet.tsx
-#: ../../packages/web-ui/src/components/TermSheet.tsx
+#: ../../packages/web-ui/src/components/ui-labels.ts
 msgid "ui.close"
 msgstr "關閉"
 
 #. Toast 關閉按鈕的可讀名稱
+#. Toast 關閉按鈕的可讀名稱
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/Toast.tsx
+#: ../../packages/web-ui/src/components/ui-labels.ts
 msgid "ui.dismiss"
 msgstr "關閉提示"
 
