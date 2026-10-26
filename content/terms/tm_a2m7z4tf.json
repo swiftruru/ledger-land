@@ -2,7 +2,7 @@
   "id": "tm_a2m7z4tf",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "攤銷遞延資產",
@@ -28,16 +28,34 @@
   ],
   "ifrsBasis": "IAS 38.69",
   "note": {
-    "zh-TW": "教材列在營業外支出（T05）；間接法的加回列預設放在其他非現金損失增加（T12）。依 14 的決定處理，可出分錄題，老師可回饋。",
-    "en": "The course lists it under non-operating expenses (T05); the indirect-method add-back goes by default to other non-cash losses (T12). Handled per the decisions in 14; journal entry questions may be set, and the teacher may give feedback."
+    "zh-TW": "課程把它列在營業外支出；間接法的加回放在「其他非現金損失增加」列。",
+    "en": "The course lists it under non-operating expenses; the indirect-method add-back goes on the line for other non-cash losses."
   },
   "definition": {
-    "zh-TW": "把先列為資產的設立費等遞延資產，依年限逐年轉成費用的金額。現行報表沒有這一項。",
-    "en": "The yearly charge that moves capitalised start-up costs and other deferred assets into expense over their amortisation period. Current statements have no such item."
+    "zh-TW": "把先列為資產的設立費等遞延資產，依攤銷年限每年轉成費用的金額。\n\n它和折舊是同一種想法：一次付出的大筆支出，分成幾年認列。課程把這一列放在營業外支出。",
+    "en": "The portion of deferred assets, such as capitalised start-up costs, that is charged to expense each year over the amortisation period.\n\nIt works like depreciation: a large one-off payment is recognised over several years. The course presents this line under non-operating expenses."
+  },
+  "example": {
+    "zh-TW": "位置：損益表營業外支出區。攤銷時設立費的餘額減少、攤銷費用增加，稅前淨利減少；因為沒有現金流出，間接法要在「其他非現金損失增加」列加回。",
+    "en": "Where it sits: the non-operating expenses section of the income statement. Amortisation reduces the start-up costs balance, increases this expense and lowers profit before tax; because no cash moves, the indirect method adds it back on the line for other non-cash losses."
+  },
+  "misconception": {
+    "zh-TW": "以為攤銷的那一年有現金流出。現金早在支付設立費的時候就出去了，攤銷只是把當初的支出分期認列成費用；這也是為什麼間接法要把它加回。",
+    "en": "Assuming cash leaves the company in the year of amortisation. The cash went out when the start-up costs were paid; amortisation merely spreads that earlier payment over several years as an expense, which is why the indirect method adds it back."
+  },
+  "formula": {
+    "zh-TW": "本期攤銷額 ＝ 遞延資產的原始金額 ÷ 攤銷年數（課程採直線法，設立費的攤銷年數依課程設定為 5 年）。",
+    "en": "Amortisation for the period = original amount of the deferred asset ÷ number of years (the course uses the straight-line method, with five years for start-up costs as the course setting)."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 下設立費在發生時就已費用化，沒有可供攤銷的資產，所以不會有這筆費用；改用 IFRS 時之後各期的營業外支出減少，間接法也不再有這筆加回。",
-    "en": "Under IFRS start-up costs are expensed when incurred, so there is no asset to amortise and this expense does not arise; later periods show lower non-operating expenses and the indirect method has no add-back for it."
+    "zh-TW": "IAS 38.69 規定開辦活動的支出在發生時認列為費用，不會先列為資產，所以 IFRS 下沒有這筆攤銷。改用 IFRS 對照時，設立費在支付當期全數列入銷管費用，營業外支出也沒有這一列：支付當期的營業利益與稅前淨利都比課程版面的數字低，之後到攤銷期滿的各年，稅前淨利因為沒有攤銷而比較高；間接法也不再有這筆加回。本課故事視為公司成立的第一年，也就是支付當期，所以 IFRS 對照下看到的稅前淨利比較低。",
+    "en": "Under IAS 38.69 expenditure on start-up activities is recognised as an expense when incurred rather than as an asset, so this amortisation does not arise under IFRS. In the IFRS comparison the whole amount goes into distribution costs and administrative expenses in the period of payment and this line is absent from non-operating expenses: operating profit and profit before tax for that period are lower than in the course layout, while profit before tax in the remaining years of the amortisation period is higher because nothing is amortised; the indirect method has no add-back for it either. The course story is treated as the company’s first year, which is the period of payment, so the IFRS comparison shows lower profit before tax."
   },
-  "accountRef": "amortisation_deferred_assets"
+  "accountRef": "amortisation_deferred_assets",
+  "related": [
+    "tm_d9f3g7cs",
+    "tm_8g81jkmp",
+    "tm_gcgcmf3y",
+    "tm_d4p7x2mv"
+  ]
 }

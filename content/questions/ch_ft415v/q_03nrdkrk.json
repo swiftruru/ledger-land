@@ -1,0 +1,65 @@
+{
+  "id": "q_03nrdkrk",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "objectiveId": "obj_6x06z2",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "activity",
+    "days"
+  ],
+  "termRefs": [
+    "tm_fsv83x2z",
+    "tm_08g66t9j",
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "compute": {
+    "ratioRef": "days_inventory@excel",
+    "scenario": {
+      "opening": {
+        "balances": {
+          "cash": 400000,
+          "inventory": 600000,
+          "share_capital": 1000000
+        }
+      },
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.sell_all_inventory_cash",
+          "params": {
+            "price": 900000
+          }
+        },
+        {
+          "id": "e2",
+          "template": "tpl.purchase_inventory_credit",
+          "params": {
+            "amount": 120000
+          }
+        }
+      ],
+      "policy": "teacher@1",
+      "layout": "teacher@1",
+      "window": "cumulative",
+      "targets": []
+    }
+  },
+  "answerUnit": "days",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "雲嶺茶莊開業時帳上有一批成本 {{money:e1.costOfAllInventory}} 的茶葉存貨。今年把這批存貨全部以 {{money:e1.price}} 現金賣出，年底又賒購了 {{money:e2.amount}} 的茶葉。依課程 Excel 口徑（營業成本除以期末存貨，再換算天數）計算平均銷貨日數，以「天」作答。",
+    "en": "Cloud Ridge Tea House opened with tea inventory that cost {{money:e1.costOfAllInventory}}. This year it sold all of it for {{money:e1.price}} in cash, then bought {{money:e2.amount}} of tea on credit at year end. Using the course Excel basis (cost of sales divided by closing inventory, then converted to days), what is the average days to sell inventory? Answer in days."
+  },
+  "explanation": {
+    "zh-TW": "先算{{term:tm_08g66t9j}}：賣掉的那批存貨成本 {{money:e1.costOfAllInventory}} 是今年的營業成本，期末存貨是年底賒購的 {{money:e2.amount}}。再用 {{number:365|unit=day}} 除以週轉率，得到{{term:tm_fsv83x2z}}。課程 Excel 只用期末存貨，年底那批進貨決定了分母，所以這個天數反映的是年底的庫存水準，不是這批茶葉實際放了多久；年報版用期初與期末的平均存貨，算出來的天數會長很多。",
+    "en": "First find the {{term:tm_08g66t9j}}: the cost of the batch sold, {{money:e1.costOfAllInventory}}, is this year’s cost of sales, and closing inventory is the {{money:e2.amount}} bought on credit at year end. Then divide {{number:365|unit=day}} by the turnover to get the {{term:tm_fsv83x2z}}. The course Excel basis uses closing inventory only, so the year-end purchase sets the denominator and the figure reflects the stock level at year end, not how long this batch of tea actually sat; the annual-report version uses the average of opening and closing inventory and would give far more days."
+  }
+}

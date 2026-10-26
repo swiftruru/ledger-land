@@ -1,0 +1,43 @@
+{
+  "id": "q_xtjcy3px",
+  "rev": 4,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_81e8f8",
+  "difficulty": 2,
+  "tags": [
+    "roe",
+    "dupont"
+  ],
+  "termRefs": [
+    "tm_0k8vegyr",
+    "tm_n4e8t2jy",
+    "tm_y37ymj9w",
+    "tm_1ebm48ca"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "netIncome": 288000,
+    "totalEquity": 1600000
+  },
+  "compute": {
+    "ratioRef": "roe@slides02",
+    "measures": {
+      "is_net_income": "vars.netIncome",
+      "bs_total_equity": "vars.totalEquity"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "晨霧茶行今年的本期淨利是 {{money:vars.netIncome}}，年底的股東權益總額是 {{money:vars.totalEquity}}。用期末權益計算 ROE（簡化版），以百分比作答，取到小數點後兩位。",
+    "en": "Morning Mist Tea earned a profit for the period of {{money:vars.netIncome}} this year, and its total equity at year end was {{money:vars.totalEquity}}. Using closing equity, what is its ROE (simplified version)? Answer as a percentage with two decimal places."
+  },
+  "explanation": {
+    "zh-TW": "ROE（簡化版）＝ 本期淨利 ÷ 股東權益總額 ＝ {{money:vars.netIncome}} ÷ {{money:vars.totalEquity}} ＝ {{percent:expected.answer.value}}。改用純益率、資產週轉率與權益倍數三者相乘，也會得到同一個數字，這就是杜邦拆解。年報口徑改用平均權益，數字會略有不同，指標卡會並列。",
+    "en": "ROE (simplified) = profit for the period ÷ total equity = {{money:vars.netIncome}} ÷ {{money:vars.totalEquity}} = {{percent:expected.answer.value}}. The same figure also equals net profit margin × asset turnover × equity multiplier, which is the DuPont decomposition. The annual-report basis uses average equity and differs slightly; the ratio card shows both."
+  }
+}

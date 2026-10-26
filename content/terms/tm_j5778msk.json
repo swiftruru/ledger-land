@@ -2,19 +2,40 @@
   "id": "tm_j5778msk",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "特別盈餘公積", "en": "Special reserve" },
+  "label": {
+    "zh-TW": "特別盈餘公積",
+    "en": "Special reserve"
+  },
   "teacherLabel": "特別盈餘公積",
   "currentTwLabel": null,
   "ifrsEnglish": "Special reserve",
-  "aliases": { "zh-TW": [], "en": [] },
-  "flags": ["unused"],
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [
+    "unused"
+  ],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "依章程或主管機關規定另外提撥的公積，用途比法定盈餘公積更特定。本課未用。",
-    "en": "A reserve set aside under the articles of association or a regulator's rules, for a more specific purpose than the legal reserve. Not used in this course."
+    "zh-TW": "依法令、公司章程或股東會決議，為特定目的從盈餘中另外提撥、暫時不能分配的部分。\n\n它和法定盈餘公積一樣都是「鎖起來的盈餘」，差別是法定公積由公司法強制、比例固定，特別公積依需要另外提列。",
+    "en": "Profit set aside for a specific purpose under a regulation, the articles of association or a shareholder resolution, and temporarily not available for distribution.\n\nLike the legal reserve it is locked-up profit; the difference is that the legal reserve is compulsory and fixed by the Company Act, while a special reserve is appropriated as needed."
   },
-  "accountRef": "special_reserve"
+  "example": {
+    "zh-TW": "位置：資產負債表保留盈餘區，法定盈餘公積的下一列。提撥時未分配盈餘減少、特別盈餘公積增加，股東權益總額與現金都不變。本課故事沒有提撥，所以恆為 0。",
+    "en": "Where it sits: the retained earnings group on the balance sheet, below the legal reserve. Appropriation reduces unappropriated retained earnings and increases this line; total equity and cash are unchanged. The course story makes no appropriation, so it stays at zero."
+  },
+  "misconception": {
+    "zh-TW": "以為提列特別盈餘公積是一筆費用、會降低本期淨利。提列發生在淨利算出來之後，是盈餘的分配方式，不經過損益表。",
+    "en": "Treating the appropriation as an expense that lowers profit for the period. It happens after profit has been determined, as a way of allocating that profit, and never passes through the income statement."
+  },
+  "accountRef": "special_reserve",
+  "related": [
+    "tm_3bd0kmwn",
+    "tm_4c6v99nn",
+    "tm_zz4bj51z"
+  ]
 }

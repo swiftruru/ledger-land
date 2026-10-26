@@ -1,0 +1,43 @@
+{
+  "id": "q_a4b9gjsh",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "objectiveId": "obj_6r5ph7",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "leverage"
+  ],
+  "termRefs": [
+    "tm_gkmknxh4",
+    "tm_z3vbt800",
+    "tm_k6t2e9wr",
+    "tm_z971merj"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "oi": 800000,
+    "interest": 200000
+  },
+  "compute": {
+    "ratioRef": "dfl@excel",
+    "measures": {
+      "is_operating_income": "vars.oi",
+      "is_interest_expense": "vars.interest"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "星橋物流今年營業利益 {{money:vars.oi}}，利息費用 {{money:vars.interest}}。依課程 Excel 口徑計算財務槓桿度，以「倍」作答。",
+    "en": "Starbridge Logistics had operating profit of {{money:vars.oi}} and interest expense (finance costs) of {{money:vars.interest}} this year. Using the course Excel basis, what is the degree of financial leverage? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_gkmknxh4}}＝{{term:tm_z3vbt800}} ÷（營業利益 － {{term:tm_k6t2e9wr}}）。利息是固定的，所以營業利益變動 {{percent:0.01|digits=0}} 時，{{term:tm_z971merj}}會變動（槓桿度 × {{percent:0.01|digits=0}}）；借得越多、利息越重，倍數越高。",
+    "en": "{{term:tm_gkmknxh4}} = {{term:tm_z3vbt800}} ÷ (operating profit − {{term:tm_k6t2e9wr}}). Interest is fixed, so when operating profit moves by {{percent:0.01|digits=0}}, {{term:tm_z971merj}} moves by the degree of leverage times {{percent:0.01|digits=0}}; the more is borrowed and the heavier the interest, the higher the multiple."
+  }
+}

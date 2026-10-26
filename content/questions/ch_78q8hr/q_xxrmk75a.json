@@ -1,0 +1,37 @@
+{
+  "id": "q_xxrmk75a",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_bt5xpr",
+  "difficulty": 1,
+  "tags": [
+    "balance_sheet",
+    "equation"
+  ],
+  "termRefs": [
+    "tm_cfghjxzq",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "只要資產負債表左右兩邊的合計相等，表上的每一個數字就一定都是對的。",
+    "en": "As long as the two sides of a balance sheet add up to the same total, every figure on the sheet must be right."
+  },
+  "correct": false,
+  "misconceptionId": "mc_8dty",
+  "feedbackTrue": {
+    "zh-TW": "左右相等確實是第一道檢查，這點沒錯。不過它只能抓到「漏記一邊」的錯誤：如果把一台設備記成存貨，兩邊的合計還是一樣高，表卻已經錯了。",
+    "en": "Equal totals are indeed the first check, that much is right. But it only catches errors that miss one side: if a machine is recorded as inventory, both totals stay the same, yet the sheet is already wrong."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。平衡只表示每一筆交易都記了兩邊；科目放錯、金額記錯但兩邊一起錯，表仍然會平衡。",
+    "en": "That is right. Balancing only shows that every transaction was recorded on both sides; a wrong account, or a wrong amount entered on both sides, still leaves the sheet balanced."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_cfghjxzq}}是必要條件，不是充分條件：不平衡一定有錯，平衡卻不保證全對。讀表的人還要看每個科目放的位置和金額合不合理。",
+    "en": "The {{term:tm_cfghjxzq}} is a necessary condition, not a sufficient one: an unbalanced sheet is certainly wrong, but a balanced one is not guaranteed to be right. A reader still has to check whether each account sits in the right place with a sensible amount."
+  }
+}

@@ -2,7 +2,7 @@
   "id": "tm_z5kjkvhc",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "其他負債增加(+)",
@@ -26,11 +26,25 @@
     "T15"
   ],
   "note": {
-    "zh-TW": "保證金依課程模板列流動負債，歸入這一列（設計說明見 T15）；減少時以負數填同一列（T12）。",
-    "en": "Deposits received follow the course template as a current liability and belong on this line (see the design note T15); a decrease is entered as a negative on the same line (T12)."
+    "zh-TW": "保證金依課程模板列流動負債，歸入這一列；減少時以負數填同一列。",
+    "en": "Deposits received follow the course template as a current liability and belong on this line; a decrease is entered as a negative on the same line."
   },
   "definition": {
-    "zh-TW": "保證金、預收收入等營業性的其他負債增加時的加回列。應付所得稅、應付利息、借款與應付股利不能放在這裡，否則會和其他列重複計算。",
-    "en": "The add-back line for increases in other operating liabilities such as deposits received and contract liabilities. Current tax, interest payable, borrowings and dividends payable must not go here, or they would be double counted."
-  }
+    "zh-TW": "間接法裡的調整列：應付帳款以外的其他營業負債本期增加了多少，例如保證金或其他應付款。\n\n負債增加有兩種來源：費用已經認列但還沒付現（例如其他應付款裡的薪資、水電費），或已經先收到現金，但收入還沒認列（預收收入）或錢日後要退還（保證金）。兩種情形下公司手上的現金都比稅前淨利顯示的多，所以把增加額加回稅前淨利。",
+    "en": "An adjustment line in the indirect method: how much other operating liabilities apart from trade payables have grown during the period, such as deposits received or other payables.\n\nAn increase arises in one of two ways: an expense has been recognised but not yet paid (other payables such as wages or utilities), or cash has been received before the revenue is recognised (contract liabilities) or with an obligation to return it later (deposits received). Either way the company holds more cash than profit before tax suggests, so the increase is added back."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動的營運資金變動區，應付帳款增加(+) 的下一列。應付所得稅、應付利息與借款的變動不放這裡：前兩者在支付所得稅(-) 與支付利息(-) 另外處理，借款屬於籌資活動。",
+    "en": "Where it sits: the working capital section of operating activities in the statement of cash flows, right after increase in trade payables (+). Movements in current tax liabilities, interest payable and borrowings are excluded: the first two are handled on the income taxes paid and interest paid lines, and borrowings belong to financing."
+  },
+  "misconception": {
+    "zh-TW": "把短期借款的增加也填進來。借款是籌資活動，有自己的列；放在營業活動會讓本業的現金流量被灌水。",
+    "en": "Including an increase in short-term borrowings here. Borrowing is a financing activity with its own line; putting it in operating activities inflates the cash flow of the core business."
+  },
+  "related": [
+    "tm_zx169kcm",
+    "tm_bgtgsvhr",
+    "tm_dc0p0nrv",
+    "tm_mcjk5sza"
+  ]
 }

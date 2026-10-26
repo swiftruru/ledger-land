@@ -1,0 +1,216 @@
+{
+  "chapterId": "ch_a0s9tk",
+  "items": [
+    {
+      "id": "obj_trr8qh",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_a0s9tk",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能說明借方與貸方只是記帳的左右兩邊，並用會計恆等式說明為什麼每筆分錄的借貸金額相等",
+        "en": "Explain that debit and credit are simply the left and right sides of the record, and use the accounting equation to explain why every entry’s debits equal its credits"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_brw1",
+          "text": {
+            "zh-TW": "以為「借方」代表借錢、「貸方」代表貸款",
+            "en": "Thinking ‘debit’ means borrowing and ‘credit’ means lending"
+          }
+        },
+        {
+          "id": "mc_jnc2",
+          "text": {
+            "zh-TW": "以為借方一律是增加、貸方一律是減少",
+            "en": "Thinking a debit always means an increase and a credit always a decrease"
+          }
+        },
+        {
+          "id": "mc_1dn3",
+          "text": {
+            "zh-TW": "以為借貸相等是因為每筆交易一定一個科目增加、另一個減少",
+            "en": "Thinking debits equal credits because every transaction must increase one account and decrease another"
+          }
+        },
+        {
+          "id": "mc_exp4",
+          "text": {
+            "zh-TW": "以為 T 字帳左邊是收入、右邊是支出",
+            "en": "Thinking the left of a T-account is income and the right is spending"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "classify"
+      ],
+      "termRefs": [
+        "tm_50v66dt7",
+        "tm_kfnzbf8s",
+        "tm_cfghjxzq"
+      ]
+    },
+    {
+      "id": "obj_cskmkg",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_a0s9tk",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能判斷常見交易（出資、進貨、賒銷、收款、付費用、借款）各要借記、貸記哪些科目，並寫出分錄",
+        "en": "Decide which accounts to debit and credit for common transactions (capital contribution, purchases, credit sales, collections, paying expenses, borrowing) and write the entry"
+      },
+      "skill": "classify",
+      "misconceptions": [
+        {
+          "id": "mc_ccr5",
+          "text": {
+            "zh-TW": "收到現金時把現金記在貸方",
+            "en": "Crediting cash when cash is received"
+          }
+        },
+        {
+          "id": "mc_rv26",
+          "text": {
+            "zh-TW": "收回帳款時再貸記一次營業收入",
+            "en": "Crediting revenue a second time when a receivable is collected"
+          }
+        },
+        {
+          "id": "mc_db17",
+          "text": {
+            "zh-TW": "借款時借記負債科目",
+            "en": "Debiting the liability account when borrowing"
+          }
+        },
+        {
+          "id": "mc_cgs8",
+          "text": {
+            "zh-TW": "進貨時就借記營業成本",
+            "en": "Debiting cost of sales at the time of purchase"
+          }
+        }
+      ],
+      "plannedQuestions": 8,
+      "suggestedTypes": [
+        "journal_entry",
+        "classify"
+      ],
+      "termRefs": [
+        "tm_b9e9vjct",
+        "tm_n7v3k8pq",
+        "tm_r7x2c9fa",
+        "tm_a3p9y6kc",
+        "tm_s5b8r3hd",
+        "tm_5e3py55a"
+      ],
+      "pendingRefs": [
+        "T04"
+      ]
+    },
+    {
+      "id": "obj_dqxgq8",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_a0s9tk",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能把分錄過帳到 T 字帳並算出餘額，再說出這個餘額出現在哪一張報表的哪一列",
+        "en": "Post entries to T-accounts, work out the balance, and say on which statement and line that balance appears"
+      },
+      "skill": "compute",
+      "misconceptions": [
+        {
+          "id": "mc_s9m9",
+          "text": {
+            "zh-TW": "把 T 字帳兩邊的合計相加當作餘額",
+            "en": "Adding both sides of a T-account together as the balance"
+          }
+        },
+        {
+          "id": "mc_sd1a",
+          "text": {
+            "zh-TW": "以為餘額一定落在借方",
+            "en": "Thinking the balance always ends up on the debit side"
+          }
+        },
+        {
+          "id": "mc_rbs2",
+          "text": {
+            "zh-TW": "以為收入科目的餘額會直接列在資產負債表上",
+            "en": "Thinking a revenue account’s balance appears directly on the balance sheet"
+          }
+        }
+      ],
+      "plannedQuestions": 3,
+      "suggestedTypes": [
+        "single_choice",
+        "classify"
+      ],
+      "termRefs": [
+        "tm_kfnzbf8s",
+        "tm_p5yjwmnm",
+        "tm_tkj8x3a7",
+        "tm_sf72dfsv"
+      ]
+    },
+    {
+      "id": "obj_2489dv",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_a0s9tk",
+      "order": 4,
+      "statement": {
+        "zh-TW": "能說明網站分錄中的「借 存貨」「借 營業成本／貸 存貨」和教材版面「本期進貨」「期末存貨」兩列的對應，並說明盤盈的分錄",
+        "en": "Explain how the site’s entries ‘debit inventory’ and ‘debit cost of sales / credit inventory’ map to the course layout’s ‘purchases’ and ‘closing inventory’ lines, and explain the entry for a stocktake surplus"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_pc13",
+          "text": {
+            "zh-TW": "以為「本期進貨」「期末存貨」是分錄裡的科目",
+            "en": "Thinking ‘purchases’ and ‘closing inventory’ are accounts used in journal entries"
+          }
+        },
+        {
+          "id": "mc_cgp4",
+          "text": {
+            "zh-TW": "以為進貨時就借記營業成本，本期進貨就是營業成本",
+            "en": "Thinking cost of sales is debited at purchase, so purchases equal cost of sales"
+          }
+        },
+        {
+          "id": "mc_0vg5",
+          "text": {
+            "zh-TW": "以為盤盈要記成營業外收入",
+            "en": "Thinking a stocktake surplus is recorded as non-operating income"
+          }
+        }
+      ],
+      "plannedQuestions": 3,
+      "suggestedTypes": [
+        "single_choice",
+        "journal_entry"
+      ],
+      "termRefs": [
+        "tm_2967ackr",
+        "tm_p7h3c5xq",
+        "tm_q4k9v2nd",
+        "tm_g5c2m8tw",
+        "tm_n7v3k8pq"
+      ],
+      "pendingRefs": [
+        "T06"
+      ]
+    }
+  ]
+}

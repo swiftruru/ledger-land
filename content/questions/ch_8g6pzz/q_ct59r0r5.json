@@ -1,0 +1,37 @@
+{
+  "id": "q_ct59r0r5",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "true_false",
+  "objectiveId": "obj_6f1csw",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "cash_flow"
+  ],
+  "termRefs": [
+    "tm_35qb8and",
+    "tm_n7v3k8pq"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "計算現金流量允當比率時，如果今年的存貨比去年少，分母要把「存貨減少額」當成負數加進去，讓分母變小。",
+    "en": "When calculating the cash flow adequacy ratio, if inventories fell this year the decrease should be added to the denominator as a negative amount, making the denominator smaller."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "你注意到存貨的變動會影響分母，方向是對的。不過只有存貨增加才需要多投入現金；存貨減少時這一項以零計算，不拿它來縮小分母。",
+    "en": "You noticed that the change in inventories affects the denominator, which is right. But only an increase needs extra cash; when inventories fall this item counts as zero and is not used to shrink the denominator."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。分母只計入「存貨增加額」；存貨減少表示不需要為存貨多投入現金，這一項當作零。",
+    "en": "Correct. The denominator only includes the increase in inventories; a decrease means no extra cash was tied up in inventory, so the item counts as zero."
+  },
+  "misconceptionId": "mc_mkp6",
+  "explanation": {
+    "zh-TW": "{{term:tm_35qb8and}}的分母是「需要現金的三件事」，{{term:tm_n7v3k8pq}}減少不是一件需要現金的事，所以只取增加額、減少時以零計。課程 Excel 的公式在存貨減少時會把分母縮小，網站計算課程 Excel 口徑時，存貨減少一律以零計。",
+    "en": "The denominator of the {{term:tm_35qb8and}} lists three things that need cash. A fall in {{term:tm_n7v3k8pq}} is not a cash need, so only an increase is taken and a decrease counts as zero. The course Excel formula would shrink the denominator when inventories fall; on the course Excel basis the site counts a decrease as zero."
+  }
+}

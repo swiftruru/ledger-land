@@ -1,0 +1,91 @@
+{
+  "id": "q_1dm4k8kq",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "ratio_interpret",
+  "ratioRef": "current_ratio@excel",
+  "objectiveId": "obj_mj1tas",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "solvency",
+    "cross_check"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_n8ysnw1m",
+    "tm_08g66t9j",
+    "tm_n7v3k8pq"
+  ],
+  "scored": true,
+  "vars": {
+    "last": 1.2,
+    "now": 2,
+    "quick": 0.8,
+    "ca": 2000000,
+    "cl": 1000000,
+    "cash": 500000,
+    "ar": 300000,
+    "loans": 0
+  },
+  "prompt": {
+    "zh-TW": "木岸家具年底流動資產 {{money:vars.ca}}（其中現金 {{money:vars.cash}}、應收帳款 {{money:vars.ar}}、短期放款 {{money:vars.loans}}，其餘是存貨），流動負債 {{money:vars.cl}}。流動比率從去年的 {{number:vars.last|digits=2,unit=times}} 升到今年的 {{number:vars.now|digits=2,unit=times}}，速動比率兩年都是 {{number:vars.quick|digits=2,unit=times}}（見上表）。哪一個判讀最合理？",
+    "en": "Woodbank Furniture has current assets of {{money:vars.ca}} at year end (cash {{money:vars.cash}}, trade receivables {{money:vars.ar}}, short-term loans receivable {{money:vars.loans}}, the rest inventory) and current liabilities of {{money:vars.cl}}. The current ratio rose from {{number:vars.last|digits=2,unit=times}} last year to {{number:vars.now|digits=2,unit=times}} this year, while the quick ratio was {{number:vars.quick|digits=2,unit=times}} in both years (see the table above). Which reading is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_mfgw",
+      "text": {
+        "zh-TW": "增加的流動資產幾乎都是存貨，接著該看存貨週轉率",
+        "en": "Almost all of the extra current assets are inventory; check inventory turnover next"
+      },
+      "feedback": {
+        "zh-TW": "答對了。兩個指標的差別就是存貨；速動比率沒動，表示真正能快速變現的部分沒有改善。",
+        "en": "That’s right. The difference between the two ratios is inventory; an unchanged quick ratio means the part that can quickly become cash has not improved."
+      }
+    },
+    {
+      "id": "o_njax",
+      "text": {
+        "zh-TW": "流動比率上升，可以放心再借一筆短期借款",
+        "en": "The current ratio rose, so it is safe to take out another short-term loan"
+      },
+      "feedback": {
+        "zh-TW": "流動比率上升確實是往好的方向，這點沒錯。不過速動比率沒變，表示多出來的流動資產是存貨；存貨賣不掉就還不了錢，這時再加借短期借款，壓力只會更大。",
+        "en": "A higher current ratio is indeed the right direction. But the unchanged quick ratio shows the extra current assets are inventory; unsold inventory cannot repay debts, so taking on more short-term borrowing now would only add to the pressure."
+      },
+      "misconceptionId": "mc_vz9j"
+    },
+    {
+      "id": "o_hsc1",
+      "text": {
+        "zh-TW": "速動比率沒變，表示流動比率的數字算錯了",
+        "en": "The quick ratio did not change, so the current ratio must have been calculated wrongly"
+      },
+      "feedback": {
+        "zh-TW": "兩個指標的分子不同，一個含存貨、一個不含，走勢不同是正常的；這個差異正好是交叉檢查的線索，不是計算錯誤。",
+        "en": "The two ratios have different numerators, one with inventory and one without, so diverging trends are normal; the gap is exactly the cross-checking clue, not a calculation error."
+      }
+    }
+  ],
+  "correctOptionId": "o_mfgw",
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}與{{term:tm_n8ysnw1m}}只差一個{{term:tm_n7v3k8pq}}。{{option:o_mfgw}}用兩者的差異找到原因；{{option:o_njax}}只看一個指標，{{option:o_hsc1}}把線索當成錯誤。",
+    "en": "The {{term:tm_c8r1t4zm}} and the {{term:tm_n8ysnw1m}} differ only by {{term:tm_n7v3k8pq}}. {{option:o_mfgw}} uses that difference to find the cause; {{option:o_njax}} looks at one ratio alone, and {{option:o_hsc1}} mistakes the clue for an error."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "current_ratio@excel",
+      "quick_ratio@excel"
+    ],
+    "measures": {
+      "bs_current_assets": "vars.ca",
+      "bs_current_liabilities": "vars.cl",
+      "bs_cash": "vars.cash",
+      "bs_accounts_receivable": "vars.ar",
+      "bs_short_term_loans_receivable": "vars.loans"
+    }
+  }
+}

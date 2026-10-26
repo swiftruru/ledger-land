@@ -1,6 +1,6 @@
 {
   "id": "tm_67e7f0mn",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -24,8 +24,8 @@
   "pendingRefs": [],
   "ifrsBasis": "IAS 7",
   "definition": {
-    "zh-TW": "把一段期間真正收到與付出的現金，按三類活動分開列：營業活動是做生意本身的現金進出，投資活動是買賣設備等長期資產的現金，籌資活動是向銀行與股東拿錢或還錢。三類相加就是這段期間現金的增減，加上期初現金便得到期末現金。它不理會賒帳，只認真的錢。",
-    "en": "Sets out the cash actually received and paid during a period under three headings: operating activities are the cash movements of the business itself, investing activities are the cash spent on or recovered from equipment and other long-term assets, and financing activities are money raised from or returned to banks and shareholders. The three together give the period's change in cash; add opening cash and you reach closing cash. Credit is ignored; only real money counts."
+    "zh-TW": "把一段期間真正收到與付出的現金，按三類活動分開列：營業活動是做生意本身的現金進出，投資活動是買賣設備等長期資產的現金，籌資活動是向股東與債權人（例如銀行）拿錢或還錢。三類相加就是這段期間現金的增減，加上期初現金便得到期末現金。它只記實際收付的現金，賒帳在收付現金之前不算現金流入或流出。",
+    "en": "Sets out the cash actually received and paid during a period under three headings: operating activities are the cash movements of the business itself, investing activities are the cash spent on or recovered from equipment and other long-term assets, and financing activities are money raised from or returned to shareholders and lenders such as banks. The three together give the period’s change in cash; add opening cash and you reach closing cash. Only cash that actually changes hands counts; a credit sale or purchase is not a cash inflow or outflow until it is settled."
   },
   "related": [
     "tm_tkj8x3a7",

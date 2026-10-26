@@ -1,0 +1,81 @@
+{
+  "id": "q_md1kqgtm",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_8ypaqg",
+  "difficulty": 1,
+  "tags": [
+    "cash_flow_activity",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_p2a7c5vk",
+    "tm_9hrfpqem",
+    "tm_f9a4c6md"
+  ],
+  "scored": true,
+  "type": "classify",
+  "prompt": {
+    "zh-TW": "阿豪的「藍鯨水族」這個月有下面幾筆現金進出。每一筆屬於營業、投資還是籌資活動？把卡片放進正確的格子。",
+    "en": "Hao’s shop Blue Whale Aquatics had the following cash movements this month. Is each one an operating, investing or financing activity? Put each card in the right box."
+  },
+  "dimension": "cf_activity",
+  "items": [
+    {
+      "id": "it_3bg5",
+      "text": {
+        "zh-TW": "收到客人買魚缸付的現金",
+        "en": "Cash received from a customer buying a fish tank"
+      }
+    },
+    {
+      "id": "it_vp6e",
+      "text": {
+        "zh-TW": "用現金買一台會用好幾年的大型冷水機",
+        "en": "Cash paid for a large chiller that will be used for years"
+      }
+    },
+    {
+      "id": "it_5xk0",
+      "text": {
+        "zh-TW": "向銀行借入一筆一年內要還的錢",
+        "en": "Cash borrowed from the bank, repayable within a year"
+      }
+    },
+    {
+      "id": "it_a7gg",
+      "text": {
+        "zh-TW": "付給飼料供應商的貨款",
+        "en": "Cash paid to the fish-food supplier"
+      }
+    },
+    {
+      "id": "it_kkmz",
+      "text": {
+        "zh-TW": "股東再投入一筆資金",
+        "en": "Further capital put in by the shareholders"
+      }
+    },
+    {
+      "id": "it_0w1d",
+      "text": {
+        "zh-TW": "付這個月店裡用掉的事務用品費",
+        "en": "Cash paid for the office supplies used in the shop this month"
+      }
+    }
+  ],
+  "correctCategories": {
+    "it_3bg5": "operating",
+    "it_vp6e": "investing",
+    "it_5xk0": "financing",
+    "it_a7gg": "operating",
+    "it_kkmz": "financing",
+    "it_0w1d": "operating"
+  },
+  "explanation": {
+    "zh-TW": "先問這筆錢和「做生意本身」有沒有關：收貨款、付貨款、付日常開銷都是{{term:tm_p2a7c5vk}}。買會用好幾年的設備是{{term:tm_9hrfpqem}}。向銀行借款、股東出資這類向資金提供者取得資金的收付是{{term:tm_f9a4c6md}}：借款與股東出資都讓現金進來，但都不是賺來的。",
+    "en": "First ask whether the cash is about running the business itself: collecting from customers, paying suppliers and paying day-to-day costs are all {{term:tm_p2a7c5vk}}. Buying equipment that will serve for years is {{term:tm_9hrfpqem}}. Raising funds from providers of funds, such as borrowing from the bank or taking in capital from shareholders, is {{term:tm_f9a4c6md}}: the loan and the new capital both bring cash in, but neither was earned."
+  }
+}

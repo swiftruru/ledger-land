@@ -2,7 +2,7 @@
   "id": "tm_24scevxv",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "事務用品費",
@@ -23,8 +23,22 @@
     "en": "In practice a large stock of unused supplies at period end can be recorded as an asset; the course expenses them directly because the amounts are small."
   },
   "definition": {
-    "zh-TW": "買紙張、文具等事務用品的支出。本課在買進時就全部列為費用。",
-    "en": "Spending on paper, stationery and similar office supplies. The course expenses them when they are bought."
+    "zh-TW": "購買紙張、文具、碳粉等日常辦公用品的支出。\n\n本課在買進的當下就把整筆金額列為費用，放在銷管費用裡；它不會變成資產負債表上的資產。",
+    "en": "Spending on paper, stationery, toner and similar everyday office supplies.\n\nIn this course the whole amount is treated as an expense at the time of purchase and sits under distribution costs and administrative expenses; it never appears as an asset on the balance sheet."
   },
-  "accountRef": "office_supplies_expense"
+  "example": {
+    "zh-TW": "位置：損益表的銷管費用區。付現買用品時，現金減少、事務用品費增加，營業利益跟著減少；現金流量表上屬於營業活動的流出。",
+    "en": "Where it sits: in the distribution costs and administrative expenses section of the income statement. Paying cash for supplies reduces cash, increases this expense and lowers operating profit; in the statement of cash flows it is an operating outflow."
+  },
+  "misconception": {
+    "zh-TW": "把買用品當成「買資產」而放進資產負債表。用品很快就會用掉，金額又不重大，所以直接列費用；只有期末剩下大量沒用完的用品時，實務上才會另外列為用品盤存。",
+    "en": "Treating the purchase as buying an asset and putting it on the balance sheet. Supplies are used up quickly and the amounts are small, so they are expensed straight away; only a large unused stock at period end would be recorded as supplies on hand in practice."
+  },
+  "accountRef": "office_supplies_expense",
+  "related": [
+    "tm_rp85wtm7",
+    "tm_kyjfrraq",
+    "tm_c4sh8k2p",
+    "tm_d90d8jeh"
+  ]
 }

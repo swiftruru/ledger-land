@@ -1,0 +1,22 @@
+{
+  "id": "lv_qrdbwqe4",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "order": 3,
+  "title": {
+    "zh-TW": "應收、存貨與應付",
+    "en": "Receivables, inventories and payables"
+  },
+  "objectiveIds": [
+    "obj_3ddr90"
+  ],
+  "questionIds": [
+    "q_atc9cwvj",
+    "q_qd0r8s50",
+    "q_n86ta2xk",
+    "q_e9m9609t",
+    "q_t78wmhk9"
+  ]
+}

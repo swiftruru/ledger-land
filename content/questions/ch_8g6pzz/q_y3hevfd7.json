@@ -1,0 +1,42 @@
+{
+  "id": "q_y3hevfd7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "objectiveId": "obj_6f1csw",
+  "difficulty": 1,
+  "tags": [
+    "ratio",
+    "cash_flow"
+  ],
+  "termRefs": [
+    "tm_555a7d2s",
+    "tm_e61ht6yh",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ocf": 540000,
+    "cl": 1200000
+  },
+  "compute": {
+    "ratioRef": "cash_flow_ratio@excel",
+    "measures": {
+      "cf_operating_total": "vars.ocf",
+      "bs_current_liabilities": "vars.cl"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "星橋物流今年現金流量表的「營業活動的現金流量總計」是 {{money:vars.ocf}}，年底流動負債 {{money:vars.cl}}。依課程 Excel 口徑計算現金流量比率，以百分比作答。",
+    "en": "Starbridge Logistics’ statement of cash flows shows net cash from operating activities of {{money:vars.ocf}} this year, and current liabilities at year end are {{money:vars.cl}}. Using the course Excel basis, what is the cash flow ratio? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_555a7d2s}}＝{{term:tm_e61ht6yh}} ÷ {{term:tm_c2y9b5ex}}。分子是本業真的賺進來的現金，不是本期淨利；比率回答「本業賺進的現金，能還掉多少一年內要還的債」。",
+    "en": "{{term:tm_555a7d2s}} = {{term:tm_e61ht6yh}} ÷ {{term:tm_c2y9b5ex}}. The numerator is the cash the core business actually brought in, not profit for the period; the ratio answers ‘how much of the debt due within a year could be repaid from operating cash’."
+  }
+}

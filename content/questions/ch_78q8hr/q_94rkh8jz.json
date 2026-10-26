@@ -1,0 +1,39 @@
+{
+  "id": "q_94rkh8jz",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_8e479x",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "current_noncurrent",
+    "equipment"
+  ],
+  "termRefs": [
+    "tm_93mhtb4s",
+    "tm_k52yxb68",
+    "tm_gt8g4afe"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "海風衝浪店的衝浪板展示架是店裡的設備，只要想賣隨時能賣掉換現金，所以它是流動資產。",
+    "en": "Seabreeze Surf’s board display racks are shop equipment; they could be sold for cash at any time, so they are current assets."
+  },
+  "correct": false,
+  "misconceptionId": "mc_sd88",
+  "feedbackTrue": {
+    "zh-TW": "展示架確實可以賣，這點沒錯。不過分類看的是店打算怎麼用它：展示架是要長期使用的工具，不是準備在一年內賣掉變現的東西，所以放非流動資產。",
+    "en": "The racks could indeed be sold, that much is right. But the classification follows how the shop intends to use them: the racks are tools for long-term use, not something held to be sold for cash within a year, so they are non-current assets."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。設備是拿來用好幾年的，不是拿來賣的，所以是非流動資產；準備賣的衝浪板才是存貨，屬於流動資產。",
+    "en": "That is right. Equipment is held to be used for years, not to be sold, so it is a non-current asset; the boards held for sale are inventories, which are current assets."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_k52yxb68}}是預期一年內會變成現金或用掉的資產，{{term:tm_93mhtb4s}}是要長期使用的資產。「能不能賣」不是判斷標準，「打算怎麼用、多久會變現」才是。",
+    "en": "{{term:tm_k52yxb68}} are assets expected to turn into cash or be used up within a year; {{term:tm_93mhtb4s}} are held for long-term use. Whether something could be sold is not the test; how it is meant to be used and how soon it turns into cash is."
+  }
+}

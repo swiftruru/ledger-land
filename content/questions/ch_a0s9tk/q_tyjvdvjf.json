@@ -1,0 +1,57 @@
+{
+  "id": "q_tyjvdvjf",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "classify",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_dqxgq8",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "elements",
+    "statements",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_p5yjwmnm"
+  ],
+  "scored": true,
+  "dimension": "element",
+  "items": [
+    {
+      "id": "it_a1b2",
+      "account": "depreciation_expense"
+    },
+    {
+      "id": "it_c3d4",
+      "account": "income_tax_expense"
+    },
+    {
+      "id": "it_e5f6",
+      "account": "accounts_payable"
+    },
+    {
+      "id": "it_g7h8",
+      "account": "inventory"
+    },
+    {
+      "id": "it_j9k1",
+      "account": "share_capital"
+    },
+    {
+      "id": "it_m2n3",
+      "account": "revenue"
+    }
+  ],
+  "prompt": {
+    "zh-TW": "初陽貿易的分錄都過完帳了，每個 T 字帳都有餘額。先把這些科目放進正確的要素，再想一想：哪些要素的餘額會到損益表，哪些會到資產負債表？",
+    "en": "All of First Light Trading’s entries have been posted and every T-account has a balance. Sort these accounts into the right element, then think: which elements’ balances go to the income statement, and which to the balance sheet?"
+  },
+  "explanation": {
+    "zh-TW": "折舊費用與所得稅費用屬於費損，營業收入屬於收益，這三個科目的餘額進損益表，結算為本期淨利。應付帳款是負債，存貨是資產，股本是股東權益，餘額列在資產負債表。本期淨利再經由未分配盈餘進入資產負債表，兩張表就是這樣接起來的。",
+    "en": "Depreciation expense and income tax expense are expenses and revenue belongs to income; these three balances go to the income statement and combine into profit for the period. Trade payables are a liability, inventory an asset and share capital equity; their balances sit on the balance sheet. Profit for the period then flows into the balance sheet through unappropriated retained earnings, which is how the two statements connect."
+  }
+}

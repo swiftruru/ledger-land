@@ -1,6 +1,6 @@
 {
   "id": "q_xh96tsnn",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -44,7 +44,7 @@
       },
       "feedback": {
         "zh-TW": "你算出的差額是股東權益，這點沒錯。不過股東權益包含小晴出的股本，不全是這個月賺的；賺了多少要看損益表。",
-        "en": "The difference you worked out is equity, which is right. But equity includes the capital Ching put in, not just this month's earnings; how much was earned is a question for the income statement."
+        "en": "The difference you worked out is equity, which is right. But equity includes the capital Ching put in, not just this month’s earnings; how much was earned is a question for the income statement."
       },
       "misconceptionId": "mc_mekj"
     },
@@ -64,6 +64,6 @@
   "correctOptionId": "o_gspv",
   "explanation": {
     "zh-TW": "會計恆等式可以移項：股東權益＝資產－負債，所以{{option:o_gspv}}一定成立。{{option:o_0848}}把股東權益和這個月的利益混在一起；{{option:o_erkz}}把資產總計和現金混在一起。",
-    "en": "The accounting equation can be rearranged: equity = assets less liabilities, so {{option:o_gspv}} must be true. {{option:o_0848}} confuses equity with this month's profit, and {{option:o_erkz}} confuses total assets with cash."
+    "en": "The accounting equation can be rearranged: equity = assets less liabilities, so {{option:o_gspv}} must be true. {{option:o_0848}} confuses equity with this month’s profit, and {{option:o_erkz}} confuses total assets with cash."
   }
 }

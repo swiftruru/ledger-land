@@ -1,0 +1,81 @@
+{
+  "id": "q_zk86qsjs",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "ratio_interpret",
+  "ratioRef": "cash_flow_ratio@excel",
+  "objectiveId": "obj_6f1csw",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "cash_flow"
+  ],
+  "termRefs": [
+    "tm_555a7d2s",
+    "tm_n4e8t2jy",
+    "tm_e61ht6yh"
+  ],
+  "scored": true,
+  "vars": {
+    "profit": 300000,
+    "ratio": 0.08,
+    "cl": 1500000,
+    "ocf": 120000
+  },
+  "prompt": {
+    "zh-TW": "小山咖啡今年本期淨利 {{money:vars.profit}}，但營業活動的現金流量總計只有 {{money:vars.ocf}}；年底流動負債 {{money:vars.cl}}，現金流量比率只有 {{percent:vars.ratio}}（見上表）。哪一個判讀最合理？",
+    "en": "Hillside Coffee reports profit for the period of {{money:vars.profit}}, but net cash from operating activities of only {{money:vars.ocf}}; current liabilities at year end are {{money:vars.cl}}, giving a cash flow ratio of only {{percent:vars.ratio}} (see the table above). Which reading is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_sswg",
+      "text": {
+        "zh-TW": "本業賺進的現金只夠支應一小部分流動負債，短期還款壓力不小",
+        "en": "Operating cash covers only a small part of current liabilities, so short-term repayment pressure is considerable"
+      },
+      "feedback": {
+        "zh-TW": "答對了。利益和現金是兩回事，這個比率提醒小山咖啡：賺到的錢還沒有變成足夠的現金。",
+        "en": "That’s right. Profit and cash are different things, and this ratio warns Hillside Coffee that the profit has not yet turned into enough cash."
+      }
+    },
+    {
+      "id": "o_ce4c",
+      "text": {
+        "zh-TW": "既然本期淨利是正的，現金流量比率不該這麼低，數字可能算錯了",
+        "en": "With a positive profit for the period the cash flow ratio should not be this low, so the figure may be wrong"
+      },
+      "feedback": {
+        "zh-TW": "你把利益和現金連在一起想，這是很自然的直覺。不過賒銷做出的利益還沒變成現金，所以淨利為正、營業現金卻很少是常見的情況，數字沒有算錯。",
+        "en": "Linking profit and cash is a natural instinct. But profit made on credit sales has not yet become cash, so a positive profit alongside little operating cash is common; the figure is not wrong."
+      },
+      "misconceptionId": "mc_tz3y"
+    },
+    {
+      "id": "o_bfsb",
+      "text": {
+        "zh-TW": "現金流量比率低，表示小山咖啡的負債不多，負債比率也會偏低",
+        "en": "A low cash flow ratio means Hillside Coffee has few liabilities, so its debt ratio will be low as well"
+      },
+      "feedback": {
+        "zh-TW": "現金流量比率的分母是流動負債、分子是營業現金，比率低反而表示流動負債相對營業現金偏多；它和負債占資產的比例是不同的問題，一個低不代表另一個也低。",
+        "en": "The cash flow ratio divides operating cash by current liabilities, so a low ratio actually means current liabilities are large relative to operating cash; it is a different question from the share of assets funded by liabilities, and one being low says nothing about the other."
+      }
+    }
+  ],
+  "correctOptionId": "o_sswg",
+  "explanation": {
+    "zh-TW": "{{term:tm_555a7d2s}}用的是{{term:tm_e61ht6yh}}，不是{{term:tm_n4e8t2jy}}。{{option:o_sswg}}正確讀出『有利益、缺現金』的訊號；{{option:o_ce4c}}把利益當成現金，{{option:o_bfsb}}把兩個不同的比率混在一起。",
+    "en": "The {{term:tm_555a7d2s}} uses {{term:tm_e61ht6yh}}, not {{term:tm_n4e8t2jy}}. {{option:o_sswg}} reads the ‘profit but little cash’ signal correctly; {{option:o_ce4c}} treats profit as cash, and {{option:o_bfsb}} confuses two different ratios."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "cash_flow_ratio@excel"
+    ],
+    "measures": {
+      "cf_operating_total": "vars.ocf",
+      "bs_current_liabilities": "vars.cl"
+    }
+  }
+}

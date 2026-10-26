@@ -1,0 +1,93 @@
+{
+  "id": "q_4t8zswxm",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_pynkwp",
+  "difficulty": 3,
+  "tags": [
+    "income_tax",
+    "profit_levels",
+    "cash"
+  ],
+  "termRefs": [
+    "tm_3qfqnrmm",
+    "tm_z971merj",
+    "tm_n4e8t2jy",
+    "tm_4c6v99nn",
+    "tm_e61ht6yh"
+  ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_v3bgwb"
+  },
+  "scored": true,
+  "type": "transaction_effect",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 600000,
+        "share_capital": 400000,
+        "retained_earnings": 200000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.pay_income_tax_cash",
+        "params": {
+          "amount": 45000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "is_pretax_income",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "is_net_income",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_retained_earnings",
+        "measure": "direction"
+      },
+      {
+        "id": "t5",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "青苔書店用現金繳了 {{money:e1.amount}} 的所得稅。照五步驟的順序想一遍：先看五層利益哪幾層動了，再想勾稽點兩邊的數字。下面五個數字各會怎麼變？",
+    "en": "Moss Bookshop pays {{money:e1.amount}} of income tax in cash. Think it through in five-step order: which profit levels move, then what happens on each side of the check points. How does each of the five figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "所得稅是稅前淨利之後才扣的，所以稅前淨利不動，本期淨利減少 {{money:e1.amount}}；步驟②兩邊的稅前淨利仍然相等。本期淨利變少，未分配盈餘的增加額也跟著變少（步驟④）。現金付出去了，資產負債表的現金與現金流量表的營業活動總計都減少，步驟③兩邊一起變。",
+    "en": "Income tax is deducted after profit before tax, so profit before tax is unchanged while profit for the period falls by {{money:e1.amount}}; both sides of step 2 still agree. With a smaller profit for the period, the increase in unappropriated retained earnings is smaller too (step 4). The cash has gone out, so cash on the balance sheet and net cash from operating activities both fall, and the two sides of step 3 move together."
+  }
+}

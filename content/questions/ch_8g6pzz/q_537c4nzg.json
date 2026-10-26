@@ -1,0 +1,38 @@
+{
+  "id": "q_537c4nzg",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "true_false",
+  "objectiveId": "obj_fyd5cv",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "na_vs_zero",
+    "solvency"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "海風民宿沒有任何流動負債，所以它的流動比率是所有公司裡最高的。",
+    "en": "Sea Breeze Guesthouse has no current liabilities at all, so its current ratio is the highest of any company."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "沒有短期債務確實是好事，這個直覺沒錯。但分母為零的比率沒有定義，根本算不出數字，也就沒辦法和其他公司比高低；正確的呈現是 N/A，再另外說明公司目前沒有流動負債。",
+    "en": "Having no short-term debt is indeed good, so the instinct is sound. But a ratio with a zero denominator is undefined: there is no figure at all, so it cannot be ranked against other companies. The right presentation is N/A, with a separate note that the company currently has no current liabilities."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。分母為零時比率沒有定義，不是「很大」也不是「最高」；網站顯示 N/A（分母不存在），不顯示無限大，也不拿它和其他公司排名。",
+    "en": "Correct. With a zero denominator the ratio is undefined, neither ‘very large’ nor ‘the highest’. The site shows N/A (no denominator) rather than infinity, and does not rank it against other companies."
+  },
+  "misconceptionId": "mc_6xya",
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}的分母是{{term:tm_c2y9b5ex}}。沒有流動負債的公司短期內沒有還款壓力，但這件事要用文字說明，不是用一個「無限大」或「最高」的數字表示。課程有些說明把這種情況寫成趨近無限大；網站一律顯示 N/A（分母不存在），因為分母為 0 時比率沒有定義，N/A 也和「分母存在但結果為 0」不一樣。",
+    "en": "The denominator of the {{term:tm_c8r1t4zm}} is {{term:tm_c2y9b5ex}}. A company with no current liabilities has no short-term repayment pressure, but that is something to state in words, not with a figure called ‘infinity’ or ‘the highest’. Some course explanations describe this case as tending to infinity; the site always shows N/A (no denominator), because a ratio is undefined when its denominator is 0, and N/A is not the same as a result of zero from a denominator that exists."
+  }
+}

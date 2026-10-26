@@ -1,0 +1,86 @@
+{
+  "id": "q_cbahch0n",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_qg146a",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "retained_earnings",
+    "sale"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_4c6v99nn",
+    "tm_5e3py55a",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_98tppx"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 120000,
+        "inventory": 80000,
+        "share_capital": 200000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.sell_all_inventory_cash",
+        "params": {
+          "price": 130000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "is_net_income",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_retained_earnings",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_share_capital",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_total_equity",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "旺季第一天，海風衝浪店把倉庫裡全部的衝浪板以現金 {{money:e1.price}} 賣給一個衝浪營隊。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "On the first day of the high season, Seabreeze Surf sells every board in its storeroom to a surf camp for {{money:e1.price}} in cash. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "賣價 {{money:e1.price}} 減掉存貨成本 {{money:e1.costOfAllInventory}}，賺到 {{money:e1.grossProfit}}，本期淨利增加這麼多。賺到的錢會留下來：它流進資產負債表的{{term:tm_4c6v99nn}}，股東權益總額跟著增加；股本是股東投入的錢，賺錢不會讓它變多。",
+    "en": "The price of {{money:e1.price}} less the inventory cost of {{money:e1.costOfAllInventory}} leaves {{money:e1.grossProfit}} of profit, so profit for the period rises by that amount. Profit stays: it flows into {{term:tm_4c6v99nn}} on the balance sheet and total equity rises with it. Share capital is what the shareholders put in, and earning a profit does not change it."
+  }
+}

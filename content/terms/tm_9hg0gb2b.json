@@ -1,6 +1,6 @@
 {
   "id": "tm_9hg0gb2b",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -14,12 +14,12 @@
   "pendingRefs": ["T01", "T03"],
   "ifrsBasis": "IAS 1.87",
   "note": {
-    "zh-TW": "教材五層利益的第 3 層，直譯自日本會計基準的経常利益；教材部分頁面把它和稅前淨利併成一列（T03）。",
-    "en": "Level 3 of the five profit levels, a direct translation of the Japanese GAAP ordinary profit; some course pages merge it with profit before tax (T03)."
+    "zh-TW": "教材五層利益的第 3 層，直譯自日本會計基準的経常利益。課程部分頁面把它和稅前淨利合寫，是因為故事沒有非常損益；網站一律分成兩列。",
+    "en": "Level 3 of the five profit levels, a direct translation of the Japanese GAAP ordinary profit. Some course pages merge it with profit before tax because the story has no extraordinary items; the site always shows them as two lines."
   },
   "definition": {
-    "zh-TW": "營業利益加上業外收支後的小計。它想呈現公司在平常、會反覆發生的活動裡賺了多少；沒有非常損益時，它和稅前淨利相同。",
-    "en": "The subtotal after adding non-operating income and expenses to operating profit. It is meant to show what the company earns from its regular, recurring activities; when there are no extraordinary items it equals profit before tax."
+    "zh-TW": "損益表第 3 層的小計：營業利益加上營業外收入、減去營業外支出。名稱裡的「經常」是和非常損益相對而言；沒有非常損益時，它和稅前淨利同額，本課故事就是這樣。",
+    "en": "The level 3 subtotal of the income statement: operating profit plus non-operating income less non-operating expenses. ‘Ordinary’ is meant in contrast to extraordinary items; when there are none it equals profit before tax, as in the course story."
   },
   "ifrsNote": {
     "zh-TW": "IFRS 與台灣現行報表都沒有這一層。IAS 1.87 禁止把任何收益或費損列為非常項目，所以不需要再區分經常與非經常的損益；IFRS 對照的版面不顯示這一列。",

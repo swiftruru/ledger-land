@@ -1,11 +1,11 @@
 {
   "id": "ch_m2t7q4",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "order": 2,
   "scope": "core",
-  "examScope": "unconfirmed",
+  "examScope": "midterm",
   "title": {
     "zh-TW": "三表地圖",
     "en": "A map of the three statements"

@@ -1,6 +1,6 @@
 {
   "id": "q_be6hdj1g",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -19,7 +19,7 @@
   "type": "multi_choice",
   "prompt": {
     "zh-TW": "小晴想在月底前讓小山咖啡的「資產總計」變大一些。下列哪一個做法真的會讓資產總計增加？",
-    "en": "Ching wants Hillside Coffee's total assets to be a little larger by month end. Which of these would actually increase total assets?"
+    "en": "Ching wants Hillside Coffee’s total assets to be a little larger by month end. Which of these would actually increase total assets?"
   },
   "options": [
     {

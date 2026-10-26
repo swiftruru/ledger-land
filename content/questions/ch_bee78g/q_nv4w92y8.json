@@ -1,0 +1,42 @@
+{
+  "id": "q_nv4w92y8",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_am21nv",
+  "difficulty": 1,
+  "tags": [
+    "ratio",
+    "profitability"
+  ],
+  "termRefs": [
+    "tm_0k8vegyr",
+    "tm_n4e8t2jy",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ni": 480000,
+    "equity": 3000000
+  },
+  "compute": {
+    "ratioRef": "roe@excel",
+    "measures": {
+      "is_net_income": "vars.ni",
+      "bs_total_equity": "vars.equity"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "木岸家具今年本期淨利 {{money:vars.ni}}，年底股東權益總額 {{money:vars.equity}}。依課程 Excel 口徑（本期淨利 ÷ 期末股東權益總額）計算權益報酬率（ROE），以百分比作答。",
+    "en": "Woodbank Furniture had profit for the period of {{money:vars.ni}} and total equity of {{money:vars.equity}} at year end. Using the course Excel basis (profit for the period ÷ closing total equity), what is the return on equity (ROE)? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_0k8vegyr}}＝{{term:tm_n4e8t2jy}} ÷ {{term:tm_y37ymj9w}}，分母是股東自己出的錢加上留在公司的盈餘，不是資產總計。課程 Excel 口徑下，ROE 等於 ROA 乘以權益倍數（資產總計 ÷ 股東權益總額）；ROE 比 ROA 高出越多，權益倍數越大，資產裡由負債支應的比例也越高。",
+    "en": "{{term:tm_0k8vegyr}} = {{term:tm_n4e8t2jy}} ÷ {{term:tm_y37ymj9w}}; the denominator is the owners’ own money plus retained profits, not total assets. On the course Excel basis, ROE equals ROA times the equity multiplier (total assets ÷ total equity); the further ROE is above ROA, the larger the equity multiplier and the larger the share of assets funded by liabilities."
+  }
+}

@@ -1,6 +1,6 @@
 {
   "id": "q_khpt2x4j",
-  "rev": 1,
+  "rev": 3,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -14,7 +14,8 @@
     "tm_p7h3c5xq",
     "tm_n7v3k8pq",
     "tm_g5c2m8tw",
-    "tm_g8p4w1rz"
+    "tm_g8p4w1rz",
+    "tm_q4k9v2nd"
   ],
   "scored": true,
   "type": "transaction_effect",
@@ -74,8 +75,8 @@
     "en": "Sunset Stationery pays {{money:e1.amount}} in cash for a batch of fountain pens and has not sold any of them this month. After this purchase, how does each of the four figures below change?"
   },
   "explanation": {
-    "zh-TW": "本期進貨這一列增加 {{money:e1.amount}}，但一支都沒賣出，期末存貨也同時增加 {{money:e1.amount}}，兩者相抵，營業成本小計不變，營業毛利也不變。資產負債表上的存貨增加了同樣的金額。進貨不是費用，賣出去的那一刻才變成成本。",
-    "en": "The purchases line rises by {{money:e1.amount}}, but since none were sold, closing inventory rises by {{money:e1.amount}} too; the two cancel out, so the cost of sales subtotal and gross profit do not change. Inventory on the balance sheet rises by the same amount. A purchase is not an expense; it becomes a cost only when the goods are sold."
+    "zh-TW": "{{term:tm_p7h3c5xq}}這一列增加 {{money:e1.amount}}，但一支都沒賣出，{{term:tm_q4k9v2nd}}那一列也同時增加 {{money:e1.amount}}，兩者相抵，{{term:tm_g5c2m8tw}}的小計沒有變，{{term:tm_g8p4w1rz}}也不變。資產負債表上的存貨增加了同樣的金額。進貨不是費用，賣出去的那一刻才變成成本。",
+    "en": "The {{term:tm_p7h3c5xq}} line rises by {{money:e1.amount}}, but since none were sold, the {{term:tm_q4k9v2nd}} line rises by {{money:e1.amount}} too; the two cancel out, so the {{term:tm_g5c2m8tw}} subtotal and {{term:tm_g8p4w1rz}} do not change. Inventory on the balance sheet rises by the same amount. A purchase is not an expense; it becomes a cost only when the goods are sold."
   },
   "hint": {
     "zh-TW": "賣出之前，鋼筆是費用還是資產？",

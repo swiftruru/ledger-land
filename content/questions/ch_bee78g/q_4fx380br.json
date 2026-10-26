@@ -1,0 +1,69 @@
+{
+  "id": "q_4fx380br",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "single_choice",
+  "objectiveId": "obj_mj1tas",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "profitability",
+    "cross_check"
+  ],
+  "termRefs": [
+    "tm_r0a5t3kq",
+    "tm_t7a3s6wb",
+    "tm_gt8g4afe"
+  ],
+  "scored": true,
+  "vars": {
+    "last": 0.11,
+    "now": 0.055
+  },
+  "prompt": {
+    "zh-TW": "小山咖啡的 ROA（Excel 口徑）從去年的 {{percent:vars.last}} 降到今年的 {{percent:vars.now}}，本期淨利和去年一樣。年底發生了什麼事，最能解釋這個變化？",
+    "en": "Hillside Coffee’s ROA (Excel basis) fell from {{percent:vars.last}} last year to {{percent:vars.now}} this year, with profit for the period the same as last year. What happened at year end that best explains the change?"
+  },
+  "options": [
+    {
+      "id": "o_h3j1",
+      "text": {
+        "zh-TW": "年底用借款買了一台很貴的烘豆機",
+        "en": "It bought a very expensive roasting machine with a loan at year end"
+      },
+      "feedback": {
+        "zh-TW": "答對了。淨利沒變，ROA 減半，表示分母的資產總計差不多變成兩倍；新買的設備還沒開始貢獻利益。",
+        "en": "That’s right. With profit unchanged and ROA halved, total assets in the denominator roughly doubled; the new machine has not yet started contributing to profit."
+      }
+    },
+    {
+      "id": "o_7g55",
+      "text": {
+        "zh-TW": "今年咖啡賣得比較少，生意變差了",
+        "en": "It sold less coffee this year, so business got worse"
+      },
+      "feedback": {
+        "zh-TW": "你從獲利去想，很直覺。不過題目說本期淨利和去年一樣，分子沒變；變的只能是分母的資產。",
+        "en": "Thinking of profit first is intuitive. But profit for the period is the same as last year, so the numerator did not change; only the assets in the denominator can have moved."
+      }
+    },
+    {
+      "id": "o_gzre",
+      "text": {
+        "zh-TW": "年底股東把一部分資金領回去",
+        "en": "At year end the shareholders withdrew part of their money"
+      },
+      "feedback": {
+        "zh-TW": "股東領走現金會讓資產與權益一起變小；淨利不變時，ROA 反而會上升，不是下降。",
+        "en": "A withdrawal by shareholders shrinks assets and equity together; with profit unchanged, ROA would rise rather than fall."
+      }
+    }
+  ],
+  "correctOptionId": "o_h3j1",
+  "explanation": {
+    "zh-TW": "{{term:tm_r0a5t3kq}}＝本期淨利 ÷ {{term:tm_t7a3s6wb}}。分子不變、比率減半，分母大約變成兩倍：{{option:o_h3j1}}。{{option:o_7g55}}與前提矛盾，{{option:o_gzre}}的方向相反。",
+    "en": "{{term:tm_r0a5t3kq}} = profit for the period ÷ {{term:tm_t7a3s6wb}}. With the numerator unchanged and the ratio halved, the denominator roughly doubled: {{option:o_h3j1}}. {{option:o_7g55}} contradicts the premise, and {{option:o_gzre}} would push the ratio the other way."
+  }
+}

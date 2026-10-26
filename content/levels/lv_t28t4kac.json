@@ -1,0 +1,25 @@
+{
+  "id": "lv_t28t4kac",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_x09nq2",
+  "order": 1,
+  "title": {
+    "zh-TW": "資本公積從哪裡來",
+    "en": "Where capital surplus comes from"
+  },
+  "objectiveIds": [
+    "obj_1m58qq",
+    "obj_qrvy9c"
+  ],
+  "questionIds": [
+    "q_ne2bg9nw",
+    "q_1hjgb0mt",
+    "q_nxt5hpbj",
+    "q_bkygbz99",
+    "q_xx125p4n",
+    "q_kschag38",
+    "q_vrbjkt3v"
+  ]
+}

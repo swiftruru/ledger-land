@@ -1,0 +1,70 @@
+{
+  "id": "q_gyw8h1vd",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_8jjgc4",
+  "difficulty": 3,
+  "tags": [
+    "red_light",
+    "difference"
+  ],
+  "termRefs": [
+    "tm_chbctb2d",
+    "tm_c4sh8k2p",
+    "tm_ftp19fkf"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "diff": 24000,
+    "freight": 12000
+  },
+  "prompt": {
+    "zh-TW": "阿哲的步驟③亮紅燈，差額是 {{money:vars.diff}}。他回頭翻帳，發現自己把一筆 {{money:vars.freight}} 的現金運費記成了「收到現金」。這個差額告訴我們什麼？",
+    "en": "Che’s step 3 is red with a difference of {{money:vars.diff}}. Going back through the books, he finds he recorded a {{money:vars.freight}} cash freight payment as cash received. What does the difference tell us?"
+  },
+  "options": [
+    {
+      "id": "o_txm0",
+      "text": {
+        "zh-TW": "差額是線索，不一定等於出錯那筆交易的金額：方向記反時，差額會是金額的兩倍",
+        "en": "The difference is a clue and need not equal the amount of the faulty transaction: when the direction is reversed, the difference is twice the amount"
+      },
+      "feedback": {
+        "zh-TW": "答對了。該減 {{money:vars.freight}} 卻加了 {{money:vars.freight}}，兩邊一來一往差了 {{money:vars.diff}}。差額幫你縮小範圍，但要回到交易本身才知道錯在哪。",
+        "en": "Correct. Instead of subtracting {{money:vars.freight}} he added {{money:vars.freight}}, so the two sides are {{money:vars.diff}} apart. The difference narrows the search, but only the transaction itself shows what went wrong."
+      }
+    },
+    {
+      "id": "o_n5d6",
+      "text": {
+        "zh-TW": "一定有另一筆 {{money:vars.diff}} 的交易漏記了，運費那筆不是原因",
+        "en": "Another transaction of {{money:vars.diff}} must have been missed; the freight entry is not the cause"
+      },
+      "feedback": {
+        "zh-TW": "先別急著找第二筆。把 {{money:vars.freight}} 的支出記成收入，現金就多算了 {{money:vars.diff}}，剛好解釋整個差額。",
+        "en": "Do not rush to look for a second entry. Recording a {{money:vars.freight}} payment as a receipt overstates cash by {{money:vars.diff}}, which explains the whole difference."
+      },
+      "misconceptionId": "mc_3jae"
+    },
+    {
+      "id": "o_avmh",
+      "text": {
+        "zh-TW": "直接把資產負債表的現金減掉 {{money:vars.diff}}，讓燈變綠就好",
+        "en": "Just reduce cash on the balance sheet by {{money:vars.diff}} so the light turns green"
+      },
+      "feedback": {
+        "zh-TW": "硬改合計或餘額可以讓燈變綠，卻會留下一筆方向記反的記錄；下一個勾稽點或下一筆交易又會出問題。要修的是源頭那筆記錄。",
+        "en": "Forcing the balance may turn the light green, but it leaves a record pointing the wrong way; the next check point or the next transaction will break again. Fix the record at the source."
+      },
+      "misconceptionId": "mc_wea6"
+    }
+  ],
+  "correctOptionId": "o_txm0",
+  "explanation": {
+    "zh-TW": "{{option:o_txm0}}。勾稽點的差額是「兩邊差多少」，不是「哪一筆漏了多少」：漏記一筆交易，差額等於那筆交易的金額；方向記反，差額是那筆金額的兩倍；抄錯層，差額是兩層金額之間的差距。看到差額先推測可能的錯誤型態，再回到最上游的那筆交易修正。",
+    "en": "{{option:o_txm0}}. The difference at a check point is how far apart the two sides are, not how much one entry is missing: a missed entry leaves a difference equal to its amount, an entry recorded in the wrong direction leaves twice its amount, and copying from the wrong level leaves the gap between the two levels. Use the difference to guess the type of error, then go back to the transaction furthest upstream and correct it."
+  }
+}

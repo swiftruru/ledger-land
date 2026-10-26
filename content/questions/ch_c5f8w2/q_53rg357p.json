@@ -1,6 +1,6 @@
 {
   "id": "q_53rg357p",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -18,7 +18,7 @@
   "type": "true_false",
   "statement": {
     "zh-TW": "小山咖啡這個月的存貨和應付帳款增加了同樣的金額，現金沒變。光看這些數字，就能合理推測店這個月賒購了一批咖啡豆。",
-    "en": "This month Hillside Coffee's inventory and trade payables both rose by the same amount, while cash did not change. From these figures alone it is reasonable to infer that the shop bought beans on credit."
+    "en": "This month Hillside Coffee’s inventory and trade payables both rose by the same amount, while cash did not change. From these figures alone it is reasonable to infer that the shop bought beans on credit."
   },
   "correct": true,
   "feedbackTrue": {

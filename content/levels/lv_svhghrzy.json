@@ -1,0 +1,26 @@
+{
+  "id": "lv_svhghrzy",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_a0s9tk",
+  "order": 3,
+  "title": {
+    "zh-TW": "過帳、存貨與報表",
+    "en": "Posting, inventory and the statements"
+  },
+  "objectiveIds": [
+    "obj_cskmkg",
+    "obj_dqxgq8",
+    "obj_2489dv"
+  ],
+  "questionIds": [
+    "q_qzdy22qv",
+    "q_xyndtxdr",
+    "q_tyjvdvjf",
+    "q_gbd6fgh0",
+    "q_sq2cv890",
+    "q_dthgvpe2",
+    "q_d9vzrahm"
+  ]
+}

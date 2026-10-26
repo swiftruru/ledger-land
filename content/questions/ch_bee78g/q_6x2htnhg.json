@@ -1,0 +1,91 @@
+{
+  "id": "q_6x2htnhg",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "multi_choice",
+  "scoringMode": "all_correct",
+  "objectiveId": "obj_33hdss",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "solvency"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_k52yxb68",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "下列哪些做法會讓晨光健身房的流動比率上升？",
+    "en": "Which of these actions would raise Morning Light Gym’s current ratio?"
+  },
+  "options": [
+    {
+      "id": "o_34pz",
+      "text": {
+        "zh-TW": "用一筆長期借款把到期的短期借款還掉",
+        "en": "Repay the maturing short-term loan with a new long-term loan"
+      },
+      "feedback": {
+        "zh-TW": "正確。流動負債變小、流動資產不變，比率上升。",
+        "en": "Correct. Current liabilities fall while current assets stay the same, so the ratio rises."
+      }
+    },
+    {
+      "id": "o_9c70",
+      "text": {
+        "zh-TW": "股東增資，現金存進公司帳戶",
+        "en": "Shareholders inject new capital, paid into the company’s bank account"
+      },
+      "feedback": {
+        "zh-TW": "正確。現金（流動資產）變多、流動負債不變，比率上升。",
+        "en": "Correct. Cash (a current asset) increases while current liabilities do not change, so the ratio rises."
+      }
+    },
+    {
+      "id": "o_sxp1",
+      "text": {
+        "zh-TW": "把一筆短期借款展延成兩年後才到期",
+        "en": "Extend a short-term loan so that it falls due in two years"
+      },
+      "feedback": {
+        "zh-TW": "正確。借款從流動負債變成非流動負債，分母變小，比率上升。",
+        "en": "Correct. The loan moves from current to non-current liabilities, the denominator shrinks and the ratio rises."
+      }
+    },
+    {
+      "id": "o_zmc8",
+      "text": {
+        "zh-TW": "用現金買一台新的跑步機",
+        "en": "Buy a new treadmill with cash"
+      },
+      "feedback": {
+        "zh-TW": "現金變少、設備變多，流動資產下降而流動負債不變，比率反而下降。",
+        "en": "Cash falls and equipment rises; current assets drop while current liabilities are unchanged, so the ratio falls."
+      }
+    },
+    {
+      "id": "o_apv3",
+      "text": {
+        "zh-TW": "宣告發放現金股利，但還沒付出去",
+        "en": "Declare a cash dividend that has not yet been paid"
+      },
+      "feedback": {
+        "zh-TW": "宣告後要付的股利是一筆流動負債（應付股利）；流動資產沒變、分母變大，比率下降。",
+        "en": "A declared but unpaid dividend is a current liability (dividends payable); current assets are unchanged, the denominator grows and the ratio falls."
+      }
+    }
+  ],
+  "correctOptionIds": [
+    "o_34pz",
+    "o_9c70",
+    "o_sxp1"
+  ],
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}＝流動資產 ÷ 流動負債。{{option:o_34pz}}與{{option:o_sxp1}}縮小分母，{{option:o_9c70}}放大分子，三者都讓比率上升；{{option:o_zmc8}}縮小分子，{{option:o_apv3}}放大分母，都讓比率下降。",
+    "en": "{{term:tm_c8r1t4zm}} = current assets ÷ current liabilities. {{option:o_34pz}} and {{option:o_sxp1}} shrink the denominator and {{option:o_9c70}} enlarges the numerator, so all three raise the ratio; {{option:o_zmc8}} shrinks the numerator and {{option:o_apv3}} enlarges the denominator, so both lower it."
+  }
+}

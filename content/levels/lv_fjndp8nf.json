@@ -1,0 +1,24 @@
+{
+  "id": "lv_fjndp8nf",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "order": 4,
+  "title": {
+    "zh-TW": "綜合挑戰：一年內還得出來嗎",
+    "en": "Challenge: can the bills be paid within the year"
+  },
+  "objectiveIds": [
+    "obj_0x64wz",
+    "obj_d6egd4"
+  ],
+  "questionIds": [
+    "q_736bqkm4",
+    "q_s7ebm270",
+    "q_ych6rwaf",
+    "q_51ahwbr0",
+    "q_kcyeeh16",
+    "q_9nvpk62q"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "q_3e4wbse2",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "classify",
+  "dimension": "ratio_category",
+  "objectiveId": "obj_32ab85",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_r0a5t3kq",
+    "tm_0k8vegyr",
+    "tm_knqbr6g4",
+    "tm_92yzx0fn",
+    "tm_c8r1t4zm",
+    "tm_n8ysnw1m",
+    "tm_h3c7v1xe",
+    "tm_555a7d2s"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "雲嶺茶莊的報表分析列出下面幾個指標。把每一個放進它所屬的類別。",
+    "en": "Cloud Ridge Tea House’s ratio analysis lists the ratios below. Put each one into its family."
+  },
+  "items": [
+    {
+      "id": "it_m28q",
+      "ratio": "roa"
+    },
+    {
+      "id": "it_31m4",
+      "ratio": "roe"
+    },
+    {
+      "id": "it_bsxq",
+      "ratio": "eps"
+    },
+    {
+      "id": "it_6s4d",
+      "ratio": "net_profit_margin"
+    },
+    {
+      "id": "it_5ha1",
+      "ratio": "current_ratio"
+    },
+    {
+      "id": "it_a332",
+      "ratio": "quick_ratio"
+    },
+    {
+      "id": "it_7p06",
+      "ratio": "interest_coverage"
+    },
+    {
+      "id": "it_b3hv",
+      "ratio": "cash_flow_ratio"
+    }
+  ],
+  "explanation": {
+    "zh-TW": "問「賺多少」的是獲利能力：ROA、ROE、每股盈餘、純益率。問「還不還得起」的是償債能力：利息保障倍數，加上流動與速動兩個比率。現金流量比率雖然也和還債有關，但它屬於現金流量類，因為分子來自現金流量表。",
+    "en": "Ratios asking ‘how much is earned’ are profitability: ROA, ROE, EPS and the net profit margin. Ratios asking ‘can the debts be paid’ are solvency: times interest earned plus the current and quick ratios. The cash flow ratio is also about paying debts, but it belongs to the cash flow family because its numerator comes from the statement of cash flows."
+  }
+}

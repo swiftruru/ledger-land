@@ -1,0 +1,65 @@
+{
+  "id": "q_v266wkn5",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "single_choice",
+  "objectiveId": "obj_6r5ph7",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "leverage"
+  ],
+  "termRefs": [
+    "tm_gkmknxh4",
+    "tm_z971merj",
+    "tm_z3vbt800"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "財務槓桿度是「營業利益變動 {{percent:0.01|digits=0}} 時，某個數字變動百分之幾」。這個「某個數字」是什麼？",
+    "en": "The degree of financial leverage is ‘by what percentage a certain figure changes when operating profit changes by {{percent:0.01|digits=0}}’. What is that figure?"
+  },
+  "options": [
+    {
+      "id": "o_7x4c",
+      "text": {
+        "zh-TW": "稅前淨利",
+        "en": "Profit before tax"
+      },
+      "feedback": {
+        "zh-TW": "答對了。財務槓桿看的是利息這項固定支出，如何把營業利益的變動放大到稅前淨利。",
+        "en": "That’s right. Financial leverage looks at how interest, a fixed charge, magnifies a change in operating profit into a change in profit before tax."
+      }
+    },
+    {
+      "id": "o_k0k0",
+      "text": {
+        "zh-TW": "現金流量表上，本業實際收進來的現金",
+        "en": "The cash the core business actually brought in, on the statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "你想到利息要付現金，這沒錯。不過槓桿度談的是損益表上的利益被放大幾倍，不是現金流量表的數字。",
+        "en": "You thought of interest being paid in cash, which is true. But leverage is about how profit on the income statement is magnified, not about figures on the statement of cash flows."
+      },
+      "misconceptionId": "mc_j5vk"
+    },
+    {
+      "id": "o_qtyq",
+      "text": {
+        "zh-TW": "營業收入",
+        "en": "Revenue"
+      },
+      "feedback": {
+        "zh-TW": "營業收入是起點那一端的上游數字；財務槓桿看的是扣掉利息之後的下游結果。",
+        "en": "Revenue is upstream, at the starting end; financial leverage looks downstream at the result after interest."
+      }
+    }
+  ],
+  "correctOptionId": "o_7x4c",
+  "explanation": {
+    "zh-TW": "營收到營業利益之間的放大是營運槓桿；營業利益到{{term:tm_z971merj}}之間的放大才是{{term:tm_gkmknxh4}}，中間隔著固定的利息費用。所以答案是{{option:o_7x4c}}。",
+    "en": "The magnification from revenue to operating profit is operating leverage; the magnification from operating profit to {{term:tm_z971merj}}, across the fixed interest expense, is the {{term:tm_gkmknxh4}}. Hence {{option:o_7x4c}}."
+  }
+}

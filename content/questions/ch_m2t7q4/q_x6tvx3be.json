@@ -1,6 +1,6 @@
 {
   "id": "q_x6tvx3be",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -19,7 +19,7 @@
   "type": "multi_choice",
   "prompt": {
     "zh-TW": "下列哪些事情會出現在風行腳踏車行的現金流量表上？",
-    "en": "Which of the following would appear on Breeze Bicycles' statement of cash flows?"
+    "en": "Which of the following would appear on Breeze Bicycles’ statement of cash flows?"
   },
   "options": [
     {

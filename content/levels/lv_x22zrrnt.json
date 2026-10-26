@@ -1,0 +1,24 @@
+{
+  "id": "lv_x22zrrnt",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_x09nq2",
+  "order": 2,
+  "title": {
+    "zh-TW": "融資、維持率與追繳",
+    "en": "Buying on margin, the maintenance ratio and margin calls"
+  },
+  "objectiveIds": [
+    "obj_qrvy9c",
+    "obj_cqxamf"
+  ],
+  "questionIds": [
+    "q_hfbyfzwz",
+    "q_gavazqpc",
+    "q_dvb25qcv",
+    "q_mdza2xcv",
+    "q_14c8b659",
+    "q_kjnsgtae"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "lv_9ysh66da",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_a0s9tk",
+  "order": 2,
+  "title": {
+    "zh-TW": "常見交易的分錄",
+    "en": "Entries for everyday transactions"
+  },
+  "objectiveIds": [
+    "obj_cskmkg"
+  ],
+  "questionIds": [
+    "q_4zkwxdkz",
+    "q_mhnrqe0x",
+    "q_djjhstwe",
+    "q_pappa18d",
+    "q_8w0y2ch7",
+    "q_eh6cjete"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "q_5pak0cd3",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_39p0w4",
+  "difficulty": 2,
+  "tags": [
+    "reverse_inference",
+    "transactions"
+  ],
+  "termRefs": [
+    "tm_sf72dfsv",
+    "tm_tkj8x3a7"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "會計人員是先把小山咖啡的資產負債表畫好、填上數字，再回頭找交易來對；交易紀錄只是用來核對報表的。",
+    "en": "The accountant first draws up Hillside Coffee’s balance sheet and fills in the figures, then looks for transactions to match; the transaction records are only there to check the statement against."
+  },
+  "correct": false,
+  "misconceptionId": "mc_7xv8",
+  "feedbackTrue": {
+    "zh-TW": "報表和交易紀錄確實要對得起來，這點沒錯。不過順序是反的：先有一筆一筆的交易紀錄，報表是把這些紀錄整理加總之後的結果；沒有交易，報表上不會憑空多出任何數字。",
+    "en": "The statements and the transaction records do have to agree, that much is right. But the order is the other way round: the transactions are recorded one by one first, and the statement is the result of sorting and adding them up; without a transaction, no figure appears on the statement out of nowhere."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。報表是交易紀錄的總結，所以每一個數字都能追回它背後的交易。",
+    "en": "That is right. The statements summarise the transaction records, so every figure can be traced back to the transactions behind it."
+  },
+  "explanation": {
+    "zh-TW": "報表是「結果」，交易是「原因」。{{term:tm_sf72dfsv}}上的每個數字都是一筆筆交易累積出來的；也因為這樣，從數字可以倒推公司做過哪一類交易。",
+    "en": "The statements are the result and the transactions are the cause. Every figure on the {{term:tm_sf72dfsv}} is built up from individual transactions, which is also why you can work backwards from the figures to the kinds of transaction the company carried out."
+  }
+}

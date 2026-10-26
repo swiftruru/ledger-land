@@ -1,0 +1,84 @@
+{
+  "id": "q_0f0pawgq",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_8ypaqg",
+  "difficulty": 2,
+  "tags": [
+    "cash_flow_activity",
+    "equipment"
+  ],
+  "termRefs": [
+    "tm_9hrfpqem",
+    "tm_p2a7c5vk",
+    "tm_gt8g4afe"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_v77z53"
+  },
+  "vars": {
+    "cost": 180000
+  },
+  "prompt": {
+    "zh-TW": "藍鯨水族用現金 {{money:vars.cost}} 買了一座展示用的大型水族缸，預計用五年以上。這筆現金流出在現金流量表上放在哪一類活動？",
+    "en": "Blue Whale Aquatics pays {{money:vars.cost}} in cash for a large display aquarium it expects to use for more than five years. Under which activity does this outflow appear on the statement of cash flows?"
+  },
+  "options": [
+    {
+      "id": "o_9bax",
+      "text": {
+        "zh-TW": "投資活動，因為買的是要用好幾年的設備",
+        "en": "Investing activities, because it buys equipment that will be used for years"
+      },
+      "short": {
+        "zh-TW": "投資活動",
+        "en": "Investing activities"
+      },
+      "feedback": {
+        "zh-TW": "答對了。買會用很多年的設備，是把錢投到長期資產上。",
+        "en": "Nice work. Buying equipment that will serve for years is putting cash into a long-term asset."
+      }
+    },
+    {
+      "id": "o_0dj6",
+      "text": {
+        "zh-TW": "營業活動，因為水族缸是用來賣魚的",
+        "en": "Operating activities, because the aquarium is used to sell fish"
+      },
+      "short": {
+        "zh-TW": "營業活動",
+        "en": "Operating activities"
+      },
+      "feedback": {
+        "zh-TW": "水族缸確實是為了做生意才買的，這點沒錯。不過營業活動指的是日常的收付：進貨、付貨款、付開銷。買一座用好幾年的設備是一次性的長期投入，放投資活動，之後每年的折舊才會進損益表。",
+        "en": "The aquarium was indeed bought for the business, that much is right. But operating activities are the day-to-day receipts and payments: buying stock, paying suppliers, paying expenses. Buying equipment that lasts for years is a one-off long-term outlay, placed under investing; its depreciation then reaches the income statement year by year."
+      },
+      "misconceptionId": "mc_qx45"
+    },
+    {
+      "id": "o_4chk",
+      "text": {
+        "zh-TW": "籌資活動，因為花了一大筆錢",
+        "en": "Financing activities, because it is a large sum"
+      },
+      "short": {
+        "zh-TW": "籌資活動",
+        "en": "Financing activities"
+      },
+      "feedback": {
+        "zh-TW": "金額確實不小，這點沒錯。不過分類看的是這筆錢的性質與用途，不是金額大小；籌資活動是向股東或銀行等資金提供者取得資金、償還借款本金與發放股利，買長期設備不屬於這一類。",
+        "en": "It is indeed a large sum, that much is right. But the classification depends on the nature of the cash flow and what it is for, not on its size; financing covers raising funds from shareholders or lenders, repaying loan principal and paying dividends, and buying long-term equipment is not one of them."
+      }
+    }
+  ],
+  "correctOptionId": "o_9bax",
+  "explanation": {
+    "zh-TW": "{{term:tm_9hrfpqem}}記錄公司買進或賣出長期資產的現金，例如{{term:tm_gt8g4afe}}。這筆支出是{{option:o_9bax}}；選{{option:o_0dj6}}是把「為了做生意」和「日常營業收付」混在一起，選{{option:o_4chk}}則是用金額大小來分類。",
+    "en": "{{term:tm_9hrfpqem}} record the cash a company spends on or receives from long-term assets such as {{term:tm_gt8g4afe}}. This payment is {{option:o_9bax}}; choosing {{option:o_0dj6}} confuses ‘for the business’ with day-to-day operating receipts and payments, and choosing {{option:o_4chk}} classifies by size."
+  }
+}

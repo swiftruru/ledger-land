@@ -1,0 +1,25 @@
+{
+  "id": "lv_rnyg3wz7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_155y47",
+  "order": 1,
+  "title": {
+    "zh-TW": "每股盈餘與本益比",
+    "en": "Earnings per share and the P/E ratio"
+  },
+  "objectiveIds": [
+    "obj_7j31n2",
+    "obj_000wkh"
+  ],
+  "questionIds": [
+    "q_dtsptjph",
+    "q_a0y6tg61",
+    "q_5cg3db2q",
+    "q_3cpqj632",
+    "q_2ax2zmyk",
+    "q_aaxbkts3",
+    "q_k0093ptk"
+  ]
+}

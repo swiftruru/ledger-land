@@ -2,19 +2,44 @@
   "id": "tm_w60nbtch",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "支付所得稅(-)", "en": "Income taxes paid (-)" },
+  "label": {
+    "zh-TW": "支付所得稅(-)",
+    "en": "Income taxes paid (-)"
+  },
   "teacherLabel": "支付所得稅(-)",
   "currentTwLabel": "支付之所得稅",
   "ifrsEnglish": "Income taxes paid",
-  "aliases": { "zh-TW": ["支付之所得稅(-)", "支付之所得稅"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "支付之所得稅(-)",
+      "支付之所得稅"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T10"],
+  "pendingRefs": [
+    "T10"
+  ],
   "ifrsBasis": "IAS 7.35",
   "definition": {
-    "zh-TW": "本期實際繳出去的所得稅現金。因為教材從稅前淨利起算，所得稅費用沒有經過上面的調整列，只有實際繳的稅出現在這裡。",
-    "en": "Income tax actually paid in cash during the period. Because the course starts from profit before tax, the tax expense does not pass through the adjustment lines above; only the tax paid appears here."
-  }
+    "zh-TW": "本期實際繳給國庫的所得稅現金。\n\n它和損益表的所得稅費用不一定相同：費用是本期應負擔的金額，這一列是真的付出去的錢。",
+    "en": "Income tax actually paid to the tax authority in cash during the period.\n\nIt need not equal income tax expense on the income statement: the expense is what the period must bear, this line is the money that actually went out."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動區，小計之後、總計之前。本課故事的所得稅在發生時直接付現，所以這一列的金額等於所得稅費用，應付所得稅維持 0。IAS 7 原則上把繳稅歸在營業活動，只有能明確對應投資或籌資活動的部分才另外歸類。",
+    "en": "Where it sits: operating activities in the statement of cash flows, after the subtotal and before the total. In the course story the tax is paid in cash as it arises, so this line equals income tax expense and current tax liabilities stay at zero. IAS 7 classifies tax payments as operating unless they can be specifically identified with investing or financing activities."
+  },
+  "misconception": {
+    "zh-TW": "把這一列和所得稅費用當成同一個數字、填其中一個就好。應付所得稅本期有增減時兩者就會不同；間接法從稅前淨利起算，所以費用根本沒被扣過，這一列是唯一扣稅的地方。",
+    "en": "Treating this line and income tax expense as the same number. They differ whenever current tax liabilities change during the period; and because the indirect method starts from profit before tax, the expense has not been deducted at all, so this line is the only place tax is taken out."
+  },
+  "related": [
+    "tm_3qfqnrmm",
+    "tm_kgv20zg0",
+    "tm_mcjk5sza",
+    "tm_e61ht6yh"
+  ]
 }

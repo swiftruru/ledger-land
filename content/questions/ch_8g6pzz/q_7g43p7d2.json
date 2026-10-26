@@ -1,0 +1,67 @@
+{
+  "id": "q_7g43p7d2",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "single_choice",
+  "objectiveId": "obj_fyd5cv",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "na_vs_zero",
+    "financial_structure"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_t7a3s6wb",
+    "tm_fwys72qx"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "下列哪一種情況會讓負債比率顯示 N/A，而不是 0？",
+    "en": "In which of these situations would the debt ratio show N/A rather than 0?"
+  },
+  "options": [
+    {
+      "id": "o_q315",
+      "text": {
+        "zh-TW": "公司還在籌備，股款尚未繳入，資產總計是零",
+        "en": "The company is still being set up and no capital has been paid in, so total assets are zero"
+      },
+      "feedback": {
+        "zh-TW": "答對了。負債比率的分母是資產總計，分母為零就沒有定義，顯示 N/A。",
+        "en": "That’s right. The denominator of the debt ratio is total assets; with a zero denominator the ratio is undefined and shows N/A."
+      }
+    },
+    {
+      "id": "o_61tx",
+      "text": {
+        "zh-TW": "公司完全沒有負債，負債總額是零",
+        "en": "The company has no liabilities at all, so total liabilities are zero"
+      },
+      "feedback": {
+        "zh-TW": "沒有負債確實很特別，你注意到這一點很好。不過分子為零、分母存在時比率算得出來，結果是零，不是 N/A。",
+        "en": "Having no liabilities is unusual, and it is good that you noticed. But with a zero numerator and an existing denominator the ratio can be calculated: the result is zero, not N/A."
+      },
+      "misconceptionId": "mc_ys4m"
+    },
+    {
+      "id": "o_be7q",
+      "text": {
+        "zh-TW": "公司今年發生虧損，股東權益跟著變少",
+        "en": "The company made a loss this year, so its equity has shrunk"
+      },
+      "feedback": {
+        "zh-TW": "虧損確實會影響報表，這個直覺沒錯：它透過未分配盈餘讓股東權益變小，負債比率的數字通常會上升。不過分母的資產總計還在，比率仍然算得出來，不會變成 N/A。",
+        "en": "A loss does affect the statements, so the instinct is reasonable: it shrinks equity through retained earnings, and the debt ratio usually rises. But total assets, the denominator, are still there, so the ratio can still be calculated and does not become N/A."
+      },
+      "misconceptionId": "mc_gzj0"
+    }
+  ],
+  "correctOptionId": "o_q315",
+  "explanation": {
+    "zh-TW": "N/A 來自分母為零。{{term:tm_9e1rb64c}}的分母是{{term:tm_t7a3s6wb}}，所以只有{{option:o_q315}}會 N/A；{{option:o_61tx}}是分子為零、結果為 0；{{option:o_be7q}}不會讓這個比率算不出來（虧損讓權益變小，負債比率通常反而上升）。",
+    "en": "N/A comes from a zero denominator. The denominator of the {{term:tm_9e1rb64c}} is {{term:tm_t7a3s6wb}}, so only {{option:o_q315}} gives N/A; {{option:o_61tx}} is a zero numerator, giving 0; and {{option:o_be7q}} does not stop the ratio being calculated (a loss shrinks equity, so the debt ratio usually rises)."
+  }
+}

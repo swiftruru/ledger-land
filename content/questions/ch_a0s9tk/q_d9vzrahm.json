@@ -1,0 +1,61 @@
+{
+  "id": "q_d9vzrahm",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "journal_entry",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_2489dv",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "journal_entry",
+    "stocktake",
+    "inventory"
+  ],
+  "termRefs": [
+    "tm_b9e9vjct",
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw",
+    "tm_2967ackr"
+  ],
+  "scored": true,
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 300000,
+        "inventory": 40000,
+        "share_capital": 340000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.inventory_count",
+        "params": {
+          "countedAmount": 65000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": []
+  },
+  "accountChoices": [
+    "inventory",
+    "cost_of_goods_sold",
+    "non_operating_income",
+    "extraordinary_gains",
+    "cash"
+  ],
+  "allowAliases": true,
+  "prompt": {
+    "zh-TW": "年底盤點，海風麵包坊實際清點出來的存貨是 {{money:e1.countedAmount}}，比帳上多出 {{money:e1.overage}}（盤盈）。網站的做法是把盤盈沖減營業成本。請寫出盤點調整的分錄。",
+    "en": "At the year-end stocktake Sea Breeze Bakery counts inventory of {{money:e1.countedAmount}}, which is {{money:e1.overage}} more than the books show (a surplus). On this site, the surplus reduces cost of sales. Write the adjusting entry."
+  },
+  "explanation": {
+    "zh-TW": "帳上存貨要補到盤點的金額：借記存貨 {{money:e1.overage}}；多出來的部分表示先前算進營業成本的貨其實還在，所以貸記營業成本 {{money:e1.overage}}。設計說明：盤盈與盤損是帳與實物的差異調整，一般列在營業成本；若改列營業外收入或非常利益，稅前淨利相同，但營業成本與營業利益會不同，網站也保留這兩種替代做法，需要時可以改用。其中非常利益是課程版面才有的列，IFRS 不允許把任何收益列為非常項目（IAS 1.87）。",
+    "en": "Inventory on the books is brought up to the counted amount: debit inventory {{money:e1.overage}}. The extra means goods previously charged to cost of sales are still there, so credit cost of sales {{money:e1.overage}}. Design note: surpluses and shortages are adjustments between the books and the physical count and are generally taken to cost of sales; recording the surplus as non-operating income or an extraordinary gain gives the same profit before tax but different cost of sales and operating profit, and the site also keeps both alternatives so it can switch to them if needed. Extraordinary items exist only in the course layout; IFRS does not allow any income to be presented as extraordinary (IAS 1.87)."
+  }
+}

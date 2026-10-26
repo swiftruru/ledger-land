@@ -1,0 +1,45 @@
+{
+  "id": "q_x6agrbg7",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "objectiveId": "obj_wb2v68",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "financial_structure"
+  ],
+  "termRefs": [
+    "tm_8eyx0srs",
+    "tm_y37ymj9w",
+    "tm_adqjyfqg",
+    "tm_gt8g4afe"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ncl": 600000,
+    "equity": 2400000,
+    "ppe": 2000000
+  },
+  "compute": {
+    "ratioRef": "long_term_funds_to_ppe@excel",
+    "measures": {
+      "bs_noncurrent_liabilities": "vars.ncl",
+      "bs_total_equity": "vars.equity",
+      "bs_machinery_net": "vars.ppe"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "木岸家具年底的非流動負債 {{money:vars.ncl}}、股東權益總額 {{money:vars.equity}}，機器設備淨額 {{money:vars.ppe}}。依課程 Excel 口徑計算{{term:tm_8eyx0srs|plain}}（課程用的舊稱，現行年報名稱見名詞卡），以百分比作答。",
+    "en": "At year end Woodbank Furniture has non-current liabilities of {{money:vars.ncl}}, total equity of {{money:vars.equity}} and machinery and equipment (net) of {{money:vars.ppe}}. Using the course Excel basis, what is the {{term:tm_8eyx0srs|plain}} (the older name used by the course; see the term card for the current annual-report name)? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "長期資金＝{{term:tm_y37ymj9w}}＋{{term:tm_adqjyfqg}}，也就是 {{money:vars.equity}} 加 {{money:vars.ncl}}，再除以機器設備淨額 {{money:vars.ppe}}。{{term:tm_8eyx0srs}}問的是「長期的錢夠不夠蓋住長期的資產」：超過 {{percent:1|digits=0}}，表示固定資產全部由長期資金支應，沒有拿短期借款去買長期資產。",
+    "en": "Long-term funds = {{term:tm_y37ymj9w}} + {{term:tm_adqjyfqg}}, that is {{money:vars.equity}} plus {{money:vars.ncl}}, divided by machinery and equipment (net) of {{money:vars.ppe}}. The {{term:tm_8eyx0srs}} asks whether long-term money covers long-term assets: above {{percent:1|digits=0}}, the fixed assets are fully funded by long-term money and no short-term borrowing was used to buy them."
+  }
+}

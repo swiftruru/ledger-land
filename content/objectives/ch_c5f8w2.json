@@ -3,14 +3,14 @@
   "items": [
     {
       "id": "obj_erqmw9",
-      "rev": 1,
+      "rev": 2,
       "revKind": "text",
       "status": "published",
       "chapterId": "ch_c5f8w2",
       "order": 1,
       "statement": {
         "zh-TW": "能把一家小店帳上的項目分成資產、負債與股東權益，並說出每一類代表什麼",
-        "en": "Classify the items in a small shop's books as assets, liabilities or equity, and say what each class represents"
+        "en": "Classify the items in a small shop’s books as assets, liabilities or equity, and say what each class represents"
       },
       "skill": "classify",
       "misconceptions": [
@@ -25,14 +25,14 @@
           "id": "mc_drhv",
           "text": {
             "zh-TW": "把向銀行借來的錢當成公司自己的錢（股東權益）",
-            "en": "Treating money borrowed from the bank as the company's own money (equity)"
+            "en": "Treating money borrowed from the bank as the company’s own money (equity)"
           }
         },
         {
           "id": "mc_8ef5",
           "text": {
             "zh-TW": "把股東出的資金當成公司欠股東的債",
-            "en": "Treating the owners' capital as a debt the company owes them"
+            "en": "Treating the owners’ capital as a debt the company owes them"
           }
         },
         {

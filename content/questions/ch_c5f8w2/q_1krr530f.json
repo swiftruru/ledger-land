@@ -1,6 +1,6 @@
 {
   "id": "q_1krr530f",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_c5f8w2",
@@ -18,7 +18,7 @@
   "type": "single_choice",
   "prompt": {
     "zh-TW": "會計師把小山咖啡這個月的三張報表交給小晴，損益表上的本期淨利比她預期的高很多。如果你是小晴，最該追問的問題是哪一個？",
-    "en": "The accountant hands Ching this month's three statements for Hillside Coffee, and profit for the period on the income statement is far higher than she expected. If you were Ching, which question would be the most important to ask?"
+    "en": "The accountant hands Ching this month’s three statements for Hillside Coffee, and profit for the period on the income statement is far higher than she expected. If you were Ching, which question would be the most important to ask?"
   },
   "options": [
     {
@@ -29,7 +29,7 @@
       },
       "feedback": {
         "zh-TW": "答對了。利益高不代表現金多，也不代表沒有負債；要把三張報表合起來看。",
-        "en": "That's right. High profit does not mean plenty of cash or no debts; the three statements have to be read together."
+        "en": "That’s right. High profit does not mean plenty of cash or no debts; the three statements have to be read together."
       }
     },
     {
@@ -52,7 +52,7 @@
       },
       "feedback": {
         "zh-TW": "你關心未來，這很合理。不過在問「會不會更高」之前，先要確認這個月的利益是真的、而且有現金支撐。",
-        "en": "Caring about the future is reasonable. But before asking whether it will rise, first check that this month's profit is real and backed by cash."
+        "en": "Caring about the future is reasonable. But before asking whether it will rise, first check that this month’s profit is real and backed by cash."
       },
       "misconceptionId": "mc_1ppe"
     }

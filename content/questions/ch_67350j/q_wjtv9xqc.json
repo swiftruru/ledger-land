@@ -1,0 +1,88 @@
+{
+  "id": "q_wjtv9xqc",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_pynkwp",
+  "difficulty": 3,
+  "tags": [
+    "five_step_fill",
+    "inventory_count",
+    "non_cash"
+  ],
+  "termRefs": [
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw",
+    "tm_z971merj",
+    "tm_4c6v99nn",
+    "tm_c4sh8k2p"
+  ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_21tzes"
+  },
+  "scored": true,
+  "type": "five_step_fill",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 350000,
+        "inventory": 240000,
+        "share_capital": 500000,
+        "retained_earnings": 90000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.inventory_count",
+        "params": {
+          "countedAmount": 225000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "cf_pretax_income",
+        "measure": "value"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "value"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "bs_retained_earnings",
+        "measure": "value"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_cogs",
+        "measure": "value"
+      }
+    ]
+  },
+  "openCells": [
+    "cf_pretax_income",
+    "bs_cash",
+    "bs_retained_earnings"
+  ],
+  "prompt": {
+    "zh-TW": "年底盤點，北風單車行倉庫裡的零件只剩 {{money:e1.countedAmount}}，比帳上少了 {{money:e1.shortage}}，差額認列為盤損。這一期沒有其他交易。請填出三個開放的格子：現金流量表起算的稅前淨利、資產負債表的現金與未分配盈餘，讓四盞燈全亮綠。",
+    "en": "At the year-end count, North Wind Cycles finds only {{money:e1.countedAmount}} of parts in the storeroom, {{money:e1.shortage}} less than the books show, and records the difference as a shortage. There are no other transactions this period. Fill in the three open cells (the profit before tax that the statement of cash flows starts from, cash on the balance sheet and unappropriated retained earnings) so that all four lights turn green."
+  },
+  "explanation": {
+    "zh-TW": "盤點後的期末存貨比帳上少 {{money:e1.shortage}}；營業成本等於期初存貨加本期進貨再扣掉期末存貨，扣掉的部分變少，營業成本小計就多出這個金額，變成 {{money:expected.t4.after}}。這一期沒有收入，稅前淨利就是 {{money:expected.t1.after}}，現金流量表的起點照抄這個數字（步驟②）。沒有任何現金進出，現金仍是 {{money:expected.t2.after}}（步驟③）；少掉的存貨在現金流量表上由「存貨增加(-)」那一列反向調整回來。未分配盈餘從期初往下減到 {{money:expected.t3.after}}，減少的金額等於本期的淨損（步驟④）。",
+    "en": "The count puts closing inventory {{money:e1.shortage}} below the books; in the cost of sales formula (opening inventories plus purchases less closing inventories), that amount is added to the cost of sales subtotal, which becomes {{money:expected.t4.after}}. With no revenue this period, profit before tax is {{money:expected.t1.after}}, and the statement of cash flows starts from that same figure (step 2). No cash moved, so cash is still {{money:expected.t2.after}} (step 3); the lost inventory is adjusted back on the ‘increase in inventories (-)’ line of the statement of cash flows. Unappropriated retained earnings fall from the opening balance to {{money:expected.t3.after}}, by exactly the loss for the period (step 4)."
+  }
+}

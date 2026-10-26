@@ -1,0 +1,47 @@
+{
+  "id": "ch_jkhbh3",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "order": 5,
+  "scope": "core",
+  "examScope": "midterm",
+  "title": {
+    "zh-TW": "現金流量表：錢走了哪一條路",
+    "en": "The statement of cash flows: which way the money went"
+  },
+  "summary": {
+    "zh-TW": "跟著一家水族店、一家民宿和一家機車行，把每一筆現金進出分到營業、投資與籌資三條水路，看懂間接法怎麼以稅前淨利為起點、把利益換算成現金，折舊為什麼要加回來、應收與應付的變動怎麼影響現金，最後解開「有賺錢為什麼沒現金」的謎。",
+    "en": "Follow an aquarium shop, a guesthouse and a scooter workshop to sort every cash movement into the three channels of operating, investing and financing; see how the indirect method takes profit before tax as its starting point and converts profit into cash, why depreciation is added back and how changes in receivables and payables move cash; and finally solve the puzzle of being profitable yet short of cash."
+  },
+  "objectiveIds": [
+    "obj_8ypaqg",
+    "obj_mcdpxx",
+    "obj_3ddr90",
+    "obj_9ba3z0"
+  ],
+  "levelIds": [
+    "lv_g51z9e9b",
+    "lv_0dvm2fte",
+    "lv_qrdbwqe4",
+    "lv_fd4g23xt"
+  ],
+  "prerequisites": [
+    "ch_78q8hr"
+  ],
+  "badge": {
+    "icon": "waves",
+    "title": {
+      "zh-TW": "順流​而下",
+      "en": "Follow the flow"
+    }
+  },
+  "termRefs": [
+    "tm_67e7f0mn",
+    "tm_p2a7c5vk",
+    "tm_9hrfpqem",
+    "tm_f9a4c6md",
+    "tm_z971merj",
+    "tm_05t9wphy"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "lv_a94zmqx8",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "order": 1,
+  "title": { "zh-TW": "四個勾稽點在哪裡", "en": "Where the four check points are" },
+  "objectiveIds": ["obj_wt6czr", "obj_f5en1x"],
+  "questionIds": ["q_pk24ezkt", "q_mmxqb81w", "q_pax9fd8e", "q_y1jz9mjq", "q_w07edwqn", "q_rfkyzqxt"]
+}

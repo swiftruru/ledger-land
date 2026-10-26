@@ -1,0 +1,80 @@
+{
+  "id": "q_by6w2nh0",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "ratio_interpret",
+  "ratioRef": "debt_ratio@excel",
+  "objectiveId": "obj_ftamqc",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "financial_structure",
+    "reference_value"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c"
+  ],
+  "scored": true,
+  "vars": {
+    "ratio": 0.62,
+    "liabilities": 1860000,
+    "assets": 3000000
+  },
+  "prompt": {
+    "zh-TW": "課程參考值是負債比率不超過 {{percent:0.5|digits=0}}。星橋物流是一家有自有車隊和倉庫的物流公司，年底負債總額 {{money:vars.liabilities}}、資產總計 {{money:vars.assets}}，負債比率 {{percent:vars.ratio}}（見上表）。哪一個判讀最站得住腳？",
+    "en": "The course reference value is a debt ratio of no more than {{percent:0.5|digits=0}}. Starbridge Logistics, a logistics company with its own fleet and warehouses, has total liabilities of {{money:vars.liabilities}} and total assets of {{money:vars.assets}} at year end, a debt ratio of {{percent:vars.ratio}} (see the table above). Which reading holds up best?"
+  },
+  "options": [
+    {
+      "id": "o_c3sa",
+      "text": {
+        "zh-TW": "高於參考值值得追問，但參考值不是法規門檻，要和同業比較",
+        "en": "Being above the reference value is worth a question, but it is not a legal threshold; compare with peers"
+      },
+      "feedback": {
+        "zh-TW": "答對了。參考值是提醒你「該多問一句」的訊號，例如負債的內容與到期日，而不是結論。",
+        "en": "That’s right. A reference value is a signal to ask one more question, such as what the debts are and when they fall due, not a conclusion."
+      }
+    },
+    {
+      "id": "o_py2p",
+      "text": {
+        "zh-TW": "超過參考值就違反了規定，公司要在年底前把比率降到參考值以下",
+        "en": "Exceeding the reference value breaks the rules, so the company has to bring the ratio below it by year end"
+      },
+      "feedback": {
+        "zh-TW": "你把參考值看得很認真，這份謹慎是好的。不過參考值是課程整理的經驗值，法規並沒有規定一般公司負債比率的上限。",
+        "en": "You take the reference value seriously, and that caution is good. But it is a rule of thumb compiled by the course; the law sets no ceiling on the debt ratio of an ordinary company."
+      },
+      "misconceptionId": "mc_2wn7"
+    },
+    {
+      "id": "o_zfc4",
+      "text": {
+        "zh-TW": "物流業也該套用同一個參考值，高於它就表示財務已經有危險",
+        "en": "Logistics should use the same reference value, so being above it means the company is already in danger"
+      },
+      "feedback": {
+        "zh-TW": "不同產業的資產結構差很多：車隊、倉庫這類資本密集的生意，負債比率普遍偏高。要和同業比，而不是只和一個通用數字比。",
+        "en": "Asset structures differ widely between industries: capital-intensive businesses with fleets and warehouses commonly carry higher debt ratios. Compare with peers rather than a single universal number."
+      },
+      "misconceptionId": "mc_cwq6"
+    }
+  ],
+  "correctOptionId": "o_c3sa",
+  "explanation": {
+    "zh-TW": "課程參考值只是判讀的起點，網站不拿它計分。{{option:o_c3sa}}拿它來決定要追問什麼；{{option:o_py2p}}把經驗值當成法規，{{option:o_zfc4}}忽略了產業差異。",
+    "en": "A course reference value is only a starting point for reading the ratio, and the site never scores against it. {{option:o_c3sa}} uses it to decide what to ask next; {{option:o_py2p}} mistakes a rule of thumb for law, and {{option:o_zfc4}} ignores industry differences."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "debt_ratio@excel"
+    ],
+    "measures": {
+      "bs_total_liabilities": "vars.liabilities",
+      "bs_total_assets": "vars.assets"
+    }
+  }
+}

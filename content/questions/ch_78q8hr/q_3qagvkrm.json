@@ -1,0 +1,70 @@
+{
+  "id": "q_3qagvkrm",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_qg146a",
+  "difficulty": 3,
+  "tags": [
+    "balance_sheet",
+    "retained_earnings",
+    "dividend"
+  ],
+  "termRefs": [
+    "tm_4c6v99nn",
+    "tm_n4e8t2jy",
+    "tm_tkj8x3a7"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "profit": 90000,
+    "div": 30000
+  },
+  "prompt": {
+    "zh-TW": "月光書店這一期的本期淨利是 {{money:vars.profit}}，年底股東決定發放現金股利 {{money:vars.div}}。發完股利之後，未分配盈餘和本期淨利各會怎麼樣？",
+    "en": "Moonlight Books’ profit for the period is {{money:vars.profit}}, and at year end the shareholders decide to pay a cash dividend of {{money:vars.div}}. After the dividend is paid, what happens to unappropriated retained earnings and to profit for the period?"
+  },
+  "options": [
+    {
+      "id": "o_nbpy",
+      "text": {
+        "zh-TW": "未分配盈餘減少 {{money:vars.div}}，本期淨利不變",
+        "en": "Unappropriated retained earnings fall by {{money:vars.div}}; profit for the period is unchanged"
+      },
+      "feedback": {
+        "zh-TW": "答對了。股利是把已經賺到的錢分出去，動的是未分配盈餘，不是這一期的利益。",
+        "en": "Nice work. A dividend hands out profit already earned; it reduces unappropriated retained earnings, not the profit of the period."
+      }
+    },
+    {
+      "id": "o_smjf",
+      "text": {
+        "zh-TW": "本期淨利減少 {{money:vars.div}}，未分配盈餘不變",
+        "en": "Profit for the period falls by {{money:vars.div}}; unappropriated retained earnings are unchanged"
+      },
+      "feedback": {
+        "zh-TW": "你看出股利會讓股東權益變少，這點沒錯。不過股利不是經營的費用，不會進損益表；它是直接從未分配盈餘裡拿錢出來分給股東。",
+        "en": "You can see that a dividend reduces equity, which is right. But a dividend is not an operating expense and does not go through the income statement; it is taken straight out of unappropriated retained earnings and handed to the shareholders."
+      },
+      "misconceptionId": "mc_k2fj"
+    },
+    {
+      "id": "o_63b1",
+      "text": {
+        "zh-TW": "兩者都減少 {{money:vars.div}}",
+        "en": "Both fall by {{money:vars.div}}"
+      },
+      "feedback": {
+        "zh-TW": "你知道股利會讓某個數字變少，這點沒錯。不過同一筆錢只會扣一次：股利從未分配盈餘扣，本期淨利仍然是這一期實際賺到的 {{money:vars.profit}}。",
+        "en": "You know a dividend lowers something, which is right. But the same amount is deducted only once: the dividend comes out of unappropriated retained earnings, and profit for the period stays at the {{money:vars.profit}} actually earned."
+      }
+    }
+  ],
+  "correctOptionId": "o_nbpy",
+  "explanation": {
+    "zh-TW": "{{term:tm_n4e8t2jy}}是損益表上「這一期賺了多少」，{{term:tm_4c6v99nn}}是資產負債表上「賺來還沒分出去的錢累積了多少」。股利是分配，不是費用，所以答案是{{option:o_nbpy}}。{{option:o_smjf}}把股利當成費用，{{option:o_63b1}}把同一筆錢扣了兩次。",
+    "en": "{{term:tm_n4e8t2jy}} is the income statement’s answer to how much was earned this period; {{term:tm_4c6v99nn}} is the balance sheet’s running total of earnings not yet distributed. A dividend is a distribution, not an expense, so the answer is {{option:o_nbpy}}. {{option:o_smjf}} treats the dividend as an expense, and {{option:o_63b1}} deducts the same amount twice."
+  }
+}

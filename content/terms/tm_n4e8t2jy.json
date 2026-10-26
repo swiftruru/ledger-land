@@ -1,6 +1,6 @@
 {
   "id": "tm_n4e8t2jy",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -28,11 +28,11 @@
   "pendingRefs": [],
   "ifrsBasis": "IAS 1.81A",
   "note": {
-    "zh-TW": "0-2 以 Profit 代表；計算器統一期間並標示是否年化。英文別名 net income 是美式用語。",
-    "en": "Represented by Profit in the 0-2 slides; the calculator aligns the periods and says whether figures are annualised. The alias net income is American usage."
+    "zh-TW": "課程的企業績效指標以 Profit 代表；計算器統一期間並標示是否年化。英文別名 net income 是美式用語。",
+    "en": "The course’s business performance indicators use Profit for it; the calculator aligns the periods and says whether figures are annualised. The alias net income is American usage."
   },
   "definition": {
-    "zh-TW": "稅前淨利再扣掉所得稅費用後，這段期間真正賺到、屬於股東的獲利，是五層利益的最後一層。它會流進資產負債表的未分配盈餘。",
-    "en": "Profit before tax less income tax expense: what the period really earned for the shareholders, the last of the five profit levels. It flows into unappropriated retained earnings on the statement of financial position."
+    "zh-TW": "五層利益的最後一層：稅前淨利減掉所得稅費用後的金額，是這一期經營成果的總結，屬於股東。期末結帳時它併入未分配盈餘，成為資產負債表股東權益的一部分，損益表與資產負債表在這裡接上。",
+    "en": "The last of the five profit levels: profit before tax less income tax expense, summing up what the period’s operations achieved for the shareholders. At the period-end close it is transferred into unappropriated retained earnings and becomes part of equity on the balance sheet, which is where the income statement and the balance sheet connect."
   }
 }

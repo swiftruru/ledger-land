@@ -1,6 +1,6 @@
 {
   "id": "q_p34eacg2",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -28,7 +28,7 @@
   },
   "feedbackFalse": {
     "zh-TW": "答對了。營業利益只反映本業；利息是借錢的代價，歸在營業外支出，從營業利益往下走到經常利益時才扣。",
-    "en": "That's right. Operating profit reflects only the core business; interest is the price of borrowing and belongs under non-operating expenses, deducted on the way from operating profit to ordinary profit."
+    "en": "That’s right. Operating profit reflects only the core business; interest is the price of borrowing and belongs under non-operating expenses, deducted on the way from operating profit to ordinary profit."
   },
   "misconceptionId": "mc_t8fm",
   "explanation": {

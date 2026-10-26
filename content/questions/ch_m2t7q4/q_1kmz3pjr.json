@@ -1,6 +1,6 @@
 {
   "id": "q_1kmz3pjr",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -22,7 +22,7 @@
   },
   "statement": {
     "zh-TW": "上個月晴川花坊替一對新人布置婚禮，當時已經認列了 {{money:vars.amount}} 的營業收入，貨款約定下個月再收。這個月新人付清了這筆錢。收到錢時，花坊的營業收入會再增加 {{money:vars.amount}}。",
-    "en": "Last month Clearwater Florist decorated a wedding for a couple and recognised {{money:vars.amount}} of revenue at the time, with payment agreed for the following month. This month the couple paid in full. When the money arrives, the florist's revenue rises by another {{money:vars.amount}}."
+    "en": "Last month Clearwater Florist decorated a wedding for a couple and recognised {{money:vars.amount}} of revenue at the time, with payment agreed for the following month. This month the couple paid in full. When the money arrives, the florist’s revenue rises by another {{money:vars.amount}}."
   },
   "correct": false,
   "feedbackTrue": {
@@ -31,7 +31,7 @@
   },
   "feedbackFalse": {
     "zh-TW": "答對了。收款只是把應收帳款換成現金，兩個都是資產，損益表完全不動。",
-    "en": "That's right. Collecting the money swaps a receivable for cash, both of which are assets; the income statement does not move at all."
+    "en": "That’s right. Collecting the money swaps a receivable for cash, both of which are assets; the income statement does not move at all."
   },
   "misconceptionId": "mc_2ny7",
   "explanation": {

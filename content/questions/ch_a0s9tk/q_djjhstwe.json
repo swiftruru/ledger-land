@@ -1,0 +1,59 @@
+{
+  "id": "q_djjhstwe",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "type": "journal_entry",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_cskmkg",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "journal_entry",
+    "purchase"
+  ],
+  "termRefs": [
+    "tm_b9e9vjct",
+    "tm_n7v3k8pq",
+    "tm_c4sh8k2p",
+    "tm_2967ackr"
+  ],
+  "scored": true,
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 500000,
+        "share_capital": 500000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.purchase_inventory_cash",
+        "params": {
+          "amount": 180000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": []
+  },
+  "accountChoices": [
+    "inventory",
+    "cash",
+    "cost_of_goods_sold",
+    "accounts_payable",
+    "revenue"
+  ],
+  "allowAliases": true,
+  "prompt": {
+    "zh-TW": "小山咖啡用現金向豆商買進一批咖啡豆，付了 {{money:e1.amount}}。請寫出分錄。",
+    "en": "Hillside Coffee buys a batch of coffee beans from its supplier for {{money:e1.amount}} in cash. Write the journal entry."
+  },
+  "explanation": {
+    "zh-TW": "買進的豆子還沒賣出去，是資產：借記存貨 {{money:e1.amount}}；付出的現金減少，貸記現金 {{money:e1.amount}}。這一步還沒有營業成本，要等豆子賣掉時才「借 營業成本／貸 存貨」。教材版面上的「本期進貨」列，就是這類借記存貨的合計。",
+    "en": "The beans have not been sold yet, so they are an asset: debit inventory {{money:e1.amount}}; the cash paid out falls, so credit cash {{money:e1.amount}}. There is no cost of sales yet; that comes when the beans are sold, as debit cost of sales, credit inventory. The purchases line in the course layout is the total of inventory debits like this one."
+  }
+}

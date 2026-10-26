@@ -1,0 +1,37 @@
+{
+  "id": "q_a4bjx0vd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "type": "true_false",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_trr8qh",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "debit_credit"
+  ],
+  "termRefs": [
+    "tm_50v66dt7",
+    "tm_cfghjxzq"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "借方永遠代表金額增加，貸方永遠代表金額減少。",
+    "en": "A debit always means an increase in amount, and a credit always means a decrease."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "你把資產的規則套到所有科目上了，對資產與費用來說確實如此。但負債、股東權益與收入剛好相反：增加記貸方、減少記借方。",
+    "en": "You have applied the asset rule to every account; for assets and expenses it is indeed so. But liabilities, equity and revenue work the other way: increases are credits and decreases are debits."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。增加記哪一邊要看科目的性質：資產與費用增加記借方；負債、股東權益與收入增加記貸方。借方與貸方本身只是左邊與右邊。",
+    "en": "Correct. Which side records an increase depends on the kind of account: assets and expenses increase on the debit side; liabilities, equity and revenue increase on the credit side. Debit and credit themselves are just left and right."
+  },
+  "misconceptionId": "mc_jnc2",
+  "explanation": {
+    "zh-TW": "把會計恆等式想成一座天平：左邊的資產用借方增加，右邊的負債與股東權益用貸方增加；費用跟著資產、收入跟著股東權益。",
+    "en": "Picture the accounting equation as a balance: assets on the left grow with debits, liabilities and equity on the right grow with credits; expenses follow assets and revenue follows equity."
+  }
+}

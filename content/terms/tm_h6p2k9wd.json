@@ -1,7 +1,7 @@
 {
   "id": "tm_h6p2k9wd",
-  "rev": 1,
-  "revKind": "text",
+  "rev": 2,
+  "revKind": "answer",
   "status": "published",
   "category": "concept",
   "label": { "zh-TW": "負債", "en": "Liabilities" },
@@ -14,8 +14,8 @@
   "pendingRefs": [],
   "ifrsBasis": "Conceptual Framework",
   "definition": {
-    "zh-TW": "公司現在就背負、將來要用資源去履行的義務，例如還沒付的貨款與向銀行借的錢。",
-    "en": "A present obligation the business will have to settle with its resources, such as unpaid supplier bills or a bank loan."
+    "zh-TW": "公司因為過去的交易或事項，現在就背負、將來要交出資源去履行的義務，例如還沒付的貨款與向銀行借的錢。只是簽了約、交易還沒發生的未來支出，通常還不算負債。",
+    "en": "A present obligation, arising from past events, that the business will have to settle with its resources, such as unpaid supplier bills or a bank loan. Spending that is merely agreed in a contract for the future, before anything has happened, is usually not yet a liability."
   },
   "related": ["tm_r4w8n2qe", "tm_x3n8v5tc"]
 }

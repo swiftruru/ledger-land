@@ -1,0 +1,81 @@
+{
+  "id": "q_aq1r6hgk",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_8jjgc4",
+  "difficulty": 3,
+  "tags": [
+    "five_step_fill",
+    "interest",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_k6t2e9wr",
+    "tm_s5b8r3hd",
+    "tm_z971merj",
+    "tm_c4sh8k2p"
+  ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_a13q1h"
+  },
+  "scored": true,
+  "type": "five_step_fill",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 900000,
+        "inventory": 200000,
+        "short_term_borrowings": 300000,
+        "share_capital": 740000,
+        "retained_earnings": 60000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.repay_all_short_term_loans_with_interest",
+        "params": {
+          "interest": 12000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "cf_pretax_income",
+        "measure": "value"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "value"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "is_operating_income",
+        "measure": "value"
+      }
+    ]
+  },
+  "openCells": [
+    "cf_pretax_income",
+    "bs_cash"
+  ],
+  "prompt": {
+    "zh-TW": "北風單車行把向銀行借的 {{money:e1.principal}} 一次還清，同時付了利息 {{money:e1.interest}}，合計付出 {{money:e1.totalPaid}}。這一期還沒有其他交易。請填出現金流量表起算的稅前淨利，以及資產負債表上的現金，讓步驟②與③都亮綠燈。小心：還本金與付利息對稅前淨利的影響不一樣。",
+    "en": "North Wind Cycles repays its {{money:e1.principal}} bank loan in full and pays {{money:e1.interest}} of interest at the same time, {{money:e1.totalPaid}} in all. There have been no other transactions this period. Fill in the profit before tax that the statement of cash flows starts from and cash on the balance sheet, so that steps 2 and 3 turn green. Careful: repaying the principal and paying interest affect profit before tax differently."
+  },
+  "explanation": {
+    "zh-TW": "只有利息是費用，而且是營業外支出：營業利益仍是 {{money:expected.t3.after}}，稅前淨利變成 {{money:expected.t1.after}}，現金流量表的起點就填這個數。還本金只是把負債還掉，不進損益表。現金則是兩筆一起減，期末餘額 {{money:expected.t2.after}}。在現金流量表上，起點的稅前淨利已經扣過利息，所以先在營業活動的「利息費用(+)」加回 {{money:e1.interest}}，再在「支付利息(-)」扣掉實際付出的 {{money:e1.interest}}，利息只算一次；本金列在籌資活動的「短期借款返還(-)」。",
+    "en": "Only the interest is an expense, and it is a non-operating one: operating profit is still {{money:expected.t3.after}}, profit before tax becomes {{money:expected.t1.after}}, and that is the figure the statement of cash flows starts from. Repaying the principal merely clears a liability and never touches the income statement. Cash falls by both amounts, to a closing balance of {{money:expected.t2.after}}. On the statement of cash flows, the starting profit before tax already has the interest deducted, so the {{money:e1.interest}} is first added back on the ‘interest expense (+)’ line under operating activities and the {{money:e1.interest}} actually paid is then deducted on ‘interest paid (-)’, so the interest counts only once; the principal sits under financing activities as ‘repayment of short-term borrowings (-)’."
+  }
+}

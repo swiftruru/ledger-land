@@ -2,23 +2,50 @@
   "id": "tm_y7a34vmk",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "支付利息(-)", "en": "Interest paid (-)" },
+  "label": {
+    "zh-TW": "支付利息(-)",
+    "en": "Interest paid (-)"
+  },
   "teacherLabel": "利息支出(-)",
   "currentTwLabel": "支付之利息",
   "ifrsEnglish": "Interest paid",
-  "aliases": { "zh-TW": ["利息支出(-)", "支付之利息(-)", "支付之利息"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "利息支出(-)",
+      "支付之利息(-)",
+      "支付之利息"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T11"],
+  "pendingRefs": [
+    "T11"
+  ],
   "ifrsBasis": "IAS 7.31",
   "note": {
-    "zh-TW": "課程的列名「利息支出(-)」指實際付現的利息；網站主要顯示改為「支付利息(-)」，課程原字收進別名（設計說明見 T11）。現行 IAS 7 允許列營業或籌資，課程列營業；IFRS 18 修正 IAS 7 後一般企業改列籌資活動。",
-    "en": "The course label means the interest actually paid; the site shows interest paid (-) and keeps the course wording as an alias (see the design note T11). Current IAS 7 allows operating or financing and the course uses operating; after the IFRS 18 amendments most entities will classify it as financing."
+    "zh-TW": "課程的列名「利息支出(-)」指實際付現的利息；網站主要顯示改為「支付利息(-)」，課程原字收進別名。現行 IAS 7.33 允許列營業或籌資，課程列營業；IFRS 18 修正 IAS 7 後，不以投資特定資產或對客戶提供融資為主要業務的企業要改列籌資活動（國際上自 {{raw:2027}} 年起生效，台灣自 {{raw:2028}} 會計年度起適用；查證於 {{raw:2026-10-24}}）。",
+    "en": "The course label means the interest actually paid; the site shows interest paid (-) and keeps the course wording as an alias. Current IAS 7.33 allows operating or financing and the course uses operating; after the IFRS 18 amendments to IAS 7, entities whose main business is not investing in specified assets or providing finance to customers must classify it as financing (effective internationally from {{raw:2027}} and applied in Taiwan from the {{raw:2028}} financial year; checked on {{raw:2026-10-24}})."
   },
   "definition": {
-    "zh-TW": "本期實際付出去的利息現金。它和損益表的利息費用不同：費用是本期發生的，這裡是真的付了錢。",
-    "en": "The interest actually paid in cash during the period. It differs from interest expense on the income statement: the expense is what accrued, this line is what was paid."
-  }
+    "zh-TW": "本期實際付給債權人的利息現金。\n\n它和損益表的利息費用是兩回事：費用是本期應負擔的利息，這一列是真的付出去的錢；兩者只有在利息全部付清時相等。",
+    "en": "Interest actually paid to lenders in cash during the period.\n\nIt is distinct from finance costs (interest expense) on the income statement: the expense is the interest the period must bear, this line is the cash that went out; they are equal only when all interest has been paid."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動區，小計之後。故事裡還款付息那一筆的利息部分填在這裡。課程把它列在營業活動，這是現行 IAS 7.33 允許的做法。",
+    "en": "Where it sits: operating activities in the statement of cash flows, after the subtotal. The interest portion of the story’s repay-with-interest transaction goes here. The course places it in operating activities, which the current IAS 7.33 permits."
+  },
+  "misconception": {
+    "zh-TW": "以為間接法裡把利息費用加回又扣掉支付利息是多此一舉。加回的是費用，扣掉的是現金，兩者只有在全部付清時相等；這樣安排讓小計能單獨呈現本業營運產生的現金。",
+    "en": "Seeing the add-back of interest expense followed by the deduction of interest paid as pointless. The add-back is the expense, the deduction is the cash, and they coincide only when everything has been paid; the arrangement lets the subtotal show cash from operations on its own."
+  },
+  "related": [
+    "tm_k6t2e9wr",
+    "tm_dsfjhrfw",
+    "tm_hg8c967a",
+    "tm_vgf3h5z9",
+    "tm_mcjk5sza"
+  ]
 }

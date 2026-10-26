@@ -2,23 +2,49 @@
   "id": "tm_vpzcjk6n",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "RD intensity", "en": "R&D intensity" },
+  "label": {
+    "zh-TW": "RD intensity",
+    "en": "R&D intensity"
+  },
   "teacherLabel": "RD intensity",
   "currentTwLabel": "RD intensity",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["研發密度"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "研發密度"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "研究發展費用占營業收入的比例，看公司把多少生意的錢投回研發。數值越高表示越重視研發，常見於科技業。",
-    "en": "Research and development expense as a share of revenue: how much of the business is ploughed back into R&D. Higher means a stronger research focus, typical of technology companies."
+    "zh-TW": "研究發展費用占營業收入的比例，也就是公司每做一元生意，花多少錢在研發上。\n\n比例高低主要反映產業特性與公司策略，跨產業直接比較意義不大；和同業比，才看得出誰在研發上投入得比較積極。",
+    "en": "Research and development expenses as a share of revenue: how much the company spends on research for each unit of sales.\n\nThe level mostly reflects the industry and the company’s strategy, so comparing across industries says little; set it against peers to see who invests more heavily in research."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上。本課故事沒有研發費用，所以比率是 0。別名是研發密度。",
+    "en": "Both figures are on the income statement. The course story has no research expense, so the ratio is zero. It is also called research intensity."
+  },
+  "misconception": {
+    "zh-TW": "把 RD intensity 當成研發的成效。它只衡量投入多少，不衡量產出；研發花得多不代表做出好產品。要看成效得另外看營收成長或新產品占比。",
+    "en": "Reading R&D intensity as research effectiveness. It measures input, not output; spending heavily does not guarantee good products. To judge results, look at revenue growth or the share of sales from new products."
+  },
+  "formula": {
+    "zh-TW": "RD intensity ＝ 研究發展費用 ÷ 營業收入。",
+    "en": "R&D intensity = research and development expenses ÷ revenue."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；網站依課程的公式計算。",
+    "en": "IFRS does not define financial ratios; the name follows international usage, and the site calculates it with the course formula."
   },
-  "ratioRef": "rd_intensity@slides02"
+  "ratioRef": "rd_intensity@slides02",
+  "related": [
+    "tm_avgpa43e",
+    "tm_1vxjew8q",
+    "tm_x6e56fqp",
+    "tm_v3n8q2ye"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "id": "tm_ec80jjev",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -27,7 +27,7 @@
   "pendingRefs": [],
   "note": {
     "zh-TW": "「股東權益」為舊稱，照教材顯示並加「舊稱」標記；模板原文寫「統計」，網站顯示「總計」，原字列為別名。",
-    "en": "Shareholders' equity is an older term, shown as the course writes it with an old-name marker; the template uses a wrong word for total, which the site corrects and keeps as an alias."
+    "en": "Shareholders’ equity is an older term, shown as the course writes it with an old-name marker; the template uses a wrong word for total, which the site corrects and keeps as an alias."
   },
   "definition": {
     "zh-TW": "負債總額加權益總額。依會計恆等式它一定等於資產總計，兩邊對不上就表示某筆交易記錯了。",

@@ -1,0 +1,97 @@
+{
+  "id": "q_e9m9609t",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_3ddr90",
+  "difficulty": 3,
+  "tags": [
+    "working_capital",
+    "operating_cash"
+  ],
+  "termRefs": [
+    "tm_e61ht6yh",
+    "tm_n7v3k8pq",
+    "tm_a3p9y6kc",
+    "tm_9hrfpqem"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "下列哪些交易會讓速達機車行營業活動的現金減少？",
+    "en": "Which of the following transactions would reduce Swift Scooter Repairs’ cash from operating activities?"
+  },
+  "options": [
+    {
+      "id": "o_a5kq",
+      "text": {
+        "zh-TW": "用現金進一批機油與零件",
+        "en": "Buying a batch of engine oil and parts for cash"
+      },
+      "short": {
+        "zh-TW": "現金進貨",
+        "en": "Buying stock for cash"
+      },
+      "feedback": {
+        "zh-TW": "會。付給供應商的現金是營業活動的流出。",
+        "en": "Yes. Cash paid to a supplier is an operating outflow."
+      }
+    },
+    {
+      "id": "o_w1nh",
+      "text": {
+        "zh-TW": "付清上個月欠零件商的應付帳款",
+        "en": "Paying off last month’s trade payables to the parts dealer"
+      },
+      "short": {
+        "zh-TW": "付清應付帳款",
+        "en": "Paying off payables"
+      },
+      "feedback": {
+        "zh-TW": "會。雖然東西上個月就進了，但現金是這個月才付出去的。",
+        "en": "Yes. The goods arrived last month, but the cash leaves this month."
+      }
+    },
+    {
+      "id": "o_xg77",
+      "text": {
+        "zh-TW": "賒購一批輪胎，月底才付款",
+        "en": "Buying a batch of tyres on credit, payable at month end"
+      },
+      "short": {
+        "zh-TW": "賒購輪胎",
+        "en": "Tyres on credit"
+      },
+      "feedback": {
+        "zh-TW": "進貨確實會讓存貨變多，這點沒錯。不過錢還沒付出去，現金這時候沒有變動；等真的付款時才是營業活動的流出。",
+        "en": "The purchase does increase inventories, that much is right. But no cash has been paid yet, so cash is untouched for now; the operating outflow comes when the bill is actually paid."
+      },
+      "misconceptionId": "mc_8tnr"
+    },
+    {
+      "id": "o_sh5x",
+      "text": {
+        "zh-TW": "用現金買一台新的機車舉升機",
+        "en": "Buying a new scooter lift for cash"
+      },
+      "short": {
+        "zh-TW": "現金買舉升機",
+        "en": "Buying a lift for cash"
+      },
+      "feedback": {
+        "zh-TW": "這筆現金確實付出去了，這點沒錯。不過舉升機是會用好幾年的設備，這筆支出放在投資活動，不會讓營業活動的現金減少。",
+        "en": "This cash was indeed paid out, that much is right. But the lift is equipment that will serve for years, so the payment sits under investing activities and does not reduce operating cash."
+      }
+    }
+  ],
+  "correctOptionIds": [
+    "o_a5kq",
+    "o_w1nh"
+  ],
+  "scoringMode": "all_correct",
+  "explanation": {
+    "zh-TW": "{{term:tm_e61ht6yh}}只反映日常營業實際收付的現金。{{option:o_a5kq}}與{{option:o_w1nh}}都在這一期付了現金給供應商，所以都會；{{option:o_xg77}}還沒付錢，{{option:o_sh5x}}則屬於{{term:tm_9hrfpqem}}的支出。",
+    "en": "{{term:tm_e61ht6yh}} reflects only the cash actually received and paid in day-to-day operations. {{option:o_a5kq}} and {{option:o_w1nh}} both pay cash to a supplier this period, so both count; {{option:o_xg77}} has not been paid yet, and {{option:o_sh5x}} is spending under {{term:tm_9hrfpqem}}."
+  }
+}

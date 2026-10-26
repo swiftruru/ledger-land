@@ -1,0 +1,58 @@
+{
+  "id": "q_ygkss4g0",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "classify",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_trr8qh",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "elements",
+    "debit_credit",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_r4w8n2qe",
+    "tm_h6p2k9wd",
+    "tm_x3n8v5tc",
+    "tm_50v66dt7"
+  ],
+  "scored": true,
+  "dimension": "element",
+  "items": [
+    {
+      "id": "it_a1b2",
+      "account": "cash"
+    },
+    {
+      "id": "it_c3d4",
+      "account": "inventory"
+    },
+    {
+      "id": "it_e5f6",
+      "account": "accounts_payable"
+    },
+    {
+      "id": "it_g7h8",
+      "account": "share_capital"
+    },
+    {
+      "id": "it_j9k1",
+      "account": "revenue"
+    },
+    {
+      "id": "it_m2n3",
+      "account": "cost_of_goods_sold"
+    }
+  ],
+  "prompt": {
+    "zh-TW": "要知道一個科目增加時記借方還是貸方，先認出它屬於哪個要素。把海風麵包坊帳上的這些科目放進資產、負債、股東權益、收益或費損。",
+    "en": "To know whether an account increases on the debit or the credit side, first identify which element it belongs to. Sort these accounts from Sea Breeze Bakery’s books into assets, liabilities, equity, income or expenses."
+  },
+  "explanation": {
+    "zh-TW": "現金與存貨屬於資產，應付帳款屬於負債，股本屬於股東權益，營業收入屬於收益，營業成本屬於費損。資產與費損這一組增加記借方；負債、股東權益與收益這一組增加記貸方。",
+    "en": "Cash and inventory are assets, trade payables are a liability, share capital is equity, revenue belongs to income and cost of sales to expenses. The asset and expense group increases on the debit side; the liability, equity and income group increases on the credit side."
+  }
+}

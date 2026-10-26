@@ -1,0 +1,11 @@
+{
+  "id": "lv_hk19p9x3",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "order": 1,
+  "title": { "zh-TW": "四個基本數字", "en": "Four basic figures" },
+  "objectiveIds": ["obj_kse1q6"],
+  "questionIds": ["q_c8kcx1sb", "q_vad0sts4", "q_azmn1qta", "q_v6p0zasc", "q_g552s9hy"]
+}

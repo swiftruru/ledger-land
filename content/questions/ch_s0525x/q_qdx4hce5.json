@@ -1,6 +1,6 @@
 {
   "id": "q_qdx4hce5",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -97,10 +97,10 @@
   },
   "prompt": {
     "zh-TW": "這是日暮文具社的損益表。請點出「營業收入減營業成本小計」得到的那一列。",
-    "en": "Here is Sunset Stationery's income statement. Tap the line that results from revenue less total cost of sales."
+    "en": "Here is Sunset Stationery’s income statement. Tap the line that results from revenue less total cost of sales."
   },
   "explanation": {
     "zh-TW": "營業毛利是五層利益的第一層：營業收入減營業成本小計。它告訴你商品本身賺不賺錢，還沒考慮店的其他開支。",
-    "en": "Gross profit is the first of the five levels: revenue less the cost of sales subtotal. It tells you whether the goods themselves make money, before the shop's other costs are considered."
+    "en": "Gross profit is the first of the five levels: revenue less the cost of sales subtotal. It tells you whether the goods themselves make money, before the shop’s other costs are considered."
   }
 }

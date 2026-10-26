@@ -1,6 +1,6 @@
 {
   "id": "tm_dxr5anv4",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -14,7 +14,7 @@
   "pendingRefs": [],
   "definition": {
     "zh-TW": "把商品包裝並送到客戶手上的費用。它是銷售相關的費用，屬於銷管費用；進貨時的運費則計入存貨成本，不放這裡。",
-    "en": "The cost of packing goods and delivering them to customers. It is a selling cost within distribution and administrative expenses; freight on purchases goes into inventory cost instead."
+    "en": "The cost of packing goods and delivering them to customers. It is a selling cost within distribution costs and administrative expenses; freight on purchases goes into inventory cost instead."
   },
   "accountRef": "packing_freight_expense"
 }

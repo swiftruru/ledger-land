@@ -1,0 +1,79 @@
+{
+  "id": "q_je69y1ey",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_pynkwp",
+  "difficulty": 2,
+  "tags": [
+    "five_step_fill",
+    "retained_earnings",
+    "sga"
+  ],
+  "termRefs": [
+    "tm_dxr5anv4",
+    "tm_4c6v99nn",
+    "tm_c4sh8k2p",
+    "tm_n4e8t2jy"
+  ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_vf8115"
+  },
+  "scored": true,
+  "type": "five_step_fill",
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 500000,
+        "share_capital": 420000,
+        "retained_earnings": 80000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.pay_packing_freight_cash",
+        "params": {
+          "amount": 36000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "cumulative",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "value"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_retained_earnings",
+        "measure": "value"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "is_net_income",
+        "measure": "value"
+      }
+    ]
+  },
+  "openCells": [
+    "bs_cash",
+    "bs_retained_earnings"
+  ],
+  "prompt": {
+    "zh-TW": "青苔書店這一期還沒有任何銷貨，先用現金付了 {{money:e1.amount}} 的包裝運送費，把新書目錄寄給老顧客。期初帳上已經有一筆以前年度留下的未分配盈餘。請填出資產負債表上的現金與未分配盈餘，讓步驟③與④都亮綠燈。",
+    "en": "Moss Bookshop has made no sales yet this period, but has paid {{money:e1.amount}} in cash for packing and delivery to post its new catalogue to regular customers. The opening books already hold unappropriated retained earnings left from earlier years. Fill in cash and unappropriated retained earnings on the balance sheet so that steps 3 and 4 both turn green."
+  },
+  "explanation": {
+    "zh-TW": "現金付出去之後，期末現金是 {{money:expected.t1.after}}，和現金流量表最後一列相同（步驟③）。步驟④比的是未分配盈餘的增加額：這一期只有費用沒有收入，本期淨利是 {{money:expected.t3.after}}，所以未分配盈餘從期初餘額往下走，變成 {{money:expected.t2.after}}。這一期沒有股利，也沒有提列公積，所以未分配盈餘的變動等於本期淨利；但期初不是零，所以餘額本身不會等於本期淨利。有股利或提列公積的時候，變動是本期淨利減去這兩項。",
+    "en": "After the payment, closing cash is {{money:expected.t1.after}}, the same as the last line of the statement of cash flows (step 3). Step 4 compares the increase in unappropriated retained earnings: this period has only an expense and no revenue, so profit for the period is {{money:expected.t3.after}} and retained earnings move down from the opening balance to {{money:expected.t2.after}}. With no dividends or reserve appropriations this period, the change in retained earnings equals profit for the period; because the opening balance is not zero, the balance itself does not. When there are dividends or reserve appropriations, the change is profit for the period less those amounts."
+  }
+}

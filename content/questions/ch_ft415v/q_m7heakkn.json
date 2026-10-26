@@ -1,0 +1,43 @@
+{
+  "id": "q_m7heakkn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "objectiveId": "obj_qr0bbx",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity",
+    "version"
+  ],
+  "termRefs": [
+    "tm_2jyfy0hn",
+    "tm_p7h3c5xq",
+    "tm_a3p9y6kc"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "purchases": 2190000,
+    "ap": 365000
+  },
+  "compute": {
+    "ratioRef": "ap_turnover@excel",
+    "measures": {
+      "is_purchases": "vars.purchases",
+      "bs_accounts_payable": "vars.ap"
+    }
+  },
+  "answerUnit": "turnover",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "木岸家具今年本期進貨 {{money:vars.purchases}}，年底應付帳款 {{money:vars.ap}}。依課程 Excel 版（分子用本期進貨、分母用期末餘額）計算應付款項週轉率，以「次」作答。",
+    "en": "Woodbank Furniture made purchases of {{money:vars.purchases}} this year and had trade payables of {{money:vars.ap}} at year end. Using the course Excel version (purchases over the closing balance), what is the payables turnover? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "Excel 版的{{term:tm_2jyfy0hn}}＝{{term:tm_p7h3c5xq}} ÷ {{term:tm_a3p9y6kc}}，表示一年之中欠供應商的貨款「欠了再付清」大約轉了幾輪。這個版本對上課程的 Excel 答案。",
+    "en": "In the Excel version, {{term:tm_2jyfy0hn}} = {{term:tm_p7h3c5xq}} ÷ {{term:tm_a3p9y6kc}}: roughly how many times a year the amounts owed to suppliers are run up and paid off. This version matches the course Excel answers."
+  }
+}

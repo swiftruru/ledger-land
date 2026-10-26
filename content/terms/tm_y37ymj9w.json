@@ -1,6 +1,6 @@
 {
   "id": "tm_y37ymj9w",
-  "rev": 1,
+  "rev": 3,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -25,10 +25,10 @@
   "pendingRefs": [],
   "note": {
     "zh-TW": "教材稱股東權益總額（舊稱）；模板沒有這一列。",
-    "en": "The course says total shareholders' equity, an older term; the template has no such line."
+    "en": "The course says total shareholders’ equity, an older term; the template has no such line."
   },
   "definition": {
-    "zh-TW": "股本、資本公積、保留盈餘等權益項目的合計。網站用它當權益報酬率與長期資金比率的輸入。",
-    "en": "The sum of share capital, capital surplus, retained earnings and the other equity items. The site uses it as an input to return on equity and the long-term funds ratio."
+    "zh-TW": "股本、資本公積、保留盈餘等權益項目的合計。計算權益報酬率時它是分母，計算長期資金占固定資產比率時它是分子的一部分。",
+    "en": "The sum of share capital, capital surplus, retained earnings and the other equity items. The site uses it as an input to return on equity and the long-term funds to property, plant and equipment ratio."
   }
 }

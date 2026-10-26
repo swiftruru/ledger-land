@@ -1,0 +1,58 @@
+{
+  "id": "q_pappa18d",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "type": "journal_entry",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_cskmkg",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "journal_entry",
+    "credit_purchase"
+  ],
+  "termRefs": [
+    "tm_b9e9vjct",
+    "tm_n7v3k8pq",
+    "tm_a3p9y6kc"
+  ],
+  "scored": true,
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 300000,
+        "share_capital": 300000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.purchase_inventory_credit",
+        "params": {
+          "amount": 420000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": []
+  },
+  "accountChoices": [
+    "inventory",
+    "accounts_payable",
+    "cash",
+    "accounts_receivable",
+    "cost_of_goods_sold"
+  ],
+  "allowAliases": true,
+  "prompt": {
+    "zh-TW": "初陽貿易向供應商賒購一批商品 {{money:e1.amount}}，約定下個月付款。請寫出分錄。",
+    "en": "First Light Trading buys goods worth {{money:e1.amount}} from a supplier on credit, payable next month. Write the journal entry."
+  },
+  "explanation": {
+    "zh-TW": "商品進來了，借記存貨 {{money:e1.amount}}；錢還沒付，欠供應商的是負債，貸記應付帳款 {{money:e1.amount}}。現金這一步沒動。注意是「應付」不是「應收」：應收帳款是別人欠我們的。",
+    "en": "The goods have arrived, so debit inventory {{money:e1.amount}}; nothing has been paid, so what is owed to the supplier is a liability, credit trade payables {{money:e1.amount}}. Cash does not move at this step. Note payables, not receivables: receivables are what others owe us."
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "tm_50v66dt7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "process",
+  "label": {
+    "zh-TW": "借方／貸方",
+    "en": "Debit / credit"
+  },
+  "teacherLabel": "借方／貸方",
+  "currentTwLabel": "借方／貸方",
+  "ifrsEnglish": "Debit / credit",
+  "aliases": {
+    "zh-TW": [
+      "借",
+      "貸",
+      "借記",
+      "貸記"
+    ],
+    "en": [
+      "Dr / Cr",
+      "Debit side / credit side"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [],
+  "definition": {
+    "zh-TW": "分錄與 T 字帳的左邊叫借方、右邊叫貸方。這兩個字只是左右的代號，和借錢、貸款無關。資產與費用增加記借方；負債、股東權益與收入增加記貸方；減少則記在相反的一邊。",
+    "en": "The left side of an entry or T-account is the debit side and the right the credit side. The two words are labels for left and right and have nothing to do with borrowing or lending. Assets and expenses increase on the debit side; liabilities, equity and revenue increase on the credit side; decreases go on the opposite side."
+  },
+  "related": [
+    "tm_b9e9vjct",
+    "tm_kfnzbf8s",
+    "tm_cfghjxzq"
+  ],
+  "ifrsNote": {
+    "zh-TW": "借方與貸方是簿記用語，IFRS 沒有定義；它們是記錄方式，不是報表項目。",
+    "en": "Debit and credit are bookkeeping terms not defined by IFRS; they are a way of recording, not statement items."
+  }
+}

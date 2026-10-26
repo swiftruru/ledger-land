@@ -1,0 +1,44 @@
+{
+  "id": "q_89f6ajr1",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_am21nv",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "profitability"
+  ],
+  "termRefs": [
+    "tm_knqbr6g4",
+    "tm_n4e8t2jy",
+    "tm_5e3py55a"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ni": 1200000,
+    "capital": 8000000,
+    "par": 10
+  },
+  "compute": {
+    "ratioRef": "eps@excel",
+    "measures": {
+      "is_net_income": "vars.ni",
+      "bs_share_capital": "vars.capital",
+      "input.par_value": "vars.par"
+    }
+  },
+  "answerUnit": "currency_per_share",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "星橋物流今年本期淨利 {{money:vars.ni}}，股本 {{money:vars.capital}}，每股面額 {{money:vars.par}}。依課程 Excel 口徑（股本 ÷ 每股面額推算股數）計算每股盈餘（EPS），以「元／股」作答。",
+    "en": "Starbridge Logistics had profit for the period of {{money:vars.ni}}, share capital of {{money:vars.capital}} and a par value of {{money:vars.par}} per share. Using the course Excel basis (number of shares = share capital ÷ par value), what is earnings per share (EPS)? Answer in dollars per share."
+  },
+  "explanation": {
+    "zh-TW": "先把{{term:tm_5e3py55a}} {{money:vars.capital}} 除以每股面額 {{money:vars.par}} 換成股數，再用{{term:tm_n4e8t2jy}}除以股數，才是{{term:tm_knqbr6g4}}。直接用股本金額當分母，算出來的是「每一元股本賺多少」，不是每股。",
+    "en": "First convert {{term:tm_5e3py55a}} of {{money:vars.capital}} into a number of shares by dividing by the par value of {{money:vars.par}}, then divide {{term:tm_n4e8t2jy}} by that number to get {{term:tm_knqbr6g4}}. Dividing by the share capital amount instead gives earnings per dollar of capital, not per share."
+  }
+}

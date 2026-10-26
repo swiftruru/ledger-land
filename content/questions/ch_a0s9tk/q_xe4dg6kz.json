@@ -1,0 +1,72 @@
+{
+  "id": "q_xe4dg6kz",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_dqxgq8",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "t_account",
+    "balance"
+  ],
+  "termRefs": [
+    "tm_kfnzbf8s",
+    "tm_p5yjwmnm",
+    "tm_c4sh8k2p"
+  ],
+  "scored": true,
+  "vars": {
+    "drTotal": 950000,
+    "crTotal": 610000,
+    "balance": 340000,
+    "sum": 1560000
+  },
+  "prompt": {
+    "zh-TW": "小山咖啡這個月剛開業，現金沒有月初餘額。小晴把這個月的分錄過到現金的 T 字帳：借方合計 {{money:vars.drTotal}}，貸方合計 {{money:vars.crTotal}}。現金的餘額是多少、在哪一邊？",
+    "en": "Hillside Coffee opened this month, so cash had no opening balance. Ching posts the month’s entries to the cash T-account: debits total {{money:vars.drTotal}} and credits total {{money:vars.crTotal}}. What is the cash balance, and on which side?"
+  },
+  "options": [
+    {
+      "id": "o_p4q5",
+      "text": {
+        "zh-TW": "借方餘額 {{money:vars.balance}}",
+        "en": "A debit balance of {{money:vars.balance}}"
+      },
+      "feedback": {
+        "zh-TW": "答對了。餘額是兩邊相減；現金是資產，收進來的多於付出去的，餘額落在借方。",
+        "en": "That is right. The balance is the difference between the two sides; cash is an asset, more came in than went out, so the balance sits on the debit side."
+      }
+    },
+    {
+      "id": "o_r6s7",
+      "text": {
+        "zh-TW": "借方餘額 {{money:vars.sum}}",
+        "en": "A debit balance of {{money:vars.sum}}"
+      },
+      "feedback": {
+        "zh-TW": "你知道現金的餘額在借方，這部分對。但餘額是「借方合計減貸方合計」，不是兩邊相加；兩邊相加得到的是這個月經手的現金總量，不是現在手上有多少。",
+        "en": "You know a cash balance sits on the debit side, which is right. But the balance is debits minus credits, not the two added together; adding gives the total cash handled this month, not what is on hand now."
+      },
+      "misconceptionId": "mc_s9m9"
+    },
+    {
+      "id": "o_t8v9",
+      "text": {
+        "zh-TW": "貸方餘額 {{money:vars.balance}}",
+        "en": "A credit balance of {{money:vars.balance}}"
+      },
+      "feedback": {
+        "zh-TW": "金額算對了。不過借方合計比貸方大，餘額落在大的那一邊，也就是借方。現金如果出現貸方餘額，代表付出去的比收到的多，帳上現金變成負數，要回頭檢查哪裡記錯了。",
+        "en": "The amount is right. But debits exceed credits, so the balance sits on the larger side, the debit side. A credit balance in cash would mean more paid out than received, a negative cash figure and a sign to go back and look for the error."
+      }
+    }
+  ],
+  "correctOptionId": "o_p4q5",
+  "explanation": {
+    "zh-TW": "{{option:o_p4q5}}正確：{{money:vars.drTotal}} 減 {{money:vars.crTotal}} 等於 {{money:vars.balance}}，落在借方。{{option:o_r6s7}}把兩邊相加；{{option:o_t8v9}}把餘額放錯邊。這個借方餘額就是資產負債表上「現金及約當現金」那一列的數字。",
+    "en": "{{option:o_p4q5}} is right: {{money:vars.drTotal}} less {{money:vars.crTotal}} is {{money:vars.balance}}, on the debit side. {{option:o_r6s7}} adds the sides; {{option:o_t8v9}} puts the balance on the wrong side. This debit balance is the figure on the cash and cash equivalents line of the balance sheet."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "q_3t3d57g5",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_m3fgww",
+  "difficulty": 2,
+  "tags": [
+    "roa",
+    "dupont"
+  ],
+  "termRefs": [
+    "tm_r0a5t3kq",
+    "tm_0k8vegyr",
+    "tm_n4e8t2jy",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "netIncome": 288000,
+    "totalAssets": 2400000
+  },
+  "compute": {
+    "ratioRef": "roa@slides02",
+    "measures": {
+      "is_net_income": "vars.netIncome",
+      "bs_total_assets": "vars.totalAssets"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "晨霧茶行今年的本期淨利是 {{money:vars.netIncome}}，年底的資產總計是 {{money:vars.totalAssets}}。用年底資產計算 ROA（簡化版），以百分比作答，取到小數點後兩位。算完之後想想：如果分母換成股東權益總額，算出來的 ROE 會比 ROA 高還是低？",
+    "en": "Morning Mist Tea earned a profit for the period of {{money:vars.netIncome}} this year, and its total assets at year end were {{money:vars.totalAssets}}. Using year-end assets, what is its ROA (simplified version)? Answer as a percentage with two decimal places. Then think: if the denominator were total equity instead, would the resulting ROE be higher or lower than ROA?"
+  },
+  "explanation": {
+    "zh-TW": "ROA（簡化版）＝ 本期淨利 ÷ 資產總計 ＝ {{money:vars.netIncome}} ÷ {{money:vars.totalAssets}} ＝ {{percent:expected.answer.value}}。它比同一家公司的 ROE 低，因為分母換成了包含借款在內的全部資產；ROE ÷ ROA 正好等於權益倍數。年報口徑的 ROA 會加回稅後利息並用平均資產，數字不同，指標卡會並列。",
+    "en": "ROA (simplified) = profit for the period ÷ total assets = {{money:vars.netIncome}} ÷ {{money:vars.totalAssets}} = {{percent:expected.answer.value}}. It is lower than the same company’s ROE because the denominator is now all the assets, borrowed money included; ROE ÷ ROA equals the equity multiplier exactly. The annual-report ROA adds back after-tax interest and uses average assets, giving a different figure, which the ratio card shows alongside."
+  }
+}

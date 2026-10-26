@@ -1,0 +1,24 @@
+{
+  "id": "lv_4tcv2pd7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "order": 3,
+  "title": {
+    "zh-TW": "賺到的錢留在哪裡",
+    "en": "Where the profit stays"
+  },
+  "objectiveIds": [
+    "obj_qg146a",
+    "obj_0x64wz"
+  ],
+  "questionIds": [
+    "q_f2rd5kjq",
+    "q_8mveqy25",
+    "q_tpt5n1v5",
+    "q_9rd9kq4k",
+    "q_3qagvkrm",
+    "q_6k5w2mje"
+  ]
+}

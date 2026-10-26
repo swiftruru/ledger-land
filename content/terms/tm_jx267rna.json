@@ -1,24 +1,54 @@
 {
   "id": "tm_jx267rna",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "整體槓桿度", "en": "Degree of total leverage (DTL)" },
+  "label": {
+    "zh-TW": "整體槓桿度",
+    "en": "Degree of total leverage (DTL)"
+  },
   "teacherLabel": "整體槓桿度",
   "currentTwLabel": "整體槓桿度",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["綜合槓桿度"], "en": ["Total leverage"] },
+  "aliases": {
+    "zh-TW": [
+      "綜合槓桿度"
+    ],
+    "en": [
+      "Total leverage",
+      "Combined leverage",
+      "Degree of combined leverage"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "營運槓桿度乘以財務槓桿度，看營業收入變動時稅前淨利總共會放大多少倍。倍數越高，獲利對景氣越敏感。",
-    "en": "The degree of operating leverage multiplied by the degree of financial leverage: how many times more profit before tax moves when revenue moves. A higher degree means profit is more sensitive to the business cycle."
+    "zh-TW": "營業收入每變動百分之一，稅前淨利會變動百分之幾。\n\n它把固定成本的放大效果（營運槓桿）和固定利息的放大效果（財務槓桿）串在一起，看營收的小波動最後會變成獲利的多大波動。",
+    "en": "By what percentage profit before tax changes for each one per cent change in revenue.\n\nIt chains the amplifying effect of fixed costs (operating leverage) with that of fixed interest (financial leverage) to show how a small swing in sales ends up as a larger swing in profit."
+  },
+  "example": {
+    "zh-TW": "它由另外兩個槓桿度相乘而來，任何一個是 N/A 或不具解釋意義時它也一樣。別名是綜合槓桿度。這是網站補充的延伸指標，不列入期中考範圍。",
+    "en": "It is the product of the other two leverage measures and is N/A or not meaningful whenever either of them is. It is also called combined leverage. It is an extension ratio supplied by the site and is not in the midterm."
+  },
+  "misconception": {
+    "zh-TW": "把兩個槓桿度相加而不是相乘。兩層放大效果是連乘的：營收變動先經過營運槓桿放大成營業利益的變動，再經過財務槓桿放大成稅前淨利的變動。",
+    "en": "Adding the two leverage measures instead of multiplying them. The two amplifications compound: a change in revenue is first magnified by operating leverage into a change in operating profit, then by financial leverage into a change in profit before tax."
+  },
+  "formula": {
+    "zh-TW": "整體槓桿度的算法：兩種槓桿度相乘，也就是營運槓桿度 × 財務槓桿度。",
+    "en": "Degree of total leverage = degree of operating leverage × degree of financial leverage."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "total_leverage@slides03"
+  "ratioRef": "total_leverage@slides03",
+  "related": [
+    "tm_tspyazrx",
+    "tm_gkmknxh4",
+    "tm_v3n8q2ye",
+    "tm_z971merj"
+  ]
 }

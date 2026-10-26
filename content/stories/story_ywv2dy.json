@@ -17,7 +17,7 @@
       "title": { "zh-TW": "成立公司，股東出資", "en": "Founding the company with share capital" },
       "narrative": {
         "zh-TW": "公司建立的第一步：創辦人拿出自己的存款，投入 {{money:e1.amount}} 成立初陽貿易，這筆錢成為公司的股本。從這一刻起公司有了自己的帳，第一筆資產就是存進銀行的現金。",
-        "en": "Setting up the company starts here: the founder draws {{money:e1.amount}} from personal savings to found First Light Trading, and that money becomes the company's share capital. From this moment the company keeps its own books, and its first asset is the cash in the bank."
+        "en": "Setting up the company starts here: the founder draws {{money:e1.amount}} from personal savings to found First Light Trading, and that money becomes the company’s share capital. From this moment the company keeps its own books, and its first asset is the cash in the bank."
       },
       "events": [{ "id": "e1", "template": "tpl.issue_shares_cash", "params": { "amount": 3000000 } }],
       "termRefs": ["tm_c4sh8k2p", "tm_5e3py55a", "tm_4n517fc3"],
@@ -41,7 +41,7 @@
       "title": { "zh-TW": "購入電腦設備", "en": "Buying computer equipment" },
       "narrative": {
         "zh-TW": "接著用現金購入一組電腦設備，付了 {{money:e1.amount}}。這組設備會用上好幾年，所以記成資產；依課程的做法，電腦設備歸入機器設備這個科目。",
-        "en": "Next the company buys a set of computer equipment for {{money:e1.amount}} in cash. The equipment will serve for several years, so it is recorded as an asset; following the course's classification, computer equipment sits under machinery and equipment."
+        "en": "Next the company buys a set of computer equipment for {{money:e1.amount}} in cash. The equipment will serve for several years, so it is recorded as an asset; following the course’s classification, computer equipment sits under machinery and equipment."
       },
       "events": [{ "id": "e1", "template": "tpl.buy_equipment_cash", "params": { "amount": 500000 } }],
       "termRefs": ["tm_gt8g4afe", "tm_c4sh8k2p", "tm_xen3p30x"],
@@ -137,7 +137,7 @@
       "title": { "zh-TW": "付清應付帳款", "en": "Paying the supplier in full" },
       "narrative": {
         "zh-TW": "接下來是還款與收款作業。供應商的付款期限到了，公司把欠的貨款 {{money:e1.amount}} 一次付清，應付帳款歸零，現金也減少同樣的數目。",
-        "en": "Now for settling debts and collecting what is owed. The supplier's payment date arrives and the company pays the full {{money:e1.amount}} it owes; trade payables fall to zero and cash goes down by the same amount."
+        "en": "Now for settling debts and collecting what is owed. The supplier’s payment date arrives and the company pays the full {{money:e1.amount}} it owes; trade payables fall to zero and cash goes down by the same amount."
       },
       "events": [{ "id": "e1", "template": "tpl.pay_all_payables", "params": {} }],
       "termRefs": ["tm_a3p9y6kc", "tm_c4sh8k2p"],
@@ -173,7 +173,7 @@
       "title": { "zh-TW": "付清商品寄送費", "en": "Paying the delivery costs" },
       "narrative": {
         "zh-TW": "賣出去的商品都要包裝和寄送，這一年的寄送費用累積下來一次付清，共 {{money:e1.amount}}。這類支出和銷售直接相關，屬於營業費用。",
-        "en": "Every item sold has to be packed and shipped, and the year's delivery costs are settled in one payment of {{money:e1.amount}}. Spending like this goes hand in hand with selling and belongs to operating expenses."
+        "en": "Every item sold has to be packed and shipped, and the year’s delivery costs are settled in one payment of {{money:e1.amount}}. Spending like this goes hand in hand with selling and belongs to operating expenses."
       },
       "events": [{ "id": "e1", "template": "tpl.pay_packing_freight_cash", "params": { "amount": 1000000 } }],
       "termRefs": ["tm_dxr5anv4", "tm_c4sh8k2p"],
@@ -209,7 +209,7 @@
       "title": { "zh-TW": "年底調整：折舊與攤銷", "en": "Year-end adjustments: depreciation and amortisation" },
       "narrative": {
         "zh-TW": "年底結帳前有兩件調整要做。電腦設備預計使用 {{number:e1.usefulLifeYears}} 年，公司用直線法提列這一年的折舊 {{money:e1.amount}}；當初記成遞延資產的設立費也分 {{number:e2.years}} 年攤銷，今年攤掉 {{money:e2.amount}}。這兩筆都是沒有現金流出的費用。",
-        "en": "Two adjustments are needed before the year is closed. The computer equipment is expected to last {{number:e1.usefulLifeYears}} years, so the company records this year's straight-line depreciation of {{money:e1.amount}}; the start-up costs recorded earlier as a deferred asset are amortised over {{number:e2.years}} years, with {{money:e2.amount}} written off this year. Neither expense involves any cash leaving the company."
+        "en": "Two adjustments are needed before the year is closed. The computer equipment is expected to last {{number:e1.usefulLifeYears}} years, so the company records this year’s straight-line depreciation of {{money:e1.amount}}; the start-up costs recorded earlier as a deferred asset are amortised over {{number:e2.years}} years, with {{money:e2.amount}} written off this year. Neither expense involves any cash leaving the company."
       },
       "events": [
         { "id": "e1", "template": "tpl.depreciation_straight_line", "params": { "usefulLifeYears": 5 } },
@@ -224,7 +224,7 @@
       "title": { "zh-TW": "繳納所得稅", "en": "Paying income tax" },
       "narrative": {
         "zh-TW": "一年下來公司有獲利，就要繳所得稅。公司以現金繳納 {{money:e1.amount}} 的所得稅，這是初陽貿易第一年的最後一筆交易，接下來就可以編製財務報表了。",
-        "en": "The company has made a profit over the year, so income tax is due. It pays {{money:e1.amount}} of income tax in cash, the last transaction of First Light Trading's first year; the financial statements can now be prepared."
+        "en": "The company has made a profit over the year, so income tax is due. It pays {{money:e1.amount}} of income tax in cash, the last transaction of First Light Trading’s first year; the financial statements can now be prepared."
       },
       "events": [{ "id": "e1", "template": "tpl.pay_income_tax_cash", "params": { "amount": 3000000 }, "pendingRefs": ["T10"] }],
       "termRefs": ["tm_3qfqnrmm", "tm_c4sh8k2p", "tm_kgv20zg0"],

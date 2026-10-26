@@ -1,0 +1,59 @@
+{
+  "id": "q_8w0y2ch7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "type": "journal_entry",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_cskmkg",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "journal_entry",
+    "collection"
+  ],
+  "termRefs": [
+    "tm_b9e9vjct",
+    "tm_c4sh8k2p",
+    "tm_r7x2c9fa",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 50000,
+        "accounts_receivable": 410000,
+        "share_capital": 460000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.collect_receivables",
+        "params": {
+          "amount": 250000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": []
+  },
+  "accountChoices": [
+    "cash",
+    "accounts_receivable",
+    "revenue",
+    "accounts_payable"
+  ],
+  "allowAliases": true,
+  "prompt": {
+    "zh-TW": "上個月賒銷給學校的貨款，綠茵運動用品這個月先收到了 {{money:e1.amount}}。請寫出收款的分錄。",
+    "en": "This month Greenfield Sports collects {{money:e1.amount}} of last month’s credit sale to the school. Write the entry for the collection."
+  },
+  "explanation": {
+    "zh-TW": "收到現金，借記現金 {{money:e1.amount}}；學校欠的錢少了，貸記應收帳款 {{money:e1.amount}}。營業收入在賒銷那一天就已經認列，收款時不再記一次，否則同一筆生意會算兩次收入。",
+    "en": "Cash comes in, so debit cash {{money:e1.amount}}; the school owes less, so credit trade receivables {{money:e1.amount}}. Revenue was recognised on the day of the credit sale and is not recorded again on collection; otherwise the same sale would be counted twice."
+  }
+}

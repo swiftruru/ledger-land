@@ -2,20 +2,41 @@
   "id": "tm_wqn6nph9",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "無形資產", "en": "Intangible assets" },
+  "label": {
+    "zh-TW": "無形資產",
+    "en": "Intangible assets"
+  },
   "teacherLabel": "無形資產",
   "currentTwLabel": null,
   "ifrsEnglish": "Intangible assets",
-  "aliases": { "zh-TW": [], "en": [] },
-  "flags": ["unused"],
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [
+    "unused"
+  ],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 38",
   "definition": {
-    "zh-TW": "沒有實體形狀、但能長期替公司帶來效益的資產，例如商標、專利與軟體。本課的故事沒有用到。",
-    "en": "Assets without physical form that benefit the business over several years, such as trademarks, patents and software. The course story does not use this account."
+    "zh-TW": "沒有實體、但能帶來經濟效益且可以辨認的非貨幣性資產，例如專利、商標、取得的軟體。\n\n它和機器設備一樣是長期使用的資產，只是摸不到；有限年限的無形資產要逐年攤銷。",
+    "en": "Identifiable non-monetary assets without physical substance that bring economic benefits, such as patents, trademarks or purchased software.\n\nLike machinery they are long-lived assets, just intangible; those with finite lives are amortised year by year."
   },
-  "accountRef": "intangible_assets"
+  "example": {
+    "zh-TW": "位置：資產負債表非流動資產，機器設備之後。本課故事沒有用到，實驗室預設隱藏。取得時現金減少、無形資產增加，現金流量表列投資活動。",
+    "en": "Where it sits: non-current assets on the balance sheet, after machinery and equipment. The course story does not use it, so the lab hides it by default. Acquisition reduces cash and increases this asset, shown as an investing outflow."
+  },
+  "misconception": {
+    "zh-TW": "把自己培養出來的品牌價值或客戶名單也列進無形資產。內部產生的商譽、品牌與客戶關係不能認列；只有買來的或符合嚴格條件的開發支出才能入帳。",
+    "en": "Recording the value of a home-grown brand or customer list as an intangible asset. Internally generated goodwill, brands and customer relationships are not recognised; only purchased intangibles or development spending meeting strict conditions can be recorded."
+  },
+  "accountRef": "intangible_assets",
+  "related": [
+    "tm_12gxceqy",
+    "tm_7nja2cvf",
+    "tm_yw1wvkkd"
+  ]
 }

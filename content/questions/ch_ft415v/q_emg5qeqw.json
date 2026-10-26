@@ -1,0 +1,42 @@
+{
+  "id": "q_emg5qeqw",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "objectiveId": "obj_6x06z2",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_2cqt9cfd",
+    "tm_v3n8q2ye",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "revenue": 5400000,
+    "assets": 4500000
+  },
+  "compute": {
+    "ratioRef": "total_asset_turnover@excel",
+    "measures": {
+      "is_revenue": "vars.revenue",
+      "bs_total_assets": "vars.assets"
+    }
+  },
+  "answerUnit": "turnover",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "星橋物流今年營業收入 {{money:vars.revenue}}，年底資產總計 {{money:vars.assets}}。依課程 Excel 口徑計算總資產週轉率，以「次」作答。",
+    "en": "Starbridge Logistics had revenue of {{money:vars.revenue}} this year and total assets of {{money:vars.assets}} at year end. Using the course Excel basis, what is the total asset turnover? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_2cqt9cfd}}＝{{term:tm_v3n8q2ye}} ÷ {{term:tm_t7a3s6wb}}，回答「每一元資產一年做出多少營收」。它也是杜邦拆解裡的一個因子，數字越大表示資產用得越勤。",
+    "en": "{{term:tm_2cqt9cfd}} = {{term:tm_v3n8q2ye}} ÷ {{term:tm_t7a3s6wb}}: how much revenue each dollar of assets generates in a year. It is also one factor in the DuPont breakdown; the higher it is, the harder the assets are working."
+  }
+}

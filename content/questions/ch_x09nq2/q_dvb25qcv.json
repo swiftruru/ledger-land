@@ -1,0 +1,66 @@
+{
+  "id": "q_dvb25qcv",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_cqxamf",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "margin",
+    "maintenance"
+  ],
+  "termRefs": [
+    "tm_whmbqrr8",
+    "tm_n70k1r9t"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "佩珊融資買的股票連續下跌，擔保品的市值相對於融資金額越來越低。接下來最可能發生什麼？",
+    "en": "Shares Pei-shan bought on margin keep falling, and the market value of the collateral relative to the loan keeps shrinking. What is most likely to happen next?"
+  },
+  "options": [
+    {
+      "id": "o_z7a8",
+      "text": {
+        "zh-TW": "維持率下降，跌破門檻時會收到追繳通知",
+        "en": "The maintenance ratio falls, and below the threshold the broker issues a margin call"
+      },
+      "feedback": {
+        "zh-TW": "答對了。維持率 ＝ 擔保品市值 ÷ 融資金額；券商靠它確保借出去的錢有足夠的擔保。跌破門檻時券商會發出追繳通知，要求補繳現金或補充擔保品；期限內沒補足，擔保品可能被強制賣出（俗稱斷頭）。現行規定看的是整戶擔保維持率：低於 {{percent:1.3|digits=0}} 時發出通知，通知送達之日起 2 個營業日內要補足（現行規定，查證於 {{raw:2026-10-24}}）。",
+        "en": "That is right. Maintenance ratio = collateral value ÷ margin loan; the broker uses it to keep the loan adequately covered. Below the threshold the broker issues a margin call for more cash or collateral; if it is not met by the deadline, the collateral may be sold off (forced liquidation). Current rules look at the account-wide collateral maintenance ratio: the call is issued when it falls below {{percent:1.3|digits=0}}, and the shortfall must be made up within two business days of the notice being served (current rules, checked on {{raw:2026-10-24}})."
+      }
+    },
+    {
+      "id": "o_b9c1",
+      "text": {
+        "zh-TW": "維持率下降代表借款變少，所以帳戶反而更安全",
+        "en": "A falling maintenance ratio means less borrowing, so the account is actually safer"
+      },
+      "feedback": {
+        "zh-TW": "你把「下降」讀成「負擔變輕」。但融資金額沒變，變少的是擔保品的價值；比率越低，券商的風險越高，投資人越接近追繳。",
+        "en": "You read ‘falling’ as a lighter burden. But the loan is unchanged; what shrank is the collateral. The lower the ratio, the greater the broker’s risk and the closer the investor is to a margin call."
+      },
+      "misconceptionId": "mc_saf9"
+    },
+    {
+      "id": "o_d2e3",
+      "text": {
+        "zh-TW": "發行股票的公司會出面替投資人補足擔保品的差額",
+        "en": "The company that issued the shares will step in to cover the collateral shortfall for the investor"
+      },
+      "feedback": {
+        "zh-TW": "公司和投資人的融資帳戶沒有關係；股價下跌是市場的事，補錢的責任在投資人自己。",
+        "en": "The company has nothing to do with the investor’s margin account; a falling price is a market matter, and topping up is the investor’s own responsibility."
+      },
+      "misconceptionId": "mc_bks1"
+    }
+  ],
+  "correctOptionId": "o_z7a8",
+  "explanation": {
+    "zh-TW": "{{option:o_z7a8}}，這就是融資機制的運作方式。{{option:o_b9c1}}把比率下降解讀反了；{{option:o_d2e3}}把投資人的風險推給公司。本章是會計觀念練習，不是投資建議。",
+    "en": "{{option:o_z7a8}}: that is how buying on margin works. {{option:o_b9c1}} reads the falling ratio backwards; {{option:o_d2e3}} shifts the investor’s risk onto the company. This chapter is an accounting concept exercise, not investment advice."
+  }
+}

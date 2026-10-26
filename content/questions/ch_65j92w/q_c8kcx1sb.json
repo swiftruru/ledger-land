@@ -1,0 +1,72 @@
+{
+  "id": "q_c8kcx1sb",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_kse1q6",
+  "difficulty": 1,
+  "tags": [
+    "basic_figures",
+    "revenue",
+    "accrual"
+  ],
+  "termRefs": [
+    "tm_v3n8q2ye",
+    "tm_r7x2c9fa",
+    "tm_05t9wphy"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "sales": 1800000,
+    "collected": 1200000,
+    "oldAr": 300000
+  },
+  "prompt": {
+    "zh-TW": "晨霧茶行今年賣出了 {{money:vars.sales}} 的茶葉，其中 {{money:vars.collected}} 當場收現、其餘賒帳；另外還收回了去年客戶欠的 {{money:vars.oldAr}}。算指標時，今年的營收（TR）應該是多少？",
+    "en": "Morning Mist Tea sold {{money:vars.sales}} of tea this year, of which {{money:vars.collected}} was paid on the spot and the rest put on account; it also collected {{money:vars.oldAr}} that customers owed from last year. For the ratios, what is this year’s revenue (TR)?"
+  },
+  "options": [
+    {
+      "id": "o_3nh1",
+      "text": {
+        "zh-TW": "{{money:vars.sales}}，也就是今年認列（賣出）的生意",
+        "en": "{{money:vars.sales}}, the sales recognised (goods sold) this year"
+      },
+      "feedback": {
+        "zh-TW": "答對了。營收看的是這一期賣出了多少，不管錢收了沒有；賒帳的部分已經是營收，去年的帳款則是去年的營收。",
+        "en": "Correct. Revenue is what was sold this period, regardless of whether the cash has come in; the part on account is already revenue, and last year’s receivable was last year’s revenue."
+      }
+    },
+    {
+      "id": "o_33t2",
+      "text": {
+        "zh-TW": "{{money:vars.collected}} 加 {{money:vars.oldAr}}，也就是今年實際收到的現金",
+        "en": "{{money:vars.collected}} plus {{money:vars.oldAr}}, the cash actually received this year"
+      },
+      "feedback": {
+        "zh-TW": "你算的是今年收到的現金，那是現金流量表的數字。營收依權責發生制在賣出時認列，和收現的時間無關。",
+        "en": "You have worked out the cash received this year, which is a statement of cash flows figure. Revenue is recognised on the accrual basis when the goods are sold, whatever the timing of the cash."
+      },
+      "misconceptionId": "mc_q3r9"
+    },
+    {
+      "id": "o_tj99",
+      "text": {
+        "zh-TW": "{{money:vars.sales}} 加 {{money:vars.oldAr}}，今年賣出的加上收回的舊帳",
+        "en": "{{money:vars.sales}} plus {{money:vars.oldAr}}, this year’s sales plus the old receivable collected"
+      },
+      "feedback": {
+        "zh-TW": "去年的帳款在去年賣出時就算過營收了，今年收回只是把應收帳款換成現金，不能再算一次。",
+        "en": "Last year’s receivable was counted as revenue when it was sold last year; collecting it now only swaps a receivable for cash and cannot be counted again."
+      },
+      "misconceptionId": "mc_q3r9"
+    }
+  ],
+  "correctOptionId": "o_3nh1",
+  "explanation": {
+    "zh-TW": "四個基本數字裡的營收（TR）是損益表第一列：{{option:o_3nh1}}。它不等於收到的現金，收現的多寡要看現金流量表。算純益率或資產週轉率時，分子分母要用同一期間的數字，例如整年的營收對整年的淨利或年底的資產。",
+    "en": "Revenue (TR), the first of the four basic figures, is the first line of the income statement: {{option:o_3nh1}}. It is not the cash received; for that, look at the statement of cash flows. When working out net profit margin or asset turnover, numerator and denominator must cover the same period, for example a full year’s revenue against the full year’s profit or the year-end assets."
+  }
+}

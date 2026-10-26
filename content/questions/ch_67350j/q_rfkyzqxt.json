@@ -1,0 +1,70 @@
+{
+  "id": "q_rfkyzqxt",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_wt6czr",
+  "difficulty": 2,
+  "tags": [
+    "five_step",
+    "linkage"
+  ],
+  "termRefs": [
+    "tm_ftp19fkf",
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv",
+    "tm_67e7f0mn"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "sale": 42000
+  },
+  "prompt": {
+    "zh-TW": "青苔書店以現金賣出一批書，收到 {{money:vars.sale}}。阿哲說：「這只是一筆賣書，應該只有損益表會變，五步驟不用全部跑。」他的想法哪裡需要修正？",
+    "en": "Moss Bookshop sells a batch of books for {{money:vars.sale}} in cash. Che says: ‘It is just one sale, so only the income statement changes; no need to run all five steps.’ What needs correcting in his thinking?"
+  },
+  "options": [
+    {
+      "id": "o_63dw",
+      "text": {
+        "zh-TW": "一筆現金銷貨會同時改變三張報表，所以五步驟每一步都要看",
+        "en": "A cash sale changes all three statements at once, so every one of the five steps needs looking at"
+      },
+      "feedback": {
+        "zh-TW": "答對了。這筆交易三張表都會動，四個勾稽點都要重新對。收入與成本進損益表，現金、存貨與未分配盈餘進資產負債表，收到的現金進現金流量表的營業活動。",
+        "en": "Correct. All three statements move, so all four check points need re-checking. Revenue and cost go to the income statement; cash, inventories and unappropriated retained earnings to the balance sheet; and the cash received to operating activities on the statement of cash flows."
+      }
+    },
+    {
+      "id": "o_dxf6",
+      "text": {
+        "zh-TW": "他說得對，現金銷貨只影響損益表，只要跑步驟①就夠",
+        "en": "He is right: a cash sale only affects the income statement, so step 1 is enough"
+      },
+      "feedback": {
+        "zh-TW": "想想收到的現金去了哪裡：它會出現在資產負債表的現金，也會出現在現金流量表的營業活動。一筆交易幾乎不可能只動一張表。",
+        "en": "Think about where the cash went: it appears in cash on the balance sheet and in operating activities on the statement of cash flows. A transaction almost never touches only one statement."
+      },
+      "misconceptionId": "mc_4yen"
+    },
+    {
+      "id": "o_wc73",
+      "text": {
+        "zh-TW": "五步驟是填寫三張報表的順序，記完帳之後就不需要了",
+        "en": "The five steps are the order for filling in the statements and are not needed once the books are posted"
+      },
+      "feedback": {
+        "zh-TW": "課堂上確實會沿著這個順序填表，這一半沒錯。但五步驟更重要的用途，是填完之後逐一核對三張表彼此對不對得起來；記完帳之後正需要它，不是填完就用不到了。",
+        "en": "Filling the statements in this order is indeed how the course does it, so that half is fine. But the bigger job of the five steps is checking, once everything is filled in, that the three statements agree with one another; that is exactly when you need them, not when you can drop them."
+      },
+      "misconceptionId": "mc_6284"
+    }
+  ],
+  "correctOptionId": "o_63dw",
+  "explanation": {
+    "zh-TW": "{{option:o_63dw}}。這筆 {{money:vars.sale}} 的現金銷貨讓損益表多了收入與成本、資產負債表的現金增加而存貨減少、現金流量表的營業活動多了一筆收現。正因為一筆交易會牽動三張表，才需要用五步驟把它們一一對過。",
+    "en": "{{option:o_63dw}}. This {{money:vars.sale}} cash sale adds revenue and cost to the income statement, raises cash and lowers inventories on the balance sheet, and adds a receipt under operating activities on the statement of cash flows. Because one transaction pulls on all three statements, the five steps are needed to check them one by one."
+  }
+}

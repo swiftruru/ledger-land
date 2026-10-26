@@ -1,0 +1,86 @@
+{
+  "id": "q_n86ta2xk",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_3ddr90",
+  "difficulty": 2,
+  "tags": [
+    "working_capital",
+    "credit_purchase"
+  ],
+  "termRefs": [
+    "tm_n7v3k8pq",
+    "tm_a3p9y6kc",
+    "tm_e61ht6yh",
+    "tm_z971merj",
+    "tm_bpt2kp5c",
+    "tm_dc0p0nrv"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_p6m0q7"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 90000,
+        "share_capital": 90000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.purchase_inventory_credit",
+        "params": {
+          "amount": 70000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_inventory",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_accounts_payable",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_pretax_income",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "速達機車行向零件商賒購一批輪胎與機油，共 {{money:e1.amount}}，約定下個月付款。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "Swift Scooter Repairs buys tyres and engine oil worth {{money:e1.amount}} from a parts dealer on credit, payable next month. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "存貨增加 {{money:e1.amount}}，應付帳款也增加同樣的金額。東西還沒賣出去，所以稅前淨利不變；錢也還沒付，所以{{term:tm_e61ht6yh}}不變。間接法裡「{{term:tm_bpt2kp5c}}」的減項和「{{term:tm_dc0p0nrv}}」的加項剛好互相抵銷。",
+    "en": "Inventories rise by {{money:e1.amount}} and trade payables rise by the same amount. Nothing has been sold yet, so profit before tax is unchanged; nothing has been paid yet, so {{term:tm_e61ht6yh}} is unchanged too. In the indirect method the deduction on the {{term:tm_bpt2kp5c}} line and the addition on the {{term:tm_dc0p0nrv}} line cancel each other out."
+  }
+}

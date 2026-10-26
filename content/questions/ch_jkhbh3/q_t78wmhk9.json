@@ -1,0 +1,84 @@
+{
+  "id": "q_t78wmhk9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_3ddr90",
+  "difficulty": 3,
+  "tags": [
+    "working_capital",
+    "pay_payables"
+  ],
+  "termRefs": [
+    "tm_a3p9y6kc",
+    "tm_c4sh8k2p",
+    "tm_e61ht6yh",
+    "tm_z971merj"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_yksbqh"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 150000,
+        "inventory": 70000,
+        "accounts_payable": 70000,
+        "share_capital": 150000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.pay_all_payables",
+        "params": {}
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_accounts_payable",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "is_pretax_income",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "月初，速達機車行把上個月賒購零件欠零件商的貨款一次付清。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "At the start of the month, Swift Scooter Repairs pays the parts dealer everything it owed for last month’s credit purchases. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金與應付帳款各減少 {{money:e1.amount}}。零件早在上個月就入帳了，這筆付款不是新的費用，所以稅前淨利不變；但現金是這個月才真的付出去，所以{{term:tm_e61ht6yh}}這時候才減少。利益和現金，常常不在同一個月發生。",
+    "en": "Cash and trade payables each fall by {{money:e1.amount}}. The parts were recorded last month, so this payment is not a new expense and profit before tax is unchanged; but the cash only leaves now, so {{term:tm_e61ht6yh}} falls this month. Profit and cash often happen in different months."
+  }
+}

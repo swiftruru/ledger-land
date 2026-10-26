@@ -1,0 +1,55 @@
+{
+  "id": "ch_67350j",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "order": 6,
+  "scope": "core",
+  "examScope": "midterm",
+  "title": {
+    "zh-TW": "五步驟勾稽",
+    "en": "The five-step check"
+  },
+  "summary": {
+    "zh-TW": "記完一筆交易之後，怎麼確定三張報表彼此對得起來？跟著青苔書店與北風單車行的帳，練習先看五層利益，再逐一核對四個勾稽點，並在對不上時找出最上游出錯的那一格。",
+    "en": "Once a transaction is recorded, how do you know the three statements still agree with one another? Follow the books of Moss Bookshop and North Wind Cycles: look at the five profit levels first, then work through the four check points, and when something is off, find the cell furthest upstream that went wrong."
+  },
+  "objectiveIds": [
+    "obj_wt6czr",
+    "obj_f5en1x",
+    "obj_8jjgc4",
+    "obj_pynkwp"
+  ],
+  "levelIds": [
+    "lv_a94zmqx8",
+    "lv_gtpyj3s8",
+    "lv_ths19g8w",
+    "lv_jq2z0cpt"
+  ],
+  "prerequisites": [
+    "ch_s0525x"
+  ],
+  "badge": {
+    "icon": "check-square",
+    "title": {
+      "zh-TW": "四燈全亮",
+      "en": "Four green lights"
+    }
+  },
+  "termRefs": [
+    "tm_chbctb2d",
+    "tm_ftp19fkf",
+    "tm_z971merj",
+    "tm_12k2yq6k",
+    "tm_4c6v99nn",
+    "tm_t7a3s6wb",
+    "tm_ec80jjev"
+  ],
+  "chapterEndLinks": [
+    {
+      "kind": "lab",
+      "story": "story_ywv2dy",
+      "step": "st_98tppx"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "id": "q_hcgqc0me",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -55,7 +55,7 @@
   },
   "prompt": {
     "zh-TW": "風行腳踏車行這一期的現金流量表最後一列是「期末現金及約當現金餘額」。這個數字會原封不動地出現在資產負債表的哪一列？請在資產負債表上點出來。",
-    "en": "The last line of Breeze Bicycles' statement of cash flows for the period is \"cash and cash equivalents at the end of the period\". On which line of the balance sheet does the very same figure appear? Tap that line on the balance sheet."
+    "en": "The last line of Breeze Bicycles’ statement of cash flows for the period is ‘cash and cash equivalents at the end of the period’. On which line of the balance sheet does the very same figure appear? Tap that line on the balance sheet."
   },
   "explanation": {
     "zh-TW": "現金流量表從期初現金出發，加上三類活動的現金流量，算到期末現金；這個期末現金就是資產負債表第一列的現金及約當現金。兩張表在這裡握手。",

@@ -2,22 +2,53 @@
   "id": "tm_dsfjhrfw",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "利息費用(+)", "en": "Interest expense (+)" },
+  "label": {
+    "zh-TW": "利息費用(+)",
+    "en": "Interest expense (+)"
+  },
   "teacherLabel": "支付利息(+)",
   "currentTwLabel": "利息費用",
   "ifrsEnglish": "Interest expense",
-  "aliases": { "zh-TW": ["支付利息(+)"], "en": [] },
-  "flags": ["japanese"],
+  "aliases": {
+    "zh-TW": [
+      "支付利息(+)"
+    ],
+    "en": []
+  },
+  "flags": [
+    "japanese"
+  ],
   "confidence": "high",
-  "pendingRefs": ["T11"],
+  "pendingRefs": [
+    "T11"
+  ],
+  "ifrsBasis": "IAS 7.20",
   "note": {
-    "zh-TW": "課程的列名「支付利息(+)」直譯自日文支払利息；網站主要顯示改為「利息費用(+)」，課程原字收進別名（設計說明見 T11）。",
-    "en": "The course label is a direct translation of the Japanese for interest expense; the site shows interest expense (+) and keeps the course wording as an alias (see the design note T11)."
+    "zh-TW": "課程的列名「支付利息(+)」直譯自日文支払利息，容易被誤會成付現；網站主要顯示改為「利息費用(+)」，課程原字收進別名。",
+    "en": "The course label is a direct translation of the Japanese for interest expense and reads like a cash payment; the site shows interest expense (+) and keeps the course wording as an alias."
   },
   "definition": {
-    "zh-TW": "間接法的加回列：先把本期的利息費用加回稅前淨利，再在下面的利息支出列扣掉實際付出的利息。這裡指的是費用，不是付現。",
-    "en": "An add-back line in the indirect method: the period's interest expense is added back to profit before tax, and the interest actually paid is deducted further down. The line means the expense, not the payment."
-  }
+    "zh-TW": "間接法裡的加回項：本期認列的利息費用。\n\n課程從稅前淨利起算，而稅前淨利已經扣掉利息費用；加回之後，實際付出去的利息再另外在「支付利息(-)」列扣除，這樣才看得出本業本身產生多少現金。",
+    "en": "An add-back in the indirect method: the interest expense recognised for the period.\n\nThe course starts from profit before tax, which is already after interest expense; adding it back and then deducting the cash actually paid on the separate interest paid line shows how much cash the business itself generated."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動區，折舊費用(+) 的下一列。金額等於損益表營業外支出裡的利息費用。課程原字「支付利息(+)」直譯自日文，容易被誤會成付現，網站改顯示「利息費用(+)」，原字收進別名。",
+    "en": "Where it sits: operating activities in the statement of cash flows, right after depreciation (+). The amount equals interest expense under non-operating expenses on the income statement. The course wording, a direct translation from Japanese, reads like a cash payment, so the site shows interest expense (+) and keeps the original as an alias."
+  },
+  "misconception": {
+    "zh-TW": "以為這一列和「支付利息(-)」是同一筆錢付了兩次。前者是把費用加回、後者是扣掉真正付的現金；利息全部付清時兩個金額相等、一加一減剛好抵銷，只是為了讓小計單獨呈現本業的現金。",
+    "en": "Thinking this line and interest paid (-) count the same money twice. The first adds the expense back, the second deducts the cash actually paid; when all interest has been paid the two amounts are equal and cancel out, so that the subtotal shows the cash from operations on its own."
+  },
+  "ifrsNote": {
+    "zh-TW": "IAS 7.20 的間接法從損益起算，再調整非現金項目與營運資金的變動；課程從稅前淨利起算，所以要先加回利息費用。IAS 7.33 允許支付的利息列營業或籌資活動，課程列在營業活動；台灣 {{raw:2027}} 會計年度以前適用的現金流量表格式，同樣從稅前淨利起算並加回利息費用。IFRS 18 修正 IAS 7 之後，間接法改從營業損益起算；一般企業的利息費用不在營業損益裡，支付的利息也改列籌資活動，所以不再有這一列加回。IFRS 18 國際上自 {{raw:2027}} 年 1 月 1 日起生效，台灣自 {{raw:2028}} 會計年度起適用（現行規定，查證於 {{raw:2026-10-24}}）。",
+    "en": "Under IAS 7.20 the indirect method starts from profit or loss and adjusts for non-cash items and working capital movements; the course starts from profit before tax, so interest expense is added back first. IAS 7.33 allows interest paid to be classified as operating or financing, and the course uses operating; the statement of cash flows format Taiwan applies up to the {{raw:2027}} financial year likewise starts from profit before tax and adds back interest expense. Once IFRS 18 amends IAS 7, the indirect method starts from operating profit or loss; for most entities interest expense is not part of operating profit or loss and interest paid moves to financing activities, so this add-back disappears. IFRS 18 is effective internationally from 1 January {{raw:2027}}, and Taiwan applies it from the {{raw:2028}} financial year (current rules, checked on {{raw:2026-10-24}})."
+  },
+  "related": [
+    "tm_k6t2e9wr",
+    "tm_y7a34vmk",
+    "tm_85pkjrv0",
+    "tm_mcjk5sza"
+  ]
 }

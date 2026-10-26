@@ -1,6 +1,6 @@
 {
   "id": "q_c7qw338p",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -22,7 +22,7 @@
   },
   "prompt": {
     "zh-TW": "晴川花坊替一場婚禮布置會場，價值 {{money:vars.order}}，新人說下個月才付款。花坊這個月的損益表上，這筆生意怎麼呈現？",
-    "en": "Clearwater Florist decorates a wedding venue for {{money:vars.order}}, and the couple will pay next month. How does this job appear on the florist's income statement for this month?"
+    "en": "Clearwater Florist decorates a wedding venue for {{money:vars.order}}, and the couple will pay next month. How does this job appear on the florist’s income statement for this month?"
   },
   "options": [
     {

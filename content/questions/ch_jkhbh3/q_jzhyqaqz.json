@@ -1,0 +1,87 @@
+{
+  "id": "q_jzhyqaqz",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_8ypaqg",
+  "difficulty": 2,
+  "tags": [
+    "cash_flow_activity",
+    "repayment",
+    "interest"
+  ],
+  "termRefs": [
+    "tm_vk8v09cy",
+    "tm_e61ht6yh",
+    "tm_y7a34vmk",
+    "tm_s5b8r3hd"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_a13q1h"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 300000,
+        "inventory": 50000,
+        "short_term_borrowings": 120000,
+        "share_capital": 230000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.repay_all_short_term_loans_with_interest",
+        "params": {
+          "interest": 6000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "cf_financing_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "cf_investing_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_short_term_borrowings",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "藍鯨水族把向銀行借的短期借款一次還清，連同利息 {{money:e1.interest}} 一起付掉。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "Blue Whale Aquatics repays its short-term bank loan in full and pays the interest of {{money:e1.interest}} at the same time. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "一筆付款拆成兩類。還掉的本金 {{money:e1.principal}} 是還給資金提供者（銀行）的錢，讓{{term:tm_vk8v09cy}}減少。利息 {{money:e1.interest}} 是借錢的代價，課程模板把它列在營業活動的{{term:tm_y7a34vmk}}這一列（現行準則也允許列籌資，本課選營業；IFRS 18 適用後一般企業要改列籌資，詳見名詞卡），所以{{term:tm_e61ht6yh}}也減少。沒有買賣長期資產，投資活動不動；短期借款在資產負債表上歸零。",
+    "en": "One payment splits into two kinds. The principal of {{money:e1.principal}} is repaid to a provider of funds, the bank, so {{term:tm_vk8v09cy}} falls. The interest of {{money:e1.interest}} is the price of borrowing, and the course template places it on the {{term:tm_y7a34vmk}} line under operating activities (the standard currently also allows financing and the course chooses operating; once IFRS 18 applies, most entities will have to use financing, as the term card explains), so {{term:tm_e61ht6yh}} falls as well. No long-term asset was bought or sold, so investing is untouched, and short-term borrowings on the balance sheet drop to nil."
+  }
+}

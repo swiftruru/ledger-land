@@ -1,6 +1,6 @@
 {
   "id": "q_265y2jqn",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -18,18 +18,18 @@
   "type": "single_choice",
   "prompt": {
     "zh-TW": "風行腳踏車行的損益表標題寫著「某年 1 月 1 日至 12 月 31 日」，資產負債表標題卻只寫「某年 12 月 31 日」。為什麼兩張表的標題不一樣？",
-    "en": "Breeze Bicycles' income statement is headed \"1 January to 31 December\", but its balance sheet is headed only \"31 December\". Why are the two headings different?"
+    "en": "Breeze Bicycles’ income statement is headed ‘1 January to 31 December’, but its balance sheet is headed only ‘31 December’. Why are the two headings different?"
   },
   "options": [
     {
       "id": "o_0h1j",
       "text": {
         "zh-TW": "損益表累計一段期間的收入與費用，資產負債表只描述某一天的狀況",
-        "en": "The income statement accumulates a period's revenue and expenses, while the balance sheet describes one day"
+        "en": "The income statement accumulates a period’s revenue and expenses, while the balance sheet describes one day"
       },
       "feedback": {
         "zh-TW": "答對了。一張像一段影片，一張像一張照片。",
-        "en": "That's right. One is like a video of the period, the other like a photograph of one day."
+        "en": "That’s right. One is like a video of the period, the other like a photograph of one day."
       }
     },
     {

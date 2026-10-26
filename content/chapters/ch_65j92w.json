@@ -1,0 +1,51 @@
+{
+  "id": "ch_65j92w",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "order": 7,
+  "scope": "core",
+  "examScope": "midterm",
+  "title": {
+    "zh-TW": "杜邦與績效指標",
+    "en": "DuPont and performance indicators"
+  },
+  "summary": {
+    "zh-TW": "從報表上拿出四個基本數字：營收、淨利、資產、權益。先算出純益率、資產週轉率與權益倍數，再把 ROE 拆開，看公司是靠賺得多、轉得快，還是借得多。最後認識人均營收，以及研發、資本支出、行銷相關的部門指標。",
+    "en": "Take four basic figures from the statements (revenue, profit, assets and equity) and work out net profit margin, asset turnover and the equity multiplier. Then split ROE to see whether a company earns a lot per sale, turns its assets quickly or borrows more, and finish with revenue per employee and the research, capital spending and marketing indicators."
+  },
+  "objectiveIds": [
+    "obj_kse1q6",
+    "obj_81e8f8",
+    "obj_m3fgww",
+    "obj_2a6vbq",
+    "obj_v29ayq"
+  ],
+  "levelIds": [
+    "lv_hk19p9x3",
+    "lv_p4rqx88x",
+    "lv_s454v0q3",
+    "lv_bh8mzn0p"
+  ],
+  "prerequisites": [
+    "ch_s0525x",
+    "ch_67350j"
+  ],
+  "badge": {
+    "icon": "tree-structure",
+    "title": {
+      "zh-TW": "拆開 ROE",
+      "en": "ROE, taken apart"
+    }
+  },
+  "termRefs": [
+    "tm_1ebm48ca",
+    "tm_0k8vegyr",
+    "tm_r0a5t3kq",
+    "tm_92yzx0fn",
+    "tm_2cqt9cfd",
+    "tm_2ggtxnaz",
+    "tm_9e1rb64c",
+    "tm_g50575m9"
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "chapterId": "ch_x09nq2",
+  "items": [
+    {
+      "id": "obj_1m58qq",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_x09nq2",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能說明資本公積是什麼、主要從哪裡來（股東投入超過面額的部分），以及它和股本、未分配盈餘的差別",
+        "en": "Explain what capital surplus is, where it mainly comes from (shareholder contributions above par value), and how it differs from share capital and unappropriated retained earnings"
+      },
+      "skill": "identify",
+      "misconceptions": [
+        {
+          "id": "mc_ern2",
+          "text": {
+            "zh-TW": "把資本公積當成公司賺來的盈餘",
+            "en": "Treating capital surplus as profit the company earned"
+          }
+        },
+        {
+          "id": "mc_csh4",
+          "text": {
+            "zh-TW": "以為資本公積是一筆放在銀行、隨時可用的現金",
+            "en": "Thinking capital surplus is a pile of cash sitting in the bank"
+          }
+        },
+        {
+          "id": "mc_par6",
+          "text": {
+            "zh-TW": "以為發行溢價要全部記在股本",
+            "en": "Thinking the whole issue price, including the premium, is recorded as share capital"
+          }
+        },
+        {
+          "id": "mc_01d8",
+          "text": {
+            "zh-TW": "以為處分固定資產的利益現在仍列資本公積",
+            "en": "Thinking a gain on disposal of property, plant and equipment still goes to capital surplus today"
+          }
+        }
+      ],
+      "plannedQuestions": 4,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false"
+      ],
+      "termRefs": [
+        "tm_yka0razf",
+        "tm_5e3py55a",
+        "tm_4c6v99nn"
+      ],
+      "pendingRefs": [
+        "T16"
+      ]
+    },
+    {
+      "id": "obj_qrvy9c",
+      "rev": 2,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_x09nq2",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能說明資本公積依現行公司法的用途以彌補虧損為主、發放新股或現金有條件，並知道課程清單是舊制分類，「資本公積÷股本」也不是標準指標",
+        "en": "Explain that under the current Company Act capital surplus is used mainly to offset losses and that distributing shares or cash from it is conditional, and know that the course list is an older classification and that the capital-surplus-to-share-capital ratio is not a standard measure"
+      },
+      "skill": "interpret",
+      "misconceptions": [
+        {
+          "id": "mc_dvd3",
+          "text": {
+            "zh-TW": "以為資本公積可以像盈餘一樣隨時配發現金股利",
+            "en": "Thinking capital surplus can be paid out as cash dividends at will, like retained earnings"
+          }
+        },
+        {
+          "id": "mc_std5",
+          "text": {
+            "zh-TW": "以為「資本公積÷股本」是標準的估值指標",
+            "en": "Thinking the capital-surplus-to-share-capital ratio is a standard valuation measure"
+          }
+        },
+        {
+          "id": "mc_rct7",
+          "text": {
+            "zh-TW": "以為資本公積多代表公司最近很賺錢",
+            "en": "Thinking a large capital surplus means the company has been very profitable recently"
+          }
+        }
+      ],
+      "plannedQuestions": 4,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_yka0razf",
+        "tm_qpw1px47",
+        "tm_4c6v99nn"
+      ],
+      "pendingRefs": [
+        "T16",
+        "T17"
+      ]
+    },
+    {
+      "id": "obj_cqxamf",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_x09nq2",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能說明融資買股票（證券信用交易）的基本機制：借錢買股、擔保品、維持率與追繳，並知道它是投資人與券商之間的事，與公司的會計帳無關",
+        "en": "Explain the basics of buying shares on margin: the loan, the collateral, the maintenance ratio and margin calls, and know that it is between the investor and the broker and does not touch the company’s accounts"
+      },
+      "skill": "judge",
+      "misconceptions": [
+        {
+          "id": "mc_bks1",
+          "text": {
+            "zh-TW": "以為投資人融資買股票會出現在公司的資產負債表上",
+            "en": "Thinking an investor’s margin loan appears on the company’s balance sheet"
+          }
+        },
+        {
+          "id": "mc_saf9",
+          "text": {
+            "zh-TW": "以為維持率越低代表借得越少、越安全",
+            "en": "Thinking a lower maintenance ratio means less borrowing and more safety"
+          }
+        },
+        {
+          "id": "mc_s1v2",
+          "text": {
+            "zh-TW": "把融資維持率當成公司的償債能力指標",
+            "en": "Treating the margin maintenance ratio as a measure of the company’s solvency"
+          }
+        }
+      ],
+      "plannedQuestions": 5,
+      "suggestedTypes": [
+        "single_choice",
+        "true_false",
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_whmbqrr8",
+        "tm_n70k1r9t"
+      ],
+      "pendingRefs": [
+        "T18"
+      ]
+    }
+  ]
+}

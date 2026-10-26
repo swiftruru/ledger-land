@@ -2,19 +2,41 @@
   "id": "tm_s0b4f89c",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "短期借款收入(+)", "en": "Proceeds from short-term borrowings (+)" },
+  "label": {
+    "zh-TW": "短期借款收入(+)",
+    "en": "Proceeds from short-term borrowings (+)"
+  },
   "teacherLabel": "短期借款收入(+)",
   "currentTwLabel": "短期借款增加",
   "ifrsEnglish": "Proceeds from short-term borrowings",
-  "aliases": { "zh-TW": ["短期借款增加"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "短期借款增加"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 7.17(c)",
   "definition": {
-    "zh-TW": "向銀行或他人借入短期款項時收到的現金。它讓現金與負債同時增加，不是收入。",
-    "en": "Cash received when the company takes out short-term borrowings. It raises cash and liabilities together; it is not revenue."
-  }
+    "zh-TW": "向銀行等債權人借入一年內到期的借款時收到的現金。\n\n這是籌資活動的流入：現金與短期借款同時增加，不是收入。",
+    "en": "Cash received when the company takes out a loan due within a year.\n\nIt is a financing inflow: cash and short-term borrowings rise together, and none of it is revenue."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表籌資活動區的第一列。故事裡向銀行借款的那一筆就填在這裡；之後還款時填在短期借款返還(-)，利息則列營業活動的支付利息(-)。現行報表稱短期借款增加。",
+    "en": "Where it sits: the first line of financing activities in the statement of cash flows. The bank loan in the story goes here; the later repayment goes on repayment of short-term borrowings (-), and the interest goes on interest paid (-) under operating activities. Current statements call it an increase in short-term borrowings."
+  },
+  "misconception": {
+    "zh-TW": "把借款收到的錢當成營業活動的現金流入。它來自債權人而不是客戶，放進營業活動會讓本業看起來比實際上更會賺現金。",
+    "en": "Treating loan proceeds as an operating inflow. The money comes from a lender, not from customers; putting it in operating activities makes the business look better at generating cash than it is."
+  },
+  "related": [
+    "tm_s5b8r3hd",
+    "tm_vgf3h5z9",
+    "tm_fk8yqnyt",
+    "tm_f9a4c6md"
+  ]
 }

@@ -1,0 +1,22 @@
+{
+  "id": "lv_68b6mgvq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "order": 3,
+  "title": {
+    "zh-TW": "N/A 與 0 不一樣",
+    "en": "N/A is not zero"
+  },
+  "objectiveIds": [
+    "obj_fyd5cv"
+  ],
+  "questionIds": [
+    "q_gn7yd90q",
+    "q_7h5m745x",
+    "q_h3bdd027",
+    "q_537c4nzg",
+    "q_7g43p7d2"
+  ]
+}

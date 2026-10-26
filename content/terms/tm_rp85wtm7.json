@@ -2,7 +2,7 @@
   "id": "tm_rp85wtm7",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "用品盤存",
@@ -23,8 +23,20 @@
     "en": "An extension account added by the site. In practice a large stock of unused supplies at period end can be recorded as an asset; the course expenses supplies directly because the amounts are small."
   },
   "definition": {
-    "zh-TW": "買進來還沒用完的事務用品，例如紙張與文具。本課在買進時就把用品全部列為費用，這個科目只用在延伸題。",
-    "en": "Office supplies bought but not yet used, such as paper and stationery. The course expenses supplies when they are bought, so this account appears only in extension exercises."
+    "zh-TW": "期末盤點後還沒用完的事務用品，以成本列為流動資產。\n\n它和事務用品費是一體兩面：買進的用品用掉的部分是費用，還沒用掉的部分可以列為用品盤存。",
+    "en": "Office supplies still unused at the period-end count, recorded at cost as a current asset.\n\nIt is the other side of office supplies expense: the supplies used up are an expense, while the unused remainder may be recorded as supplies on hand."
   },
-  "accountRef": "supplies_on_hand"
+  "example": {
+    "zh-TW": "位置：資產負債表流動資產，預設停用。課程把事務用品全額費用化，所以故事不會用到它。期末調整時用品盤存增加、事務用品費減少。",
+    "en": "Where it sits: current assets on the balance sheet, disabled by default. The course expenses all office supplies, so the story never uses it. At the period-end adjustment this asset rises and office supplies expense falls."
+  },
+  "misconception": {
+    "zh-TW": "以為沒用完的用品一定要列成資產，否則就是做錯。金額不重大時直接列費用是常見的簡化做法。",
+    "en": "Believing unused supplies must always be shown as an asset or the accounts are wrong. Expensing them is a common simplification when the amount is immaterial."
+  },
+  "accountRef": "supplies_on_hand",
+  "related": [
+    "tm_24scevxv",
+    "tm_n7v3k8pq"
+  ]
 }

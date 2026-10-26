@@ -1,0 +1,84 @@
+{
+  "id": "q_vrbjkt3v",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_qrvy9c",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "capital_surplus",
+    "judgment"
+  ],
+  "termRefs": [
+    "tm_yka0razf",
+    "tm_4c6v99nn"
+  ],
+  "scored": false,
+  "vars": {
+    "loss": 600000,
+    "cs": 2000000
+  },
+  "prompt": {
+    "zh-TW": "暖木家具今年小虧 {{money:vars.loss}}；以前年度沒有留下盈餘，也沒有提列盈餘公積，這筆虧損就是帳上的待彌補虧損。公司另有資本公積 {{money:vars.cs}}。董事會提出三個做法，三個都說得通，你會支持哪一個？",
+    "en": "Warm Timber Furniture made a small loss of {{money:vars.loss}} this year. Earlier years left no profit behind and no legal or special reserve was set aside, so the loss stands as an accumulated deficit. The company also has capital surplus of {{money:vars.cs}}. The board proposes three courses of action, all defensible. Which would you support?"
+  },
+  "options": [
+    {
+      "id": "o_d7e8",
+      "text": {
+        "zh-TW": "用資本公積彌補這筆虧損",
+        "en": "Use capital surplus to offset the loss"
+      },
+      "upside": {
+        "zh-TW": "資產負債表上不再有累積虧損，對銀行與供應商的觀感較好；這是公司法允許的用途，而且公司沒有盈餘公積可以先用。",
+        "en": "The balance sheet no longer shows an accumulated deficit, which looks better to banks and suppliers; it is a use the Company Act permits, and the company has no surplus reserves to use first."
+      },
+      "downside": {
+        "zh-TW": "資本公積減少，日後想用它撥充資本的空間變小；虧損的原因也沒有因此解決。",
+        "en": "Capital surplus shrinks, leaving less room to capitalise it later; and the cause of the loss is not addressed."
+      }
+    },
+    {
+      "id": "o_f9g1",
+      "text": {
+        "zh-TW": "虧損先留在未分配盈餘，等明年盈餘自己補回來",
+        "en": "Leave the loss in unappropriated retained earnings and let next year’s profit cover it"
+      },
+      "upside": {
+        "zh-TW": "保留資本公積的彈性；如果明年確實轉盈，報表自然恢復，不必動用股東投入的資本。",
+        "en": "Keeps the flexibility of capital surplus; if next year does turn profitable, the statements recover on their own without touching contributed capital."
+      },
+      "downside": {
+        "zh-TW": "明年不一定轉盈；帳上一直掛著累積虧損，股利分配也會受限。",
+        "en": "Next year may not be profitable; an accumulated deficit stays on the books and restricts dividend distribution."
+      }
+    },
+    {
+      "id": "o_h2j3",
+      "text": {
+        "zh-TW": "一邊用資本公積彌補虧損，一邊檢討虧損來源並調整經營",
+        "en": "Offset the loss with capital surplus and at the same time review the cause of the loss and adjust operations"
+      },
+      "upside": {
+        "zh-TW": "同時處理報表與經營兩個層面，對外觀感與內部改善並行。",
+        "en": "Addresses both the statements and the business at once, pairing outward appearance with internal improvement."
+      },
+      "downside": {
+        "zh-TW": "動用了資本公積，而且經營調整需要時間與成本，短期內未必看得到效果。",
+        "en": "Capital surplus is used up, and operational changes take time and money, with results that may not show quickly."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "彌補虧損是資本公積最沒有爭議的用途，但「要不要用」仍然是經營判斷：你最在意報表乾淨，會選彌補；最在意保留彈性，會選等待；最在意根本原因，會選第三個。依公司法第 239 條，彌補虧損要先用盈餘公積，仍不足時才能動用資本公積；這家公司沒有盈餘公積，所以可以直接討論資本公積（現行規定，查證於 {{raw:2026-10-24}}）。無論選哪一個，資本公積都不是公司「賺來」的錢，用掉之後不會再自動長回來。",
+    "en": "Offsetting losses is the least controversial use of capital surplus, yet whether to do it remains a management judgement: if a clean balance sheet matters most, offset; if flexibility matters most, wait; if the root cause matters most, choose the third. Under Article 239 of the Company Act, losses are offset from surplus reserves first and capital surplus is drawn on only if they fall short; this company has no surplus reserves, so capital surplus can be discussed directly (current rules, checked on {{raw:2026-10-24}}). Whichever you choose, capital surplus is not money the company earned, and once used it does not grow back by itself."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

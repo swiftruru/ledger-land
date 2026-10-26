@@ -1,0 +1,42 @@
+{
+  "id": "ch_k9548t",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "order": 13,
+  "scope": "extension",
+  "examScope": "not_in_exam",
+  "title": {
+    "zh-TW": "利害關係人觀點",
+    "en": "Stakeholder perspectives"
+  },
+  "summary": {
+    "zh-TW": "同一份財報，股東、債權人、員工與客戶各自在意的數字不一樣。本章全部是不計分的取捨思辨題：先選一個立場，再看三個方案各自的得失。解說是網站的觀點，沒有標準答案。",
+    "en": "The same set of financial statements means different things to shareholders, creditors, employees and customers. Every question in this chapter is an unscored judgement question: pick a position, then read the gains and costs of all three options. The commentary is the site’s own view; there is no single right answer."
+  },
+  "objectiveIds": [
+    "obj_xkyrq9",
+    "obj_bkfrmc",
+    "obj_xt5tdk"
+  ],
+  "levelIds": [
+    "lv_3cqx05m1",
+    "lv_sf2gp4d7"
+  ],
+  "prerequisites": [
+    "ch_m2t7q4"
+  ],
+  "badge": {
+    "icon": "users-three",
+    "title": {
+      "zh-TW": "換位看報表",
+      "en": "Statements from every seat"
+    }
+  },
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_n4e8t2jy",
+    "tm_67e7f0mn",
+    "tm_sf72dfsv"
+  ]
+}

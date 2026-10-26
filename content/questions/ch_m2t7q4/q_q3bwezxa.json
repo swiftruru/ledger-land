@@ -1,6 +1,6 @@
 {
   "id": "q_q3bwezxa",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -29,7 +29,7 @@
       },
       "feedback": {
         "zh-TW": "答對了。損益表把一段期間的收入與費用加總，最後得到本期淨利。",
-        "en": "That's right. The income statement totals a period's revenue and expenses and ends at profit for the period."
+        "en": "That’s right. The income statement totals a period’s revenue and expenses and ends at profit for the period."
       }
     },
     {
@@ -52,7 +52,7 @@
       },
       "feedback": {
         "zh-TW": "現金流量表說的是現金怎麼進出。賒銷賺到的錢還沒收到，就不會出現在這裡，所以它回答不了「賺了多少」。",
-        "en": "The statement of cash flows shows how cash moved. Money earned on credit but not yet collected does not appear there, so it cannot answer \"how much was earned\"."
+        "en": "The statement of cash flows shows how cash moved. Money earned on credit but not yet collected does not appear there, so it cannot answer ‘how much was earned’."
       },
       "misconceptionId": "mc_7hx8"
     }
@@ -60,6 +60,6 @@
   "correctOptionId": "o_empy",
   "explanation": {
     "zh-TW": "「一段期間賺了多少」是損益表的問題，所以選{{option:o_empy}}。{{option:o_4qx7}}回答的是某一天擁有多少，{{option:o_55zc}}回答的是現金怎麼進出。",
-    "en": "\"How much was earned over a period\" is the income statement's question, so {{option:o_empy}} is right. {{option:o_4qx7}} answers what is owned on a given day, and {{option:o_55zc}} answers how cash moved."
+    "en": "‘How much was earned over a period’ is the income statement’s question, so {{option:o_empy}} is right. {{option:o_4qx7}} answers what is owned on a given day, and {{option:o_55zc}} answers how cash moved."
   }
 }

@@ -1,0 +1,45 @@
+{
+  "id": "q_hs4nb6mv",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "objectiveId": "obj_wb2v68",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "financial_structure"
+  ],
+  "termRefs": [
+    "tm_8eyx0srs",
+    "tm_gt8g4afe",
+    "tm_adqjyfqg",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "ncl": 1260000,
+    "equity": 900000,
+    "ppe": 3000000
+  },
+  "compute": {
+    "ratioRef": "long_term_funds_to_ppe@excel",
+    "measures": {
+      "bs_noncurrent_liabilities": "vars.ncl",
+      "bs_total_equity": "vars.equity",
+      "bs_machinery_net": "vars.ppe"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "海風民宿為了整修房舍買了不少設備，年底機器設備淨額 {{money:vars.ppe}}，非流動負債 {{money:vars.ncl}}，股東權益總額 {{money:vars.equity}}。依課程 Excel 口徑計算{{term:tm_8eyx0srs|plain}}，以百分比作答。算完想一想：這個數字高於或低於 {{percent:1|digits=0}} 各代表什麼？",
+    "en": "Sea Breeze Guesthouse bought a lot of equipment to refurbish its rooms; at year end machinery and equipment (net) is {{money:vars.ppe}}, non-current liabilities are {{money:vars.ncl}} and total equity is {{money:vars.equity}}. Using the course Excel basis, what is the {{term:tm_8eyx0srs|plain}}? Answer as a percentage, then think: what would a figure above or below {{percent:1|digits=0}} mean?"
+  },
+  "explanation": {
+    "zh-TW": "長期資金是 {{money:vars.equity}} 加 {{money:vars.ncl}}，除以 {{money:vars.ppe}}。{{term:tm_8eyx0srs}}低於 {{percent:1|digits=0}}，表示長期資金蓋不滿{{term:tm_gt8g4afe}}，差額只能靠一年內就要還的錢補上；借款到期時，設備卻還要用好幾年，這就是「以短支長」的壓力。",
+    "en": "Long-term funds are {{money:vars.equity}} plus {{money:vars.ncl}}, divided by {{money:vars.ppe}}. A {{term:tm_8eyx0srs}} below {{percent:1|digits=0}} means long-term money does not fully cover the {{term:tm_gt8g4afe}}, so the gap has to be filled with money due within a year; when those loans fall due, the equipment still has years of use left, which is the pressure of funding long-lived assets with short-term money."
+  }
+}

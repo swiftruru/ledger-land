@@ -1,0 +1,79 @@
+{
+  "id": "q_ch8rwkh0",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "ratio_interpret",
+  "ratioRef": "ap_turnover@excel",
+  "objectiveId": "obj_fbc0kw",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_2jyfy0hn",
+    "tm_a3p9y6kc"
+  ],
+  "scored": true,
+  "vars": {
+    "last": 8,
+    "now": 4,
+    "purchases": 2000000,
+    "ap": 500000
+  },
+  "prompt": {
+    "zh-TW": "初陽貿易今年本期進貨 {{money:vars.purchases}}，年底應付帳款 {{money:vars.ap}}；應付款項週轉率（Excel 版）從去年的 {{number:vars.last|digits=2,unit=times}} 降到今年的 {{number:vars.now|digits=2,unit=times}}（見上表），兩年的進貨金額差不多。哪一個判讀最合理？",
+    "en": "First Light Trading made purchases of {{money:vars.purchases}} this year and had trade payables of {{money:vars.ap}} at year end; its payables turnover (Excel version) fell from {{number:vars.last|digits=2,unit=times}} last year to {{number:vars.now|digits=2,unit=times}} this year (see the table above), with purchases about the same. Which reading is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_g038",
+      "text": {
+        "zh-TW": "付款變慢，等於多用了供應商的錢來週轉，但要留意供應商關係",
+        "en": "Paying more slowly means using more of suppliers’ money, but it should watch its supplier relationships"
+      },
+      "feedback": {
+        "zh-TW": "答對了。應付帳款是免息的資金來源，但不是沒有代價：短期內現金壓力減輕，供應商關係與信用條件卻可能變差。",
+        "en": "That’s right. Trade payables are an interest-free source of funding, but not a free one: cash pressure eases in the short term, while supplier relationships and credit terms may deteriorate."
+      }
+    },
+    {
+      "id": "o_qtc6",
+      "text": {
+        "zh-TW": "付款變慢代表供應商給了更多折扣，對公司是好事",
+        "en": "Paying more slowly means suppliers are giving bigger discounts, which is good for the company"
+      },
+      "feedback": {
+        "zh-TW": "折扣通常是給付款快的客戶。付款變慢更可能是公司自己想留住現金，或現金不夠。",
+        "en": "Discounts usually go to customers who pay quickly. Slower payment more likely means the company wants to hold on to cash, or does not have enough."
+      }
+    },
+    {
+      "id": "o_zpcr",
+      "text": {
+        "zh-TW": "週轉率下降，表示年底欠供應商的應付帳款變少了",
+        "en": "A lower turnover means the trade payables owed to suppliers at year end have fallen"
+      },
+      "feedback": {
+        "zh-TW": "你從分母去想，方向對。不過進貨差不多、週轉率下降，表示分母的應付帳款變大，不是變少。",
+        "en": "Thinking about the denominator is the right direction. But with purchases about the same, a lower turnover means payables in the denominator grew, not shrank."
+      }
+    }
+  ],
+  "correctOptionId": "o_g038",
+  "explanation": {
+    "zh-TW": "{{term:tm_2jyfy0hn}}下降代表付款週期拉長。{{option:o_g038}}同時看到好處與代價；{{option:o_qtc6}}把折扣和付款速度的關係弄反，{{option:o_zpcr}}把分母的方向讀錯。",
+    "en": "A falling {{term:tm_2jyfy0hn}} means a longer payment cycle. {{option:o_g038}} sees both the benefit and the cost; {{option:o_qtc6}} gets the link between discounts and payment speed backwards, and {{option:o_zpcr}} misreads the direction of the denominator."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "ap_turnover@excel"
+    ],
+    "measures": {
+      "is_purchases": "vars.purchases",
+      "bs_accounts_payable": "vars.ap"
+    }
+  }
+}

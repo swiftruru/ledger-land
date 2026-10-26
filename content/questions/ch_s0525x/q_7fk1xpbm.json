@@ -1,6 +1,6 @@
 {
   "id": "q_7fk1xpbm",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -19,7 +19,7 @@
   "type": "multi_choice",
   "prompt": {
     "zh-TW": "從營業毛利走到營業利益，中間扣掉的是銷管費用。下列哪些項目屬於日暮文具社的銷管費用？",
-    "en": "Between gross profit and operating profit, distribution costs and administrative expenses are deducted. Which of the following count as Sunset Stationery's distribution costs and administrative expenses?"
+    "en": "Between gross profit and operating profit, distribution costs and administrative expenses are deducted. Which of the following count as Sunset Stationery’s distribution costs and administrative expenses?"
   },
   "options": [
     {

@@ -1,0 +1,66 @@
+{
+  "id": "q_vad0sts4",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_kse1q6",
+  "difficulty": 1,
+  "tags": [
+    "basic_figures",
+    "statements"
+  ],
+  "termRefs": [
+    "tm_t7a3s6wb",
+    "tm_y37ymj9w",
+    "tm_tkj8x3a7",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "TR（營收）、Profit（淨利）、A（資產）、E（權益）四個基本數字裡，哪兩個是從資產負債表拿出來的？",
+    "en": "Of the four basic figures TR (revenue), Profit, A (assets) and E (equity), which two come from the balance sheet?"
+  },
+  "options": [
+    {
+      "id": "o_dx5e",
+      "text": {
+        "zh-TW": "A 與 E：它們是某一天的存量",
+        "en": "A and E: they are balances at a point in time"
+      },
+      "feedback": {
+        "zh-TW": "答對了。資產總計與股東權益總額都寫在資產負債表上，代表某一天擁有多少、股東占多少；營收與淨利則是損益表上一段期間的流量。",
+        "en": "Correct. Total assets and total equity both sit on the balance sheet and describe what is owned, and the owners’ share, on one day; revenue and profit are flows over a period on the income statement."
+      }
+    },
+    {
+      "id": "o_7ect",
+      "text": {
+        "zh-TW": "TR 與 A：營收與資產都是公司「有多少」的數字",
+        "en": "TR and A: revenue and assets are both figures for ‘how much the company has’"
+      },
+      "feedback": {
+        "zh-TW": "資產確實在資產負債表上，但營收是一段期間賣了多少，寫在損益表的第一列，不是某一天的存量。",
+        "en": "Assets are indeed on the balance sheet, but revenue is how much was sold over a period, the first line of the income statement, not a balance at a point in time."
+      },
+      "misconceptionId": "mc_rzbs"
+    },
+    {
+      "id": "o_sm8e",
+      "text": {
+        "zh-TW": "Profit 與 E：淨利會流進權益，所以都在資產負債表上",
+        "en": "Profit and E: profit flows into equity, so both are on the balance sheet"
+      },
+      "feedback": {
+        "zh-TW": "淨利流進未分配盈餘沒錯，但本期淨利這個數字本身是損益表的最後一列。資產負債表上看到的是累積下來的未分配盈餘，不是這一期的淨利。",
+        "en": "Profit does flow into unappropriated retained earnings, but profit for the period itself is the last line of the income statement. What the balance sheet shows is the accumulated retained earnings, not this period’s profit."
+      }
+    }
+  ],
+  "correctOptionId": "o_dx5e",
+  "explanation": {
+    "zh-TW": "{{option:o_dx5e}}。記住兩組來源：TR 與 Profit 來自損益表，是一段期間的流量；A 與 E 來自資產負債表，是期末那一天的存量。網站算 ROE 與 ROA 的簡化版時，A 與 E 都用期末值，並標示「簡化」。",
+    "en": "{{option:o_dx5e}}. Remember the two sources: TR and Profit come from the income statement and are flows over a period; A and E come from the balance sheet and are balances at period end. The site’s simplified ROE and ROA use closing values for A and E and mark them as simplified."
+  }
+}

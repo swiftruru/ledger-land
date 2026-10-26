@@ -2,7 +2,7 @@
   "id": "tm_2jyfy0hn",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
   "label": {
     "zh-TW": "應付款項週轉率",
@@ -26,16 +26,34 @@
     "T27"
   ],
   "note": {
-    "zh-TW": "分子用銷貨成本還是本期進貨，教材與模板不同，網站以兩個版本並列（設計說明見 T27）。介面統一寫「帳」與「週轉率」，模板原字列為別名。",
-    "en": "Whether the numerator is cost of sales or purchases differs between the slides and the template, so the site keeps both as versions (see the design note T27). The interface uses one spelling and keeps the template wording as an alias."
+    "zh-TW": "分子用銷貨成本還是本期進貨，教材與模板不同，網站以兩個版本並列，計分看題目指定的版本。介面統一寫「帳」與「週轉率」，模板原字列為別名。",
+    "en": "Whether the numerator is cost of sales or purchases differs between the slides and the template, so the site keeps both as versions and scoring follows the version the question names. The interface uses one spelling and keeps the template wording as an alias."
   },
   "definition": {
-    "zh-TW": "一年內應付帳款被付清、再重新賒購幾次。次數越多表示付款越快，供應商給的賒帳期越短。",
-    "en": "How many times a year payables are settled and renewed through credit purchases. More turns mean faster payment and shorter credit from suppliers."
+    "zh-TW": "公司在一段期間內把應付帳款付清、再欠新帳的次數。\n\n次數越少，表示公司拖供應商的款拖得越久；次數越多，表示付款越快。",
+    "en": "How many times during a period the company settles its trade payables and runs up new ones.\n\nFewer turns mean suppliers wait longer to be paid; more turns mean faster payment."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表營業成本區的本期進貨（或營業成本小計），分母來自資產負債表的應付帳款。期末應付帳款為 0 時顯示 N/A；本課故事付清貨款之後就是這種情況。",
+    "en": "The numerator comes from purchases (or cost of sales) in the income statement and the denominator from trade payables on the balance sheet. When closing payables are zero the result is N/A, which is the case in the course story once the suppliers have been paid in full."
+  },
+  "misconception": {
+    "zh-TW": "以為週轉率越高越好。付款太快等於放棄供應商給的免費信用；只要不拖到影響關係或錯過折扣，付得慢一點對現金反而有利。",
+    "en": "Assuming a higher payables turnover is better. Paying too quickly gives up the free credit suppliers offer; as long as relationships and discounts are not hurt, slower payment is better for cash."
+  },
+  "formula": {
+    "zh-TW": "應付款項週轉率 ＝ 本期進貨 ÷ 應付帳款（課程版，用期末餘額）。年報版的分子改用營業成本、分母用平均應付款項。兩個版本並列，計分看題目指定的版本。",
+    "en": "Payables turnover = purchases ÷ trade payables (course version, closing balance). The annual report version uses cost of sales as the numerator and average payables as the denominator. Both versions are shown; scoring follows the version named in the question."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "ap_turnover@excel"
+  "ratioRef": "ap_turnover@excel",
+  "related": [
+    "tm_kzkzng5e",
+    "tm_a3p9y6kc",
+    "tm_p7h3c5xq",
+    "tm_2s4hterv"
+  ]
 }

@@ -1,0 +1,38 @@
+{
+  "id": "q_b6h8p6xd",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_qg146a",
+  "difficulty": 1,
+  "tags": [
+    "balance_sheet",
+    "retained_earnings"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_4c6v99nn",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "期末結帳之後，這一期的本期淨利就從帳上消失了，不會出現在資產負債表上。",
+    "en": "Once the books are closed at period end, the profit for the period disappears from the accounts and does not appear on the balance sheet."
+  },
+  "correct": false,
+  "misconceptionId": "mc_245v",
+  "feedbackTrue": {
+    "zh-TW": "損益表的數字確實每一期都會歸零重新開始，這點沒錯。不過本期淨利在歸零前，會先併入右邊股東權益裡的未分配盈餘，以另一個名字留在表上。",
+    "en": "The income statement does indeed start from zero each period, that much is right. But before it resets, profit for the period is folded into unappropriated retained earnings within equity on the right, where it stays under a different name."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。本期淨利會流進未分配盈餘，留在股東權益裡；資產負債表上看得到公司歷年累積賺來還沒分配的錢。",
+    "en": "That is right. Profit for the period flows into unappropriated retained earnings and stays within equity; the balance sheet shows the earnings accumulated over the years and not yet distributed."
+  },
+  "explanation": {
+    "zh-TW": "損益表是一段期間的流量，期末歸零；{{term:tm_sf72dfsv}}是某一天的存量，會把每一期的{{term:tm_n4e8t2jy}}累積在{{term:tm_4c6v99nn}}裡。",
+    "en": "The income statement is a flow over a period and resets at period end; the {{term:tm_sf72dfsv}} is a stock on a given day, and it accumulates each period’s {{term:tm_n4e8t2jy}} in {{term:tm_4c6v99nn}}."
+  }
+}

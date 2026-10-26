@@ -1,0 +1,82 @@
+{
+  "id": "q_ych6rwaf",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_d6egd4",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "current_ratio",
+    "interpret"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_n7v3k8pq",
+    "tm_k52yxb68"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "before": 1.4,
+    "after": 2.6
+  },
+  "prompt": {
+    "zh-TW": "海風衝浪店的流動比率從去年的 {{number:vars.before|digits=2,unit=times}} 升到今年的 {{number:vars.after|digits=2,unit=times}}。阿凱一查，原因是倉庫裡堆了大量賣得很慢的舊款衝浪板。這代表什麼？",
+    "en": "Seabreeze Surf’s current ratio has risen from {{number:vars.before|digits=2,unit=times}} last year to {{number:vars.after|digits=2,unit=times}} this year. Kai looks into it: the reason is a storeroom full of old-model boards that are selling very slowly. What does this tell you?"
+  },
+  "options": [
+    {
+      "id": "o_vps6",
+      "text": {
+        "zh-TW": "比率變高，但多的是賣不動的存貨，償債能力未必變好",
+        "en": "The ratio is higher, but the extra is slow-moving stock, so the ability to pay may not have improved"
+      },
+      "feedback": {
+        "zh-TW": "答對了。流動比率把存貨算成一年內會變現的資產，賣不動的存貨卻付不了帳單。",
+        "en": "Nice work. The current ratio counts inventories as assets that turn into cash within a year, but boards that are not selling cannot pay the bills."
+      },
+      "short": {
+        "zh-TW": "比率變高，但多的是賣不動的存貨",
+        "en": "Higher ratio, but the extra is slow-moving stock"
+      }
+    },
+    {
+      "id": "o_tj8a",
+      "text": {
+        "zh-TW": "流動比率越高越好，所以店的財務狀況一定變好了",
+        "en": "A higher current ratio is always better, so the shop must be in better shape"
+      },
+      "feedback": {
+        "zh-TW": "流動比率高通常代表短期壓力小，這個方向沒錯。不過比率只是數字，要看它是怎麼變高的：存貨堆積也會讓分子變大，這時高比率反而是存貨賣不動的警訊。",
+        "en": "A high current ratio usually does mean less short-term pressure, which is right as a rule. But the ratio is just a number, and how it rose matters: a pile-up of inventory also inflates the numerator, and then a high ratio is a warning that stock is not moving."
+      },
+      "short": {
+        "zh-TW": "越高越好",
+        "en": "Higher is always better"
+      },
+      "misconceptionId": "mc_dehh"
+    },
+    {
+      "id": "o_geh9",
+      "text": {
+        "zh-TW": "比率變高，代表帳上的現金也跟著變多了",
+        "en": "The ratio is higher, so there must be more cash in the bank too"
+      },
+      "feedback": {
+        "zh-TW": "現金是流動資產的一部分，這點沒錯。不過流動資產還包含應收帳款與存貨；這次變多的是存貨，現金可能反而因為進貨而變少了。",
+        "en": "Cash is part of current assets, that much is right. But current assets also include receivables and inventories; this time it was inventories that grew, and cash may actually have fallen to pay for them."
+      },
+      "short": {
+        "zh-TW": "現金變多了",
+        "en": "More cash in the bank"
+      }
+    }
+  ],
+  "correctOptionId": "o_vps6",
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}的分子是整個{{term:tm_k52yxb68}}，裡面的{{term:tm_n7v3k8pq}}要賣得掉才會變成現金。所以答案是{{option:o_vps6}}；{{option:o_tj8a}}忽略了比率變高的原因，{{option:o_geh9}}則把流動資產和現金畫上等號。如果這些舊款衝浪板能賣得的價格已經低於成本，依 IAS 2 還要把存貨減記到淨變現價值，流動資產與流動比率都會跟著下降。",
+    "en": "The numerator of the {{term:tm_c8r1t4zm}} is all of {{term:tm_k52yxb68}}, and the {{term:tm_n7v3k8pq}} within it only become cash if they sell. So the answer is {{option:o_vps6}}; {{option:o_tj8a}} ignores why the ratio rose, and {{option:o_geh9}} equates current assets with cash. If what the old boards can now be sold for is below their cost, IAS 2 requires the inventory to be written down to net realisable value, and current assets and the current ratio fall with it."
+  }
+}

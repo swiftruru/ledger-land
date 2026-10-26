@@ -1,0 +1,82 @@
+{
+  "id": "q_4xweyeaf",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_9ba3z0",
+  "difficulty": 2,
+  "tags": [
+    "profit_vs_cash",
+    "receivables"
+  ],
+  "termRefs": [
+    "tm_05t9wphy",
+    "tm_n4e8t2jy",
+    "tm_r7x2c9fa",
+    "tm_e61ht6yh"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "profit": 120000,
+    "bill": 90000
+  },
+  "prompt": {
+    "zh-TW": "藍鯨水族這一期的本期淨利是 {{money:vars.profit}}，月底卻付不出 {{money:vars.bill}} 的飼料貨款。最可能的原因是什麼？",
+    "en": "Blue Whale Aquatics made a profit of {{money:vars.profit}} this period, yet at month end it cannot pay a {{money:vars.bill}} fish-food bill. What is the most likely reason?"
+  },
+  "options": [
+    {
+      "id": "o_deft",
+      "text": {
+        "zh-TW": "大多是賒銷，利益算進去了，錢還在應收帳款上",
+        "en": "Mostly credit sales: the profit is counted but the money is still in receivables"
+      },
+      "feedback": {
+        "zh-TW": "答對了。有賺到，不等於有收到。",
+        "en": "Nice work. Earned is not the same as received."
+      },
+      "short": {
+        "zh-TW": "賒銷的錢還在應收帳款上",
+        "en": "The money is still in receivables"
+      }
+    },
+    {
+      "id": "o_we2b",
+      "text": {
+        "zh-TW": "利益一定算錯了，有賺錢的公司不可能付不出錢",
+        "en": "The profit must be wrong; a profitable company cannot fail to pay a bill"
+      },
+      "feedback": {
+        "zh-TW": "直覺上有賺錢就該有錢，這個想法很常見。不過利益是依權責發生制算的：賣出去就算收入，不管錢收到沒有。利益可以是對的，現金卻還在路上。",
+        "en": "It feels natural that profit should mean cash, and the thought is common. But profit follows the accrual basis: a sale counts as revenue whether or not the cash has arrived. The profit can be right while the cash is still on its way."
+      },
+      "short": {
+        "zh-TW": "利益一定算錯了",
+        "en": "The profit must be wrong"
+      },
+      "misconceptionId": "mc_4azj"
+    },
+    {
+      "id": "o_vn4y",
+      "text": {
+        "zh-TW": "本期淨利要等到年底結帳才會變成帳戶裡的現金",
+        "en": "Profit for the period only turns into cash in the account when the books are closed at year end"
+      },
+      "feedback": {
+        "zh-TW": "你知道利益和現金不是同一個數字，這點沒錯。不過結帳不會變出現金；錢什麼時候進來，看的是客人什麼時候付款，和結帳日無關。",
+        "en": "You know profit and cash are not the same figure, which is right. But closing the books does not conjure up cash; when the money arrives depends on when customers pay, not on the closing date."
+      },
+      "short": {
+        "zh-TW": "要等結帳才變現金",
+        "en": "Turns into cash at closing"
+      }
+    }
+  ],
+  "correctOptionId": "o_deft",
+  "explanation": {
+    "zh-TW": "{{term:tm_05t9wphy}}下，收入在賣出時認列，不是在收錢時。賒銷越多，{{term:tm_n4e8t2jy}}和現金的距離就越大，所以答案是{{option:o_deft}}。{{option:o_we2b}}把利益和現金畫上等號，{{option:o_vn4y}}則以為結帳會把利益變成現金。",
+    "en": "Under the {{term:tm_05t9wphy}}, revenue is recognised when the sale is made, not when the cash arrives. The more sales are on credit, the wider the gap between {{term:tm_n4e8t2jy}} and cash, so the answer is {{option:o_deft}}. {{option:o_we2b}} equates profit with cash, and {{option:o_vn4y}} imagines that closing the books turns profit into cash."
+  }
+}

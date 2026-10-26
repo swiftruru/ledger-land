@@ -1,0 +1,88 @@
+{
+  "id": "q_x8keqnv4",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_k9548t",
+  "objectiveId": "obj_xkyrq9",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "stakeholders",
+    "judgment",
+    "shareholder",
+    "creditor",
+    "financing"
+  ],
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_s5b8r3hd",
+    "tm_5e3py55a",
+    "tm_x3n8v5tc"
+  ],
+  "scored": false,
+  "vars": {
+    "need": 6000000
+  },
+  "prompt": {
+    "zh-TW": "星河軟體想擴張，需要 {{money:vars.need}} 的資金。三種籌資方式都可行，股東與債權人的感受卻不一樣。你會選哪一種？",
+    "en": "Starriver Software wants to expand and needs {{money:vars.need}}. Three ways of raising it are all feasible, but shareholders and creditors feel differently about each. Which would you choose?"
+  },
+  "options": [
+    {
+      "id": "o_g4j5",
+      "text": {
+        "zh-TW": "向銀行借款",
+        "en": "Borrow from the bank"
+      },
+      "upside": {
+        "zh-TW": "現有股東的持股比例不變，利息還能抵稅；如果擴張成功，多賺的全歸股東。",
+        "en": "Existing shareholders are not diluted and interest is tax-deductible; if the expansion works, the extra profit all goes to shareholders."
+      },
+      "downside": {
+        "zh-TW": "負債比率上升，利息不論成敗都要付；現有債權人會擔心自己的債權變得沒那麼安全。",
+        "en": "The debt ratio rises and interest is payable whether or not the expansion works; existing creditors worry their claims are less secure."
+      }
+    },
+    {
+      "id": "o_h6k7",
+      "text": {
+        "zh-TW": "辦現金增資，找新舊股東認購新股",
+        "en": "Issue new shares for cash"
+      },
+      "upside": {
+        "zh-TW": "沒有還款壓力，負債比率下降，債權人最放心。",
+        "en": "No repayment pressure, the debt ratio falls, and creditors are most at ease."
+      },
+      "downside": {
+        "zh-TW": "不參與增資的股東持股被稀釋；新股東也要分走未來的盈餘。",
+        "en": "Shareholders who do not subscribe are diluted, and new shareholders share in future profits."
+      }
+    },
+    {
+      "id": "o_j8m9",
+      "text": {
+        "zh-TW": "用保留盈餘慢慢做，不對外籌資",
+        "en": "Fund it gradually from retained earnings without raising outside money"
+      },
+      "upside": {
+        "zh-TW": "不欠人也不稀釋，財務最穩；每一步都量力而為。",
+        "en": "No debt and no dilution, the most stable financially; each step is within means."
+      },
+      "downside": {
+        "zh-TW": "擴張要分好幾年才完成；股東這幾年拿不到股利，員工期待的加薪與升遷也可能延後。",
+        "en": "Expansion takes several years to complete; shareholders see no dividends in the meantime, and the pay rises and promotions staff hope for may be delayed too."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "債權人偏好讓負債比率下降的做法，股東則在意稀釋與報酬，兩者天生有張力。利率低、獲利穩定時，借款對股東有利；風險高、現金流不穩時，增資比較安全；機會不急、公司保守時，用自己的錢最穩。資金結構沒有唯一正解，取決於你願意把風險放在誰身上。",
+    "en": "Creditors prefer whatever lowers the debt ratio; shareholders care about dilution and return, so the two are naturally in tension. With low interest rates and steady profit, borrowing favours shareholders; with high risk and uneven cash flow, issuing shares is safer; when the opportunity is not urgent and the company is cautious, self-funding is steadiest. There is no single right capital structure; it depends on whose shoulders you are willing to put the risk on."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  }
+}

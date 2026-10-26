@@ -1,0 +1,98 @@
+{
+  "id": "q_51ahwbr0",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_0x64wz",
+  "difficulty": 3,
+  "tags": [
+    "balance_sheet",
+    "retained_earnings"
+  ],
+  "termRefs": [
+    "tm_4c6v99nn",
+    "tm_n4e8t2jy",
+    "tm_5e3py55a",
+    "tm_6nmfxa10"
+  ],
+  "scored": true,
+  "type": "multi_choice",
+  "prompt": {
+    "zh-TW": "下列哪些事情會讓海風衝浪店的未分配盈餘變多？",
+    "en": "Which of the following would increase Seabreeze Surf’s unappropriated retained earnings?"
+  },
+  "options": [
+    {
+      "id": "o_bnc4",
+      "text": {
+        "zh-TW": "這一期賣衝浪板賺到的利益",
+        "en": "The profit earned this period from selling boards"
+      },
+      "short": {
+        "zh-TW": "賣衝浪板的利益",
+        "en": "Profit from selling boards"
+      },
+      "feedback": {
+        "zh-TW": "會。本期淨利會流進未分配盈餘。",
+        "en": "Yes. Profit for the period flows into unappropriated retained earnings."
+      }
+    },
+    {
+      "id": "o_rjd7",
+      "text": {
+        "zh-TW": "把店後方的空間租給鄰居，這一期的租金收入",
+        "en": "Rental income this period from letting the space behind the shop to a neighbour"
+      },
+      "short": {
+        "zh-TW": "租金收入",
+        "en": "Rental income"
+      },
+      "feedback": {
+        "zh-TW": "會。租金不是本業的收入，放在{{term:tm_6nmfxa10}}，但一樣會讓本期淨利變多，最後流進未分配盈餘。",
+        "en": "Yes. Rent is not revenue from the core business, so it goes under {{term:tm_6nmfxa10}}, but it still raises profit for the period, which flows into unappropriated retained earnings all the same."
+      }
+    },
+    {
+      "id": "o_9ppe",
+      "text": {
+        "zh-TW": "這一期一位新股東投入的資金",
+        "en": "Money put in by a new shareholder this period"
+      },
+      "short": {
+        "zh-TW": "新股東的資金",
+        "en": "A new shareholder’s money"
+      },
+      "feedback": {
+        "zh-TW": "新股東的錢確實讓股東權益變多，這點沒錯。不過它記在股本（高於面額發行時，超過面額的部分記在資本公積），不是未分配盈餘；只有賺來的錢才會進未分配盈餘。",
+        "en": "A new shareholder’s money does increase equity, that much is right. But it is recorded as share capital (any premium above par goes to capital surplus), not unappropriated retained earnings; only earnings go into unappropriated retained earnings."
+      },
+      "misconceptionId": "mc_qntk"
+    },
+    {
+      "id": "o_vpk8",
+      "text": {
+        "zh-TW": "收回去年賒銷給衝浪營隊的貨款",
+        "en": "Collecting what a surf camp still owed from last year’s credit sale"
+      },
+      "short": {
+        "zh-TW": "收回去年的貨款",
+        "en": "Collecting last year’s receivable"
+      },
+      "feedback": {
+        "zh-TW": "收到錢確實讓現金變多，這點沒錯。不過這筆生意的利益去年就算過了，今年收款只是應收帳款換成現金，未分配盈餘不會再增加。",
+        "en": "Collecting the money does increase cash, that much is right. But the profit on that sale was counted last year; collecting it this year merely turns a receivable into cash, and unappropriated retained earnings do not rise again."
+      },
+      "misconceptionId": "mc_ekyy"
+    }
+  ],
+  "correctOptionIds": [
+    "o_bnc4",
+    "o_rjd7"
+  ],
+  "scoringMode": "all_correct",
+  "explanation": {
+    "zh-TW": "只有「賺到的錢」會進{{term:tm_4c6v99nn}}。{{option:o_bnc4}}與{{option:o_rjd7}}都讓本期淨利增加，所以都會；{{option:o_9ppe}}是股東投入的本錢，記在{{term:tm_5e3py55a}}；{{option:o_vpk8}}只是資產之間的交換。",
+    "en": "Only earnings go into {{term:tm_4c6v99nn}}. {{option:o_bnc4}} and {{option:o_rjd7}} both raise profit for the period, so both count; {{option:o_9ppe}} is a stake put up by a shareholder and goes to {{term:tm_5e3py55a}}; {{option:o_vpk8}} is merely a swap between two assets."
+  }
+}

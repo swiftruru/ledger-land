@@ -1,0 +1,22 @@
+{
+  "id": "lv_sf2gp4d7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_k9548t",
+  "order": 2,
+  "title": {
+    "zh-TW": "員工、客戶與取捨",
+    "en": "Employees, customers and the trade-off"
+  },
+  "objectiveIds": [
+    "obj_bkfrmc",
+    "obj_xt5tdk"
+  ],
+  "questionIds": [
+    "q_fy3c015f",
+    "q_aj146w6y",
+    "q_rdpsx06w",
+    "q_mj9jrfh3"
+  ]
+}

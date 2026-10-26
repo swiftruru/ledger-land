@@ -1,0 +1,68 @@
+{
+  "id": "q_85rmeb5z",
+  "rev": 4,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "single_choice",
+  "objectiveId": "obj_32ab85",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "profitability",
+    "extension"
+  ],
+  "termRefs": [
+    "tm_7km3j04r",
+    "tm_bkqw8c59",
+    "tm_5e3py55a",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "網站把{{term:tm_7km3j04r|plain}}標為「延伸指標」。它和{{term:tm_bkqw8c59|plain}}是什麼關係？下列哪一個說法正確？",
+    "en": "The site labels the {{term:tm_7km3j04r|plain}} an ‘extension ratio’. How does it relate to the {{term:tm_bkqw8c59|plain}}? Which statement is correct?"
+  },
+  "options": [
+    {
+      "id": "o_h4ky",
+      "text": {
+        "zh-TW": "兩者的分母都是股本，分子一個是營業利益、一個是稅前淨利",
+        "en": "Both use share capital as the denominator; the numerator is operating profit in one and profit before tax in the other"
+      },
+      "feedback": {
+        "zh-TW": "答對了。名稱裡的「實收資本」就是分母的提示。它們衡量的是相對股本的報酬，不是資產報酬率。",
+        "en": "That’s right. The words ‘paid-in capital’ in the name tell you what the denominator is. They measure return relative to share capital, not return on assets."
+      }
+    },
+    {
+      "id": "o_7b10",
+      "text": {
+        "zh-TW": "兩者都是資產報酬率的一種，只是分子不同，分母都是資產總計",
+        "en": "Both are kinds of return on assets; only the numerators differ, and both use total assets as the denominator"
+      },
+      "feedback": {
+        "zh-TW": "你注意到它們都是獲利能力的指標，這點對。不過分母是股本而不是資產總計，所以它們回答的是「股東投入的每一元股本賺回多少」，和資產報酬率是不同的問題。課程講義用過不同的描述；網站依公式（分母是股本）改稱相對股本的報酬率。",
+        "en": "You noticed that both are profitability ratios, which is right. But the denominator is share capital, not total assets, so they answer ‘how much is earned on each dollar the shareholders paid in’, a different question from return on assets. Some course material describes them differently; the site follows the formula (share capital as the denominator) and calls them returns relative to share capital."
+      },
+      "misconceptionId": "mc_5pdb"
+    },
+    {
+      "id": "o_fhg3",
+      "text": {
+        "zh-TW": "實收資本就是股東權益總額，所以它們和 ROE 是同一個指標",
+        "en": "Paid-in capital is the same as total equity, so they are the same ratio as ROE"
+      },
+      "feedback": {
+        "zh-TW": "股東權益總額還包含未分配盈餘、資本公積等；實收資本只是股東投入的股本。分母不同，數字與意義都不同。",
+        "en": "Total equity also includes retained earnings, capital surplus and so on; paid-in capital is only the share capital the shareholders contributed. Different denominators give different figures and meanings."
+      },
+      "misconceptionId": "mc_zxrb"
+    }
+  ],
+  "correctOptionId": "o_h4ky",
+  "explanation": {
+    "zh-TW": "{{term:tm_7km3j04r}}與{{term:tm_bkqw8c59}}的分母都是{{term:tm_5e3py55a}}。{{option:o_h4ky}}說對了分母與意義；{{option:o_7b10}}把它們當成資產報酬率，{{option:o_fhg3}}把股本和{{term:tm_y37ymj9w}}混為一談。網站依公式（分母是股本）稱它們為相對股本的報酬率。",
+    "en": "Both {{term:tm_7km3j04r}} and {{term:tm_bkqw8c59}} use {{term:tm_5e3py55a}} as the denominator. {{option:o_h4ky}} gets the denominator and meaning right; {{option:o_7b10}} treats them as return on assets, and {{option:o_fhg3}} confuses share capital with {{term:tm_y37ymj9w}}. The site follows the formula (share capital as the denominator) and calls them returns relative to share capital."
+  }
+}

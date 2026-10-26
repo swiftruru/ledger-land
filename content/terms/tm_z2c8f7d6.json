@@ -2,7 +2,7 @@
   "id": "tm_z2c8f7d6",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "期初現金及約當現金餘額",
@@ -19,11 +19,25 @@
   "confidence": "high",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "教材自成立起累計，恆為 0；實驗室同時顯示累計三表與本筆交易的變動。",
-    "en": "The course runs cumulatively from incorporation, so it is always nil; the lab shows both the cumulative statements and the change from each transaction."
+    "zh-TW": "課程故事自成立起累計，所以故事裡這一列是 0；題目或練習給了期初的數字時就不一定是 0。",
+    "en": "The course story runs cumulatively from incorporation, so this line is zero in the story; when a question or exercise gives opening figures it need not be zero."
   },
   "definition": {
-    "zh-TW": "這段期間開始時的現金餘額。本課的報表自公司成立起累計，所以它永遠是零。",
-    "en": "The cash balance at the start of the period. The course statements run cumulatively from incorporation, so it is always nil."
-  }
+    "zh-TW": "這段期間開始時公司手上的現金及約當現金。\n\n期初餘額加上本期增減額，就是期末餘額。",
+    "en": "The cash and cash equivalents the company held at the start of the period.\n\nOpening balance plus the net change for the period gives the closing balance."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表最後一區，現金及約當現金增減額的下一列。課程的故事從公司成立那一刻開始累計，所以故事裡的期初餘額是 0；實驗室同時顯示累計三表與本筆交易的變動，避免把一筆小交易誤讀成現金大幅變動。",
+    "en": "Where it sits: the last section of the statement of cash flows, right after the net change in cash and cash equivalents. The course story accumulates from the moment the company is formed, so the opening balance in the story is zero; the lab shows the cumulative statements alongside the change from the current transaction, so a small transaction is not misread as a large swing in cash."
+  },
+  "misconception": {
+    "zh-TW": "以為期初餘額是 0 表示公司沒有錢。它只是說明課程的累計從成立起算；真實公司第二年的期初餘額就是第一年的期末餘額。",
+    "en": "Reading a zero opening balance as the company having no money. It only reflects that the course accumulates from formation; for a real company, the second year’s opening balance is the first year’s closing balance."
+  },
+  "related": [
+    "tm_12k2yq6k",
+    "tm_x6gmpvm5",
+    "tm_c4sh8k2p",
+    "tm_5aryzkn3"
+  ]
 }

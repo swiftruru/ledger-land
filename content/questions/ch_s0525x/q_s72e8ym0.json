@@ -1,6 +1,6 @@
 {
   "id": "q_s72e8ym0",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -22,14 +22,14 @@
   },
   "prompt": {
     "zh-TW": "河岸麵包坊今年的本期淨利比去年高，不過多出來的部分主要是把閒置的二樓短租給劇組拍片一週收到的 {{money:vars.rent}} 租金；本業的營業利益其實比去年略低。大東要用今年的數字決定明年的員工獎金與進貨量，他可以怎麼用這個數字？三種做法都說得通，重點是你覺得哪一種最穩當。",
-    "en": "Riverside Bakery's profit for the period is higher than last year's, but most of the increase is {{money:vars.rent}} of rent from letting the unused first floor to a film crew for a week; operating profit from the core business is actually slightly below last year. Tung has to use this year's figures to set next year's staff bonuses and purchasing volume. How might he use the figure? All three can make sense; what matters is which you think is the most sound."
+    "en": "Riverside Bakery’s profit for the period is higher than last year’s, but most of the increase is {{money:vars.rent}} of rent from letting the unused first floor to a film crew for a week; operating profit from the core business is actually slightly below last year. Tung has to use this year’s figures to set next year’s staff bonuses and purchasing volume. How might he use the figure? All three can make sense; what matters is which you think is the most sound."
   },
   "options": [
     {
       "id": "o_vmnw",
       "text": {
         "zh-TW": "照本期淨利的成長幅度，把明年的獎金與進貨量一起往上調",
-        "en": "Raise next year's bonuses and purchasing volume in line with the growth in profit for the period"
+        "en": "Raise next year’s bonuses and purchasing volume in line with the growth in profit for the period"
       },
       "upside": {
         "zh-TW": "數字最直接，員工也最有感；今年確實留下了比去年多的錢。",
@@ -44,7 +44,7 @@
       "id": "o_mk41",
       "text": {
         "zh-TW": "只用營業利益來訂明年的獎金與進貨量，租金收入另外存起來備用",
-        "en": "Set next year's bonuses and purchasing volume on operating profit only, and put the rent aside as a reserve"
+        "en": "Set next year’s bonuses and purchasing volume on operating profit only, and put the rent aside as a reserve"
       },
       "upside": {
         "zh-TW": "獎金和進貨量跟著本業走，明年不會因為少了一筆租金而突然付不出來；一次性的錢可以留作修設備或應急。",
@@ -59,15 +59,15 @@
       "id": "o_mba8",
       "text": {
         "zh-TW": "先不用今年的數字，等明年看過一季的成績再決定",
-        "en": "Do not use this year's figures at all; wait for a quarter of next year's results before deciding"
+        "en": "Do not use this year’s figures at all; wait for a quarter of next year’s results before deciding"
       },
       "upside": {
         "zh-TW": "不會被今年的一次性收益誤導，決定會建立在新一年的實際表現上。",
-        "en": "Avoids being misled by this year's one-off gain; the decision rests on the new year's actual performance."
+        "en": "Avoids being misled by this year’s one-off gain; the decision rests on the new year’s actual performance."
       },
       "downside": {
         "zh-TW": "進貨要提早備料、員工也在等答案，拖到明年才動會錯過時機；其實今年的報表已經給得出答案，只要分層看。",
-        "en": "Stock has to be ordered ahead and staff are waiting for an answer, so delaying until next year misses the moment; and this year's statement already holds the answer, if read level by level."
+        "en": "Stock has to be ordered ahead and staff are waiting for an answer, so delaying until next year misses the moment; and this year’s statement already holds the answer, if read level by level."
       }
     }
   ],

@@ -1,6 +1,6 @@
 {
   "id": "q_kpwfzd8y",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -19,7 +19,7 @@
   "type": "true_false",
   "statement": {
     "zh-TW": "如果風行腳踏車行這一期的本期淨利是正的，現金流量表上的「現金及約當現金增減額」也一定是正的。",
-    "en": "If Breeze Bicycles' profit for the period is positive, the \"net increase (decrease) in cash and cash equivalents\" on its statement of cash flows must be positive too."
+    "en": "If Breeze Bicycles’ profit for the period is positive, the ‘net increase (decrease) in cash and cash equivalents’ on its statement of cash flows must be positive too."
   },
   "correct": false,
   "feedbackTrue": {

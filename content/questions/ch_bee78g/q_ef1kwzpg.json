@@ -1,0 +1,70 @@
+{
+  "id": "q_ef1kwzpg",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "single_choice",
+  "objectiveId": "obj_mj1tas",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "solvency",
+    "cross_check"
+  ],
+  "termRefs": [
+    "tm_h3c7v1xe",
+    "tm_9e1rb64c",
+    "tm_gkmknxh4"
+  ],
+  "scored": true,
+  "vars": {
+    "last": 7.5,
+    "now": 3
+  },
+  "prompt": {
+    "zh-TW": "星橋物流的利息保障倍數從去年的 {{number:vars.last|digits=2,unit=times}} 降到今年的 {{number:vars.now|digits=2,unit=times}}，營業利益沒變。搭配哪一個指標交叉檢查，最能確認原因是借款變多？",
+    "en": "Starbridge Logistics’ times interest earned fell from {{number:vars.last|digits=2,unit=times}} last year to {{number:vars.now|digits=2,unit=times}} this year, with operating profit unchanged. Which ratio would best cross-check that the cause is more borrowing?"
+  },
+  "options": [
+    {
+      "id": "o_w41k",
+      "text": {
+        "zh-TW": "負債比率是否同時上升",
+        "en": "Whether the debt ratio rose at the same time"
+      },
+      "feedback": {
+        "zh-TW": "答對了。借款變多會讓負債比率上升，正好和利息保障倍數下降互相印證。財務槓桿度和利息保障倍數用的是同一組營業利益與利息，會跟著一起動，沒辦法單獨確認借款變多；能確認的是資產負債表上的負債比率。",
+        "en": "That’s right. More borrowing raises the debt ratio, which corroborates the fall in times interest earned. The degree of financial leverage uses the same operating profit and interest as times interest earned, so the two move together and cannot confirm more borrowing on their own; the debt ratio on the balance sheet can."
+      }
+    },
+    {
+      "id": "o_xnk1",
+      "text": {
+        "zh-TW": "存貨週轉率是否下降",
+        "en": "Whether inventory turnover fell"
+      },
+      "feedback": {
+        "zh-TW": "存貨週轉率看的是賣貨的速度，和利息負擔無關，沒辦法確認借款是否變多。",
+        "en": "Inventory turnover measures how fast goods sell; it has nothing to do with the interest burden and cannot confirm more borrowing."
+      }
+    },
+    {
+      "id": "o_08a2",
+      "text": {
+        "zh-TW": "純益率是否上升",
+        "en": "Whether the net profit margin rose"
+      },
+      "feedback": {
+        "zh-TW": "利息變多會讓純益率下降而不是上升；而且純益率無法直接告訴你利息費用是否變多。",
+        "en": "More interest would lower the net margin, not raise it; and the margin cannot tell you directly whether interest expense grew."
+      },
+      "misconceptionId": "mc_dcpb"
+    }
+  ],
+  "correctOptionId": "o_w41k",
+  "explanation": {
+    "zh-TW": "{{term:tm_h3c7v1xe}}的分子沒變、倍數下降，表示分母的利息費用變多。{{option:o_w41k}}直接看借款的痕跡；{{option:o_xnk1}}與{{option:o_08a2}}都問不到利息的來源。",
+    "en": "With the numerator of {{term:tm_h3c7v1xe}} unchanged and the multiple falling, interest expense in the denominator must have grown. {{option:o_w41k}} looks straight at the footprint of borrowing; {{option:o_xnk1}} and {{option:o_08a2}} cannot reach the source of the interest."
+  }
+}

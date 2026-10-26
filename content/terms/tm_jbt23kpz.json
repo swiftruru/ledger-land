@@ -2,24 +2,50 @@
   "id": "tm_jbt23kpz",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "非常損失", "en": "Extraordinary losses" },
+  "label": {
+    "zh-TW": "非常損失",
+    "en": "Extraordinary losses"
+  },
   "teacherLabel": "非常損失",
   "currentTwLabel": null,
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
-  "flags": ["not_ifrs_line", "ifrs_treatment_differs", "unused"],
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [
+    "not_ifrs_line",
+    "ifrs_treatment_differs",
+    "unused"
+  ],
   "confidence": "high",
-  "pendingRefs": ["T02"],
+  "pendingRefs": [
+    "T02"
+  ],
   "ifrsBasis": "IAS 1.87",
   "definition": {
-    "zh-TW": "教材損益表裡放少見、不會經常發生的損失的一列。現行報表沒有這一列；本課的故事也沒有用到。",
-    "en": "A line in the course income statement for rare, non-recurring losses. Current statements have no such line and the course story does not use it."
+    "zh-TW": "課程版面中，本業以外、不常發生的重大損失，例如政府徵收廠房用地，補償金低於帳面金額的部分；放在經常利益之後、稅前淨利之前。\n\n分類時問兩個問題：是不是本業？會不會一再發生？兩個答案都是「否」才放這一列。",
+    "en": "In the course layout, a large loss that is outside the main business and does not recur, such as the shortfall when the government takes over factory land and pays less than its carrying amount; it sits after ordinary profit and before profit before tax.\n\nAsk two questions when classifying: is it part of the main business, and does it recur? Only when both answers are no does it belong here."
+  },
+  "example": {
+    "zh-TW": "位置：損益表稅前淨利之前，非常利益的下一列。本課故事沒有用到，實驗室預設隱藏。有金額時它會減少稅前淨利，但不影響營業利益與經常利益。",
+    "en": "Where it sits: just before profit before tax on the income statement, below extraordinary gains. The course story does not use it, so the lab hides it by default. When present it reduces profit before tax without touching operating profit or ordinary profit."
+  },
+  "misconception": {
+    "zh-TW": "以為所有叫做「損失」的項目都是非常損失。對外捐贈的支出、借款的利息這類每年都可能出現的業外支出屬於營業外支出，會影響經常利益；只有罕見又重大的才放這裡。",
+    "en": "Assuming anything called a loss is extraordinary. Donations made or interest on borrowings can arise every year; such costs belong in non-operating expenses and affect ordinary profit, and only rare and significant items go here."
   },
   "ifrsNote": {
-    "zh-TW": "IAS 1.87 禁止在損益表或附註把任何收益或費損列為非常項目；改用 IFRS 時這類項目併入營業外收支或其他利益及損失，稅前淨利不變。",
-    "en": "IAS 1.87 prohibits presenting any item of income or expense as extraordinary. Under IFRS such items are included in non-operating or other gains and losses, and profit before tax is unchanged."
+    "zh-TW": "IAS 1.87 禁止在損益表或附註中把任何收益或費損列為非常項目，台灣現行報表沒有這一列。IFRS 對照的版面不顯示它，這類損失併入營業外支出或其他損失；稅前淨利不變，但經常利益這一層消失。",
+    "en": "IAS 1.87 prohibits presenting any item of income or expense as extraordinary, in the statement of profit or loss or in the notes, and current Taiwanese statements have no such line. The IFRS comparison layout hides it and folds such losses into non-operating or other losses; profit before tax is unchanged, but the ordinary profit layer disappears."
   },
-  "accountRef": "extraordinary_losses"
+  "accountRef": "extraordinary_losses",
+  "related": [
+    "tm_kqwv1rjs",
+    "tm_9hg0gb2b",
+    "tm_z971merj",
+    "tm_gvrw06p3"
+  ]
 }

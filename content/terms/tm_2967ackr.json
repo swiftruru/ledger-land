@@ -1,0 +1,45 @@
+{
+  "id": "tm_2967ackr",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "process",
+  "label": {
+    "zh-TW": "永續盤存制",
+    "en": "Perpetual inventory system"
+  },
+  "teacherLabel": "永續盤存制",
+  "currentTwLabel": "永續盤存制",
+  "ifrsEnglish": "Perpetual inventory system",
+  "aliases": {
+    "zh-TW": [
+      "永續盤存",
+      "永續制"
+    ],
+    "en": [
+      "Continuous inventory"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": ["T06"],
+  "definition": {
+    "zh-TW": "每次進貨就借記存貨、每次賣出就「借 營業成本／貸 存貨」，所以存貨帳隨時反映帳上應有的數量。網站核心採這個做法；教材版面的「本期進貨」與「期末存貨」兩列是由存貨帳推導出來的，不是分錄裡的科目。年底實地盤點後若有差異，再以盤盈或盤損調整。",
+    "en": "Inventory is debited on every purchase and cost of sales is debited (and inventory credited) on every sale, so the inventory account always shows what should be on hand. The site’s core works this way; the purchases and closing inventory lines in the course layout are derived from the inventory account and are not accounts used in entries. Any difference found at the year-end physical count is adjusted as a surplus or shortage."
+  },
+  "note": {
+    "zh-TW": "教材版面把營業成本寫成三列的加減（期初的存貨、這一期的進貨、期末剩下的存貨），那是定期盤存制的呈現方式。在網站的模型裡，三列加減算出的營業成本一定等於營業成本帳戶的發生額；一般實務上，兩種制度採用的成本流動假設或盤點差異的處理不同時，結果可能不同。",
+    "en": "The course layout presents cost of sales as three lines added and subtracted (inventory at the start, purchases during the period, inventory left at the end), which is the periodic-system presentation. In the site’s model the three lines always give the same cost of sales as the cost of sales account; in general practice the two systems can give different results when they use different cost flow assumptions or treat count differences differently."
+  },
+  "related": [
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw",
+    "tm_p7h3c5xq",
+    "tm_q4k9v2nd"
+  ],
+  "ifrsBasis": "IAS 2",
+  "ifrsNote": {
+    "zh-TW": "IAS 2 規範存貨的衡量，不限定記錄制度；永續或定期盤存都可以。",
+    "en": "IAS 2 governs how inventories are measured and does not prescribe a recording system; perpetual and periodic are both acceptable."
+  }
+}

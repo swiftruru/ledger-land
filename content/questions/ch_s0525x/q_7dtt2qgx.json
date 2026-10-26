@@ -1,6 +1,6 @@
 {
   "id": "q_7dtt2qgx",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -93,16 +93,16 @@
     },
     "is_opening_inventory": {
       "zh-TW": "期初存貨是期初那一天的存貨，對應的是上一期的資產負債表。",
-      "en": "Opening inventories are what was held at the start of the period and match last period's balance sheet."
+      "en": "Opening inventories are what was held at the start of the period and match last period’s balance sheet."
     }
   },
   "prompt": {
     "zh-TW": "日暮文具社的損益表裡，有一列的金額和資產負債表上的「存貨」完全相同。請在損益表上點出那一列。",
-    "en": "One line on Sunset Stationery's income statement carries exactly the same amount as \"inventories\" on the balance sheet. Tap that line on the income statement."
+    "en": "One line on Sunset Stationery’s income statement carries exactly the same amount as ‘inventories’ on the balance sheet. Tap that line on the income statement."
   },
   "explanation": {
     "zh-TW": "期末存貨是這一期結束時還沒賣出的貨。在損益表上它被減掉（因為不是這期的成本），在資產負債表上它是一項資產，兩邊是同一個數字。",
-    "en": "Closing inventories are the goods still unsold at the end of the period. On the income statement they are deducted (because they are not this period's cost); on the balance sheet they are an asset. Both show the same figure."
+    "en": "Closing inventories are the goods still unsold at the end of the period. On the income statement they are deducted (because they are not this period’s cost); on the balance sheet they are an asset. Both show the same figure."
   },
   "display": {
     "statements": [

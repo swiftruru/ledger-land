@@ -1,0 +1,87 @@
+{
+  "id": "q_mj9jrfh3",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "judgment",
+  "chapterId": "ch_k9548t",
+  "objectiveId": "obj_xt5tdk",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "stakeholders",
+    "judgment",
+    "conflict",
+    "customer"
+  ],
+  "termRefs": [
+    "tm_9nf1gghz",
+    "tm_r7x2c9fa",
+    "tm_e61ht6yh",
+    "tm_n4e8t2jy"
+  ],
+  "scored": false,
+  "prompt": {
+    "zh-TW": "星河軟體最大的客戶要求把付款期限從一個月延長到三個月，否則轉向競爭者。這位客戶占公司營收的 {{percent:vars.revenueShare|digits=0}}。答應會讓應收帳款膨脹、現金變緊；拒絕可能失去營收。你會怎麼決定？",
+    "en": "Starriver Software’s largest customer, which accounts for {{percent:vars.revenueShare|digits=0}} of revenue, demands that payment terms be extended from one month to three, or it will move to a competitor. Agreeing swells receivables and tightens cash; refusing may lose the revenue. What would you decide?"
+  },
+  "options": [
+    {
+      "id": "o_b7c8",
+      "text": {
+        "zh-TW": "答應延長付款期限",
+        "en": "Agree to the longer terms"
+      },
+      "upside": {
+        "zh-TW": "保住這位客戶的營收與長期關係；營收照樣在交付時認列，不受付款期限影響。",
+        "en": "Keeps the revenue from this customer and the long-term relationship; revenue is still recognised on delivery, whatever the payment terms."
+      },
+      "downside": {
+        "zh-TW": "公司等於借錢給客戶兩個月，自己可能要向銀行借款補缺口，借款利息與可能增加的呆帳都會壓低淨利；客戶若出事，呆帳風險集中。",
+        "en": "The company is in effect lending to the customer for two extra months and may have to borrow from the bank to fill the gap; the interest and any rise in bad debts will weigh on profit, and if the customer fails, bad-debt risk is concentrated."
+      }
+    },
+    {
+      "id": "o_d9e1",
+      "text": {
+        "zh-TW": "拒絕，維持原條件",
+        "en": "Refuse and keep the existing terms"
+      },
+      "upside": {
+        "zh-TW": "現金流量與財務紀律不受影響，也不會開出日後難以收回的先例。",
+        "en": "Cash flow and financial discipline are intact, and no precedent is set that would be hard to withdraw later."
+      },
+      "downside": {
+        "zh-TW": "可能立刻失去這位客戶的營收，短期內淨利與現金都會受傷，員工也可能受影響。",
+        "en": "The revenue from this customer may vanish at once, hurting profit and cash in the short term and possibly staff too."
+      }
+    },
+    {
+      "id": "o_f2g3",
+      "text": {
+        "zh-TW": "有條件答應：延長帳期但調整價格，或設定延長條件的額度上限",
+        "en": "Agree conditionally: extend terms but adjust the price, or cap the amount eligible for longer terms"
+      },
+      "upside": {
+        "zh-TW": "客戶留下，公司也拿到補償或控制了曝險；兩邊都讓一步。",
+        "en": "The customer stays while the company is compensated or limits its exposure; both sides give a little."
+      },
+      "downside": {
+        "zh-TW": "談判可能破裂，執行上也要多花力氣追蹤額度與條件。",
+        "en": "The negotiation may break down, and tracking the cap and conditions takes extra effort."
+      }
+    }
+  ],
+  "viewpoint": {
+    "zh-TW": "這是客戶、股東、債權人與員工利益交錯的典型情境：客戶要資金方便，股東要營收與獲利，債權人要現金安全，員工要公司穩定。沒有一個答案能同時滿足所有人；也可以把「答應或拒絕」變成「用什麼條件答應」，但談判本身可能破局。無論選哪一個，都要把風險（呆帳、現金缺口）攤在桌上討論；你的選擇反映的是你最不願意承擔哪一種損失。",
+    "en": "This is a classic case of customer, shareholder, creditor and employee interests crossing: the customer wants easier funding, shareholders want revenue and profit, creditors want cash safety, and employees want stability. No answer satisfies everyone at once; yes-or-no can also be turned into on-what-terms, though the negotiation itself may break down. Whichever you choose, put the risks (bad debts, cash gaps) on the table; your choice reflects which loss you are least willing to bear."
+  },
+  "attribution": "site",
+  "explanation": {
+    "zh-TW": "這一題沒有標準答案；送出之後會看到三個做法各自的理由。",
+    "en": "There is no single right answer here; once you submit, you will see the reasoning behind all three choices."
+  },
+  "vars": {
+    "revenueShare": 0.3
+  }
+}

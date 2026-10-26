@@ -1,0 +1,79 @@
+{
+  "id": "q_vrwhc932",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "multi_choice",
+  "scoringMode": "all_correct",
+  "objectiveId": "obj_fbc0kw",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_08g66t9j",
+    "tm_n7v3k8pq",
+    "tm_g5c2m8tw"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "下列哪些做法會讓綠丘單車行的存貨週轉率上升？",
+    "en": "Which of these actions would raise Green Hill Cycles’ inventory turnover?"
+  },
+  "options": [
+    {
+      "id": "o_a8z0",
+      "text": {
+        "zh-TW": "減少冷門車款的庫存，只留暢銷款",
+        "en": "Cut the stock of slow-selling models and keep only the popular ones"
+      },
+      "feedback": {
+        "zh-TW": "正確。營業成本不變、存貨變少，分母縮小，週轉率上升。",
+        "en": "Correct. With cost of sales unchanged and less inventory, the denominator shrinks and turnover rises."
+      }
+    },
+    {
+      "id": "o_ybcg",
+      "text": {
+        "zh-TW": "用同樣的庫存量賣出更多車",
+        "en": "Sell more bikes while holding the same amount of stock"
+      },
+      "feedback": {
+        "zh-TW": "正確。賣得多、營業成本變大，分子上升，週轉率上升。",
+        "en": "Correct. More sales mean higher cost of sales, so the numerator rises and so does turnover."
+      }
+    },
+    {
+      "id": "o_kfb1",
+      "text": {
+        "zh-TW": "把客戶欠的款項收回來",
+        "en": "Collect the money customers owe"
+      },
+      "feedback": {
+        "zh-TW": "收款影響的是應收帳款與現金，存貨和營業成本都沒變，存貨週轉率不會動。",
+        "en": "Collecting receivables affects receivables and cash; inventory and cost of sales are unchanged, so inventory turnover does not move."
+      }
+    },
+    {
+      "id": "o_asx1",
+      "text": {
+        "zh-TW": "年底大量進貨，為春季旺季做準備",
+        "en": "Stock up heavily at year end for the spring peak season"
+      },
+      "feedback": {
+        "zh-TW": "年底進貨會讓期末存貨變大、分母變大，存貨週轉率反而下降；旺季前備貨可能合理，但指標會往下走。",
+        "en": "Year-end purchases enlarge closing inventory and the denominator, so turnover falls; stocking up before the peak may be sensible, but the ratio will move down."
+      }
+    }
+  ],
+  "correctOptionIds": [
+    "o_a8z0",
+    "o_ybcg"
+  ],
+  "explanation": {
+    "zh-TW": "{{term:tm_08g66t9j}}＝營業成本 ÷ 存貨。{{option:o_a8z0}}縮小分母，{{option:o_ybcg}}放大分子，兩者都讓比率上升；{{option:o_kfb1}}與存貨無關，{{option:o_asx1}}放大分母、比率下降。",
+    "en": "{{term:tm_08g66t9j}} = cost of sales ÷ inventory. {{option:o_a8z0}} shrinks the denominator and {{option:o_ybcg}} enlarges the numerator, so both raise the ratio; {{option:o_kfb1}} has nothing to do with inventory, and {{option:o_asx1}} enlarges the denominator and lowers the ratio."
+  }
+}

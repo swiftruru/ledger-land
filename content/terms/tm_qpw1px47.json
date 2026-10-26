@@ -2,21 +2,54 @@
   "id": "tm_qpw1px47",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "資本公積÷股本", "en": "Capital surplus to share capital ratio" },
+  "label": {
+    "zh-TW": "資本公積÷股本",
+    "en": "Capital surplus to share capital ratio"
+  },
   "teacherLabel": "資本公積÷股本",
   "currentTwLabel": "資本公積÷股本",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["資本公積占股本比率"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "資本公積占股本比率"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T17"],
-  "note": { "zh-TW": "老師自訂的比率，非標準指標（T17），不計分。", "en": "A teacher-defined ratio rather than a standard one (T17); not scored." },
-  "definition": { "zh-TW": "資本公積相對於股本的比率，看股東投入超過面額的部分有多少。", "en": "Capital surplus relative to share capital: how much the shareholders contributed above par value." },
-  "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+  "pendingRefs": [
+    "T17"
+  ],
+  "note": {
+    "zh-TW": "課程的觀察方式，非標準比率；不放進指標計算的計分。",
+    "en": "A course observation rather than a standard ratio; it is left out of ratio calculation scoring."
   },
-  "ratioRef": "capital_surplus_to_share_capital@slides02"
+  "definition": {
+    "zh-TW": "資本公積相對於股本的比例。\n\n這是課程用來觀察市場估值的方式，不是標準比率：比例高表示公司歷年發行新股時，投資人付出的價格明顯高於面額。本站的說明只供學習，不構成任何投資建議。",
+    "en": "Capital surplus relative to share capital.\n\nThis is a way the course looks at market valuation rather than a standard ratio: a high figure means that over the years investors have paid clearly more than par when the company issued new shares. This explanation is for learning only and is not investment advice."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在資產負債表股東權益區。本課故事以面額發行，資本公積為 0，所以比率也是 0。一般用來看市場估值的指標是本益比與股價淨值比。",
+    "en": "Both figures are in the equity section of the balance sheet. The course story issues shares at par, so capital surplus and the ratio are both zero. The usual measures of market valuation are the price-to-earnings and price-to-book ratios."
+  },
+  "misconception": {
+    "zh-TW": "把它當成現在的市場估值。資本公積累積的是過去發行溢價的歷史紀錄，不會隨股價變動；要看當下市場怎麼看這家公司，得用股價算的本益比。",
+    "en": "Reading it as the current market valuation. Capital surplus accumulates the history of past issue premiums and does not move with the share price; to see how the market values the company today, use the price-to-earnings ratio, which is based on the share price."
+  },
+  "formula": {
+    "zh-TW": "資本公積÷股本 ＝ 資本公積 ÷ 股本。",
+    "en": "Capital surplus to share capital ratio = capital surplus ÷ share capital."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率，也沒有「資本公積」這個單一對應名詞；這個比率是課程自訂的觀察方式。",
+    "en": "IFRS neither defines financial ratios nor has a single equivalent of the Taiwanese term capital surplus; this ratio is an observation devised in the course."
+  },
+  "ratioRef": "capital_surplus_to_share_capital@slides02",
+  "related": [
+    "tm_yka0razf",
+    "tm_5e3py55a",
+    "tm_wd3fx6rh"
+  ]
 }

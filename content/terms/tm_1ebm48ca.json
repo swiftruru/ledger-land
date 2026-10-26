@@ -1,0 +1,60 @@
+{
+  "id": "tm_1ebm48ca",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "category": "concept",
+  "label": {
+    "zh-TW": "杜邦分析",
+    "en": "DuPont analysis"
+  },
+  "teacherLabel": "杜邦方程式",
+  "currentTwLabel": "杜邦方程式",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "杜邦拆解",
+      "杜邦五指標",
+      "杜邦等式"
+    ],
+    "en": [
+      "DuPont identity",
+      "DuPont decomposition"
+    ]
+  },
+  "flags": [
+    "simplified"
+  ],
+  "confidence": "high",
+  "pendingRefs": [
+    "T21",
+    "T22"
+  ],
+  "note": {
+    "zh-TW": "網站的杜邦樹採簡化版：全部用期末值，ROA 的分子不加回稅後利息。ROA 與 ROE 各有幾種算法，計分看題目指定的版本。",
+    "en": "The site’s DuPont tree is the simplified version: closing balances throughout, with no after-tax interest added back to ROA. ROA and ROE each have several versions, and scoring follows the version each question specifies."
+  },
+  "definition": {
+    "zh-TW": "把權益報酬率（ROE）拆成三個因子相乘：純益率（每一元營收留下多少淨利）、總資產週轉率（每一元資產帶出多少營收）、權益倍數（每一元權益撐起多少資產）。前兩個相乘是 ROA，再乘上權益倍數就是 ROE，所以 ROE 與 ROA 的差距來自負債（借款、應付帳款等），也就是權益倍數。",
+    "en": "Splits return on equity (ROE) into three factors multiplied together: net profit margin (how much of each unit of revenue survives as profit), total asset turnover (how much revenue each unit of assets generates) and the equity multiplier (how many units of assets each unit of equity supports). The first two multiply to ROA; multiplying by the equity multiplier gives ROE, so the gap between ROE and ROA comes from liabilities (borrowings, trade payables and the like), which is what the equity multiplier captures."
+  },
+  "formula": {
+    "zh-TW": "ROE 拆成三個因子相乘：純益率 × 總資產週轉率 × 權益倍數，也可以寫成 ROA × 權益倍數。",
+    "en": "ROE = net profit margin × total asset turnover × equity multiplier = ROA × equity multiplier"
+  },
+  "misconception": {
+    "zh-TW": "看到 ROE 很高就以為本業很會賺。先看 ROA：如果 ROA 不高、ROE 卻很高，差距來自財務槓桿，權益倍數越大，同樣的 ROA 就被放大成越高的 ROE。",
+    "en": "Assuming a high ROE means the core business earns well. Look at ROA first: if ROA is modest but ROE is high, the gap comes from financial leverage; the larger the equity multiplier, the more the same ROA is magnified into a higher ROE."
+  },
+  "ifrsNote": {
+    "zh-TW": "IFRS 不定義財務比率；杜邦分析是分析方法，各因子的計算口徑以指標登錄檔的版本為準。",
+    "en": "IFRS does not define financial ratios. DuPont analysis is an analytical method; the basis for each factor follows the version in the ratio registry."
+  },
+  "related": [
+    "tm_0k8vegyr",
+    "tm_r0a5t3kq",
+    "tm_92yzx0fn",
+    "tm_2cqt9cfd",
+    "tm_2ggtxnaz"
+  ]
+}

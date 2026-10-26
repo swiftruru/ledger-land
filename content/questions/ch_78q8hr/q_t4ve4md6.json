@@ -1,0 +1,73 @@
+{
+  "id": "q_t4ve4md6",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_8e479x",
+  "difficulty": 3,
+  "tags": [
+    "balance_sheet",
+    "elements",
+    "share_capital"
+  ],
+  "termRefs": [
+    "tm_5e3py55a",
+    "tm_x3n8v5tc",
+    "tm_h6p2k9wd"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_9htcrg"
+  },
+  "vars": {
+    "capital": 800000
+  },
+  "prompt": {
+    "zh-TW": "小嵐和兩位朋友一共拿出 {{money:vars.capital}} 成立月光書店，錢已經存進公司帳戶。這筆出資在資產負債表上記在哪裡？",
+    "en": "Lan and two friends put in {{money:vars.capital}} between them to set up Moonlight Books, and the money is now in the company account. Where is this contribution recorded on the balance sheet?"
+  },
+  "options": [
+    {
+      "id": "o_a0pb",
+      "text": {
+        "zh-TW": "股東權益裡的股本",
+        "en": "Share capital, under equity"
+      },
+      "feedback": {
+        "zh-TW": "答對了。股東投入的錢是公司自己的資金來源，記在股東權益。",
+        "en": "Nice work. Money put in by shareholders is the company’s own source of funds and sits in equity."
+      }
+    },
+    {
+      "id": "o_tjjy",
+      "text": {
+        "zh-TW": "流動負債，因為公司欠股東這筆錢",
+        "en": "Current liabilities, because the company owes this money to its shareholders"
+      },
+      "feedback": {
+        "zh-TW": "你知道這筆錢的來源是股東，這點沒錯。不過股東出資不是借款：公司沒有約定要在某天還給股東，股東拿到的是公司的所有權，所以放股東權益而不是負債。",
+        "en": "You know the money came from the shareholders, which is right. But a contribution is not a loan: the company has not promised to repay it on any date, and what the shareholders receive is ownership of the company, so it sits in equity rather than liabilities."
+      },
+      "misconceptionId": "mc_b9qz"
+    },
+    {
+      "id": "o_rxmj",
+      "text": {
+        "zh-TW": "資產，因為錢已經進了公司帳戶",
+        "en": "Assets, because the money is already in the company account"
+      },
+      "feedback": {
+        "zh-TW": "帳戶裡的錢確實是資產，這點沒錯。不過那是「現金」這個科目；題目問的是這筆錢「從哪裡來」，來源要記在右邊的股本。一筆出資會同時讓現金和股本增加。",
+        "en": "The money in the account is indeed an asset, that much is right. But that is the cash account; the question asks where the money came from, and the source is recorded on the right as share capital. A contribution raises cash and share capital at the same time."
+      }
+    }
+  ],
+  "correctOptionId": "o_a0pb",
+  "explanation": {
+    "zh-TW": "資產負債表的右邊分成兩種錢的來源：要還的是負債，不用還、屬於股東的是{{term:tm_x3n8v5tc}}。股東出資記在{{term:tm_5e3py55a}}，所以是{{option:o_a0pb}}；{{option:o_tjjy}}把它當成借款，{{option:o_rxmj}}則只看到左邊的現金。",
+    "en": "The right side of the balance sheet shows two kinds of source: money that has to be repaid is a liability, and money that belongs to the shareholders with nothing to repay is {{term:tm_x3n8v5tc}}. Shareholder contributions are recorded as {{term:tm_5e3py55a}}, so {{option:o_a0pb}} is right; {{option:o_tjjy}} treats it as a loan, and {{option:o_rxmj}} only sees the cash on the left."
+  }
+}

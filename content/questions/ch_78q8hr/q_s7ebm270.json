@@ -1,0 +1,49 @@
+{
+  "id": "q_s7ebm270",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_d6egd4",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "current_ratio",
+    "compute"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_k52yxb68",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "currentAssets": 540000,
+    "currentLiabilities": 360000,
+    "longTerm": 300000,
+    "equipment": 360000
+  },
+  "compute": {
+    "ratioRef": "current_ratio@excel",
+    "measures": {
+      "bs_current_assets": "vars.currentAssets",
+      "bs_current_liabilities": "vars.currentLiabilities"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "海風衝浪店年底的資產負債表：流動資產合計 {{money:vars.currentAssets}}、流動負債合計 {{money:vars.currentLiabilities}}；另外還有機器設備 {{money:vars.equipment}} 與三年後到期的長期借款 {{money:vars.longTerm}}。流動比率是多少？以「倍」作答。",
+    "en": "Seabreeze Surf’s year-end balance sheet shows total current assets of {{money:vars.currentAssets}} and total current liabilities of {{money:vars.currentLiabilities}}; it also has machinery of {{money:vars.equipment}} and a long-term loan of {{money:vars.longTerm}} due in three years. What is the current ratio? Answer in times."
+  },
+  "hint": {
+    "zh-TW": "只用一年內的資產和一年內的負債。",
+    "en": "Use only the assets and debts that fall within one year."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}＝流動資產合計 {{money:vars.currentAssets}} ÷ 流動負債合計 {{money:vars.currentLiabilities}} ＝ {{number:expected.answer.value|digits=2,unit=times}}。機器設備與長期借款都是一年以上的項目，不在這個比率裡；如果把它們算進去，算出來的就是另一個意思的數字了。",
+    "en": "{{term:tm_c8r1t4zm}} = total current assets {{money:vars.currentAssets}} ÷ total current liabilities {{money:vars.currentLiabilities}} = {{number:expected.answer.value|digits=2,unit=times}}. Machinery and the long-term loan are items beyond one year and stay out of this ratio; including them would give a figure with a different meaning."
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "q_azmn1qta",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_kse1q6",
+  "difficulty": 1,
+  "tags": [
+    "basic_figures",
+    "profit_levels"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_g8p4w1rz",
+    "tm_92yzx0fn"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "statement": {
+    "zh-TW": "四個基本數字裡的 Profit，指的是營業收入減營業成本之後的營業毛利。",
+    "en": "Profit, one of the four basic figures, means gross profit, that is revenue less cost of sales."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "營業毛利確實是「利益」的第一層，這點沒錯。但績效指標裡的 Profit 要用損益表最後一列的本期淨利：費用、業外收支與所得稅都扣完，才是最後歸屬於股東的獲利。",
+    "en": "Gross profit is indeed the first level of profit, that much is right. But Profit in the performance indicators is profit for the period, the last line of the income statement: only after expenses, non-operating items and tax are deducted is it the profit finally attributable to shareholders."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。Profit 是本期淨利，也就是五層利益的最後一層；純益率、ROA 與 ROE 的分子都用它。",
+    "en": "Correct. Profit is profit for the period, the last of the five profit levels; it is the numerator of net profit margin, ROA and ROE."
+  },
+  "misconceptionId": "mc_c11k",
+  "explanation": {
+    "zh-TW": "五層利益由上往下是：營業毛利，扣掉銷管費用成為營業利益，加減業外收支成為經常利益，再計入非常損益成為稅前淨利，最後扣掉所得稅才是本期淨利。杜邦與績效指標的 Profit 取最底下的本期淨利，因為那才是扣完所有成本、費用與稅之後，最後歸屬於股東的獲利。",
+    "en": "From top to bottom: gross profit; less distribution costs and administrative expenses gives operating profit; plus or minus non-operating items gives ordinary profit; extraordinary items then give profit before tax; and deducting income tax leaves profit for the period. DuPont and the performance indicators take the bottom one, profit for the period, because that is the profit finally attributable to shareholders after every cost, expense and tax."
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "id": "q_ygfnrnzh",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "multi_choice",
+  "scoringMode": "all_correct",
+  "objectiveId": "obj_ftamqc",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "reference_value"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_8eyx0srs",
+    "tm_c8r1t4zm"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "關於課程參考值（例如{{term:tm_9e1rb64c|plain}}不超過 {{percent:0.5|digits=0}}、{{term:tm_8eyx0srs|plain}}不低於 {{percent:1|digits=0}}），下列哪些說法正確？",
+    "en": "Which of these statements about the course reference values (for example a {{term:tm_9e1rb64c|plain}} of no more than {{percent:0.5|digits=0}} or a {{term:tm_8eyx0srs|plain}} of at least {{percent:1|digits=0}}) are correct?"
+  },
+  "options": [
+    {
+      "id": "o_czyn",
+      "text": {
+        "zh-TW": "它們是課程整理的經驗值，不是法規規定的門檻",
+        "en": "They are rules of thumb compiled by the course, not thresholds set by law"
+      },
+      "feedback": {
+        "zh-TW": "正確。法規沒有規定這些比率的門檻，參考值只提供一個比較的起點。",
+        "en": "Correct. The law sets no thresholds for these ratios; the reference values only give you a starting point for comparison."
+      }
+    },
+    {
+      "id": "o_mz1b",
+      "text": {
+        "zh-TW": "不同產業的合理區間不同，判讀時要和同業比較",
+        "en": "Reasonable ranges differ by industry, so compare with peers when interpreting"
+      },
+      "feedback": {
+        "zh-TW": "正確。銀行、航空、營建這類產業的負債比率普遍比一般商店高，同一個數字在不同產業意義不同。",
+        "en": "Correct. Banks, airlines and construction firms commonly carry higher debt ratios than an ordinary shop; the same number means different things in different industries."
+      }
+    },
+    {
+      "id": "o_yarm",
+      "text": {
+        "zh-TW": "教科書常見的說法和課程參考值可能不一樣，兩者都只是參考",
+        "en": "Common textbook figures may differ from the course reference values, and both are only guides"
+      },
+      "feedback": {
+        "zh-TW": "正確。例如流動比率就有不同的常見說法；網站把課程參考值和常見說法並列，讓你知道它們都不是標準答案。",
+        "en": "Correct. The current ratio, for example, has several common benchmarks; the site shows the course value alongside them so you know none of them is the right answer."
+      }
+    },
+    {
+      "id": "o_vwwc",
+      "text": {
+        "zh-TW": "只要指標落在參考值內，就不必再看其他報表",
+        "en": "As long as a ratio falls within the reference range, there is no need to look at the other statements"
+      },
+      "feedback": {
+        "zh-TW": "參考值內只表示這一個指標沒有亮紅燈。負債比率正常的公司仍可能現金不夠或獲利很差，三張報表還是要一起看。",
+        "en": "Being within the range only means this one ratio has not raised a flag. A company with a normal debt ratio may still be short of cash or barely profitable; the three statements still have to be read together."
+      },
+      "misconceptionId": "mc_tfjb"
+    }
+  ],
+  "correctOptionIds": [
+    "o_czyn",
+    "o_mz1b",
+    "o_yarm"
+  ],
+  "explanation": {
+    "zh-TW": "{{option:o_czyn}}、{{option:o_mz1b}}與{{option:o_yarm}}都在說同一件事：參考值是幫助你提問的工具。{{option:o_vwwc}}把參考值當成終點，正好是參考值最容易被誤用的方式。",
+    "en": "{{option:o_czyn}}, {{option:o_mz1b}} and {{option:o_yarm}} all say the same thing: reference values are tools that help you ask questions. {{option:o_vwwc}} treats them as the finish line, which is exactly how they are most often misused."
+  }
+}

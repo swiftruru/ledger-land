@@ -2,20 +2,47 @@
   "id": "tm_zqzrfgfn",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "支付股息(-)", "en": "Dividends paid (-)" },
+  "label": {
+    "zh-TW": "支付股息(-)",
+    "en": "Dividends paid (-)"
+  },
   "teacherLabel": "支付股息(-)",
   "currentTwLabel": "發放現金股利",
   "ifrsEnglish": "Dividends paid",
-  "aliases": { "zh-TW": ["支付之股利(-)", "發放現金股利"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "支付之股利(-)",
+      "發放現金股利"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 7.34",
   "note": {
-    "zh-TW": "現行 IAS 7.34 允許列營業或籌資，教材列籌資；IFRS 18 修正 IAS 7 後一般企業一律列籌資活動。",
-    "en": "Current IAS 7.34 allows operating or financing and the course uses financing; after the IFRS 18 amendments most entities must classify it as financing."
+    "zh-TW": "現行 IAS 7.34 允許列營業或籌資，課程列籌資；IFRS 18 修正 IAS 7 後，所有企業一律列籌資活動（國際上自 {{raw:2027}} 年起生效，台灣自 {{raw:2028}} 會計年度起適用；查證於 {{raw:2026-10-24}}）。",
+    "en": "Current IAS 7.34 allows operating or financing and the course uses financing; after the IFRS 18 amendments to IAS 7, all entities must classify it as financing (effective internationally from {{raw:2027}} and applied in Taiwan from the {{raw:2028}} financial year; checked on {{raw:2026-10-24}})."
   },
-  "definition": { "zh-TW": "發給股東的現金股利。本課的故事沒有發股利。", "en": "Cash dividends paid to shareholders. The course story pays no dividend." }
+  "definition": {
+    "zh-TW": "實際付給股東的現金股利。\n\n它是把賺來的錢分給股東：宣告時未分配盈餘減少、應付股利增加，付現時現金與應付股利一起減少；本課的範本把宣告與發放合成一筆，所以現金與未分配盈餘同時減少。它不是費用，不會出現在損益表。",
+    "en": "Cash dividends actually paid to shareholders.\n\nIt distributes earned profit to the owners: declaring it reduces unappropriated retained earnings and creates dividends payable, and paying it reduces cash and the payable together; the course template combines declaration and payment in one entry, so cash and unappropriated retained earnings fall together. It is not an expense and never appears on the income statement."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表籌資活動區，發行股票收入(+) 的下一列。本課故事沒有發放股利，所以這一列是 0。現金流量允當比率與現金流量再投資比率都會用到它。課程把它列在籌資活動，這是 IAS 7.34 允許的做法之一。",
+    "en": "Where it sits: the financing activities section of the statement of cash flows, right after proceeds from issuing shares (+). The course story pays no dividend, so this line is zero. The cash flow adequacy and cash reinvestment ratios both use it. The course places it in financing activities, one of the options IAS 7.34 allows."
+  },
+  "misconception": {
+    "zh-TW": "把股利當成費用、以為發股利會讓本期淨利減少。股利是淨利算出來之後的分配，只動未分配盈餘與現金；本期淨利不變。",
+    "en": "Treating dividends as an expense that lowers profit for the period. A dividend is a distribution made after profit has been determined; it only moves unappropriated retained earnings and cash, leaving profit unchanged."
+  },
+  "related": [
+    "tm_4kwp1jdw",
+    "tm_4c6v99nn",
+    "tm_f9a4c6md",
+    "tm_35qb8and",
+    "tm_jbtbky5v"
+  ]
 }

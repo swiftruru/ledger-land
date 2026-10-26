@@ -2,7 +2,7 @@
   "id": "tm_dc0p0nrv",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
   "label": {
     "zh-TW": "應付帳款增加(+)",
@@ -27,11 +27,25 @@
     "T12"
   ],
   "note": {
-    "zh-TW": "模板原字「應付賬款增加(+)」用了異體字，介面統一寫「帳」，原字列為別名；模板沒有減少列，減少時以負數填同一列（T12）。",
-    "en": "The template spells payables with a variant character; the interface uses one spelling and keeps the original as an alias. There is no decrease line, so a decrease is entered as a negative on the same line (T12)."
+    "zh-TW": "模板原字「應付賬款增加(+)」用了異體字，介面統一寫「帳」，原字列為別名；模板沒有減少列，減少時以負數填同一列，這是網站照課程模板填寫的做法。",
+    "en": "The template spells payables with a variant character; the interface uses one spelling and keeps the original as an alias. There is no decrease line, so a decrease is entered as a negative on the same line, which is how the site follows the course template."
   },
   "definition": {
-    "zh-TW": "應付帳款增加表示有些進貨還沒付錢，省下的現金要加回稅前淨利。",
-    "en": "A rise in payables means some purchases have not been paid for yet, so the cash saved is added back to profit before tax."
-  }
+    "zh-TW": "間接法裡的調整列：本期應付帳款比期初多了多少。\n\n應付帳款增加表示有一部分進貨還沒付錢，現金還留在公司，所以要加回稅前淨利。",
+    "en": "An adjustment line in the indirect method: how much trade payables have grown since the start of the period.\n\nAn increase means part of the purchases has not yet been paid for, so the cash is still in the company and the amount is added back to profit before tax."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動的營運資金變動區。故事裡賒購之後、付款之前，這一列是正數，和同一筆交易造成的存貨增加(-) 互相抵銷。課程模板沒有減少列，付款之後應付帳款減少時以負數填在同一列。模板原字用了異體字「賬」，網站統一寫「帳」。",
+    "en": "Where it sits: the working capital section of operating activities in the statement of cash flows. In the story, between the credit purchase and its payment, this line is positive and offsets the increase in inventories caused by the same transaction. The template has no decrease line, so after payment the fall in payables is entered as a negative on this line. The template label uses a variant character, which the site standardises."
+  },
+  "misconception": {
+    "zh-TW": "以為應付帳款增加對公司不利所以要扣掉。從現金的角度，欠著不付反而讓現金留在手上，所以是加回；要扣的是付款那一期的減少。",
+    "en": "Assuming an increase in payables is bad and should be deducted. From a cash point of view, not paying yet keeps cash in hand, so it is added back; the deduction comes in the period when the payables are settled."
+  },
+  "related": [
+    "tm_a3p9y6kc",
+    "tm_bpt2kp5c",
+    "tm_p7h3c5xq",
+    "tm_mcjk5sza"
+  ]
 }

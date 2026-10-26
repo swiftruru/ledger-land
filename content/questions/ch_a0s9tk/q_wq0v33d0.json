@@ -1,0 +1,68 @@
+{
+  "id": "q_wq0v33d0",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_trr8qh",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "teaching_card",
+    "debit_credit"
+  ],
+  "termRefs": [
+    "tm_50v66dt7",
+    "tm_b9e9vjct",
+    "tm_cfghjxzq",
+    "tm_kfnzbf8s"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "教學卡：每一筆交易都用一筆分錄記下來。分錄分成左右兩欄，左欄叫「借方」，右欄叫「貸方」；這兩個字只是「左」與「右」的代號，和借錢、貸款沒有關係。對照會計恆等式「資產＝負債＋股東權益」：等式左邊的資產增加記借方、減少記貸方；等式右邊的負債與股東權益增加記貸方、減少記借方。費用像資產一樣，增加記借方；收入像股東權益一樣，增加記貸方。分類格裡，收入歸在「收益」，費用歸在「費損」。因為每筆交易不是讓等式兩邊同時增加或同時減少同樣的金額（例如借款、還款），就是讓同一邊一增一減同樣的金額（例如用現金買設備），所以每筆分錄的借方合計一定等於貸方合計。T 字帳就是把一個科目的借方寫在左邊、貸方寫在右邊的表格。讀完之後請回答：「借方」最接近哪個意思？",
+    "en": "Teaching card: every transaction is recorded as one journal entry. An entry has two columns: the left is called the debit side, the right the credit side. The two words are just labels for left and right and have nothing to do with borrowing or lending. Set against the accounting equation, assets = liabilities + equity: an increase in an asset (left of the equation) is a debit and a decrease a credit; an increase in a liability or equity (right of the equation) is a credit and a decrease a debit. Expenses behave like assets, increasing on the debit side; revenue behaves like equity, increasing on the credit side. In the sorting boxes, revenue goes under Income and expenses under Expenses. Because every transaction either raises or lowers both sides of the equation by the same amount (taking out a loan, repaying it) or raises and lowers items on the same side by the same amount (buying equipment for cash), total debits in an entry always equal total credits. A T-account is simply a table with one account’s debits on the left and credits on the right. Having read this, answer: what does ‘debit’ most nearly mean?"
+  },
+  "options": [
+    {
+      "id": "o_a1b2",
+      "text": {
+        "zh-TW": "分錄的左邊",
+        "en": "The left side of an entry"
+      },
+      "feedback": {
+        "zh-TW": "答對了。借方就是左邊，貸方就是右邊；哪一邊代表增加，要看科目的性質。",
+        "en": "That is right. Debit is the left and credit the right; which side means an increase depends on the kind of account."
+      }
+    },
+    {
+      "id": "o_c3d4",
+      "text": {
+        "zh-TW": "向別人借錢",
+        "en": "Borrowing money from someone"
+      },
+      "feedback": {
+        "zh-TW": "中文的「借」很容易讓人這樣想，這個聯想很自然。但在記帳裡它只是左欄的名字；借到錢的分錄反而是「借 現金／貸 短期借款」，借方記的是收到的現金。",
+        "en": "The word naturally suggests borrowing. But in bookkeeping it is only the name of the left column; the entry for taking a loan is actually debit cash, credit short-term borrowings, with the cash received on the debit side."
+      },
+      "misconceptionId": "mc_brw1"
+    },
+    {
+      "id": "o_e5f6",
+      "text": {
+        "zh-TW": "金額增加",
+        "en": "An increase in amount"
+      },
+      "feedback": {
+        "zh-TW": "對資產與費用來說，借方的確是增加，你記對了一半。但對負債、股東權益與收入來說，借方是減少；借方本身不等於增加。",
+        "en": "For assets and expenses a debit is indeed an increase, so you are half right. But for liabilities, equity and revenue a debit is a decrease; debit by itself does not mean increase."
+      },
+      "misconceptionId": "mc_jnc2"
+    }
+  ],
+  "correctOptionId": "o_a1b2",
+  "explanation": {
+    "zh-TW": "{{option:o_a1b2}}是借方唯一不變的意思。{{option:o_c3d4}}被字面誤導；{{option:o_e5f6}}只對一半的科目成立。記住：左右是固定的，增減要看科目。",
+    "en": "{{option:o_a1b2}} is the one meaning of debit that never changes. {{option:o_c3d4}} is misled by the word; {{option:o_e5f6}} holds for only half the accounts. Remember: left and right are fixed, increase or decrease depends on the account."
+  }
+}

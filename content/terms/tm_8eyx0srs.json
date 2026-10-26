@@ -1,8 +1,8 @@
 {
   "id": "tm_8eyx0srs",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
   "label": {
     "zh-TW": "長期資金占固定資產比率",
@@ -27,16 +27,35 @@
     "T24"
   ],
   "note": {
-    "zh-TW": "「固定資產」是舊稱，照教材顯示並加「舊稱」標記，現行名稱列為別名；課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）。",
-    "en": "Fixed assets is an older term, shown as the course writes it with an old-name marker; the current name is kept as an alias and the course threshold is shown only as a course reference value and is not scored (see the design note T24)."
+    "zh-TW": "「固定資產」是舊稱，照教材顯示並加「舊稱」標記，現行名稱列為別名；課程的門檻是經驗值，只當「課程參考值」顯示，不計分。",
+    "en": "Fixed assets is an older term, shown as the course writes it with an old-name marker, and the current name is kept as an alias; the course threshold is a rule of thumb, shown only as a course reference value and not scored."
   },
   "definition": {
-    "zh-TW": "權益加非流動負債這些長期資金，相對於不動產、廠房及設備淨額的比率。它檢查長期資產是不是用長期的錢買的；數值越高越穩健，太低表示拿短期的錢去買長期資產。",
-    "en": "Long-term funding (equity plus non-current liabilities) relative to the carrying amount of property, plant and equipment. It tests whether long-term assets are financed with long-term money; higher is safer, and a low value means short-term money is paying for long-term assets."
+    "zh-TW": "長期資金（股東權益加非流動負債）夠不夠支應長期使用的廠房設備。\n\n比率超過 {{percent:1|digits=0}}，表示廠房設備的淨額全部有長期資金對應，不必動用流動負債；低於 {{percent:1|digits=0}} 時，有一部分廠房設備是靠流動負債支應，也就是「以短支長」。",
+    "en": "Whether long-term funding (equity plus non-current liabilities) is enough to finance long-lived plant and equipment.\n\nAbove {{percent:1|digits=0}}, net property, plant and equipment is fully matched by long-term funding, with no need to draw on current liabilities; below {{percent:1|digits=0}}, part of it is financed by current liabilities, which means funding long assets with short money."
+  },
+  "example": {
+    "zh-TW": "所有數字都在資產負債表上。沒有任何廠房設備時分母為 0，顯示 N/A。「固定資產」是 IFRS 導入前的舊稱，現行名稱是不動產、廠房及設備；課程的門檻只當參考值顯示，不計分。",
+    "en": "All figures come from the balance sheet. With no plant or equipment the denominator is zero and the result is N/A. Fixed assets is the pre-IFRS name; the current name is property, plant and equipment. The course threshold is shown as a reference value only and is not scored."
+  },
+  "misconception": {
+    "zh-TW": "只把股東權益當長期資金。長期借款這類非流動負債也是長期資金，漏掉它會把比率算低。",
+    "en": "Counting only equity as long-term funding. Non-current liabilities such as long-term borrowings are long-term funds too; leaving them out understates the ratio."
+  },
+  "formula": {
+    "zh-TW": "長期資金占固定資產比率：分子是股東權益總額加非流動負債，分母用不動產、廠房及設備的淨額。課程版的分母只算機器設備的淨額；年報版擴大到全部的不動產、廠房與設備，同樣取淨額（本課另含辦公設備）。",
+    "en": "Long-term funds to property, plant and equipment ratio = (total equity + non-current liabilities) ÷ net property, plant and equipment. The course version’s denominator is net machinery only; the annual report version uses all net property, plant and equipment (here also office equipment)."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率；這是台灣主管機關財務分析格式使用的指標，課程模板沿用。計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; this ratio is used in the financial analysis format set by Taiwan’s regulator, and the course template adopts it. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "long_term_funds_to_ppe@excel"
+  "ratioRef": "long_term_funds_to_ppe@excel",
+  "related": [
+    "tm_adqjyfqg",
+    "tm_y37ymj9w",
+    "tm_12gxceqy",
+    "tm_gcp2zeys",
+    "tm_9e1rb64c"
+  ]
 }

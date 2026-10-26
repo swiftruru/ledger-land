@@ -2,7 +2,7 @@
   "id": "tm_4kwp1jdw",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "應付股利",
@@ -19,12 +19,25 @@
   "confidence": "high",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "網站補充的延伸科目，術語表沒有獨立的條目；模板沒有這一列。",
-    "en": "An extension account added by the site; the glossary has no separate entry and the template has no such line."
+    "zh-TW": "網站補充的延伸科目，課程模板沒有這一列；不列入期中考範圍。",
+    "en": "An extension account added by the site; the course template has no such line and it is outside the midterm scope."
   },
   "definition": {
-    "zh-TW": "股東會決議要發、但還沒付給股東的股利。它和借款一樣不能放進間接法的其他負債增加列，付款時走籌資活動。",
-    "en": "Dividends declared but not yet paid to shareholders. Like borrowings it must be excluded from the increase in other liabilities line of the indirect method; the payment is a financing cash flow."
+    "zh-TW": "公司已經決議要發放、但還沒實際付給股東的現金股利。\n\n從決議那天到付款那天之間，這筆錢是公司欠股東的負債。",
+    "en": "Cash dividends the company has resolved to pay but has not yet handed to shareholders.\n\nBetween the resolution date and the payment date the amount is a liability owed to the owners."
   },
-  "accountRef": "dividends_payable"
+  "example": {
+    "zh-TW": "位置：資產負債表流動負債；這是網站補充的延伸科目，課程模板沒有這一列，也不列入期中考範圍。決議時未分配盈餘減少、應付股利增加；付款時現金與應付股利一起減少，現金流量表列籌資活動的支付股息。",
+    "en": "Where it sits: current liabilities on the balance sheet; it is an extension account added by the site, absent from the course template and outside the midterm scope. On resolution, unappropriated retained earnings fall and dividends payable rise; on payment, cash and the payable fall together and the outflow appears as dividends paid under financing activities."
+  },
+  "misconception": {
+    "zh-TW": "以為決議發股利的那一天現金就少了。現金是在實際付款那天才流出；決議當天只是產生一筆負債，資產總計還沒變。",
+    "en": "Assuming cash drops on the day the dividend is declared. Cash only leaves when the dividend is actually paid; the declaration creates a liability and total assets are unchanged at that point."
+  },
+  "accountRef": "dividends_payable",
+  "related": [
+    "tm_4c6v99nn",
+    "tm_zqzrfgfn",
+    "tm_bgtgsvhr"
+  ]
 }

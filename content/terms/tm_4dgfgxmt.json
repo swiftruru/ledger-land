@@ -2,22 +2,44 @@
   "id": "tm_4dgfgxmt",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "應收帳款減少(+)", "en": "Decrease in trade receivables (+)" },
+  "label": {
+    "zh-TW": "應收帳款減少(+)",
+    "en": "Decrease in trade receivables (+)"
+  },
   "teacherLabel": "應收帳款減少(+)",
   "currentTwLabel": "應收帳款（增加）減少",
   "ifrsEnglish": "Decrease in trade receivables",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T12"],
+  "pendingRefs": [
+    "T12"
+  ],
   "note": {
-    "zh-TW": "和銷貨債權增加(-) 是同一科目的兩個方向，累計報表只會用到其中一列（T12）。",
-    "en": "This and the increase line are two directions of the same account; the cumulative statement uses only one of them (T12)."
+    "zh-TW": "和銷貨債權增加(-) 是同一科目的兩個方向，同一期的報表只會用到其中一列；這是網站照課程模板填寫的做法。",
+    "en": "This and the increase line are two directions of the same account, and a single period’s statement uses only one of them; this is how the site follows the course template."
   },
   "definition": {
-    "zh-TW": "應收帳款減少表示收回了以前賒銷的貨款，這筆現金不在本期收入裡，所以要加回。",
-    "en": "A fall in receivables means earlier credit sales have been collected; that cash is not in the period's revenue, so it is added back."
-  }
+    "zh-TW": "間接法裡的調整列：本期應收帳款比期初少了多少。\n\n應收帳款減少代表以前賒銷的貨款收回來了，這筆現金不在本期的收入裡，所以要加回稅前淨利。",
+    "en": "An adjustment line in the indirect method: how much trade receivables have fallen since the start of the period.\n\nA fall in receivables means earlier credit sales have been collected; that cash is not part of this period’s revenue, so it is added back to profit before tax."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動的營運資金變動區。課程模板替應收帳款設了兩列：淨增加填在銷貨債權增加(-)，淨減少填在這一列；同一期的報表只會用到其中一列。台灣現行報表每個科目只有一行淨變動。",
+    "en": "Where it sits: the working capital section of operating activities in the statement of cash flows. The course template gives receivables two lines: a net increase goes on increase in trade receivables (-), a net decrease on this line; a single period’s statement uses only one of them. Current Taiwanese statements show a single net movement per account."
+  },
+  "misconception": {
+    "zh-TW": "把收回貨款當成本期的收入再算一次。收入早在賒銷那期就認列了，收款只是把應收帳款換成現金；這一列的作用就是把這筆「有現金、沒收入」的差額補回來。",
+    "en": "Counting the cash collected as revenue again. Revenue was recognised when the credit sale was made; collection merely swaps a receivable for cash. This line exists to add back that cash-but-no-revenue difference."
+  },
+  "related": [
+    "tm_873r9bx9",
+    "tm_r7x2c9fa",
+    "tm_p2a7c5vk",
+    "tm_mcjk5sza"
+  ]
 }

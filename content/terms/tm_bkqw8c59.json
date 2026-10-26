@@ -1,28 +1,55 @@
 {
   "id": "tm_bkqw8c59",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "稅前利益佔實收資本比率", "en": "Profit before tax to paid-in capital ratio" },
+  "label": {
+    "zh-TW": "稅前利益佔實收資本比率",
+    "en": "Profit before tax to paid-in capital ratio"
+  },
   "teacherLabel": "稅前利益佔實收資本比率",
-  "currentTwLabel": "稅前純益占實收資本額比率",
+  "currentTwLabel": "稅前純益占實收資本比率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["稅前利益占實收資本比率", "稅前純益占實收資本額比率"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "稅前利益占實收資本比率",
+      "稅前純益占實收資本額比率"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "note": {
     "zh-TW": "「佔」照教材，「占」的寫法收進別名。",
-    "en": "The course uses one of the two interchangeable characters for the word share; the other spelling is kept as an alias."
+    "en": "The course writes 佔 here; the other form, 占, is kept as an alias."
   },
   "definition": {
-    "zh-TW": "稅前淨利相對於股東實收資本的比率，看股東投入的本錢賺回多少稅前獲利。數值越高表示資本的獲利能力越強。",
-    "en": "Profit before tax relative to the shareholders' paid-in capital: how much pre-tax profit the capital contributed has earned. Higher means the capital is more profitable."
+    "zh-TW": "稅前淨利占股本的比例。\n\n分母只用股本，不含資本公積與保留盈餘，所以它和權益報酬率、資產報酬率的分母都不同；台灣主管機關的財務分析格式把它列在獲利能力。",
+    "en": "Profit before tax as a proportion of share capital.\n\nThe denominator is share capital alone, without capital surplus or retained earnings, so it differs from the denominators of return on equity and return on assets; the financial analysis format set by Taiwan’s regulator lists it under profitability."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表第 4 層利益，分母來自資產負債表的股本。現行的財務分析格式（例如公開說明書）稱它為稅前純益占實收資本比率；年報準則在 {{raw:2024}} 年 8 月 1 日修正以前，年報的財務分析寫作稅前純益占實收資本額比率（現行規定，查證於 {{raw:2026-10-24}}）。",
+    "en": "The numerator is the fourth profit level on the income statement and the denominator is share capital on the balance sheet. The current financial analysis format (in prospectuses, for example) calls it profit before tax to paid-in capital; until the annual report rules were amended on 1 August {{raw:2024}}, the financial analysis in annual reports used the same name with slightly different Chinese wording (current rules, checked on {{raw:2026-10-24}})."
+  },
+  "misconception": {
+    "zh-TW": "把它和權益報酬率混為一談。這裡的分母只有股本，不含資本公積和保留盈餘，分子又是稅前的數字，所以數值通常比權益報酬率高，不能直接相比。",
+    "en": "Confusing it with return on equity. Here the denominator is share capital alone, without capital surplus or retained earnings, and the numerator is pre-tax, so the figure is usually higher than return on equity and the two are not directly comparable."
+  },
+  "formula": {
+    "zh-TW": "稅前利益佔實收資本比率：以股本當分母、稅前淨利當分子；本課的股本就是實收資本。",
+    "en": "Profit before tax to paid-in capital ratio = profit before tax ÷ share capital. In this course paid-in capital equals share capital."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率；這是台灣主管機關財務分析格式使用的指標，課程模板沿用。計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; this ratio is used in the financial analysis format set by Taiwan’s regulator, and the course template adopts it. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "pretax_to_paid_in_capital@excel"
+  "ratioRef": "pretax_to_paid_in_capital@excel",
+  "related": [
+    "tm_7km3j04r",
+    "tm_z971merj",
+    "tm_5e3py55a",
+    "tm_0k8vegyr"
+  ]
 }

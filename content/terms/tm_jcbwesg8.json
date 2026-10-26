@@ -2,23 +2,48 @@
   "id": "tm_jcbwesg8",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "CE turnover", "en": "Capital expenditure turnover" },
+  "label": {
+    "zh-TW": "CE turnover",
+    "en": "Capital expenditure turnover"
+  },
   "teacherLabel": "CE turnover",
   "currentTwLabel": "CE turnover",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": ["Revenue to capex"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Revenue to capex"
+    ]
+  },
   "flags": [],
   "confidence": "medium",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "營業收入是資本支出的幾倍，也就是 CE intensity 的倒數。倍數越高表示每一份資本支出帶出越多營收；兩者的資訊相同。",
-    "en": "Revenue as a multiple of capital expenditure, the reciprocal of capex intensity. A higher multiple means each unit of capital spending generates more revenue; the two carry the same information."
+    "zh-TW": "本期營業收入相當於本期資本支出的幾倍。\n\n它把 CE intensity 的分子和分母對調，資訊相同，只是改用倍數表達：數字越大，代表同樣的設備投資對應到越多營收。",
+    "en": "Revenue for the period as a multiple of capital expenditure for the period.\n\nIt swaps the numerator and denominator of CE intensity, so it carries the same information expressed as a multiple: the larger the figure, the more revenue the same equipment spending is matched with."
+  },
+  "example": {
+    "zh-TW": "分母來自現金流量表的投資活動，分子來自損益表。本期沒有資本支出時分母為 0，顯示 N/A。",
+    "en": "The denominator comes from investing activities in the statement of cash flows and the numerator from the income statement. With no capital expenditure in the period the denominator is zero and the result is N/A."
+  },
+  "misconception": {
+    "zh-TW": "把它和總資產週轉率或不動產、廠房及設備週轉率混淆。那兩個指標的分母是資產負債表上累積的資產餘額，這個指標的分母只是本期新投入的資本支出。",
+    "en": "Confusing it with total asset turnover or property, plant and equipment turnover. Those use the accumulated asset balance on the balance sheet as the denominator; this one uses only the capital spent in the current period."
+  },
+  "formula": {
+    "zh-TW": "CE turnover ＝ 營業收入 ÷ 資本支出。網站以現金流量表「取得非流動資產」的流出金額當作資本支出；依課程的處理，設立費的付款也列在這一列，所以會算進資本支出。改用 IFRS 的處理時，設立費在發生時列為費用、付款改列營業活動，就不算在內。",
+    "en": "Capital expenditure turnover = revenue ÷ capital expenditure. The site takes the outflow on payments to acquire non-current assets in the statement of cash flows as capital expenditure; under the course treatment the payment of start-up costs is also recorded on that line, so it counts as capital expenditure. Under the IFRS treatment start-up costs are expensed when incurred and the payment is shown under operating activities, so it is left out."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率；CE turnover 是課程的叫法，不是通用的指標名稱，英文採描述性名稱。計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; CE turnover is the course’s own label rather than a standard ratio name, and the English name is descriptive. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "ce_turnover@slides02"
+  "ratioRef": "ce_turnover@slides02",
+  "related": [
+    "tm_1hgn004m",
+    "tm_xen3p30x",
+    "tm_4tz4q9pa"
+  ]
 }

@@ -1,0 +1,81 @@
+{
+  "id": "q_pvwgq1bq",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_8e479x",
+  "difficulty": 2,
+  "tags": [
+    "balance_sheet",
+    "current_noncurrent",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_adqjyfqg",
+    "tm_c2y9b5ex",
+    "tm_gcp2zeys"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "loan": 600000
+  },
+  "prompt": {
+    "zh-TW": "海風衝浪店向銀行借了 {{money:vars.loan}} 來整修店面，約定三年後一次還清。這筆借款在資產負債表上要放在哪裡？",
+    "en": "Seabreeze Surf borrows {{money:vars.loan}} from the bank to refurbish the shop, to be repaid in one sum three years from now. Where does this loan belong on the balance sheet?"
+  },
+  "options": [
+    {
+      "id": "o_yevs",
+      "text": {
+        "zh-TW": "非流動負債的長期借款",
+        "en": "Long-term borrowings, under non-current liabilities"
+      },
+      "short": {
+        "zh-TW": "非流動負債",
+        "en": "Non-current liabilities"
+      },
+      "feedback": {
+        "zh-TW": "答對了。一年內不用還的債務放非流動負債。",
+        "en": "Nice work. A debt that does not fall due within a year goes under non-current liabilities."
+      }
+    },
+    {
+      "id": "o_0hxk",
+      "text": {
+        "zh-TW": "流動負債，因為這筆錢遲早要還",
+        "en": "Current liabilities, because the money has to be repaid sooner or later"
+      },
+      "short": {
+        "zh-TW": "流動負債",
+        "en": "Current liabilities"
+      },
+      "feedback": {
+        "zh-TW": "它確實是一筆要還的負債，這點沒錯。不過流動與非流動分的是「多快要還」：三年後才到期，一年內不會用到店裡的現金，所以放非流動負債。",
+        "en": "It is indeed a debt that has to be repaid, that much is right. But current versus non-current is about how soon: due in three years, it will not call on the shop’s cash within the year, so it sits under non-current liabilities."
+      },
+      "misconceptionId": "mc_cjqm"
+    },
+    {
+      "id": "o_atcq",
+      "text": {
+        "zh-TW": "流動資產，因為借來的錢已經進了帳戶",
+        "en": "Current assets, because the borrowed money is already in the bank account"
+      },
+      "short": {
+        "zh-TW": "流動資產",
+        "en": "Current assets"
+      },
+      "feedback": {
+        "zh-TW": "借來的錢確實讓現金變多，這點沒錯。不過現金是左邊的資產，而「欠銀行的錢」這件事要記在右邊的負債；一筆借款會同時動到兩邊。",
+        "en": "The borrowed money does increase cash, that much is right. But cash is the asset on the left; the fact that the bank is owed is recorded as a liability on the right. A loan touches both sides at once."
+      }
+    }
+  ],
+  "correctOptionId": "o_yevs",
+  "explanation": {
+    "zh-TW": "負債依到期時間分成兩組：一年內要付的放{{term:tm_c2y9b5ex}}，一年後才到期的放{{term:tm_adqjyfqg}}。三年後還的借款屬於後者，所以是{{option:o_yevs}}。{{option:o_0hxk}}忽略了到期時間，{{option:o_atcq}}則把收到的現金和欠的債混在一起。",
+    "en": "Liabilities are split by when they fall due: those payable within a year go under {{term:tm_c2y9b5ex}}, those due later under {{term:tm_adqjyfqg}}. A loan repayable in three years belongs to the second group, so {{option:o_yevs}} is right. {{option:o_0hxk}} ignores the due date, and {{option:o_atcq}} mixes up the cash received with the debt owed."
+  }
+}

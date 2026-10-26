@@ -1,0 +1,72 @@
+{
+  "id": "q_0yhf7rbw",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_39p0w4",
+  "difficulty": 3,
+  "tags": [
+    "reverse_inference",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_c4sh8k2p",
+    "tm_s5b8r3hd",
+    "tm_n4e8t2jy"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_a13q1h"
+  },
+  "vars": {
+    "amount": 120000
+  },
+  "prompt": {
+    "zh-TW": "比較小山咖啡上個月底和這個月底的資產負債表：現金少了 {{money:vars.amount}}，短期借款也少了 {{money:vars.amount}}，其他項目都沒變，這個月的本期淨利也幾乎是零。最可能發生了哪一類交易？",
+    "en": "Compare Hillside Coffee’s balance sheets at the end of last month and this month: cash is down by {{money:vars.amount}}, short-term borrowings are down by {{money:vars.amount}}, nothing else has changed, and this month’s profit is close to nil. What kind of transaction most likely took place?"
+  },
+  "options": [
+    {
+      "id": "o_ewxr",
+      "text": {
+        "zh-TW": "還了一筆銀行借款",
+        "en": "A bank loan was repaid"
+      },
+      "feedback": {
+        "zh-TW": "答對了。現金和借款同時減少同樣的金額，是還款留下的腳印。",
+        "en": "Nice work. Cash and borrowings falling by the same amount at the same time is the footprint of a repayment."
+      }
+    },
+    {
+      "id": "o_33gw",
+      "text": {
+        "zh-TW": "付了一筆店租之類的費用",
+        "en": "An expense such as rent was paid"
+      },
+      "feedback": {
+        "zh-TW": "付費用確實會讓現金減少，這點沒錯。不過費用會讓本期淨利跟著下降，也不會讓短期借款變少；這個月的本期淨利幾乎是零，借款卻少了，和付費用對不上。",
+        "en": "Paying an expense would indeed reduce cash, that much is right. But an expense also pulls profit down and does nothing to short-term borrowings; here profit was close to nil while borrowings fell, which does not fit an expense."
+      }
+    },
+    {
+      "id": "o_fy94",
+      "text": {
+        "zh-TW": "光看報表上的數字沒辦法判斷",
+        "en": "There is no way to tell from the figures on the statement"
+      },
+      "feedback": {
+        "zh-TW": "報表確實不會直接寫出交易的名稱，這點沒錯。不過每一類交易都會在固定的幾個項目留下固定方向的變動，比對這些變動就能倒推出來。",
+        "en": "The statement does not name the transaction, that much is right. But each kind of transaction leaves changes of a fixed direction in a fixed set of items, and comparing those changes lets you work backwards to it."
+      },
+      "misconceptionId": "mc_n6zm"
+    }
+  ],
+  "correctOptionId": "o_ewxr",
+  "explanation": {
+    "zh-TW": "從數字倒推交易，看的是「哪幾個項目一起動、往哪個方向動」。{{term:tm_c4sh8k2p}}和{{term:tm_s5b8r3hd}}同時減少同樣的金額、本期淨利幾乎是零，正是{{option:o_ewxr}}的腳印。{{option:o_33gw}}會讓利益下降，也不會讓借款變少；認為{{option:o_fy94}}，則低估了報表能透露的資訊。",
+    "en": "Working backwards from figures means asking which items moved together and in which direction. {{term:tm_c4sh8k2p}} and {{term:tm_s5b8r3hd}} falling by the same amount while profit is close to nil is exactly the footprint of {{option:o_ewxr}}. {{option:o_33gw}} would lower profit and leave borrowings untouched, and answering {{option:o_fy94}} underestimates what the statement reveals."
+  }
+}

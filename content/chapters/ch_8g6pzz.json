@@ -1,0 +1,46 @@
+{
+  "id": "ch_8g6pzz",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "order": 8,
+  "scope": "core",
+  "examScope": "midterm",
+  "title": {
+    "zh-TW": "六大指標：投入（資產結構、現金流量）",
+    "en": "The six ratio families: inputs (financial structure and cash flow)"
+  },
+  "summary": {
+    "zh-TW": "六大類財務分析指標從這一章開始。這門課把六大類分成投入、轉換、產出三段來看，這是課程的讀法；主管機關規定的財務分析格式只列類別，不分段。先看「投入」：公司的錢從哪裡來（資產結構），以及本業賺進的現金夠不夠用（現金流量）。這一章也要把「算不出來」的 N/A 和「算出來剛好是零」分清楚，並學會把課程參考值當參考、不當判決。",
+    "en": "The six families of financial ratios start here. The course reads them in three stages (inputs, transformation and outputs); this is the course’s own reading, and the regulator’s financial analysis format lists the families without grouping them into stages. First come the inputs: where the company’s money comes from (financial structure) and whether the cash its core business brings in is enough (cash flow). You will also learn to tell ‘cannot be calculated’ (N/A) from ‘calculated and exactly zero’, and to treat course reference values as a guide rather than a verdict."
+  },
+  "objectiveIds": [
+    "obj_wb2v68",
+    "obj_6f1csw",
+    "obj_fyd5cv",
+    "obj_ftamqc"
+  ],
+  "levelIds": [
+    "lv_ssqpqpdm",
+    "lv_qyeddb18",
+    "lv_68b6mgvq",
+    "lv_mfwe0xsm"
+  ],
+  "prerequisites": [
+    "ch_s0525x"
+  ],
+  "badge": {
+    "icon": "scales",
+    "title": {
+      "zh-TW": "資金來源偵探",
+      "en": "Funding detective"
+    }
+  },
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_8eyx0srs",
+    "tm_555a7d2s",
+    "tm_35qb8and",
+    "tm_jbtbky5v"
+  ]
+}

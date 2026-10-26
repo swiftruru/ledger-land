@@ -1,0 +1,85 @@
+{
+  "id": "q_ch2x3m6w",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_mcdpxx",
+  "difficulty": 2,
+  "tags": [
+    "indirect_method",
+    "depreciation"
+  ],
+  "termRefs": [
+    "tm_z971merj",
+    "tm_85pkjrv0",
+    "tm_e61ht6yh",
+    "tm_c4sh8k2p"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_j6185k"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 100000,
+        "machinery_equipment": 250000,
+        "share_capital": 350000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.depreciation_straight_line",
+        "params": {
+          "usefulLifeYears": 5
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "is_pretax_income",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "cf_depreciation",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "年底，山谷民宿替客房的設備提列這一年的折舊（直線法，耐用年限五年）。這筆調整之後，下面四個數字各會怎麼變？",
+    "en": "At year end, Valley Guesthouse records this year’s depreciation on its room equipment (straight-line, five-year useful life). After this adjustment, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "折舊 {{money:e1.amount}} 讓{{term:tm_z971merj}}減少，但沒有任何現金離開帳戶。間接法在「折舊費用(+)」這一列把同樣的金額加回來，一減一加剛好抵銷，所以{{term:tm_e61ht6yh}}不變，資產負債表上的現金也不變。",
+    "en": "Depreciation of {{money:e1.amount}} lowers {{term:tm_z971merj}}, yet no cash leaves the account. The indirect method adds the same amount back on the depreciation line, and the deduction and the add-back cancel out, so {{term:tm_e61ht6yh}} is unchanged and so is cash on the balance sheet."
+  }
+}

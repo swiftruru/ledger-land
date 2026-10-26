@@ -1,0 +1,117 @@
+{
+  "chapterId": "ch_k9548t",
+  "items": [
+    {
+      "id": "obj_xkyrq9",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_k9548t",
+      "order": 1,
+      "statement": {
+        "zh-TW": "能站在股東與債權人的立場，說出同一個經營決定各自在意的報表數字與風險",
+        "en": "Take the position of a shareholder and of a creditor and say which figures on the statements and which risks each cares about in the same business decision"
+      },
+      "skill": "judge",
+      "misconceptions": [
+        {
+          "id": "mc_prf1",
+          "text": {
+            "zh-TW": "以為所有利害關係人都只看本期淨利",
+            "en": "Thinking every stakeholder looks only at profit for the period"
+          }
+        },
+        {
+          "id": "mc_rsk2",
+          "text": {
+            "zh-TW": "以為債權人和股東一樣希望公司多冒險追求成長",
+            "en": "Thinking creditors, like shareholders, want the company to take more risk for growth"
+          }
+        }
+      ],
+      "plannedQuestions": 4,
+      "suggestedTypes": [
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_9nf1gghz",
+        "tm_n4e8t2jy",
+        "tm_67e7f0mn"
+      ]
+    },
+    {
+      "id": "obj_bkfrmc",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_k9548t",
+      "order": 2,
+      "statement": {
+        "zh-TW": "能站在員工與客戶的立場，說出他們從財報中關心的穩定性與持續經營的訊號",
+        "en": "Take the position of an employee and of a customer and say which signals of stability and going concern they look for in the statements"
+      },
+      "skill": "judge",
+      "misconceptions": [
+        {
+          "id": "mc_wag3",
+          "text": {
+            "zh-TW": "以為員工只需要關心薪資費用那一列",
+            "en": "Thinking employees need only look at the wages line"
+          }
+        },
+        {
+          "id": "mc_cst4",
+          "text": {
+            "zh-TW": "以為客戶不需要看供應商的財報",
+            "en": "Thinking a customer has no reason to read a supplier’s statements"
+          }
+        }
+      ],
+      "plannedQuestions": 2,
+      "suggestedTypes": [
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_9nf1gghz",
+        "tm_sf72dfsv",
+        "tm_e61ht6yh"
+      ]
+    },
+    {
+      "id": "obj_xt5tdk",
+      "rev": 1,
+      "revKind": "text",
+      "status": "published",
+      "chapterId": "ch_k9548t",
+      "order": 3,
+      "statement": {
+        "zh-TW": "能在利益衝突的情境中，說明一個決定對不同利害關係人的得失，並說出自己的取捨依據",
+        "en": "In a situation of conflicting interests, explain what each stakeholder gains and loses from a decision and state the basis of your own trade-off"
+      },
+      "skill": "judge",
+      "misconceptions": [
+        {
+          "id": "mc_a115",
+          "text": {
+            "zh-TW": "以為一定找得到讓所有利害關係人都滿意的方案",
+            "en": "Thinking there is always an option that satisfies every stakeholder"
+          }
+        },
+        {
+          "id": "mc_v0t6",
+          "text": {
+            "zh-TW": "以為利益衝突只能靠誰人多、誰出錢多來決定",
+            "en": "Thinking conflicts can only be settled by headcount or by who paid the most"
+          }
+        }
+      ],
+      "plannedQuestions": 2,
+      "suggestedTypes": [
+        "judgment"
+      ],
+      "termRefs": [
+        "tm_9nf1gghz"
+      ]
+    }
+  ]
+}

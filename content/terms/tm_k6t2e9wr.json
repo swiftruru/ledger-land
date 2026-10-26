@@ -1,6 +1,6 @@
 {
   "id": "tm_k6t2e9wr",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -29,12 +29,17 @@
   ],
   "ifrsBasis": "IAS 1.82(b)",
   "note": {
-    "zh-TW": "課程的列名「支付利息」直譯自日文支払利息，指的是費用而不是付現；網站主要顯示改用現行用語「利息費用」，課程原字收進別名，報表列名是財務成本（設計說明見 T11）。",
-    "en": "The course line name is a direct translation of the Japanese for interest expense and means the expense, not the cash paid; the site shows the current term interest expense, keeps the course wording as an alias, and the statement line is finance costs (see the design note T11)."
+    "zh-TW": "課程的列名「支付利息」直譯自日文支払利息，指的是費用而不是付現；網站中文主要顯示改用現行用語「利息費用」，課程原字收進別名。台灣現行報表與 IFRS 的列名是財務成本，英文介面照 IFRS 顯示 finance costs。",
+    "en": "The course’s Chinese line name is a direct translation of the Japanese term for interest expense and means the expense, not the cash paid; the Chinese display uses the current term for interest expense and keeps the course wording as an alias. Current Taiwanese statements and IFRS call the line finance costs, which is what the English display shows."
   },
   "definition": {
-    "zh-TW": "借款在本期產生的利息費用，不論是否已經付現。實際付出的利息另外列在現金流量表的利息支出。",
-    "en": "The interest cost of borrowings for the period, whether or not it has been paid. The cash actually paid is shown separately as interest paid in the statement of cash flows."
+    "zh-TW": "借款在本期產生的利息費用，不論是否已經付現。現金流量表先在營業活動的「利息費用(+)」把它加回，實際付出的利息再列在小計之後的「支付利息(-)」。",
+    "en": "The interest cost of borrowings for the period, whether or not it has been paid. In the statement of cash flows it is first added back under operating activities on the interest expense (+) line, and the cash actually paid is then deducted separately on the interest paid (-) line."
   },
-  "accountRef": "interest_expense"
+  "accountRef": "interest_expense",
+  "related": [
+    "tm_y7a34vmk",
+    "tm_dsfjhrfw",
+    "tm_hg8c967a"
+  ]
 }

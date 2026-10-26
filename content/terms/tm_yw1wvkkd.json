@@ -2,23 +2,53 @@
   "id": "tm_yw1wvkkd",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "投資其他資產", "en": "Investments and other assets" },
+  "label": {
+    "zh-TW": "投資其他資產",
+    "en": "Investments and other assets"
+  },
   "teacherLabel": "投資其他資產",
   "currentTwLabel": null,
   "ifrsEnglish": "Investments and other assets",
-  "aliases": { "zh-TW": ["長期投資", "其他非流動資產"], "en": ["Long-term investments", "Other non-current assets"] },
-  "flags": ["japanese", "unused"],
+  "aliases": {
+    "zh-TW": [
+      "長期投資",
+      "其他非流動資產"
+    ],
+    "en": [
+      "Long-term investments",
+      "Other non-current assets"
+    ]
+  },
+  "flags": [
+    "japanese",
+    "unused"
+  ],
   "confidence": "high",
-  "pendingRefs": ["T15"],
+  "pendingRefs": [
+    "T15"
+  ],
   "note": {
-    "zh-TW": "直譯自日文的投資その他の資産；台灣報表拆成採用權益法之投資、其他非流動金融資產、其他非流動資產等，網站維持課程名稱為主要顯示並加現行對照（設計說明見 T15）。",
-    "en": "A direct translation of the Japanese balance sheet category. Taiwanese statements split it into investments under the equity method, other non-current financial assets and other non-current assets; the site keeps the course name as the main display with the current captions alongside (see the design note T15)."
+    "zh-TW": "直譯自日文的投資その他の資産；網站維持課程名稱為主要顯示並加現行對照。",
+    "en": "A direct translation of the Japanese balance sheet category; the site keeps the course name as the main display with the current captions alongside."
   },
   "definition": {
-    "zh-TW": "模板裡放長期投資與其他非流動資產的一列。它包含哪些項目教材沒有說明，本課的故事也沒有用到。",
-    "en": "A template line for long-term investments and other non-current assets. The course does not say what it contains, and the story does not use it."
+    "zh-TW": "日本會計基準版面中，把長期投資與其他非流動資產合在一起的分類。\n\n台灣現行報表會拆成採用權益法之投資、其他非流動金融資產、其他非流動資產等好幾列。",
+    "en": "A heading from the Japanese GAAP layout that groups long-term investments together with other non-current assets.\n\nCurrent Taiwanese statements split it into several lines such as investments accounted for using the equity method, other non-current financial assets and other non-current assets."
   },
-  "accountRef": "investments_other_assets"
+  "example": {
+    "zh-TW": "位置：資產負債表非流動資產，無形資產的下一列。本課故事沒有用到，實驗室預設隱藏。年報公式口徑的現金流量再投資比率會把它算進分母。",
+    "en": "Where it sits: non-current assets on the balance sheet, below intangible assets. The course story does not use it, so the lab hides it by default. The cash reinvestment ratio under ‘Annual report formulas’ includes it in the denominator."
+  },
+  "misconception": {
+    "zh-TW": "看到「其他資產」就以為它是流動資產裡的雜項。這一列放在非流動資產，裝的是打算長期持有的投資與其他長期項目。",
+    "en": "Reading other assets as a miscellaneous current asset. This line sits in non-current assets and holds investments and other items meant to be held for the long term."
+  },
+  "accountRef": "investments_other_assets",
+  "related": [
+    "tm_wqn6nph9",
+    "tm_jbtbky5v",
+    "tm_93mhtb4s"
+  ]
 }

@@ -1,0 +1,82 @@
+{
+  "id": "q_atc9cwvj",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_3ddr90",
+  "difficulty": 2,
+  "tags": [
+    "working_capital",
+    "receivables"
+  ],
+  "termRefs": [
+    "tm_873r9bx9",
+    "tm_r7x2c9fa",
+    "tm_e61ht6yh"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "start": 40000,
+    "end": 65000,
+    "diff": 25000
+  },
+  "prompt": {
+    "zh-TW": "速達機車行的應收帳款從期初的 {{money:vars.start}} 增加到期末的 {{money:vars.end}}。對這一期營業活動的現金來說，這代表什麼？",
+    "en": "Swift Scooter Repairs’ trade receivables rose from {{money:vars.start}} at the start of the period to {{money:vars.end}} at the end. What does this mean for operating cash this period?"
+  },
+  "options": [
+    {
+      "id": "o_3sek",
+      "text": {
+        "zh-TW": "有 {{money:vars.diff}} 的收入還沒收到現金，算現金時要從利益扣掉",
+        "en": "{{money:vars.diff}} of revenue has not yet been collected, so it is deducted from profit when working out cash"
+      },
+      "feedback": {
+        "zh-TW": "答對了。應收帳款變多，就是「賣了但還沒收到錢」的部分變多；這些收入已經算進利益，所以要扣掉。",
+        "en": "Nice work. More receivables means more of what was sold has not yet been paid for; that revenue is already in profit, so it is deducted."
+      },
+      "short": {
+        "zh-TW": "收入算了但錢沒收到，要扣掉",
+        "en": "Revenue counted but cash not collected, so deduct it"
+      }
+    },
+    {
+      "id": "o_j9es",
+      "text": {
+        "zh-TW": "收到的錢比收入多了 {{money:vars.diff}}，算現金時要加回去",
+        "en": "{{money:vars.diff}} more cash was collected than revenue, so it is added back when working out cash"
+      },
+      "feedback": {
+        "zh-TW": "你知道應收帳款和收錢有關，這點沒錯，只是方向反了。應收帳款是「客人還欠的錢」，它變多表示收到的比賣出的少，不是多。",
+        "en": "You know receivables are tied to collecting cash, which is right, but the direction is reversed. Receivables are what customers still owe; when they grow, less was collected than was sold, not more."
+      },
+      "short": {
+        "zh-TW": "收到的比收入多，要加回",
+        "en": "Collected more than revenue, so add it back"
+      },
+      "misconceptionId": "mc_288v"
+    },
+    {
+      "id": "o_2ps7",
+      "text": {
+        "zh-TW": "應收帳款是資產負債表的事，和現金流量表無關",
+        "en": "Receivables belong to the balance sheet and have nothing to do with the statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "應收帳款確實是資產負債表上的科目，這點沒錯。不過間接法正是靠這些科目的「變動」把利益修正成現金；應收帳款的增減就是其中一列。",
+        "en": "Receivables are indeed a balance sheet account, that much is right. But the indirect method relies on the changes in exactly these accounts to turn profit into cash; the change in receivables is one of its lines."
+      },
+      "short": {
+        "zh-TW": "和現金流量表無關",
+        "en": "Nothing to do with the statement of cash flows"
+      }
+    }
+  ],
+  "correctOptionId": "o_3sek",
+  "explanation": {
+    "zh-TW": "{{term:tm_r7x2c9fa}}是客人還沒付的錢。它增加 {{money:vars.diff}}，表示這一期的收入裡有 {{money:vars.diff}} 還躺在客人那裡，所以答案是{{option:o_3sek}}；這就是「{{term:tm_873r9bx9}}」這一列（也就是應收帳款增加）的意思。選{{option:o_j9es}}是把方向弄反，選{{option:o_2ps7}}則忽略了間接法用的正是這些變動。",
+    "en": "{{term:tm_r7x2c9fa}} are what customers have not yet paid. A rise of {{money:vars.diff}} means {{money:vars.diff}} of this period’s revenue is still sitting with customers, so the answer is {{option:o_3sek}}; that is what the {{term:tm_873r9bx9}} line means. Choosing {{option:o_j9es}} gets the direction backwards, and choosing {{option:o_2ps7}} overlooks that these changes are exactly what the indirect method uses."
+  }
+}

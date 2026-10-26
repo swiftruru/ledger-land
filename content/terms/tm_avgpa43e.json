@@ -2,24 +2,48 @@
   "id": "tm_avgpa43e",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "研究發展費用", "en": "Research and development expenses" },
-  "teacherLabel": "研究發展費用",
+  "label": {
+    "zh-TW": "研究發展費用",
+    "en": "Research and development expenses"
+  },
+  "teacherLabel": "研發費用",
   "currentTwLabel": null,
   "ifrsEnglish": "Research and development expenses",
-  "aliases": { "zh-TW": ["研發費用"], "en": ["R&D expenses"] },
+  "aliases": {
+    "zh-TW": [
+      "研發費用"
+    ],
+    "en": [
+      "R&D expenses"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 38",
   "note": {
-    "zh-TW": "0-2 以 RD 代表；網站補充的延伸科目，給 RD intensity 等指標使用。",
-    "en": "Represented by RD in the 0-2 slides; an extension account added by the site for ratios such as R&D intensity."
+    "zh-TW": "課程投影片以 RD 代表；網站補充的延伸科目，給 RD intensity 等指標使用，不列入期中考範圍。",
+    "en": "Abbreviated to RD in the course slides; an extension account added by the site for ratios such as R&D intensity, outside the midterm scope."
   },
   "definition": {
-    "zh-TW": "為了研究與開發新產品、新技術所花的費用。研究階段的支出依 IFRS 一律列為費用。",
-    "en": "Spending on researching and developing new products or technology. Under IFRS research-phase costs are always expensed."
+    "zh-TW": "為了研究新知識、開發新產品或新製程而投入的人事、材料與測試等支出。\n\n研究階段的支出一律在發生時列為費用；課程的企業績效指標以它衡量研發投入的強度。",
+    "en": "Spending on staff, materials and testing aimed at researching new knowledge or developing new products or processes.\n\nResearch-phase expenditure is always expensed as incurred; the course’s business performance indicators use it to measure research intensity."
   },
-  "accountRef": "research_development_expense"
+  "example": {
+    "zh-TW": "位置：損益表銷管費用區；這是網站補充的延伸科目，課程模板沒有這一列，也不列入期中考範圍。台灣報表把營業費用分成推銷、管理、研究發展三類，它是其中一類。RD intensity 以它為分子。",
+    "en": "Where it sits: the distribution costs and administrative expenses section of the income statement; it is an extension account added by the site, absent from the course template and outside the midterm scope. Taiwanese statements split operating expenses into selling, administrative and research and development, and this is the third group. RD intensity uses it as the numerator."
+  },
+  "misconception": {
+    "zh-TW": "以為研發花的錢將來會帶來收益，所以可以先列成資產。研究階段的支出一律費用化；只有符合條件的開發階段支出才能資本化，而且那是另一個科目。",
+    "en": "Assuming research spending can be capitalised because it should pay off later. Research expenditure is always expensed; only qualifying development-phase expenditure may be capitalised, and that goes to a different account."
+  },
+  "accountRef": "research_development_expense",
+  "related": [
+    "tm_vpzcjk6n",
+    "tm_1vxjew8q",
+    "tm_7nja2cvf",
+    "tm_kyjfrraq"
+  ]
 }

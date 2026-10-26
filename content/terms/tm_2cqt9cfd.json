@@ -2,7 +2,7 @@
   "id": "tm_2cqt9cfd",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
   "label": {
     "zh-TW": "總資產週轉率",
@@ -22,16 +22,34 @@
   "confidence": "high",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "0-2 的簡化版用期末值，計算器統一期間並標示是否年化。",
-    "en": "The 0-2 version uses closing values; the calculator aligns the periods and says whether figures are annualised."
+    "zh-TW": "課程的簡化版用期末值，計算器統一期間並標示是否年化。",
+    "en": "The course’s simplified version uses closing values; the calculator aligns the periods and says whether figures are annualised."
   },
   "definition": {
-    "zh-TW": "全部資產能帶出多少營業收入，看資產運用的效率。次數越高表示資產運用越有效率；它也是杜邦分析的中間因子。",
-    "en": "How much revenue all the assets generate: the efficiency of asset use. Higher means the assets are worked harder; it is also the middle factor in the DuPont analysis."
+    "zh-TW": "每一元資產在一段期間內做出多少營業收入。\n\n它衡量資產的使用效率：同樣規模的資產能做越多生意，表示資產沒有閒置。",
+    "en": "How much revenue each unit of assets generates during a period.\n\nIt measures how hard the assets are working: the more sales the same asset base produces, the less idle capacity there is."
+  },
+  "example": {
+    "zh-TW": "分子來自損益表，分母來自資產負債表。它也是杜邦分析的中間項：純益率乘以總資產週轉率就是資產報酬率。課程的簡化版用單一期間計算，計算器會標示是否年化。",
+    "en": "The numerator comes from the income statement and the denominator from the balance sheet. It is also the middle term of DuPont analysis: net profit margin × total asset turnover = return on assets. The simplified course version uses a single period and the calculator states whether the figure is annualised."
+  },
+  "misconception": {
+    "zh-TW": "拿課程版算出的週轉率，直接和公司公開的財務分析數字比。課程版與簡化版除以期末資產總計，公開的財務分析和網站的年報版一樣，除以期初與期末的平均資產總額；年底前才大量增加資產的公司，新資產還沒帶來多少營收就整筆算進期末的分母，課程版會明顯偏低。比較前先確認兩個數字用的是同一個版本。",
+    "en": "Comparing a course-version figure directly with a company’s published financial analysis. The course and simplified versions divide by closing total assets, while published financial analysis, like the site’s annual report version, divides by the average of opening and closing total assets; if a company added a lot of assets late in the year, those assets sit in the closing denominator in full before they have brought in much revenue, so the course figure comes out noticeably lower. Check that both figures use the same version before comparing."
+  },
+  "formula": {
+    "zh-TW": "總資產週轉率 ＝ 營業收入 ÷ 資產總計。課程版與簡化版用期末資產總計；年報版用平均資產總額。",
+    "en": "Total asset turnover = revenue ÷ total assets. The course and simplified versions use closing total assets; the annual report version uses average total assets."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "total_asset_turnover@excel"
+  "ratioRef": "total_asset_turnover@excel",
+  "related": [
+    "tm_r0a5t3kq",
+    "tm_4tz4q9pa",
+    "tm_t7a3s6wb",
+    "tm_v3n8q2ye"
+  ]
 }

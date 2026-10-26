@@ -1,0 +1,44 @@
+{
+  "id": "q_0cejsben",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_32ab85",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "profitability",
+    "extension"
+  ],
+  "termRefs": [
+    "tm_7km3j04r",
+    "tm_z3vbt800",
+    "tm_5e3py55a",
+    "tm_bkqw8c59"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "oi": 300000,
+    "capital": 2000000
+  },
+  "compute": {
+    "ratioRef": "operating_income_to_paid_in_capital@excel",
+    "measures": {
+      "is_operating_income": "vars.oi",
+      "bs_share_capital": "vars.capital"
+    }
+  },
+  "answerUnit": "percent",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "延伸指標（課程 Excel 有這一項，現行採 IFRS 的財務分析格式不列）：綠丘單車行今年營業利益 {{money:vars.oi}}，股本（實收資本）{{money:vars.capital}}。依課程 Excel 口徑計算{{term:tm_7km3j04r|plain}}，以百分比作答。",
+    "en": "Extension ratio (in the course Excel but not in the current IFRS-based financial analysis format): Green Hill Cycles had operating profit of {{money:vars.oi}} and share capital (paid-in capital) of {{money:vars.capital}} this year. Using the course Excel basis, what is the {{term:tm_7km3j04r|plain}}? Answer as a percentage."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_7km3j04r}}＝{{term:tm_z3vbt800}} ÷ {{term:tm_5e3py55a}}，回答「本業的利益相對股東投入的股本有多少」。網站把它列為延伸指標：公式照課程，但現行採 IFRS 的財務分析格式（例如公開說明書）在相對實收資本的比率中只列{{term:tm_bkqw8c59|plain}}，營業利益這一列只出現在採用 IFRS 以前的舊格式；年報準則在 {{raw:2024}} 年 8 月 1 日修正後，年報也不再要求刊載財務分析表（現行規定，查證於 {{raw:2026-10-24}}）。",
+    "en": "{{term:tm_7km3j04r}} = {{term:tm_z3vbt800}} ÷ {{term:tm_5e3py55a}}: how large the core business’s profit is relative to the capital the shareholders paid in. The site lists it as an extension ratio: the formula follows the course, but among the ratios to paid-in capital, the current IFRS-based financial analysis format (in a prospectus, for example) lists only the {{term:tm_bkqw8c59|plain}}; the operating profit line appears only in the older pre-IFRS format, and since the annual report rules were amended on 1 August {{raw:2024}}, annual reports no longer have to include a financial analysis table (current rules, checked on {{raw:2026-10-24}})."
+  }
+}

@@ -2,28 +2,55 @@
   "id": "tm_7nja2cvf",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "開發費", "en": "Development costs" },
+  "label": {
+    "zh-TW": "開發費",
+    "en": "Development costs"
+  },
   "teacherLabel": "開發費",
   "currentTwLabel": null,
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": [] },
-  "flags": ["japanese", "not_ifrs_line", "ifrs_treatment_differs", "unused"],
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [
+    "japanese",
+    "not_ifrs_line",
+    "ifrs_treatment_differs",
+    "unused"
+  ],
   "confidence": "high",
-  "pendingRefs": ["T04"],
+  "pendingRefs": [
+    "T04"
+  ],
   "ifrsBasis": "IAS 38.57",
   "note": {
-    "zh-TW": "日本基準的開發費（新技術、新市場等）與 IAS 38 的開發階段不同義，不要和研發費用混在一起。",
-    "en": "The Japanese GAAP development costs (new technology, new markets and so on) are not the same as the IAS 38 development phase, so do not confuse them with research and development expenses."
+    "zh-TW": "日本基準的開發費（新技術、新市場等）與 IAS 38 的開發階段不同義，也和研究發展費用是不同的科目。",
+    "en": "The Japanese GAAP development costs (new technology, new markets and so on) differ from the IAS 38 development phase and are a separate account from research and development expenses."
   },
   "definition": {
-    "zh-TW": "為了開發新技術或新市場付出的支出，教材依日本做法先列為遞延資產再攤銷。本課的故事沒有用到。",
-    "en": "Spending on developing new technology or new markets, which the course carries as a deferred asset and amortises, following Japanese practice. The course story does not use it."
+    "zh-TW": "日本會計基準下，為開拓新技術、新市場或新組織而投入、先列為遞延資產再分年攤銷的支出。\n\n它和研究發展費用不同：研發費用在發生時就是費用，開發費是課程模板特有的遞延資產。",
+    "en": "Under Japanese GAAP, expenditure on developing new technology, new markets or a new organisation that is first recorded as a deferred asset and then amortised over several years.\n\nIt is not the same as research and development expenses, which are expensed as incurred; development costs are a deferred asset specific to the course template."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表遞延資產區，設立費的下一列。本課故事沒有用到，實驗室預設隱藏。若有金額，支付時列投資活動流出；網站比照設立費，之後每年攤銷到營業外支出（日本基準實務上多把開發費的攤銷列在營業成本或銷管費用，這裡為了和設立費一致而簡化）。",
+    "en": "Where it sits: the deferred assets section of the balance sheet, below start-up costs. The course story does not use it, so the lab hides it by default. If there were a balance, the payment would be an investing outflow; the site treats it like start-up costs and amortises it each year to non-operating expenses (in Japanese practice the amortisation of development costs usually goes to cost of sales or selling and administrative expenses; the site simplifies so that it matches start-up costs)."
+  },
+  "misconception": {
+    "zh-TW": "把開發費和研究發展費用混為一談，或以為所有開發支出都可以列成資產。研究階段的支出一律費用化；只有符合嚴格條件的開發階段支出，在現行準則下才能列為無形資產。",
+    "en": "Lumping development costs together with research and development expenses, or assuming any development spending can be capitalised. Research expenditure is always expensed; under current standards only development expenditure meeting strict conditions is recognised as an intangible asset."
   },
   "ifrsNote": {
-    "zh-TW": "IAS 38.57 只允許符合六項條件的開發階段支出列為無形資產，研究階段與不符合條件的開發支出都在發生時列為費用。",
-    "en": "IAS 38.57 allows development expenditure to be capitalised as an intangible asset only when six conditions are met; research costs and development costs that do not qualify are expensed when incurred."
+    "zh-TW": "IAS 38.57 只允許符合六項條件的開發階段支出列為無形資產，研究階段與不符合條件的開發支出都在發生時認列為費用；台灣現行報表沒有「開發費」這種遞延資產。IFRS 對照的版面不顯示這一列，相關金額改列當期費用。",
+    "en": "IAS 38.57 allows development expenditure to be recognised as an intangible asset only when six conditions are met; research expenditure and non-qualifying development expenditure are expensed when incurred. Current Taiwanese statements have no deferred asset of this kind. The IFRS comparison layout hides this line and treats the amount as an expense of the period."
   },
-  "accountRef": "deferred_development_costs"
+  "accountRef": "deferred_development_costs",
+  "related": [
+    "tm_d9f3g7cs",
+    "tm_8g81jkmp",
+    "tm_avgpa43e",
+    "tm_wqn6nph9"
+  ]
 }

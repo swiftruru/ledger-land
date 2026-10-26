@@ -1,6 +1,6 @@
 {
   "id": "tm_c4sh8k2p",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -15,7 +15,7 @@
   "ifrsBasis": "IAS 7.6",
   "definition": {
     "zh-TW": "公司手上隨時能動用的錢，包括銀行存款，以及短期內就能變現、價值幾乎不會變動的投資。它是資產負債表的第一列，也要和現金流量表的期末餘額對得上。",
-    "en": "Money the business can use straight away, including bank deposits and short-term investments that are readily convertible to cash. It is the first line of the statement of financial position and must agree with the closing balance in the statement of cash flows."
+    "en": "Money the business can use straight away, including bank deposits and short-term, highly liquid investments that are readily convertible to known amounts of cash and carry an insignificant risk of changes in value. It is the first line of the balance sheet and must agree with the closing balance in the statement of cash flows."
   },
   "accountRef": "cash"
 }

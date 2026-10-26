@@ -1,0 +1,69 @@
+{
+  "id": "q_mgjbbywg",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "ratio_interpret",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_000wkh",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "interpret"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh",
+    "tm_knqbr6g4"
+  ],
+  "scored": true,
+  "ratioRef": "pe_ratio@slides02",
+  "vars": {
+    "pe": 16
+  },
+  "prompt": {
+    "zh-TW": "小安看到暖木家具的本益比是 {{number:vars.pe|unit=times}}，想用一句話向同學解釋這個數字。哪一句最接近它的意思？",
+    "en": "An sees that Warm Timber Furniture has a P/E ratio of {{number:vars.pe|unit=times}} and wants to explain the figure to a classmate in one sentence. Which comes closest to what it means?"
+  },
+  "options": [
+    {
+      "id": "o_p4z9",
+      "text": {
+        "zh-TW": "以目前的每股盈餘來算，現在的股價相當於 {{number:vars.pe}} 年的盈餘",
+        "en": "At the current earnings per share, today’s share price is equivalent to {{number:vars.pe}} years of earnings"
+      },
+      "feedback": {
+        "zh-TW": "答對了。倍數可以想成「用現在的盈餘水準，幾年的盈餘加起來等於現在的價格」；這只是換個說法，不是保證。",
+        "en": "That is right. The multiple can be read as how many years of earnings, at today’s level, add up to today’s price; it is a restatement, not a promise."
+      }
+    },
+    {
+      "id": "o_q5a1",
+      "text": {
+        "zh-TW": "公司保證在 {{number:vars.pe}} 年內把股價退還給股東",
+        "en": "The company guarantees to return the share price to shareholders within {{number:vars.pe}} years"
+      },
+      "feedback": {
+        "zh-TW": "你把倍數換算成年數，這個換算本身沒錯。但盈餘不一定會以股利發回來，更沒有任何保證；本益比只是價格與盈餘的比例。",
+        "en": "Converting the multiple into years is itself fine. But earnings are not necessarily paid out as dividends, and nothing is guaranteed; the P/E ratio is only a ratio of price to earnings."
+      }
+    },
+    {
+      "id": "o_r6b2",
+      "text": {
+        "zh-TW": "公司的資產總計是股東權益總額的 {{number:vars.pe}} 倍",
+        "en": "The company’s total assets are {{number:vars.pe}} times its total equity"
+      },
+      "feedback": {
+        "zh-TW": "你想到了另一個「倍數」。資產與權益的倍數是權益倍數，和本益比無關；本益比的兩個數字是股價與每股盈餘。",
+        "en": "You are thinking of a different multiple. Assets over equity is the equity multiplier, unrelated to the P/E ratio, whose two inputs are share price and earnings per share."
+      },
+      "misconceptionId": "mc_st8f"
+    }
+  ],
+  "correctOptionId": "o_p4z9",
+  "explanation": {
+    "zh-TW": "{{option:o_p4z9}}是常見的白話換算：假設每股盈餘每年都和現在一樣，股價相當於幾年的盈餘。它沒有考慮成長、風險與時間價值，只是讀數字的一種方式。{{option:o_q5a1}}把比例說成承諾；{{option:o_r6b2}}把本益比和權益倍數搞混。",
+    "en": "{{option:o_p4z9}} is a common plain-language conversion: if earnings per share stayed at today’s level every year, the share price would equal that many years of earnings. It ignores growth, risk and the time value of money; it is just one way of reading the figure. {{option:o_q5a1}} turns a ratio into a promise; {{option:o_r6b2}} confuses the P/E ratio with the equity multiplier."
+  }
+}

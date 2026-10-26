@@ -2,19 +2,41 @@
   "id": "tm_3bd0kmwn",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "法定盈餘公積", "en": "Legal reserve" },
+  "label": {
+    "zh-TW": "法定盈餘公積",
+    "en": "Legal reserve"
+  },
   "teacherLabel": "法定盈餘公積",
   "currentTwLabel": null,
   "ifrsEnglish": "Legal reserve",
-  "aliases": { "zh-TW": [], "en": [] },
-  "flags": ["unused"],
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
+  "flags": [
+    "unused"
+  ],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "公司法規定從每年盈餘中提撥、不能隨便發出去的公積。它仍然屬於權益，只是把一部分盈餘留在公司裡；本課未用。",
-    "en": "A reserve that company law requires to be set aside from each year's profit and that cannot be freely distributed. It remains part of equity; it simply keeps part of the profit inside the company. Not used in this course."
+    "zh-TW": "公司依公司法規定，從每年的稅後盈餘中按固定比例提撥、累積起來不能隨意分配給股東的盈餘。\n\n白話說，它是法律要求公司留在身上的「存糧」，用來墊住日後的虧損。",
+    "en": "Retained profit that the Company Act requires a company to set aside each year at a fixed proportion of after-tax profit; it accumulates and cannot be freely distributed to shareholders.\n\nIn plain terms, it is a cushion the law makes the company keep to absorb future losses."
   },
-  "accountRef": "legal_reserve"
+  "example": {
+    "zh-TW": "位置：資產負債表股東權益中的保留盈餘區。提撥時未分配盈餘減少、法定盈餘公積增加，股東權益總額不變。本課故事沒有分配盈餘，所以這一列一直是 0。",
+    "en": "Where it sits: in the retained earnings group within equity on the balance sheet. When it is appropriated, unappropriated retained earnings fall and the legal reserve rises by the same amount, so total equity is unchanged. The course story never appropriates profit, so this line stays at zero."
+  },
+  "misconception": {
+    "zh-TW": "以為提撥公積會讓現金減少。提撥只是權益內部的搬動，把一部分盈餘貼上「不能分配」的標籤，沒有任何現金流出。",
+    "en": "Assuming that appropriating a reserve uses up cash. It is only a reclassification inside equity, labelling part of the profit as not distributable; no cash leaves the company."
+  },
+  "accountRef": "legal_reserve",
+  "related": [
+    "tm_j5778msk",
+    "tm_4c6v99nn",
+    "tm_zz4bj51z",
+    "tm_x3n8v5tc"
+  ]
 }

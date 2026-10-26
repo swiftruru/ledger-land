@@ -1,0 +1,41 @@
+{
+  "id": "q_dthgvpe2",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "true_false",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_2489dv",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "inventory",
+    "layout",
+    "perpetual"
+  ],
+  "termRefs": [
+    "tm_2967ackr",
+    "tm_q4k9v2nd",
+    "tm_n7v3k8pq",
+    "tm_p7h3c5xq"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "在網站採用的永續盤存制下，教材版面「期末存貨(-)」那一列的數字，是年底另外寫一筆「借 存貨／貸 期末存貨」的分錄記出來的。",
+    "en": "Under the perpetual system the site uses, the figure on the course layout’s closing inventory (-) line comes from a separate year-end entry that debits inventory and credits a closing inventory account."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "你注意到版面上有這一列、也想找出對應的分錄，方向對了。不過網站的內帳採永續盤存：進貨直接借記存貨、賣出時借記營業成本貸記存貨，存貨帳隨時反映帳上應有的餘額（實地盤點的差異，另以盤盈或盤損的分錄調整）。「期末存貨」只是把那個餘額抄到版面上，沒有也不需要這種調整分錄。",
+    "en": "You noticed the line on the layout and looked for a matching entry, which is the right instinct. But the site keeps perpetual inventory: purchases are debited straight to inventory and each sale debits cost of sales and credits inventory, so the inventory account always shows what should be on hand (any difference found at the count is adjusted as a surplus or shortage). The closing inventory line simply copies that balance onto the layout; no such adjusting entry exists or is needed."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。「期末存貨」不是分錄裡的科目，而是期末存貨帳戶的餘額；網站的帳裡沒有「借 存貨／貸 期末存貨」這種只為了填表而寫的分錄，所有分錄都是標準分錄。",
+    "en": "Correct. Closing inventory is not an account used in entries; it is the inventory account balance at period end. The site’s books have no debit-inventory, credit-closing-inventory entry written only to fill in the layout; every entry is a standard entry."
+  },
+  "misconceptionId": "mc_pc13",
+  "explanation": {
+    "zh-TW": "在定期盤存的做法裡，期末才用盤點數調整存貨，所以會有結帳分錄；在永續盤存裡，存貨帳平時就跟著每筆進貨與銷貨變動。版面上期初、進貨、期末這三列都是由存貨帳推導出來的，和分錄裡的科目是兩層不同的東西。",
+    "en": "Under a periodic system, inventory is adjusted only at period end from the count, so closing entries are needed; under a perpetual system the inventory account moves with every purchase and sale as they happen. The opening inventory, purchases and closing inventory lines on the layout are all derived from the inventory account and sit at a different layer from the accounts in the entries."
+  }
+}

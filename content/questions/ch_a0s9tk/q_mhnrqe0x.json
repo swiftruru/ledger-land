@@ -1,0 +1,60 @@
+{
+  "id": "q_mhnrqe0x",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "journal_entry",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_cskmkg",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "journal_entry",
+    "share_issue"
+  ],
+  "termRefs": [
+    "tm_b9e9vjct",
+    "tm_c4sh8k2p",
+    "tm_5e3py55a",
+    "tm_50v66dt7",
+    "tm_yka0razf"
+  ],
+  "scored": true,
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 200000,
+        "share_capital": 200000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.issue_shares_cash",
+        "params": {
+          "amount": 800000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": []
+  },
+  "accountChoices": [
+    "cash",
+    "share_capital",
+    "revenue",
+    "short_term_borrowings",
+    "retained_earnings"
+  ],
+  "allowAliases": true,
+  "prompt": {
+    "zh-TW": "海風麵包坊的股東再投入現金 {{money:e1.amount}}，公司按面額發給他們新股。請寫出這筆交易的分錄。",
+    "en": "The shareholders of Sea Breeze Bakery put in a further {{money:e1.amount}} in cash and the company issues them new shares at par. Write the journal entry."
+  },
+  "explanation": {
+    "zh-TW": "現金是資產，增加記借方 {{money:e1.amount}}；股本是股東權益，增加記貸方 {{money:e1.amount}}。股東出資不是營業收入，也不是借款：公司不必還這筆錢，股東換到的是所有權。如果發行價格高於面額，超過的部分要貸記資本公積（延伸章「融資與資本公積」有說明）。",
+    "en": "Cash is an asset, so its increase of {{money:e1.amount}} is a debit; share capital is equity, so its increase of {{money:e1.amount}} is a credit. A capital contribution is neither revenue nor a loan: the company does not have to repay it, and the shareholders receive ownership in exchange. If shares are issued above par, the excess is credited to capital surplus (covered in the extension chapter on buying on margin and capital surplus)."
+  }
+}

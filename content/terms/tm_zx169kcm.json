@@ -2,23 +2,50 @@
   "id": "tm_zx169kcm",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "保證金", "en": "Deposits received" },
+  "label": {
+    "zh-TW": "保證金",
+    "en": "Deposits received"
+  },
   "teacherLabel": "保證金",
   "currentTwLabel": null,
   "ifrsEnglish": "Deposits received",
-  "aliases": { "zh-TW": ["存入保證金", "代收款"], "en": [] },
-  "flags": ["japanese", "unused"],
+  "aliases": {
+    "zh-TW": [
+      "存入保證金",
+      "代收款"
+    ],
+    "en": []
+  },
+  "flags": [
+    "japanese",
+    "unused"
+  ],
   "confidence": "medium",
-  "pendingRefs": ["T15"],
+  "pendingRefs": [
+    "T15"
+  ],
   "note": {
-    "zh-TW": "模板列在流動負債，性質教材沒有說明；台灣實務對照存入保證金（多屬非流動）或代收款，網站依課程模板列流動負債（設計說明見 T15）。",
-    "en": "The template lists it under current liabilities without defining it; in Taiwanese practice it maps to guarantee deposits received (usually non-current) or collections on behalf of others, the site follows the course template and lists it under current liabilities (see the design note T15)."
+    "zh-TW": "模板列在流動負債，性質課程沒有說明；台灣實務對照存入保證金或代收款，網站依課程模板列流動負債。",
+    "en": "The template lists it under current liabilities without defining it. In Taiwanese practice it maps to guarantee deposits received or to collections on behalf of others; the site follows the course template and lists it under current liabilities."
   },
   "definition": {
-    "zh-TW": "從客戶或他人收到、將來要退還的保證金。它是負債，因為這筆錢終究要還；本課的故事沒有用到。",
-    "en": "Deposits received from customers or others that will have to be returned. It is a liability because the money must eventually be given back; the course story does not use it."
+    "zh-TW": "向客戶或承租人收到、日後要退還的押金；課程模板沒有定義，也可能指替他人代收、日後要轉交的款項（代收款）。\n\n因為錢終究要還回去或轉交出去，所以它是負債，不是收入。",
+    "en": "Deposits received from customers or tenants that must be returned later; the course template does not define it, and it may also cover money collected on behalf of others and passed on later.\n\nBecause the money has to be given back or passed on, it is a liability rather than income."
   },
-  "accountRef": "deposits_received"
+  "example": {
+    "zh-TW": "位置：課程模板放在資產負債表流動負債。收到時現金增加、保證金增加；退還時兩者一起減少。間接法把它的變動歸入「其他負債增加(+)」列。本課故事沒有用到。預期一年內退還的列流動負債，之後才退還的列非流動負債；台灣實務的存入保證金多隨長期租約或合約收取，所以多列非流動負債，現金流量表也多把它的增減列在籌資活動。網站依課程模板處理。",
+    "en": "Where it sits: the course template places it in current liabilities on the balance sheet. Receiving a deposit raises cash and this liability; refunding it lowers both. The indirect method puts its movement on the increase in other operating liabilities (+) line. The course story does not use it. A deposit expected to be returned within twelve months is a current liability and one due later is non-current; in Taiwan guarantee deposits usually come with long-term leases or contracts, so they are mostly non-current, and statements of cash flows usually show their movements under financing activities. The site follows the course template."
+  },
+  "misconception": {
+    "zh-TW": "把收到的保證金當成收入。它和預收收入一樣是先收到錢、還沒完成義務；不同的是，預收收入之後會轉成收入，保證金到期原則上要退還，只有依約不退還的部分（例如扣下來賠償損壞，或因違約而沒收）才會轉列收益。",
+    "en": "Counting a deposit received as income. Like contract liabilities it is cash received before an obligation is settled; the difference is that contract liabilities later become revenue, whereas a deposit is in principle refunded when due, and only an amount kept under the contract (for example to cover damage, or forfeited on a breach) is recognised as income."
+  },
+  "accountRef": "deposits_received",
+  "related": [
+    "tm_bgtgsvhr",
+    "tm_z5kjkvhc",
+    "tm_bcs4fvmn"
+  ]
 }

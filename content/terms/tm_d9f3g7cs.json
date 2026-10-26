@@ -2,7 +2,7 @@
   "id": "tm_d9f3g7cs",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "設立費",
@@ -33,16 +33,30 @@
   ],
   "ifrsBasis": "IAS 38.69",
   "note": {
-    "zh-TW": "現行用語是開辦費，英文舊譯 organisation costs 列為別名。依 14 的決定處理，可出分錄題，老師可回饋。",
-    "en": "The current Taiwanese term is 開辦費 (start-up costs); the older English organisation costs is kept as an alias. Handled per the decisions in 14; journal entry questions may be set, and the teacher may give feedback."
+    "zh-TW": "現行用語是開辦費，英文舊譯 organisation costs 列為別名。",
+    "en": "The current Taiwanese term is 開辦費 (start-up costs); the older English organisation costs is kept as an alias."
   },
   "definition": {
-    "zh-TW": "公司成立時付出的登記、顧問等開辦支出。教材把它先列為資產，再分幾年攤銷成費用；現行做法是付出當年就全部列為費用。",
-    "en": "Registration, advisory and similar costs of setting up the company. The course records them as an asset and amortises them over several years; current practice expenses them in the year they are paid."
+    "zh-TW": "公司成立時為登記、公證、開辦等事項付出的費用。\n\n課程把它先列為遞延資產，之後依課程設定分 5 年直線攤銷到費用；現行台灣用語是開辦費。",
+    "en": "Costs paid to register, notarise and set up the company when it is formed.\n\nThe course records them first as a deferred asset and then amortises them on a straight-line basis over five years, the course setting; the current Taiwanese term is 開辦費 (start-up costs)."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表遞延資產區。支付時現金減少、設立費增加，現金流量表列在投資活動的取得非流動資產；每年攤銷時設立費減少、攤銷遞延資產增加。",
+    "en": "Where it sits: the deferred assets section of the balance sheet. Paying reduces cash and increases this asset, shown under investing activities as payments to acquire non-current assets; each year’s amortisation reduces the balance and increases amortisation of deferred assets."
+  },
+  "misconception": {
+    "zh-TW": "以為列成資產表示這筆錢以後還拿得回來。它沒有可以變現的價值，只是把一次付出的費用分攤到幾年認列；攤銷完之後就從資產負債表消失。",
+    "en": "Believing that showing it as an asset means the money can be recovered. It has no realisable value; it merely spreads a one-off payment over several years, and once fully amortised it disappears from the balance sheet."
   },
   "ifrsNote": {
-    "zh-TW": "IAS 38.69 規定開辦活動的支出在發生時就認列為費用，不能列為資產；改用 IFRS 時當期費用增加、之後各期不再攤銷，付出的現金也由投資活動改列營業活動。",
-    "en": "IAS 38.69 requires expenditure on start-up activities to be recognised as an expense when incurred, so it is never an asset. Under IFRS the expense is higher in the year of payment, there is no later amortisation, and the cash paid moves from investing to operating activities."
+    "zh-TW": "IAS 38.69 規定開辦活動的支出在發生時認列為費用，不能列為資產。IFRS 對照的版面改用「設立費（費用化）」：支付當期的費用增加、之後各期不再攤銷，付出的現金也由投資活動改列營業活動。",
+    "en": "IAS 38.69 requires expenditure on start-up activities to be recognised as an expense when incurred; it cannot be capitalised. The IFRS comparison layout uses start-up costs (expensed) instead: the expense is higher in the year of payment, there is no later amortisation, and the cash paid moves from investing to operating activities."
   },
-  "accountRef": "deferred_organisation_costs"
+  "accountRef": "deferred_organisation_costs",
+  "related": [
+    "tm_a2m7z4tf",
+    "tm_8g81jkmp",
+    "tm_hz08w4k5",
+    "tm_xen3p30x"
+  ]
 }

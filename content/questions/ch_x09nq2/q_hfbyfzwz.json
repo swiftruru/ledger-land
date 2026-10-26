@@ -1,0 +1,36 @@
+{
+  "id": "q_hfbyfzwz",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "true_false",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_cqxamf",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "margin",
+    "leverage"
+  ],
+  "termRefs": [
+    "tm_whmbqrr8"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "先不計借款利息，用融資買進的股票上漲時，投資人自有資金的報酬率會比全部用自己的錢時放大；下跌時，虧損同樣會被放大。",
+    "en": "Ignoring loan interest, when shares bought on margin rise, the return on the investor’s own money is magnified compared with paying entirely in cash; when they fall, the loss is magnified in the same way."
+  },
+  "correct": true,
+  "feedbackTrue": {
+    "zh-TW": "答對了。借來的錢放大了部位，漲跌都算在自有資金上，這就是槓桿的兩面。",
+    "en": "Correct. Borrowed money enlarges the position while gains and losses land on the investor’s own money; that is both sides of leverage."
+  },
+  "feedbackFalse": {
+    "zh-TW": "你可能只想到上漲的那一面。槓桿是對稱的：放大獲利的同時也放大虧損，而且借款利息不論漲跌都要付。",
+    "en": "You may have thought only of the upside. Leverage is symmetric: it magnifies losses as well as gains, and the loan interest is payable whether the price rises or falls."
+  },
+  "explanation": {
+    "zh-TW": "融資的本質是借錢投資。同樣的股價變動，分母（自有資金）變小，報酬率的絕對值就變大，方向可正可負。實際上還要扣掉借款利息：漲幅不夠付利息時，融資反而讓報酬變差。本章是會計觀念練習，不是投資建議。",
+    "en": "Buying on margin is borrowing to invest. For the same price move, a smaller denominator (own money) makes the return larger in absolute terms, in either direction. In practice the loan interest comes off too: if the rise does not cover the interest, margin makes the return worse. This chapter is an accounting concept exercise, not investment advice."
+  }
+}

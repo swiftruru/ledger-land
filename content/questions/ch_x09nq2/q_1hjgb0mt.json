@@ -1,0 +1,71 @@
+{
+  "id": "q_1hjgb0mt",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_1m58qq",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "capital_surplus",
+    "share_issue"
+  ],
+  "termRefs": [
+    "tm_yka0razf",
+    "tm_5e3py55a"
+  ],
+  "scored": true,
+  "vars": {
+    "par": 10,
+    "price": 32,
+    "shares": 100000
+  },
+  "prompt": {
+    "zh-TW": "暖木家具辦理現金增資，發行 {{number:vars.shares}} 股新股，每股面額 {{money:vars.par}}，發行價格 {{money:vars.price}}。收到的現金在股東權益裡要怎麼記？",
+    "en": "Warm Timber Furniture issues {{number:vars.shares}} new shares for cash at {{money:vars.price}} each; the par value is {{money:vars.par}} per share. How is the cash received recorded within equity?"
+  },
+  "options": [
+    {
+      "id": "o_a1b2",
+      "text": {
+        "zh-TW": "面額的部分記股本，超過面額的部分記資本公積（股本溢價）",
+        "en": "The par value goes to share capital and the amount above par to capital surplus (share premium)"
+      },
+      "feedback": {
+        "zh-TW": "答對了。股本只記面額乘以股數；股東多付的部分是另一種投入，放在資本公積。",
+        "en": "That is right. Share capital records only par value times the number of shares; what shareholders pay above that is a separate contribution, recorded in capital surplus."
+      }
+    },
+    {
+      "id": "o_c3d4",
+      "text": {
+        "zh-TW": "全部記股本，因為都是股東付進來的錢",
+        "en": "All of it goes to share capital, since it is all money paid in by shareholders"
+      },
+      "feedback": {
+        "zh-TW": "你看出這些都是股東投入、不是賺來的，這點正確。不過股本這個科目只記面額，超過面額的部分要分開記成資本公積，報表才看得出溢價有多少。",
+        "en": "You are right that all of it is contributed by shareholders rather than earned. But the share capital account records par value only; the excess is kept separately as capital surplus so the statements show the size of the premium."
+      },
+      "misconceptionId": "mc_par6"
+    },
+    {
+      "id": "o_e5f6",
+      "text": {
+        "zh-TW": "超過面額的部分是公司賺到的，記本期淨利",
+        "en": "The amount above par is a gain for the company and goes to profit for the period"
+      },
+      "feedback": {
+        "zh-TW": "你注意到公司收到的比面額多，觀察沒錯。但和自己的股東之間的出資往來不是營業活動，不會產生利益；它是股東權益的投入，不經過損益表。",
+        "en": "You noticed the company receives more than par, which is correct. But contributions from its own shareholders are not trading; they create no profit and go straight to equity without passing through the income statement."
+      },
+      "misconceptionId": "mc_ern2"
+    }
+  ],
+  "correctOptionId": "o_a1b2",
+  "explanation": {
+    "zh-TW": "{{option:o_a1b2}}是正確的拆法：股本放面額，資本公積放溢價。{{option:o_c3d4}}把溢價混進股本；{{option:o_e5f6}}把股東出資當成利益。",
+    "en": "{{option:o_a1b2}} is the correct split: par value in share capital, the premium in capital surplus. {{option:o_c3d4}} mixes the premium into share capital; {{option:o_e5f6}} treats a shareholder contribution as profit."
+  }
+}

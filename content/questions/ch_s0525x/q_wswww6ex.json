@@ -1,6 +1,6 @@
 {
   "id": "q_wswww6ex",
-  "rev": 1,
+  "rev": 3,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_s0525x",
@@ -23,7 +23,7 @@
   },
   "prompt": {
     "zh-TW": "河岸麵包坊今年的稅前淨利是 {{money:vars.pretax}}，所得稅費用 {{money:vars.tax}}。大東說：「稅前淨利就是我們今年真正賺到、可以留在店裡的錢。」他說得對嗎？",
-    "en": "Riverside Bakery's profit before tax this year is {{money:vars.pretax}}, and income tax expense is {{money:vars.tax}}. Tung says profit before tax is what the shop really earned and can keep this year. Is he right?"
+    "en": "Riverside Bakery’s profit before tax this year is {{money:vars.pretax}}, and income tax expense is {{money:vars.tax}}. Tung says profit before tax is what the shop really earned and can keep this year. Is he right?"
   },
   "options": [
     {
@@ -31,6 +31,10 @@
       "text": {
         "zh-TW": "不對，還要扣掉所得稅費用，本期淨利才是最後留下的",
         "en": "No, income tax expense still has to be deducted; profit for the period is what remains"
+      },
+      "short": {
+        "zh-TW": "不對，要再扣所得稅",
+        "en": "No, tax still comes off"
       },
       "feedback": {
         "zh-TW": "答對了。稅前淨利是倒數第二層，最後一層才是本期淨利。",
@@ -43,9 +47,13 @@
         "zh-TW": "對，稅前淨利已經扣完所有該扣的項目",
         "en": "Yes, profit before tax already has everything deducted"
       },
+      "short": {
+        "zh-TW": "對，已經扣完了",
+        "en": "Yes, everything is deducted"
+      },
       "feedback": {
         "zh-TW": "名字裡的「稅前」就是提示：所得稅還沒扣。再往下一層才是本期淨利。",
-        "en": "The words \"before tax\" are the clue: income tax has not been deducted yet. One level further down is profit for the period."
+        "en": "The words ‘before tax’ are the clue: income tax has not been deducted yet. One level further down is profit for the period."
       },
       "misconceptionId": "mc_8gw8"
     },
@@ -55,6 +63,10 @@
         "zh-TW": "不對，應該用營業利益，因為那才是本業賺的",
         "en": "No, operating profit should be used, because that is what the core business earned"
       },
+      "short": {
+        "zh-TW": "不對，要用營業利益",
+        "en": "No, use operating profit"
+      },
       "feedback": {
         "zh-TW": "營業利益確實反映本業，但它還沒扣業外收支和所得稅，不是最後留下的金額。",
         "en": "Operating profit does reflect the core business, but it is still before non-operating items and income tax, so it is not the final amount kept."
@@ -63,7 +75,7 @@
   ],
   "correctOptionId": "o_85qt",
   "explanation": {
-    "zh-TW": "五層利益的最後一層是本期淨利＝稅前淨利－所得稅費用，所以{{option:o_85qt}}正確。{{option:o_80pe}}漏了所得稅這一層；{{option:o_qwed}}回答的是另一個問題（本業賺多少），不是最後留下多少。",
-    "en": "The last of the five levels is profit for the period = profit before tax less income tax expense, so {{option:o_85qt}} is right. {{option:o_80pe}} skips the tax level, and {{option:o_qwed}} answers a different question (what the core business earned) rather than what is finally kept."
+    "zh-TW": "五層利益的最後一層是{{term:tm_n4e8t2jy}}：{{term:tm_z971merj}}減掉{{term:tm_3qfqnrmm}}，所以{{option:o_85qt}}正確。{{option:o_80pe}}漏了所得稅這一層；{{option:o_qwed}}回答的是另一個問題（本業賺多少），不是最後留下多少。",
+    "en": "The last of the five levels is {{term:tm_n4e8t2jy}}: {{term:tm_z971merj}} less {{term:tm_3qfqnrmm}}, so {{option:o_85qt}} is right. {{option:o_80pe}} skips the tax level, and {{option:o_qwed}} answers a different question (what the core business earned) rather than what is finally kept."
   }
 }

@@ -1,25 +1,59 @@
 {
   "id": "tm_jbtbky5v",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "現金流量再投資比率", "en": "Cash reinvestment ratio" },
+  "label": {
+    "zh-TW": "現金流量再投資比率",
+    "en": "Cash reinvestment ratio"
+  },
   "teacherLabel": "現金流量再投資比率",
   "currentTwLabel": "現金再投資比率",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["再投資比率", "現金再投資比率"], "en": [] },
+  "aliases": {
+    "zh-TW": [
+      "再投資比率",
+      "現金再投資比率"
+    ],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T24", "T25"],
-  "note": { "zh-TW": "模板分子的符號問題由網站修正，分子扣除股利（設計說明見 T25）；課程的門檻只當「課程參考值」顯示，不計分（設計說明見 T24）。", "en": "The site corrects the sign issue in the template numerator by deducting dividends (see the design note T25); the course threshold is shown only as a course reference value and is not scored (see the design note T24)." },
+  "pendingRefs": [
+    "T24",
+    "T25"
+  ],
+  "note": {
+    "zh-TW": "網站修正了模板分子的股利符號問題，分子一律扣除股利；課程的門檻只當「課程參考值」顯示，不計分。",
+    "en": "The site corrects the sign problem with dividends in the template numerator, so dividends are always deducted; the course threshold is shown only as a course reference value and is not scored."
+  },
   "definition": {
-    "zh-TW": "營業活動的現金扣掉股利後，有多少比例重新投入公司的資產（毛額固定資產、長期投資、其他資產與營運資金）。數值越高表示公司把賺到的現金留下來擴充。",
-    "en": "The share of operating cash, after dividends, that is reinvested in the company's assets (gross fixed assets, long-term investments, other assets and working capital). Higher means more of the cash earned is kept to grow the business."
+    "zh-TW": "本期營業活動的現金流量先扣掉發給股東的現金股利，剩下的金額再和公司長期投入營運的資金相比，得到的百分比。\n\n比率越高，表示公司添購或汰換設備、擴充營運時，本業自己留下的現金能負擔的部分越大，越不需要另外借款或請股東增資。",
+    "en": "Net cash from operating activities for the period, less the cash dividends paid to shareholders, as a percentage of the long-term funds the company has put into its operations.\n\nThe higher the ratio, the more of the cost of buying or replacing equipment and expanding the business can be met from cash the business itself has kept, and the less it needs to borrow or ask shareholders for new capital."
+  },
+  "example": {
+    "zh-TW": "分子來自現金流量表，分母來自資產負債表。分母為 0 時顯示 N/A，為負時標示「不具解釋意義」。課程的門檻只當參考值顯示，常見說法是 {{percent:0.1|digits=0}} 以上，不計分。",
+    "en": "The numerator comes from the statement of cash flows and the denominator from the balance sheet. When the denominator is zero the result is N/A; when it is negative the ratio is marked as not meaningful. The course threshold is shown as a reference value only; a common rule of thumb is {{percent:0.1|digits=0}} or more, and it is not scored."
+  },
+  "misconception": {
+    "zh-TW": "把股利加回分子而不是扣掉。發出去的股利已經離開公司，不能再拿來投資；分子要用付完股利之後剩下的現金。",
+    "en": "Adding dividends to the numerator instead of deducting them. Dividends paid have left the company and cannot be reinvested; the numerator must be the cash left after paying them."
+  },
+  "formula": {
+    "zh-TW": "現金流量再投資比率（課程版）的算法：營業活動的現金流量總計先扣掉現金股利，再除以資產總計減流動負債。年報版換一個分母：不動產、廠房及設備的毛額，加上長期投資、其他非流動資產與營運資金；課程版面的無形資產與遞延資產（設立費、開發費）併入其他非流動資產，不動產、廠房及設備毛額取機器設備與辦公設備的成本，不扣累計折舊。模板分子的股利符號問題由網站修正，分子一律扣除股利。",
+    "en": "Cash reinvestment ratio = (net cash from operating activities － cash dividends) ÷ (total assets － current liabilities); this is the course version. The annual report version uses gross property, plant and equipment + long-term investments + other non-current assets + working capital as the denominator. In the course layout, intangible assets and deferred assets (start-up costs and development costs) are counted as other non-current assets; gross property, plant and equipment is the cost of machinery and office equipment before accumulated depreciation. The sign problem with dividends in the template numerator is corrected by the site, so dividends are always deducted."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "cash_reinvestment@excel"
+  "ratioRef": "cash_reinvestment@excel",
+  "related": [
+    "tm_e61ht6yh",
+    "tm_zqzrfgfn",
+    "tm_t7a3s6wb",
+    "tm_c2y9b5ex",
+    "tm_5y5wj6f4"
+  ]
 }

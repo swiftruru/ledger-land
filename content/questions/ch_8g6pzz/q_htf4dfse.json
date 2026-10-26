@@ -1,0 +1,81 @@
+{
+  "id": "q_htf4dfse",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "ratio_interpret",
+  "ratioRef": "debt_ratio@excel",
+  "objectiveId": "obj_wb2v68",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "financial_structure"
+  ],
+  "termRefs": [
+    "tm_9e1rb64c",
+    "tm_fwys72qx",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "vars": {
+    "gymRatio": 0.72,
+    "innRatio": 0.35,
+    "gymLiabilities": 2160000,
+    "gymAssets": 3000000
+  },
+  "prompt": {
+    "zh-TW": "晨光健身房年底負債總額 {{money:vars.gymLiabilities}}、資產總計 {{money:vars.gymAssets}}，負債比率是 {{percent:vars.gymRatio}}（見上表）；海風民宿的負債比率是 {{percent:vars.innRatio}}。單從這兩個數字，哪一個判讀站得住腳？",
+    "en": "Morning Light Gym has total liabilities of {{money:vars.gymLiabilities}} and total assets of {{money:vars.gymAssets}} at year end, a debt ratio of {{percent:vars.gymRatio}} (see the table above); Sea Breeze Guesthouse’s debt ratio is {{percent:vars.innRatio}}. From these two figures alone, which reading holds up?"
+  },
+  "options": [
+    {
+      "id": "o_45t6",
+      "text": {
+        "zh-TW": "晨光健身房的資產有較大比例靠負債支應，債權人承擔的風險較大",
+        "en": "A larger share of Morning Light Gym’s assets is financed by liabilities, so its creditors bear more risk"
+      },
+      "feedback": {
+        "zh-TW": "答對了。負債比率只回答「錢從哪裡來」，比例高不代表經營不善；風險高低要再配合獲利與現金流量一起看。",
+        "en": "That’s right. The debt ratio only answers ‘where does the money come from’; a high share does not mean the gym is badly run, and how risky it is has to be read together with profit and cash flow."
+      }
+    },
+    {
+      "id": "o_s7bz",
+      "text": {
+        "zh-TW": "海風民宿的負債比率較低，利息負擔較輕，所以比晨光健身房賺錢",
+        "en": "Sea Breeze Guesthouse has the lower debt ratio and lighter interest costs, so it earns more than the gym"
+      },
+      "feedback": {
+        "zh-TW": "你看出民宿的資金比較多來自股東，這部分對。不過負債比率只看資金來源，不看獲利；利息少一些也不等於賺得多，誰比較賺錢要看損益表或獲利能力指標。",
+        "en": "You correctly saw that more of the guesthouse’s funding comes from shareholders. But the debt ratio only looks at where funding comes from, not at profit; lower interest does not mean higher earnings, and who earns more is a question for the income statement or the profitability ratios."
+      },
+      "misconceptionId": "mc_kqm5"
+    },
+    {
+      "id": "o_mbnc",
+      "text": {
+        "zh-TW": "晨光健身房的負債比率較高，表示股東投入的資金比負債還多",
+        "en": "The gym’s higher debt ratio means its shareholders have put in more money than its creditors"
+      },
+      "feedback": {
+        "zh-TW": "方向剛好相反：負債比率高代表負債占資產的比例大，股東出的錢比例反而小。",
+        "en": "It is the other way round: a high debt ratio means liabilities make up a large share of assets, so the shareholders’ share is small."
+      }
+    }
+  ],
+  "correctOptionId": "o_45t6",
+  "explanation": {
+    "zh-TW": "{{term:tm_9e1rb64c}}描述資金來源的結構。{{option:o_45t6}}只說了這個指標能說的事；{{option:o_s7bz}}把資金來源和獲利混在一起，{{option:o_mbnc}}把高低讀反了。",
+    "en": "The {{term:tm_9e1rb64c}} describes the structure of funding. {{option:o_45t6}} says only what this ratio can say; {{option:o_s7bz}} mixes funding with profit, and {{option:o_mbnc}} reads high and low the wrong way round."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "debt_ratio@excel"
+    ],
+    "measures": {
+      "bs_total_liabilities": "vars.gymLiabilities",
+      "bs_total_assets": "vars.gymAssets"
+    }
+  }
+}

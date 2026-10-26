@@ -2,7 +2,7 @@
   "id": "tm_njqd0f5g",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "辦公設備",
@@ -19,12 +19,25 @@
   "confidence": "medium",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "網站補充的延伸科目；術語表沒有獨立的條目，英文名稱依一般用法。故事的電腦設備依教材記在機器設備。",
-    "en": "An extension account added by the site; the glossary has no separate entry and the English name follows common usage. The computers in the story are recorded under machinery and equipment."
+    "zh-TW": "網站補充的延伸科目，英文名稱依一般用法；故事的電腦設備依教材記在機器設備。不列入期中考範圍。",
+    "en": "An extension account added by the site, with an English name that follows common usage; the computers in the story are recorded under machinery and equipment, as in the course. It is not in the midterm."
   },
   "definition": {
-    "zh-TW": "辦公室用的設備，例如電腦與印表機。只給需要另列辦公設備的延伸題使用。",
-    "en": "Equipment used in the office, such as computers and printers. It is used only in extension exercises that present office equipment separately."
+    "zh-TW": "辦公用的桌椅、影印機、電腦等可以使用一年以上的設備。\n\n它是固定資產（現行稱不動產、廠房及設備）的一種，取得時列為資產，再透過折舊分年轉成費用。",
+    "en": "Desks, photocopiers, computers and similar office equipment that will be used for more than a year.\n\nIt is a type of property, plant and equipment: recorded as an asset on acquisition and turned into expense over its life through depreciation."
   },
-  "accountRef": "office_equipment"
+  "example": {
+    "zh-TW": "位置：資產負債表固定資產區；這是網站補充的延伸科目，預設停用。本課故事的電腦設備依教材記在機器設備，所以用不到這一列。取得時現金減少、辦公設備增加，現金流量表列投資活動。",
+    "en": "Where it sits: the property, plant and equipment (fixed assets) section of the balance sheet; it is an extension account added by the site and disabled by default. The course story records its computer equipment under machinery and equipment as the materials do, so this line is not needed. Acquisition reduces cash and increases this asset, shown as an investing outflow."
+  },
+  "misconception": {
+    "zh-TW": "以為買設備的錢當期就要全部列為費用。設備會用好幾年，所以先列資產，每年只把用掉的那一份透過折舊列為費用。",
+    "en": "Assuming the purchase price must be expensed in full in the year of purchase. Equipment serves for several years, so it is first an asset and only the portion used each year becomes an expense through depreciation."
+  },
+  "accountRef": "office_equipment",
+  "related": [
+    "tm_gt8g4afe",
+    "tm_d4p7x2mv",
+    "tm_12gxceqy"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "id": "tm_r7x2c9fa",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -29,8 +29,8 @@
   ],
   "ifrsBasis": "IAS 1.54(h)",
   "note": {
-    "zh-TW": "現金流量表模板的「銷貨債權」直譯自日文，指的就是這個科目；IAS 1 的報表大項名稱是 trade and other receivables。",
-    "en": "The template cash flow line uses a Japanese-style name (literally \"sales credits\") for the same account; the IAS 1 line item is trade and other receivables."
+    "zh-TW": "現金流量表模板的「銷貨債權」直譯自日文，原意包含應收票據與應收帳款；本課沒有應收票據，所以它就是應收帳款的變動。IAS 1 的報表大項名稱是應收帳款及其他應收款（trade and other receivables）。",
+    "en": "The template cash flow line uses a Japanese-style name (literally ‘sales receivables’) that originally covers both notes and accounts receivable; the course has no notes receivable, so it is simply the movement in this account. The IAS 1 line item is trade and other receivables."
   },
   "definition": {
     "zh-TW": "賒銷之後客戶還沒付的貨款。它是流動資產，收到錢時減少；賒銷當下收入已經認列，所以應收帳款增加表示有收入還沒變成現金。",

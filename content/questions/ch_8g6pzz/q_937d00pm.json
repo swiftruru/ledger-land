@@ -1,0 +1,38 @@
+{
+  "id": "q_937d00pm",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_8g6pzz",
+  "type": "true_false",
+  "objectiveId": "obj_wb2v68",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "financial_structure"
+  ],
+  "termRefs": [
+    "tm_8eyx0srs",
+    "tm_y37ymj9w",
+    "tm_adqjyfqg"
+  ],
+  "scored": true,
+  "statement": {
+    "zh-TW": "{{term:tm_8eyx0srs|plain}}的分子「長期資金」只包含非流動負債，不包含股東權益。",
+    "en": "In the {{term:tm_8eyx0srs|plain}}, the numerator, ‘long-term funds’, means only non-current liabilities and does not include equity."
+  },
+  "correct": false,
+  "feedbackTrue": {
+    "zh-TW": "你記得非流動負債是長期資金，這部分對。不過股東出的錢沒有到期日，是最長期的資金，分子要把股東權益也加進去。",
+    "en": "You remembered that non-current liabilities are long-term funds, which is right. But the shareholders’ money has no due date and is the most long-term funding of all, so equity has to be added to the numerator too."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。長期資金是股東權益加非流動負債：股東的錢沒有到期日，長期借款也要很久才還，兩者都能長期留在公司。",
+    "en": "Correct. Long-term funds are equity plus non-current liabilities: shareholders’ money has no due date and long-term loans are repaid far in the future, so both stay in the company for a long time."
+  },
+  "misconceptionId": "mc_jvzk",
+  "explanation": {
+    "zh-TW": "{{term:tm_8eyx0srs}}的分子是{{term:tm_y37ymj9w}}加{{term:tm_adqjyfqg}}。少算股東權益會嚴重低估這個比率，讓一家財務健全的公司看起來像在用短錢買長資產。",
+    "en": "The numerator of the {{term:tm_8eyx0srs}} is {{term:tm_y37ymj9w}} plus {{term:tm_adqjyfqg}}. Leaving equity out badly understates the ratio and makes a sound company look as if it were buying long-term assets with short-term money."
+  }
+}

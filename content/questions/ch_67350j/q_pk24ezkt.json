@@ -1,0 +1,67 @@
+{
+  "id": "q_pk24ezkt",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_67350j",
+  "objectiveId": "obj_wt6czr",
+  "difficulty": 1,
+  "tags": [
+    "five_step",
+    "profit_levels"
+  ],
+  "termRefs": [
+    "tm_ftp19fkf",
+    "tm_g8p4w1rz",
+    "tm_n4e8t2jy",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "青苔書店的老闆阿哲剛把一筆賣書的交易記進帳裡，想照五步驟檢查三張報表。步驟①他應該先看什麼？",
+    "en": "Che, who runs Moss Bookshop, has just recorded a sale of books and wants to check the three statements with the five-step method. What should he look at first, in step 1?"
+  },
+  "options": [
+    {
+      "id": "o_2nwc",
+      "text": {
+        "zh-TW": "損益表上的五層利益有沒有照預期變動",
+        "en": "Whether the five profit levels on the income statement moved as expected"
+      },
+      "feedback": {
+        "zh-TW": "答對了。步驟①只看五層利益，確認這筆交易對利益的影響合不合理；它沒有兩邊可以比對，所以不亮燈號。",
+        "en": "Correct. Step 1 looks only at the five profit levels to see whether the effect on profit makes sense; there is no second side to compare, so it has no light."
+      }
+    },
+    {
+      "id": "o_ydbm",
+      "text": {
+        "zh-TW": "資產負債表的左邊和右邊加起來是不是一樣多",
+        "en": "Whether the left and right sides of the balance sheet add up to the same amount"
+      },
+      "feedback": {
+        "zh-TW": "左右相等確實要檢查，但那是最後一步（步驟⑤）。先從五層利益開始，才能看出交易有沒有記到正確的層。",
+        "en": "Balancing does need checking, but it is the last step (step 5). Starting with the five profit levels shows whether the transaction landed on the right level."
+      },
+      "misconceptionId": "mc_92dj"
+    },
+    {
+      "id": "o_zj60",
+      "text": {
+        "zh-TW": "把損益表的稅前淨利與現金流量表的起點比對",
+        "en": "Comparing profit before tax on the income statement with the start of the statement of cash flows"
+      },
+      "feedback": {
+        "zh-TW": "這是步驟②要做的事，順序上還早了一步。步驟①只看五層利益、不做比對。",
+        "en": "That is step 2, one step too early. Step 1 only looks at the five profit levels and compares nothing."
+      },
+      "misconceptionId": "mc_te52"
+    }
+  ],
+  "correctOptionId": "o_2nwc",
+  "explanation": {
+    "zh-TW": "五步驟的順序固定：{{option:o_2nwc}}是步驟①，接著才是步驟②到⑤的四個勾稽點。步驟①之所以沒有燈號，是因為五層利益只在損益表上出現，沒有另一張表可以對；它的用途是先確認這筆交易對利益的影響方向對不對。",
+    "en": "The order of the five steps is fixed: {{option:o_2nwc}} is step 1, and only then come the four check points in steps 2 to 5. Step 1 has no light because the five profit levels appear only on the income statement, with no other statement to compare against; its job is to confirm that the transaction moved profit in the right direction."
+  }
+}

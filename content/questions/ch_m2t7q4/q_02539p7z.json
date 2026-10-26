@@ -1,6 +1,6 @@
 {
   "id": "q_02539p7z",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -19,7 +19,7 @@
   "type": "judgment",
   "prompt": {
     "zh-TW": "林姊的朋友阿婷想加盟晴川花坊，在隔壁鎮開第二家店。阿婷說她只想先看一張報表，再決定要不要認真談。你是林姊，會先給哪一張？三個選擇都說得通，重點是你想讓阿婷先看到什麼。",
-    "en": "Lin's friend Ting wants to open a second Clearwater Florist as a franchise in the next town. Ting says she only wants to look at one statement first before deciding whether to talk seriously. If you were Lin, which would you show first? All three can make sense; what matters is what you want Ting to see first."
+    "en": "Lin’s friend Ting wants to open a second Clearwater Florist as a franchise in the next town. Ting says she only wants to look at one statement first before deciding whether to talk seriously. If you were Lin, which would you show first? All three can make sense; what matters is what you want Ting to see first."
   },
   "options": [
     {
@@ -45,7 +45,7 @@
       },
       "upside": {
         "zh-TW": "一眼看出店裡放了多少資產、靠借款還是靠股東出的錢撐起來；阿婷可以估算自己要準備多少資金。",
-        "en": "Shows at a glance how many assets a shop holds and whether borrowing or the owners' money supports them, so Ting can estimate how much capital she needs."
+        "en": "Shows at a glance how many assets a shop holds and whether borrowing or the owners’ money supports them, so Ting can estimate how much capital she needs."
       },
       "downside": {
         "zh-TW": "它是某一天的快照，看不出這家店平常賺不賺錢，也看不出每個月現金週轉得過不過來。",
@@ -60,7 +60,7 @@
       },
       "upside": {
         "zh-TW": "新店最怕的是帳上有賺、戶頭沒錢；營業活動的現金流量為正，表示這門生意養得活自己。",
-        "en": "A new shop's biggest fear is profit on paper and nothing in the bank; positive operating cash flow shows the business can feed itself."
+        "en": "A new shop’s biggest fear is profit on paper and nothing in the bank; positive operating cash flow shows the business can feed itself."
       },
       "downside": {
         "zh-TW": "單看現金進出，看不出利益的結構，也看不出店裡已經背了多少負債。",
@@ -70,7 +70,7 @@
   ],
   "viewpoint": {
     "zh-TW": "阿婷最後一定三張都會看，問題只在「先看到什麼最有幫助」。能不能賺、要投入多少、養不養得活自己，三者各是加盟者的一種擔心。如果花坊的強項是毛利高，就先給損益表；如果強項是不靠借款、投入不大，就先給資產負債表；如果強項是現金週轉順，就先給現金流量表。選報表的原則永遠一樣：先想對方要回答的問題是什麼。",
-    "en": "Ting will read all three in the end; the only question is which helps most first. Whether it earns, how much it takes to set up and whether it feeds itself are three different worries a franchisee has. If the florist's strength is a high gross margin, lead with the income statement; if it is low debt and a modest outlay, the balance sheet; if it is smooth cash turnover, the statement of cash flows. The rule for choosing a statement never changes: first ask what question the reader needs answered."
+    "en": "Ting will read all three in the end; the only question is which helps most first. Whether it earns, how much it takes to set up and whether it feeds itself are three different worries a franchisee has. If the florist’s strength is a high gross margin, lead with the income statement; if it is low debt and a modest outlay, the balance sheet; if it is smooth cash turnover, the statement of cash flows. The rule for choosing a statement never changes: first ask what question the reader needs answered."
   },
   "attribution": "site",
   "explanation": {

@@ -2,20 +2,48 @@
   "id": "tm_c2y9b5ex",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "流動負債", "en": "Current liabilities" },
+  "label": {
+    "zh-TW": "流動負債",
+    "en": "Current liabilities"
+  },
   "teacherLabel": "流動負債",
   "currentTwLabel": "流動負債",
   "ifrsEnglish": "Current liabilities",
-  "aliases": { "zh-TW": ["流動負債合計"], "en": ["Total current liabilities"] },
+  "aliases": {
+    "zh-TW": [
+      "流動負債合計"
+    ],
+    "en": [
+      "Total current liabilities"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 1.69",
-  "note": { "zh-TW": "同一張名詞卡也用於「流動負債合計」列。", "en": "The same card serves the total current liabilities line." },
+  "note": {
+    "zh-TW": "同一張名詞卡也用於「流動負債合計」列。",
+    "en": "The same card serves the total current liabilities line."
+  },
   "definition": {
-    "zh-TW": "一年內要償還的債務，例如應付帳款、短期借款與應付所得稅。模板的分組標題，也是流動比率與速動比率的分母。",
-    "en": "Obligations due within a year, such as trade payables, short-term borrowings and current tax. A template group heading and the denominator of the current and quick ratios."
-  }
+    "zh-TW": "一年內（或一個營運週期內）要清償的負債，例如應付帳款、短期借款與應付所得稅。\n\n它是短期償債能力分析的分母：流動比率、速動比率與現金流量比率都拿它來比。",
+    "en": "Liabilities to be settled within a year (or one operating cycle), such as trade payables, short-term borrowings and current tax liabilities.\n\nIt is the denominator in short-term solvency analysis: the current ratio, quick ratio and cash flow ratio all measure against it."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表右邊負債區的第一個分組標題，課程版面底下有應付帳款、短期借款，以及應付所得稅與保證金；同一張名詞卡也用於「流動負債合計」列。故事裡付清貨款、還清借款之後，流動負債合計會變成 0，這時相關比率顯示 N/A。",
+    "en": "Where it sits: the first group heading on the liabilities side of the balance sheet; in the course layout it contains trade payables, short-term borrowings, current tax liabilities and deposits received, and this same card covers the total current liabilities line. Once the story pays off its suppliers and its loan, total current liabilities drop to zero and the related ratios show N/A."
+  },
+  "misconception": {
+    "zh-TW": "把流動負債當成「壞事」而希望它是 0。賒購與短期借款是正常的營運資金來源；流動負債為 0 通常只是公司剛成立或剛好全部付清，不代表財務特別健全。",
+    "en": "Seeing current liabilities as bad and hoping for zero. Buying on credit and short-term borrowing are normal sources of working capital; zero current liabilities usually just means a brand-new company or a moment when everything happens to be paid off, not exceptional health."
+  },
+  "related": [
+    "tm_adqjyfqg",
+    "tm_a3p9y6kc",
+    "tm_s5b8r3hd",
+    "tm_c8r1t4zm",
+    "tm_h6p2k9wd"
+  ]
 }

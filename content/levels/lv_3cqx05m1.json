@@ -1,0 +1,21 @@
+{
+  "id": "lv_3cqx05m1",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_k9548t",
+  "order": 1,
+  "title": {
+    "zh-TW": "股東與債權人",
+    "en": "Shareholders and creditors"
+  },
+  "objectiveIds": [
+    "obj_xkyrq9"
+  ],
+  "questionIds": [
+    "q_pxqnresy",
+    "q_z95cf988",
+    "q_x8keqnv4",
+    "q_1s17g127"
+  ]
+}

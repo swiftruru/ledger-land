@@ -1,0 +1,65 @@
+{
+  "id": "q_wa79qvat",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_2a6vbq",
+  "difficulty": 2,
+  "tags": [
+    "department_ratio",
+    "revenue_per_employee"
+  ],
+  "termRefs": [
+    "tm_g50575m9",
+    "tm_v3n8q2ye",
+    "tm_92yzx0fn"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "雲梯軟體的人均營收比同業高出不少。這個指標告訴你的是什麼？",
+    "en": "Cloud Ladder Software’s revenue per employee is well above its peers’. What does this indicator tell you?"
+  },
+  "options": [
+    {
+      "id": "o_5tg0",
+      "text": {
+        "zh-TW": "平均每位員工替公司做出多少營收，也就是人力的產出",
+        "en": "How much revenue each employee generates on average, that is, the output per person"
+      },
+      "feedback": {
+        "zh-TW": "答對了。人均營收 ＝ 營收 ÷ 員工人數，看的是人力運用的效率；員工人數不是報表上的數字，要另外輸入。",
+        "en": "Correct. Revenue per employee = revenue ÷ headcount, a measure of how productively people are used; the headcount is not on the statements and has to be entered separately."
+      }
+    },
+    {
+      "id": "o_gvsr",
+      "text": {
+        "zh-TW": "公司很賺錢，因為每位員工都帶進很多錢",
+        "en": "The company is very profitable, because every employee brings in a lot of money"
+      },
+      "feedback": {
+        "zh-TW": "人均營收只看營收，沒有扣成本與費用。營收高但成本也高的公司，人均營收亮眼、淨利卻可能很薄；要判斷賺不賺錢，還要配合純益率。",
+        "en": "Revenue per employee looks only at revenue, before any costs or expenses. A company with high revenue and high costs can have an impressive figure and a thin profit; pair it with the net profit margin to judge profitability."
+      },
+      "misconceptionId": "mc_tte1"
+    },
+    {
+      "id": "o_1xtx",
+      "text": {
+        "zh-TW": "每位員工平均領到多少薪水，也就是人事成本的高低",
+        "en": "How much each employee is paid on average, that is, how high staff costs are"
+      },
+      "feedback": {
+        "zh-TW": "分子是營收，不是薪資費用。薪資怎麼分配是另一個問題，這個指標看不出來。",
+        "en": "The numerator is revenue, not wages. How pay is distributed is a separate question that this indicator cannot answer."
+      }
+    }
+  ],
+  "correctOptionId": "o_5tg0",
+  "explanation": {
+    "zh-TW": "{{option:o_5tg0}}。人均營收的分母是員工人數，不是金額，三張報表上找不到，要另外輸入。外包比例高的公司帳上人數少，人均營收自然偏高；而且它只看營收、沒有扣成本與費用，衡量的是人力的產出，不是獲利。要知道賺不賺錢，還是要回到純益率與 ROE。",
+    "en": "{{option:o_5tg0}}. The denominator of revenue per employee is the headcount, not an amount of money, so it cannot be found on the three statements and has to be entered separately. A company that outsources a lot has fewer staff on its books, so its figure is naturally higher; and since it looks only at revenue, before costs and expenses, it measures output per person, not profit. To judge profitability, go back to the net profit margin and ROE."
+  }
+}

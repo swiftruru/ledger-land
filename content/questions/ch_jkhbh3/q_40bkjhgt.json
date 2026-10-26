@@ -1,0 +1,41 @@
+{
+  "id": "q_40bkjhgt",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_3ddr90",
+  "difficulty": 2,
+  "tags": [
+    "working_capital",
+    "payables"
+  ],
+  "termRefs": [
+    "tm_dc0p0nrv",
+    "tm_a3p9y6kc",
+    "tm_e61ht6yh"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "vars": {
+    "diff": 30000
+  },
+  "statement": {
+    "zh-TW": "速達機車行這一期的應付帳款增加了 {{money:vars.diff}}，表示有 {{money:vars.diff}} 的進貨還沒付錢；用間接法算營業活動的現金時，這 {{money:vars.diff}} 要加回來。",
+    "en": "Swift Scooter Repairs’ trade payables rose by {{money:vars.diff}} this period, meaning {{money:vars.diff}} of purchases has not yet been paid for; when working out operating cash by the indirect method, this {{money:vars.diff}} is added back."
+  },
+  "correct": true,
+  "misconceptionId": "mc_m4nc",
+  "feedbackTrue": {
+    "zh-TW": "答對了。沒付出去的錢還留在帳戶裡，所以相對於利益，現金要多加這一筆。",
+    "en": "That is right. Money not yet paid is still in the account, so cash is that much higher than profit suggests."
+  },
+  "feedbackFalse": {
+    "zh-TW": "欠的錢變多確實讓人覺得不太妙，這個直覺可以理解。不過間接法問的是「這一期實際付了多少現金」：應付帳款變多表示有一部分進貨還沒付，現金因此比利益算出來的多，所以要加回。",
+    "en": "More owed does sound like bad news, and the instinct is understandable. But the indirect method asks how much cash was actually paid this period: a rise in payables means part of the purchases is still unpaid, so cash is higher than profit implies, and the amount is added back."
+  },
+  "explanation": {
+    "zh-TW": "「{{term:tm_dc0p0nrv}}」這一列的邏輯和應收帳款相反：應收帳款增加是「賣了沒收到」要扣，{{term:tm_a3p9y6kc}}增加是「買了沒付」要加。等下一期真的付款，應付帳款減少，那時才扣。",
+    "en": "The logic of the {{term:tm_dc0p0nrv}} line is the mirror image of receivables: a rise in receivables means goods sold but not yet collected, so it is deducted; a rise in {{term:tm_a3p9y6kc}} means goods bought but not yet paid for, so it is added. When the bill is actually paid next period, payables fall and the deduction comes then."
+  }
+}

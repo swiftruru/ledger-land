@@ -1,0 +1,45 @@
+{
+  "id": "q_4pypyedm",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_mcdpxx",
+  "difficulty": 2,
+  "tags": [
+    "indirect_method",
+    "depreciation"
+  ],
+  "termRefs": [
+    "tm_85pkjrv0",
+    "tm_d4p7x2mv",
+    "tm_e61ht6yh"
+  ],
+  "scored": true,
+  "type": "true_false",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_j6185k"
+  },
+  "vars": {
+    "dep": 40000
+  },
+  "statement": {
+    "zh-TW": "山谷民宿這一年提列折舊費用 {{money:vars.dep}}。間接法把這 {{money:vars.dep}} 加回來，是因為民宿這一年收到了 {{money:vars.dep}} 的現金。",
+    "en": "Valley Guesthouse recorded depreciation of {{money:vars.dep}} this year. The indirect method adds the {{money:vars.dep}} back because the guesthouse received {{money:vars.dep}} in cash this year."
+  },
+  "correct": false,
+  "misconceptionId": "mc_gf8e",
+  "feedbackTrue": {
+    "zh-TW": "折舊確實是用「加」的，這點沒錯。不過加回來不是因為有錢進來，而是因為算利益時扣掉的折舊根本沒有付出現金；把它加回去只是把這筆「沒付現的扣除」還原。",
+    "en": "Depreciation is indeed added, that much is right. But it is added back not because cash came in, but because the depreciation deducted in working out profit never involved paying any cash; adding it back simply reverses a non-cash deduction."
+  },
+  "feedbackFalse": {
+    "zh-TW": "答對了。買設備的錢在購買那一年就付過了（放在投資活動）；之後每年的折舊只是把成本分攤到損益表，沒有現金進出，所以要從利益裡加回來。",
+    "en": "That is right. The cash for the equipment was paid in the year it was bought (under investing); the depreciation charged in later years only spreads that cost over the income statement, with no cash moving, so it is added back to profit."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_85pkjrv0}}這一列的意思是「這筆費用沒有付現，利益被它壓低了，算現金時要還原」。它不是一筆收入；不考慮所得稅的影響時，也不會讓{{term:tm_e61ht6yh}}比沒有折舊時更高。",
+    "en": "The {{term:tm_85pkjrv0}} line means that this expense involved no cash, so profit was pushed down by it and the deduction must be reversed when working out cash. It is not income, and leaving income tax aside, it does not make {{term:tm_e61ht6yh}} any higher than it would be without depreciation."
+  }
+}

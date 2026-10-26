@@ -1,0 +1,68 @@
+{
+  "id": "q_3q9k480v",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_155y47",
+  "objectiveId": "obj_e2942m",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "pe_ratio",
+    "industry"
+  ],
+  "termRefs": [
+    "tm_wd3fx6rh"
+  ],
+  "scored": true,
+  "vars": {
+    "peBakery": 11,
+    "peSoftware": 38
+  },
+  "prompt": {
+    "zh-TW": "小安比較海風麵包坊（本益比 {{number:vars.peBakery|unit=times}}）和星河軟體（本益比 {{number:vars.peSoftware|unit=times}}），結論是「麵包坊被低估了」。你會給他哪一個提醒？",
+    "en": "An compares Sea Breeze Bakery (P/E {{number:vars.peBakery|unit=times}}) with Starriver Software (P/E {{number:vars.peSoftware|unit=times}}) and concludes that the bakery is undervalued. Which reminder would you give him?"
+  },
+  "options": [
+    {
+      "id": "o_z4j9",
+      "text": {
+        "zh-TW": "不同產業的成長性與風險不同，跨產業直接比倍數意義不大",
+        "en": "Growth and risk differ by industry, so comparing multiples across industries says little"
+      },
+      "feedback": {
+        "zh-TW": "答對了。市場通常給成長快的產業較高的倍數，給成熟、穩定的產業較低的倍數；這不代表誰被低估。要判斷倍數高低，應該和同產業的公司或公司自己過去的倍數比較。",
+        "en": "That is right. The market usually gives faster-growing industries higher multiples and mature, stable ones lower multiples; that does not mean either is undervalued. To judge whether a multiple is high or low, compare it with peers in the same industry or with the company’s own history."
+      }
+    },
+    {
+      "id": "o_a5k1",
+      "text": {
+        "zh-TW": "倍數低就是便宜，所以他的結論沒有問題",
+        "en": "A low multiple means the shares are cheap, so his conclusion is fine"
+      },
+      "feedback": {
+        "zh-TW": "倍數低的確表示每一元盈餘的價格低，這個數學沒錯。但麵包坊的成長空間與軟體公司不同，低倍數可能只是反映產業特性。",
+        "en": "A low multiple does mean a low price per dollar of earnings; the arithmetic is right. But a bakery’s growth prospects differ from a software company’s, and the low multiple may simply reflect the industry."
+      },
+      "misconceptionId": "mc_jnd2"
+    },
+    {
+      "id": "o_b6m2",
+      "text": {
+        "zh-TW": "本益比只能用在軟體業，不能拿來看麵包店",
+        "en": "The P/E ratio only works for software companies and cannot be used for a bakery"
+      },
+      "feedback": {
+        "zh-TW": "你感覺到產業不同會影響判讀，方向對了。但本益比任何有盈餘的公司都能算；限制在於跨產業比較，不在於能不能算。",
+        "en": "You sense that industry affects the reading, which is the right direction. But a P/E ratio can be calculated for any company with earnings; the limit is in cross-industry comparison, not in whether it can be computed."
+      }
+    }
+  ],
+  "correctOptionId": "o_z4j9",
+  "explanation": {
+    "zh-TW": "{{option:o_z4j9}}，這是恰當的提醒。認為他的結論沒有問題，是忽略了產業差異；說本益比只能用在軟體業，則把限制說過頭了。本章是會計觀念練習，不是投資建議。",
+    "en": "{{option:o_z4j9}}: that is the appropriate reminder. Saying his conclusion is fine ignores industry differences; saying the P/E ratio only works for software companies overstates the limitation. This chapter is an accounting concept exercise, not investment advice."
+  }
+}

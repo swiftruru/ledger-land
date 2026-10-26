@@ -1,0 +1,75 @@
+{
+  "id": "q_sq2cv890",
+  "rev": 3,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_2489dv",
+  "difficulty": 3,
+  "tags": [
+    "extension",
+    "inventory",
+    "layout",
+    "perpetual"
+  ],
+  "termRefs": [
+    "tm_2967ackr",
+    "tm_p7h3c5xq",
+    "tm_q4k9v2nd",
+    "tm_g5c2m8tw",
+    "tm_n7v3k8pq"
+  ],
+  "scored": true,
+  "vars": {
+    "purchases": 500000,
+    "cogs": 380000,
+    "closing": 120000
+  },
+  "prompt": {
+    "zh-TW": "海風麵包坊這一期開始時沒有存貨。這一期進貨時全部借記存貨，合計 {{money:vars.purchases}}；賣出時記「借 營業成本／貸 存貨」，合計 {{money:vars.cogs}}；期末存貨帳戶餘額 {{money:vars.closing}}。教材版面的損益表上有「本期進貨」與「期末存貨(-)」兩列。這兩列的數字是怎麼來的？",
+    "en": "Sea Breeze Bakery started the period with no inventory. During the period it debited inventory for every purchase, {{money:vars.purchases}} in total; on each sale it recorded debit cost of sales, credit inventory, {{money:vars.cogs}} in total; the inventory account’s closing balance is {{money:vars.closing}}. The course layout’s income statement has two lines, purchases and closing inventory (-). Where do those two figures come from?"
+  },
+  "options": [
+    {
+      "id": "o_g7h8",
+      "text": {
+        "zh-TW": "兩列都是由存貨帳推導出來的版面列，不是分錄裡的科目",
+        "en": "Both are layout lines derived from the inventory account, not accounts used in entries"
+      },
+      "feedback": {
+        "zh-TW": "答對了。「本期進貨」是這一期借記存貨（進貨）的合計 {{money:vars.purchases}}，「期末存貨」是存貨帳戶的期末餘額 {{money:vars.closing}}。期初存貨加本期進貨減期末存貨，剛好等於營業成本帳戶的 {{money:vars.cogs}}；版面和分錄說的是同一件事。",
+        "en": "That is right. Purchases is the total of this period’s inventory debits for purchases, {{money:vars.purchases}}, and closing inventory is the inventory account’s closing balance, {{money:vars.closing}}. Opening inventory plus purchases less closing inventory comes to exactly the {{money:vars.cogs}} in the cost of sales account; the layout and the entries describe the same thing."
+      }
+    },
+    {
+      "id": "o_j9k1",
+      "text": {
+        "zh-TW": "分錄裡要另外借記「本期進貨」科目、貸記「期末存貨」科目，版面才會有這兩列",
+        "en": "The entries must separately debit a purchases account and credit a closing inventory account for the layout to show these lines"
+      },
+      "feedback": {
+        "zh-TW": "你注意到版面有這兩列而分錄裡看不到，觀察很細。但網站採永續盤存，進貨直接記存貨；這兩列是由存貨帳算出來顯示的，不需要也沒有對應的科目。",
+        "en": "You noticed that the layout shows two lines that the entries do not, a sharp observation. But the site keeps perpetual inventory, with purchases recorded straight into inventory; the two lines are computed from the inventory account for display and have no accounts of their own."
+      },
+      "misconceptionId": "mc_pc13"
+    },
+    {
+      "id": "o_m2n3",
+      "text": {
+        "zh-TW": "進貨時就借記營業成本，所以「本期進貨」就是營業成本",
+        "en": "Cost of sales is debited at purchase, so purchases equal cost of sales"
+      },
+      "feedback": {
+        "zh-TW": "進貨與營業成本確實有關，這個聯想不算錯。但沒賣出去的貨還在店裡，是資產，不是成本；題目裡 {{money:vars.purchases}} 的進貨只有 {{money:vars.cogs}} 變成營業成本，剩下的 {{money:vars.closing}} 還是存貨。",
+        "en": "Purchases and cost of sales are indeed related, so the association is understandable. But unsold goods are still in the shop and are an asset, not a cost; of the {{money:vars.purchases}} purchased, only {{money:vars.cogs}} became cost of sales and the remaining {{money:vars.closing}} is still inventory."
+      },
+      "misconceptionId": "mc_cgp4"
+    }
+  ],
+  "correctOptionId": "o_g7h8",
+  "explanation": {
+    "zh-TW": "{{option:o_g7h8}}：網站的帳採永續盤存制，分錄只有「借 存貨」與「借 營業成本／貸 存貨」兩種標準寫法；教材版面則用期初、進貨、期末三列的加減呈現同一個營業成本。{{option:o_j9k1}}把版面列當成科目；{{option:o_m2n3}}把進貨全當成成本。",
+    "en": "{{option:o_g7h8}}: the site’s books use the perpetual inventory system, with only two standard entries, debit inventory and debit cost of sales, credit inventory; the course layout presents the same cost of sales through three lines, opening, purchases and closing, added and subtracted. {{option:o_j9k1}} treats layout lines as accounts; {{option:o_m2n3}} treats all purchases as cost."
+  }
+}

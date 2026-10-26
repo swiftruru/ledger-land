@@ -1,0 +1,67 @@
+{
+  "id": "q_fxnedar6",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "single_choice",
+  "objectiveId": "obj_fbc0kw",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "activity"
+  ],
+  "termRefs": [
+    "tm_2cqt9cfd",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "vars": {
+    "turnover": 0.4
+  },
+  "prompt": {
+    "zh-TW": "晨光健身房沒有存貨，應收帳款也很少，但總資產週轉率只有 {{number:vars.turnover|digits=2,unit=times}}。最可能的原因是什麼？",
+    "en": "Morning Light Gym holds no inventory and has very few receivables, yet its total asset turnover is only {{number:vars.turnover|digits=2,unit=times}}. What is the most likely reason?"
+  },
+  "options": [
+    {
+      "id": "o_0170",
+      "text": {
+        "zh-TW": "錢大多投在器材和裝潢，這些都算在分母裡，一年營收相較之下不大",
+        "en": "Most of the money is in equipment and fit-out, which sit in the denominator, so a year’s revenue looks small beside them"
+      },
+      "feedback": {
+        "zh-TW": "答對了。先看分母裝了什麼：器材和裝潢占了資產的大半。{{number:vars.turnover|digits=2,unit=times}}算不算低，要拿其他健身房的數字來對照才知道。",
+        "en": "That’s right. Look first at what sits in the denominator: equipment and fit-out make up most of the assets. Whether {{number:vars.turnover|digits=2,unit=times}} is low only becomes clear when you set it beside other gyms."
+      }
+    },
+    {
+      "id": "o_8y87",
+      "text": {
+        "zh-TW": "一定是算錯了，沒有存貨的公司總資產週轉率應該很高",
+        "en": "It must be a mistake; a company with no inventory should have a high total asset turnover"
+      },
+      "feedback": {
+        "zh-TW": "你想到存貨會拉低週轉率，這在零售業很常見。不過總資產不只有存貨，健身房的器材和裝潢才是大頭，所以數字沒有算錯。",
+        "en": "You thought of inventory dragging turnover down, which is common in retail. But total assets are not just inventory; for a gym the equipment and fit-out are the bulk, so the figure is not a mistake."
+      },
+      "misconceptionId": "mc_hssb"
+    },
+    {
+      "id": "o_41a1",
+      "text": {
+        "zh-TW": "總資產週轉率低表示會員付款太慢",
+        "en": "Low total asset turnover means members are paying too slowly"
+      },
+      "feedback": {
+        "zh-TW": "會員付款快慢反映在應收款項週轉率；題目說應收帳款很少，所以付款速度不是原因。",
+        "en": "How quickly members pay shows up in receivables turnover; receivables here are small, so payment speed is not the cause."
+      }
+    }
+  ],
+  "correctOptionId": "o_0170",
+  "explanation": {
+    "zh-TW": "{{term:tm_2cqt9cfd}}的分母是{{term:tm_t7a3s6wb}}。健身房沒有存貨、應收帳款也少，資產幾乎都是要用上好幾年的器材和裝潢，一年的營收和它們相比自然顯得小。{{option:o_0170}}從分母的內容找原因；{{option:o_8y87}}只想到存貨，{{option:o_41a1}}找錯了指標。",
+    "en": "The denominator of {{term:tm_2cqt9cfd}} is {{term:tm_t7a3s6wb}}. With no inventory and few receivables, a gym’s assets are almost all equipment and fit-out that last for years, so one year’s revenue looks small beside them. {{option:o_0170}} finds the reason in what the denominator holds; {{option:o_8y87}} thinks only of inventory, and {{option:o_41a1}} looks at the wrong ratio."
+  }
+}

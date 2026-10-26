@@ -1,0 +1,80 @@
+{
+  "id": "q_kcyeeh16",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_d6egd4",
+  "difficulty": 3,
+  "tags": [
+    "balance_sheet",
+    "current_ratio",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_c2y9b5ex",
+    "tm_s5b8r3hd"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_skx6ss"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 200000,
+        "inventory": 100000,
+        "accounts_payable": 150000,
+        "share_capital": 150000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 100000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "bs_current_liabilities",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "ratio",
+        "ratioRef": "current_ratio@excel",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "月光書店的流動比率本來高於一倍。小嵐為了讓數字更漂亮，向銀行借了 {{money:e1.amount}}，半年後要還。這筆交易之後，下面三個數字各會怎麼變？",
+    "en": "Moonlight Books’ current ratio was above one. Hoping to make the figure look better, Lan borrows {{money:e1.amount}} from the bank, repayable in six months. After this transaction, how does each of the three figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金增加 {{money:e1.amount}}，短期借款也增加 {{money:e1.amount}}，分子分母各加同樣的數。當{{term:tm_c8r1t4zm}}原本高於一倍時，兩邊加同樣的數會讓比率往一倍靠近，所以反而下降。流動比率已經高於一倍時，想靠借短期的錢拉高它沒有用；比率低於一倍時，同樣的借款反而會讓它往一倍上升。",
+    "en": "Cash rises by {{money:e1.amount}} and short-term borrowings rise by {{money:e1.amount}}, so the same amount is added to numerator and denominator alike. When the {{term:tm_c8r1t4zm}} starts above one, adding the same amount to both sides pulls it towards one, so it falls. When the current ratio is already above one, short-term borrowing will not lift it; when it is below one, the same loan actually moves it up towards one."
+  }
+}

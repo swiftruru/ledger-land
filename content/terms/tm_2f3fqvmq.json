@@ -2,7 +2,7 @@
   "id": "tm_2f3fqvmq",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
   "label": {
     "zh-TW": "銷售及管理費用率",
@@ -27,12 +27,30 @@
     "en": "See the distribution costs and administrative expenses card for the naming."
   },
   "definition": {
-    "zh-TW": "銷管費用占營業收入的比例，看做每一份生意要花多少日常開支。數值越低表示營運越精簡。",
-    "en": "Distribution and administrative expenses as a share of revenue: the everyday cost of winning each unit of business. Lower means leaner operations."
+    "zh-TW": "銷管費用占營業收入的比例，也就是每做一元生意要花多少在推銷與管理上。\n\n比例上升時，表示費用成長得比營收快，營業利益率會被壓縮。",
+    "en": "Distribution costs and administrative expenses as a share of revenue: how much selling and administration costs for each unit of sales.\n\nWhen it rises, expenses are growing faster than revenue and the operating margin is being squeezed."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上。課程版面的銷管費用就是全部的營業費用，所以毛利率減去這個比率就是營業利益率（畫面上的百分比經過四捨五入，末位可能差一點）。",
+    "en": "Both figures are on the income statement. In the course layout distribution costs and administrative expenses are the whole of operating expenses, so gross profit margin minus this ratio equals the operating margin (displayed percentages are rounded, so the last digit may differ)."
+  },
+  "misconception": {
+    "zh-TW": "把營業成本也算進分子。營業成本是賣出商品本身的成本，已經在毛利那一層扣掉；這個比率只看毛利之後的推銷與管理費用。",
+    "en": "Including cost of sales in the numerator. Cost of sales is the cost of the goods themselves and is already deducted at the gross profit level; this ratio looks only at selling and administrative expenses below gross profit."
+  },
+  "formula": {
+    "zh-TW": "銷售及管理費用率 ＝ 銷管費用小計 ÷ 營業收入。",
+    "en": "Selling, general and administrative expense ratio = total distribution costs and administrative expenses ÷ revenue."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "sga_ratio@slides01"
+  "ratioRef": "sga_ratio@slides01",
+  "related": [
+    "tm_d90d8jeh",
+    "tm_kyjfrraq",
+    "tm_1c1g4a7q",
+    "tm_zn4nbxtb"
+  ]
 }

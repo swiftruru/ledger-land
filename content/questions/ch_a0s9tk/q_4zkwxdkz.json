@@ -1,0 +1,58 @@
+{
+  "id": "q_4zkwxdkz",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "classify",
+  "chapterId": "ch_a0s9tk",
+  "objectiveId": "obj_cskmkg",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "elements",
+    "debit_credit",
+    "classify"
+  ],
+  "termRefs": [
+    "tm_r7x2c9fa",
+    "tm_s5b8r3hd",
+    "tm_4c6v99nn",
+    "tm_50v66dt7"
+  ],
+  "scored": true,
+  "dimension": "element",
+  "items": [
+    {
+      "id": "it_a1b2",
+      "account": "accounts_receivable"
+    },
+    {
+      "id": "it_c3d4",
+      "account": "machinery_equipment"
+    },
+    {
+      "id": "it_e5f6",
+      "account": "short_term_borrowings"
+    },
+    {
+      "id": "it_g7h8",
+      "account": "retained_earnings"
+    },
+    {
+      "id": "it_j9k1",
+      "account": "interest_expense"
+    },
+    {
+      "id": "it_m2n3",
+      "account": "packing_freight_expense"
+    }
+  ],
+  "prompt": {
+    "zh-TW": "寫分錄之前先認科目。把初陽貿易會用到的這些科目放進正確的要素，想一想每一個增加時記哪一邊。",
+    "en": "Before writing entries, identify the accounts. Sort these accounts used by First Light Trading into the right element, and think about which side each increases on."
+  },
+  "explanation": {
+    "zh-TW": "應收帳款與機器設備是資產（增加記借方）；短期借款是負債、未分配盈餘是股東權益（增加記貸方）；利息費用與包裝運送費屬於費損（增加記借方）。",
+    "en": "Trade receivables and machinery and equipment are assets (increase on the debit side); short-term borrowings are a liability and unappropriated retained earnings are equity (increase on the credit side); finance costs and packing and delivery expenses are expenses (increase on the debit side)."
+  }
+}

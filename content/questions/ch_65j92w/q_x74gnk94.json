@@ -1,0 +1,66 @@
+{
+  "id": "q_x74gnk94",
+  "rev": 3,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_m3fgww",
+  "difficulty": 2,
+  "tags": [
+    "equity_multiplier",
+    "debt_ratio"
+  ],
+  "termRefs": [
+    "tm_2ggtxnaz",
+    "tm_9e1rb64c",
+    "tm_y37ymj9w",
+    "tm_fwys72qx",
+    "tm_t7a3s6wb"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "晨霧茶行的老闆娘想知道「每一元股東權益，撐起了多少元的資產」。要直接回答她，該用哪一個算法？",
+    "en": "The owner of Morning Mist Tea wants to know ‘for every unit of equity, how many units of assets does the company support’. Which calculation answers her directly?"
+  },
+  "options": [
+    {
+      "id": "o_at8e",
+      "text": {
+        "zh-TW": "資產總計 ÷ 股東權益總額",
+        "en": "Total assets ÷ total equity"
+      },
+      "feedback": {
+        "zh-TW": "答對了。資產總計除以股東權益總額就是權益倍數：資產是權益的幾倍，正好回答「每一元權益撐起多少資產」。倍數等於一倍時沒有負債，越高表示借得越多。",
+        "en": "Correct. Total assets over total equity is the equity multiplier: assets as a multiple of equity, exactly ‘how many units of assets each unit of equity supports’. A multiplier of one means no liabilities; the higher it goes, the more is borrowed."
+      }
+    },
+    {
+      "id": "o_7wbr",
+      "text": {
+        "zh-TW": "負債總額 ÷ 資產總計",
+        "en": "Total liabilities ÷ total assets"
+      },
+      "feedback": {
+        "zh-TW": "這是負債比率，回答的是另一個問句：「資產有多大比例來自負債」。兩者可以換算（權益倍數 ＝ 1 ÷（1 － 負債比率）），但老闆娘問的是倍數，直接用權益倍數（資產總計 ÷ 股東權益總額）就好。",
+        "en": "This is the debt ratio, which answers a different question: ‘what share of assets comes from liabilities’. The two convert into each other (equity multiplier = 1 ÷ (1 − debt ratio)), but the owner asked for a multiple, so the equity multiplier (total assets ÷ total equity) answers her directly."
+      }
+    },
+    {
+      "id": "o_8wj7",
+      "text": {
+        "zh-TW": "股東權益總額 ÷ 資產總計",
+        "en": "Total equity ÷ total assets"
+      },
+      "feedback": {
+        "zh-TW": "用到的兩個數字沒錯，只是分子分母倒過來了：這樣算出來的是資產裡有幾成來自股東權益，正好是權益倍數的倒數。老闆娘問的是一元權益撐起幾元資產，也就是幾倍，要看權益倍數。",
+        "en": "The two figures are the right ones, just the wrong way up: this gives the share of the assets funded by equity, exactly the reciprocal of the equity multiplier. The owner asked how many units of assets each unit of equity supports, which is a multiple, so the equity multiplier is what she needs."
+      }
+    }
+  ],
+  "correctOptionId": "o_at8e",
+  "explanation": {
+    "zh-TW": "{{option:o_at8e}}，這就是權益倍數。記住一組對應：問「幾倍」看權益倍數，問「幾成」看負債比率。兩者描述同一個資本結構，權益倍數 ＝ 1 ÷（1 － 負債比率）；負債越多，權益倍數越高，ROE 也會被放大，但利息負擔與風險同樣放大。",
+    "en": "{{option:o_at8e}}, which is the equity multiplier. Keep the pairing in mind: a question about ‘how many times’ is the equity multiplier, a question about ‘what share’ is the debt ratio. Both describe the same capital structure, with equity multiplier = 1 ÷ (1 − debt ratio); more liabilities mean a higher multiplier and a magnified ROE, but the interest burden and the risk are magnified too."
+  }
+}

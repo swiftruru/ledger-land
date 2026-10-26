@@ -1,0 +1,85 @@
+{
+  "id": "q_qhgstt98",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_9ba3z0",
+  "difficulty": 3,
+  "tags": [
+    "profit_vs_cash",
+    "borrowing"
+  ],
+  "termRefs": [
+    "tm_vk8v09cy",
+    "tm_e61ht6yh",
+    "tm_z971merj",
+    "tm_c4sh8k2p"
+  ],
+  "scored": true,
+  "type": "transaction_effect",
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_skx6ss"
+  },
+  "scenario": {
+    "opening": {
+      "balances": {
+        "cash": 40000,
+        "inventory": 30000,
+        "share_capital": 70000
+      }
+    },
+    "events": [
+      {
+        "id": "e1",
+        "template": "tpl.borrow_short_term",
+        "params": {
+          "amount": 100000
+        }
+      }
+    ],
+    "policy": "teacher@1",
+    "layout": "teacher@1",
+    "window": "transaction",
+    "targets": [
+      {
+        "id": "t1",
+        "kind": "line",
+        "line": "bs_cash",
+        "measure": "direction"
+      },
+      {
+        "id": "t2",
+        "kind": "line",
+        "line": "is_pretax_income",
+        "measure": "direction"
+      },
+      {
+        "id": "t3",
+        "kind": "line",
+        "line": "cf_financing_total",
+        "measure": "direction"
+      },
+      {
+        "id": "t4",
+        "kind": "line",
+        "line": "cf_operating_total",
+        "measure": "direction"
+      }
+    ]
+  },
+  "choices": [
+    "up",
+    "down",
+    "unchanged"
+  ],
+  "prompt": {
+    "zh-TW": "淡季現金吃緊，速達機車行向銀行借了 {{money:e1.amount}}，錢已經進了帳戶。這筆交易之後，下面四個數字各會怎麼變？",
+    "en": "Cash is tight in the quiet season, so Swift Scooter Repairs borrows {{money:e1.amount}} from the bank, and the money is now in the account. After this transaction, how does each of the four figures below change?"
+  },
+  "explanation": {
+    "zh-TW": "現金增加 {{money:e1.amount}}，但這筆錢是借來的：{{term:tm_vk8v09cy}}增加，稅前淨利與{{term:tm_e61ht6yh}}都不動。帳上的錢變多了，店卻一毛錢都沒有賺到，這就是「現金增加不等於有獲利」。",
+    "en": "Cash rises by {{money:e1.amount}}, but the money is borrowed: {{term:tm_vk8v09cy}} rises while profit before tax and {{term:tm_e61ht6yh}} stay put. There is more money in the account, yet the workshop has not earned a cent; this is why more cash does not mean a profit."
+  }
+}

@@ -1,6 +1,6 @@
 {
   "id": "tm_v6j2k8sr",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -13,7 +13,7 @@
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "這段期間開始時倉庫裡的存貨。本課的報表自公司成立起累計，所以它永遠是零。",
-    "en": "The inventories on hand at the start of the period. The course statements run cumulatively from incorporation, so this line is always nil."
+    "zh-TW": "這段期間開始時倉庫裡的存貨，也就是上一期的期末存貨。課程故事自公司成立起累計，所以故事裡它是零；題目或練習若給了期初的數字，期初存貨就不一定是零。",
+    "en": "The inventories on hand at the start of the period, that is, the previous period’s closing inventories. The course story runs cumulatively from incorporation, so this line is nil in the story; when a question or exercise gives opening figures, opening inventories need not be nil."
   }
 }

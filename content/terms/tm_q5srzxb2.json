@@ -2,7 +2,7 @@
   "id": "tm_q5srzxb2",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "董監事酬勞",
@@ -14,7 +14,7 @@
   "aliases": {
     "zh-TW": [],
     "en": [
-      "Directors' remuneration"
+      "Directors’ remuneration"
     ]
   },
   "flags": [],
@@ -22,11 +22,24 @@
   "pendingRefs": [],
   "note": {
     "zh-TW": "照教材顯示「董監事酬勞」；現行公司多稱董事酬勞。",
-    "en": "Shown as the course writes it; most companies now say directors' remuneration."
+    "en": "Shown as the course writes it; most companies now say directors’ remuneration."
   },
   "definition": {
-    "zh-TW": "付給董事與監察人的報酬。它是銷管費用的一項。",
-    "en": "Pay to the company's directors and supervisors. It is one of the distribution and administrative expenses."
+    "zh-TW": "付給董事與監察人的報酬。\n\n它屬於營業費用，課程列在銷管費用。",
+    "en": "Remuneration paid to directors and supervisors.\n\nIt is an operating expense, which the course shows within distribution costs and administrative expenses."
   },
-  "accountRef": "directors_remuneration"
+  "example": {
+    "zh-TW": "位置：損益表銷管費用區的第一列。付現時現金減少、董監事酬勞增加，營業利益減少；現金流量表屬於營業活動的流出。",
+    "en": "Where it sits: the first line in the distribution costs and administrative expenses section of the income statement. Paying reduces cash and increases this expense, lowering operating profit; in the statement of cash flows it is an operating outflow."
+  },
+  "misconception": {
+    "zh-TW": "以為董監事酬勞是盈餘的分配、不影響淨利。依現行的會計處理，董監事酬勞與員工酬勞都列為費用，課程也這樣處理，所以認列時就會降低營業利益與本期淨利。",
+    "en": "Treating it as a distribution of profit that leaves profit untouched. Under current accounting, remuneration of directors and supervisors and employee remuneration are both expenses, and the course treats it the same way, so recognising it lowers operating profit and profit for the period."
+  },
+  "accountRef": "directors_remuneration",
+  "related": [
+    "tm_kyjfrraq",
+    "tm_r3nvm8jy",
+    "tm_d90d8jeh"
+  ]
 }

@@ -1,0 +1,49 @@
+{
+  "id": "q_kgqn45jy",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "objectiveId": "obj_33hdss",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "solvency"
+  ],
+  "termRefs": [
+    "tm_n8ysnw1m",
+    "tm_c4sh8k2p",
+    "tm_r7x2c9fa",
+    "tm_n7v3k8pq",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "cash": 400000,
+    "ar": 500000,
+    "loans": 0,
+    "inventory": 900000,
+    "cl": 1000000
+  },
+  "compute": {
+    "ratioRef": "quick_ratio@excel",
+    "measures": {
+      "bs_cash": "vars.cash",
+      "bs_accounts_receivable": "vars.ar",
+      "bs_short_term_loans_receivable": "vars.loans",
+      "bs_current_liabilities": "vars.cl"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": {
+    "zh-TW": "木岸家具年底的流動資產有現金 {{money:vars.cash}}、應收帳款 {{money:vars.ar}}、短期放款 {{money:vars.loans}}、存貨 {{money:vars.inventory}}；流動負債 {{money:vars.cl}}。依課程 Excel 口徑（現金＋應收帳款＋短期放款）計算速動比率，以「倍」作答。",
+    "en": "Woodbank Furniture’s current assets at year end are cash {{money:vars.cash}}, trade receivables {{money:vars.ar}}, short-term loans receivable {{money:vars.loans}} and inventories {{money:vars.inventory}}; current liabilities are {{money:vars.cl}}. Using the course Excel basis (cash + trade receivables + short-term loans receivable), what is the quick ratio? Answer in times."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_n8ysnw1m}}把{{term:tm_n7v3k8pq}}排除在分子之外，因為存貨要先賣掉、再收到錢才會變成現金，最不「速動」。分子只留現金、應收帳款與短期放款，再除以{{term:tm_c2y9b5ex}}。",
+    "en": "The {{term:tm_n8ysnw1m}} leaves {{term:tm_n7v3k8pq}} out of the numerator because inventory has to be sold and then collected before it becomes cash, making it the least ‘quick’. The numerator keeps only cash, trade receivables and short-term loans receivable, divided by {{term:tm_c2y9b5ex}}."
+  }
+}

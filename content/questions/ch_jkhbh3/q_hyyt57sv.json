@@ -1,0 +1,78 @@
+{
+  "id": "q_hyyt57sv",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_jkhbh3",
+  "objectiveId": "obj_mcdpxx",
+  "difficulty": 3,
+  "tags": [
+    "indirect_method",
+    "pretax",
+    "starting_point"
+  ],
+  "termRefs": [
+    "tm_z971merj",
+    "tm_n4e8t2jy",
+    "tm_3qfqnrmm"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "美琪發現另一家公司的現金流量表從「本期淨利」起算，而課程模板從「稅前淨利」起算。下面哪個說法對？",
+    "en": "Mei notices that another company’s statement of cash flows starts from profit for the period, while this course’s template starts from profit before tax. Which statement is right?"
+  },
+  "options": [
+    {
+      "id": "o_c7zs",
+      "text": {
+        "zh-TW": "兩種起算點都可以，從本期淨利起算時要先把所得稅費用加回",
+        "en": "Either starting point works; starting from profit for the period means adding back income tax expense first"
+      },
+      "feedback": {
+        "zh-TW": "答對了。本期淨利加回所得稅費用就回到稅前淨利，之後兩條路都扣掉實際支付的所得稅，算出來的營業活動現金流量一樣。",
+        "en": "Nice work. Adding income tax expense back to profit for the period brings you back to profit before tax; from there both routes deduct the tax actually paid, so net operating cash flow comes out the same."
+      },
+      "short": {
+        "zh-TW": "兩種起算點都可以",
+        "en": "Either starting point works"
+      }
+    },
+    {
+      "id": "o_cywr",
+      "text": {
+        "zh-TW": "從本期淨利起算是錯的，間接法只能從稅前淨利開始",
+        "en": "Starting from profit for the period is wrong; the indirect method may only start from profit before tax"
+      },
+      "feedback": {
+        "zh-TW": "你記得課程模板從稅前淨利起算，這點沒錯。不過準則也允許從本期淨利起算，只要把所得稅費用加回、再扣掉實際支付的所得稅，結果相同；兩種寫法都看得到。",
+        "en": "You remember that this course’s template starts from profit before tax, which is right. But the standard also allows starting from profit for the period, as long as income tax expense is added back and the tax actually paid is deducted; both layouts give the same result and both are seen in practice."
+      },
+      "short": {
+        "zh-TW": "從本期淨利起算是錯的",
+        "en": "Starting from profit for the period is wrong"
+      },
+      "misconceptionId": "mc_0k0g"
+    },
+    {
+      "id": "o_thpz",
+      "text": {
+        "zh-TW": "兩種算法得到的營業活動現金流量會差一個所得稅費用的金額",
+        "en": "The two approaches give net operating cash flows that differ by the amount of income tax expense"
+      },
+      "feedback": {
+        "zh-TW": "你注意到兩個起點差了所得稅費用，這點沒錯。不過從本期淨利起算時會把所得稅費用加回，兩條路最後都扣掉實際支付的所得稅，所以算出來的營業活動現金流量一樣。",
+        "en": "You noticed that the two starting points differ by income tax expense, which is right. But when starting from profit for the period that expense is added back, and both routes then deduct the tax actually paid, so net operating cash flow comes out the same."
+      },
+      "short": {
+        "zh-TW": "兩種算法結果不同",
+        "en": "The two approaches give different results"
+      }
+    }
+  ],
+  "correctOptionId": "o_c7zs",
+  "explanation": {
+    "zh-TW": "間接法的起點可以是{{term:tm_z971merj}}，也可以是{{term:tm_n4e8t2jy}}。本課採稅前淨利起算；若從本期淨利起算，需另加回{{term:tm_3qfqnrmm}}，之後再扣掉實際支付的所得稅，所以答案是{{option:o_c7zs}}。選{{option:o_cywr}}是把課程的選擇當成唯一正確的寫法，選{{option:o_thpz}}是忘了加回所得稅費用這一步。",
+    "en": "The indirect method may start from {{term:tm_z971merj}} or from {{term:tm_n4e8t2jy}}. This course starts from profit before tax; starting from profit for the period calls for adding back {{term:tm_3qfqnrmm}} and then deducting the tax actually paid, so the answer is {{option:o_c7zs}}. Choosing {{option:o_cywr}} treats the course’s choice as the only correct layout, and choosing {{option:o_thpz}} forgets the step of adding back income tax expense."
+  }
+}

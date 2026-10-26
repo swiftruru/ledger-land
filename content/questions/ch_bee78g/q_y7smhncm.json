@@ -1,0 +1,79 @@
+{
+  "id": "q_y7smhncm",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "ratio_interpret",
+  "ratioRef": "current_ratio@excel",
+  "objectiveId": "obj_33hdss",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "solvency"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_555a7d2s",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "vars": {
+    "ratio": 0.7,
+    "ca": 700000,
+    "cl": 1000000
+  },
+  "prompt": {
+    "zh-TW": "晨光健身房年底流動資產 {{money:vars.ca}}、流動負債 {{money:vars.cl}}，流動比率是 {{number:vars.ratio|digits=2,unit=times}}（見上表）。哪一個判讀最合理？",
+    "en": "Morning Light Gym has current assets of {{money:vars.ca}} and current liabilities of {{money:vars.cl}} at year end, a current ratio of {{number:vars.ratio|digits=2,unit=times}} (see the table above). Which reading is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_x3k1",
+      "text": {
+        "zh-TW": "短期償債有壓力，該接著看現金流量比率與借款能否展期",
+        "en": "Short-term solvency is under pressure; next check the cash flow ratio and whether the loans can be rolled over"
+      },
+      "feedback": {
+        "zh-TW": "答對了。一年內要還的錢比能變現的流動資產多，低於 {{number:1|digits=0,unit=times}}是警訊；但下一步是找原因與現金來源，不是直接下定論。",
+        "en": "That’s right. More is due within a year than the current assets that can be turned into cash, and a figure below {{number:1|digits=0,unit=times}} is a warning sign; but the next step is to find the cause and the sources of cash, not to jump to a verdict."
+      }
+    },
+    {
+      "id": "o_0ztn",
+      "text": {
+        "zh-TW": "流動比率低於 {{number:1|digits=0,unit=times}}，表示公司已經資不抵債",
+        "en": "A current ratio below {{number:1|digits=0,unit=times}} means the company is already insolvent, with liabilities exceeding assets"
+      },
+      "feedback": {
+        "zh-TW": "你把「不夠還」的方向抓對了。不過資不抵債指的是總負債大於總資產；流動比率只看一年內的部分，低於 {{number:1|digits=0,unit=times}}不代表整體資產不夠。",
+        "en": "You got the direction right: not enough to pay. But insolvency means total liabilities exceed total assets; the current ratio only covers the next year, and a figure below {{number:1|digits=0,unit=times}} does not mean overall assets are insufficient."
+      }
+    },
+    {
+      "id": "o_xm9a",
+      "text": {
+        "zh-TW": "健身房都收現金，流動比率低沒關係，不必再看",
+        "en": "Gyms take cash up front, so a low current ratio does not matter and needs no further attention"
+      },
+      "feedback": {
+        "zh-TW": "收現金確實讓壓力小一點，這點有道理。但「不必再看」太快了：還是要確認每月的現金進帳夠不夠付到期的債，也就是看現金流量比率。",
+        "en": "Taking cash up front does ease the pressure, which is a fair point. But ‘needs no further attention’ is too quick: you still have to confirm that monthly cash receipts cover the debts falling due, which is what the cash flow ratio shows."
+      }
+    }
+  ],
+  "correctOptionId": "o_x3k1",
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}低於 {{number:1|digits=0,unit=times}}表示短期的錢可能不夠。{{option:o_x3k1}}把它當成追問的起點並指出該交叉檢查的指標；{{option:o_0ztn}}把短期問題放大成整體資不抵債，{{option:o_xm9a}}則過早停止追問。",
+    "en": "A {{term:tm_c8r1t4zm}} below {{number:1|digits=0,unit=times}} means short-term money may run short. {{option:o_x3k1}} treats it as the start of further questions and names the ratio to cross-check; {{option:o_0ztn}} inflates a short-term issue into overall insolvency, and {{option:o_xm9a}} stops asking too early."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "current_ratio@excel"
+    ],
+    "measures": {
+      "bs_current_assets": "vars.ca",
+      "bs_current_liabilities": "vars.cl"
+    }
+  }
+}

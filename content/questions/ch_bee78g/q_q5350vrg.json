@@ -1,0 +1,89 @@
+{
+  "id": "q_q5350vrg",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_bee78g",
+  "type": "ratio_interpret",
+  "ratioRef": "net_profit_margin@excel",
+  "objectiveId": "obj_mj1tas",
+  "difficulty": 3,
+  "tags": [
+    "ratio",
+    "profitability",
+    "cross_check"
+  ],
+  "termRefs": [
+    "tm_92yzx0fn",
+    "tm_axb9rtr7",
+    "tm_1c1g4a7q",
+    "tm_tkj8x3a7"
+  ],
+  "scored": true,
+  "vars": {
+    "last": 0.04,
+    "now": 0.09,
+    "revenue": 4500000,
+    "gp": 1350000,
+    "oi": 450000,
+    "ni": 405000
+  },
+  "prompt": {
+    "zh-TW": "青田農產今年營業收入 {{money:vars.revenue}}、營業毛利 {{money:vars.gp}}、營業利益 {{money:vars.oi}}、本期淨利 {{money:vars.ni}}（三個比率見上表）。{{term:tm_92yzx0fn|plain}}從去年的 {{percent:vars.last}} 升到今年的 {{percent:vars.now}}，但{{term:tm_axb9rtr7|plain}}與{{term:tm_1c1g4a7q|plain}}兩年都一樣。哪一個判讀最合理？",
+    "en": "Green Field Produce had revenue of {{money:vars.revenue}}, gross profit of {{money:vars.gp}}, operating profit of {{money:vars.oi}} and profit for the period of {{money:vars.ni}} this year (the three margins are in the table above). The {{term:tm_92yzx0fn|plain}} rose from {{percent:vars.last}} last year to {{percent:vars.now}} this year, but the {{term:tm_axb9rtr7|plain}} and {{term:tm_1c1g4a7q|plain}} are the same in both years. Which reading is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_2kvt",
+      "text": {
+        "zh-TW": "差異來自營業利益以下的項目，例如營業外收入或所得稅",
+        "en": "The change comes from items below operating profit, such as non-operating income or tax"
+      },
+      "feedback": {
+        "zh-TW": "答對了。毛利率與營業利益率沒動，就把範圍縮到損益表的下半部。接著去看損益表的營業外收支與所得稅列。",
+        "en": "That’s right. With gross and operating margins unchanged, the search narrows to the lower half of the income statement. Next, look at the non-operating and tax lines."
+      }
+    },
+    {
+      "id": "o_078z",
+      "text": {
+        "zh-TW": "純益率上升，表示本業的毛利結構改善了",
+        "en": "The higher net margin shows the core business’s gross margin improved"
+      },
+      "feedback": {
+        "zh-TW": "你想到毛利是淨利的源頭，這個思路很好。不過題目說毛利率沒變，表示本業賣東西的利潤結構沒有改變，原因在更下面的項目。",
+        "en": "Thinking of gross profit as the source of net profit is good reasoning. But the gross margin did not change, so the profit structure of the core business is the same; the cause lies further down."
+      }
+    },
+    {
+      "id": "o_61hd",
+      "text": {
+        "zh-TW": "純益率上升就代表獲利變好，不必再查原因",
+        "en": "A higher net margin means profit has improved; there is no need to look for the reason"
+      },
+      "feedback": {
+        "zh-TW": "純益率上升確實是好消息。不過如果原因是一次性的收益，明年就不會再來；不查原因，就會把一次性的好運當成持續的獲利能力。",
+        "en": "A higher net margin is good news. But if the cause is a one-off gain, it will not recur next year; without finding the reason you could mistake a stroke of luck for lasting profitability."
+      },
+      "misconceptionId": "mc_dcpb"
+    }
+  ],
+  "correctOptionId": "o_2kvt",
+  "explanation": {
+    "zh-TW": "{{term:tm_92yzx0fn}}是損益表從上到下的最後結果。{{term:tm_axb9rtr7}}與{{term:tm_1c1g4a7q}}沒變，差異只能出現在營業利益之下。{{option:o_2kvt}}正確縮小範圍；{{option:o_078z}}找錯層，{{option:o_61hd}}不追問。",
+    "en": "The {{term:tm_92yzx0fn}} is the final result at the bottom of the income statement. With the {{term:tm_axb9rtr7}} and the {{term:tm_1c1g4a7q}} unchanged, the difference can only arise below operating profit. {{option:o_2kvt}} narrows the search correctly; {{option:o_078z}} looks at the wrong level, and {{option:o_61hd}} does not ask."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "gross_margin@slides01",
+      "operating_margin@slides01",
+      "net_profit_margin@excel"
+    ],
+    "measures": {
+      "is_revenue": "vars.revenue",
+      "is_gross_profit": "vars.gp",
+      "is_operating_income": "vars.oi",
+      "is_net_income": "vars.ni"
+    }
+  }
+}

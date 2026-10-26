@@ -2,7 +2,7 @@
   "id": "tm_gcp2zeys",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
   "label": {
     "zh-TW": "長期借款",
@@ -30,8 +30,23 @@
     "en": "The template has no long-term borrowing lines in financing activities, so the site uses extension rows; some course pages call this group long-term liabilities, an older term."
   },
   "definition": {
-    "zh-TW": "一年以後才要償還的借款。它是非流動負債；本課的故事沒有用到。",
-    "en": "Borrowings repayable more than a year ahead. A non-current liability; the course story does not use it."
+    "zh-TW": "向銀行等債權人借入、到期日在一年以後的借款。\n\n它和短期借款的差別只在還款期限；利息同樣列在利息費用。",
+    "en": "Money borrowed from banks or other lenders that falls due more than a year away.\n\nIt differs from short-term borrowings only in the repayment horizon; the interest is likewise recorded as interest expense."
   },
-  "accountRef": "long_term_borrowings"
+  "example": {
+    "zh-TW": "位置：資產負債表非流動負債。借入時現金與長期借款一起增加，償還時一起減少；現金流量表列在籌資活動的延伸列（老師的模板沒有長期借款列）。長期資金占固定資產比率把它算進長期資金。本課故事沒有用到。",
+    "en": "Where it sits: non-current liabilities on the balance sheet. Borrowing raises cash and this liability together; repayment lowers both. The statement of cash flows shows it on extension lines under financing activities (the course template has no long-term borrowing lines). The ratio of long-term funds to property, plant and equipment counts it as long-term funding. The course story does not use it."
+  },
+  "misconception": {
+    "zh-TW": "以為一年內就要還的那一部分也可以繼續留在長期借款。到期日進入一年以內的部分要轉列流動負債，否則流動比率會被高估。",
+    "en": "Leaving the portion due within the next year in long-term borrowings. Amounts falling due within twelve months must be reclassified to current liabilities, otherwise the current ratio is overstated."
+  },
+  "accountRef": "long_term_borrowings",
+  "related": [
+    "tm_s5b8r3hd",
+    "tm_adqjyfqg",
+    "tm_fk8yqnyt",
+    "tm_tfmnrp7r",
+    "tm_8eyx0srs"
+  ]
 }

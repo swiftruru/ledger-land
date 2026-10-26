@@ -1,0 +1,78 @@
+{
+  "id": "q_n9nvk40s",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_jey1mk",
+  "difficulty": 2,
+  "tags": [
+    "three_statements",
+    "balance_sheet"
+  ],
+  "termRefs": [
+    "tm_sf72dfsv",
+    "tm_tkj8x3a7",
+    "tm_n4e8t2jy"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "風行腳踏車行的老闆想知道「這個月賺了多少」。他只看月底的資產負債表，能直接得到答案嗎？",
+    "en": "The owner of Breeze Bicycles wants to know how much the shop earned this month. Can he get the answer straight from the month-end balance sheet alone?"
+  },
+  "options": [
+    {
+      "id": "o_nqe9",
+      "text": {
+        "zh-TW": "不能。資產負債表只看月底那一天，賺了多少要看損益表",
+        "en": "No. The balance sheet shows only the last day of the month; how much was earned is on the income statement"
+      },
+      "feedback": {
+        "zh-TW": "答對了。一張是某一天的存量，一張是一段期間的流量。",
+        "en": "Nice work. One is a stock on a given day, the other a flow over a period."
+      },
+      "short": {
+        "zh-TW": "不能，要看損益表",
+        "en": "No, look at the income statement"
+      }
+    },
+    {
+      "id": "o_1829",
+      "text": {
+        "zh-TW": "能。資產總計比上個月多出來的部分，就是這個月賺的",
+        "en": "Yes. The amount by which total assets grew since last month is this month’s profit"
+      },
+      "feedback": {
+        "zh-TW": "你想到比較兩個時點的差異，這個方向不錯。不過資產變多也可能是借款或股東出資造成的，和賺錢無關；要知道賺了多少，還是得看損益表。",
+        "en": "Comparing two points in time is a good instinct. But assets can grow because of a loan or new capital, which has nothing to do with earning; to know the profit you still need the income statement."
+      },
+      "short": {
+        "zh-TW": "能，看資產總計的增加",
+        "en": "Yes, from the rise in total assets"
+      },
+      "misconceptionId": "mc_hkwj"
+    },
+    {
+      "id": "o_8m3s",
+      "text": {
+        "zh-TW": "能。現金比上個月多出來的部分，就是這個月賺的",
+        "en": "Yes. The amount by which cash grew since last month is this month’s profit"
+      },
+      "feedback": {
+        "zh-TW": "現金確實是大家最關心的數字，這點沒錯。不過賒銷賺到的錢還沒收到、借來的錢沒有賺到卻已經進帳，現金的增減和利益常常不一樣。",
+        "en": "Cash is indeed the figure everyone cares about, that much is right. But profit on credit sales has not been collected yet, while borrowed money arrives without being earned; so the change in cash and the profit often differ."
+      },
+      "short": {
+        "zh-TW": "能，看現金的增加",
+        "en": "Yes, from the rise in cash"
+      },
+      "misconceptionId": "mc_7hx8"
+    }
+  ],
+  "correctOptionId": "o_nqe9",
+  "explanation": {
+    "zh-TW": "{{term:tm_sf72dfsv}}回答「某一天擁有多少」，{{term:tm_tkj8x3a7}}回答「一段期間賺了多少」，所以答案是{{option:o_nqe9}}。{{option:o_1829}}和{{option:o_8m3s}}都想用兩個時點的差額代替利益，卻忽略了借款、出資這些和賺錢無關的變動。",
+    "en": "The {{term:tm_sf72dfsv}} answers what is held on a given day; the {{term:tm_tkj8x3a7}} answers how much was earned over a period, so the answer is {{option:o_nqe9}}. {{option:o_1829}} and {{option:o_8m3s}} both try to use the difference between two dates in place of profit, overlooking loans and capital that change the figures without any earning."
+  }
+}

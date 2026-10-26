@@ -2,19 +2,45 @@
   "id": "tm_9hrfpqem",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "投資活動的現金流量", "en": "Cash flows from investing activities" },
+  "label": {
+    "zh-TW": "投資活動的現金流量",
+    "en": "Cash flows from investing activities"
+  },
   "teacherLabel": "投資活動的現金流量",
   "currentTwLabel": "投資活動之現金流量",
   "ifrsEnglish": "Cash flows from investing activities",
-  "aliases": { "zh-TW": ["投資活動之現金流量", "投資活動"], "en": ["Investing activities"] },
+  "aliases": {
+    "zh-TW": [
+      "投資活動之現金流量",
+      "投資活動"
+    ],
+    "en": [
+      "Investing activities"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "ifrsBasis": "IAS 7.16",
   "definition": {
-    "zh-TW": "買賣設備、放款與收回放款等長期資產相關的現金流量。模板三大活動的第二段，本課的設立費也依教材政策放在這裡。",
-    "en": "Cash flows from buying and selling equipment, making and collecting loans and other long-term asset activity. The second activity section of the template; under the course policy start-up costs are placed here too."
-  }
+    "zh-TW": "現金流量表三大活動中的第二區：買進或賣出長期資產、借錢給別人或收回放款所產生的現金流動。\n\n它反映公司把錢投到哪裡去；成長中的公司這一區通常是淨流出。",
+    "en": "The second of the three sections of the statement of cash flows: cash movements from buying or selling long-lived assets, lending to others and collecting those loans.\n\nIt shows where the company is putting its money; a growing company usually shows a net outflow here."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表營業活動總計之後。課程模板底下有三列：取得非流動資產、放貸支出，以及其他投資支出；網站另加收回放款與處分資產收入兩條延伸列。故事裡買電腦設備與支付設立費都落在這一區。",
+    "en": "Where it sits: after net cash from operating activities in the statement of cash flows. The course template lists payments to acquire non-current assets, loans advanced and other investing payments; the site adds extension lines for loan repayments received and disposal proceeds. In the story, buying computer equipment and paying start-up costs both land here."
+  },
+  "misconception": {
+    "zh-TW": "看到投資活動是負數就以為公司經營不善。買設備、擴充產能本來就會讓這一區變成流出；真正要擔心的是本業的營業活動長期為負。",
+    "en": "Reading a negative investing figure as a sign of trouble. Buying equipment and expanding capacity naturally produce outflows here; the real warning sign is operating cash flow that stays negative."
+  },
+  "related": [
+    "tm_fkpb3evq",
+    "tm_xen3p30x",
+    "tm_p2a7c5vk",
+    "tm_f9a4c6md",
+    "tm_67e7f0mn"
+  ]
 }

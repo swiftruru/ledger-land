@@ -1,0 +1,49 @@
+{
+  "id": "q_9nvpk62q",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_d6egd4",
+  "difficulty": 3,
+  "tags": [
+    "balance_sheet",
+    "current_ratio",
+    "na"
+  ],
+  "termRefs": [
+    "tm_c8r1t4zm",
+    "tm_c2y9b5ex"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "currentAssets": 420000,
+    "currentLiabilities": 0
+  },
+  "compute": {
+    "ratioRef": "current_ratio@excel",
+    "measures": {
+      "bs_current_assets": "vars.currentAssets",
+      "bs_current_liabilities": "vars.currentLiabilities"
+    }
+  },
+  "answerUnit": "multiple",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "acceptStatus": [
+    "na"
+  ],
+  "prompt": {
+    "zh-TW": "年底前，月光書店把應付帳款和短期借款全部付清，資產負債表上的流動負債合計是 {{money:vars.currentLiabilities}}，流動資產合計是 {{money:vars.currentAssets}}。流動比率是多少？以「倍」作答。",
+    "en": "Before year end, Moonlight Books pays off all its trade payables and short-term borrowings, so total current liabilities on the balance sheet are {{money:vars.currentLiabilities}} and total current assets are {{money:vars.currentAssets}}. What is the current ratio? Answer in times."
+  },
+  "hint": {
+    "zh-TW": "想一想分母是多少。",
+    "en": "Think about what the denominator is."
+  },
+  "explanation": {
+    "zh-TW": "{{term:tm_c8r1t4zm}}的分母是{{term:tm_c2y9b5ex}}。這家店的流動負債是 {{money:vars.currentLiabilities}}，{{money:vars.currentAssets}} 除以零沒有答案，所以比率沒有定義，網站顯示 N/A（分母不存在）。要是反過來，流動資產是零而流動負債不是零，比率就算得出來，只是結果是 0。這不是壞消息，只是這個比率在這裡沒有定義、算不出來。",
+    "en": "The denominator of the {{term:tm_c8r1t4zm}} is {{term:tm_c2y9b5ex}}. Here current liabilities are {{money:vars.currentLiabilities}}, and {{money:vars.currentAssets}} divided by zero has no answer, so the ratio is undefined and the site shows N/A (the denominator does not exist). The other way round, with no current assets but some current liabilities, the ratio could be worked out; it would simply be 0. It is not bad news; the ratio is simply undefined here."
+  }
+}

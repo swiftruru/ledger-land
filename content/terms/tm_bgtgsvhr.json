@@ -2,23 +2,42 @@
   "id": "tm_bgtgsvhr",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "其他應付款", "en": "Other payables" },
+  "label": {
+    "zh-TW": "其他應付款",
+    "en": "Other payables"
+  },
   "teacherLabel": "其他應付款",
   "currentTwLabel": null,
   "ifrsEnglish": "Other payables",
-  "aliases": { "zh-TW": [], "en": [] },
+  "aliases": {
+    "zh-TW": [],
+    "en": []
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "note": {
-    "zh-TW": "網站補充的延伸科目，老師的模板沒有這一列；不列入期中考範圍。",
-    "en": "An extension account added by the site; the teacher's template has no such line and it is outside the mid-term scope."
+    "zh-TW": "網站補充的延伸科目，課程模板沒有這一列；不列入期中考範圍。",
+    "en": "An extension account added by the site; the course template has no such line and it is outside the midterm scope."
   },
   "definition": {
-    "zh-TW": "貨款以外、還沒付的各種款項，例如應付的水電費或薪資。它是流動負債，變動時經過間接法的其他負債增加列。",
-    "en": "Unpaid amounts other than trade payables, such as utilities or wages still to be paid. A current liability whose movement passes through the increase in other liabilities line of the indirect method."
+    "zh-TW": "不是因為進貨產生、但已經欠下還沒付的營業性款項，例如應付的薪資或水電費。\n\n它和應付帳款的差別在來源：應付帳款專門放向供應商進貨的欠款，薪資、水電這類營業費用的欠款放這裡。借款、應付利息、應付所得稅與應付股利各有自己的科目，不放這裡。",
+    "en": "Operating amounts already owed but not yet paid that did not arise from buying inventory, such as wages or utilities.\n\nIt differs from trade payables in origin: trade payables hold what is owed to suppliers for goods bought, while unpaid operating expenses such as wages and utilities go here. Borrowings, interest payable, current tax liabilities and dividends payable each have their own account."
   },
-  "accountRef": "other_payables"
+  "example": {
+    "zh-TW": "位置：資產負債表流動負債；這是網站補充的延伸科目，課程模板沒有這一列，也不列入期中考範圍。欠款增加時費用增加、其他應付款增加；間接法把它的變動歸入「其他負債增加」列。賒購設備產生的應付設備款不是營業性負債：賒購當下沒有現金流量，屬於不影響現金的投資活動（IAS 7.43），付款時才列投資活動的「取得非流動資產(-)」；網站目前不提供賒購設備的交易。",
+    "en": "Where it sits: current liabilities on the balance sheet; it is an extension account added by the site, absent from the course template and outside the midterm scope. When a new amount is owed, an expense rises together with this liability; the indirect method puts its movement on the line for increases in other operating liabilities. An unpaid equipment bill is not an operating liability: buying equipment on credit involves no cash at the time, so it is a non-cash investing transaction left out of the statement of cash flows (IAS 7.43), and the later payment goes on the payments to acquire non-current assets line under investing activities. The site does not currently offer a transaction for buying equipment on credit."
+  },
+  "misconception": {
+    "zh-TW": "把所有欠款都丟進應付帳款。應付帳款只收向供應商賒購商品的欠款，欠設備款或欠薪資要另外列，否則應付款項週轉率會失真。",
+    "en": "Putting every unpaid bill into trade payables. Trade payables only cover goods bought on credit from suppliers; unpaid wages or an unpaid equipment bill must be kept out of them, otherwise the payables turnover ratio is distorted."
+  },
+  "accountRef": "other_payables",
+  "related": [
+    "tm_a3p9y6kc",
+    "tm_hg8c967a",
+    "tm_z5kjkvhc"
+  ]
 }

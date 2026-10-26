@@ -1,6 +1,6 @@
 {
   "id": "tm_3qfqnrmm",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -13,9 +13,13 @@
   "confidence": "high",
   "pendingRefs": ["T10"],
   "ifrsBasis": "IAS 12",
+  "note": {
+    "zh-TW": "本課故事只在最後一筆交易照課程設定的金額認列所得稅並直接付現，之前的交易都不計所得稅；由此算出的有效稅率和法定稅率不符，屬於課程的教學設定。",
+    "en": "In the course story income tax is recognised and paid in cash only in the last transaction, at the amount the course sets, and earlier transactions carry no tax; the resulting effective rate does not match the statutory rate, which is a teaching assumption."
+  },
   "definition": {
     "zh-TW": "依本期獲利計算、應負擔的所得稅。它是五層利益的最後一道扣除，稅前淨利減掉它就是本期淨利。",
-    "en": "The tax charged on the period's profit. It is the last deduction in the five profit levels: profit before tax less this amount is profit for the period."
+    "en": "The tax charged on the period’s profit. It is the last deduction in the five profit levels: profit before tax less this amount is profit for the period."
   },
   "accountRef": "income_tax_expense"
 }

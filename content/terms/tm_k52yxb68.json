@@ -2,13 +2,23 @@
   "id": "tm_k52yxb68",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "流動資產", "en": "Current assets" },
+  "label": {
+    "zh-TW": "流動資產",
+    "en": "Current assets"
+  },
   "teacherLabel": "流動資產",
   "currentTwLabel": "流動資產",
   "ifrsEnglish": "Current assets",
-  "aliases": { "zh-TW": ["流動資產合計"], "en": ["Total current assets"] },
+  "aliases": {
+    "zh-TW": [
+      "流動資產合計"
+    ],
+    "en": [
+      "Total current assets"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
@@ -18,7 +28,22 @@
     "en": "The course uses one year as the boundary; IAS 1.66 also allows the normal operating cycle. The same card serves the total current assets line."
   },
   "definition": {
-    "zh-TW": "預期在一年內會變成現金或用掉的資產，例如現金、應收帳款與存貨。模板的分組標題，也是流動比率的分子。",
-    "en": "Assets expected to be turned into cash or used up within a year, such as cash, trade receivables and inventories. A template group heading and the numerator of the current ratio."
-  }
+    "zh-TW": "預計一年內（或一個營業週期內）會變成現金或被用掉的資產，例如現金、應收帳款與存貨。\n\n它衡量公司短期可以動用的資源，是流動比率的分子。",
+    "en": "Assets expected to turn into cash or be used up within a year (or one operating cycle), such as cash, trade receivables and inventories.\n\nIt measures the resources the company can draw on in the short term and is the numerator of the current ratio."
+  },
+  "example": {
+    "zh-TW": "位置：資產負債表左邊的第一個分組標題，課程版面底下依序是現金及約當現金、應收帳款、存貨與短期放款。",
+    "en": "Where it sits: the first group heading on the assets side of the balance sheet; in the course layout it contains cash and cash equivalents, trade receivables, inventories and short-term loans receivable."
+  },
+  "misconception": {
+    "zh-TW": "以為流動資產都能馬上拿來還債。存貨要先賣出、再等客戶付款才變成現金，預付費用則不會再變回現金；所以速動比率把存貨排除（年報版另扣預付費用），只留下現金、應收帳款這類比較快變現的資產。",
+    "en": "Assuming every current asset can be used straight away to pay debts. Inventory has to be sold and then collected before it becomes cash, and prepayments do not turn back into cash; so the quick ratio leaves inventory out (the annual report version also deducts prepayments) and keeps only assets that turn into cash faster, such as cash and trade receivables."
+  },
+  "related": [
+    "tm_93mhtb4s",
+    "tm_c4sh8k2p",
+    "tm_r7x2c9fa",
+    "tm_n7v3k8pq",
+    "tm_c8r1t4zm"
+  ]
 }

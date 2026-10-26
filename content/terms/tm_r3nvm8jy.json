@@ -2,19 +2,40 @@
   "id": "tm_r3nvm8jy",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "account",
-  "label": { "zh-TW": "外包費用", "en": "Outsourcing expenses" },
+  "label": {
+    "zh-TW": "外包費用",
+    "en": "Outsourcing expenses"
+  },
   "teacherLabel": "外包費用",
   "currentTwLabel": null,
   "ifrsEnglish": "Outsourcing expenses",
-  "aliases": { "zh-TW": [], "en": ["Outsourcing expense"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Outsourcing expense"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "把工作交給外部廠商做所付的費用，例如請人架設網站。它屬於銷管費用。",
-    "en": "Fees paid to outside providers for work done on the company's behalf, such as having a website built. It belongs to distribution and administrative expenses."
+    "zh-TW": "把工作委託外部廠商完成所付的費用，例如請人架設網站或代為處理行政事務。\n\n課程把這類支出列為當期費用，不資本化。",
+    "en": "Fees paid to outside firms for work the company contracts out, such as building a website or handling administration.\n\nThe course expenses such payments in the period rather than capitalising them."
   },
-  "accountRef": "outsourcing_expense"
+  "example": {
+    "zh-TW": "位置：損益表銷管費用區。付現時現金減少、外包費用增加，營業利益減少；現金流量表屬於營業活動的流出。",
+    "en": "Where it sits: the distribution costs and administrative expenses section of the income statement. Paying reduces cash and increases this expense, lowering operating profit; in the statement of cash flows it is an operating outflow."
+  },
+  "misconception": {
+    "zh-TW": "以為外包做出來的網站是資產，所以這筆支出應該列在資產負債表。只有能證明網站很可能帶來未來經濟效益（例如可以直接接單），而且成本能可靠衡量、符合無形資產開發階段的認列條件時，才能資本化；課程情境看不出這些條件，所以直接列費用。",
+    "en": "Assuming the website produced by the contractor is an asset, so the spending should sit on the balance sheet. It can be capitalised only when the website is shown to be likely to bring future economic benefits, such as by taking orders directly, its cost can be measured reliably and it meets the recognition criteria for the development phase of an intangible asset; the course scenario gives no such evidence, so it is expensed."
+  },
+  "accountRef": "outsourcing_expense",
+  "related": [
+    "tm_kyjfrraq",
+    "tm_q5srzxb2",
+    "tm_24scevxv"
+  ]
 }

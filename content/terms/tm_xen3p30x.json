@@ -2,20 +2,50 @@
   "id": "tm_xen3p30x",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "statement",
-  "label": { "zh-TW": "取得非流動資產(-)", "en": "Payments to acquire non-current assets (-)" },
+  "label": {
+    "zh-TW": "取得非流動資產(-)",
+    "en": "Payments to acquire non-current assets (-)"
+  },
   "teacherLabel": "取得非流動資產(-)",
   "currentTwLabel": "取得不動產、廠房及設備",
   "ifrsEnglish": "Payments to acquire non-current assets",
-  "aliases": { "zh-TW": ["資本支出"], "en": ["Capital expenditure"] },
+  "aliases": {
+    "zh-TW": [
+      "資本支出"
+    ],
+    "en": [
+      "Capital expenditure"
+    ]
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T30"],
+  "pendingRefs": [
+    "T30"
+  ],
   "ifrsBasis": "IAS 7.16(a)",
-  "note": { "zh-TW": "故事第 5 筆的設立費放這一列屬推論（T30）。", "en": "Placing the start-up costs of step 5 of the story on this line is an inference (T30)." },
+  "note": {
+    "zh-TW": "故事第 5 筆的設立費在課程政策下放這一列；IFRS 政策下設立費於發生時費用化，付現改列營業活動。",
+    "en": "Under the course policy the start-up costs in step 5 of the story go on this line; under the IFRS policy they are expensed as incurred and the payment is an operating cash flow."
+  },
   "definition": {
-    "zh-TW": "為了買設備、無形資產等長期資產付出的現金，也就是一般說的資本支出。數字越大表示公司投入越多在未來的產能。",
-    "en": "Cash paid to buy equipment, intangible assets and other long-term assets, commonly called capital expenditure. A larger figure means more investment in future capacity."
-  }
+    "zh-TW": "為了取得機器設備、無形資產等非流動資產而付出的現金，也就是一般說的資本支出。\n\n這是投資活動最主要的流出；課程政策下，支付設立費也歸在這一列。",
+    "en": "Cash paid to acquire non-current assets such as machinery and intangible assets, commonly called capital expenditure.\n\nIt is the main investing outflow; under the course policy, paying start-up costs is also classified here."
+  },
+  "example": {
+    "zh-TW": "位置：現金流量表投資活動區的第一列。故事裡買電腦設備與支付設立費都填在這裡。CE intensity 與現金流量允當比率都拿這一列當資本支出。",
+    "en": "Where it sits: the first line of investing activities in the statement of cash flows. In the story both the computer equipment purchase and the start-up costs go here. CE intensity and the cash flow adequacy ratio both take this line as capital expenditure."
+  },
+  "misconception": {
+    "zh-TW": "以為買設備當期的損益表會出現一筆大費用。買設備不經過損益表，只是現金換成資產；之後每年的折舊才進損益表，所以現金流出與費用認列的時間差很多。",
+    "en": "Expecting a large expense on the income statement in the year equipment is bought. The purchase bypasses the income statement, swapping cash for an asset; only the yearly depreciation reaches profit, so the cash outflow and the expense are far apart in time."
+  },
+  "related": [
+    "tm_gt8g4afe",
+    "tm_d9f3g7cs",
+    "tm_1hgn004m",
+    "tm_35qb8and",
+    "tm_9hrfpqem"
+  ]
 }

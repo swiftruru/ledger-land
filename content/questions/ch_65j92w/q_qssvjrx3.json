@@ -1,0 +1,20 @@
+{
+  "id": "q_qssvjrx3",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_81e8f8",
+  "difficulty": 2,
+  "tags": ["asset_turnover", "dupont"],
+  "termRefs": ["tm_2cqt9cfd", "tm_v3n8q2ye", "tm_t7a3s6wb"],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": { "revenue": 3600000, "totalAssets": 2400000 },
+  "compute": { "ratioRef": "total_asset_turnover@slides02", "measures": { "is_revenue": "vars.revenue", "bs_total_assets": "vars.totalAssets" } },
+  "answerUnit": "turnover",
+  "decimals": 2,
+  "tolerance": 0.01,
+  "prompt": { "zh-TW": "晨霧茶行今年的營收是 {{money:vars.revenue}}，年底的資產總計是 {{money:vars.totalAssets}}。用年底資產計算資產週轉率，以「次」作答，取到小數點後兩位。", "en": "Morning Mist Tea had revenue of {{money:vars.revenue}} this year and total assets of {{money:vars.totalAssets}} at year end. Using year-end assets, what is its asset turnover? Answer in times, with two decimal places." },
+  "explanation": { "zh-TW": "資產週轉率 ＝ 營收 ÷ 資產總計 ＝ {{money:vars.revenue}} ÷ {{money:vars.totalAssets}} ＝ {{number:expected.answer.value|digits=2,unit=turns}}（簡化版，用期末資產）。它的單位是「次」而不是百分比：每一元資產一年帶出多少元營收。分子用整年營收、分母用年底資產，期間是對應的。", "en": "Asset turnover = revenue ÷ total assets = {{money:vars.revenue}} ÷ {{money:vars.totalAssets}} = {{number:expected.answer.value|digits=2,unit=turns}} (simplified version, closing assets). Its unit is times, not a percentage: how much revenue each unit of assets generates in a year. A full year’s revenue against year-end assets keeps the periods aligned." }
+}

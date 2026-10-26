@@ -2,13 +2,21 @@
   "id": "tm_kzkzng5e",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "平均付款天數", "en": "Average payment period" },
+  "label": {
+    "zh-TW": "平均付款天數",
+    "en": "Average payment period"
+  },
   "teacherLabel": "平均付款天數",
   "currentTwLabel": "平均付款天數",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": [], "en": ["Days payables outstanding"] },
+  "aliases": {
+    "zh-TW": [],
+    "en": [
+      "Days payables outstanding"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
@@ -17,12 +25,30 @@
     "en": "A name supplied by the site: the course works it out by example without naming it and annual reports do not list it; an extension ratio, not scored."
   },
   "definition": {
-    "zh-TW": "從賒購到付清貨款平均要幾天，用一年的天數除以應付款項週轉率算出。天數越多表示供應商給的付款寬限越長。",
-    "en": "The average number of days between a credit purchase and its payment, found by dividing the days in a year by payables turnover. More days mean longer credit from suppliers."
+    "zh-TW": "公司賒購之後，平均隔幾天才付錢給供應商。\n\n用一年的天數除以應付款項週轉率，就得到平均每付一次貨款相隔幾天；天數越長，表示供應商給的信用期間越長，或公司付款越慢。",
+    "en": "How many days, on average, the company takes to pay its suppliers after buying on credit.\n\nDividing the days in a year by payables turnover gives the average gap between payments to suppliers; a longer period means suppliers extend more credit or the company pays more slowly."
+  },
+  "example": {
+    "zh-TW": "它由應付款項週轉率換算而來，週轉率是 N/A 或 0 時它也是 N/A。營運週期減去它就是現金轉換循環。",
+    "en": "It is derived from payables turnover and is N/A whenever the turnover is N/A or zero. The operating cycle minus this figure gives the cash conversion cycle."
+  },
+  "misconception": {
+    "zh-TW": "以為付款天數越短表示財務越健康。付得太快等於放棄供應商提供的免費資金；一般的做法是在信用期限內付款，有現金折扣時把握折扣期限。",
+    "en": "Assuming a shorter payment period means healthier finances. Paying too fast gives up free funding from suppliers; the usual practice is to pay within the credit terms and to take any cash discount within its window."
+  },
+  "formula": {
+    "zh-TW": "平均付款天數 ＝ 365 ÷ 應付款項週轉率（用年報版的週轉率，分子是營業成本）。",
+    "en": "Average payment period = 365 ÷ payables turnover (using the annual report version of the turnover, with cost of sales as the numerator)."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率；中文名稱由網站補充，英文名稱採國際常見的說法。計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the Chinese name is supplied by the site and the English name follows common international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "days_payable@slides03"
+  "ratioRef": "days_payable@slides03",
+  "related": [
+    "tm_2jyfy0hn",
+    "tm_arb3vgk7",
+    "tm_7v02zwjf",
+    "tm_a3p9y6kc"
+  ]
 }

@@ -1,0 +1,78 @@
+{
+  "id": "q_55ddybbc",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_c5f8w2",
+  "objectiveId": "obj_nd6s2j",
+  "difficulty": 3,
+  "tags": [
+    "sceptic",
+    "profit"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_67e7f0mn",
+    "tm_sf72dfsv"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "prompt": {
+    "zh-TW": "小晴看到小山咖啡這一季的本期淨利比上一季多了一倍，很開心。如果你是一個會追問的讀者，會先問哪一個問題？",
+    "en": "Ching is delighted to see that Hillside Coffee’s profit this quarter is double last quarter’s. If you were a reader who likes to ask questions, which would you ask first?"
+  },
+  "options": [
+    {
+      "id": "o_pb0s",
+      "text": {
+        "zh-TW": "利益收到現金了嗎？是本業賺的，還是一次性的？",
+        "en": "Has this profit turned into cash, and is it from the core business or a one-off?"
+      },
+      "feedback": {
+        "zh-TW": "答對了。利益翻倍只是起點，錢從哪裡來、有沒有收到，才看得出這一季是不是真的變好。",
+        "en": "Nice work. Doubling profit is only the starting point; where the money came from and whether it arrived show whether the quarter really improved."
+      },
+      "short": {
+        "zh-TW": "利益變成現金了嗎、來源是什麼",
+        "en": "Has it become cash, and where did it come from"
+      }
+    },
+    {
+      "id": "o_ddzz",
+      "text": {
+        "zh-TW": "利益翻倍就夠了，不必再問別的",
+        "en": "Doubling profit is enough; there is nothing more to ask"
+      },
+      "feedback": {
+        "zh-TW": "利益變多確實是好消息，這點沒錯。不過本期淨利只是損益表的最後一列；如果利益全掛在應收帳款上、或來自一次性的收益，下一季就不一定還在。",
+        "en": "More profit is indeed good news, that much is right. But profit for the period is only the last line of the income statement; if it is all sitting in receivables or came from a one-off gain, it may not be there next quarter."
+      },
+      "short": {
+        "zh-TW": "利益翻倍就夠了",
+        "en": "Doubling profit is enough"
+      },
+      "misconceptionId": "mc_1ppe"
+    },
+    {
+      "id": "o_7z4w",
+      "text": {
+        "zh-TW": "資產負債表平衡了嗎？平衡就代表數字沒問題",
+        "en": "Does the balance sheet balance? If it does, the figures are fine"
+      },
+      "feedback": {
+        "zh-TW": "檢查平衡確實是基本功，這點沒錯。不過平衡只表示兩邊加總相等，不代表利益的品質；會追問的讀者要看利益的來源和現金，不只看帳有沒有平。",
+        "en": "Checking that it balances is indeed basic good practice, that much is right. But balancing only means the two sides add up; it says nothing about the quality of the profit. A questioning reader looks at where profit came from and at cash, not just at whether the books balance."
+      },
+      "short": {
+        "zh-TW": "平衡就代表沒問題",
+        "en": "Balanced means fine"
+      },
+      "misconceptionId": "mc_xqfm"
+    }
+  ],
+  "correctOptionId": "o_pb0s",
+  "explanation": {
+    "zh-TW": "{{term:tm_n4e8t2jy}}只回答「賺了多少」。會追問的讀者會接著翻{{term:tm_67e7f0mn}}看錢有沒有進來、翻損益表的各列看利益來自本業還是業外，所以最該先問的是{{option:o_pb0s}}。{{option:o_ddzz}}停在最後一列，{{option:o_7z4w}}把平衡當成品質保證。",
+    "en": "{{term:tm_n4e8t2jy}} answers only how much was earned. A questioning reader then turns to the {{term:tm_67e7f0mn}} to see whether the money came in, and to the lines of the income statement to see whether the profit came from the core business, so the first thing to ask is {{option:o_pb0s}}. {{option:o_ddzz}} stops at the last line, and {{option:o_7z4w}} mistakes balancing for a guarantee of quality."
+  }
+}

@@ -1,24 +1,52 @@
 {
   "id": "tm_fsv83x2z",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "平均銷貨日數", "en": "Average days to sell inventory" },
+  "label": {
+    "zh-TW": "平均銷貨日數",
+    "en": "Average days to sell inventory"
+  },
   "teacherLabel": "平均銷貨日數",
   "currentTwLabel": "平均售貨日數",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["平均售貨日數"], "en": ["Days inventory outstanding"] },
+  "aliases": {
+    "zh-TW": [
+      "平均售貨日數"
+    ],
+    "en": [
+      "Days inventory outstanding"
+    ]
+  },
   "flags": [],
   "confidence": "high",
   "pendingRefs": [],
   "definition": {
-    "zh-TW": "商品從進貨到賣出平均要放幾天，用一年的天數除以存貨週轉率算出。天數越少表示銷貨越快。",
-    "en": "The average number of days goods stay in stock before being sold, found by dividing the days in a year by inventory turnover. Fewer days mean faster selling."
+    "zh-TW": "存貨平均要在帳上停留幾天，才隨著銷貨轉成營業成本。\n\n算法是一年 365 天除以存貨週轉率；週轉次數越多，每批貨停留的天數越短。",
+    "en": "The average number of days inventory stays on the books before it is sold and becomes cost of sales.\n\nIt is 365 days divided by inventory turnover; the more turns a year, the fewer days each batch stays."
+  },
+  "example": {
+    "zh-TW": "它由存貨週轉率換算而來，週轉率是 N/A 或 0 時它也是 N/A。台灣的財務分析資料也常稱它為平均售貨日數；加上平均收現日數就是營運週期。",
+    "en": "It is derived from inventory turnover and is N/A whenever the turnover is N/A or zero. Taiwanese financial analysis data often call it average days to sell goods; adding the average collection period gives the operating cycle."
+  },
+  "misconception": {
+    "zh-TW": "用 12 個月除以週轉率，得到「月」卻當成「天」。公式固定用 365 天，單位是天；換算基準弄錯會差三十倍。",
+    "en": "Dividing 12 months by the turnover and reading the result as days. The formula uses 365 days and the unit is days; mixing up the base gives a figure thirty times too small."
+  },
+  "formula": {
+    "zh-TW": "平均銷貨日數的算法：365 ÷ 存貨週轉率。",
+    "en": "Average days to sell inventory = 365 ÷ inventory turnover."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "days_inventory@excel"
+  "ratioRef": "days_inventory@excel",
+  "related": [
+    "tm_08g66t9j",
+    "tm_gysqtps0",
+    "tm_7v02zwjf",
+    "tm_n7v3k8pq"
+  ]
 }

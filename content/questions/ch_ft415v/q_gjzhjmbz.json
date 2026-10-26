@@ -1,0 +1,82 @@
+{
+  "id": "q_gjzhjmbz",
+  "rev": 2,
+  "revKind": "answer",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "type": "ratio_interpret",
+  "ratioRef": "ar_turnover@excel",
+  "objectiveId": "obj_fbc0kw",
+  "difficulty": 2,
+  "tags": [
+    "ratio",
+    "activity",
+    "days"
+  ],
+  "termRefs": [
+    "tm_gysqtps0",
+    "tm_2s4hterv",
+    "tm_r7x2c9fa"
+  ],
+  "scored": true,
+  "vars": {
+    "lastDays": 40,
+    "thisDays": 78,
+    "revenue": 3650000,
+    "ar": 780000
+  },
+  "prompt": {
+    "zh-TW": "初陽貿易今年營業收入 {{money:vars.revenue}}，年底應收帳款 {{money:vars.ar}}（週轉率見上表）。換算下來，平均收現日數從去年的 {{number:vars.lastDays|digits=2,unit=day}} 變成今年的 {{number:vars.thisDays|digits=2,unit=day}}，兩年的營業收入差不多。哪一個判讀最合理？",
+    "en": "First Light Trading had revenue of {{money:vars.revenue}} this year and trade receivables of {{money:vars.ar}} at year end (turnover in the table above). Converted to days, the average collection period went from {{number:vars.lastDays|digits=2,unit=day}} last year to {{number:vars.thisDays|digits=2,unit=day}} this year, with revenue about the same in both years. Which reading is most reasonable?"
+  },
+  "options": [
+    {
+      "id": "o_fv7a",
+      "text": {
+        "zh-TW": "客戶付款變慢，更多資金押在應收帳款上，現金壓力變大",
+        "en": "Customers are paying more slowly, more money is tied up in receivables and cash pressure is rising"
+      },
+      "feedback": {
+        "zh-TW": "答對了。營收沒變、天數變長，就是同樣的生意收錢收得更慢；接下來該檢查收款政策，以及有沒有收不回來的帳。",
+        "en": "That’s right. With revenue unchanged, longer days simply mean the same sales are being collected more slowly; the next step is to review the collection policy and check for bad debts."
+      }
+    },
+    {
+      "id": "o_k8zg",
+      "text": {
+        "zh-TW": "收現日數變長代表客戶變多、生意變好",
+        "en": "A longer collection period means more customers and better business"
+      },
+      "feedback": {
+        "zh-TW": "你把應收帳款變多和生意變好連在一起，在營收成長時這可能成立。不過題目說營收差不多，表示生意沒有變大，天數變長只是收款變慢。",
+        "en": "You linked higher receivables with better business, which can be true when revenue is growing. But revenue here is about the same, so the business has not grown; the longer period only means slower collection."
+      },
+      "misconceptionId": "mc_m4zs"
+    },
+    {
+      "id": "o_dqma",
+      "text": {
+        "zh-TW": "收現日數變長對公司是好事，因為可以少付利息",
+        "en": "A longer collection period is good for the company because it pays less interest"
+      },
+      "feedback": {
+        "zh-TW": "收現慢的是「別人欠我們的錢」，不是我們欠別人的；錢晚進來，公司反而可能要去借錢週轉、多付利息。",
+        "en": "Slow collection concerns money others owe us, not money we owe; when cash comes in later the company may have to borrow to bridge the gap and pay more interest, not less."
+      }
+    }
+  ],
+  "correctOptionId": "o_fv7a",
+  "explanation": {
+    "zh-TW": "{{term:tm_gysqtps0}}變長，表示{{term:tm_r7x2c9fa}}占用的資金變多。{{option:o_fv7a}}看出了資金壓力；{{option:o_k8zg}}忽略營收沒有成長，{{option:o_dqma}}搞混了收款與付款的方向。",
+    "en": "A longer {{term:tm_gysqtps0}} means more money is tied up in {{term:tm_r7x2c9fa}}. {{option:o_fv7a}} sees the cash pressure; {{option:o_k8zg}} ignores that revenue did not grow, and {{option:o_dqma}} confuses collecting with paying."
+  },
+  "ratioTable": {
+    "ratioRefs": [
+      "ar_turnover@excel"
+    ],
+    "measures": {
+      "is_revenue": "vars.revenue",
+      "bs_accounts_receivable": "vars.ar"
+    }
+  }
+}

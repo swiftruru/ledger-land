@@ -1,0 +1,70 @@
+{
+  "id": "q_gavazqpc",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_cqxamf",
+  "difficulty": 1,
+  "tags": [
+    "extension",
+    "margin"
+  ],
+  "termRefs": [
+    "tm_whmbqrr8",
+    "tm_sf72dfsv",
+    "tm_h6p2k9wd"
+  ],
+  "scored": true,
+  "vars": {
+    "own": 200000,
+    "loan": 300000
+  },
+  "prompt": {
+    "zh-TW": "小安用融資買進綠茵運動用品的股票：自己出 {{money:vars.own}}，向券商借 {{money:vars.loan}}。這筆融資借款會記在哪裡？",
+    "en": "An buys Greenfield Sports shares on margin: {{money:vars.own}} of his own money plus {{money:vars.loan}} borrowed from the broker. Where is this margin loan recorded?"
+  },
+  "options": [
+    {
+      "id": "o_s1t2",
+      "text": {
+        "zh-TW": "記在小安的信用交易帳戶，綠茵運動用品的帳完全不受影響",
+        "en": "In An’s margin account with the broker; Greenfield Sports’ books are not affected at all"
+      },
+      "feedback": {
+        "zh-TW": "答對了。股票在市場上換手，公司沒有收到錢、也沒有借錢；融資是投資人自己的負債。",
+        "en": "That is right. The shares change hands in the market; the company receives no money and borrows none. The margin loan is the investor’s own liability."
+      }
+    },
+    {
+      "id": "o_v3w4",
+      "text": {
+        "zh-TW": "綠茵運動用品的負債增加 {{money:vars.loan}}，因為這筆錢是拿來買它的股票",
+        "en": "Greenfield Sports’ liabilities rise by {{money:vars.loan}}, because the money was used to buy its shares"
+      },
+      "feedback": {
+        "zh-TW": "你知道有人借了錢，這沒錯。但借錢的是小安，不是公司；公司的帳只記公司自己的交易。",
+        "en": "You are right that someone borrowed money. But the borrower is An, not the company, and the company’s books record only the company’s own transactions."
+      },
+      "misconceptionId": "mc_bks1"
+    },
+    {
+      "id": "o_x5y6",
+      "text": {
+        "zh-TW": "綠茵運動用品的股本增加，因為小安成了公司的新股東",
+        "en": "Greenfield Sports’ share capital rises, because An has become a new shareholder in the company"
+      },
+      "feedback": {
+        "zh-TW": "公司多了一位股東是事實，但那是原股東把股票賣給小安，公司沒有發行新股；股本不變。",
+        "en": "The company does gain a shareholder, but an existing holder sold shares to An; the company issued no new shares, so share capital is unchanged."
+      },
+      "misconceptionId": "mc_bks1"
+    }
+  ],
+  "correctOptionId": "o_s1t2",
+  "explanation": {
+    "zh-TW": "{{option:o_s1t2}}分清了投資人的帳和公司的帳。{{option:o_v3w4}}與{{option:o_x5y6}}都把市場上的買賣誤當成公司的交易。",
+    "en": "{{option:o_s1t2}} separates the investor’s accounts from the company’s. {{option:o_v3w4}} and {{option:o_x5y6}} both mistake a market trade for a company transaction."
+  }
+}

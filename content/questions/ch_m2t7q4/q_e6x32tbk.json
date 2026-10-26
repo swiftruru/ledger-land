@@ -1,6 +1,6 @@
 {
   "id": "q_e6x32tbk",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "chapterId": "ch_m2t7q4",
@@ -29,7 +29,7 @@
       },
       "feedback": {
         "zh-TW": "損益表列的是一段期間的收入與費用，不會列出存貨有多少、欠供應商多少。",
-        "en": "The income statement lists a period's revenue and expenses; it does not show how much inventory there is or what is owed to suppliers."
+        "en": "The income statement lists a period’s revenue and expenses; it does not show how much inventory there is or what is owed to suppliers."
       },
       "misconceptionId": "mc_s6mx"
     },
@@ -59,6 +59,6 @@
   "correctOptionId": "o_7q96",
   "explanation": {
     "zh-TW": "「某一天擁有多少、欠多少」是資產負債表的問題，所以選{{option:o_7q96}}。存貨與設備在資產那一邊，欠供應商的錢在負債那一邊。",
-    "en": "\"What is owned and owed on a given day\" is the balance sheet's question, so {{option:o_7q96}} is right. Inventory and equipment sit on the asset side, and the amount owed to suppliers on the liability side."
+    "en": "‘What is owned and owed on a given day’ is the balance sheet’s question, so {{option:o_7q96}} is right. Inventory and equipment sit on the asset side, and the amount owed to suppliers on the liability side."
   }
 }

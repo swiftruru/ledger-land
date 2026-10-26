@@ -1,0 +1,22 @@
+{
+  "id": "lv_dgewh5tm",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "order": 3,
+  "title": {
+    "zh-TW": "槓桿度：放大幾倍",
+    "en": "Leverage: how much gets magnified"
+  },
+  "objectiveIds": [
+    "obj_6r5ph7"
+  ],
+  "questionIds": [
+    "q_v266wkn5",
+    "q_sbmp73bg",
+    "q_a4b9gjsh",
+    "q_ych499y5",
+    "q_0q9cm8kq"
+  ]
+}

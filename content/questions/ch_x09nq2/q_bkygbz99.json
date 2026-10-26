@@ -1,0 +1,66 @@
+{
+  "id": "q_bkygbz99",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "type": "single_choice",
+  "chapterId": "ch_x09nq2",
+  "objectiveId": "obj_1m58qq",
+  "difficulty": 2,
+  "tags": [
+    "extension",
+    "capital_surplus",
+    "ifrs"
+  ],
+  "termRefs": [
+    "tm_yka0razf",
+    "tm_4c6v99nn"
+  ],
+  "scored": true,
+  "prompt": {
+    "zh-TW": "下面三個項目，哪一個在現行做法下屬於資本公積？",
+    "en": "Which of the three items below belongs in capital surplus under current practice?"
+  },
+  "options": [
+    {
+      "id": "o_p4q5",
+      "text": {
+        "zh-TW": "發行新股時，股東付的價格超過面額的部分",
+        "en": "The amount shareholders pay above par value when new shares are issued"
+      },
+      "feedback": {
+        "zh-TW": "答對了。股本溢價是資本公積最典型、也最常見的來源。",
+        "en": "That is right. The share premium is the most typical and most common source of capital surplus."
+      }
+    },
+    {
+      "id": "o_r6s7",
+      "text": {
+        "zh-TW": "今年營業賺到、還沒分配的本期淨利",
+        "en": "This year’s profit from trading that has not yet been distributed"
+      },
+      "feedback": {
+        "zh-TW": "你知道它會留在股東權益裡，這部分正確。不過賺來的盈餘累積在未分配盈餘，不是資本公積；兩者來源不同，用途的限制也不同。",
+        "en": "You are right that it stays in equity. But earned profit accumulates in unappropriated retained earnings, not capital surplus; the two have different sources and different restrictions on use."
+      },
+      "misconceptionId": "mc_ern2"
+    },
+    {
+      "id": "o_t8v9",
+      "text": {
+        "zh-TW": "賣掉一台舊機器賺到的處分利益",
+        "en": "The gain from selling an old machine"
+      },
+      "feedback": {
+        "zh-TW": "較早的分類方式確實把這類利益列為資本公積的來源（{{raw:2001}} 年修正前的公司法），但那是舊制。現行 IFRS 把處分不動產、廠房及設備的利益列入當期損益，不進資本公積。",
+        "en": "Older classifications did treat this kind of gain as a source of capital surplus (the Company Act before its {{raw:2001}} amendment), but that is the old system. Under current IFRS a gain on disposal of property, plant and equipment goes to profit or loss, not to capital surplus."
+      },
+      "misconceptionId": "mc_01d8"
+    }
+  ],
+  "correctOptionId": "o_p4q5",
+  "explanation": {
+    "zh-TW": "{{option:o_p4q5}}是現行最常見的資本公積來源。{{option:o_r6s7}}屬於未分配盈餘；{{option:o_t8v9}}在舊制分類下曾列資本公積，現行準則把它列入當期損益。",
+    "en": "{{option:o_p4q5}} is the most common source of capital surplus today. {{option:o_r6s7}} belongs to unappropriated retained earnings; {{option:o_t8v9}} went to capital surplus under the older classification, but current standards put it in profit or loss."
+  }
+}

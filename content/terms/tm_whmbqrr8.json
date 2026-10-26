@@ -1,0 +1,44 @@
+{
+  "id": "tm_whmbqrr8",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "category": "other",
+  "label": {
+    "zh-TW": "融資（證券信用交易）",
+    "en": "Margin purchase"
+  },
+  "teacherLabel": "融資",
+  "currentTwLabel": "融資",
+  "ifrsEnglish": null,
+  "aliases": {
+    "zh-TW": [
+      "融資買進",
+      "信用交易"
+    ],
+    "en": [
+      "Margin financing",
+      "Buying on margin"
+    ]
+  },
+  "flags": [],
+  "confidence": "high",
+  "pendingRefs": [
+    "T18"
+  ],
+  "note": {
+    "zh-TW": "投資與金融用語，放在延伸區，不列入期中考範圍。和公司向銀行借錢的「融資」不同，這裡專指投資人向券商借錢買股票。",
+    "en": "An investment term kept in the extension area and outside the midterm scope. Distinct from a company raising finance from a bank: here it means an investor borrowing from a broker to buy shares."
+  },
+  "definition": {
+    "zh-TW": "投資人自己出一部分錢、向券商借其餘的錢買進股票，買進的股票留在券商那裡當擔保品。股價漲跌都算在投資人自有資金上，所以報酬與虧損都被放大，另外還要付借款利息。這筆借款是投資人的負債，不會出現在被買進公司的帳上。本站的說明只供學習，不構成任何投資建議。",
+    "en": "An investor pays part of the purchase price and borrows the rest from a broker, leaving the shares with the broker as collateral. Price moves fall on the investor’s own money, so both gains and losses are magnified, and interest is payable on the loan. The loan is the investor’s liability and never appears in the books of the company whose shares were bought. This explanation is for learning only and is not investment advice."
+  },
+  "ifrsNote": {
+    "zh-TW": "這不是會計名詞，IFRS 沒有對應用語；它屬於證券信用交易的規定。",
+    "en": "Not an accounting term and IFRS has no equivalent; it belongs to securities margin trading rules."
+  },
+  "related": [
+    "tm_n70k1r9t"
+  ]
+}

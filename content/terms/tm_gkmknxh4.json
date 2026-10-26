@@ -1,25 +1,59 @@
 {
   "id": "tm_gkmknxh4",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
-  "status": "draft",
+  "status": "published",
   "category": "ratio",
-  "label": { "zh-TW": "財務槓桿度", "en": "Degree of financial leverage (DFL)" },
+  "label": {
+    "zh-TW": "財務槓桿度",
+    "en": "Degree of financial leverage (DFL)"
+  },
   "teacherLabel": "財務槓桿度",
   "currentTwLabel": "財務槓桿度",
   "ifrsEnglish": null,
-  "aliases": { "zh-TW": ["財務槓桿"], "en": ["Financial leverage"] },
+  "aliases": {
+    "zh-TW": [
+      "財務槓桿"
+    ],
+    "en": [
+      "Financial leverage"
+    ]
+  },
   "flags": [],
   "confidence": "high",
-  "pendingRefs": ["T20"],
-  "note": { "zh-TW": "以百分比變動解讀（T20）。", "en": "Read as a ratio of percentage changes (T20)." },
+  "pendingRefs": [
+    "T20"
+  ],
+  "note": {
+    "zh-TW": "網站一律以百分比變動解讀，財務槓桿的終點統一寫稅前淨利。",
+    "en": "The site always reads it as a ratio of percentage changes, with profit before tax as the end point."
+  },
   "definition": {
-    "zh-TW": "營業利益變動一些時，稅前淨利會放大變動多少倍。利息負擔越重，槓桿度越大，表示借錢經營放大了股東的獲利與風險。",
-    "en": "How many times more profit before tax moves when operating profit moves. A heavier interest burden means a higher degree: borrowing magnifies both the shareholders' gains and their risk."
+    "zh-TW": "營業利益每變動百分之一，稅前淨利會變動百分之幾。\n\n利息是固定支出，營業利益上下起伏時，扣掉固定利息後的稅前淨利起伏會更大；倍數越高，利息負擔對獲利的放大效果越強。",
+    "en": "By what percentage profit before tax changes for each one per cent change in operating profit.\n\nInterest is a fixed charge, so when operating profit swings, profit before tax after that fixed interest swings more; the higher the multiple, the stronger the amplifying effect of the interest burden."
+  },
+  "example": {
+    "zh-TW": "兩個數字都在損益表上。它和營運槓桿度相乘就是整體槓桿度。網站以百分比彈性解讀，不用金額解讀：利息固定時，營業利益增加多少元、稅前淨利就增加同樣的元數，被放大的是百分比。",
+    "en": "Both figures are on the income statement. Multiplied by the degree of operating leverage it gives the degree of total leverage. The site reads it as a percentage elasticity, not in money terms: with fixed interest, profit before tax rises by the same amount as operating profit, and what is magnified is the percentage."
+  },
+  "misconception": {
+    "zh-TW": "以為財務槓桿度高一定不好。它同時放大好消息與壞消息：景氣好時股東報酬被放大，景氣差時虧損也被放大，所以它是風險指標，不是好壞的判斷。",
+    "en": "Treating a high degree of financial leverage as simply bad. It magnifies both good and bad news: returns are amplified in good years and losses in bad ones, so it is a measure of risk rather than a verdict."
+  },
+  "formula": {
+    "zh-TW": "財務槓桿度的算法：分子放營業利益，分母放營業利益減掉利息費用後的餘額。沒有利息時倍數是 1；營業利益不為正或分母為負時標示「不具解釋意義」。分母是營業利益減利息費用，只有在沒有其他營業外收支與非常損益時才等於稅前淨利；課程版面把攤銷遞延資產列在營業外支出，所以兩者可能略有差距，計算仍照課程 Excel 用營業利益減利息費用。",
+    "en": "Degree of financial leverage = operating profit ÷ (operating profit － interest expense). With no interest the multiple is 1; when operating profit is not positive or the denominator is negative the ratio is marked as not meaningful. The denominator, operating profit less interest expense, equals profit before tax only when there are no other non-operating items or extraordinary items; the course layout shows amortisation of deferred assets under non-operating expenses, so the two can differ slightly, and the calculation still follows the course spreadsheet in using operating profit less interest expense."
   },
   "ifrsNote": {
-    "zh-TW": "IFRS 不定義財務比率；這個名稱是國際通用說法，計算口徑以指標登錄檔的版本為準。",
-    "en": "IFRS does not define financial ratios. The name follows international usage; the calculation basis is the version in the ratio registry."
+    "zh-TW": "IFRS 不定義財務比率，這個名稱是國際通用的說法；計算口徑以指標登錄檔的版本為準，題目會指定用哪一個版本計分。",
+    "en": "IFRS does not define financial ratios; the name follows international usage. The calculation basis is the version in the ratio registry, and each question states which version it scores against."
   },
-  "ratioRef": "dfl@excel"
+  "ratioRef": "dfl@excel",
+  "related": [
+    "tm_tspyazrx",
+    "tm_jx267rna",
+    "tm_z3vbt800",
+    "tm_k6t2e9wr",
+    "tm_h3c7v1xe"
+  ]
 }

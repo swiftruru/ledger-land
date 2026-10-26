@@ -1,0 +1,71 @@
+{
+  "id": "q_zmwm19v5",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_78q8hr",
+  "objectiveId": "obj_bt5xpr",
+  "difficulty": 1,
+  "tags": [
+    "balance_sheet",
+    "equation"
+  ],
+  "termRefs": [
+    "tm_cfghjxzq",
+    "tm_t7a3s6wb",
+    "tm_y37ymj9w"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "assets": 900000,
+    "liab": 350000,
+    "equity": 550000,
+    "sum": 1250000
+  },
+  "prompt": {
+    "zh-TW": "阿凱的「海風衝浪店」年底的資產負債表上，資產總計是 {{money:vars.assets}}，負債總額是 {{money:vars.liab}}。依會計恆等式，股東權益總額應該是多少，這張表才會平衡？",
+    "en": "On the year-end balance sheet of Kai’s shop Seabreeze Surf, total assets are {{money:vars.assets}} and total liabilities are {{money:vars.liab}}. Under the accounting equation, what must total equity be for the sheet to balance?"
+  },
+  "options": [
+    {
+      "id": "o_6vpw",
+      "text": {
+        "zh-TW": "{{money:vars.equity}}",
+        "en": "{{money:vars.equity}}"
+      },
+      "feedback": {
+        "zh-TW": "答對了。資產總計減掉負債總額，剩下的就是屬於股東的部分。",
+        "en": "Nice work. Total assets less total liabilities leaves the part that belongs to the shareholders."
+      }
+    },
+    {
+      "id": "o_02kk",
+      "text": {
+        "zh-TW": "{{money:vars.sum}}",
+        "en": "{{money:vars.sum}}"
+      },
+      "feedback": {
+        "zh-TW": "你把資產和負債加在一起了，這表示你知道兩者都在表上。不過恆等式是「資產＝負債＋股東權益」，股東權益是資產扣掉負債之後剩下的，不是兩者相加。",
+        "en": "You added assets and liabilities together, so you know both appear on the sheet. But the equation is assets = liabilities + equity: equity is what is left after deducting liabilities from assets, not the two added together."
+      }
+    },
+    {
+      "id": "o_fq1k",
+      "text": {
+        "zh-TW": "{{money:vars.liab}}",
+        "en": "{{money:vars.liab}}"
+      },
+      "feedback": {
+        "zh-TW": "你注意到右邊要和左邊對得起來，這點沒錯。不過右邊是負債加股東權益，不是負債自己；股東權益要補到讓右邊合計等於資產總計。",
+        "en": "You noticed that the right side has to match the left, which is right. But the right side is liabilities plus equity, not liabilities alone; equity has to fill the gap so that the right side adds up to total assets."
+      },
+      "misconceptionId": "mc_n4p5"
+    }
+  ],
+  "correctOptionId": "o_6vpw",
+  "explanation": {
+    "zh-TW": "{{term:tm_cfghjxzq}}永遠成立：資產總計等於負債總額加股東權益總額。所以股東權益總額是資產總計減負債總額，也就是{{option:o_6vpw}}。{{option:o_02kk}}把兩邊相加，{{option:o_fq1k}}則漏掉了股東權益這一塊。",
+    "en": "The {{term:tm_cfghjxzq}} always holds: total assets equal total liabilities plus total equity. So total equity is total assets less total liabilities, which is {{option:o_6vpw}}. {{option:o_02kk}} adds the two sides together, and {{option:o_fq1k}} leaves out the equity part altogether."
+  }
+}

@@ -1,6 +1,6 @@
 {
   "id": "tm_e61ht6yh",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "statement",
@@ -32,7 +32,7 @@
     "en": "The template label uses a wrong word for total; the site shows the corrected wording and keeps the original as a searchable alias."
   },
   "definition": {
-    "zh-TW": "本業在這段期間淨收到（或淨付出）的現金。它是現金流量三項指標的分子，長期為正表示公司本業能自己造血。",
-    "en": "The net cash the main business brought in (or paid out) during the period. It is the numerator of the three cash flow ratios; a persistently positive figure means the business funds itself."
+    "zh-TW": "本業在這段期間淨收到（或淨付出）的現金。它是現金流量比率與現金流量允當比率的分子，現金再投資比率則用它減去發放的股利當分子；長期為正表示公司本業能自己造血。",
+    "en": "The net cash the main business brought in (or paid out) during the period. It is the numerator of the cash flow ratio and the cash flow adequacy ratio, and the cash reinvestment ratio uses it less dividends paid; a persistently positive figure means the business funds itself."
   }
 }

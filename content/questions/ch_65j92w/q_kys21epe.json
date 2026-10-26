@@ -1,0 +1,41 @@
+{
+  "id": "q_kys21epe",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_65j92w",
+  "objectiveId": "obj_2a6vbq",
+  "difficulty": 2,
+  "tags": [
+    "department_ratio",
+    "revenue_per_employee"
+  ],
+  "termRefs": [
+    "tm_g50575m9",
+    "tm_v3n8q2ye"
+  ],
+  "scored": true,
+  "type": "ratio_numeric",
+  "vars": {
+    "revenue": 3600000,
+    "employees": 8
+  },
+  "compute": {
+    "ratioRef": "revenue_per_employee@slides02",
+    "measures": {
+      "is_revenue": "vars.revenue",
+      "input.employees": "vars.employees"
+    }
+  },
+  "answerUnit": "currency",
+  "decimals": 0,
+  "tolerance": 1,
+  "prompt": {
+    "zh-TW": "晨霧茶行今年的營收是 {{money:vars.revenue}}，全店含老闆娘共有 {{number:vars.employees}} 位員工。人均營收是多少？以元作答，取到整數。",
+    "en": "Morning Mist Tea had revenue of {{money:vars.revenue}} this year and {{number:vars.employees}} staff including the owner. What is its revenue per employee? Answer in NT$, to the nearest whole number."
+  },
+  "explanation": {
+    "zh-TW": "人均營收 ＝ 營收 ÷ 員工人數 ＝ {{money:vars.revenue}} ÷ {{number:vars.employees}} ＝ {{money:expected.answer.value}}。員工人數不在三張報表上，是另外輸入的數字；沒有人數時這個指標顯示 N/A。它衡量的是人力的產出，不是獲利：要知道這些營收留下多少，還要看純益率。",
+    "en": "Revenue per employee = revenue ÷ headcount = {{money:vars.revenue}} ÷ {{number:vars.employees}} = {{money:expected.answer.value}}. The headcount is not on the three statements and is entered separately; without it the indicator shows N/A. It measures output per person, not profit: to know how much of that revenue is kept, look at the net profit margin."
+  }
+}

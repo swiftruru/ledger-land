@@ -1,0 +1,22 @@
+{
+  "id": "lv_6ewffczs",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_ft415v",
+  "order": 2,
+  "title": {
+    "zh-TW": "週轉率在說什麼",
+    "en": "What turnover is telling you"
+  },
+  "objectiveIds": [
+    "obj_fbc0kw"
+  ],
+  "questionIds": [
+    "q_sejs0djz",
+    "q_gjzhjmbz",
+    "q_xzqdydyz",
+    "q_n5qnsesy",
+    "q_fxnedar6"
+  ]
+}

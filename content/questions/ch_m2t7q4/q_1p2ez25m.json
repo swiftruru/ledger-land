@@ -1,0 +1,82 @@
+{
+  "id": "q_1p2ez25m",
+  "rev": 2,
+  "revKind": "text",
+  "status": "published",
+  "chapterId": "ch_m2t7q4",
+  "objectiveId": "obj_1kbk22",
+  "difficulty": 3,
+  "tags": [
+    "linkage",
+    "profit_vs_cash"
+  ],
+  "termRefs": [
+    "tm_n4e8t2jy",
+    "tm_4c6v99nn",
+    "tm_c4sh8k2p"
+  ],
+  "scored": true,
+  "type": "single_choice",
+  "vars": {
+    "profit": 90000,
+    "cash": 35000
+  },
+  "prompt": {
+    "zh-TW": "風行腳踏車行今年的本期淨利是 {{money:vars.profit}}，年底資產負債表上的現金卻只有 {{money:vars.cash}}。哪一個說法對？",
+    "en": "Breeze Bicycles made a profit of {{money:vars.profit}} this year, yet cash on the year-end balance sheet is only {{money:vars.cash}}. Which statement is right?"
+  },
+  "options": [
+    {
+      "id": "o_rvpz",
+      "text": {
+        "zh-TW": "本期淨利流進未分配盈餘，現金是另一個數字",
+        "en": "Profit for the period flows into unappropriated retained earnings; cash is a different figure"
+      },
+      "feedback": {
+        "zh-TW": "答對了。利益和現金走的是兩條不同的路線。",
+        "en": "Nice work. Profit and cash travel by two different routes."
+      },
+      "short": {
+        "zh-TW": "利益進未分配盈餘，現金是另一回事",
+        "en": "Profit goes to retained earnings; cash is separate"
+      }
+    },
+    {
+      "id": "o_bfq4",
+      "text": {
+        "zh-TW": "現金少了這麼多，一定是有人記錯帳",
+        "en": "Cash is so much lower that someone must have recorded it wrongly"
+      },
+      "feedback": {
+        "zh-TW": "你注意到兩個數字差很多，這個警覺很好。不過利益可能變成了存貨、設備或還沒收到的應收帳款，現金少於利益不代表記錯；要查原因，該看現金流量表。",
+        "en": "Noticing the gap between the two figures is a good instinct. But profit may have become inventory, equipment or receivables not yet collected; cash being lower than profit does not mean a mistake. To find out why, look at the statement of cash flows."
+      },
+      "short": {
+        "zh-TW": "一定是記錯帳",
+        "en": "Someone must have made a mistake"
+      },
+      "misconceptionId": "mc_ycga"
+    },
+    {
+      "id": "o_9q0f",
+      "text": {
+        "zh-TW": "本期淨利結算後就不在資產負債表上，所以和現金對不起來",
+        "en": "Profit for the period is gone from the balance sheet after closing, so it cannot be matched with cash"
+      },
+      "feedback": {
+        "zh-TW": "損益表確實每年歸零，這點沒錯。不過本期淨利歸零前會流進股東權益裡的未分配盈餘，在資產負債表上找得到；找不到的只是「同樣金額的現金」。",
+        "en": "The income statement does reset every year, that much is right. But before it resets, profit for the period flows into unappropriated retained earnings within equity, where it can be found on the balance sheet; what cannot be found is the same amount in cash."
+      },
+      "short": {
+        "zh-TW": "結算後就不在表上了",
+        "en": "It leaves the books after closing"
+      },
+      "misconceptionId": "mc_5xbd"
+    }
+  ],
+  "correctOptionId": "o_rvpz",
+  "explanation": {
+    "zh-TW": "{{term:tm_n4e8t2jy}}連到資產負債表右邊的{{term:tm_4c6v99nn}}；左邊的{{term:tm_c4sh8k2p}}則由現金流量表的期末現金連過來。兩條連線各自獨立，所以{{option:o_rvpz}}才對。{{option:o_bfq4}}把兩個數字畫上等號，{{option:o_9q0f}}忘了利益會留在未分配盈餘。",
+    "en": "{{term:tm_n4e8t2jy}} links to {{term:tm_4c6v99nn}} on the right of the balance sheet; {{term:tm_c4sh8k2p}} on the left is linked from closing cash on the statement of cash flows. The two links are independent, so the answer is {{option:o_rvpz}}. {{option:o_bfq4}} equates the two figures, and {{option:o_9q0f}} forgets that profit stays in unappropriated retained earnings."
+  }
+}
