@@ -26,7 +26,14 @@ jobs:
   verify:
     name: lint、typecheck、test、content、i18n、hygiene、licenses
     runs-on: ubuntu-latest
-    # 執行器卡住時不等預設的 6 小時（2026-10-24 apt 那一步曾卡 40 分鐘）；數字約是正常耗時的三倍
+    # 在 Playwright 的官方容器裡跑（2026-10-27）：WebKit 與三個瀏覽器的系統套件都內建，不再跑 apt（apt 卡住一天四次撞到工作的時間上限，
+    # 紀錄只留下 The operation was canceled）；本機用同一個映像就能重現 CI 的 Linux 瀏覽器行為。映像以 digest 釘版，tag 的版本要和
+    # @playwright/test 相同（check:actions 比對）；瀏覽器在映像的 /ms-playwright，這兩個工作用它取代 repo 內的快取路徑
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f # v1.64.0
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+    # 執行器卡住時不等預設的 6 小時；數字約是正常耗時的三倍
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -67,16 +74,7 @@ jobs:
       - name: i18n：抽取後 catalog 不得有未 commit 的變動；complete 語系不得缺字
         run: pnpm i18n:check
       - run: pnpm licenses:check
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-      # 系統相依套件（apt）和瀏覽器檔案分開裝：apt 偶爾卡住（2026-10-27 一天三次卡到工作的 20 分鐘上限才被切掉），每次最多 6 分鐘、試兩次；
-      # 瀏覽器檔案在上面的快取裡，命中時幾秒就好
-      - name: 安裝 WebKit 的系統相依套件（apt 卡住就重試）
-        run: for i in 1 2; do timeout 6m pnpm exec playwright install-deps webkit && exit 0; echo "apt 第 $i 次沒有在 6 分鐘內完成，重試"; done; exit 1
-      - name: 安裝 Playwright 的 WebKit（web-ui 的元件測試在 Browser Mode）
-        run: pnpm exec playwright install webkit
+      # web-ui 的元件測試在 Browser Mode（WebKit）：瀏覽器在容器裡，不用另外安裝
       - run: pnpm test
       - name: 覆蓋率（packages/core/src，門檻在 vitest.config.ts）
         run: pnpm test:coverage
@@ -114,7 +112,14 @@ jobs:
   e2e:
     name: e2e、axe、reduced motion、lighthouse
     runs-on: ubuntu-latest
-    # 執行器卡住時不等預設的 6 小時（2026-10-24 apt 那一步曾卡 40 分鐘）；數字約是正常耗時的三倍
+    # 在 Playwright 的官方容器裡跑（2026-10-27）：WebKit 與三個瀏覽器的系統套件都內建，不再跑 apt（apt 卡住一天四次撞到工作的時間上限，
+    # 紀錄只留下 The operation was canceled）；本機用同一個映像就能重現 CI 的 Linux 瀏覽器行為。映像以 digest 釘版，tag 的版本要和
+    # @playwright/test 相同（check:actions 比對）；瀏覽器在映像的 /ms-playwright，這兩個工作用它取代 repo 內的快取路徑
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f # v1.64.0
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+    # 執行器卡住時不等預設的 6 小時；數字約是正常耗時的三倍
     timeout-minutes: 40
     needs: build
     steps:
@@ -137,17 +142,8 @@ jobs:
         with:
           name: web-dist
           path: apps/web/dist
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-      # PR 只跑 Chromium（desktop-chromium 與 reduced-motion）與 3 次 Lighthouse，push 到 main 才跑三個瀏覽器與 5 次（2026-10-23，縮短 PR 的等待時間）
-      # PR 只裝 Chromium 且不跑 --with-deps：執行器映像已含 Chrome 的系統相依套件，apt 那一步偶爾要十分鐘（2026-10-23 量到）；main 裝三個瀏覽器時才需要
-      - name: 三個瀏覽器的系統相依套件（只在 main；apt 卡住就重試，每次最多 6 分鐘）
-        if: github.event_name != 'pull_request'
-        run: for i in 1 2; do timeout 6m pnpm exec playwright install-deps chromium webkit firefox && exit 0; echo "apt 第 $i 次沒有在 6 分鐘內完成，重試"; done; exit 1
-      - name: 安裝 Playwright 瀏覽器（PR 只裝 Chromium）
-        run: pnpm exec playwright install ${{ github.event_name == 'pull_request' && 'chromium' || 'chromium webkit firefox' }}
+      # PR 只跑 Chromium（desktop-chromium 與 reduced-motion）與 3 次 Lighthouse，push 到 main 才跑三個瀏覽器與 5 次（2026-10-23，縮短 PR 的等待時間）；
+      # 三個瀏覽器都在容器裡，不用安裝
       - name: E2E（對 apps/web 的 wrangler dev，重現 Workers 的 SPA fallback 與 _headers；PR 只跑 Chromium 專案；INP 另外跑）
         run: pnpm e2e --grep-invert "INP：" ${{ github.event_name == 'pull_request' && '--project desktop-chromium --project reduced-motion' || '' }}
       - name: INP（單獨一個 worker，不和其他測試搶 CPU；門檻依執行器基準校正，見 inp.spec.ts）
