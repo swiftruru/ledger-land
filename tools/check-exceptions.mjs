@@ -1,4 +1,4 @@
-// 例外清單檢查（09 第 2.2 節）：pnpm-workspace.yaml 的 minimumReleaseAgeExclude、trustPolicyExclude 與 overrides 都要在 tools/ 的紀錄檔有對應條目；
+// 例外清單檢查（09 第 2.2 節）：pnpm-workspace.yaml 的 minimumReleaseAgeExclude、trustPolicyExclude、overrides 與 auditConfig.ignoreGhsas 都要在 tools/ 的紀錄檔有對應條目；
 // 紀錄檔多出來的條目、過期（expires 已過）的條目都讓檢查失敗，提醒移除。也檢查 lockfile 的 typescript 版本（09 第 2.3 節）。
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -63,6 +63,13 @@ compare('overrides', Object.keys(overrides), trust.overrides, 'entry');
 for (const r of trust.overrides)
   if (overrides[r.entry] && overrides[r.entry] !== r.pinnedTo) {
     fail(`check:exceptions：overrides 的 ${r.entry} 是 ${overrides[r.entry]}，紀錄寫 ${r.pinnedTo}`);
+    ok = false;
+  }
+// pnpm audit 忽略的公告：每一條都要有紀錄與到期日（忽略不是修好，到期要重新看）
+compare('auditConfig.ignoreGhsas', listUnder('auditConfig'), trust.auditIgnores ?? [], 'entry');
+for (const r of trust.auditIgnores ?? [])
+  if (!r.expires) {
+    fail(`check:exceptions：auditConfig.ignoreGhsas 的 ${r.entry} 必須有 expires`);
     ok = false;
   }
 

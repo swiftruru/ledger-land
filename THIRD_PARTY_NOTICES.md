@@ -93,7 +93,7 @@
 | workbox-core | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | workbox-window | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | yallist | 3.1.1 | ISC | https://github.com/isaacs/yallist#readme |
-| zod | 4.6.5 | MIT | https://zod.dev |
+| zod | 4.6.6 | MIT | https://zod.dev |
 | zustand | 5.0.15 | MIT | https://github.com/pmndrs/zustand |
 
 ## 不經套件管理的項目

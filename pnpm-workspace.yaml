@@ -6,7 +6,9 @@ packages:
 minimumReleaseAge: 20160
 trustPolicy: no-downgrade
 # 每一條例外都要在 tools/release-age-exceptions.json 留紀錄（含公告編號與到期日），CI 比對並在到期時提醒移除
-minimumReleaseAgeExclude: []
+minimumReleaseAgeExclude:
+  # undici 7.30.1（2026-10-15 發布，2026-10-29 滿兩週）：GHSA-xjj6-f33q-929c 的修正版；紀錄在 tools/release-age-exceptions.json
+  - 'undici@7.30.1'
 # 信任政策例外與版本覆寫的紀錄在 tools/trust-policy-exceptions.json（M0b 安裝時依實際觸發情況填寫）
 trustPolicyExclude:
   # semver@6.3.1：2023-07 在 6.x 版線補發的安全修正版，沒有 provenance；pnpm 只依發布日期比較而判為信任降級。
@@ -27,3 +29,15 @@ allowBuilds:
 # Workbox 更新這個相依時要重新檢查並移除。
 overrides:
   '@trickfilm400/rollup-plugin-off-main-thread': 2.5.0
+  # 2026-10-26 每週檢查（issue 20）的 pnpm audit 三個 high，都在開發工具的相依鏈，不進網站：
+  # sharp 0.35.4（wrangler → miniflare）GHSA-wq5f-xc86-pv6w；undici 7.29.1（同一條鏈）GHSA-xjj6-f33q-929c；
+  # 第三個 zod 3.25.76（lighthouse → puppeteer-core 25.12 → chromium-bidi 17）GHSA-mrhx-c7xc-m3w5：zod 3 沒有修正版，
+  # 改用 zod 4 的 chromium-bidi 157 又沒有 provenance（trustPolicy 判為降級），所以不升，改在 package.json 的 pnpm.auditConfig 忽略這一則，
+  # 紀錄一樣在 tools/trust-policy-exceptions.json
+  sharp: 0.35.5
+  'undici@7': 7.30.1
+# pnpm audit 忽略的公告（每一條都要在 tools/trust-policy-exceptions.json 的 auditIgnores 留紀錄，含到期日；CI 比對）：
+# GHSA-mrhx-c7xc-m3w5：lighthouse → puppeteer-core → chromium-bidi 17 帶的 zod 3，沒有修正版，見 overrides 的說明
+auditConfig:
+  ignoreGhsas:
+    - 'GHSA-mrhx-c7xc-m3w5'

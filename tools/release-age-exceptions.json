@@ -1,4 +1,15 @@
 {
   "note": "minimumReleaseAgeExclude 的紀錄（09 第 2.2 節）。每一條都要有安全公告編號、理由、加入日與到期日（該版本自然滿兩週的日期）；CI 的 check:exceptions 比對本檔與 pnpm-workspace.yaml，缺紀錄或已過期都讓 CI 失敗。",
-  "exceptions": []
+  "exceptions": [
+    {
+      "entry": "undici@7.30.1",
+      "setting": "minimumReleaseAgeExclude",
+      "advisory": "GHSA-xjj6-f33q-929c",
+      "reason": "undici 7.18.0 到 7.30.0 在 content-encoding 過多時未處理的錯誤可造成阻斷服務（high）；7.30.1 是 7.x 的修正版，2026-10-15 發布。由 wrangler 4.148.0 → miniflare 引入，只在本機與 CI 執行，不進網站。pnpm-workspace.yaml 用 overrides 釘到 7.30.1，發布未滿兩週所以同時加例外。",
+      "approvedBy": "使用者（2026-10-26，同意處理每週檢查 issue 20 的 audit）",
+      "added": "2026-10-26",
+      "expires": "2026-11-09",
+      "review": "2026-10-29 這一版自然滿兩週，之後移除這條例外（overrides 留著，直到 miniflare 自己升到 7.30.1 以上再移除 overrides）。"
+    }
+  ]
 }
