@@ -80,7 +80,9 @@ try {
         { cwd: ROOT, encoding: 'utf8', env: { ...process.env, ...(chrome ? { CHROME_PATH: chrome } : {}) } },
       );
       if (lh.status !== 0 || !existsSync(file)) {
-        fail(`perf：${u.name} 第 ${i} 次 Lighthouse 失敗：${(lh.stderr || lh.stdout).slice(-600)}`);
+        const out = (lh.stderr || lh.stdout || '').trim();
+        // 錯誤訊息在開頭（stack 在後面），開頭與結尾都留
+        fail(`perf：${u.name} 第 ${i} 次 Lighthouse 失敗：${out.length > 1200 ? `${out.slice(0, 600)}\n…\n${out.slice(-600)}` : out}`);
         continue;
       }
       const r = JSON.parse(readFileSync(file, 'utf8'));
