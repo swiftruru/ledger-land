@@ -16,7 +16,7 @@
 - 已決定（2026-10-20）：網站與未來的 App 放在同一個 repo（monorepo）。根目錄保持精簡，程式依「app」（`apps/web`、M7 的 `apps/admin`、預留的 `apps/mobile`）與「共用套件」（`packages/tokens`、`i18n`、`content-schema`、`core`、`quiz`、`progress`、`web-ui`）分層；npm 套件名稱一律 `@ledgerland/<資料夾名>`；依賴只能往下、不能循環，`packages/` 永遠不引用 `apps/`；除了 `web-ui`，其他套件都是純 TypeScript，由 tsconfig、lint 與依賴方向檢查三道機制把關（第 8 節，已決定六）。
 - 已決定（2026-10-20）：學習端的 wrangler 設定從根目錄移到 `apps/web/wrangler.jsonc`，每個要部署的 app 自己帶部署設定；Worker 名稱維持 `ledgerland`（第 7.3 節）。
 - 已決定（2026-10-20）：套件、工具與快取都裝在專案自己的資料夾裡（`.pnpm-store/`、`.cache/`），不做全域安裝，整個環境可以刪掉重建；重建與部署需要的東西都在 repo 裡，部署維持 GitHub Actions 執行 wrangler，不使用 Cloudflare 儀表板的 Git 整合（Workers Builds）（第 7.5 節，已決定七）。
-- repo 公開（已決定 D3）。repo 初始化依第 9 節的固定步驟在 M0b 執行；`.gitignore` 只用附加的方式補充，不整份取代。附加的規則包含 `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 AI 設定的整段排除規則；這些檔案都留在原位、只存在本機，不搬移；不使用 `docs/private/`。
+- repo 公開（已決定 D3）。repo 初始化依第 9 節的固定步驟在 M0b 執行；`.gitignore` 只用附加的方式補充，不整份取代。附加的規則包含 `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 本機工具設定的整段排除規則；這些檔案都留在原位、只存在本機，不搬移；不使用 `docs/private/`。
 - 主機用 Cloudflare Workers Static Assets，正式網域 `ledgerland.swift.moe`，base path 為 `/`（已決定 D4）。用 `_headers` 設定 CSP、`frame-ancestors` 與快取；深層連結以 SPA fallback 回傳殼層 `index.html`（狀態碼 200）；PR 有預覽網址；部署用 wrangler（第 7 節）。GitHub Pages 不使用。
 - 授權（已決定 D6）：根目錄 `LICENSE` 為 MIT（程式碼）；原創教學內容用 CC BY-SA 4.0，全文放在 `LICENSES/`；老師的故事情境與金額不在 CC 授權範圍內，標示「經陳彥宏老師授權使用」；名稱與標誌另外保留，寫在 `NOTICE`（第 8 節，細節見 [11 風險與授權](11-risks-license.md) 第 4 節）。
 - 流量統計（已決定 D7）：M0b 一併加入不用 cookie、不收集個資的統計；服務在 M0b 開工前查證後提出（候選：Cloudflare 的網頁分析）。同步修改 CSP 的 `script-src` 與 `connect-src`、隱私說明頁與 debug 頁，統計腳本不得影響離線使用與效能預算（第 11 節）。
@@ -63,7 +63,7 @@
 - 已決定（D3，2026-10-20）：repo 公開。`docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md` 留在原位，以 `.gitignore` 排除、只存在本機（由我備份），不搬移任何檔案；不使用 `docs/private/`。
 - 目前事實（2026-10-20 查詢）：專案資料夾還不是 git repo；GitHub 上的 `swiftruru/ledger-land` 是公開的空 repo。第一次 push 就等於公開，而且 git 歷史無法撤回。
 - 影響：
-  - 第 9 節第 3 步附加的 `.gitignore` 規則加入這兩個檔案，並保留 AI 設定的整段排除規則；第 4、5、7 步與 CI 的 hygiene 檢查都把這兩個檔案列入比對；第 9 步的 push 就是公開。
+  - 第 9 節第 3 步附加的 `.gitignore` 規則加入這兩個檔案，並保留 本機工具設定的整段排除規則；第 4、5、7 步與 CI 的 hygiene 檢查都把這兩個檔案列入比對；第 9 步的 push 就是公開。
   - 測試仍用自編數字。老師的故事情境與金額只出現在內容資料中（D2 已同意，屬於公開內容），repo 內只對故事資料做性質測試；與老師 Excel 的逐格比對只在本機執行（`*.local.test.ts`，第 8 節）。
   - repo 公開與網站能不能被開啟是兩件事：部署出去的網址（包括 M0a 的暫時網址與 PR 預覽）本來就任何人都能開啟。另外，公開 repo 中的內容草稿一建立就公開（見 [08 題庫與後台](08-content-admin.md)）。
 - 未採用的選項：(a) repo 先改私有（M8 公開前要稽核整個 git 歷史，私有 repo 的 Actions 也有免費分鐘數上限；改為直接排除兩份教材衍生文件即可）；(b) 原案的 `docs/private/` 資料夾（要搬移檔案，而且放錯位置就會永久留在公開歷史；改為在原位以 `.gitignore` 排除）。
@@ -816,7 +816,7 @@ tools       -> content-schema、core、quiz、i18n、tokens
 **目前事實**（2026-10-20）：
 
 - 專案資料夾還不是 git repo。
-- 根目錄的 `.gitignore` 原本只有 `references/` 一行；M0a 開工時（2026-10-20）已依第 3 步附加建置輸出、01 與 13、`/prototypes/`（M0a 試作程式與本機工具快取）與 AI 工具設定的排除規則，第一行不變。`.pnpm-store/` 與 `.cache/` 還沒有附加，M0b 補上（第 3 步）。
+- 根目錄的 `.gitignore` 原本只有 `references/` 一行；M0a 開工時（2026-10-20）已依第 3 步附加建置輸出、01 與 13、`/prototypes/`（M0a 試作程式與本機工具快取）與 本機工具設定的排除規則，第一行不變。`.pnpm-store/` 與 `.cache/` 還沒有附加，M0b 補上（第 3 步）。
 - 根目錄與 `references/` 底下都有 `.DS_Store`；M0a 附加的規則已經忽略它們。
 - GitHub 上的 `swiftruru/ledger-land` 是公開的空 repo（沒有任何 ref），沒有東西要合併；第一次 push 就等於公開。
 - `docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 已經存在於本機，必須在任何 `git add` 之前就被 `.gitignore` 排除。
@@ -833,9 +833,9 @@ tools       -> content-schema、core、quiz、i18n、tokens
    - M0a 試作程式與本機工具快取：`/prototypes/`。
    - 本機工具設定的整段排除規則，整段照抄，不刪減。M0a 開工時已附加過這三段與 `/prototypes/`（2026-10-20），這裡只確認這些段落完整存在，不重複附加。M0a 附加的建置與本機輸出規則還沒有 `.pnpm-store/` 與 `.cache/`，M0b 另外以附加的方式補上這兩條（寫在檔案末尾，不改動既有的行）。
 
-   附加後確認第一行仍是 `references/`。教材衍生文件與 AI 設定一律留在原位，只靠這些規則排除，不搬移任何檔案，也不建立 `docs/private/`。這一步必須在任何 `git add` 之前完成。
+   附加後確認第一行仍是 `references/`。教材衍生文件與 本機工具設定一律留在原位，只靠這些規則排除，不搬移任何檔案，也不建立 `docs/private/`。這一步必須在任何 `git add` 之前完成。
 4. 對 `references/` 底下的每一個檔案、根目錄與 `references/` 內的 `.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，以及每一個已存在的本機工具設定路徑（`.gitignore` 本機工具段落列出的），執行 `git check-ignore -v`，全部都要命中規則才繼續。
-5. 執行 `git status --porcelain`，輸出不能出現 `references/`、`.DS_Store`、`01-materials.md`、`13-material-questions.md`，也不能出現任何 AI 設定路徑。
+5. 執行 `git status --porcelain`，輸出不能出現 `references/`、`.DS_Store`、`01-materials.md`、`13-material-questions.md`，也不能出現任何 本機工具設定路徑。
 6. 第一次 commit 只明確加入指定的檔案，例如 `git add .gitignore README.md LICENSE LICENSES/CC-BY-SA-4.0.txt NOTICE`；`docs/` 底下的文件逐一列出檔名加入（01、13 已被排除，也不要列出）。不使用 `git add -A` 或 `git add .`。README 的致謝段落要等老師看過文字與位置後才加入（第 8 節）。
 7. push 前執行 `git ls-files`，用 grep 比對 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`01-materials.md`、`13-material-questions.md` 與本機工具設定路徑（`.gitignore` 本機工具段落列出的），結果必須是空的；再用 `git log --all --name-only --format=` 對所有分支的歷史紀錄做同樣的比對，結果也必須是空的。
 8. 執行 `git ls-remote` 確認遠端狀態。若遠端已經有 commit，先 fetch 再 rebase；若遠端也有 `.gitignore`，合併方式是「保留本機每一行，再附加遠端新增的行」，禁止 `checkout --theirs` 或整份取代。絕不 force push。

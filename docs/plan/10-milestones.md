@@ -191,7 +191,7 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 
 **測試流程**：先在 iOS Simulator 用 localhost 跑一輪（localhost 屬於 secure context，可以測 SW）；再部署到 Cloudflare Workers 的暫時預覽網址（HTTPS），用 iPhone 實機測試（區網 IP 加 http 不是 secure context，不能測 SW）。預覽網址是暫時的 origin，不是正式網域 `ledgerland.swift.moe`，也不讓學生使用。實機至少一台 iOS 26 與一台 iOS 27 的 iPhone、一台 iOS 17 裝置（D8；沒有實機時用 Simulator 補，並在報告中註明），加一支中低階 Android；每個結果都記錄機型與系統版本，並顯示在原型的 debug 頁。
 
-**試作程式放哪裡**（已決定，2026-10-20）：程式相關的內容一律只寫在 `ledger-land/` 資料夾內，不寫到其他地方。試作程式放在 `prototypes/m0a/`，M0a 開工的第一步已把 `/prototypes/` 連同 09 第 9 節的建置輸出、01 與 13、AI 工具設定的排除規則附加到 `.gitignore`（第一行 `references/` 不變），所以試作程式不會進 ledger-land 的 git 歷史。工具快取（npm、pnpm store、測試瀏覽器）也放在 `prototypes/` 底下。本機 AI 設定與 V17、V18 依我的決定延到 M0b，在第一次 commit 之前完成。
+**試作程式放哪裡**（已決定，2026-10-20）：程式相關的內容一律只寫在 `ledger-land/` 資料夾內，不寫到其他地方。試作程式放在 `prototypes/m0a/`，M0a 開工的第一步已把 `/prototypes/` 連同 09 第 9 節的建置輸出、01 與 13、本機工具設定的排除規則附加到 `.gitignore`（第一行 `references/` 不變），所以試作程式不會進 ledger-land 的 git 歷史。工具快取（npm、pnpm store、測試瀏覽器）也放在 `prototypes/` 底下。本機工具設定與 V17、V18 依我的決定延到 M0b，在第一次 commit 之前完成。
 
 **不做什麼**：repo 初始化、CI、正式的 design tokens、會計核心、任何正式內容、正式網域、流量統計、讓學生使用。
 
@@ -210,7 +210,7 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 - [ ] V01 到 V07、V09、V13、V14、V15 各有紀錄（V08 暫不需要，報告中註明原因），每一項寫明裝置、系統版本與結果。
 - [ ] 玻璃 Tab bar 在 iPhone 實機（含 iOS 17 裝置，或註明以 Simulator 代替）上可讀，有減少動態效果的截圖，也有最糟背景下的對比量測。
 - [ ] 量測數字與預算提案已寫進報告。
-- [ ] AI 工具設定的排除規則已附加到 `.gitignore`，既有的 `references/` 那一行沒有變動；V17、V18 各有紀錄。排除規則已在 2026-10-20 附加；本機 AI 設定依我的決定延到 M0b，報告中註明延後，V17、V18 改到 M0b 第一次 commit 之前完成。
+- [ ] 本機工具設定的排除規則已附加到 `.gitignore`，既有的 `references/` 那一行沒有變動；V17、V18 各有紀錄。排除規則已在 2026-10-20 附加；本機工具設定依我的決定延到 M0b，報告中註明延後，V17、V18 改到 M0b 第一次 commit 之前完成。
 - [ ] 每個失敗的檢查都列出備案、取捨與對後續里程碑的影響。
 - [ ] 停下回報，我的 go / no-go 決定已記錄。
 
@@ -236,7 +236,7 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 
 **範圍**：
 
-1. repo 初始化：依 [09 技術選擇](09-tech-stack.md) 第 9 節的固定步驟；之後建立骨架也依同一節的規則，不用會清空或覆寫既有檔案的方式。若本機 AI 設定從 M0a 延到這裡（第 6 節範圍第 13 項），先附加排除規則、建立 AI 設定並記錄 V17、V18，全部完成後才做第一次 commit。依 D3，repo 公開：`.gitignore` 以附加的方式加入 `docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md`，兩份文件留在原位、只存在本機（由我備份），不搬移、不使用 `docs/private/`；這一步要在任何 `git add` 之前完成。
+1. repo 初始化：依 [09 技術選擇](09-tech-stack.md) 第 9 節的固定步驟；之後建立骨架也依同一節的規則，不用會清空或覆寫既有檔案的方式。若本機工具設定從 M0a 延到這裡（第 6 節範圍第 13 項），先附加排除規則、建立 本機工具設定並記錄 V17、V18，全部完成後才做第一次 commit。依 D3，repo 公開：`.gitignore` 以附加的方式加入 `docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md`，兩份文件留在原位、只存在本機（由我備份），不搬移、不使用 `docs/private/`；這一步要在任何 `git add` 之前完成。
 2. 工具鏈：pnpm 11.28.5 workspace、Node 24、TypeScript 6.0.3、Oxlint、Prettier、Vitest、Playwright、axe、lighthouse 13 CLI；`minimumReleaseAge` 與例外清單檢查；GitHub Actions 以 SHA 釘版。
 3. CI 與部署：09 第 10 節的全部工作；以 `wrangler deploy` 整批部署到 Cloudflare Workers Static Assets（D4），base path 為 `/`，CI 只需要以根路徑建置；PR 預覽可用。正式網域 `ledgerland.swift.moe` 可以在 M0b 接上，最晚在 M2 試用之前；在那之前的部署只供內部測試，資料一律視為測試資料。
    - 已決定（2026-10-20）：部署設定放在 `apps/web/wrangler.jsonc`（原本規劃放在根目錄的 `wrangler.json` 移到這裡，每個要部署的 app 自己帶部署設定）；`assets.directory` 改為 `"./dist"`（相對於設定檔），其餘設定（`not_found_handling`、`html_handling`、自訂網域 `ledgerland.swift.moe`）不變，Worker 名稱維持 `ledgerland`。
@@ -270,9 +270,9 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 **完成標準**：
 
 - [ ] 初始化步驟第 1、4、5、7、8 步的指令輸出已附在回報中；`git ls-files` 沒有 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也沒有任何本機工具設定路徑（`.gitignore` 本機工具段落列出的）；所有分支的歷史紀錄掃描結果也是空的。
-- [ ] 本機 AI 設定、`docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md` 仍在原位，`git check-ignore -v` 對每一個路徑都回報命中的規則。
+- [ ] 本機工具設定、`docs/plan/01-materials.md` 與 `docs/plan/13-material-questions.md` 仍在原位，`git check-ignore -v` 對每一個路徑都回報命中的規則。
 - [ ] `.gitignore` 第一行仍是 `references/`，其餘規則都是附加的。
-- [ ] 若本機 AI 設定從 M0a 延到 M0b：排除規則、AI 設定的建立與 V17、V18 的紀錄，都在第一次 commit 之前完成，回報中附上先後順序的證據。
+- [ ] 若本機工具設定從 M0a 延到 M0b：排除規則、本機設定的建立與 V17、V18 的紀錄，都在第一次 commit 之前完成，回報中附上先後順序的證據。
 - [ ] 每次加入骨架後的 `git status --porcelain` 輸出已附上，沒有任何既有檔案被修改或刪除。
 - [ ] `packageManager`、`.node-version`、TypeScript 6.0.3 的鎖定都生效；`pnpm-workspace.yaml` 有 `minimumReleaseAge: 20160` 與 `trustPolicy: no-downgrade`。
 - [ ] 所有 workflow 的 action 都以 SHA 釘版，CI 的檢查能抓到未釘版的寫法。
@@ -306,7 +306,7 @@ M3 完成後另有一個 App 技術決策點（不是里程碑，不改變上表
 
 **主要風險**：
 
-- 初始化時誤加入 `references/`、`.DS_Store`、AI 設定或只存在本機的 01、13：靠固定步驟與指令輸出把關，因為這時 pre-commit hook 與 CI 都還不存在；repo 公開，一旦 push 就無法撤回。01 與 13 不在版本控制內，遺失時沒有 git 可以救，由我定期備份。
+- 初始化時誤加入 `references/`、`.DS_Store`、本機工具設定或只存在本機的 01、13：靠固定步驟與指令輸出把關，因為這時 pre-commit hook 與 CI 都還不存在；repo 公開，一旦 push 就無法撤回。01 與 13 不在版本控制內，遺失時沒有 git 可以救，由我定期備份。
 - 統計腳本和 CSP、離線殼層或效能預算衝突：PR 預覽不載入統計腳本，所以改在本機建置與 CI 的效能量測中強制載入統計腳本、送出目的地指向 stub 端點（06 第 8.2 節）驗證，不送資料到正式統計端點；不通過就停下回報，不自行放寬 CSP。
 - Lighthouse 在 CI 上分數浮動：用 5 次中位數與 `benchmarkIndex` 校準，必要時調整節流倍數，而不是放寬門檻。
 - Lingui 的 macroTransform 在完整專案中出現 M0a 沒遇到的問題：改用 Babel 外掛的退路，只改建置設定。若問題只出在 workspace 套件的原始碼（`packages/web-ui`），退路是把 `packages/web-ui/src` 加進 app 的抽取設定。
@@ -707,7 +707,7 @@ D10(c) 決定做完整公式樹與來源分錄，M4 的介面工作量因此最�
 2. 授權（D6）：M0b 建立的 `LICENSE`（MIT）、`LICENSES/CC-BY-SA-4.0.txt`、README 的授權表與「名稱與標誌」一節、THIRD_PARTY_NOTICES，和目前的路徑與相依套件一致；老師的故事情境與金額標示「經陳彥宏老師授權使用」，不在 CC 授權內（見 [11 風險與授權](11-risks-license.md) 第 4 節）。
 3. 正式網域 `ledgerland.swift.moe` 的 HTTPS 與安全標頭最終確認（D4）；是否加 `Strict-Transport-Security` 在這裡定案（見 09 第 11.2 節）。
 4. 流量統計（D7，M0b 起已建置）：確認 CSP、隱私說明頁與實際收集的內容一致。
-5. 整個 git 歷史的總稽核（D3）：確認所有分支從來沒有 commit 過 `references/`、教材檔案（`.pdf`、`.xlsx`）、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 AI 設定路徑。若發現問題，停下回報，改寫歷史前一定先取得我的同意。
+5. 整個 git 歷史的總稽核（D3）：確認所有分支從來沒有 commit 過 `references/`、教材檔案（`.pdf`、`.xlsx`）、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md` 與 本機工具設定路徑。若發現問題，停下回報，改寫歷史前一定先取得我的同意。
 6. 名稱：模組全名與 Tab 短名照 D9；查詢「LedgerLand」與「會計樂園」是否與既有商標衝突，結果寫進回報。
 7. 隱私說明頁（含流量統計與 App 內掃描 QR 的相機用途）、關於與授權頁定稿；README 與 CONTRIBUTING 定稿。
 8. 最終稽核：完整的無障礙檢查（axe 加兩個平台的螢幕閱讀器）、實機效能（含 iOS 17 裝置）、CSP 與安全標頭、內容相似度與台灣用語掃描、介面上所有「設計說明」與「依課程情境推算」的標記依老師的回饋更新或保留。
@@ -722,7 +722,7 @@ D10(c) 決定做完整公式樹與來源分錄，M4 的介面工作量因此最�
 - [ ] 具名致謝的文字與位置已請老師看過，並反映在關於頁與 README。
 - [ ] 授權檔、內容授權、老師素材的授權標示與 THIRD_PARTY_NOTICES 都和目前的內容一致。
 - [ ] 正式網域的 HTTPS、CSP 與安全標頭都通過檢查。
-- [ ] 整個 git 歷史的稽核結果（`git log --all --name-only` 比對 `references/`、`.pdf`、`.xlsx`、`.DS_Store`、`01-materials.md`、`13-material-questions.md` 與 AI 設定路徑）已附在回報中，結果是空的。
+- [ ] 整個 git 歷史的稽核結果（`git log --all --name-only` 比對 `references/`、`.pdf`、`.xlsx`、`.DS_Store`、`01-materials.md`、`13-material-questions.md` 與 本機工具設定路徑）已附在回報中，結果是空的。
 - [ ] 商標檢索的結果已記錄。
 - [ ] 第 4 節的驗收閘門全部通過，實機效能符合目標。
 - [ ] 所有已發布內容通過相似度檢查與用語掃描。
@@ -773,7 +773,7 @@ D10(c) 決定做完整公式樹與來源分錄，M4 的介面工作量因此最�
 | 里程碑 | 編號 |
 | --- | --- |
 | M0a | V01、V02、V03、V04、V05、V06、V07、V09、V13、V14、V15、V17、V18；時間允許再做 V11、V12；V08 暫不需要（D5 採 data mode，日後改成預先產生 HTML 時才補做） |
-| M0b | M0a 沒做完的事項（本機 AI 設定延到 M0b 才建立時，V17、V18 在第一次 commit 之前完成）；V12（若 Tier 2 要在 M8 前啟用） |
+| M0b | M0a 沒做完的事項（本機工具設定延到 M0b 才建立時，V17、V18 在第一次 commit 之前完成）；V12（若 Tier 2 要在 M8 前啟用） |
 | M2 | V04 與 V11 的完整結果（實際試用環境）；V02、V03 在正式網域上再確認一次；V19 到 V22（2026-10-23 新增：App 內掃描的實機辨識率、主畫面 App 的相機權限、備份碼轉移、螢幕閱讀器） |
 | M3 | V23（2026-10-25 新增：莓果與紅酒的 Tab bar 選取圖示在 Liquid Glass 上的對比，部署前用 Simulator 量）；V19 到 V22 在 M3 完成時（2026-10-26）仍沒有實機結果，連同 M3 的實機清單一起做（[M3 回報](../reports/m3.md) 第 7 節） |
 | M7 | V10（V16 不再是 M7 的前提，因為 D10(e) 不採用 Git-based 後台） |
