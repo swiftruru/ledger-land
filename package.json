@@ -48,6 +48,7 @@
     "i18n:check": "pnpm --filter @ledgerland/web run i18n:check",
     "check:deps": "node tools/check-deps.mjs",
     "check:dom": "node tools/check-dom.mjs",
+    "check:links": "node tools/check-links.mjs",
     "check:actions": "node tools/check-actions.mjs",
     "check:exceptions": "node tools/check-exceptions.mjs",
     "check:tw": "node tools/check-tw-style.mjs",

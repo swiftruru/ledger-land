@@ -113,7 +113,7 @@ function loadMaterials() {
   return null;
 }
 
-/** content/ 裡給學生看的文字：題幹、敘述、選項、回饋、解說、提示、觀點；名詞的定義、範例、迷思；故事敘述 */
+/** content/ 裡給學生看的文字：題幹、敘述、選項、回饋、解說、提示、觀點；名詞的定義、範例、迷思、說明、公式與 IFRS 說明；故事敘述 */
 function contentTexts(bundle) {
   const out = [];
   const push = (file, path, lt) => {
@@ -130,7 +130,7 @@ function contentTexts(bundle) {
     });
     (d.items ?? []).forEach((it, i) => push(q.file, `items.${i}.text`, it.text));
   }
-  for (const t of bundle.terms) for (const k of ['definition', 'example', 'misconception', 'note']) push(t.file, k, t.data?.[k]);
+  for (const t of bundle.terms) for (const k of ['definition', 'example', 'misconception', 'note', 'formula', 'ifrsNote']) push(t.file, k, t.data?.[k]);
   for (const f of bundle.objectives) (f.data?.items ?? []).forEach((o, i) => push(f.file, `items.${i}.statement`, o.statement));
   for (const s of bundle.stories) (s.data?.steps ?? []).forEach((st, i) => push(s.file, `steps.${i}.narrative`, st.narrative));
   for (const c of bundle.chapters) push(c.file, 'summary', c.data?.summary);

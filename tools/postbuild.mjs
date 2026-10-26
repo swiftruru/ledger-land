@@ -5,9 +5,12 @@
 // 4. 建置後的 CSS：每個 backdrop-filter 都有 -webkit-backdrop-filter，且不含 var()
 // 5. 站內連結（index.html 與 JS 裡的 href="/..."）都帶結尾斜線（只檢查殼層）
 // 6. wrangler.jsonc 的 not_found_handling 與 assets.directory
+// 0. 最先做：把依路徑預先載入的表（tools/lib/preload-table.mjs）填進 boot 腳本，index.html 改了之後同步更新 sw.js 裡 index.html 的 precache revision，
+//    再刪掉 .vite/manifest.json（只給這一步用，不部署）；之後第 1 步的雜湊就是填好表格的 boot 腳本（06 第 8.2 節、14 第 5.2 節）
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { PRELOAD_PLACEHOLDER, buildPreloadTable, injectPreload } from './lib/preload-table.mjs';
 
 const app = resolve(process.cwd());
 const dist = join(app, 'dist');
@@ -16,7 +19,44 @@ const fail = (msg) => {
   process.exitCode = 1;
 };
 const sha = (s) => `'sha256-${createHash('sha256').update(s, 'utf8').digest('base64')}'`;
-const html = readFileSync(join(dist, 'index.html'), 'utf8');
+let html = readFileSync(join(dist, 'index.html'), 'utf8');
+
+// 0. 依路徑預先載入的表
+let preloadSummary = null;
+const viteManifestPath = join(dist, '.vite', 'manifest.json');
+if (html.includes(PRELOAD_PLACEHOLDER)) {
+  if (!existsSync(viteManifestPath)) fail('找不到 .vite/manifest.json（vite.config.ts 的 build.manifest 要開著），無法填入依路徑預先載入的表');
+  else {
+    try {
+      const contentManifest = JSON.parse(readFileSync(join(dist, 'content', 'content-manifest.json'), 'utf8'));
+      const routeTable = JSON.parse(readFileSync(join(app, 'src', 'shell', 'route-preload.json'), 'utf8'));
+      const table = buildPreloadTable({
+        viteManifest: JSON.parse(readFileSync(viteManifestPath, 'utf8')),
+        contentManifest,
+        routes: routeTable.routes,
+        catalogs: routeTable.catalogs,
+        always: routeTable.always ?? [],
+        chunkModules: existsSync(join(dist, '.vite', 'chunk-modules.json')) ? JSON.parse(readFileSync(join(dist, '.vite', 'chunk-modules.json'), 'utf8')) : {},
+        locales: Object.keys(contentManifest.locales),
+      });
+      const before = html;
+      html = injectPreload(html, table);
+      writeFileSync(join(dist, 'index.html'), html);
+      // sw.js 的 precache 是在 vite build 時依原本的 index.html 算 revision（md5），內容改了就要跟著改，否則 revision 不反映殼層內容
+      const swPath = join(dist, 'sw.js');
+      const md5 = (t) => createHash('md5').update(t, 'utf8').digest('hex');
+      const swText = readFileSync(swPath, 'utf8');
+      const oldRev = `{url:"index.html",revision:"${md5(before)}"}`;
+      if (!swText.includes(oldRev)) fail('sw.js 找不到 index.html 的 precache revision（格式改了？），無法同步更新');
+      else writeFileSync(swPath, swText.replace(oldRev, `{url:"index.html",revision:"${md5(html)}"}`));
+      preloadSummary = { assets: table.a.length, routes: table.r.length, bytes: JSON.stringify(table).length };
+    } catch (e) {
+      fail(`依路徑預先載入的表：${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
+}
+rmSync(join(dist, '.vite'), { recursive: true, force: true });
+if (html.includes(PRELOAD_PLACEHOLDER)) fail('index.html 仍有依路徑預先載入的佔位');
 const site = JSON.parse(readFileSync(join(dist, 'site-config.json'), 'utf8'));
 
 const inlineScripts = [...html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g)].filter(
@@ -105,6 +145,7 @@ const report = {
   backdropRules,
   swFiles,
   manifestId: manifest.id,
+  preload: preloadSummary,
 };
 writeFileSync(join(dist, 'build-report.json'), JSON.stringify(report, null, 2));
 console.log('postbuild:', JSON.stringify(report));

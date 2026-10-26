@@ -19,7 +19,7 @@ if (mode === null) {
 const lockPath = join(ROOT, 'content/published.lock.json');
 const bundle = loadContentFiles();
 const schemaIssues = validateBundle(bundle);
-for (const i of schemaIssues) fail(`content:lock：${i.file} ${i.path}：${i.message}`);
+for (const i of schemaIssues) fail(`content:lock：${i.file} ${i.path}：${i.rule ? `${i.rule}：` : ''}${i.message}`);
 const parsed = parseBundle(bundle);
 const acct = runAccountingChecks(parsed);
 for (const i of acct.issues) if (i.severity === 'error') fail(`content:lock：${i.file} ${i.path}：${i.rule}：${i.message}`);

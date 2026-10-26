@@ -251,7 +251,10 @@ describe('文字與結構規則（08 第 5.1、5.5、5.7 節）', () => {
     expect(sourceRefHit('見第 12 頁')).toBe('第 12 頁');
     expect(sourceRefHit('see p.12 of the notes')).toBe('p.12');
     expect(sourceRefHit('lecture.pdf')).toBe('.pdf');
+    expect(sourceRefHit('0-2 的簡化公式')).toBe('0-2');
+    expect(sourceRefHit('in the 0-3 slides')).toBe('0-3');
     expect(sourceRefHit('slides02 版的指標')).toBeNull();
+    expect(sourceRefHit('2027-01-01 生效')).toBeNull();
     expect(sourceRefHit('p. 的下一步')).toBeNull();
     expect(rawNumberHit('月底才付款 {{money:vars.amount}}')).toBeNull();
     expect(rawNumberHit('月底才付款 260,000 元')).toMatchObject({ why: '帶千分位的數字' });

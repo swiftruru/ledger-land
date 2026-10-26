@@ -16,7 +16,7 @@ const outRoot = join(ROOT, 'apps/web/public/content');
 const bundle = loadContentFiles();
 const issues = validateBundle(bundle);
 if (issues.length) {
-  for (const i of issues) fail(`content:build：${i.file} ${i.path}：${i.message}`);
+  for (const i of issues) fail(`content:build：${i.file} ${i.path}：${i.rule ? `${i.rule}：` : ''}${i.message}`);
   process.exit(1);
 }
 const parsed = parseBundle(bundle);

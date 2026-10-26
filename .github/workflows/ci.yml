@@ -50,6 +50,8 @@ jobs:
       - run: pnpm check:actions
       - run: pnpm check:deps
       - run: pnpm check:dom
+      # 站規 4.1：全站的可點元素只准用設計系統元件；有違規或例外對不上就失敗（M3 整合時已清零）
+      - run: pnpm check:links
       - run: pnpm check:tw
       - run: pnpm check:hygiene
       - run: pnpm check:core
