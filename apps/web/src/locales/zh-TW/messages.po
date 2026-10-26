@@ -13,17 +13,123 @@ msgstr ""
 msgid "backup.status.persistDetail"
 msgstr "（{triggerLabel}，{persistDate}）"
 
-#. attempts、levels、badges 是數字
+#. 作答頁語言選單裡，目前語言那一項後面的視覺隱藏補充
+#. js-lingui-explicit-id
+#: src/features/quiz/LevelSession.tsx
+msgid "quiz.lang.current"
+msgstr "（目前）"
+
+#. 統計膠囊上的「已取得／總數」；a、b 已格式化
+#. 統計膠囊上的「已取得／總數」；a、b 已格式化
+#. 統計膠囊上的「已取得／總數」；a、b 已格式化
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+#: src/features/me/PlayerCard.tsx
+#: src/pages/Home.tsx
+msgid "me.stat.ratio"
+msgstr "{a}／{b}"
+
+#. 章節主卡主按鈕的可讀名稱；actionText 是按鈕上的字、actionTitle 是關卡名稱
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.action.label"
+msgstr "{actionText}：{actionTitle}"
+
+#. 備份頁狀態卡的作答紀錄數；attempts 已格式化
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
-msgid "backup.status.counts"
-msgstr "{attempts} 筆作答紀錄、{levels} 個關卡的星星、{badges} 個徽章"
+msgid "backup.stat.attempts"
+msgstr "{attempts} 筆作答紀錄"
 
-#. 首頁的錯題本入口；due 是今天到期的題數，0 題時不顯示
+#. 備份頁狀態卡的徽章數；badges 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.stat.badges"
+msgstr "{badges} 個徽章"
+
+#. 關卡的短代號；c 章序、l 關序，都已格式化
+#. js-lingui-explicit-id
+#: src/features/home/codes.ts
+msgid "home.code"
+msgstr "{c}-{l}"
+
+#. 名詞卡上的收進日期；date 是已格式化的日期
+#. js-lingui-explicit-id
+#: src/features/glossary/UnlockCard.tsx
+msgid "term.unlockedAt"
+msgstr "{date} 收進名詞圖鑑"
+
+#. 已下架的題目找不到原本的關卡時，那一列的名稱；date 是上次作答的日期（已格式化）
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.retired.answeredOn"
+msgstr "{date}答過的題目"
+
+#. 「我的」備份列右側：上次匯出是幾天前（至少 2 天）；daysText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.backup.daysAgo"
+msgstr "{daysText} 天前備份"
+
+#. 首頁寬版主卡：這一章完成的關數；done、levelTotal 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.progress.levels"
+msgstr "{done}／{levelTotal} 關"
+
+#. 分組標題右側：這一組已收進幾個；done、total 是已格式化的數字
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.count"
+msgstr "{done}／{total} 已收進"
+
+#. 章節主卡進度條旁的完成關數；done 已完成、total 總關數（已依語系格式化）
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.progress.levels"
+msgstr "{done}／{total} 關"
+
+#. 頁首統計膠囊上的收集數（畫面上的短字，可讀名稱另有 terms.stat.label）；doneText、totalText 是已格式化的數字
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.stat.value"
+msgstr "{doneText}／{totalText}"
+
+#. 「我的」錯題本列的說明（今天有到期的題目）；due 是題數。<1/> 是可以換行的位置（320 加 200% 時「今天要／複習 1 題」），<2> 包住的「1 題」整塊不斷行
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.review.due"
+msgstr "{due, plural, other {<0>今天要<1/>複習 <2># 題</2></0>}}"
+
+#. 首頁今日複習列的說明；due 是今天到期的題數，0 題時整列不顯示；數字和「題」之間是不換行空白，「今天」「複習」的字之間有看不見的 U+2060（首次載入的 chunk 不切詞，200% 字級不再斷成「複／習」）
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
 msgid "home.due"
-msgstr "{due, plural, other {今天要複習 # 題}}"
+msgstr "{due, plural, other {今⁠天要複⁠習 # 題}}"
+
+#. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.earnedOn"
+msgstr "{earnedDate} 取得"
+
+#. 備份頁狀態卡：拿到星星的關卡數；levels 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.stat.levels"
+msgstr "{levels} 個有星星的關卡"
+
+#. 章節主卡進度條旁的星星數（只算計分關卡）；stars 得到的、maxStars 滿星（已依語系格式化）
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.progress.stars"
+msgstr "{stars}／{maxStars} 顆星"
+
+#. 五步驟勾稽填格的格子標籤；statement 是報表名稱、line 是列名
+#. js-lingui-explicit-id
+#: src/features/quiz/question-types.tsx
+msgid "quiz.fiveStep.cell"
+msgstr "{statement}的{line}"
 
 #. usageKb 是已格式化的 KB 數字
 #. js-lingui-explicit-id
@@ -36,45 +142,190 @@ msgstr "{usageKb} KB"
 msgid "about.license.name"
 msgstr "「LedgerLand 會計樂園」的名稱與標誌另外保留，不隨開源授權授出。"
 
+#. 結果頁成績小卡：新收名詞數；count 是已格式化的個數（數字放大、單位小字）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.stat.termsValue"
+msgstr "<0>{count}</0> 個"
+
+#. 結果頁成績小卡的用時；m、s 是已格式化的分與秒（數字放大、單位小字）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.stat.timeValue"
+msgstr "<0>{m}</0> 分 <1>{s}</1> 秒"
+
+#. 結果頁成績小卡的用時，不到一分鐘；s 是已格式化的秒數（數字放大、單位小字）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.stat.timeSeconds"
+msgstr "<0>{s}</0> 秒"
+
+#. 結果頁成績小卡：計分題數；n 是已格式化的題數（數字放大、單位小字）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.stat.scoredValue"
+msgstr "<0>{scored}</0> 題"
+
+#. 錯題本入口卡的標題：上面一行小字，下面是大字題數加單位；n 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.entry.count"
+msgstr "<0>今天要複習</0> <1><2>{n}</2> 題</1>"
+
+#. 結果頁：全對時的說明（「計分題」「錯題本」包在不換行的標籤裡）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.allCorrectNote"
+msgstr "<0>計分題</0>全部答對，沒有題目進<1>錯題本</1>。"
+
+#. 關卡讀不到時的說明（標題已經說了還沒下載，這裡不重複）；標籤包住的詞不換行
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.unavailable.retryNote"
+msgstr "<0>連上網路後</0><1>再試一次</1>，<2>已下載的內容</2><3>現在也能</3><4>繼續使用</4>。"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.mode.inApp"
 msgstr "App 內建瀏覽器"
+
+#. 延伸章關卡的短代號（E 是 Extension）；c 章序、l 關序，都已格式化
+#. js-lingui-explicit-id
+#: src/features/home/codes.ts
+msgid "home.code.ext"
+msgstr "E{c}-{l}"
+
+#. 延伸章眉標前面六角形徽記裡的字（E 是 Extension，n 是章序），兩種語言相同
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.extMark"
+msgstr "E{n}"
+
+#. 名詞圖鑑分組標題左側的延伸章章號（六角形小膠囊）；no 是延伸區自己的章序
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.chapterPill.ext"
+msgstr "E{no}"
+
+#. 指標版本名稱（04 第 12.7 節）：課程 Excel 的公式
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.version.excel"
+msgstr "Excel 口徑"
+
+#. 指標旗標說明
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.flag.excelApprox"
+msgstr "Excel 的近似做法"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.contact.body"
 msgstr "GitHub repo 的 issue 頁面"
 
+#. 關於頁「原始碼與第三方授權聲明」選單列的說明（外部網站）
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.more.source.desc"
+msgstr "GitHub 上的程式碼與授權"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.underIfrs"
+msgstr "IFRS 怎麼處理"
+
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
 msgid "term.ifrsEnglish"
 msgstr "IFRS 英文"
 
+#. 電腦或 Android 上附的 iPhone 做法（給老師說明用）
+#. js-lingui-explicit-id
+#: src/pages/Install.tsx
+msgid "install.page.iosDetails"
+msgstr "iPhone、iPad 的做法"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.why.3"
-msgstr "LedgerLand 就是這樣開始的。它不是要取代課程，比較像一本可以翻、可以按的練習簿。"
+msgstr "LedgerLand 就是這樣開始的。它不是要取代課程，比較像一本可以翻、可以按的練⁠習⁠簿。"
 
-#. 首頁大標題，站名
-#. js-lingui-explicit-id
-#: src/pages/Home.tsx
-msgid "home.title"
-msgstr "LedgerLand 會計樂園"
-
+#. 關於頁導言；<0> 是不換行的片語
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.intro"
-msgstr "LedgerLand 會計樂園是一個公開、開源、手機優先的會計入門學習網站：用闖關題目與報表實驗室，從一家小店的帳開始認識資產、負債、股東權益與三大財務報表，中英雙語，可離線使用。"
+msgstr "LedgerLand 會計樂園是一個公開、開源、手機優先的會計入門學習網站：用闖關題目與報表實驗室，從一家小店的帳開始認識資產、負債、股東權益與三大財務報表，中英雙語，<0>可離線使用</0>。"
+
+#. 指標正解是 N/A 時顯示的文字
+#. 指標正解是 N/A 時顯示的文字
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+#: src/features/quiz/question-types.tsx
+msgid "quiz.ratio.na"
+msgstr "N/A"
+
+#. Safari 分頁常駐提示收合後的小按鈕
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.collapsed"
+msgstr "Safari 分頁：顯示提示"
+
+#. iOS Safari 分頁常駐提示（展開時）的標題
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.title"
+msgstr "Safari 分⁠頁⁠的進⁠度可⁠能⁠會消⁠失"
+
+#. 地圖頁的單行提示條：iOS Safari 分頁的常駐提示
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "play.hint.safari"
+msgstr "Safari 分⁠頁⁠的進⁠度可⁠能⁠會消⁠失"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.feature.link.title"
+msgstr "三張報表一起動"
+
+#. 已下架題目那一列的上次作答日期；date 已格式化（整段日期不換行）
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.retired.lastOn"
+msgstr "上次作答 <0>{date}</0>"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.status.lastExport"
 msgstr "上次匯出"
 
+#. 首頁章節小地圖卡說明前只給螢幕閱讀器的字，後面接關卡名
+#. js-lingui-explicit-id
+#: src/features/home/ChapterMiniMap.tsx
+msgid "home.minimap.nextLabel"
+msgstr "下一關："
+
+#. 首頁主卡的第二行（有進度）：下一關的關卡名；nextTitle 是關卡名（依詞換行）。「下一關」的字與字之間有看不見的 U+2060，兩行時不拆成「下一／關「…」」
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.hero.next"
+msgstr "下⁠一⁠關「{nextTitle}」"
+
+#. 錯題本空狀態下的下一次排程；date 是已格式化的日期、n 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.next"
+msgstr "下次複習：{date} {n} 題"
+
+#. 下載關卡 QR 的 PNG
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelQr.tsx
+msgid "map.qr.download"
+msgstr "下載圖片"
+
 #. 是非題沒有題幹時的標題
 #. js-lingui-explicit-id
-#: src/pages/Level.tsx
+#: src/features/quiz/LevelSession.tsx
 #: src/pages/Review.tsx
 msgid "quiz.tf.prompt"
 msgstr "下面這句話對不對？"
@@ -83,6 +334,12 @@ msgstr "下面這句話對不對？"
 #: src/pages/Privacy.tsx
 msgid "privacy.not.title"
 msgstr "不做哪些事"
+
+#. 匯入提示卡右上角關閉鈕的可讀名稱：不匯入、從這裡重新開始
+#. js-lingui-explicit-id
+#: src/components/ImportPromptCard.tsx
+msgid "importPrompt.skipA11y"
+msgstr "不用了，從這裡重新開始"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -104,10 +361,22 @@ msgstr "主機會記錄什麼"
 msgid "backup.mode.app"
 msgstr "主畫面 App"
 
+#. 徽章頁的分段小標：主線的章
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.group.main"
+msgstr "主線章節"
+
 #. js-lingui-explicit-id
 #: src/app/Root.tsx
 msgid "shell.main"
 msgstr "主要內容"
+
+#. 關閉備份提醒的按鈕（這個工作階段不再提醒）
+#. js-lingui-explicit-id
+#: src/components/BackupReminder.tsx
+msgid "backupReminder.notNow"
+msgstr "之後再說"
 
 #. 關閉安裝建議的按鈕
 #. js-lingui-explicit-id
@@ -121,28 +390,82 @@ msgstr "之後再說"
 msgid "play.scan.deniedHint"
 msgstr "之後想用相機掃描，可以在系統設定裡找到這個 App（或 Safari）的相機權限，改成允許後再回來。"
 
-#. iOS 簡易說明第三步
+#. 加入之後的提醒
 #. js-lingui-explicit-id
-#: src/components/InstallPrompt.tsx
-msgid "install.ios.step3"
-msgstr "之後都從主畫面的圖示開啟；開啟後可以貼上備份碼把這裡的進度帶過去"
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.after"
+msgstr "之後都從主畫面的圖示開啟。Safari 分頁和 App 的紀錄是分開的兩份，新的進度記得用「<0>匯出到 App</0>」帶過去。"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.preview.applySettings"
 msgstr "也套用語言與計時設定"
 
-#. 錯題本沒有到期題目時的標題
+#. 玩家卡的問候
 #. js-lingui-explicit-id
-#: src/pages/Review.tsx
-msgid "review.empty.title"
-msgstr "今天沒有要複習的題目"
+#: src/features/me/PlayerCard.tsx
+msgid "me.player.greet"
+msgstr "今天也一起闖關吧"
 
-#. 今天的複習做完時的標題
+#. 「我的」備份列右側：今天匯出過
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.backup.today"
+msgstr "今天備份過"
+
+#. 首頁主卡的問候（有進度）；nextCode 是下一關的短代號，例如 1-2（整塊不換行）
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.greet.continue"
+msgstr "今天從 {nextCode} 繼續吧"
+
+#. 錯題本沒有到期題目時的標題；標籤包住的詞不換行（文字放大時斷成「今天沒有／要複習的題目」）
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
-msgid "review.done.title"
-msgstr "今天的複習完成了"
+msgid "review.empty.heading"
+msgstr "今天沒有<0>要複習</0>的題目"
+
+#. 今天的錯題複習做完時，小舞台的標題
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.done.heading"
+msgstr "今天的錯題都複習完了"
+
+#. 錯題本入口卡裡，今天到期題目清單的小標
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.entry.listTitle"
+msgstr "今天的題目"
+
+#. 首頁今日複習清單的可讀名稱
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.review.label"
+msgstr "今日複習"
+
+#. 示意圖裡 iOS 26 的開關文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.openAsApp"
+msgstr "以 Web App 打開"
+
+#. 指標旗標說明
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.flag.endOfPeriod"
+msgstr "以期末餘額計算"
+
+#. 計時開關的標籤
+#. js-lingui-explicit-id
+#: src/components/TimerSetting.tsx
+msgid "settings.timer.enabled"
+msgstr "作答時計時"
+
+#. 備份頁作答紀錄膠囊下面的短標籤
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.stat.attempts.cap"
+msgstr "作答紀錄"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -155,21 +478,39 @@ msgstr "作答紀錄、星星、錯題本、徽章、名詞解鎖、設定與語
 msgid "quiz.classify.summary"
 msgstr "你放對了 {correctCount} 張，共 {total} 張。"
 
-#. 內建瀏覽器提醒的本文；app 是 LINE、Facebook、Instagram 或「這個 App」
+#. 錯題本入口每一列的來源：作答時按了「我是猜的」
 #. js-lingui-explicit-id
-#: src/components/InAppBrowserBanner.tsx
-msgid "inapp.text"
-msgstr "你正在 {app} 裡開啟。改用 Safari 或 Chrome，進度比較不會消失，也能離線使用。"
+#: src/pages/Review.tsx
+msgid "review.source.guessed"
+msgstr "你標成猜的"
 
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
 msgid "ephemeral.body"
-msgstr "你現在是在相機開啟的預覽畫面。請點右下角的指南針圖示，改用 Safari 開啟；如果已經把會計樂園加到主畫面，請改用 App 裡的「掃描課堂 QR」。"
+msgstr "你現⁠在是⁠在相⁠機開⁠啟⁠的預⁠覽⁠畫⁠面。請⁠點⁠右⁠下⁠角⁠的指⁠南⁠針圖⁠示，改⁠用 Safari 開⁠啟；如⁠果已⁠經把會⁠計樂⁠園加⁠到⁠主⁠畫⁠面，請⁠改⁠用 App 裡⁠的「⁠掃⁠描⁠課⁠堂 QR」。"
+
+#. iOS 17、18 的說明
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.legacyNote"
+msgstr "你的 iOS 版本沒有縮小的網址列，也沒有「<0>以 Web App 打開</0>」的開關；加入主畫面後會直接以 App 開啟。"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.summary"
 msgstr "你的學習紀錄只存在這台裝置的這個瀏覽器裡；網站沒有帳號、不用 cookie，只有不收集個資的匿名流量統計。"
+
+#. 指標計算題作答後的摘要；submitted 與 expected 已格式化、version 是指標版本名稱
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.ratio.summary"
+msgstr "你的答案是 {submitted}，正解是 {expected}（本題採{version}）。"
+
+#. 更新提示的說明
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.updateBody"
+msgstr "你⁠的進⁠度已⁠經⁠存⁠好，按「⁠重⁠新⁠整⁠理⁠」就⁠會換⁠成⁠新⁠版⁠本。"
 
 #. any_correct 作答後的摘要；chosenList 是你選的選項文字
 #. js-lingui-explicit-id
@@ -182,6 +523,23 @@ msgstr "你選了 {chosenList}。"
 #: src/pages/Backup.tsx
 msgid "backup.preview.source"
 msgstr "來源：{sourceLabel}，{sourceDate}"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.example"
+msgstr "例子"
+
+#. 名詞圖鑑分組選項
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.name"
+msgstr "依名稱"
+
+#. 名詞圖鑑分組選項
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.chapter"
+msgstr "依章節"
 
 #. 這次成績沒有超過之前時的說明；bestStars 是之前的顆數
 #. js-lingui-explicit-id
@@ -204,11 +562,18 @@ msgstr "保護我的進度"
 msgid "backup.status.persist"
 msgstr "保護進度"
 
+#. 指標單位：倍數
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.unit.times"
+msgstr "倍"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.title"
 msgstr "備份"
 
+#. 「我的」連到備份頁
 #. js-lingui-explicit-id
 #: src/pages/Me.tsx
 msgid "me.backup"
@@ -250,10 +615,47 @@ msgstr "償債能力"
 msgid "debug.storage"
 msgstr "儲存"
 
+#. 儲存層橫幅的標題
 #. js-lingui-explicit-id
-#: src/pages/Backup.tsx
-msgid "backup.preview.exportThenReplace"
-msgstr "先匯出，再覆蓋"
+#: src/components/StorageBanners.tsx
+msgid "storage.writeFailed.title"
+msgstr "儲存暫時失敗"
+
+#. 儲存層橫幅的標題
+#. js-lingui-explicit-id
+#: src/components/StorageBanners.tsx
+msgid "storage.quota.title"
+msgstr "儲存空間不足"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.placeholder.go"
+msgstr "先去闖關"
+
+#. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
+#. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
+#. js-lingui-explicit-id
+#: src/pages/Play.tsx
+msgid "play.toTerms"
+msgstr "先看名詞圖鑑"
+
+#. 依名稱排序、不分組時的標題
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.all"
+msgstr "全部名詞"
+
+#. 首頁章節小地圖卡的說明（所有關卡都完成）
+#. js-lingui-explicit-id
+#: src/features/home/ChapterMiniMap.tsx
+msgid "home.minimap.allDone"
+msgstr "全部關卡都完成了"
+
+#. 首頁主卡的問候（所有關卡都完成）
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.greet.allDone"
+msgstr "全部關卡都闖過了，去拿更多星星吧"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -261,9 +663,26 @@ msgid "design.languages.title"
 msgstr "兩種語言"
 
 #. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.formula"
+msgstr "公式"
+
+#. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.open.title"
 msgstr "公開的理由"
+
+#. 名詞類別：其他
+#. js-lingui-explicit-id
+#: src/features/glossary/useCategoryLabel.ts
+msgid "terms.category.other"
+msgstr "其他"
+
+#. 儲存層橫幅的標題
+#. js-lingui-explicit-id
+#: src/components/StorageBanners.tsx
+msgid "storage.blocked.title"
+msgstr "其他分頁擋住了儲存"
 
 #. 結果頁重玩同一關的按鈕
 #. js-lingui-explicit-id
@@ -271,15 +690,64 @@ msgstr "公開的理由"
 msgid "level.result.retry"
 msgstr "再挑戰"
 
+#. 章節主卡的按鈕：這一章全部完成，從第一關再玩一次；actionCode 是關卡編號
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.action.replay"
+msgstr "再挑戰 {actionCode}"
+
+#. 不計分關卡的結果頁：再看一次這一關的按鈕
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.readAgain"
+msgstr "再看一次"
+
+#. 判分程式載入失敗時，重新載入一次的按鈕
+#. js-lingui-explicit-id
+#: src/features/quiz/LoadFailed.tsx
+msgid "quiz.loadFailed.retry"
+msgstr "再試一次"
+
+#. updated 是已依語言格式化的日期
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
-msgid "privacy.updated"
-msgstr "最後更新：2026 年 10 月 22 日"
+msgid "privacy.updatedOn"
+msgstr "最後更新：{updated}"
 
 #. js-lingui-explicit-id
 #: src/components/RouteError.tsx
 msgid "error.generic.title"
 msgstr "出了一點問題"
+
+#. 示意圖裡 Safari「分享」按鈕的文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.share"
+msgstr "分享"
+
+#. 名詞圖鑑分組的群組名稱
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.label"
+msgstr "分組方式"
+
+#. 分錄題答對時的摘要
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.journal.summary.correct"
+msgstr "分錄全部正確。"
+
+#. 作答頁頁首窄的時候，語言圖示按鈕的可讀名稱（點了開語言選單）
+#. js-lingui-explicit-id
+#: src/features/quiz/LevelSession.tsx
+msgid "quiz.lang.menu"
+msgstr "切換語言"
+
+#. 判分或結果頁的程式沒有載入成功時的標題
+#. js-lingui-explicit-id
+#: src/features/quiz/LoadFailed.tsx
+msgid "quiz.loadFailed.title"
+msgstr "判分的程式沒有載入成功"
 
 #. 章末連到實驗室故事步驟的連結文字
 #. js-lingui-explicit-id
@@ -292,6 +760,36 @@ msgstr "到實驗室看這一章的故事步驟"
 #: src/components/BackupReminder.tsx
 msgid "backupReminder.go"
 msgstr "前往備份"
+
+#. 名詞頁解鎖任務卡的主按鈕：前往會遇到這個名詞的關卡
+#. js-lingui-explicit-id
+#: src/features/glossary/UnlockCard.tsx
+msgid "terms.meet.go"
+msgstr "前往這一關"
+
+#. 首頁主按鈕（所有關卡都完成）
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.play.map"
+msgstr "前往闖關地圖"
+
+#. 計時的螢幕閱讀器提醒開關的標籤（03 第 2.10 節）
+#. js-lingui-explicit-id
+#: src/components/TimerSetting.tsx
+msgid "settings.timer.announce"
+msgstr "剩 1 分鐘與時間到時提醒"
+
+#. 示意圖裡確認對話框的「加入」按鈕
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.add"
+msgstr "加入"
+
+#. 示意圖裡「加入主畫面」那一列的文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.addToHome"
+msgstr "加入主畫面"
 
 #. 06 第 4.5 節：只能寫「降低機率」
 #. js-lingui-explicit-id
@@ -309,10 +807,17 @@ msgstr "匯入"
 msgid "backup.export.title"
 msgstr "匯出"
 
+#. 備份頁的主按鈕：存成備份檔（手機上交給分享表單）
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.export.fileButton"
+msgstr "匯出備份檔"
+
 #. Safari 分頁的「匯出到 App」捷徑，連到備份頁
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 #: src/components/SafariTabNotice.tsx
+#: src/features/install/InstallGuide.tsx
 msgid "export.toApp"
 msgstr "匯出到 App"
 
@@ -321,6 +826,18 @@ msgstr "匯出到 App"
 msgid "backup.export.failed"
 msgstr "匯出失敗，請再試一次。"
 
+#. 「我的」備份列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.backup.desc"
+msgstr "匯出或匯入學習進度"
+
+#. 實驗室占位頁預告小卡右上角的標示：還不能用
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.feature.soon"
+msgstr "即將開放"
+
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.license.content"
@@ -328,14 +845,50 @@ msgstr "原創教學內容（題目、名詞卡、解說、故事的敘述文字
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
-msgid "about.repo"
-msgstr "原始碼與第三方授權聲明（GitHub）"
+msgid "about.more.repo"
+msgstr "原始碼與第三方授權聲明"
 
-#. 錯題本空狀態的按鈕
+#. 找不到頁面的第二顆按鈕
+#. js-lingui-explicit-id
+#: src/pages/NotFound.tsx
+msgid "notFound.goMap"
+msgstr "去闖關地圖"
+
+#. 錯題本空狀態的按鈕：去闖關地圖（和找不到頁面的「去闖關地圖」同一種說法）
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
-msgid "review.empty.goPlay"
-msgstr "去闖關"
+msgid "review.empty.goMap"
+msgstr "去闖關地圖"
+
+#. 收藏清單是空的時候的按鈕：去闖關地圖（和錯題本空狀態、找不到頁面的「去闖關地圖」同一種說法）
+#. js-lingui-explicit-id
+#: src/features/quiz/FavouritesSection.tsx
+msgid "favourites.goMap"
+msgstr "去闖關地圖"
+
+#. 名詞圖鑑最後的展開列：目前沒有任何已發布題目用到的名詞（不算收集數、不顯示鎖定）
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.reference.toggle"
+msgstr "參考名詞"
+
+#. 名詞頁：參考名詞（目前沒有任何已發布題目用到）的說明；不顯示鎖定，也不說之後會收進圖鑑
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.reference"
+msgstr "參考名詞：目前還沒有關卡用到，隨時可以讀，不算在名詞圖鑑的收集數裡。"
+
+#. 章內每關至少一星時的提示標題；第二行是徽章名稱
+#. js-lingui-explicit-id
+#: src/pages/Play.tsx
+msgid "play.badge.gotTitle"
+msgstr "取得徽章"
+
+#. 章內每關三星時的提示標題；第二行是徽章名稱
+#. js-lingui-explicit-id
+#: src/pages/Play.tsx
+msgid "play.badge.masteryTitle"
+msgstr "取得精通徽章"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -350,8 +903,20 @@ msgstr "取消"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
-msgid "privacy.camera.body"
-msgstr "只有在你按下「掃描課堂 QR」時才要求相機權限；影像只在這台裝置上解讀 QR，不錄影、不截圖、不上傳，離開掃描畫面就關閉相機。（這個功能在之後的里程碑加入。）"
+msgid "privacy.camera.text"
+msgstr "只有在你按下「掃描課堂 QR」裡的「開始掃描」時才要求相機權限，網站載入時與掃碼開啟的頁面都不會要求。相機只用來辨識課堂 QR：影像只在這台裝置上處理，不錄影、不截圖、不上傳，也不保存掃到的內容；辨識完成、按取消、離開掃描畫面或 App 退到背景時都會立刻關閉相機。只接受本站的關卡、章節與故事步驟網址，其他網址不會開啟。"
+
+#. 「附上錯誤紀錄」開關的說明
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.export.includeErrorsDesc"
+msgstr "只用於回報問題。"
+
+#. 判分程式載入失敗的說明（標題已經說了沒有載入成功）；作答已暫存
+#. js-lingui-explicit-id
+#: src/features/quiz/LoadFailed.tsx
+msgid "quiz.loadFailed.bodyShort"
+msgstr "可能是網路中斷或網站剛更新。你的作答已經存好，再試一次或重新整理就能繼續。"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -359,8 +924,26 @@ msgid "backup.preview.confirmMerge"
 msgstr "合併匯入"
 
 #. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.feature.rules.desc"
+msgstr "同一組交易切換兩種版面，看數字差在哪裡。"
+
+#. 實驗室預告小卡的說明（1280 三欄時一行約 13 字）
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.feature.link.desc"
+msgstr "同一組分錄，同時更新資產負債表、損益表與現金流量表。"
+
+#. 搜尋欄的提示文字（只是例子，標籤另外寫）
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.search.placeholder"
+msgstr "名稱、現行用語或英文"
+
+#. 首頁捷徑：名詞圖鑑
+#. js-lingui-explicit-id
 #: src/pages/Home.tsx
-msgid "home.link.terms"
+msgid "home.shortcut.terms"
 msgstr "名詞圖鑑"
 
 #. 名詞圖鑑的頁面標題（模組全名）
@@ -369,15 +952,40 @@ msgstr "名詞圖鑑"
 msgid "terms.title"
 msgstr "名詞圖鑑"
 
+#. 名詞圖鑑讀不到名詞索引時的標題
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.error.title"
+msgstr "名詞圖鑑載入失敗"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.questions.2"
 msgstr "唯一直接沿用的是故事裡那家公司的情境和金額，因為它和課堂上用的是同一組數字，對照起來最方便。這部分經過老師同意，也在授權說明裡寫清楚了。"
 
+#. 指標旗標說明
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.flag.singlePeriod"
+msgstr "單期近似：平均值以期末代替"
+
+#. 名詞頁返回按鈕的可讀名稱與頁尾按鈕
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
 msgid "term.back"
 msgstr "回到名詞圖鑑"
+
+#. 關卡讀不到時回到闖關地圖的按鈕（和結果頁、錯題本完成的「回到地圖」同一種說法）
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.unavailable.backToMap"
+msgstr "回到地圖"
+
+#. 複習完成後回到闖關地圖的按鈕（和結果頁的「回到地圖」同一種說法）
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.done.toMap"
+msgstr "回到地圖"
 
 #. 結果頁回到闖關地圖的按鈕
 #. js-lingui-explicit-id
@@ -385,17 +993,35 @@ msgstr "回到名詞圖鑑"
 msgid "level.result.backToMap"
 msgstr "回到地圖"
 
-#. 複習完成後回到闖關的按鈕
+#. 子頁返回「我的」的可讀名稱（必須包含短字「我的」）
+#. 子頁返回「我的」的可讀名稱（必須包含短字「我的」）
+#. 子頁返回「我的」的可讀名稱（必須包含短字「我的」）
+#. 子頁頂部返回鍵的可讀名稱
 #. js-lingui-explicit-id
-#: src/pages/Review.tsx
-msgid "review.done.goPlay"
-msgstr "回到闖關"
+#: src/components/useBackLabels.ts
+#: src/pages/Backup.tsx
+#: src/pages/Badges.tsx
+#: src/pages/Settings.tsx
+msgid "me.back"
+msgstr "回到我的"
 
-#. 章節頁返回按鈕的可讀名稱
+#. 章節頁返回按鈕的可讀名稱（畫面上是短字「地圖」）
 #. js-lingui-explicit-id
 #: src/pages/Chapter.tsx
 msgid "chapter.back"
 msgstr "回到闖關地圖"
+
+#. 錯題本頁首返回按鈕的可讀名稱（錯題本在 Tab bar 的「闖關」底下）
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.back"
+msgstr "回到闖關地圖"
+
+#. 診斷資訊頁頂部返回鍵的可讀名稱
+#. js-lingui-explicit-id
+#: src/components/useBackLabels.ts
+msgid "about.back"
+msgstr "回到關於與授權"
 
 #. js-lingui-explicit-id
 #: src/components/RouteError.tsx
@@ -403,33 +1029,140 @@ msgstr "回到闖關地圖"
 msgid "error.home"
 msgstr "回到首頁"
 
+#. 隱私說明的聯絡方式：連到 GitHub issue 頁面的選單列
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.contact.row"
+msgstr "回報問題"
+
+#. 名詞頁返回按鈕在畫面上的短字（必須是「回到名詞圖鑑」的一部分）
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.back.short"
+msgstr "圖鑑"
+
+#. 玩家卡名詞圖鑑膠囊下面的短標籤
+#. js-lingui-explicit-id
+#: src/features/me/PlayerCard.tsx
+msgid "me.stat.terms.cap"
+msgstr "圖鑑"
+
+#. 玩家卡的名詞圖鑑收集數；數字已格式化
+#. js-lingui-explicit-id
+#: src/features/me/PlayerCard.tsx
+msgid "me.stat.terms"
+msgstr "圖鑑 {termsDone}／{termsTotal}"
+
+#. 名詞圖鑑收集進度卡的小標
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.progress.label"
+msgstr "圖鑑收集"
+
+#. 內建瀏覽器提醒的標題（和收合後的小按鈕同一句開頭）；app 是 App 名稱
+#. js-lingui-explicit-id
+#: src/components/InAppBrowserBanner.tsx
+msgid "inapp.title"
+msgstr "在 {app} 裡開啟"
+
 #. 內建瀏覽器提醒收合後的小按鈕；app 是 App 名稱
 #. js-lingui-explicit-id
 #: src/components/InAppBrowserBanner.tsx
-msgid "inapp.expand"
+msgid "inapp.collapsed"
 msgstr "在 {app} 裡開啟：顯示提示"
 
-#. 章節頁回到地圖並捲到該章的連結
+#. 名詞卡說明列：未收進名詞會在哪一關遇到；code 是關卡代號（例如 1-2，延伸章是 E1-2），依章節分組或讀不到關卡名時
 #. js-lingui-explicit-id
-#: src/pages/Chapter.tsx
-msgid "chapter.onMap"
-msgstr "在地圖上看這一章"
+#: src/features/glossary/MeetLevel.tsx
+msgid "terms.meet.code"
+msgstr "在 {code} 遇到"
+
+#. 名詞卡說明列：未收進名詞會在哪一關遇到；code 是關卡代號（例如 1-1，延伸章是 E1-1），levelTitle 是關卡名
+#. js-lingui-explicit-id
+#: src/features/glossary/MeetLevel.tsx
+msgid "terms.meet"
+msgstr "在 {code}「{levelTitle}」遇到"
 
 #. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.teacher.qr"
+msgstr "在同一個展開列按「顯示 QR」就能產生這一關的 QR，下載圖片放在投影片上，或複製連結貼到課程群組；學生用手機相機掃，或在地圖右上按「掃描課堂 QR」，掃到就直接開啟那一關。"
+
+#. 章節頁回到地圖並捲到該章的連結；<0> 包住的「這一章」不拆開（文字放大時按鈕換行，不斷成「這／一章」）
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.onMap"
+msgstr "在地圖上看<0>這一章</0>"
+
+#. 實驗室占位頁的說明，對學生說話
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.placeholder.body"
+msgstr "在實驗室裡，你可以自己改一筆交易，看三張報表跟著一起變。開放之前，先到闖關地圖把基本功練起來吧。"
+
+#. 未收進名詞的說明，只知道是延伸區的哪一章；chapterNo 是延伸區自己的章序（和地圖的「延伸第 N 章」相同）
+#. js-lingui-explicit-id
+#: src/features/glossary/MeetLevel.tsx
+msgid "terms.meet.extChapter"
+msgstr "在延伸第 {chapterNo} 章會遇到"
+
+#. 名詞頁解鎖任務卡的標題（延伸章）；chapterNo 是延伸區自己的章序，levelNo 是章內關序，都已格式化
+#. js-lingui-explicit-id
+#: src/features/glossary/MeetLevel.tsx
+msgid "term.unlock.titleExt"
+msgstr "在延伸第 {chapterNo} 章第 {levelNo} 關遇到"
+
+#. 「如何刪除」段；「我的 › 備份」是文中連結
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
-msgid "privacy.delete.body"
-msgstr "在瀏覽器裡清除這個網站的資料即可；「我的 › 設定」的「清除這台裝置上的資料」會在之後的里程碑加入。"
+msgid "privacy.delete.how"
+msgstr "在瀏覽器的網站設定裡清除這個網站的資料，進度、設定與離線快取會一起刪除。主畫面 App 的那一份，在 iPhone、iPad 上把 App 從主畫面移除就會一併刪除。想先留一份，到<0>我的 › 備份</0>匯出。"
+
+#. 未收進名詞的說明，只知道章；chapterNo 是已格式化的章序號
+#. js-lingui-explicit-id
+#: src/features/glossary/MeetLevel.tsx
+msgid "terms.meet.chapter"
+msgstr "在第 {chapterNo} 章會遇到"
+
+#. 名詞頁解鎖任務卡的標題；chapterNo、levelNo 是已格式化的章序與關序
+#. js-lingui-explicit-id
+#: src/features/glossary/MeetLevel.tsx
+msgid "term.unlock.title"
+msgstr "在第 {chapterNo} 章第 {levelNo} 關遇到"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.status.trigger.button"
 msgstr "在設定頁按下"
 
-#. 闖關地圖右側工具列的可讀名稱
+#. Chromium 沒有安裝事件時的第二步：瀏覽器的確認視窗
 #. js-lingui-explicit-id
-#: src/features/quest-map/MapToolbar.tsx
-msgid "play.toolbar"
-msgstr "地圖工具"
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.confirm"
+msgstr "在跳出的確認視窗按「安裝」。"
+
+#. 名詞頁解鎖任務卡的標題：讀不到章節索引、不知道是第幾章第幾關時
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.unlock.titleUnknown"
+msgstr "在闖關地圖的關卡裡遇到"
+
+#. 章節頁返回按鈕在畫面上的短字；可讀名稱「回到闖關地圖」必須包含這兩個字
+#. js-lingui-explicit-id
+#: src/pages/Chapter.tsx
+msgid "chapter.back.short"
+msgstr "地圖"
+
+#. 錯題本頁首返回按鈕上的短字（必須是「回到闖關地圖」的一部分）
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.back.short"
+msgstr "地圖"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.teacher.order"
+msgstr "地圖只建議順序、不鎖關：上課講到哪一關，就可以用代號或 QR 直接把全班帶到那一關，進去不會跳出「建議先完成前一關」的提示。"
 
 #. 闖關地圖讀不到內容時的標題
 #. js-lingui-explicit-id
@@ -437,25 +1170,39 @@ msgstr "地圖工具"
 msgid "play.error.title"
 msgstr "地圖載入失敗"
 
+#. 名詞類別：財務報表與報表上的項目
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.title"
-msgstr "報表實驗室"
+#: src/features/glossary/useCategoryLabel.ts
+msgid "terms.category.statement"
+msgstr "報表"
+
+#. 分錄題旁的一句對應說明（03 第 2.6 節）
+#. js-lingui-explicit-id
+#: src/features/quiz/question-types.tsx
+msgid "quiz.journal.note"
+msgstr "報表上的「本期進貨」「期末存貨」是由存貨帳推導出來的列，不是分錄裡的科目；分錄只寫科目。"
 
 #. js-lingui-explicit-id
 #: src/pages/Placeholder.tsx
-msgid "lab.placeholder"
-msgstr "報表實驗室會在之後的里程碑加入。"
+msgid "lab.placeholder.soon"
+msgstr "報表實驗室即將開放"
+
+#. 五步驟勾稽填格作答後的摘要；correctCount 是填對的格數、total 是總格數
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.fiveStep.summary"
+msgstr "填對 {correctCount} 格，共 {total} 格。"
 
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 msgid "settings.theme.label"
 msgstr "外觀"
 
+#. 「我的 › 設定」是文中連結
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
-msgid "debug.appearanceLink"
-msgstr "外觀、深色風味與玻璃效果在「我的 › 設定」調整。"
+msgid "debug.settingsLink"
+msgstr "外觀、深色風味與玻璃效果在<0>我的 › 設定</0>調整。"
 
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
@@ -466,6 +1213,12 @@ msgstr "夜空"
 #: src/pages/Design.tsx
 msgid "design.mobile.1"
 msgstr "大多數人會在手機上打開它，可能在捷運上，可能在睡前。所以每一頁都先為小螢幕設計，加到主畫面之後，沒有網路也能繼續用。"
+
+#. 指標單位：天數
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.unit.days"
+msgstr "天"
 
 #. 取捨題每個方案說明的小標
 #. js-lingui-explicit-id
@@ -481,7 +1234,7 @@ msgstr "如何刪除"
 #. js-lingui-explicit-id
 #: src/components/ImportPromptCard.tsx
 msgid "importPrompt.body"
-msgstr "如果你之前在 Safari 分頁練習過，先在那裡「匯出到 App」，再回到這裡貼上備份碼或選擇備份檔；匯入會和這裡的紀錄合併。"
+msgstr "如⁠果你之⁠前在 Safari 分⁠頁⁠練⁠習⁠過，先⁠在那⁠裡「⁠匯⁠出⁠到 App」，再⁠回⁠到這⁠裡貼⁠上⁠備⁠份⁠碼或選⁠擇⁠備⁠份⁠檔；匯⁠入會和這⁠裡⁠的紀⁠錄合⁠併。"
 
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
@@ -492,7 +1245,7 @@ msgstr "如果你在 iPhone 開了「降低透明度」，網頁讀不到這個�
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "safari.text"
-msgstr "如果你已經加入主畫面，請從主畫面圖示開啟，進度存在那裡。"
+msgstr "如⁠果你已⁠經加⁠入⁠主⁠畫⁠面，請⁠從主⁠畫⁠面圖⁠示開⁠啟，進⁠度存⁠在那⁠裡。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -504,10 +1257,11 @@ msgstr "如果你發現哪裡不對，或者有更好的說法，歡迎告訴我
 msgid "privacy.stored.title"
 msgstr "存了哪些資料"
 
+#. 「我的」選單列的群組標題
 #. js-lingui-explicit-id
-#: src/pages/Backup.tsx
-msgid "backup.export.file"
-msgstr "存成備份檔"
+#: src/pages/Me.tsx
+msgid "me.group.learn"
+msgstr "學習"
 
 #. 章節頁學習目標段落的標題
 #. js-lingui-explicit-id
@@ -515,16 +1269,50 @@ msgstr "存成備份檔"
 msgid "chapter.objectives"
 msgstr "學習目標"
 
+#. 清單檢視「章節資訊」列標題下方的說明
 #. js-lingui-explicit-id
-#: src/pages/Me.tsx
-msgid "me.progressLater"
-msgstr "學習進度、徽章與備份會在之後的里程碑加入。"
+#: src/features/quest-map/ListView.tsx
+msgid "play.list.chapterInfoTrail"
+msgstr "學習目標與徽章"
+
+#. 備份頁狀態卡：這台裝置上的學習紀錄數（三個統計膠囊的清單名稱）
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.status.records"
+msgstr "學習紀錄"
+
+#. 示意圖裡 Chromium 選單的「安裝」
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.install"
+msgstr "安裝"
 
 #. Chromium 的安裝按鈕
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
+#: src/features/install/InstallGuide.tsx
 msgid "install.button"
 msgstr "安裝"
+
+#. 安裝教學頁的標題
+#. js-lingui-explicit-id
+#: src/pages/Install.tsx
+msgid "install.page.title"
+msgstr "安裝教學"
+
+#. 「我的」與設定頁連到安裝教學
+#. 「我的」與設定頁連到安裝教學
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+#: src/pages/Settings.tsx
+msgid "me.install"
+msgstr "安裝教學"
+
+#. 徽章格的狀態：完成
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.state.done"
+msgstr "完成"
 
 #. 關卡結果頁的標題
 #. js-lingui-explicit-id
@@ -532,21 +1320,63 @@ msgstr "安裝"
 msgid "level.result.title"
 msgstr "完成了！"
 
+#. 章節主卡的徽章預覽：還沒取得；badgeName 是徽章名稱
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.badge.locked"
+msgstr "完成本章可獲得「{badgeName}」"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.status.trigger.level"
 msgstr "完成第一關時詢問"
+
+#. 連到獨立的安裝教學頁
+#. js-lingui-explicit-id
+#: src/components/InstallPrompt.tsx
+msgid "install.guide.fullPage"
+msgstr "完整教學頁"
+
+#. Top 或 Bottom 分頁列的白話說法；要短，內嵌時和另一個選項排成一列
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.bar"
+msgstr "完整的工具列"
+
+#. 實驗室頁（Tab bar 頂層頁）的頁首標題
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.page.title"
+msgstr "實驗室"
+
+#. 實驗室占位頁三張預告小卡的清單名稱
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.features.label"
+msgstr "實驗室裡可以做的事"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.import.failed"
 msgstr "寫入失敗，請重新整理後再試一次。"
 
-#. previewAttempts、previewLevels、previewBadges 是數字
+#. 計時寬鬆選項的標籤
+#. js-lingui-explicit-id
+#: src/components/TimerSetting.tsx
+msgid "settings.timer.relaxed"
+msgstr "寬鬆（時間加倍）"
+
+#. previewAttempts、previewLevels、previewBadges、previewFavourites 是已格式化的數字；數字和量詞（筆、個、題）之間是不換行空白
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
-msgid "backup.preview.summary"
-msgstr "將匯入 {previewAttempts} 筆作答紀錄、{previewLevels} 個關卡的星星、{previewBadges} 個徽章"
+msgid "backup.preview.summaryWithFavourites"
+msgstr "將匯入 {previewAttempts} 筆作答紀錄、{previewLevels} 個關卡的星星、{previewBadges} 個徽章、{previewFavourites} 題收藏"
+
+#. 隱私說明「聯絡方式」段的說明，下面是「回報問題」的選單列
+#. js-lingui-explicit-id
+#: src/pages/Privacy.tsx
+msgid "privacy.contact.lead"
+msgstr "對隱私有疑問，或發現資料處理有問題，請到 GitHub 回報。"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -557,6 +1387,12 @@ msgstr "尚未取得保留許可"
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.state.off"
 msgstr "尚未取得保留許可。"
+
+#. 錯題本已下架題目每一列右側的標籤
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.retired.badge"
+msgstr "已下架"
 
 #. 章節頁已下架關卡段落的標題
 #. js-lingui-explicit-id
@@ -575,16 +1411,31 @@ msgstr "已下架的題目"
 msgid "backup.export.shared"
 msgstr "已交給分享表單。"
 
+#. 徽章的取得數；earned、total 已格式化；總數和「枚」之間是不換行空白
 #. js-lingui-explicit-id
-#: src/pages/Backup.tsx
-msgid "backup.status.usage"
-msgstr "已使用的儲存空間"
+#: src/pages/Home.tsx
+msgid "me.badges.count"
+msgstr "已取得 {earned}／{total} 枚"
 
-#. Safari 分頁常駐提示收合後的小按鈕
+#. 「我的」徽章卡與徽章頁摘要卡的取得數；earned、total 已格式化；<0> 包住的「2／14 枚」整塊不斷行（320 加 200% 時「已取得／2／14 枚」）
+#. 「我的」徽章卡與徽章頁摘要卡的取得數；earned、total 已格式化；<0> 包住的「2／14 枚」整塊不斷行（320 加 200% 時「已取得／2／14 枚」）
 #. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.expand"
-msgstr "已加入主畫面？顯示提示"
+#: src/features/badges/BadgesSection.tsx
+#: src/pages/Me.tsx
+msgid "me.badges.earned"
+msgstr "已取得 <0>{earned}／{total} 枚</0>"
+
+#. 章節主卡的徽章預覽：已取得；badgeName 是徽章名稱
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.badge.done"
+msgstr "已取得徽章「{badgeName}」"
+
+#. 章節主卡的徽章預覽：已達精通；badgeName 是徽章名稱
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.badge.mastery"
+msgstr "已取得精通徽章「{badgeName}」"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -597,15 +1448,69 @@ msgstr "已合併，兩邊的紀錄都保留。"
 msgid "review.box.mastered"
 msgstr "已掌握，離開複習清單。"
 
+#. 名詞卡的狀態（給螢幕閱讀器）：已收進圖鑑
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.state.unlocked"
+msgstr "已收進"
+
+#. 名詞圖鑑收集數的可讀名稱（頁首統計膠囊與收集進度卡）；doneText、totalText 是已格式化的數字
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.stat.label"
+msgstr "已收進 {doneText}／{totalText} 個名詞"
+
+#. 首頁捷徑：名詞圖鑑的收集數；termsDone、termsTotal 已格式化（參考名詞不算）
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.shortcut.termsCount"
+msgstr "已收進 {termsDone}／{termsTotal} 個名詞"
+
+#. 名詞頁：這個名詞已收進圖鑑
+#. js-lingui-explicit-id
+#: src/features/glossary/UnlockCard.tsx
+msgid "term.collected"
+msgstr "已收進圖鑑"
+
+#. 作答到一半按返回回到地圖時的提示（作答狀態已暫存，站規 2.4.1）
+#. js-lingui-explicit-id
+#: src/pages/Play.tsx
+msgid "level.leftToast"
+msgstr "已暫存，可隨時回來繼續"
+
 #. 下架題目有替代題時的補充
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
 msgid "review.retired.superseded"
 msgstr "已有替代題目，會在重玩該關時遇到。"
 
+#. 備份頁狀態卡的欄位標籤，後面是 KB 數（保持短字：320 寬時標籤欄太寬會把日期擠成兩行）
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.status.usage"
+msgstr "已用空間"
+
+#. 從收藏清單移除後的播報；name 是關卡名，題目已下架時是「這題已下架」
+#. js-lingui-explicit-id
+#: src/features/quiz/FavouritesSection.tsx
+msgid "favourites.removed"
+msgstr "已移除收藏：{name}"
+
+#. iOS 安裝建議的說明，併入 Safari 分頁常駐提示的那一句（兩條不會同時出現）；375 寬最多兩行，步驟在按「看圖解教學」展開的卡片裡
+#. js-lingui-explicit-id
+#: src/components/InstallPrompt.tsx
+msgid "install.ios.short"
+msgstr "已⁠經加⁠入就⁠從⁠主⁠畫⁠面圖⁠示開⁠啟，進⁠度存⁠在那⁠裡；還⁠沒⁠加⁠入就看⁠圖⁠解。"
+
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.copied"
+msgstr "已複製"
+
+#. 複製關卡連結成功
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelQr.tsx
+msgid "map.qr.copied"
 msgstr "已複製"
 
 #. 複製成功
@@ -619,17 +1524,100 @@ msgstr "已複製連結，貼到 Safari 或 Chrome 的網址列就能開啟。"
 msgid "backup.import.replaced"
 msgstr "已覆蓋為備份裡的進度。"
 
+#. 整關不計分（取捨題）的結果頁標題
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.unscoredTitle"
+msgstr "已讀完這一關"
+
+#. 已取得保留許可：按鈕停用，旁邊顯示這句
+#. js-lingui-explicit-id
+#: src/components/ProtectProgress.tsx
+msgid "settings.protect.state.enabled"
+msgstr "已開啟，這個瀏覽器同意保留進度。"
+
+#. 取捨題確認後的摘要，焦點移到標題時一併讀出
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.judgment.shown"
+msgstr "已顯示三個方案的解說觀點。"
+
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
 msgid "classify.ratio.market"
 msgstr "市場面"
 
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.misconception"
+msgstr "常見誤解"
+
+#. 指標版本名稱（04 第 12.7 節）：依年報財務分析寫法的公式；學生看的說法，不露出版本代號或教材單元
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.version.slides03"
+msgstr "年報公式口徑"
+
 #. 主線與延伸區之間的分隔文字
 #. js-lingui-explicit-id
 #: src/features/quest-map/QuestMap.tsx
 msgid "play.extensionGap"
 msgstr "延伸區：不列入期中考，想多學再來"
+
+#. 延伸章主卡最下方的說明（整頁只在這裡說「不列入期中考」）
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.note.extension"
+msgstr "延伸區：不列入期中考，想多學再來。"
+
+#. 徽章所屬的延伸章（讀不到章節名）；chapterNo 是延伸區自己的章序
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.extChapterNoTitle"
+msgstr "延伸第 {chapterNo} 章"
+
+#. 首頁章節小地圖卡的標題（延伸章）；chapterNo 是已格式化的章序，chapterName 是章名
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.minimap.chapterTitleExt"
+msgstr "延伸第 {chapterNo} 章 {chapterName}"
+
+#. 徽章所屬的延伸章；chapterNo 是延伸區自己的章序（和地圖的「延伸第 N 章」相同），title 是章節名
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.eyebrow.extChapter"
+msgstr "延伸第 {chapterNo} 章：{title}"
+
+#. 章節頁主卡的眉標（延伸章）；n 是延伸區的章序
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.eyebrow.ext"
+msgstr "延伸第 {n} 章"
+
+#. 依章節分組、延伸章且讀不到章節名時的標題；no 是延伸區自己的章序
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.extChapterNo"
+msgstr "延伸第 {no} 章"
+
+#. 依章節分組、延伸章的標題（螢幕閱讀器唸的完整名稱）；no 是延伸區自己的章序（和地圖的「延伸第 N 章」相同），title 是章節名
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.extChapterName"
+msgstr "延伸第 {no} 章：{title}"
+
+#. 徽章頁的分段小標：延伸區的章
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.group.ext"
+msgstr "延伸章節"
+
+#. 往下找到加入主畫面
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.add"
+msgstr "往下找到「<0>加入主畫面</0>」。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -638,7 +1626,7 @@ msgstr "後來覺得這樣太細了，也太打擾。只要做法符合一般公
 
 #. 掃描前的說明卡：預告主畫面 App 每次啟動都可能重新詢問相機權限（WebKit 的已知行為）
 #. js-lingui-explicit-id
-#: src/features/quest-map/ScanOverlay.tsx
+#: src/features/quest-map-overlays/ScanOverlay.tsx
 msgid "play.scan.reask"
 msgstr "從主畫面開啟的 App 每次重新開啟時，可能會再問一次。"
 
@@ -647,10 +1635,43 @@ msgstr "從主畫面開啟的 App 每次重新開啟時，可能會再問一次�
 msgid "design.statements.title"
 msgstr "從報表倒著看"
 
+#. 首頁主卡的問候（還沒有進度，或進度還在讀）
 #. js-lingui-explicit-id
-#: src/components/ImportPromptCard.tsx
-msgid "importPrompt.fresh"
-msgstr "從頭開始"
+#: src/pages/Home.tsx
+msgid "home.greet.new"
+msgstr "從第 1 章開始吧"
+
+#. 備份頁徽章膠囊下面的短標籤
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.stat.badges.cap"
+msgstr "徽章"
+
+#. 徽章頁的標題
+#. js-lingui-explicit-id
+#: src/pages/Badges.tsx
+msgid "badges.title"
+msgstr "徽章"
+
+#. 「我的」與首頁捷徑連到徽章頁
+#. 「我的」與首頁捷徑連到徽章頁
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+#: src/pages/Me.tsx
+msgid "me.badges"
+msgstr "徽章"
+
+#. 玩家卡徽章膠囊下面的短標籤
+#. js-lingui-explicit-id
+#: src/features/me/PlayerCard.tsx
+msgid "me.stat.badges.cap"
+msgstr "徽章"
+
+#. 玩家卡的徽章數；數字已格式化
+#. js-lingui-explicit-id
+#: src/features/me/PlayerCard.tsx
+msgid "me.stat.badges"
+msgstr "徽章 {earned}／{badgeTotal} 枚"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -662,16 +1683,58 @@ msgstr "我不想替哪一邊選邊，只想把差異放在看得見的地方。
 msgid "design.layout.2"
 msgstr "我做的是把兩邊並排：報表照課程的版面顯示，旁邊標出哪些項目在現行的國際財務報導準則裡沒有，點開可以看到現在的做法是什麼。實驗室裡也可以整套切換成準則的版本，看看同一組交易在兩種規則下，數字差在哪裡。"
 
+#. 圖解最後的確認按鈕（英文畫面上用短字，可讀名稱是 install.guide.seenA11y）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.seen"
+msgstr "我已加入主畫面"
+
+#. 「我已加入主畫面」按鈕的可讀名稱（完整句，必須包含畫面上的字）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.seenA11y"
+msgstr "我已加入主畫面"
+
+#. Chromium 安裝說明最後的確認按鈕（英文畫面上用短字）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.done"
+msgstr "我已安裝"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.play.2"
 msgstr "我希望它比較像散步，走錯了可以回頭再走一次，而不是一場要衝過的考試。星星只是記錄你來過哪裡。"
+
+#. 子頁返回「我的」在畫面上的短字
+#. 子頁返回「我的」在畫面上的短字
+#. 子頁返回「我的」在畫面上的短字
+#. 子頁頂部返回鍵上的短字（回到「我的」）
+#. js-lingui-explicit-id
+#: src/components/useBackLabels.ts
+#: src/pages/Backup.tsx
+#: src/pages/Badges.tsx
+#: src/pages/Settings.tsx
+msgid "me.back.short"
+msgstr "我的"
 
 #. 「我的」頁面標題
 #. js-lingui-explicit-id
 #: src/pages/Me.tsx
 msgid "me.title"
 msgstr "我的"
+
+#. 讓使用者選 Safari 分頁列版面的標籤
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.label"
+msgstr "我的 Safari 長這樣："
+
+#. 玩家卡（「我的」頁最上面那張卡）的可讀名稱
+#. js-lingui-explicit-id
+#: src/features/me/PlayerCard.tsx
+msgid "me.player.label"
+msgstr "我的進度"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -688,16 +1751,48 @@ msgstr "所有的題目、解說、名詞卡都是重新寫過的，不是把課
 msgid "design.mobile.title"
 msgstr "手機優先，離線也能用"
 
+#. Chromium 沒有安裝事件時的說明
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.menu"
+msgstr "打開右上角的選單，找「安裝」或「<0>加入主畫面</0>」。"
+
+#. 名詞圖鑑搜尋沒有結果時的標題；shownQuery 是使用者輸入的搜尋字
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.search.empty"
+msgstr "找不到「{shownQuery}」"
+
 #. js-lingui-explicit-id
 #: src/pages/NotFound.tsx
 msgid "notfound.title"
 msgstr "找不到這一頁"
 
-#. 安裝建議卡片的標題
+#. 搜尋結果數（給螢幕閱讀器）；hitsText 是已格式化的數字
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.search.count"
+msgstr "找到 {hitsText} 個名詞"
+
+#. 安裝教學列的說明
+#. 安裝教學列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+#: src/pages/Settings.tsx
+msgid "me.install.desc"
+msgstr "把會計樂園加到主畫面"
+
+#. 安裝建議的標題
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 msgid "install.title"
 msgstr "把會計樂園加到主畫面"
+
+#. 安裝教學頁的開頭
+#. js-lingui-explicit-id
+#: src/pages/Install.tsx
+msgid "install.page.intro"
+msgstr "把會計樂園加到主畫面：開啟更快，進度也比較不容易被清除。"
 
 #. 掃描畫面：掃描中的說明
 #. js-lingui-explicit-id
@@ -709,7 +1804,7 @@ msgstr "把課堂 QR 對準畫面，辨識後會自動前往。"
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "safari.levelCode"
-msgstr "把這個關卡代號記下來，在 App 裡輸入就能直接進到這一關。"
+msgstr "把這⁠個關⁠卡代⁠號記⁠下⁠來，在 App 裡⁠輸⁠入就能直⁠接⁠進⁠到這⁠一⁠關。"
 
 #. 分類題的分類格（現金流量活動）
 #. js-lingui-explicit-id
@@ -722,32 +1817,44 @@ msgstr "投資活動"
 msgid "settings.glass.refract"
 msgstr "折射"
 
-#. iOS 簡易說明第一步
+#. 名詞類別：財務比率與指標
 #. js-lingui-explicit-id
-#: src/components/InstallPrompt.tsx
-msgid "install.ios.step1"
-msgstr "按 Safari 的「分享」按鈕（新版 Safari 要先按網址列旁的「⋯」）"
+#: src/features/glossary/useCategoryLabel.ts
+msgid "terms.category.ratio"
+msgstr "指標"
+
+#. Chromium 有安裝事件時的說明（一步，下面就是「安裝」按鈕）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.bip"
+msgstr "按「安裝」，在跳出的視窗再按一次「安裝」。"
 
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.firefox"
 msgstr "按下後瀏覽器會詢問是否允許保留資料。"
 
+#. 首頁捷徑清單的標題
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.shortcuts"
+msgstr "捷徑"
+
 #. 掃描元件還沒接上時的說明
 #. js-lingui-explicit-id
-#: src/features/quest-map/ScanOverlay.tsx
+#: src/features/quest-map-overlays/ScanOverlay.tsx
 msgid "play.scan.soon"
 msgstr "掃描功能即將推出，可先輸入關卡代號。"
 
-#. 工具列：開啟課堂 QR 掃描的按鈕
+#. 頂部工具：開啟課堂 QR 掃描的按鈕
 #. js-lingui-explicit-id
-#: src/features/quest-map/MapToolbar.tsx
+#: src/pages/Play.tsx
 msgid "play.tool.scan"
 msgstr "掃描課堂 QR"
 
 #. 掃描疊加層的標題
 #. js-lingui-explicit-id
-#: src/features/quest-map/ScanOverlay.tsx
+#: src/features/quest-map-overlays/ScanOverlay.tsx
 msgid "play.scan.title"
 msgstr "掃描課堂 QR"
 
@@ -756,17 +1863,55 @@ msgstr "掃描課堂 QR"
 msgid "about.license.title"
 msgstr "授權"
 
+#. 「我的」關於與授權列的說明
+#. 「我的」關於與授權列的說明
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+#: src/pages/Me.tsx
+msgid "me.about.desc"
+msgstr "授權、原始碼與版本"
+
 #. 掃描前的相機說明卡（06 第 4.9 節）
 #. js-lingui-explicit-id
-#: src/features/quest-map/ScanOverlay.tsx
+#: src/features/quest-map-overlays/ScanOverlay.tsx
 msgid "play.scan.explain"
 msgstr "接下來會請你允許使用相機。相機只用來辨識 QR，不會拍照，也不會上傳；影像只在這台裝置上處理。"
+
+#. 安裝教學頁：沒有安裝功能的瀏覽器（Firefox、電腦版 Safari）的卡片標題
+#. js-lingui-explicit-id
+#: src/pages/Install.tsx
+msgid "install.card.generic"
+msgstr "換個瀏覽器安裝"
+
+#. 名詞圖鑑搜尋沒有結果時的說明
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.search.emptyHint"
+msgstr "換個說法試試，例如中文名稱、現行用語或英文。"
+
+#. 名詞圖鑑搜尋欄的標籤
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.search.label"
+msgstr "搜尋名詞（中文或英文）"
+
+#. 名詞圖鑑搜尋時的結果標題（搜尋時不分章節，命中的名詞排成一格）
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.search.results"
+msgstr "搜尋結果"
 
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
 msgid "classify.ratio.incomeStructure"
 msgstr "損益結構"
+
+#. 指標版本名稱（04 第 12.7 節）：損益結構比率用的公式；學生看的說法，不露出版本代號或教材單元
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.version.slides01"
+msgstr "損益結構口徑"
 
 #. 收合按鈕的文字
 #. js-lingui-explicit-id
@@ -798,17 +1943,58 @@ msgstr "收合提示"
 msgid "classify.element.revenue"
 msgstr "收益"
 
-#. 送出含名詞的題目後的提示；label 是名詞
+#. 玩家卡收藏膠囊下面的短標籤
 #. js-lingui-explicit-id
-#: src/pages/Level.tsx
-msgid "level.termUnlocked"
-msgstr "收進名詞圖鑑：{label}"
+#: src/features/me/PlayerCard.tsx
+msgid "me.stat.favourites.cap"
+msgstr "收藏"
+
+#. 「我的」頁收藏區的標題
+#. js-lingui-explicit-id
+#: src/features/quiz/FavouritesSection.tsx
+msgid "favourites.heading"
+msgstr "收藏的題目"
+
+#. 玩家卡的收藏題數（點了捲到同一頁的收藏區）；favCount 已格式化
+#. js-lingui-explicit-id
+#: src/features/me/PlayerCard.tsx
+msgid "me.stat.favourites"
+msgstr "收藏的題目 {favCount} 題"
+
+#. 收藏卡片清單的可讀名稱
+#. js-lingui-explicit-id
+#: src/features/quiz/FavouritesSection.tsx
+msgid "favourites.listLabel"
+msgstr "收藏的題目清單"
+
+#. 關卡介紹面板「給老師」區收起關卡 QR 的按鈕
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelQr.tsx
+msgid "map.qr.hide"
+msgstr "收起 QR"
+
+#. 收起內嵌的安裝圖解
+#. js-lingui-explicit-id
+#: src/components/InstallPrompt.tsx
+msgid "install.guide.hide"
+msgstr "收起圖解"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.feature.edit.title"
+msgstr "改一筆交易"
+
+#. 內建瀏覽器提醒的本文（標題已經寫了在哪個 App 裡開啟）
+#. js-lingui-explicit-id
+#: src/components/InAppBrowserBanner.tsx
+msgid "inapp.body"
+msgstr "改⁠用 Safari 或 Chrome 開⁠啟，進⁠度比⁠較不⁠會消⁠失，也⁠能離⁠線使⁠用。"
 
 #. 掃描疊加層改用代號的按鈕
 #. 掃描疊加層改用代號的按鈕
 #. js-lingui-explicit-id
+#: src/features/quest-map-overlays/ScanOverlay.tsx
 #: src/features/quest-map/QrScanner.tsx
-#: src/features/quest-map/ScanOverlay.tsx
 msgid "play.scan.useCode"
 msgstr "改輸入關卡代號"
 
@@ -822,15 +2008,45 @@ msgstr "故事的情境與金額經陳彥宏老師授權使用，不在 CC 授�
 msgid "backup.status.trigger.launch"
 msgstr "啟動時詢問"
 
+#. 關於頁的非投資建議聲明標題（11 第 1 節、第 2 節第 21 列）
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.notAdvice.title"
+msgstr "教學用途，不構成投資建議"
+
+#. 涉及投資（本益比、融資、估價）的延伸章，作答頁標題下的聲明（11 第 1 節）
+#. js-lingui-explicit-id
+#: src/features/quiz/LevelSession.tsx
+msgid "level.notInvestmentAdvice"
+msgstr "教學用途，不構成投資建議。"
+
+#. 涉及投資（本益比、融資、估價）的延伸章，主卡最下方的聲明（11 第 1 節）
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.note.notAdvice"
+msgstr "教學用途，不構成投資建議。"
+
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
 msgid "term.teacherLabel"
 msgstr "教材用語"
 
+#. 名詞頁的用語對照：教材用語與現行用語相同時合併成一列的欄位標題
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.labels.same"
+msgstr "教材與現行用語"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.unsaid.1"
 msgstr "教材裡有一些地方沒有明說，例如設立費要不要資本化、盤點多出來的存貨要記在哪裡、付利息算哪一種活動。一開始我列了一長串問題，想一條一條問老師。"
+
+#. 徽章頁摘要卡的取得規則：整章不計分的延伸章
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.rules.unscored"
+msgstr "整章不計分的延伸章，每關讀完就完成，沒有精通。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -848,42 +2064,149 @@ msgstr "數字格式"
 msgid "review.updated.text"
 msgstr "文字有更新"
 
+#. 結果頁成績小卡：這一輪新收進圖鑑的名詞數的標籤
 #. js-lingui-explicit-id
-#: src/components/UpdatePrompt.tsx
-msgid "sw.update"
-msgstr "更新"
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.stat.terms"
+msgstr "新收名詞"
+
+#. 玩家卡與頁首的星星總數；stars 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.stat.stars"
+msgstr "星星 {stars} 顆"
+
+#. 「我的」備份列右側：昨天匯出過
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.backup.yesterday"
+msgstr "昨天備份過"
+
+#. 關於頁最後一組選單列的標題
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.more"
+msgstr "更多"
+
+#. 關於系統設計頁最後一組選單列的標題
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.more"
+msgstr "更多"
+
+#. 設定頁最後一組選單列的標題
+#. js-lingui-explicit-id
+#: src/pages/Settings.tsx
+msgid "settings.more"
+msgstr "更多"
+
+#. 首頁頁首的站名
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.siteName"
+msgstr "會計樂園"
+
+#. 示意圖裡的 App 名稱（短名）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.appName"
+msgstr "會計樂園"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.why.1"
 msgstr "會計課上到一半，我發現自己最記得的，不是哪個科目該放哪裡，而是老師把一家小公司的故事從頭講到尾：先拿錢成立，買了一台電腦，進了一批貨，賣掉，借錢，再還錢。三張報表就在這些小事裡慢慢長出來。"
 
+#. 分錄題答錯時的摘要；count 是要修正的行數
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.journal.summary.wrong"
+msgstr "有 {count} 行要修正。"
+
+#. 確認對話框：iOS 17、18 沒有「以 Web App 打開」開關，所以寫成「有…就開啟」；要短：375 的步驟說明一行約 10 字、1280 的步驟方塊約 12 字，都排成兩行
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.confirm"
+msgstr "有「以 <0>Web App</0> 打開」就開啟，點「加入」。"
+
+#. 更新提示的標題
 #. js-lingui-explicit-id
 #: src/components/UpdatePrompt.tsx
-msgid "sw.updateAvailable"
-msgstr "有新版本可以使用。你的進度已經存好，按「更新」就會重新載入。"
+msgid "sw.updateTitle"
+msgstr "有新版本可以使用"
 
+#. 備份頁關卡膠囊下面的短標籤（數字是拿到星星的關卡數，不是星星總數）
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.stat.levels.cap"
+msgstr "有星星的關卡"
+
+#. 診斷資訊的流量統計說明；<0> 是不換行的片語
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.analytics.note"
-msgstr "服務：Cloudflare Web Analytics。不用 cookie、不含作答資料；只在正式網址啟用，離線或被擋下時略過。"
+msgstr "服務：Cloudflare Web Analytics。不用 cookie、不含作答資料；只在正式網址啟用，離線或<0>被擋下時略過</0>。"
 
+#. 期中考範圍的主線章，主卡最下方的說明（T32）
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.note.examScope"
+msgstr "期中考範圍以老師公告為準。"
+
+#. 徽章格的狀態：還沒取得
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.state.locked"
+msgstr "未取得"
+
+#. 名詞卡的狀態（給螢幕閱讀器）：還沒收進圖鑑；只是收藏狀態，內容照樣能讀
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.state.locked"
+msgstr "未收進"
+
+#. <0> 是正式網址（不從中間斷行）
 #. js-lingui-explicit-id
 #. placeholder {0}: site.productionOrigin
 #: src/pages/Privacy.tsx
 msgid "privacy.analytics.body"
-msgstr "本站使用 Cloudflare Web Analytics（服務由 Cloudflare 提供與保存），只用來了解有多少人在用、哪些頁面被開啟與載入速度。它不使用 cookie，也不收集姓名、email 或任何識別個人的資料；收集的內容是瀏覽的頁面路徑（只有路徑，不含查詢字串）、來源網站、瀏覽器與作業系統類型、國家或地區，以及頁面載入效能指標。統計不含作答內容、進度或錯誤紀錄，只在正式網址{0} 啟用；離線時不送出，載入失敗也不影響學習。"
+msgstr "本站使用 Cloudflare Web Analytics（服務由 Cloudflare 提供與保存），只用來了解有多少人在用、哪些頁面被開啟與載入速度。它不使用 cookie，也不收集姓名、email 或任何識別個人的資料；收集的內容是瀏覽的頁面路徑（只有路徑，不含查詢字串）、來源網站、瀏覽器與作業系統類型、國家或地區，以及頁面載入效能指標。統計不含作答內容、進度或錯誤紀錄，只在正式網址 <0>{0}</0> 啟用；離線時不送出，載入失敗也不影響學習。"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.license.materials"
 msgstr "本站的授權不涵蓋老師的教材（投影片、Excel、題目、解答）；網站不收錄、不散布這些教材。"
 
+#. 關於頁的非投資建議聲明說明；<0>、<1> 是不換行的詞
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.notAdvice.body"
+msgstr "本站的題目、名詞卡與報表範例都是<0>會計入門</0>的教學練習。涉及本益比、融資、估價的章節也一樣，只用來練習<1>會計觀念</1>，不是投資建議，也不推薦任何投資標的。"
+
+#. 關於系統設計頁右側（1024 以上）的段落目錄標題
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.toc"
+msgstr "本頁目錄"
+
+#. 「看公式」裡的版本說明；version 是版本名稱
+#. js-lingui-explicit-id
+#. placeholder {0}: versionLabel(version ?? '')
+#: src/features/quiz/question-types.tsx
+msgid "quiz.ratio.version"
+msgstr "本題採{0}"
+
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
 msgid "classify.ratio.dupont"
 msgstr "杜邦分析"
+
+#. 指標版本名稱：杜邦分析的公式
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.version.dupont"
+msgstr "杜邦分析口徑"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -906,23 +2229,58 @@ msgstr "檔案不完整，請重新選擇或重新貼上。"
 msgid "backup.import.check"
 msgstr "檢查備份碼"
 
+#. 指標單位：週轉次數（資產週轉率等，04 第 12.4 節）
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.unit.turns"
+msgstr "次"
+
 #. 掃描畫面：等待相機權限與串流時的文字
 #. js-lingui-explicit-id
 #: src/features/quest-map/QrScanner.tsx
 msgid "play.scan.starting"
 msgstr "正在開啟相機。"
 
-#. 結果頁的正確率；ratio 已格式化成百分比、scoredCount 是計分題數
+#. 結果頁成績小卡：正確率的標籤
 #. js-lingui-explicit-id
 #: src/features/quiz/ResultView.tsx
-msgid "level.result.ratio"
-msgstr "正確率 {ratio}（計分題 {scoredCount} 題）"
+msgid "level.result.stat.ratio"
+msgstr "正確率"
 
 #. all_correct 作答後的摘要；correctCount 是正解數、correctList 與 chosenList 是以頓號連接的選項文字
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
 msgid "quiz.multi.summary.allCorrect"
 msgstr "正確答案有 {correctCount} 個：{correctList}。你選了 {chosenList}。"
+
+#. 五步驟勾稽填格的格子標籤（14 T13：數字是步驟、字母是勾稽點）；step 是步驟編號、letter 是勾稽點字母、statement 是報表名稱、line 是列名
+#. js-lingui-explicit-id
+#: src/features/quiz/question-types.tsx
+msgid "quiz.fiveStep.cellWithCheck"
+msgstr "步驟{step}（勾稽點 {letter}），{statement}的{line}"
+
+#. 計時寬鬆選項的說明（計時關閉時這個開關停用）
+#. js-lingui-explicit-id
+#: src/components/TimerSetting.tsx
+msgid "settings.timer.relaxedDesc"
+msgstr "每一關的時間上限變成兩倍。開啟作答時計時後才有作用。"
+
+#. 章節主卡的徽章預覽：已取得、還沒精通時的提示
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.badge.masteryHint"
+msgstr "每一關都拿到三顆星，徽章會升級為精通"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.teacher.code"
+msgstr "每一關都有 8 碼的關卡代號，在闖關地圖點開關卡介紹、展開「給老師：關卡代號」就看得到。把代號寫在黑板上，學生在地圖右上按「輸入關卡代號」就會直接到那一關；大小寫、空白與連字號都可以省略。"
+
+#. 徽章頁摘要卡的取得規則
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.rules"
+msgstr "每一章一枚徽章：章內每關至少一星就「完成」，每關三星就是同一枚徽章的「精通」外觀。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -946,6 +2304,12 @@ msgstr "沒有追蹤，沒有 cookie。只有一個不認得你是誰的訪客�
 msgid "classify.current.current"
 msgstr "流動"
 
+#. 名詞類別：會計流程（例如過帳、結帳）
+#. js-lingui-explicit-id
+#: src/features/glossary/useCategoryLabel.ts
+msgid "terms.category.process"
+msgstr "流程"
+
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.analytics"
@@ -960,6 +2324,12 @@ msgstr "流量統計"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.theme.dark"
 msgstr "深色"
+
+#. 關於系統設計「顏色」一節的第二段：深色闖關地圖的地景色（作者的語氣）
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.colours.2"
+msgstr "深色的闖關地圖改最久。一開始陸地和海在晚上一樣暗，看不出岸在哪裡；後來讓海偏深藍、陸地亮一點，再帶一點各自主題的顏色：夜空偏藍紫、莓果偏紫紅、紅酒偏紅棕。不過整張地圖都比卡片暗，地圖上的字永遠比地景顯眼。"
 
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
@@ -981,10 +2351,17 @@ msgstr "淺色是紙的顏色，深色有三種：夜空、莓果、紅酒。沒
 msgid "debug.errors.clear"
 msgstr "清除"
 
+#. 搜尋沒有結果時的按鈕：清除搜尋字，焦點回到搜尋框
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.search.clear"
+msgstr "清除搜尋"
+
+#. 「我的 › 備份」是文中連結
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
-msgid "privacy.loss.body"
-msgstr "清除瀏覽器資料，或長時間未使用時瀏覽器主動清除（例如 Safari 的規則），都可能讓進度消失。網站會盡量降低被清除的機率，但不保證不會發生；之後的里程碑會提供備份與匯出。"
+msgid "privacy.loss.text"
+msgstr "清除瀏覽器資料，或長時間未使用時瀏覽器主動清除（例如 Safari 的規則），都可能讓進度消失。網站會盡量降低被清除的機率，但不保證不會發生；請定期到<0>我的 › 備份</0>匯出一份。"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1006,6 +2383,12 @@ msgstr "瀏覽器沒有同意，請定期匯出備份。"
 msgid "design.why.title"
 msgstr "為什麼想做這個"
 
+#. 儲存層橫幅的標題
+#. js-lingui-explicit-id
+#: src/components/StorageBanners.tsx
+msgid "storage.degraded.title"
+msgstr "無法儲存進度"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.code.copyFailed"
@@ -1016,6 +2399,12 @@ msgstr "無法自動複製，請自己選取下方的備份碼。"
 #: src/components/InAppBrowserBanner.tsx
 msgid "inapp.copyFailed"
 msgstr "無法自動複製，請長按網址列自行複製。"
+
+#. 複製關卡連結失敗
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelQr.tsx
+msgid "map.qr.copyFailed"
+msgstr "無法複製，請直接選取網址"
 
 #. 分類題的分類格（現金流量活動）
 #. js-lingui-explicit-id
@@ -1032,6 +2421,12 @@ msgstr "版本"
 #: src/pages/Debug.tsx
 msgid "debug.version"
 msgstr "版本"
+
+#. 關於頁「診斷資訊」選單列的說明
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.more.debug.desc"
+msgstr "版本、裝置與儲存的檢查結果"
 
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
@@ -1061,20 +2456,58 @@ msgstr "現行用語"
 msgid "classify.ratio.cashFlow"
 msgstr "現金流量"
 
+#. 安裝教學頁：iPhone、iPad 上這台裝置的教學卡片標題
+#. js-lingui-explicit-id
+#: src/pages/Install.tsx
+msgid "install.card.ios"
+msgstr "用 Safari 加入主畫面"
+
+#. 結果頁成績小卡：這一關用時的標籤（計時有開才顯示）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.stat.time"
+msgstr "用時"
+
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.note"
+msgstr "用語說明"
+
+#. 安裝教學頁：Chrome、Edge 等瀏覽器的教學卡片標題
+#. js-lingui-explicit-id
+#: src/pages/Install.tsx
+msgid "install.card.chromium"
+msgstr "用這個瀏覽器安裝"
+
+#. 首頁主卡的介紹，兩句；詞的字與字之間有看不見的 U+2060（word joiner），只在詞與詞之間、標點後換行（「會計入門」「可離線使用」整塊不拆）。闖關、實驗室是 Tab 的短名（D9）。375 排成「用闖關與實驗室學會計入門。」換行「中英雙語，可離線使用。」兩行；320 三行，在「學」或句號後換行
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
 msgid "home.tagline"
-msgstr "用闖關與報表實驗室學會計入門，中英雙語，可離線使用。"
+msgstr "用闖⁠關與實⁠驗⁠室學會⁠計⁠入⁠門。中⁠英⁠雙⁠語，可⁠離⁠線⁠使⁠用。"
 
+#. 診斷資訊：錯誤紀錄是空的時候，停用的「清除」旁邊的說明
 #. js-lingui-explicit-id
-#: src/pages/Home.tsx
-msgid "home.build.title"
-msgstr "目前的進度"
+#: src/pages/Debug.tsx
+msgid "debug.errors.empty"
+msgstr "目前沒有紀錄"
 
+#. 覆蓋前的自動匯出被取消（例如關掉分享表單）
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
-msgid "backup.preview.replaceConfirm"
-msgstr "目前的進度已匯出。確定要覆蓋嗎？這個動作無法復原。"
+msgid "backup.replace.cancelled"
+msgstr "目前的進度沒有匯出，所以沒有覆蓋。"
+
+#. 「參考名詞」區的說明：隨時可讀、不算收集數；之後有關卡用到會自動移到收集區
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.reference.note"
+msgstr "目前還沒有關卡用到這些名詞，隨時可以讀，不算在上面「已收進圖鑑」的數量裡；之後有關卡用到時會自動移進收集。"
+
+#. 還沒收進圖鑑、目前也沒有任何已發布關卡用到這個名詞時的說明（不能寫會在哪一關遇到）
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.lockedNoLevel"
+msgstr "目前還沒有關卡用到這個名詞；之後的關卡或報表實驗室用到時會自動收進圖鑑，現在也可以直接讀。"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -1087,34 +2520,65 @@ msgstr "相機"
 msgid "play.scan.preview"
 msgstr "相機預覽"
 
+#. 名詞頁：相關名詞段落標題
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.related"
+msgstr "相關名詞"
+
 #. 章節頁章末連到實驗室的段落標題
 #. js-lingui-explicit-id
 #: src/pages/Chapter.tsx
 msgid "chapter.endLinks"
 msgstr "相關實驗室步驟"
 
+#. 實驗室占位頁的第二顆按鈕
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.placeholder.terms"
+msgstr "看名詞圖鑑"
+
+#. 展開內嵌的安裝圖解
+#. js-lingui-explicit-id
+#: src/components/InstallPrompt.tsx
+msgid "install.guide.show"
+msgstr "看圖解教學"
+
+#. 結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績，都包在不換行的標籤裡）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.cheerLine"
+msgstr "看過解說<0>再挑戰</0>一次，<1>星星</1>就會亮起來。"
+
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
 msgid "common.ok"
 msgstr "知道了"
 
-#. js-lingui-explicit-id
-#: src/pages/Backup.tsx
-msgid "backup.preview.confirmReplace"
-msgstr "確定覆蓋"
-
 #. 分類題的送出按鈕
 #. js-lingui-explicit-id
-#: src/pages/Level.tsx
+#: src/features/quiz/LevelSession.tsx
 #: src/pages/Review.tsx
 msgid "quiz.submit.classify"
 msgstr "確認分類"
+
+#. 名詞類別：會計科目
+#. js-lingui-explicit-id
+#: src/features/glossary/useCategoryLabel.ts
+msgid "terms.category.account"
+msgstr "科目"
 
 #. 從錯題本移除已下架題目的按鈕
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
 msgid "review.retired.remove"
 msgstr "移除"
+
+#. 收藏卡移除按鈕的可讀名稱；後面是題目摘錄的前 12 個字（題目已下架時是「這題已下架」）
+#. js-lingui-explicit-id
+#: src/features/quiz/FavouritesSection.tsx
+msgid "favourite.remove"
+msgstr "移除收藏：{excerpt}"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -1126,28 +2590,58 @@ msgstr "程式碼：MIT 授權。"
 msgid "design.open.1"
 msgstr "程式碼和原創的內容都是公開的。一方面是因為我覺得學習的東西本來就該讓人看見怎麼做出來的；另一方面也是提醒自己，寫下的每一個選擇都要經得起別人翻閱。"
 
-#. 關閉備份提醒的按鈕
-#. js-lingui-explicit-id
-#: src/components/BackupReminder.tsx
-msgid "backupReminder.later"
-msgstr "稍後"
-
 #. js-lingui-explicit-id
 #: src/components/UpdatePrompt.tsx
 msgid "sw.later"
 msgstr "稍後"
 
-#. 儲存失敗提示裡的按鈕
+#. 儲存失敗提示裡的按鈕，連到備份頁
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.exportNow"
 msgstr "立即匯出"
 
-#. 複習完成的摘要；correct 是答對題數、total 是題數
+#. 徽章所屬的章（讀不到章節名）；chapterNo 是已格式化的章序號
 #. js-lingui-explicit-id
-#: src/pages/Review.tsx
-msgid "review.done.summary"
-msgstr "答對 {correct} 題，共 {total} 題。答對的往上一個盒子，答錯的回到盒子 1。"
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.chapterNoTitle"
+msgstr "第 {chapterNo} 章"
+
+#. 首頁章節小地圖卡的標題；chapterNo 是已格式化的章序，chapterName 是章名
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.minimap.chapterTitle"
+msgstr "第 {chapterNo} 章 {chapterName}"
+
+#. 徽章所屬的章；chapterNo 是已格式化的章序號，title 是章節名
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.eyebrow.chapter"
+msgstr "第 {chapterNo} 章：{title}"
+
+#. 章節頁主卡的眉標（主線章）；n 是章序
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.eyebrow"
+msgstr "第 {n} 章"
+
+#. 依章節分組、讀不到章節名時的標題；no 是已格式化的章序號
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.chapterNo"
+msgstr "第 {no} 章"
+
+#. 依章節分組的標題（螢幕閱讀器唸的完整名稱）；no 是已格式化的章序號，title 是章節名
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.chapterName"
+msgstr "第 {no} 章：{title}"
+
+#. iOS 圖解的第 0 步：先把進度帶走
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.step0"
+msgstr "第 0 步：先把這裡的進度帶走。按「<0>匯出到 App</0>」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App 時貼上，進度就會合併。"
 
 #. 交易影響題作答後的摘要；correctCount 是答對的目標數、total 是目標數
 #. js-lingui-explicit-id
@@ -1155,17 +2649,47 @@ msgstr "答對 {correct} 題，共 {total} 題。答對的往上一個盒子，�
 msgid "quiz.impact.summary"
 msgstr "答對 {correctCount} 個目標，共 {total} 個。"
 
-#. 結果頁：有答錯時的說明；wrongCount 是題數
-#. js-lingui-explicit-id
-#: src/features/quiz/ResultView.tsx
-msgid "level.result.wrongAdded"
-msgstr "答錯的題目已放進錯題本（{wrongCount} 題）。"
-
-#. 錯題本沒有到期題目時的說明
+#. 錯題複習完成的成績；right 是答對題數、total 是題數（都已格式化）
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
-msgid "review.empty.body"
-msgstr "答錯的題目會依間隔排進來；去闖關或明天再來看看。"
+msgid "review.done.score"
+msgstr "答對 {right} 題，共 {total} 題。"
+
+#. 錯題複習完成後，說明之後什麼時候再複習。不提間隔複習的「盒子」（學生看不懂的內部用語）；標籤包住的詞不換行
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.done.comeBack"
+msgstr "答對的會<0>隔久一點再來</0>，<1>答錯的</1><2>明天再見</2>。"
+
+#. 錯題本入口每一列的來源：答錯的次數；times 是已格式化的次數
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.source.wrong"
+msgstr "答錯 {times} 次"
+
+#. 錯題本沒有到期題目時的說明；標籤包住的詞不換行
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.empty.comeBack"
+msgstr "答錯或<0>標成猜的</0>題目，<1>會在之後</1><2>幾天</2><3>回來找你</3>。"
+
+#. 結果頁：有答錯時的說明；wrongN 是已格式化的題數（「錯題本」包在不換行的標籤裡）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.wrongAddedNote"
+msgstr "答錯的題目已放進<0>錯題本</0>（{wrongN} 題）。"
+
+#. 「我的」學習群組錯題本列的說明（今天沒有到期的題目）；依詞換行，「再複習」會和「隔幾天」黏成一個六字的詞，320 加 200% 時斷成「再複／習」
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.review.desc"
+msgstr "答錯的題目會排在這裡，隔幾天回來複習"
+
+#. 指標版本名稱（04 第 12.7 節）：入門用的簡化公式（期末餘額、單期）；學生看的說法，不露出版本代號或教材單元
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "ratio.version.slides02"
+msgstr "簡化公式口徑"
 
 #. 分類題的分類格（現金流量活動）
 #. js-lingui-explicit-id
@@ -1173,10 +2697,21 @@ msgstr "答錯的題目會依間隔排進來；去闖關或明天再來看看。
 msgid "classify.cf.financing"
 msgstr "籌資活動"
 
+#. 徽章格的狀態：精通
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.state.mastery"
+msgstr "精通"
+
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 msgid "settings.flavor.wine"
 msgstr "紅酒"
+
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.teacher.title"
+msgstr "給老師"
 
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
@@ -1206,20 +2741,39 @@ msgid "error.updated.title"
 msgstr "網站已更新"
 
 #. js-lingui-explicit-id
-#: src/components/RouteError.tsx
-msgid "error.updated.body"
-msgstr "網站已更新，重新整理即可繼續。你的進度已經存好。"
-
-#. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.source.1"
 msgstr "網站裡所有的數字，包括餘額、三張報表、財務比率、題目的答案，都是從同一組分錄算出來的。沒有任何一個數字是另外手寫上去的。"
 
-#. 關卡代號疊加層的說明
+#. Compact 分頁列的白話說法（底部只剩一條縮小的網址列）；要短，內嵌時和另一個選項排成一列
 #. js-lingui-explicit-id
-#: src/features/quest-map/LevelCodeOverlay.tsx
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.compact"
+msgstr "縮小的網址列"
+
+#. 章節主卡的主按鈕：這一章做到一半，前往下一個還沒完成的關卡；actionCode 是關卡編號
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.action.continue"
+msgstr "繼續 {actionCode}"
+
+#. 首頁主按鈕（有進度）：直接開始下一關；nextCode 是短代號，例如 1-2（關名在主卡的第二行）
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.continue.code"
+msgstr "繼續 {nextCode}"
+
+#. 錯題本入口：今天的複習做到一半時的按鈕
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.resume"
+msgstr "繼續複習"
+
+#. 關卡代號疊加層的說明；標籤包住的詞不換行
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelCodeOverlay.tsx
 msgid "play.code.hint"
-msgstr "老師寫在黑板或投影片上的 8 碼代號；大小寫、空白與連字號都可以省略。"
+msgstr "老師寫在黑板或投影片上的 <0>8 碼代號</0>；大小寫、空白與<1>連字號</1>都可以省略。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1242,15 +2796,33 @@ msgstr "聯絡方式"
 msgid "classify.element.equity"
 msgstr "股東權益"
 
+#. 玻璃效果的選項：自動（英文用短字 Auto）
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.auto"
 msgstr "自動"
 
 #. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.feature.edit.note"
+msgstr "自己決定金額與科目，看看怎麼記帳。"
+
+#. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 msgid "settings.flavor.berry"
 msgstr "莓果"
+
+#. 計時提醒開關的說明
+#. js-lingui-explicit-id
+#: src/components/TimerSetting.tsx
+msgid "settings.timer.announceDesc"
+msgstr "螢幕閱讀器在剩 1 分鐘與時間到時各唸一次提醒。關閉後倒數照常顯示，只是不唸出來。"
+
+#. Chromium 安裝之後的說明：桌面或主畫面的圖示；進度和瀏覽器共用
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.after"
+msgstr "裝好之後從桌面或主畫面的圖示開啟。進度和這個瀏覽器是同一份，不用搬。"
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -1267,6 +2839,12 @@ msgstr "複製備份碼"
 msgid "debug.copy"
 msgstr "複製全部結果"
 
+#. 複製這一關網址的按鈕
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelQr.tsx
+msgid "map.qr.copyLink"
+msgstr "複製連結"
+
 #. 複製目前網址的按鈕
 #. js-lingui-explicit-id
 #: src/components/InAppBrowserBanner.tsx
@@ -1276,7 +2854,7 @@ msgstr "複製連結"
 #. js-lingui-explicit-id
 #: src/components/ImportPromptCard.tsx
 msgid "importPrompt.title"
-msgstr "要從 Safari 匯入進度嗎？"
+msgstr "要從 Safari 匯⁠入進⁠度⁠嗎？"
 
 #. 取捨題每個方案說明的小標
 #. js-lingui-explicit-id
@@ -1284,24 +2862,76 @@ msgstr "要從 Safari 匯入進度嗎？"
 msgid "quiz.judgment.downside"
 msgstr "要注意"
 
+#. 覆蓋現有進度的確認面板標題
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
-msgid "backup.preview.replace"
-msgstr "覆蓋：除了設定之外，全部改成備份裡的內容（會先自動匯出一份目前的進度）"
+msgid "backup.confirm.title"
+msgstr "要覆蓋現有進度嗎？"
 
-#. 結果頁：全對時的說明
+#. 進階選項裡覆蓋的說明
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.preview.replaceHint"
+msgstr "覆蓋：除了語言、計時這類偏好設定之外，全部（包括收藏）改成備份裡的內容。覆蓋之前會先自動匯出一份目前的進度。"
+
+#. 進階選項裡的破壞性按鈕；按下先開確認面板
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.preview.replaceButton"
+msgstr "覆蓋現有進度"
+
+#. 名詞類別：會計觀念
+#. js-lingui-explicit-id
+#: src/features/glossary/useCategoryLabel.ts
+msgid "terms.category.concept"
+msgstr "觀念"
+
+#. 結果頁成績小卡：計分題數的標籤
 #. js-lingui-explicit-id
 #: src/features/quiz/ResultView.tsx
-msgid "level.result.allCorrect"
-msgstr "計分題全部答對，沒有題目進錯題本。"
+msgid "level.result.stat.scored"
+msgstr "計分題"
 
-#. 備份提醒橫幅的本文
+#. 設定頁計時區的標題
+#. js-lingui-explicit-id
+#: src/components/TimerSetting.tsx
+msgid "settings.timer.title"
+msgstr "計時"
+
+#. 結果頁有用時時的補充說明
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.timeNote"
+msgstr "計時不影響星星。"
+
+#. 按過「我已安裝」之後的回應
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.doneMsg"
+msgstr "記住了，不會再跳出安裝建議。"
+
+#. 按過「我已加入主畫面」之後的回應
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.seenDone"
+msgstr "記住了。之後在 Safari 分頁會提醒你從主畫面開啟。"
+
+#. 地圖頁的單行提示條：備份提醒
 #. js-lingui-explicit-id
 #: src/components/BackupReminder.tsx
-msgid "backupReminder.text"
-msgstr "記得匯出備份：這台裝置的進度可能被清除，先匯出一份比較安心。"
+msgid "play.hint.backup"
+msgstr "記⁠得備⁠份進⁠度"
 
+#. 備份提醒橫幅的標題
 #. js-lingui-explicit-id
+#: src/components/BackupReminder.tsx
+msgid "backupReminder.title"
+msgstr "記得匯出備份"
+
+#. 「我的」與首頁捷徑連到設定頁
+#. 「我的」與首頁捷徑連到設定頁
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
 #: src/pages/Me.tsx
 msgid "me.settings"
 msgstr "設定"
@@ -1310,11 +2940,6 @@ msgstr "設定"
 #: src/pages/Settings.tsx
 msgid "settings.title"
 msgstr "設定"
-
-#. js-lingui-explicit-id
-#: src/pages/Home.tsx
-msgid "home.link.settings"
-msgstr "設定（語言、外觀、深色風味）"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -1326,11 +2951,40 @@ msgstr "診斷資訊"
 msgid "debug.title"
 msgstr "診斷資訊"
 
+#. 地圖頁備份提示條右側「詳細」圖示按鈕的可讀名稱
+#. js-lingui-explicit-id
+#: src/components/BackupReminder.tsx
+msgid "play.hint.details.backup"
+msgstr "詳細：前往備份"
+
+#. 地圖頁 Safari 分頁提示條右側「詳細」圖示按鈕的可讀名稱（前往備份頁）
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "play.hint.details.safari"
+msgstr "詳細：匯出到 App"
+
 #. js-lingui-explicit-id
 #: src/components/LangSwitch.tsx
 #: src/pages/Settings.tsx
 msgid "lang.label"
 msgstr "語言"
+
+#. 首頁捷徑：設定的說明；詞的字與字之間有看不見的 U+2060，200% 字級時只在頓號後換行（第 9 輪：「外／觀」）
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.shortcut.settings.desc"
+msgstr "語⁠言、外⁠觀、深⁠色⁠風⁠味"
+
+#. 「我的」設定列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.settings.desc"
+msgstr "語言、外觀、計時"
+
+#. js-lingui-explicit-id
+#: src/pages/Placeholder.tsx
+msgid "lab.feature.rules.title"
+msgstr "課程版與準則版"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1345,19 +2999,13 @@ msgstr "課程的版面，現行的準則"
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.blocked"
-msgstr "請關閉其他 LedgerLand 分頁，再重新整理。"
+msgstr "請⁠關⁠閉其⁠他 LedgerLand 分⁠頁，再重⁠新整⁠理。"
 
 #. 分類題的分類格（要素）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
 msgid "classify.element.liability"
 msgstr "負債"
-
-#. 分類題的分類格（指標類別）
-#. js-lingui-explicit-id
-#: src/features/quiz/categories.ts
-msgid "classify.ratio.financialStructure"
-msgstr "財務結構"
 
 #. 分類題的分類格（要素）
 #. js-lingui-explicit-id
@@ -1386,40 +3034,94 @@ msgstr "資料可能消失的情況"
 msgid "classify.element.asset"
 msgstr "資產"
 
+#. 分類題的分類格（指標類別，12 第 10.1 節）
+#. js-lingui-explicit-id
+#: src/features/quiz/categories.ts
+msgid "classify.ratio.financialStructure"
+msgstr "資產結構"
+
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 msgid "settings.theme.system"
 msgstr "跟隨系統"
 
-#. 工具列：捲到目前關卡的按鈕
+#. 頂部工具：捲到目前關卡的按鈕
 #. js-lingui-explicit-id
-#: src/features/quest-map/MapToolbar.tsx
+#: src/pages/Play.tsx
 msgid "play.tool.locate"
 msgstr "跳到目前關卡"
 
 #. 掃描器 chunk 載入中的文字
 #. js-lingui-explicit-id
-#: src/features/quest-map/ScanOverlay.tsx
+#: src/features/quest-map-overlays/ScanOverlay.tsx
 msgid "play.scan.loading"
 msgstr "載入掃描器中"
 
-#. 關卡代號疊加層的標題
+#. 頂部工具：開啟關卡代號輸入的按鈕
 #. js-lingui-explicit-id
-#: src/features/quest-map/LevelCodeOverlay.tsx
-msgid "play.code.title"
-msgstr "輸入關卡代號"
-
-#. 工具列：開啟關卡代號輸入的按鈕
-#. js-lingui-explicit-id
-#: src/features/quest-map/MapToolbar.tsx
+#: src/pages/Play.tsx
 msgid "play.tool.code"
 msgstr "輸入關卡代號"
 
-#. 關卡快照載入失敗時的標題
+#. 關卡代號疊加層的標題
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelCodeOverlay.tsx
+msgid "play.code.title"
+msgstr "輸入關卡代號"
+
+#. 關卡快照載入失敗時的標題；標籤包住的詞不換行
 #. js-lingui-explicit-id
 #: src/pages/Level.tsx
-msgid "level.unavailable.title"
-msgstr "這一關還沒下載到這台裝置"
+msgid "level.unavailable.heading"
+msgstr "這一關<0>還沒下載</0>到<1>這台裝置</1>"
+
+#. 已下架的收藏卡的說明
+#. js-lingui-explicit-id
+#: src/features/quiz/FavouritesSection.tsx
+msgid "favourites.retiredLevel"
+msgstr "這一關已下架，可以移除這筆收藏。"
+
+#. QR 圖的可讀名稱（網址另外列在圖下方）
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelQr.tsx
+msgid "map.qr.alt"
+msgstr "這一關的 QR"
+
+#. 整關不計分的結果頁說明：沒有星星，也不進錯題本（「錯題本」包在不換行的標籤裡）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.unscoredNote"
+msgstr "這一關的題目沒有標準答案，不算星星，也不會進<0>錯題本</0>。"
+
+#. 作答頁開頭單次開啟計時的按鈕（不改設定頁的預設，03 第 2.10 節）
+#. js-lingui-explicit-id
+#: src/features/quiz/LevelSession.tsx
+msgid "level.timer.once"
+msgstr "這一關計時"
+
+#. 主線章但不列入期中考時，主卡最下方的說明
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.note.notInExam"
+msgstr "這一章不列入期中考。"
+
+#. 清單檢視每章底下「章節資訊」列的群組可讀名稱
+#. js-lingui-explicit-id
+#: src/features/quest-map/ListView.tsx
+msgid "play.list.chapterLinks"
+msgstr "這一章的其他頁面"
+
+#. 首頁寬版主卡星星膠囊的可讀名稱；progStars 是「拿到的／滿星數」，例如 4／9
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.progress.starsLabel"
+msgstr "這一章的星星 {progStars} 顆"
+
+#. 首頁寬版主卡：目前章節進度的小標
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.progress.title"
+msgstr "這一章的進度"
 
 #. 章節還沒有發布關卡時的文字
 #. js-lingui-explicit-id
@@ -1437,10 +3139,11 @@ msgstr "這一頁只在本機顯示資訊，不會送出任何資料；「複製
 msgid "design.unsaid.3"
 msgstr "這一頁後面會慢慢補上那些選擇，以及為什麼。"
 
+#. 路由錯誤頁的說明；按鈕是「重新整理」與「回到首頁」
 #. js-lingui-explicit-id
 #: src/components/RouteError.tsx
-msgid "error.generic.body"
-msgstr "這一頁暫時無法顯示。你可以回到首頁，或先把這個畫面截圖回報給我們。"
+msgid "error.generic.hint"
+msgstr "這一⁠頁暫⁠時無⁠法顯⁠示。可⁠以重⁠新整⁠理再⁠試一⁠次，或先⁠回⁠到首⁠頁；如⁠果一⁠直出⁠現，請⁠把這⁠個畫⁠面⁠截⁠圖⁠回⁠報給我⁠們。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1448,8 +3151,8 @@ msgid "design.footer"
 msgstr "這一頁會跟著系統一起慢慢成形。"
 
 #. js-lingui-explicit-id
+#: src/features/quiz/terms.tsx
 #: src/pages/Chapter.tsx
-#: src/pages/Level.tsx
 #: src/pages/Play.tsx
 #: src/pages/Term.tsx
 #: src/pages/Terms.tsx
@@ -1462,6 +3165,12 @@ msgstr "這一頁還沒下載到這台裝置。連上網路後再試一次，已
 msgid "quiz.judgment.unscored"
 msgstr "這一題不計分，也不進錯題本。"
 
+#. 指標判讀題上方小表格的標題
+#. js-lingui-explicit-id
+#: src/features/quiz/QuestionView.tsx
+msgid "quiz.ratio.tableCaption"
+msgstr "這一題的指標"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.error.notCode"
@@ -1472,6 +3181,12 @@ msgstr "這不是 LedgerLand 的備份碼。"
 #: src/features/quest-map/QrScanner.tsx
 msgid "play.scan.notSite"
 msgstr "這不是 LedgerLand 的課堂 QR。"
+
+#. 「還沒有關卡用到的名詞」那一組的說明（只出現一次，卡片上不再重複）
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.none.note"
+msgstr "這些名詞目前還沒有關卡用到，可以先讀。"
 
 #. 已下架關卡段落的說明
 #. js-lingui-explicit-id
@@ -1504,17 +3219,30 @@ msgstr "這個 App"
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "safari.full"
-msgstr "這個 Safari 分頁和主畫面 App 的紀錄是分開的兩份。如果這裡有新的進度，按「匯出到 App」複製備份碼，再到 App 的「我的 › 備份」貼上，兩邊的紀錄會合併。"
+msgstr "這⁠個 Safari 分⁠頁⁠和主⁠畫⁠面 App 的紀⁠錄是分⁠開⁠的兩⁠份。如⁠果這⁠裡有新⁠的進⁠度，按「⁠匯⁠出⁠到 App」複⁠製備⁠份⁠碼，再⁠到 App 的「⁠我⁠的 › 備⁠份⁠」貼⁠上，兩⁠邊⁠的紀⁠錄會合⁠併。"
+
+#. 名詞頁讀不到內容（離線而且這一桶沒有快取）時的標題
+#. js-lingui-explicit-id
+#: src/pages/Term.tsx
+msgid "term.error.title"
+msgstr "這個名詞讀不到"
+
+#. 瀏覽器不支援壓縮（備份碼要壓縮），「複製備份碼」停用時的說明
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.export.codeUnsupported"
+msgstr "這個瀏覽器不支援備份碼，請改用備份檔。"
 
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.state.unsupported"
 msgstr "這個瀏覽器不支援這項設定，請定期匯出備份。"
 
+#. 沒有安裝按鈕的瀏覽器（Firefox、電腦版 Safari）
 #. js-lingui-explicit-id
-#: src/components/ProtectProgress.tsx
-msgid "settings.protect.state.on"
-msgstr "這個瀏覽器已同意保留進度。"
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.generic"
+msgstr "這個瀏覽器沒有安裝按鈕：可以先加入書籤；在 iPhone 用 Safari、在 Android 用 Chrome 開啟這個網址，就能加到主畫面。"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1529,17 +3257,41 @@ msgstr "這個環境不適用，請定期匯出備份。"
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
 msgid "ephemeral.title"
-msgstr "這個畫面關掉後，作答進度不會保留"
+msgstr "這⁠個畫⁠面關⁠掉後，作⁠答進⁠度不⁠會保⁠留"
 
 #. js-lingui-explicit-id
 #: src/pages/NotFound.tsx
 msgid "notfound.body"
 msgstr "這個網址沒有對應的頁面，可能是輸入錯誤，或內容已經下架。"
 
+#. 關於頁「關於系統設計」選單列的說明
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+msgid "about.more.design.desc"
+msgstr "這個網站怎麼設計出來的"
+
+#. 「我的」關於系統設計列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.design.desc"
+msgstr "這個網站怎麼設計出來的"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.status.title"
 msgstr "這台裝置"
+
+#. 「我的」選單列的群組標題
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.group.device"
+msgstr "這台裝置"
+
+#. 覆蓋現有進度的確認面板說明
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.confirm.body"
+msgstr "這台裝置上的星星、錯題本與收藏會換成備份檔裡的內容。按下後會先自動匯出一份目前的進度；覆蓋之後不能復原。"
 
 #. 掃描畫面：找不到相機時的提示
 #. js-lingui-explicit-id
@@ -1550,17 +3302,35 @@ msgstr "這台裝置找不到可以用的相機，可以改輸入關卡代號。
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.quota"
-msgstr "這台裝置的儲存空間不太夠，進度可能存不進去。建議你先匯出備份。"
+msgstr "這台⁠裝⁠置⁠的儲⁠存空⁠間不⁠太⁠夠，進⁠度可⁠能⁠存⁠不⁠進⁠去。建⁠議你先⁠匯⁠出備⁠份。"
+
+#. 備份提醒橫幅的說明
+#. js-lingui-explicit-id
+#: src/components/BackupReminder.tsx
+msgid "backupReminder.body"
+msgstr "這台⁠裝⁠置⁠的進⁠度可⁠能被清⁠除，先⁠匯⁠出一⁠份比⁠較安⁠心。"
 
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.degraded"
-msgstr "這台裝置目前無法儲存進度。你可以繼續練習，但請先匯出備份。"
+msgstr "這台⁠裝⁠置目⁠前無⁠法儲⁠存進⁠度。你可⁠以繼⁠續練⁠習，但請⁠先匯⁠出備⁠份。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.source.2"
 msgstr "這樣做的理由很簡單：如果有一天某個地方算錯了，它只會錯在一個地方，改一次就好。也因為這樣，你在實驗室裡改了一筆金額，後面的每一張表都會跟著變，不會有哪個角落還留著舊的數字。"
+
+#. QR 編碼器載入失敗時的說明
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelQr.tsx
+msgid "map.qr.failed"
+msgstr "這次沒辦法產生 QR，請改用「複製連結」。"
+
+#. 關卡結果頁的標題：這一輪沒有拿到星星（下面接一行鼓勵與「再挑戰」主按鈕）
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.title.noStar"
+msgstr "這次還沒拿到星星"
 
 #. 題型還沒實作時的提示；type 是題型代號
 #. js-lingui-explicit-id
@@ -1568,10 +3338,10 @@ msgstr "這樣做的理由很簡單：如果有一天某個地方算錯了，它
 msgid "quiz.unsupportedType"
 msgstr "這種題型（{type}）這個版本還不能作答。"
 
-#. 錯題本裡題目已下架時的說明
+#. 收藏的題目已不在任何關卡
 #. js-lingui-explicit-id
-#: src/pages/Review.tsx
-msgid "review.retired.item"
+#: src/features/quiz/FavouritesSection.tsx
+msgid "favourites.retired"
 msgstr "這題已下架"
 
 #. 錯題本裡的題目載入不到時的說明
@@ -1585,26 +3355,35 @@ msgstr "這題暫時載入不到，重新整理後再試一次。"
 msgid "backup.intro"
 msgstr "進度只存在這台裝置。換裝置、重灌，或把 Safari 的進度搬進主畫面 App 時，用備份檔或備份碼轉移。"
 
+#. 「我的」隱私說明列的說明
+#. 「我的」隱私說明列的說明
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+#: src/pages/Me.tsx
+msgid "me.privacy.desc"
+msgstr "進度存在哪裡、誰看得到"
+
+#. 儲存層橫幅的標題
+#. js-lingui-explicit-id
+#: src/components/StorageBanners.tsx
+msgid "storage.suspended.title"
+msgstr "進度暫停儲存"
+
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.writeFailed"
-msgstr "進度暫時無法儲存。重要進度已先暫存起來，建議你現在匯出備份。"
+msgstr "進⁠度暫⁠時無⁠法儲⁠存。重⁠要進⁠度⁠已⁠先⁠暫⁠存起⁠來，建⁠議你現⁠在匯⁠出備⁠份。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.progress.title"
 msgstr "進度留在你自己的手上"
 
+#. 備份預覽卡的展開列：覆蓋現有進度
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
-msgid "backup.preview.advanced"
-msgstr "進階"
-
-#. iOS 簡易說明第二步
-#. js-lingui-explicit-id
-#: src/components/InstallPrompt.tsx
-msgid "install.ios.step2"
-msgstr "選「加入主畫面」"
+msgid "backup.preview.advancedOptions"
+msgstr "進階選項"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1616,53 +3395,114 @@ msgstr "選擇備份檔"
 msgid "importPrompt.file"
 msgstr "選擇備份檔"
 
+#. 錯題本入口：列表只列 5 題，其餘的題數；moreN 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.entry.more"
+msgstr "還有 {moreN} 題"
+
+#. 關卡讀不到、章節索引也找不到名稱時，作答頁頁首的標題
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.unavailable.short"
+msgstr "還沒下載的關卡"
+
+#. 「我的」備份列右側與備份頁：從來沒有匯出過
+#. 「我的」備份列右側與備份頁：從來沒有匯出過
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
-msgid "backup.status.never"
-msgstr "還沒匯出過"
+#: src/pages/Me.tsx
+msgid "me.backup.never"
+msgstr "還沒備份"
+
+#. 名詞頁解鎖任務卡的眉標：這個名詞還沒收進圖鑑（只是收藏狀態，內容照樣能讀）
+#. js-lingui-explicit-id
+#: src/features/glossary/UnlockCard.tsx
+msgid "term.unlock.eyebrow"
+msgstr "還沒收進圖鑑"
+
+#. 收集進度卡最後一行：鎖住的只是收藏狀態，內容照樣能讀
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.progress.hint"
+msgstr "還沒收進的名詞也可以直接讀。"
+
+#. 收藏清單是空的；<0>、<1> 是不換行的詞；其他依詞換行（PhrasedRich）
+#. js-lingui-explicit-id
+#: src/features/quiz/FavouritesSection.tsx
+msgid "favourites.empty"
+msgstr "還沒有收藏。作答<0>取捨題</0>時按「<1>收藏</1>」，就會放在這裡。"
+
+#. 還沒有任何已發布關卡用到的名詞那一組（不知道會在哪一關遇到）
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.group.other"
+msgstr "還沒有關卡用到的名詞"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.why.2"
 msgstr "那時候我想，如果可以把這個過程做成一個可以動手玩的東西，讓數字自己跑，讓人看見每一筆交易在報表裡留下的痕跡，也許會計就不會那麼像一堆要背的規則了。"
 
+#. 還原暫存時，有已作答的題目答案改版了，那幾題要重新作答（02 第 3 節第 7 點）
+#. js-lingui-explicit-id
+#: src/features/quiz/LevelSession.tsx
+msgid "level.questionsUpdated"
+msgstr "部分題目已更新，請重新作答。"
+
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
 msgid "classify.ratio.department"
-msgstr "部門別"
+msgstr "部門指標"
 
 #. js-lingui-explicit-id
 #: src/components/RouteError.tsx
+#: src/features/quiz/LoadFailed.tsx
 msgid "error.reload"
 msgstr "重新整理"
 
+#. 儲存提示裡重新整理頁面的按鈕
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.reload"
 msgstr "重新整理"
+
+#. 更新提示的主按鈕：換成新版本並重新載入
+#. js-lingui-explicit-id
+#: src/components/UpdatePrompt.tsx
+msgid "sw.reload"
+msgstr "重新整理"
+
+#. 網站已更新的說明（標題已經說了「網站已更新」）
+#. js-lingui-explicit-id
+#: src/components/RouteError.tsx
+msgid "error.updated.hint"
+msgstr "重⁠新整⁠理一⁠下就能繼⁠續，你⁠的進⁠度已⁠經⁠存⁠好。"
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.refresh"
 msgstr "重新量測"
 
-#. 地圖資料載入中的提示；鈴是吉祥物的名字
-#. js-lingui-explicit-id
-#: src/pages/Play.tsx
-msgid "play.loading"
-msgstr "鈴正在整理路線，關卡馬上就會出現。"
-
-#. 空狀態說明；鈴是吉祥物的名字
+#. 空狀態說明；鈴是吉祥物的名字；<0> 是不換行的詞
 #. js-lingui-explicit-id
 #: src/pages/Play.tsx
 msgid "play.empty.body"
-msgstr "鈴還在整理路線，關卡發布後就會出現在這裡。"
+msgstr "鈴還在整理路線，關卡<0>發布</0>後就會出現在這裡。"
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.errors"
 msgstr "錯誤紀錄（最近 50 筆）"
+
+#. 首頁今日複習列的標題
+#. 首頁今日複習列的標題
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+#: src/pages/Me.tsx
+msgid "home.review.title"
+msgstr "錯題本"
 
 #. 錯題本頁面的標題
 #. js-lingui-explicit-id
@@ -1670,23 +3510,41 @@ msgstr "錯誤紀錄（最近 50 筆）"
 msgid "review.title"
 msgstr "錯題本"
 
+#. 錯題複習中的頁首標題
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.mode"
+msgstr "錯題複習"
+
+#. 章節主卡的主按鈕：還沒開始這一章；actionCode 是關卡編號（1-1 或 E1-1）
+#. js-lingui-explicit-id
+#: src/features/chapter/ChapterHero.tsx
+msgid "chapter.action.start"
+msgstr "開始 {actionCode}"
+
 #. 說明卡上開始掃描的按鈕
 #. js-lingui-explicit-id
-#: src/features/quest-map/ScanOverlay.tsx
+#: src/features/quest-map-overlays/ScanOverlay.tsx
 msgid "play.scan.start"
 msgstr "開始掃描"
 
-#. 首頁進入闖關地圖的主按鈕
+#. 錯題本入口的主要按鈕
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.start"
+msgstr "開始複習"
+
+#. 首頁進入闖關地圖的主按鈕（還沒有進度）
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
 msgid "home.play"
 msgstr "開始闖關"
 
-#. 安裝建議卡片的說明；只說「比較不容易」，不保證
+#. 安裝建議的說明；只說「比較不容易」，不保證
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 msgid "install.body"
-msgstr "開啟更快，進度也比較不容易被清除。"
+msgstr "開⁠啟更快，進⁠度也⁠比⁠較不⁠容⁠易被清⁠除。"
 
 #. 闖關地圖的頁面標題（頂部列中央）
 #. js-lingui-explicit-id
@@ -1695,24 +3553,15 @@ msgid "play.map.title"
 msgstr "闖關"
 
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "play.title"
-msgstr "闖關區"
-
-#. js-lingui-explicit-id
-#: src/pages/Home.tsx
-msgid "home.build.body"
-msgstr "闖關區已經可以試用：前幾章的關卡、錯題本、進度備份與外觀設定都在這裡；報表實驗室與名詞圖鑑的完整版在之後的里程碑加入。"
-
-#. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.play.1"
 msgstr "闖關區長得像遊戲，但這裡沒有倒數計時、沒有體力、沒有要跟別人比的名次。關卡也不會鎖住你。"
 
+#. 首頁章節小地圖卡在進度讀到之前的標題
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "play.placeholder"
-msgstr "闖關地圖與關卡會在之後的里程碑加入。"
+#: src/pages/Home.tsx
+msgid "home.minimap.title"
+msgstr "闖關地圖"
 
 #. 章節頁關卡列表的標題
 #. js-lingui-explicit-id
@@ -1726,6 +3575,18 @@ msgstr "關卡"
 msgid "play.empty.title"
 msgstr "關卡準備中"
 
+#. 「我的」選單列的群組標題
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.group.about"
+msgstr "關於"
+
+#. 診斷資訊頁頂部返回鍵上的短字（回到「關於與授權」）
+#. js-lingui-explicit-id
+#: src/components/useBackLabels.ts
+msgid "about.back.short"
+msgstr "關於"
+
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.design"
@@ -1736,6 +3597,7 @@ msgstr "關於系統設計"
 msgid "design.title"
 msgstr "關於系統設計"
 
+#. 「我的」連到關於系統設計
 #. js-lingui-explicit-id
 #: src/pages/Me.tsx
 msgid "me.design"
@@ -1746,16 +3608,13 @@ msgstr "關於系統設計"
 msgid "about.title"
 msgstr "關於與授權"
 
+#. 「我的」連到關於與授權
+#. 「我的」連到關於與授權
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
 #: src/pages/Me.tsx
 msgid "me.about"
 msgstr "關於與授權"
-
-#. 對話框關閉按鈕的可讀名稱
-#. js-lingui-explicit-id
-#: src/features/quest-map/Overlay.tsx
-msgid "ui.close"
-msgstr "關閉"
 
 #. 「之後再說」按鈕的可讀名稱
 #. js-lingui-explicit-id
@@ -1763,17 +3622,22 @@ msgstr "關閉"
 msgid "install.laterA11y"
 msgstr "關閉安裝建議，之後再說"
 
+#. 匯出卡的開關標籤（用途寫在下面的說明行）
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.export.includeErrors"
-msgstr "附上錯誤紀錄（只用於回報問題）"
+msgstr "附上錯誤紀錄"
 
+#. 玻璃效果的選項：降低透明度（和 iPhone 的設定同名）。英文用 Solid，和 Frosted、Refraction 同一種說法，375 寬時四個選項排得進一列；說明文字寫出它對應 iPhone 的 Reduce Transparency
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.reduced"
 msgstr "降低透明度"
 
+#. 「我的」連到隱私說明
+#. 「我的」連到隱私說明
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
 #: src/pages/Me.tsx
 msgid "me.privacy"
 msgstr "隱私說明"
@@ -1782,6 +3646,21 @@ msgstr "隱私說明"
 #: src/pages/Privacy.tsx
 msgid "privacy.title"
 msgstr "隱私說明"
+
+#. 作答頁頁首返回圖示的可讀名稱（不跳確認，作答已暫存）
+#. 作答頁頁首返回圖示的可讀名稱（不跳確認，作答已暫存）
+#. 作答頁頁首返回圖示的可讀名稱（不跳確認，作答已暫存）
+#. js-lingui-explicit-id
+#: src/features/quiz/LevelSession.tsx
+#: src/pages/Level.tsx
+msgid "level.back"
+msgstr "離開這一關，回到闖關地圖"
+
+#. 錯題複習中頁首返回圖示的可讀名稱（回到錯題本入口，進度暫存）
+#. js-lingui-explicit-id
+#: src/pages/Review.tsx
+msgid "review.leave"
+msgstr "離開錯題複習"
 
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
@@ -1794,28 +3673,34 @@ msgstr "霧面"
 msgid "classify.current.noncurrent"
 msgstr "非流動"
 
-#. 章節頁還沒載入時的標題
-#. 章節頁還沒載入時的標題
-#. js-lingui-explicit-id
-#: src/pages/Chapter.tsx
-msgid "chapter.title.loading"
-msgstr "章節"
-
-#. 清單檢視每章底下到章節頁的連結
+#. 清單檢視每章底下到章節頁的列
 #. js-lingui-explicit-id
 #: src/features/quest-map/ListView.tsx
 msgid "play.list.chapterInfo"
 msgstr "章節資訊"
+
+#. 章節頁讀不到內容（多半是離線、這一頁還沒下載）時的標題
+#. js-lingui-explicit-id
+#: src/pages/Chapter.tsx
+msgid "chapter.error.title"
+msgstr "章節載入失敗"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.preview.title"
 msgstr "預覽"
 
+#. 匯入卡的說明。<0> 包住的「作答紀錄」在窄螢幕不拆成兩行；冒號後面一句保持 20 個字以內，375 寬時排成冒號前後兩行
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.import.hint"
-msgstr "預設會和這台裝置的紀錄合併：作答紀錄取聯集、星星取最高、徽章只會變多。"
+msgstr "預設會和這台裝置的紀錄合併：<0>作答紀錄</0>都保留、星星取最高、徽章不會少。"
+
+#. 計時開關的說明
+#. js-lingui-explicit-id
+#: src/components/TimerSetting.tsx
+msgid "settings.timer.enabledDesc"
+msgstr "預設關閉。開啟後作答頁顯示剩餘時間，隨時可以暫停；時間到不會送出，也不影響星星。"
 
 #. 錯題本：題目答案改版時的標示
 #. js-lingui-explicit-id
@@ -1832,3 +3717,27 @@ msgstr "題目是自己寫的"
 #: src/pages/Design.tsx
 msgid "design.colours.title"
 msgstr "顏色"
+
+#. 關卡介紹面板「給老師」區顯示關卡 QR 的按鈕（產生這一關網址的 QR 圖）
+#. js-lingui-explicit-id
+#: src/features/quest-map-overlays/LevelQr.tsx
+msgid "map.qr.show"
+msgstr "顯示 QR"
+
+#. Compact 分頁列第二步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact.2"
+msgstr "點「分享」。"
+
+#. Top／Bottom 分頁列第一步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.bar.1"
+msgstr "點工具列上的「分享」按鈕。"
+
+#. Compact 分頁列第一步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact.1"
+msgstr "點網址列旁的「⋯」（更多）。"
