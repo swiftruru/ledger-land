@@ -502,7 +502,9 @@ describe('章節徽章、章末區、角色、數字滾動（M3）', () => {
     const num = () => screen.container.querySelector<HTMLElement>('.ll-rollnum')!;
     expect(num().textContent).toBe('3');
     await screen.getByRole('button', { name: '加五' }).click();
-    expect(num().textContent).toBe('8');
+    // 減少動態時也是在 effect 裡換值（click() 回來時 React 可能還沒跑到 effect；vitest 5.0.4 的 browser mode 在 Linux 的 WebKit 上就是這樣，
+    // 2026-10-27 main 的 CI），所以等值出現，不立刻斷言
+    await expect.poll(() => num().textContent, { timeout: 2000 }).toBe('8');
     expect(num().dataset['rolling']).toBeUndefined();
     delete document.documentElement.dataset['motion'];
     await screen.getByRole('button', { name: '加五' }).click();
