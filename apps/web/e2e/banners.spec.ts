@@ -243,24 +243,23 @@ test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
   test('作答頁冷啟動時關卡代號先有同尺寸佔位，題目卡片位置不變，載入後立刻點選項與確認答案都成功', async ({ page, browserName, isMobile }) => {
     test.skip(browserName !== 'webkit' || !isMobile, '只在 iphone-webkit 專案跑');
     type Rec = { t0?: number; stop?: boolean; codeRowAtStart?: boolean; tops: [number, number][] };
+    // 取樣用 setInterval，不用 requestAnimationFrame：Linux 的 WebKit（CI）只在有畫面更新時才跑 rAF 回呼，一秒可能只有一兩次（2026-10-26 實測），
+    // 計時器則照常跑；每 16ms 量一次卡片位置（getBoundingClientRect 會強制排版，量到的就是當下的位置）
     await page.addInitScript(() => {
       const rec: { t0?: number; stop?: boolean; codeRowAtStart?: boolean; tops: [number, number][] } = { tops: [] };
       (window as unknown as { __llShift: typeof rec }).__llShift = rec;
-      const tick = () => {
-        if (rec.stop) return;
+      const id = setInterval(() => {
+        if (rec.stop) return clearInterval(id);
         const card = document.querySelector('[id^="ll-q-"]');
-        if (card) {
-          const now = performance.now();
-          if (rec.t0 === undefined) {
-            rec.t0 = now;
-            rec.codeRowAtStart = document.querySelector('.ll-safari-notice .ll-levelcode') !== null;
-          }
-          rec.tops.push([Math.round(now - rec.t0), Math.round((card.getBoundingClientRect().top + window.scrollY) * 10) / 10]);
-          if (now - rec.t0 > 1200) return;
+        if (!card) return;
+        const now = performance.now();
+        if (rec.t0 === undefined) {
+          rec.t0 = now;
+          rec.codeRowAtStart = document.querySelector('.ll-safari-notice .ll-levelcode') !== null;
         }
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
+        rec.tops.push([Math.round(now - rec.t0), Math.round((card.getBoundingClientRect().top + window.scrollY) * 10) / 10]);
+        if (now - rec.t0 > 1200) clearInterval(id);
+      }, 16);
     });
     const read = () => page.evaluate(() => (window as unknown as { __llShift: Rec }).__llShift);
     const spread = (tops: [number, number][]) => Math.max(...tops.map(([, y]) => y)) - Math.min(...tops.map(([, y]) => y));

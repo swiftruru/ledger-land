@@ -208,7 +208,10 @@ export const useQuiz = create<QuizState>()((set, get) => {
       const next = nextQuestion(s);
       if (next === s) return;
       set({ session: next, questionShownAt: Date.now() });
-      scheduleSave();
+      // 走到結果頁（completed）就立刻寫暫存，不等 400ms 的節流：結果頁一出現使用者就可能離開，慢的裝置（CI 的 Linux WebKit）在 pagehide 時
+      // 來不及寫完，下次進這一關會還原到最後一題的回饋畫面而不是從頭開始（2026-10-26）
+      if (next.completed) void get().flush();
+      else scheduleSave();
     },
     pause() {
       const s = get().session;
