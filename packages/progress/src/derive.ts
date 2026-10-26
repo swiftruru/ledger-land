@@ -1,7 +1,7 @@
 // 由作答紀錄推導的值（06 第 4.2 節：levelProgress 由 attempts 推導、reviewQueue.wrongCount 由合併後的 attempts 重算）
 // 與備份提醒（06 第 4.5 節）。全部是純函式；星星用 packages/quiz 的 starsFor（03 第 2.10 節的門檻），測試可注入別的規則。
 import { starsFor as quizStarsFor } from '@ledgerland/quiz';
-import type { Attempt, BackupReminderState, LevelProgress, Stars } from './model.ts';
+import type { Attempt, BackupReminderState, LevelProgress, Stars } from './schemas.ts';
 import { MS_PER_DAY, compareIso, diffMs, latestIso } from './time.ts';
 import { compareCodeUnits } from './util.ts';
 

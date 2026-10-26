@@ -16,8 +16,10 @@ import {
   settingsFromRecord,
   settingsToRecord,
   validateBackup,
+  FAVOURITES_SETTING_KEY,
+  finiteJson,
 } from '../src/index.ts';
-import { DEVICE_A, DEVICE_B, T2, T3, deflate, identity, inflate, meta, populatedSnapshot, setting, sha256, snapshot } from './fixtures.ts';
+import { DEVICE_A, DEVICE_B, Q1, Q2, Q3, T2, T3, attempt, deflate, identity, inflate, meta, populatedSnapshot, setting, sha256, snapshot } from './fixtures.ts';
 
 const info = { app: { version: '0.2.0', contentVersion: 3 }, origin: 'https://example.test', mode: 'browser' as const, exportedAt: T2 };
 const validateOpts = { currentSchemaVersion: 1, sha256, now: T3 };
@@ -42,7 +44,7 @@ describe('備份檔', () => {
     const v = await validateBackup(text, validateOpts);
     expect(v.ok).toBe(true);
     if (!v.ok) return;
-    expect(v.value.preview).toEqual({ attempts: 2, levels: 1, badges: 1, terms: 1, reviewEntries: 1, hasSettings: true });
+    expect(v.value.preview).toEqual({ attempts: 2, levels: 1, badges: 1, terms: 1, reviewEntries: 1, favourites: 0, hasSettings: true });
     expect(v.value.migratedFrom).toBeUndefined();
     expect(v.value.data.settings).toEqual(settingsFromRecord(backup.data.settings, T2));
 
@@ -166,5 +168,64 @@ describe('文字備份碼', () => {
     if (!encoded.ok) throw new Error('應該成功');
     expect(await decodeBackupCode(encoded.value.code.slice(0, 30), inflate)).toMatchObject({ ok: false, error: { code: 'backup.code_corrupt' } });
     expect(await decodeBackupCode('LL1:gA', identity)).toMatchObject({ ok: false, error: { code: 'backup.code_corrupt' } });
+  });
+});
+
+describe('收藏進備份（core-2）', () => {
+  it('預覽顯示收藏數（不重複的題目 ID）；只有收藏、沒有偏好時 hasSettings 是 false', async () => {
+    const backup = await buildBackup(snapshot({ settings: [setting(FAVOURITES_SETTING_KEY, [Q1, Q2, Q1, 3, ''])] }), info, sha256);
+    expect(backup.data.settings[FAVOURITES_SETTING_KEY]).toEqual([Q1, Q2, Q1, 3, '']);
+    const v = await validateBackup(serialiseBackup(backup), validateOpts);
+    expect(v.ok).toBe(true);
+    if (!v.ok) return;
+    expect(v.value.preview.favourites).toBe(2);
+    expect(v.value.preview.hasSettings).toBe(false);
+  });
+
+  it('沒有收藏欄位的舊版備份照樣能匯入，合併後保留本機的收藏', async () => {
+    const old = await buildBackup(populatedSnapshot(), info, sha256);
+    expect(FAVOURITES_SETTING_KEY in old.data.settings).toBe(false);
+    const v = await validateBackup(serialiseBackup(old), validateOpts);
+    expect(v.ok).toBe(true);
+    if (!v.ok) return;
+    expect(v.value.preview.favourites).toBe(0);
+    const target = snapshot({ meta: meta({ deviceId: DEVICE_B }), settings: [setting(FAVOURITES_SETTING_KEY, [Q3])] });
+    const merged = mergeSnapshots(target, v.value.data, { mode: 'merge', settings: false, importedAt: T3, source: { deviceId: DEVICE_A } });
+    expect(merged.settings.find((s) => s.key === FAVOURITES_SETTING_KEY)?.value).toEqual([Q3]);
+  });
+
+  it('換裝置：匯出有收藏的備份、在空的裝置以預設選項匯入，收藏都在', async () => {
+    const source = snapshot({ settings: [setting('locale', 'en'), setting(FAVOURITES_SETTING_KEY, [Q2, Q1])] });
+    const v = await validateBackup(serialiseBackup(await buildBackup(source, info, sha256)), validateOpts);
+    expect(v.ok).toBe(true);
+    if (!v.ok) return;
+    const merged = mergeSnapshots(snapshot({ meta: meta({ deviceId: DEVICE_B }) }), v.value.data, {
+      mode: 'merge',
+      settings: false,
+      importedAt: T3,
+      source: { deviceId: DEVICE_A },
+    });
+    expect(merged.settings.map((s) => [s.key, s.value])).toEqual([[FAVOURITES_SETTING_KEY, [Q2, Q1]]]);
+  });
+});
+
+describe('非有限的數字不讓匯出失敗（core-3 的安全網）', () => {
+  it('finiteJson 把 NaN、Infinity 換成 null，其餘原樣；遞迴處理陣列與物件', () => {
+    expect(finiteJson({ a: Infinity, b: [1, -Infinity, NaN, 'x'], c: { d: 2, e: null, f: true } })).toEqual({
+      a: null,
+      b: [1, null, null, 'x'],
+      c: { d: 2, e: null, f: true },
+    });
+    expect(finiteJson(Infinity)).toBeNull();
+    expect(finiteJson('x')).toBe('x');
+  });
+
+  it('作答紀錄的 answer 有 Infinity：buildBackup 與 serialiseBackup 不 throw，答案寫成 null，validateBackup 接受', async () => {
+    const bad = attempt({ attemptId: 'a_000000000201', questionId: Q1, answeredAt: T2, answer: { t1: Infinity, t2: 5 } as never });
+    const backup = await buildBackup(snapshot({ attempts: [bad] }), info, sha256);
+    expect(backup.data.attempts[0]!.answer).toEqual({ t1: null, t2: 5 });
+    const text = serialiseBackup(backup);
+    const v = await validateBackup(text, validateOpts);
+    expect(v.ok).toBe(true);
   });
 });

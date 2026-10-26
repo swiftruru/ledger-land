@@ -17,10 +17,10 @@ import {
   ReviewQueueEntry,
   SettingEntry,
   Unlock,
-  emptyProgressData,
-} from './model.ts';
+} from './schemas.ts';
+import { FAVOURITES_SETTING_KEY, LEARNING_SETTING_KEYS, emptyProgressData, idListOf } from './model.ts';
 import { type ProgressError, type Result, err, ok, progressError } from './result.ts';
-import { base64urlDecode, base64urlEncode, canonicalJson, compareCodeUnits, utf8ByteLength, utf8Decode, utf8Encode } from './util.ts';
+import { base64urlDecode, base64urlEncode, canonicalJson, compareCodeUnits, finiteJson, utf8ByteLength, utf8Decode, utf8Encode } from './util.ts';
 
 export const BACKUP_FORMAT = 'ledgerland-backup';
 export const BACKUP_FORMAT_VERSION = 1;
@@ -104,7 +104,7 @@ export function backupToProgressData(backup: Pick<BackupFile, 'data' | 'exported
   return { ...emptyProgressData(), ...rest, settings: settingsFromRecord(settings, backup.exportedAt) };
 }
 
-/** 由快照建立備份檔（06 第 4.6 節的形狀） */
+/** 由快照建立備份檔（06 第 4.6 節的形狀）。作答答案與設定值裡的 NaN、Infinity 寫成 null（finiteJson），舊資料裡有壞掉的數字也能匯出 */
 export async function buildBackup(snapshot: ProgressSnapshot, info: BackupInfo, sha256: Sha256): Promise<BackupFile> {
   const body: Omit<BackupFile, 'checksum'> = {
     format: BACKUP_FORMAT,
@@ -116,13 +116,13 @@ export async function buildBackup(snapshot: ProgressSnapshot, info: BackupInfo, 
     mode: info.mode,
     exportedAt: info.exportedAt,
     data: {
-      attempts: snapshot.attempts,
+      attempts: snapshot.attempts.map((a) => ({ ...a, answer: finiteJson(a.answer) })),
       levelProgress: snapshot.levelProgress,
       reviewQueue: snapshot.reviewQueue,
       unlocks: snapshot.unlocks,
       labState: snapshot.labState,
       labSandbox: snapshot.labSandbox,
-      settings: settingsToRecord(snapshot.settings),
+      settings: settingsToRecord(snapshot.settings.map((s) => ({ ...s, value: finiteJson(s.value) }))),
     },
     errors: info.includeErrors === true ? snapshot.errors : [],
   };
@@ -140,13 +140,16 @@ export function backupFileName(yyyymmdd: string): string {
   return `ledgerland-backup-${yyyymmdd}.json`;
 }
 
-/** 預覽摘要（06 第 4.6 節第 5 步）：將匯入幾筆作答紀錄、幾個關卡的星星、幾個徽章、幾個名詞 */
+/** 預覽摘要（06 第 4.6 節第 5 步）：將匯入幾筆作答紀錄、幾個關卡的星星、幾個徽章、幾個名詞、幾題收藏 */
 export interface BackupPreview {
   readonly attempts: number;
   readonly levels: number;
   readonly badges: number;
   readonly terms: number;
   readonly reviewEntries: number;
+  /** 收藏的題目數（settings 的 favourites，不重複的題目 ID）；沒有收藏欄位的舊版備份是 0 */
+  readonly favourites: number;
+  /** 備份裡有沒有偏好設定（語言、計時等，畫面決定要不要顯示「也套用語言與計時設定」）；收藏等學習資料的鍵不算 */
   readonly hasSettings: boolean;
 }
 
@@ -174,7 +177,8 @@ function previewOf(data: ProgressData): BackupPreview {
     badges: data.unlocks.filter((u) => u.kind === 'badge').length,
     terms: data.unlocks.filter((u) => u.kind === 'term').length,
     reviewEntries: data.reviewQueue.length,
-    hasSettings: data.settings.length > 0,
+    favourites: idListOf(data.settings.find((s) => s.key === FAVOURITES_SETTING_KEY)?.value).length,
+    hasSettings: data.settings.some((s) => !LEARNING_SETTING_KEYS.includes(s.key)),
   };
 }
 

@@ -1401,8 +1401,8 @@
         "en": "Under IFRS start-up costs are expensed when incurred, so there is no deferred asset to amortise and this expense does not arise."
       },
       "amountImpact": {
-        "zh-TW": "改用 IFRS 時，取得之後各期的營業外支出減少、稅前淨利增加；間接法也不再有這筆加回。",
-        "en": "Under IFRS non-operating expenses are lower and profit before tax is higher in the periods after the payment, and the indirect method no longer adds this amount back."
+        "zh-TW": "改用 IFRS 時，設立費在支付當期全數列為營業費用，那一期的營業利益與稅前淨利都比課程版面低；之後到攤銷期滿的各期沒有這筆營業外支出，稅前淨利比較高；間接法也不再有這筆加回。",
+        "en": "Under IFRS start-up costs are expensed in full as operating expenses in the period of payment, so operating profit and profit before tax for that period are lower than in the course layout; the later periods of the amortisation term have no such non-operating expense, so profit before tax is higher, and the indirect method no longer adds this amount back."
       }
     },
     "cashFlow": {

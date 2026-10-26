@@ -1,63 +1,8 @@
 // 作答工作階段（02 第 5.2 節、03 第 2.11 節）：放在路由樹之外的 store，切換語言、開名詞卡、跳到實驗室再回來都不遺失。
-// 這裡只有型別與純函式（開始、作答、確認、下一題、暫停與繼續）；寫入 IndexedDB 暫存區由 apps/web 的 store 以節流方式處理。
-// 計時器不讀時鐘：經過的毫秒數由呼叫端量測後以 tickTimer 傳入。
-import { z } from 'zod';
-import { idSchema } from '@ledgerland/content-schema';
-import { IsoDateTime, JsonValue } from './model.ts';
-
-/** 每題的狀態：已選答案、數字題的原始輸入文字、是否已確認與對錯、是否已展開解說 */
-export const QuestionState = z
-  .object({
-    answer: JsonValue.optional(),
-    rawInput: z.string().optional(),
-    confirmed: z.boolean(),
-    correct: z.boolean().optional(),
-    score: z.number().min(0).max(1).optional(),
-    explanationOpen: z.boolean(),
-  })
-  .strict();
-export type QuestionState = z.infer<typeof QuestionState>;
-
-export const TimerState = z
-  .object({
-    enabled: z.boolean(),
-    totalMs: z.number().int().min(0),
-    remainingMs: z.number().int().min(0),
-    paused: z.boolean(),
-    /** 時間到不會自動送出（03 第 2.10 節），只記下來讓畫面提示一次 */
-    expired: z.boolean(),
-  })
-  .strict();
-export type TimerState = z.infer<typeof TimerState>;
-
-/** 捲動錨點：目前畫面最上方元素的 ID 與偏移量（不用 scrollY，兩種語言的文字高度不同） */
-export const ScrollAnchor = z.object({ elementId: z.string().min(1), offset: z.number() }).strict();
-export type ScrollAnchor = z.infer<typeof ScrollAnchor>;
-
-export const SessionMode = z.enum(['level', 'review']);
-export type SessionMode = z.infer<typeof SessionMode>;
-
-export const QuizSession = z
-  .object({
-    mode: SessionMode,
-    levelId: idSchema('level').optional(),
-    levelRev: z.number().int().min(1).optional(),
-    questionIds: z.array(idSchema('question')).min(1),
-    /** 選項打散用的種子：順序由種子與選項 ID 決定，與文字無關，切換語言後順序不變 */
-    shuffleSeed: z.string().min(1),
-    currentIndex: z.number().int().min(0),
-    questions: z.record(z.string(), QuestionState),
-    timer: TimerState,
-    startedAt: IsoDateTime,
-    scrollAnchor: ScrollAnchor.optional(),
-    /** 離開作答畫面去實驗室或名詞卡時的返回目標（只記最近一個來源） */
-    returnTo: z.string().optional(),
-    completed: z.boolean(),
-  })
-  .strict()
-  .refine((s) => s.currentIndex < s.questionIds.length, 'currentIndex 要在題目範圍內')
-  .refine((s) => s.mode !== 'level' || (s.levelId !== undefined && s.levelRev !== undefined), '關卡模式要有 levelId 與 levelRev');
-export type QuizSession = z.infer<typeof QuizSession>;
+// 這裡只有型別與純函式（開始、作答、確認、下一題、暫停與繼續）；Zod schema 在 session-schemas.ts（這裡只 import type，不載入 zod）；
+// 寫入 IndexedDB 暫存區由 apps/web 的 store 以節流方式處理。計時器不讀時鐘：經過的毫秒數由呼叫端量測後以 tickTimer 傳入。
+import type { JsonValue } from './schemas.ts';
+import type { QuestionState, QuizSession, ScrollAnchor, SessionMode } from './session-schemas.ts';
 
 export interface StartSessionInput {
   readonly mode: SessionMode;
