@@ -1,6 +1,7 @@
 // 語系登錄檔的型別（05 第 2.1 節）。純 TypeScript。
 export type LocaleStatus = 'complete' | 'beta';
-export type UnitKey = 'day' | 'times';
+/** day：天數；times：倍數（權益倍數、流動比率等）；turns：週轉次數（資產週轉率等，04 第 12.4 節的「次」） */
+export type UnitKey = 'day' | 'times' | 'turns';
 
 export interface UnitPattern {
   /** 依 Intl.PluralRules 的分類填寫；中文只有 other */

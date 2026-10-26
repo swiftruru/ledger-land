@@ -109,6 +109,10 @@ describe('格式化（05 第 10 節）', () => {
   it('單位與複數', () => {
     expect(formatUnit(3.5, 'zh-TW', 'times', { digits: 2 })).toBe('3.50 倍');
     expect(formatUnit(3.5, 'en', 'times', { digits: 2 })).toBe('3.50×');
+    // 週轉次數（資產週轉率等）與倍數分開：中文「次」、英文同樣用「×」（04 第 12.4 節）
+    expect(formatUnit(1.5, 'zh-TW', 'turns', { digits: 2 })).toBe('1.50 次');
+    expect(formatUnit(1.5, 'en', 'turns', { digits: 2 })).toBe('1.50×');
+    expect(formatUnit(-1.5, 'zh-TW', 'turns', { digits: 1, sign: true })).toBe('-1.5 次');
     expect(formatUnit(1, 'en', 'day')).toBe('1 day');
     expect(formatUnit(45.62, 'en', 'day', { digits: 2 })).toBe('45.62 days');
     expect(formatUnit(1, 'zh-TW', 'day')).toBe('1 天');
@@ -137,7 +141,7 @@ describe('格式化（05 第 10 節）', () => {
 });
 
 describe('輸入正規化（05 第 11 節）', () => {
-  it.each<[string, 'money' | 'percent' | 'times' | 'plain', unknown]>([
+  it.each<[string, 'money' | 'percent' | 'times' | 'turns' | 'days' | 'plain', unknown]>([
     ['１，０００．５', 'plain', { ok: true, value: 1000.5 }],
     ['−1,234', 'money', { ok: true, value: -1234 }],
     ['－1,234', 'money', { ok: true, value: -1234 }],
@@ -148,6 +152,19 @@ describe('輸入正規化（05 第 11 節）', () => {
     ['７．３４％', 'percent', { ok: true, value: 7.34 }],
     ['3.5倍', 'times', { ok: true, value: 3.5 }],
     ['3.5x', 'times', { ok: true, value: 3.5 }],
+    ['1.5次', 'turns', { ok: true, value: 1.5 }],
+    ['1.5x', 'turns', { ok: true, value: 1.5 }],
+    ['1.5×', 'turns', { ok: true, value: 1.5 }],
+    ['1.5倍', 'turns', { ok: false, reason: 'invalid' }],
+    ['1.5次', 'times', { ok: false, reason: 'invalid' }],
+    // 天數（應收帳款收現天數等）：接受「天、日、day、days」
+    ['36.50天', 'days', { ok: true, value: 36.5 }],
+    ['36.5日', 'days', { ok: true, value: 36.5 }],
+    ['36.5 days', 'days', { ok: true, value: 36.5 }],
+    ['1 day', 'days', { ok: true, value: 1 }],
+    ['36.5', 'days', { ok: true, value: 36.5 }],
+    ['1.5次', 'days', { ok: false, reason: 'invalid' }],
+    ['天', 'days', { ok: false, reason: 'invalid' }],
     ['12。5', 'plain', { ok: true, value: 12.5 }],
     ['-0', 'plain', { ok: true, value: 0 }],
     ['(1,234)', 'money', { ok: false, reason: 'parentheses' }],
@@ -156,6 +173,10 @@ describe('輸入正規化（05 第 11 節）', () => {
     ['abc', 'plain', { ok: false, reason: 'invalid' }],
     ['', 'plain', { ok: false, reason: 'empty' }],
     ['   ', 'money', { ok: false, reason: 'empty' }],
+    // 超過約 309 位會解析成 Infinity；結構化複製接受、JSON 不接受，寫進作答紀錄後每次匯出備份都會失敗（core-3）
+    ['9'.repeat(400), 'money', { ok: false, reason: 'invalid' }],
+    ['-' + '9'.repeat(400), 'plain', { ok: false, reason: 'invalid' }],
+    ['9'.repeat(400) + '%', 'percent', { ok: false, reason: 'invalid' }],
   ])('%s（%s）', (raw, unit, expected) => {
     expect(normalizeNumericInput(raw, unit)).toEqual(expected);
   });

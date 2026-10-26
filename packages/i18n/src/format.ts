@@ -1,5 +1,6 @@
 // 格式化函式（05 第 10 節）。所有數字格式器一律 signDisplay: 'negative'，只有變動值（sign 選項）改用 exceptJero；格式化前把 -0 改成 0。
 import type { Locale } from './locales.ts';
+import type { UnitKey } from './types.ts';
 import { getLocale } from './match.ts';
 
 const cache = new Map<string, Intl.NumberFormat>();
@@ -49,8 +50,8 @@ export function formatPercent(value: number, code: Locale, { digits = 2, sign = 
   return nf(def.intlLocale, { style: 'percent', minimumFractionDigits: digits, maximumFractionDigits: digits, ...signOpt(sign) }).format(noNegZero(value));
 }
 
-/** 帶單位的數值（天、倍）：複數判斷用和顯示相同的小數位數（05 第 3.3 節） */
-export function formatUnit(value: number, code: Locale, unit: 'day' | 'times', { digits, sign = false }: { digits?: number; sign?: boolean } = {}): string {
+/** 帶單位的數值（天、倍、次）：複數判斷用和顯示相同的小數位數（05 第 3.3 節） */
+export function formatUnit(value: number, code: Locale, unit: UnitKey, { digits, sign = false }: { digits?: number; sign?: boolean } = {}): string {
   const def = getLocale(code);
   const n = formatNumber(value, code, { digits, sign });
   const pr = new Intl.PluralRules(def.intlLocale, digits === undefined ? {} : { minimumFractionDigits: digits, maximumFractionDigits: digits });

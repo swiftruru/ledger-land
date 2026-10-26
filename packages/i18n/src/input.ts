@@ -1,5 +1,5 @@
 // 作答輸入的正規化（05 第 11 節）
-export type NumericUnit = 'money' | 'percent' | 'times' | 'plain';
+export type NumericUnit = 'money' | 'percent' | 'times' | 'turns' | 'days' | 'plain';
 
 export type NormalizeResult = { ok: true; value: number } | { ok: false; reason: 'empty' | 'parentheses' | 'invalid' };
 
@@ -7,6 +7,9 @@ const UNIT_AFFIX: Partial<Record<NumericUnit, RegExp>> = {
   money: /^(NT\$|\$)|元$/g,
   percent: /[%％]$/g,
   times: /(倍|x|×)$/gi,
+  turns: /(次|x|×)$/gi,
+  // 天數（收現天數、存貨週轉天數）：中文「天」或「日」，英文 day、days（空白已在前面去掉）
+  days: /(天|日|days?)$/gi,
 };
 
 /** 取出開頭的 - 或 +；+ 視為沒有符號 */
@@ -34,5 +37,7 @@ export function normalizeNumericInput(raw: string, unit: NumericUnit): Normalize
 
   if (!/^\d+(\.\d+)?$/.test(rest)) return { ok: false, reason: 'invalid' };
   const value = Number(sign + rest);
+  // 太長的數字（約 309 位以上）會變成 Infinity：視為無法判讀，不讓非有限值進作答紀錄（JSON 與備份不接受）
+  if (!Number.isFinite(value)) return { ok: false, reason: 'invalid' };
   return { ok: true, value: Object.is(value, -0) ? 0 : value };
 }

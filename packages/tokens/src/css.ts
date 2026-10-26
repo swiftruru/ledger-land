@@ -1,10 +1,26 @@
 // 由 TypeScript 原始檔產生 CSS 變數檔與殼層要用的片段（07 第 2.1 節、06 第 2.3 節、16 第 7 節）。純 TypeScript，不碰 DOM。
-import { FLAVOR_TOKENS, SEMANTIC_COLOR_TOKENS, THEME_COLOR, darkColors, flavorColors, lightColors, type Flavor, type SemanticColorToken } from './colors.ts';
-import { BASE_FONT_PX, breakpoints, fontFamily, motion, radius, rem, space, tabbar, type, typeDisplay, z, TARGET_MIN_PX } from './scale.ts';
+import {
+  COMPONENT_COLOR_TOKENS,
+  FLAVOR_TOKENS,
+  SCENE_COLOR_TOKENS,
+  SEMANTIC_COLOR_TOKENS,
+  THEME_COLOR,
+  darkColors,
+  darkComponentColors,
+  darkSceneColors,
+  flavorBase,
+  flavorColors,
+  flavorDerived,
+  lightColors,
+  lightComponentColors,
+  lightSceneColors,
+  type Flavor,
+} from './colors.ts';
+import { BASE_FONT_PX, breakpoints, control, fontFamily, motion, radius, rem, space, tabbar, type, typeDisplay, z, TARGET_MIN_PX } from './scale.ts';
 
 const line = (name: string, value: string) => `  --ll-${name}: ${value};`;
 
-function colorBlock(selector: string, tokens: readonly SemanticColorToken[], values: Record<string, string>, extra: string[] = []): string {
+function colorBlock(selector: string, tokens: readonly string[], values: Record<string, string>, extra: string[] = []): string {
   return [`${selector} {`, ...extra, ...tokens.map((t) => line(t, values[t]!)), '}'].join('\n');
 }
 
@@ -13,15 +29,31 @@ export function generateTokensCss(): string {
   const parts: string[] = [];
   parts.push('/* 由 packages/tokens 產生，不要手改；來源是 packages/tokens/src（16 主題、07 設計系統）。執行 pnpm tokens:build 重新產生。 */');
   // 淺色：:root 也放淺色，是 boot 腳本寫入 data-theme 之前的預設
-  parts.push(colorBlock(':root,\nhtml[data-theme="light"]', SEMANTIC_COLOR_TOKENS, lightColors, ['  color-scheme: light;']));
-  // 深色：html[data-theme="dark"] 放 violet 的全部值；berry 與 wine 只覆寫底色階梯
-  parts.push(colorBlock('html[data-theme="dark"]', SEMANTIC_COLOR_TOKENS, darkColors('violet'), ['  color-scheme: dark;']));
+  // 元件 token（站規 1.1.2）接在語意 token 後面；深色只寫在共用區塊，引用底色階梯的值隨風味自動變，風味覆寫區塊不加
+  // 場景 token（圖規第 5 節，地圖組）接在最後；深色的值隨風味不同（在這裡算好），所以 berry 與 wine 的覆寫區塊也各寫一組
+  const withComponents = [...SEMANTIC_COLOR_TOKENS, ...COMPONENT_COLOR_TOKENS, ...SCENE_COLOR_TOKENS];
+  parts.push(
+    colorBlock(':root,\nhtml[data-theme="light"]', withComponents, { ...lightColors, ...lightComponentColors, ...lightSceneColors }, [
+      '  color-scheme: light;',
+    ]),
+  );
+  // 深色：html[data-theme="dark"] 放 violet 的全部值；berry 與 wine 只覆寫底色階梯（與場景色）
+  parts.push(
+    colorBlock('html[data-theme="dark"]', withComponents, { ...darkColors('violet'), ...darkComponentColors, ...darkSceneColors('violet') }, [
+      '  color-scheme: dark;',
+    ]),
+  );
   for (const flavor of ['berry', 'wine'] as const) {
-    parts.push(colorBlock(`html[data-theme="dark"][data-flavor="${flavor}"]`, FLAVOR_TOKENS, flavorColors(flavor)));
+    parts.push(
+      colorBlock(`html[data-theme="dark"][data-flavor="${flavor}"]`, [...FLAVOR_TOKENS, ...SCENE_COLOR_TOKENS], {
+        ...flavorColors(flavor),
+        ...darkSceneColors(flavor),
+      }),
+    );
   }
   // 與主題無關的 token 只寫在 :root（07 第 6.2 節：寫在主題區塊裡會讓 @supports 與減少動態的覆寫失效）
   const root: string[] = [':root {'];
-  root.push(line('font-zh', fontFamily.zh), line('font-en', fontFamily.en), line('font-num', fontFamily.num));
+  root.push(line('font-zh', fontFamily.zh), line('font-en', fontFamily.en), line('font-num', fontFamily.num), line('font-mono', fontFamily.mono));
   for (const [name, t] of Object.entries(type)) {
     root.push(line(`type-${name}-size`, rem(t.size)), line(`type-${name}-line`, rem(t.lineHeight)), line(`type-${name}-weight`, String(t.weight)));
   }
@@ -32,6 +64,7 @@ export function generateTokensCss(): string {
   );
   for (const [k, v] of Object.entries(space)) root.push(line(`space-${k}`, `${v}px`));
   root.push(line('target-min', `${TARGET_MIN_PX}px`));
+  for (const [k, v] of Object.entries(control)) root.push(line(k, `${v}px`));
   for (const [k, v] of Object.entries(radius)) root.push(line(`radius-${k}`, `${v}px`));
   for (const [k, v] of Object.entries(z)) root.push(line(`z-${k}`, String(v)));
   root.push(
@@ -48,6 +81,10 @@ export function generateTokensCss(): string {
     line('ease-spring-gentle', motion.spring.gentle.fallback),
     line('ease-lift', motion.spring.lift.fallback),
   );
+  // 外觀設定的深色風味色票（16 第 7 節）：每種風味的底色與標誌色，在任何主題都一樣，所以寫在 :root（設定頁不必 import 色彩常數）
+  for (const flavor of ['violet', 'berry', 'wine'] as const) {
+    root.push(line(`swatch-${flavor}-bg`, flavorDerived[flavor].bg), line(`swatch-${flavor}-mark`, flavorBase[flavor].comment));
+  }
   root.push('}');
   parts.push(root.join('\n'));
   parts.push(
