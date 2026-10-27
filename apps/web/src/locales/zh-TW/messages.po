@@ -261,29 +261,17 @@ msgstr "LedgerLand 會計樂園是一個公開、開源、手機優先的會計�
 msgid "quiz.ratio.na"
 msgstr "N/A"
 
-#. Safari 分頁常駐提示收合後的小按鈕
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.collapsed"
-msgstr "Safari 分頁：顯示提示"
-
 #. 引導卡的說明：Safari 分頁與主畫面 App 不共享進度
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.toApp.intro"
 msgstr "Safari 分頁和主畫面的 App 各存各的進度，搬過去只有這一條路："
 
-#. iOS Safari 分頁常駐提示（展開時）的標題
+#. iOS Safari 分頁頂部的常駐提示：引導加到主畫面
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
-msgid "safari.title"
-msgstr "Safari 分頁的進度可能會消失"
-
-#. 地圖頁的單行提示條：iOS Safari 分頁的常駐提示
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "play.hint.safari"
-msgstr "Safari 分頁的進度可能會消失"
+msgid "safari.text"
+msgstr "Safari 分頁的進度可能被清掉。加到主畫面後開啟更快，進度也比較不容易被清除；已經加入的話，請從主畫面的圖示開啟。"
 
 #. js-lingui-explicit-id
 #: src/pages/Placeholder.tsx
@@ -821,6 +809,18 @@ msgstr "加入主畫面"
 msgid "settings.protect.hint"
 msgstr "加到主畫面，可以降低進度被清除的機率；定期匯出備份最保險。"
 
+#. 地圖頁的單行提示條：iOS Safari 分頁的常駐提示（引導加到主畫面）
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "play.hint.safari"
+msgstr "加到主畫面，進度才不會消失"
+
+#. Safari 分頁常駐提示收合後的小按鈕
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.collapsed"
+msgstr "加到主畫面：顯示提示"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.import.title"
@@ -1264,12 +1264,6 @@ msgstr "如果你之前在 Safari 分頁練習過，先在那裡「匯出到 Ap
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.hint"
 msgstr "如果你在 iPhone 開了「降低透明度」，網頁讀不到這個設定，請在這裡選「降低透明度」。折射只在電腦版的 Chromium 瀏覽器有效。"
-
-#. iOS Safari 分頁頂部的常駐提示
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.text"
-msgstr "如果你已經加入主畫面，請從主畫面圖示開啟，進度存在那裡。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1839,6 +1833,12 @@ msgstr "把會計樂園加到主畫面"
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 msgid "install.title"
+msgstr "把會計樂園加到主畫面"
+
+#. iOS Safari 分頁常駐提示（展開時）的標題：引導加到主畫面
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.title"
 msgstr "把會計樂園加到主畫面"
 
 #. 安裝教學頁的開頭
@@ -2629,6 +2629,12 @@ msgstr "看圖解教學"
 msgid "settings.protect.install"
 msgstr "看安裝教學"
 
+#. Safari 分頁常駐提示的主要動作：連到安裝教學頁
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.install"
+msgstr "看安裝教學"
+
 #. 結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績）
 #. js-lingui-explicit-id
 #: src/features/quiz/ResultView.tsx
@@ -3048,11 +3054,11 @@ msgstr "診斷資訊"
 msgid "play.hint.details.backup"
 msgstr "詳細：前往備份"
 
-#. 地圖頁 Safari 分頁提示條右側「詳細」圖示按鈕的可讀名稱（前往備份頁）
+#. 地圖頁 Safari 分頁提示條右側「詳細」圖示按鈕的可讀名稱（前往安裝教學頁）
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "play.hint.details.safari"
-msgstr "詳細：匯出到 App"
+msgstr "詳細：安裝教學"
 
 #. js-lingui-explicit-id
 #: src/components/LangSwitch.tsx
@@ -3086,6 +3092,12 @@ msgstr "課程用的報表格式，有幾個現行準則已經不再使用的名
 #: src/pages/Design.tsx
 msgid "design.layout.title"
 msgstr "課程的版面，現行的準則"
+
+#. iOS Safari 分頁常駐提示的標題：按過「我已加入主畫面」之後
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.title.full"
+msgstr "請從主畫面開啟會計樂園"
 
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx

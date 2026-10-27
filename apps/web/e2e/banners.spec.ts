@@ -165,15 +165,31 @@ test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
     await expect(heading).toBeFocused();
   });
 
+  // 安裝教學頁本身不顯示這條提示（它就是在引導人來這一頁），收合的膠囊也不顯示
+  test('安裝教學頁不顯示 Safari 分頁的提示', async ({ page }) => {
+    await page.goto('/install/');
+    await waitForApp(page);
+    await expect(page.locator('.ll-banner.ll-safari-notice')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: '加到主畫面：顯示提示' })).toHaveCount(0);
+    await page.goto('/me/');
+    await waitForApp(page);
+    await expect(page.locator('.ll-banner.ll-safari-notice')).toBeVisible();
+  });
+
   test('常駐提示可收合成小按鈕但不會消失，附「匯出到 App」；作答頁同時顯示關卡代號', async ({ page }) => {
     await page.goto('/');
     await waitForApp(page);
     const notice = page.locator('.ll-banner.ll-safari-notice');
-    await expect(notice).toContainText(joinable('如果你已經加入主畫面，請從主畫面圖示開啟'));
+    await expect(notice).toContainText('把會計樂園加到主畫面');
+    await expect(notice).toContainText(joinable('加到主畫面後開啟更快'));
+    // 主要動作是「看安裝教學」（secondary），「匯出到 App」退成 quiet；順序：看安裝教學、匯出到 App、收合
+    await expect(notice.getByTestId('safari-install-link')).toHaveAttribute('href', '/install/');
+    await expect(notice.getByTestId('safari-install-link')).toHaveClass(/\bll-btn--secondary\b/);
+    await expect(notice.getByRole('link', { name: '匯出到 App' })).toHaveClass(/\bll-btn--quiet\b/);
     await expect(notice.getByRole('link', { name: '匯出到 App' })).toHaveAttribute('href', '/me/backup/?to=app');
     await page.getByRole('button', { name: '收合主畫面提示' }).click();
     await expect(notice).toHaveCount(0);
-    const expand = page.getByRole('button', { name: 'Safari 分頁：顯示提示' });
+    const expand = page.getByRole('button', { name: '加到主畫面：顯示提示' });
     await expect(expand).toHaveAttribute('aria-expanded', 'false');
     await expect(expand).toBeVisible();
     await page.reload();
