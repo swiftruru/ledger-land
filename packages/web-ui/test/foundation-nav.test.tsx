@@ -105,7 +105,7 @@ describe('NavList、NavRow、NavCard', () => {
     const ext = page.getByRole('link', { name: /回報問題/ });
     await expect.element(ext).not.toHaveAttribute('data-router');
     await expect.element(ext).toHaveAttribute('rel', 'noopener');
-    await expect.element(ext).toHaveAccessibleName(/（外部網站）/);
+    await expect.element(ext).toHaveAccessibleName(/（外部網站，另開分頁）/);
     // 外連箭頭（ArrowUpRightIcon 的 path）與站內的向右箭頭不同
     const extPath = ext.element().querySelector('.ll-navrow__chev path')?.getAttribute('d');
     const inPath = settings.element().querySelector('.ll-navrow__chev path')?.getAttribute('d');

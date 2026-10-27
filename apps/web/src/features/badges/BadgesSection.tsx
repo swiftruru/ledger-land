@@ -65,9 +65,12 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
   usePageReady(ready);
   const fmt = (n: number) => formatNumber(n, locale);
   const chapterCount = index?.chapters.length ?? 0;
-  const earnedCount = ready ? index.chapters.filter((c) => badgeStatusOf(unlocks, c.id).state !== 'locked').length : 0;
+  // 摘要卡的 n／m 含特別徽章（維護者 2026-10-27：拿到的特別徽章要算進徽章頁的總數；地圖頂部統計仍只算章節）
+  const specialDone = ready ? SPECIAL_BADGES.filter((d) => specialBadgeStatus(unlocks, d).state === 'done').length : 0;
+  const earnedCount = (ready ? index.chapters.filter((c) => badgeStatusOf(unlocks, c.id).state !== 'locked').length : 0) + specialDone;
+  const totalCount = chapterCount + SPECIAL_BADGES.length;
   const earned = fmt(earnedCount);
-  const total = fmt(chapterCount);
+  const total = fmt(totalCount);
   const date = (iso: string) => formatDate(isoDatePart(iso), locale, 'medium');
   const earnedIn = (list: readonly { id: string }[]) => (ready ? list.filter((c) => badgeStatusOf(unlocks, c.id).state !== 'locked').length : 0);
   const groups = ready
@@ -89,7 +92,7 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
           };
         })
     : [];
-  // 特別徽章：目前只有「幕後偵探」；a／b 是這一區自己的數，不進摘要卡
+  // 特別徽章：目前只有「幕後偵探」；a／b 是這一區自己的數，摘要卡的 n／m 也算進去
   const specials = ready
     ? SPECIAL_BADGES.map((def) => {
         const status = specialBadgeStatus(unlocks, def);
@@ -118,7 +121,7 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
             </span>
           </Trans>
         </p>
-        <ProgressBar size="md" value={earnedCount} max={chapterCount || 1} />
+        <ProgressBar size="md" value={earnedCount} max={totalCount || 1} />
         <p className="ll-badges__rules">
           {t({
             id: 'badges.rules',

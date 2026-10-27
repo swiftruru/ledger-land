@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import type { Locale } from '@ledgerland/i18n';
 import type { PlayerStats } from './player-stats.ts';
 
-export const EMPTY_STATS: PlayerStats = { stars: 0, badges: { earned: 0, total: 0, list: [] }, terms: null, lastExportedAt: null };
+export const EMPTY_STATS: PlayerStats = { stars: 0, badges: { earned: 0, total: 0, chapterTotal: 0, list: [] }, terms: null, lastExportedAt: null };
 
 export function usePlayerStats(locale: Locale): PlayerStats | null {
   const [stats, setStats] = useState<PlayerStats | null>(null);

@@ -30,6 +30,6 @@ export function useUiLabels(): UiLabels {
     cancel: t({ id: 'ui.cancel', message: '取消', comment: '確認面板的取消按鈕' }),
     searchClear: t({ id: 'ui.search.clear', message: '清除搜尋', comment: '搜尋框右側清除按鈕的可讀名稱' }),
     details: t({ id: 'ui.details', message: '詳細', comment: '地圖頁提示條右側「前往說明頁」圖示按鈕的可讀名稱' }),
-    externalSite: t({ id: 'ui.externalSite', message: '（外部網站）', comment: '連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明' }),
+    externalSite: t({ id: 'ui.externalSite', message: '（外部網站，另開分頁）', comment: '連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明（會另開分頁）' }),
   };
 }

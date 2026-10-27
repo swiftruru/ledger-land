@@ -179,6 +179,12 @@ msgstr "<0>今天要複習</0> <1><2>{n}</2> 題</1>"
 msgid "backup.mode.inApp"
 msgstr "App 內建瀏覽器"
 
+#. 引導卡第三步
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.step3"
+msgstr "App 第一次打開會問要不要匯入，貼上備份碼就會和那裡的紀錄合併；已經打開過的話，到 App 的「我的 › 備份 › 貼上備份碼」。"
+
 #. 延伸章關卡的短代號（E 是 Extension）；c 章序、l 關序，都已格式化
 #. js-lingui-explicit-id
 #: src/features/home/codes.ts
@@ -260,6 +266,12 @@ msgstr "N/A"
 #: src/components/SafariTabNotice.tsx
 msgid "safari.collapsed"
 msgstr "Safari 分頁：顯示提示"
+
+#. 引導卡的說明：Safari 分頁與主畫面 App 不共享進度
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.intro"
+msgstr "Safari 分頁和主畫面的 App 各存各的進度，搬過去只有這一條路："
 
 #. iOS Safari 分頁常駐提示（展開時）的標題
 #. js-lingui-explicit-id
@@ -579,6 +591,12 @@ msgstr "備份"
 msgid "me.backup"
 msgstr "備份"
 
+#. 匯出卡裡兩顆按鈕下面的說明：備份檔與備份碼各自的用途（維護者 2026-10-27：iOS 的分享表單找不到主畫面的 App）
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.export.fileNote"
+msgstr "備份檔可以存到「檔案」或 AirDrop 到別台裝置；要搬進主畫面的 App，請用備份碼。"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.export.downloaded"
@@ -638,6 +656,12 @@ msgstr "先去闖關"
 #: src/pages/Play.tsx
 msgid "play.toTerms"
 msgstr "先看名詞圖鑑"
+
+#. 引導卡第一步
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.step1"
+msgstr "先複製備份碼。"
 
 #. 依名稱排序、不分組時的標題
 #. js-lingui-explicit-id
@@ -806,12 +830,6 @@ msgstr "匯入"
 #: src/pages/Backup.tsx
 msgid "backup.export.title"
 msgstr "匯出"
-
-#. 備份頁的主按鈕：存成備份檔（手機上交給分享表單）
-#. js-lingui-explicit-id
-#: src/pages/Backup.tsx
-msgid "backup.export.fileButton"
-msgstr "匯出備份檔"
 
 #. Safari 分頁的「匯出到 App」捷徑，連到備份頁
 #. js-lingui-explicit-id
@@ -1262,6 +1280,12 @@ msgstr "如果你發現哪裡不對，或者有更好的說法，歡迎告訴我
 #: src/pages/Privacy.tsx
 msgid "privacy.stored.title"
 msgstr "存了哪些資料"
+
+#. 備份頁的主按鈕：存成備份檔（手機上交給分享表單）
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.export.fileButton"
+msgstr "存成備份檔"
 
 #. 「我的」選單列的群組標題
 #. js-lingui-explicit-id
@@ -1774,6 +1798,12 @@ msgstr "所有的題目、解說、名詞卡都是重新寫過的，不是把課
 msgid "design.mobile.title"
 msgstr "手機優先，離線也能用"
 
+#. 引導卡第二步
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.step2"
+msgstr "打開主畫面的會計樂園。"
+
 #. Chromium 沒有安裝事件時的說明
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
@@ -1828,6 +1858,12 @@ msgstr "把課堂 QR 對準畫面，辨識後會自動前往。"
 #: src/components/SafariTabNotice.tsx
 msgid "safari.levelCode"
 msgstr "把這個關卡代號記下來，在 App 裡輸入就能直接進到這一關。"
+
+#. 帶 ?to=app 進備份頁時最上面那張引導卡的標題
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.title"
+msgstr "把進度搬到主畫面的 App"
 
 #. 分類題的分類格（現金流量活動）
 #. js-lingui-explicit-id
@@ -3283,6 +3319,7 @@ msgid "term.error.title"
 msgstr "這個名詞讀不到"
 
 #. 瀏覽器不支援壓縮（備份碼要壓縮），「複製備份碼」停用時的說明
+#. 瀏覽器不支援壓縮（備份碼要壓縮），「複製備份碼」停用時的說明
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.export.codeUnsupported"
@@ -3475,6 +3512,12 @@ msgstr "還沒下載的關卡"
 #: src/pages/Me.tsx
 msgid "me.backup.never"
 msgstr "還沒備份"
+
+#. 引導卡第二步：還沒加入主畫面的人連到安裝教學
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.install"
+msgstr "還沒加入主畫面？看安裝教學"
 
 #. 名詞頁解鎖任務卡的眉標：這個名詞還沒收進圖鑑（只是收藏狀態，內容照樣能讀）
 #. js-lingui-explicit-id

@@ -1,7 +1,7 @@
 // 選單列（站規 1.7）：兩個以上的去處用 NavList 包 NavRow；單一大去處用 NavCard。
 // 每列只有一個可聚焦元素（整列是連結或按鈕）：左邊 36px 圖示方塊、標題與一行說明、右側狀態（Badge、計數）、箭頭。
 // 一個 NavList 最多兩種 tone（美感審查：同一頁不要出現四種底色）；需要注意的狀態（還沒備份、今天要複習）只改右側的 Badge，不改圖示方塊的顏色。
-// 站內連結經 LinkProvider（react-router，不整頁重新載入）；external 換外連箭頭並加「（外部網站）」。NavCard 的 aside（例如移除鈕）一定在連結外面。
+// 站內連結經 LinkProvider（react-router，不整頁重新載入）；external 另開分頁、換外連箭頭並加「（外部網站，另開分頁）」。NavCard 的 aside（例如移除鈕）一定在連結外面。
 import type { MouseEventHandler, ReactNode } from 'react';
 import { isValidElement, useId } from 'react';
 import { ArrowUpRightIcon, CaretRightIcon } from './icons.tsx';

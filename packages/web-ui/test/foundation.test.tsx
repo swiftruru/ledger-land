@@ -233,7 +233,7 @@ describe('Button', () => {
     screen.unmount();
   });
 
-  it('external：附「（外部網站）」、rel="noopener"、不加 target；不經 provider', async () => {
+  it('external：附「（外部網站，另開分頁）」、rel="noopener"、target="_blank"；不經 provider', async () => {
     const { Wrap } = makeProvider();
     const screen = await render(
       <Wrap>
@@ -242,9 +242,9 @@ describe('Button', () => {
         </Button>
       </Wrap>,
     );
-    const link = page.getByRole('link', { name: /^原始碼\s*（外部網站）$/ }).element();
+    const link = page.getByRole('link', { name: /^原始碼\s*（外部網站，另開分頁）$/ }).element();
     expect(link.getAttribute('rel')).toBe('noopener');
-    expect(link.hasAttribute('target')).toBe(false);
+    expect(link.getAttribute('target')).toBe('_blank');
     expect(link.getAttribute('data-router')).toBeNull();
     expect(link.querySelector('svg')).not.toBeNull();
     screen.unmount();
@@ -438,7 +438,7 @@ describe('TextLink', () => {
       </Wrap>,
     );
     const zh = page.getByRole('link', { name: '隱私說明' }).element();
-    const en = page.getByRole('link', { name: /^licence.*（外部網站）$/ }).element();
+    const en = page.getByRole('link', { name: /^licence.*（外部網站，另開分頁）$/ }).element();
     expect(deco(zh)).toBe('underline');
     expect(deco(en)).toBe('underline');
     expect(parseFloat(getComputedStyle(zh).textUnderlineOffset)).toBeCloseTo(3.2, 1);

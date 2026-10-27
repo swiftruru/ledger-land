@@ -213,7 +213,7 @@ export function InstallPrompt({ strategy, dismiss }: InstallPromptState) {
         title={title}
         actions={
           <>
-            <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/')}>
+            <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/') + '?to=app'}>
               <Trans id="export.toApp">匯出到 App</Trans>
             </Button>
             <Button

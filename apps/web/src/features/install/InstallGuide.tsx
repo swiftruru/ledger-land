@@ -227,7 +227,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
             </p>
             {/* 接在安裝建議下方時，正上方橫幅的主動作就是「匯出到 App」，這裡不再放第二顆 */}
             {!embedded && !reference && (
-              <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/')} data-testid="install-guide-export">
+              <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/') + '?to=app'} data-testid="install-guide-export">
                 <Trans id="export.toApp">匯出到 App</Trans>
               </Button>
             )}

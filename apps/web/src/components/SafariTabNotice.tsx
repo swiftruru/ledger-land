@@ -105,7 +105,7 @@ function SafariTabBanner({ onCollapse }: { onCollapse: () => void }) {
       title={t({ id: 'safari.title', message: 'Safari 分頁的進度可能會消失', comment: 'iOS Safari 分頁常駐提示（展開時）的標題' })}
       actions={
         <>
-          <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/')}>
+          <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/') + '?to=app'}>
             <Trans id="export.toApp" comment="Safari 分頁的「匯出到 App」捷徑，連到備份頁">
               匯出到 App
             </Trans>

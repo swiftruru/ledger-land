@@ -417,6 +417,19 @@ html[data-theme='dark'] .ll-badges__item[data-state='done'] {
 .ll-backup__card {
   gap: var(--ll-space-3);
 }
+/* 「把進度搬到主畫面的 App」引導卡（?to=app）：三步的有序清單，每一步是一句話加（選用的）按鈕與複製結果 */
+.ll-backup__steps {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin: 0;
+  padding-inline-start: 1.4em;
+}
+.ll-backup__steps > li > p {
+  margin: 0 0 var(--ll-space-2);
+}
+.ll-backup__steps > li > .ll-backup__field {
+  margin-top: var(--ll-space-3);
+}
 /* 卡片內的間距由 gap 決定；按鈕不在這裡（它下方保留 4px 立體底邊的位置） */
 .ll-backup__card > :is(h2, p, dl, div, details),
 .ll-backup__ok {

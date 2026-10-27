@@ -130,7 +130,7 @@ test.describe('備份與匯入（06 第 4.6 節）', () => {
     // 預覽出現時焦點移到預覽卡的標題；「合併匯入」是這一步唯一的主按鈕，匯出降成 secondary（第 1 輪看圖驗收）
     await expect(page.getByRole('heading', { level: 2, name: '預覽' })).toBeFocused();
     await expect(page.getByTestId('import-confirm')).toHaveClass(/\bll-btn--primary\b/);
-    await expect(page.getByRole('button', { name: '匯出備份檔' })).toHaveClass(/\bll-btn--secondary\b/);
+    await expect(page.getByRole('button', { name: '存成備份檔' })).toHaveClass(/\bll-btn--secondary\b/);
     await page.getByTestId('import-confirm').click();
     await expect(page.getByTestId('import-message')).toContainText('已合併');
     await expectStats(page, 1);
