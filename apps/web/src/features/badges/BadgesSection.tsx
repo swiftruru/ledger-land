@@ -116,7 +116,7 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
             render={PhrasedRich}
           >
             已取得{' '}
-            <span className="ll-nowrap">
+            <span className="ll-keep">
               {earned}／{total} 枚
             </span>
           </Trans>

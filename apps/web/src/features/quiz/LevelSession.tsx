@@ -31,7 +31,7 @@ import { localePath } from '@ledgerland/i18n';
 import { Button, IconButton, NoteTag, QuestionCard, TimerIcon, Toast, ToastRegion, TopBar, TranslateIcon, useStatementNames } from '@ledgerland/web-ui';
 import { LangSwitch, useSwitchLocale } from '../../components/LangSwitch.tsx';
 import { DeferredFeedbackView as FeedbackView } from './feedback-lazy.tsx';
-import { Markup, QuestionWords } from './Markup.tsx';
+import { Markup } from './Markup.tsx';
 import { QuestionView, optionsOf, statementCodesOf, statementTermIds, valueContextOf } from './QuestionView.tsx';
 import { canSubmit } from './answers.ts';
 import { isFavourite } from './favourites.ts';
@@ -667,7 +667,7 @@ export function LevelSession({ snapshot, notes }: { snapshot: LevelSnapshot; not
       <div id={`ll-q-${qid}`} data-ll-anchor className="ll-question-wrap" data-ready={area.pending ? 'false' : 'true'}>
         {/* 題幹、選項、回饋與解說共用這一題自己的詞（中文依詞換行的 keep 清單，Markup.tsx） */}
         <PendingContext.Provider value={area.registry}>
-          <QuestionWords q={q}>
+          <>
             <QuestionCard
               index={session.currentIndex + 1}
               total={session.questionIds.length}
@@ -715,7 +715,7 @@ export function LevelSession({ snapshot, notes }: { snapshot: LevelSnapshot; not
                 />
               )}
             </QuestionCard>
-          </QuestionWords>
+          </>
         </PendingContext.Provider>
       </div>
     </>,

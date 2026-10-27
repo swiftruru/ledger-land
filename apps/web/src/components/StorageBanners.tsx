@@ -83,7 +83,7 @@ export function StorageBanners() {
           actions={<ReloadButton variant="primary" />}
         >
           <p>
-            <Trans id="storage.blocked">請⁠關⁠閉其⁠他 LedgerLand 分⁠頁，再重⁠新整⁠理。</Trans>
+            <Trans id="storage.blocked">請關閉其他 LedgerLand 分頁，再重新整理。</Trans>
           </p>
         </Banner>
       )}
@@ -101,7 +101,7 @@ export function StorageBanners() {
           actions={<ExportButton />}
         >
           <p>
-            <Trans id="storage.degraded">這台⁠裝⁠置目⁠前無⁠法儲⁠存進⁠度。你可⁠以繼⁠續練⁠習，但請⁠先匯⁠出備⁠份。</Trans>
+            <Trans id="storage.degraded">這台裝置目前無法儲存進度。你可以繼續練習，但請先匯出備份。</Trans>
           </p>
         </Banner>
       )}
@@ -119,7 +119,7 @@ export function StorageBanners() {
           actions={<ExportButton />}
         >
           <p>
-            <Trans id="storage.quota">這台⁠裝⁠置⁠的儲⁠存空⁠間不⁠太⁠夠，進⁠度可⁠能⁠存⁠不⁠進⁠去。建⁠議你先⁠匯⁠出備⁠份。</Trans>
+            <Trans id="storage.quota">這台裝置的儲存空間不太夠，進度可能存不進去。建議你先匯出備份。</Trans>
           </p>
         </Banner>
       )}
@@ -142,7 +142,7 @@ export function StorageBanners() {
           }
         >
           <p>
-            <Trans id="storage.writeFailed">進⁠度暫⁠時無⁠法儲⁠存。重⁠要進⁠度⁠已⁠先⁠暫⁠存起⁠來，建⁠議你現⁠在匯⁠出備⁠份。</Trans>
+            <Trans id="storage.writeFailed">進度暫時無法儲存。重要進度已先暫存起來，建議你現在匯出備份。</Trans>
           </p>
         </Banner>
       )}

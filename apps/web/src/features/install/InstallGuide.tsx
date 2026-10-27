@@ -20,7 +20,6 @@ import { Button, CheckCircleIcon, CheckIcon, DeviceIcon, ExportIcon, Segmented }
 import { INSTALL_DISMISSED_SETTING } from '../../components/InstallPrompt.tsx';
 import { INSTALL_GUIDE_SEEN_SETTING } from '../../components/SafariTabNotice.tsx';
 import { usePageReady } from '../../lib/page-ready.tsx';
-import { ProseWords } from '../../components/ProseWords.tsx';
 import { nowIso } from '../../lib/progress/app-info.ts';
 import { getProgressStore } from '../../lib/progress/index.ts';
 import { useLocale } from '../../lib/useLocale.ts';
@@ -129,7 +128,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
       steps.push({
         step: 'chromium-confirm',
         text: (
-          <Trans id="install.guide.chromium.bip" comment="Chromium 有安裝事件時的說明（一步，下面就是「安裝」按鈕）" render={ProseWords}>
+          <Trans id="install.guide.chromium.bip" comment="Chromium 有安裝事件時的說明（一步，下面就是「安裝」按鈕）">
             按「安裝」，在跳出的視窗再按一次「安裝」。
           </Trans>
         ),
@@ -139,7 +138,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
         {
           step: 'chromium-menu',
           text: (
-            <Trans id="install.guide.chromium.menu" comment="Chromium 沒有安裝事件時的說明" render={ProseWords}>
+            <Trans id="install.guide.chromium.menu" comment="Chromium 沒有安裝事件時的說明">
               打開右上角的選單，找「安裝」或「<span className="ll-nowrap">加入主畫面</span>」。
             </Trans>
           ),
@@ -147,7 +146,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
         {
           step: 'chromium-confirm',
           text: (
-            <Trans id="install.guide.chromium.confirm" comment="Chromium 沒有安裝事件時的第二步：瀏覽器的確認視窗" render={ProseWords}>
+            <Trans id="install.guide.chromium.confirm" comment="Chromium 沒有安裝事件時的第二步：瀏覽器的確認視窗">
               在跳出的確認視窗按「安裝」。
             </Trans>
           ),
@@ -160,7 +159,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
         {
           step: 'compact-more',
           text: (
-            <Trans id="install.guide.compact.1" comment="Compact 分頁列第一步" render={ProseWords}>
+            <Trans id="install.guide.compact.1" comment="Compact 分頁列第一步">
               點網址列旁的「⋯」（更多）。
             </Trans>
           ),
@@ -168,7 +167,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
         {
           step: 'compact-share',
           text: (
-            <Trans id="install.guide.compact.2" comment="Compact 分頁列第二步" render={ProseWords}>
+            <Trans id="install.guide.compact.2" comment="Compact 分頁列第二步">
               點「分享」。
             </Trans>
           ),
@@ -178,7 +177,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
       steps.push({
         step: 'bar-share',
         text: (
-          <Trans id="install.guide.bar.1" comment="Top／Bottom 分頁列第一步" render={ProseWords}>
+          <Trans id="install.guide.bar.1" comment="Top／Bottom 分頁列第一步">
             點工具列上的「分享」按鈕。
           </Trans>
         ),
@@ -188,7 +187,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
       {
         step: 'add-row',
         text: (
-          <Trans id="install.guide.add" comment="往下找到加入主畫面" render={ProseWords}>
+          <Trans id="install.guide.add" comment="往下找到加入主畫面">
             往下找到「<span className="ll-nowrap">加入主畫面</span>」。
           </Trans>
         ),
@@ -199,7 +198,6 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
           <Trans
             id="install.guide.confirm"
             comment="確認對話框：iOS 17、18 沒有「以 Web App 打開」開關，所以寫成「有…就開啟」；要短：375 的步驟說明一行約 10 字、1280 的步驟方塊約 12 字，都排成兩行"
-            render={ProseWords}
           >
             有「以 <span className="ll-nowrap">Web App</span> 打開」就開啟，點「加入」。
           </Trans>
@@ -226,7 +224,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
         <>
           <div className="ll-guide__step0">
             <p>
-              <Trans id="install.guide.step0" comment="iOS 圖解的第 0 步：先把進度帶走" render={ProseWords}>
+              <Trans id="install.guide.step0" comment="iOS 圖解的第 0 步：先把進度帶走">
                 第 0 步：先把這裡的進度帶走。按「<span className="ll-nowrap">匯出到 App</span>」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App
                 時貼上，進度就會合併。
               </Trans>
@@ -273,14 +271,14 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
             </div>
           ) : (
             <p className="ll-small ll-muted">
-              <Trans id="install.guide.legacyNote" comment="iOS 17、18 的說明" render={ProseWords}>
+              <Trans id="install.guide.legacyNote" comment="iOS 17、18 的說明">
                 你的 iOS 版本沒有縮小的網址列，也沒有「<span className="ll-nowrap">以 Web App 打開</span>」的開關；加入主畫面後會直接以 App 開啟。
               </Trans>
             </p>
           )}
           {stepList}
           <p className="ll-small ll-muted ll-guide__note">
-            <Trans id="install.guide.after" comment="加入之後的提醒" render={ProseWords}>
+            <Trans id="install.guide.after" comment="加入之後的提醒">
               之後都從主畫面的圖示開啟。Safari 分頁和 App 的紀錄是分開的兩份，新的進度記得用「<span className="ll-nowrap">匯出到 App</span>」帶過去。
             </Trans>
           </p>
@@ -315,7 +313,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
           {/* 收尾：寬的卡片（720px 以上）放在步驟方塊右側，窄的時候接在步驟下面（install.css） */}
           <div className="ll-guide__finish">
             <p className="ll-small ll-muted ll-guide__note">
-              <Trans id="install.guide.chromium.after" comment="Chromium 安裝之後的說明：桌面或主畫面的圖示；進度和瀏覽器共用" render={ProseWords}>
+              <Trans id="install.guide.chromium.after" comment="Chromium 安裝之後的說明：桌面或主畫面的圖示；進度和瀏覽器共用">
                 裝好之後從桌面或主畫面的圖示開啟。進度和這個瀏覽器是同一份，不用搬。
               </Trans>
             </p>
@@ -346,7 +344,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
       {variant === 'generic' && (
         <>
           <p className="ll-guide__generic">
-            <Trans id="install.guide.generic" comment="沒有安裝按鈕的瀏覽器（Firefox、電腦版 Safari）" render={ProseWords}>
+            <Trans id="install.guide.generic" comment="沒有安裝按鈕的瀏覽器（Firefox、電腦版 Safari）">
               這個瀏覽器沒有安裝按鈕：可以先加入書籤；在 iPhone 用 Safari、在 Android 用 Chrome 開啟這個網址，就能加到主畫面。
             </Trans>
           </p>

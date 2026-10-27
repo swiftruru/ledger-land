@@ -27,7 +27,7 @@ export interface LevelSheetData {
   levelNo?: number;
   extension?: boolean;
   status?: LevelNodeStatus;
-  /** 學習目標 1 到 3 行。中文長句由頁面依詞包好再傳進來（地圖用說明頁同一套 ProseWords，第 9 輪：375 的「損／益表」「直／接開始」） */
+  /** 學習目標 1 到 3 行，照全站規則換行（07 第 3.5 節） */
   objectives: readonly ReactNode[];
   /** 最佳成績；沒挑戰過時省略 */
   best?: { stars: 0 | 1 | 2 | 3; accuracyText: string };
@@ -65,7 +65,7 @@ export function LevelSheet({ open, onClose, level, returnFocusTo, teacherExtra }
   const lead =
     level && level.chapterNo !== undefined && level.levelNo !== undefined ? (
       <span className={`ll-levelsheet__node ll-levelsheet__node--${status}${level.extension ? ' ll-levelsheet__node--ext' : ''}`} aria-hidden="true">
-        <span className="ll-num ll-nowrap">{number(level.chapterNo, level.levelNo, level.extension)}</span>
+        <span className="ll-num ll-keep">{number(level.chapterNo, level.levelNo, level.extension)}</span>
       </span>
     ) : undefined;
   const startLabel = !played

@@ -200,7 +200,7 @@ export function InstallPrompt({ strategy, dismiss }: InstallPromptState) {
       >
         <p>
           <Trans id="install.body" comment="安裝建議的說明；只說「比較不容易」，不保證">
-            開⁠啟更快，進⁠度也⁠比⁠較不⁠容⁠易被清⁠除。
+            開啟更快，進度也比較不容易被清除。
           </Trans>
         </p>
       </Banner>
@@ -244,7 +244,7 @@ export function InstallPrompt({ strategy, dismiss }: InstallPromptState) {
             id="install.ios.short"
             comment="iOS 安裝建議的說明，併入 Safari 分頁常駐提示的那一句（兩條不會同時出現）；375 寬最多兩行，步驟在按「看圖解教學」展開的卡片裡"
           >
-            已⁠經加⁠入就⁠從⁠主⁠畫⁠面圖⁠示開⁠啟，進⁠度存⁠在那⁠裡；還⁠沒⁠加⁠入就看⁠圖⁠解。
+            已經加入就從主畫面圖示開啟，進度存在那裡；還沒加入就看圖解。
           </Trans>
         </p>
       </Banner>

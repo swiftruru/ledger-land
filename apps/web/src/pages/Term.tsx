@@ -5,10 +5,9 @@
 // 一次出現（維護者 2026-10-26）：名詞內容（兩種語言）、章節索引、相關名詞與定義引用的名稱、進度一起讀，全部到了才向 usePageReady 回報齊了、整頁一次淡入；
 // 在那之前只有頁首的返回鍵與空的 h1（換頁的焦點落點），沒有骨架；狀態卡第一次出現就是最後的樣子（已收進或解鎖任務卡）。
 // 中文換行（M3 驗收第 7 輪：375 的「現時經／濟資源」「存貨與設／備」「有形資／產」）：h1 的名詞名稱（第 9 輪）、定義、各段落、用語對照、狀態說明與解鎖任務卡的標題
-// 都用 features/term-page 的 TermProse（說明頁 components/prose-units.ts 的切詞，加上名詞自己的名稱、會計複合名詞、數字與量詞、最後一段至少 4 個字），
+// 文字照全站規則換行（07 第 3.5 節，2026-10-27 起：中文逐字換行、齊行，不再切詞）。
 // 詞包成 .ll-nowrap、其他字照全站規則換行；不另寫 CSS。整塊的寬度上限依欄寬：內文 7.5 個字寬、公式框 6.8、任務卡標題 5.9、h1 約 6（320 寬加 200% 字級）。
 // 助詞「的」「地」「得」不落在行首（第 9 輪，prose.ts 第 6 點）
-import type { TransRenderProps } from '@lingui/react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useId, useMemo, useState, type MouseEvent, type ReactNode } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
@@ -45,31 +44,18 @@ import { useUnlocks } from '../features/glossary/useUnlocks.ts';
 import { useLevelCodeFormatter } from '../features/home/codes.ts';
 import { TERM_FIELD_ORDER, termFieldsOf, type TermField } from '../features/quiz/term-fields.ts';
 import { hasTermRefs, plainParagraphs } from '../features/term-page/term-text.ts';
-import { TermProse, TermProseRich } from '../features/term-page/TermProse.tsx';
 import { ContentLoadError, loadTermDetail, loadTermIndex, type TermSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
 import { NotFound } from './NotFound.tsx';
 import '../styles/glossary.css';
 
-/** 名詞自己的名稱：定義與段落裡整塊不斷（「營業利益率」不排成「營業／利益率」） */
-const namesOf = (term: TermSnapshot) => [term.label, term.teacherLabel, term.currentTwLabel ?? ''];
-/** 段落最後一段的字寬上限：內文 7（320 寬加 200% 時欄寬 7.5 個字），公式框 6（6.8 個字） */
-const TAIL_EM = 7;
-const FORMULA_TAIL_EM = 6;
-/** 解鎖任務卡的標題欄最窄 5.9 個字寬；按鈕字最窄約 4.4 個字寬（320 寬加 200%：「前往／這一關」，不排成「前往這／一關」） */
-const UNLOCK_EM = 5;
-const UNLOCK_TAIL_EM = 5.5;
-/** h1（名詞名稱）在 320 寬加 200% 時一行約 6 個字：「營業活動的現金流量總計」排成「營業活動的／現金流量總計」，不排成「營業活動的現／金流量總計」（第 9 輪） */
-const TITLE_EM = 5;
-const goLabel = (props: TransRenderProps) => <TermProseRich {...props} maxEm={4} />;
-
 /** 狀態卡（03 第 2.10 節）：參考名詞不看進度；其他名詞看進度裡的 unlock（頁面在進度讀到之後才畫，傳進來的一定是讀好的） */
 function TermStatus({ term, locale, index, unlocks }: { term: GlossaryTerm; locale: Locale; index: GlossaryIndex; unlocks: ReadonlyMap<string, string> }) {
   if (isReferenceTerm(term))
     return (
       <StatusNote kind="reference">
-        <Trans id="term.reference" comment="名詞頁：參考名詞（目前沒有任何已發布題目用到）的說明；不顯示鎖定，也不說之後會收進圖鑑" render={TermProseRich}>
+        <Trans id="term.reference" comment="名詞頁：參考名詞（目前沒有任何已發布題目用到）的說明；不顯示鎖定，也不說之後會收進圖鑑">
           參考名詞：目前還沒有關卡用到，隨時可以讀，不算在名詞圖鑑的收集數裡。
         </Trans>
       </StatusNote>
@@ -99,7 +85,7 @@ function CollectibleStatus({
   if (!meet)
     return (
       <StatusNote kind="locked">
-        <Trans id="term.lockedNoLevel" comment="還沒收進圖鑑、目前也沒有任何已發布關卡用到這個名詞時的說明（不能寫會在哪一關遇到）" render={TermProseRich}>
+        <Trans id="term.lockedNoLevel" comment="還沒收進圖鑑、目前也沒有任何已發布關卡用到這個名詞時的說明（不能寫會在哪一關遇到）">
           目前還沒有關卡用到這個名詞；之後的關卡或報表實驗室用到時會自動收進圖鑑，現在也可以直接讀。
         </Trans>
       </StatusNote>
@@ -108,14 +94,7 @@ function CollectibleStatus({
   const title = info
     ? meetText.unlockTitle(info)
     : t({ id: 'term.unlock.titleUnknown', message: '在闖關地圖的關卡裡遇到', comment: '名詞頁解鎖任務卡的標題：讀不到章節索引、不知道是第幾章第幾關時' });
-  return (
-    <UnlockCard
-      title={<TermProse text={title} maxEm={UNLOCK_EM} tailEm={UNLOCK_TAIL_EM} />}
-      subtitle={info?.levelTitle && <TermProse text={info.levelTitle} maxEm={UNLOCK_EM} tailEm={UNLOCK_TAIL_EM} />}
-      labelRender={goLabel}
-      href={localePath(locale, `/level/${meet.levelId}/`)}
-    />
-  );
+  return <UnlockCard title={title} subtitle={info?.levelTitle} href={localePath(locale, `/level/${meet.levelId}/`)} />;
 }
 
 /** 名詞頁的其餘段落，順序與名詞卡相同（03 第 4.3 節）：用語說明、公式、例子、常見誤解、IFRS 怎麼處理；沒有內容的段落省略 */
@@ -128,7 +107,6 @@ function TermSections({ term, locale, labelOf }: { term: TermSnapshot; locale: L
     ifrsNote: <Trans id="term.underIfrs">IFRS 怎麼處理</Trans>,
   };
   const fields = termFieldsOf(term);
-  const names = namesOf(term);
   return (
     <>
       {TERM_FIELD_ORDER.map((key) => {
@@ -139,9 +117,7 @@ function TermSections({ term, locale, labelOf }: { term: TermSnapshot; locale: L
             <h2 className="ll-term-section__title">{titles[key]}</h2>
             <div className={key === 'formula' ? 'll-num ll-term-section__formula' : undefined}>
               {plainParagraphs(text, locale, labelOf).map((para, i) => (
-                <p key={i}>
-                  <TermProse text={para} names={names} tailEm={key === 'formula' ? FORMULA_TAIL_EM : TAIL_EM} />
-                </p>
+                <p key={i}>{para}</p>
               ))}
             </div>
           </Card>
@@ -164,9 +140,7 @@ function TermNames({ term }: { term: TermSnapshot }) {
                 教材與現行用語
               </Trans>
             </dt>
-            <dd lang="zh-TW">
-              <TermProse text={term.teacherLabel} names={namesOf(term)} />
-            </dd>
+            <dd lang="zh-TW">{term.teacherLabel}</dd>
           </div>
         ) : (
           <>
@@ -174,18 +148,14 @@ function TermNames({ term }: { term: TermSnapshot }) {
               <dt>
                 <Trans id="term.teacherLabel">教材用語</Trans>
               </dt>
-              <dd lang="zh-TW">
-                <TermProse text={term.teacherLabel} names={namesOf(term)} />
-              </dd>
+              <dd lang="zh-TW">{term.teacherLabel}</dd>
             </div>
             {term.currentTwLabel && (
               <div className="ll-termnames__row">
                 <dt>
                   <Trans id="term.currentTwLabel">現行用語</Trans>
                 </dt>
-                <dd lang="zh-TW">
-                  <TermProse text={term.currentTwLabel} names={namesOf(term)} />
-                </dd>
+                <dd lang="zh-TW">{term.currentTwLabel}</dd>
               </div>
             )}
           </>
@@ -295,7 +265,7 @@ function TermPage({ retried, onRetry }: { retried: boolean; onRetry: () => void 
   const backFooter = (
     <div className="ll-termpage__foot">
       <Button variant="secondary" size="md" icon={<CardsIcon />} href={listHref} data-testid="term-back">
-        <TermProse text={backLabel} maxEm={4} />
+        {backLabel}
       </Button>
     </div>
   );
@@ -338,12 +308,7 @@ function TermPage({ retried, onRetry }: { retried: boolean; onRetry: () => void 
   const notes = termNoteKinds(term.flags);
   return (
     <div className="ll-termpage">
-      <TopBar
-        title={<TermProse text={term.label} names={namesOf(term)} maxEm={TITLE_EM} tailEm={0} />}
-        backHref={listHref}
-        backLabel={backLabel}
-        backShortLabel={backShort}
-      />
+      <TopBar title={term.label} backHref={listHref} backLabel={backLabel} backShortLabel={backShort} />
       <p className="ll-termpage__meta">
         {/* 類別與註記標籤（舊稱、簡化、非 IFRS 項目，和名詞卡同一份 termNoteKinds）排成一組：手機換行時註記跟著類別留在第一列 */}
         <span className="ll-termpage__tags" data-testid="term-tags">
@@ -365,9 +330,7 @@ function TermPage({ retried, onRetry }: { retried: boolean; onRetry: () => void 
       <Card className="ll-termpage__definition">
         <div className="ll-term-definition" data-testid="term-definition">
           {plainParagraphs(term.definition, locale, labelOf).map((para, i) => (
-            <p key={i}>
-              <TermProse text={para} names={namesOf(term)} tailEm={TAIL_EM} />
-            </p>
+            <p key={i}>{para}</p>
           ))}
         </div>
       </Card>

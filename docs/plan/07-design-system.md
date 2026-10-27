@@ -254,30 +254,27 @@ token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`
 
 Tab bar 標籤是 `min(0.75rem, 16px)`（文字放大時跟著變大，最多 16px）；英文另加 `5vw - 2.5px` 的上限（320 寬時 13.5px，375 起 16px），長標籤換行時底盤跟著長高。
 
-### 3.5 中文換行與依詞換行（M3，2026-10-25 到 26 定案）
+### 3.5 中文換行（2026-10-27 改成齊行；M3 的依詞換行已拿掉）
 
 全站規則寫在 `packages/web-ui/src/styles/03-core-utils.css`，都是繼承的屬性，元件與頁面不另寫：
 
 ```css
-html { line-break: strict; text-wrap: pretty; }   /* 句號、逗號、頓號不落在行首；不留孤字；word-break 維持 normal */
+html { line-break: strict; text-wrap: pretty; }   /* 句號、逗號、頓號不落在行首；英文不留孤字 */
+:lang(zh-TW) :is(p, li, dd) { text-align: justify; text-justify: inter-character; text-wrap: wrap; }   /* 中文段落與清單齊行、逐字換行 */
 @container (max-width: 11em) {                     /* 英文只在窄容器（文字放大 200% 的手機）的內文斷字 */
   :lang(en) { hyphens: auto; hyphenate-limit-chars: 8 4 3; }
   :is([class*='title'], [class*='name'], .ll-btn), :is([class*='title'], [class*='name'], .ll-btn) * { hyphens: manual; }
 }
-.ll-nowrap { white-space: nowrap; }                /* 整塊不斷開的短詞 */
-.ll-phrased { word-break: keep-all; overflow-wrap: anywhere; }   /* 已經切好詞、詞之間有 <wbr> 的句子 */
+.ll-nowrap { white-space: nowrap; }                /* 英文訊息裡整塊不斷的短串 */
+:lang(zh-TW) .ll-nowrap { white-space: normal; }   /* 中文一般的詞不再整塊不斷 */
+.ll-keep { white-space: nowrap; }                  /* 真的不能拆的短串：關卡代號、數字加量詞、介面路徑 */
+.ll-phrased { overflow-wrap: anywhere; }           /* 切過詞的句子只保留行尾硬斷，字照一般規則換行 */
 ```
 
-- **不再用** `word-break: keep-all` 加 `overflow-wrap: anywhere` 的組合處理整段文字：分句比一行長時沒有合法斷點，緊急換行會把「。」單獨推到下一行。只有已經切好詞的 `.ll-phrased` 用它。窄欄裡的英文長字或網址可以單獨寫 `overflow-wrap: anywhere`。
-- **整塊不斷的短詞**（會計名詞、介面名稱）用 Lingui rich text 包 `<span class="ll-nowrap">`（中文 6 個字以內，英文不包）；開括號、開引號放在 span 外面（Chromium 在 nowrap 的 span 裡不套用 `text-spacing-trim`）；緊接標點而且最窄寬度放不下「詞加標點」時不包。數字和量詞之間用不換行空白 U+00A0；首次載入的 chunk 裡的字串（橫幅、首頁）只能用 `.ll-nowrap`、U+00A0 或字之間的 U+2060，不能載入切詞程式。
-- **整句依詞換行**：用 `Intl.Segmenter('zh-Hant')` 切詞、詞之間放 `<wbr>`。切詞程式依用途分五種，都在懶載入的 chunk，首次載入的 JS 不變：(1) web-ui 的 `phraseParts`（`components/phrase.ts`；`Phrased`、`PhrasedRich`、名詞卡名稱、地圖標題）給名稱與短說明，單字黏前後、括號裡整段不斷，可傳 `keep` 清單；地圖標題另由 `phrased()` 在「：」「，」「、」「；」後切成子句；(2) `apps/web/src/components/prose-units.ts` 與 `ProseWords`（說明頁、安裝圖解、關卡面板的學習目標）給長段落；(3) `features/chapter/prose.ts`（章節摘要、學習目標、徽章預覽）依欄寬用容器查詢分詞、單位兩層；(4) `features/term-page/prose.ts`（名詞頁長文）以 (2) 為準，再加名詞自己的名稱與會計複合名詞整塊；(5) `features/quiz-phrase/quiz-phrase.ts`（作答頁的題幹、選項、回饋、解說與名詞卡內文）建立在 (4) 上，金額切成不換行的千分位組，切詞程式在作答頁自己的 chunk。
-- **共同的規則**：「的」「地」「得」與「了」「著」等助詞黏前一個詞，不落在行首（「的」後面只剩一個字時也黏著）；否定詞「不」「沒」「未」「別」黏後面的詞；「在」「從」「而」前面可以斷、黏後面；貨幣符號和後面的數字不斷；英文接空格再接「的」時那個空格換成 U+00A0。Segmenter 切成兩個單字的會計用語（沖減、營收、籌資、賒銷、攤銷、勾稽、過帳等，`KNOWN_WORDS`）先併成一個詞。
-- **還沒做**：五種工具合併成 web-ui `phrase.ts` 的 prose 模式（粒度不同，合併會改變已經看圖驗收過的換行，要重拍整套圖），留到之後。
-- **檢查方式**：320、375 與文字放大 200% 各拍一次，沒有任何一行以「。」「，」「、」「；」「：」或「的」開頭，重要名詞不從中間斷；章節頁、名詞頁、作答頁各有逐行量測的單元測試（`chapter-prose.test.ts`、`term-prose.test.ts`、`quiz-phrase.test.ts`）。
-
----
-
-## 4. 間距、圓角、陰影、層級與動態
+- **中文（我 2026-10-27 的決定）**：照印刷慣例逐字換行、標點不落行首、段落與清單左右對齊，每一行排滿；最後一行靠左，偶爾只剩一兩個字是正常的。中英夾雜時英文字仍不拆，那一行的字距稍微拉開。標題、按鈕、選單列的標題不齊行。
+- **拿掉的東西**：M3 看圖驗收第 5 到 9 輪加上的「詞不拆開」（`Intl.Segmenter` 切詞、詞之間放 `<wbr>`、詞包成 `.ll-nowrap`、章節頁依欄寬決定哪一層不拆的容器查詢）與中文的 `text-wrap: pretty`。理由：詞不拆開是英文的規矩，套到中文上每一行都排不滿；iPhone 的 Safari 對 `pretty` 的做法是把整段的右緣修齊，結果看起來像提早換行（維護者 2026-10-27 實機回饋）。刪掉的程式：`components/prose-units.ts` 與 `ProseWords`、`features/term-page/prose.ts` 與 `TermProse`、`features/chapter/prose.ts` 與 `ChapterProse`、`features/quiz-phrase/quiz-phrase.ts` 與 `Markup` 的切詞路徑。保留的：web-ui 的 `phraseParts`（名詞卡名稱、地圖標題的子句換行、`Phrased` 的說明句）仍會在詞之間放 `<wbr>`，但 `.ll-phrased` 不再 keep-all，所以畫面上就是一般換行；之後再決定要不要一併拿掉。
+- **真的不能拆的短串用 `.ll-keep`**：關卡代號、數字和量詞（或用不換行空白 U+00A0）、「我的 › 備份」這種介面路徑。中文訊息裡原本包成 `.ll-nowrap` 的一般詞（「作答紀錄」「可離線使用」）先留著標籤、由 `:lang(zh-TW) .ll-nowrap { white-space: normal }` 關掉（拿掉標籤要同時改兩種語言的 catalog，之後再清）；英文訊息裡的 `.ll-nowrap` 照舊。首次載入的字串裡原本用來黏住字的 U+2060 也拿掉了。
+- **英文**：維持靠左、只在空格換行、`text-wrap: pretty`；手機一行只有八到十個字，齊行會出現河流般的空隙，所以不齊行。
 
 ### 4.1 間距（4px 基準）
 

@@ -7,7 +7,7 @@
 // 布幕（維護者 2026-10-26，lib/page-ready.tsx）：章節快照、進度、HUD 的三個數字、清單檢視的關卡名稱與第一屏附近的章節場景全部到齊才掀開，
 // 沒有載入中的骨架路線、沒有「…」；真的讀不到內容才顯示 ErrorState。
 import { Trans, useLingui } from '@lingui/react/macro';
-import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { Fragment, lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { useLocation, useNavigate, useNavigationType } from 'react-router';
 import { formatPercent, localePath } from '@ledgerland/i18n';
 import { Button, CardsIcon, EmptyState, ErrorState, Toast, ToastRegion } from '@ledgerland/web-ui';
@@ -62,10 +62,7 @@ const QrScanner = lazy(() => import('../features/quest-map/QrScanner.tsx'));
 // 使用者在那之前就打開（或網址帶 ?scan=1、返回到代號疊加層）時立刻載入
 const LevelCodeOverlay = lazy(() => import('../features/quest-map-overlays/LevelCodeOverlay.tsx').then((m) => ({ default: m.LevelCodeOverlay })));
 const ScanOverlay = lazy(() => import('../features/quest-map-overlays/ScanOverlay.tsx').then((m) => ({ default: m.ScanOverlay })));
-// 關卡面板的學習目標是長句：依詞換行用說明頁同一套（components/ProseWords.tsx 與 prose-units.ts，自成約 1.5 KB 的 prose chunk），
-// 第一次打開面板時才載入，不進地圖的 chunk（28 KB 預算）、不在第一波；載入前照原字（全站的逐字換行），面板滑入時就換好。
-// 第 9 輪：375 的面板把目標斷成「損／益表」「哪一／期」「稅／前淨利」（作答頁與章節頁已依詞換行，面板是地圖上唯一還在詞中間斷的長句）
-const ObjectiveProse = lazy(() => import('../components/ProseWords.tsx').then((m) => ({ default: m.ProseWords })));
+// 關卡面板的學習目標照全站規則換行（07 第 3.5 節，2026-10-27 起不再切詞；原本第一次打開面板才載入的切詞 chunk 已拿掉）
 
 const SCROLL_KEY = 'll:map-scroll';
 /** 徽章 Toast 自動收起的時間（ms）；焦點或滑鼠停在提示裡時暫停；也可以手動關閉 */
@@ -704,13 +701,7 @@ export default function Play() {
       levelNo: l.levelNo,
       extension: c.extension,
       status: levelStatus(l.id, levelDone(progress, l), currentId),
-      objectives: objectives.map((o) => (
-        <Suspense key={o} fallback={o}>
-          <ObjectiveProse id="" translation={o}>
-            {o}
-          </ObjectiveProse>
-        </Suspense>
-      )),
+      objectives: objectives.map((o) => <Fragment key={o}>{o}</Fragment>),
       best: best && !l.unscored ? { stars: best.stars, accuracyText: formatPercent(best.bestScore, locale, { digits: 0 }) } : undefined,
       unscored: l.unscored,
       read: l.unscored ? levelRead(progress, l.id) : undefined,

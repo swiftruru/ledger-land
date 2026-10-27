@@ -1,13 +1,21 @@
 /* 基礎組：全站換行規則、只給螢幕閱讀器的文字、圖示按鈕、小按鈕。歸屬見 .local-reports/m3-final/notes/css-areas.md；styles.css 依檔名順序 @import，順序就是層疊順序。 */
-/* 全站只有這一套換行規則（M3 驗收第 7 輪定案，design-system.md 第 22 節），都是繼承的屬性，元件與頁面不再各寫一套：
-   中文一般斷行（word-break 維持 normal）加 line-break: strict，句號、逗號、頓號不落在行首；text-wrap: pretty 不留孤字。
-   不要用 keep-all 加 overflow-wrap: anywhere：分句比一行長時會在行尾硬斷，把句號斷到下一行（第 6 輪的退步）。
-   英文斷字只在窄容器（11em 以下的 inline-size 容器：320、375 寬加 200% 字級的卡片、選單列、關卡卡片、地圖紙籤）的內文，
-   8 個字母以上的字才斷（前 4 後 3）；一般字級的段落不斷（第 7 輪驗收：375 的「invest-／ment」）。標題、名稱與按鈕只在空格換行
-   （粗體標題中間的連字號讀起來像兩個字），放不下的長字由各自的 overflow-wrap 在行尾斷。備份碼是 break-all，不受影響 */
+/* 全站只有這一套換行規則（design-system.md 第 3.5 節；2026-10-27 維護者決定改成中文齊行），都是繼承的屬性，元件與頁面不再各寫一套：
+   中文照印刷慣例逐字換行（word-break 維持 normal）加 line-break: strict，句號、逗號、頓號不落在行首；段落與清單左右對齊（text-align: justify），
+   每一行排滿。不再「詞不拆開」、不再用 text-wrap: pretty（齊行時它先把行縮短再拉開字距，iPhone 的 Safari 又會把整段右緣修齊，看起來像提早換行）。
+   英文維持靠左、只在空格換行、text-wrap: pretty 不留孤字；英文斷字只在窄容器（11em 以下的 inline-size 容器：320、375 寬加 200% 字級的卡片、
+   選單列、關卡卡片、地圖紙籤）的內文，8 個字母以上的字才斷（前 4 後 3）；一般字級的段落不斷。標題、名稱與按鈕只在空格換行
+   （粗體標題中間的連字號讀起來像兩個字），放不下的長字由各自的 overflow-wrap 在行尾斷。備份碼是 break-all，不受影響。
+   不要用 keep-all 加 overflow-wrap: anywhere：分句比一行長時會在行尾硬斷，把句號斷到下一行 */
 html {
   line-break: strict;
   text-wrap: pretty;
+}
+/* 中文的段落與清單齊行；英文靠左。只給段落與清單（標題、按鈕、選單列的標題單行居多，齊行沒有意義）。
+   text-justify: inter-character 只有 Chromium 認得（Safari 對中日韓文字本來就按字距分配）；text-wrap 回到 wrap，見上面的說明 */
+:lang(zh-TW) :is(p, li, dd) {
+  text-align: justify;
+  text-justify: inter-character;
+  text-wrap: wrap;
 }
 @container (max-width: 11em) {
   :lang(en) {
@@ -19,15 +27,22 @@ html {
     hyphens: manual;
   }
 }
-/* 整塊不斷開的詞（會計名詞、介面名稱，例如「作答紀錄」「匯出到 App」）：字串用 Lingui rich text 包成 <span class="ll-nowrap">。
-   只包短詞（中文 6 個字內），320 寬加 200% 字級時才不會撐破版面；整句要依詞換行改用 Phrased（phraseParts） */
+/* 整塊不斷開的短串：網址、介面路徑（「我的 › 備份」）、數字加量詞、英文名稱加版本號，字串用 Lingui rich text 包成 <span class="ll-nowrap">。
+   只包很短的東西（中文 6 個字內），320 寬加 200% 字級時才不會撐破版面；中文一般的詞不包（2026-10-27 起逐字換行） */
 .ll-nowrap {
   white-space: nowrap;
 }
-/* 已經切好詞的句子（phraseParts 在詞與詞之間放 <wbr>：EmptyState、ErrorState 的字串，apps/web 的 Phrased）：keep-all 只在 <wbr>、
-   標點與空格處換行，標點跟著前一個詞（句號不落在行首）；一個詞比一行還長時才在行尾斷。沒有切詞的文字不要用這個 class */
+/* 中文訊息裡包成 .ll-nowrap 的一般詞（M3 看圖驗收加的「作答紀錄」「可離線使用」這類）2026-10-27 起照一般規則換行：齊行時整塊不斷的詞會把那一行的字距拉得很開。
+   訊息的標籤先留著（拿掉要同時改兩種語言的 catalog），用 CSS 關掉；真的不能拆的短串改用 .ll-keep */
+:lang(zh-TW) .ll-nowrap {
+  white-space: normal;
+}
+.ll-keep {
+  white-space: nowrap;
+}
+/* 切過詞、詞與詞之間有 <wbr> 的句子（phraseParts：EmptyState、ErrorState 的字串，apps/web 的 Phrased，地圖標題）：2026-10-27 起不再 keep-all，
+   字照全站規則換行（<wbr> 只是多餘的換行點）；只留 overflow-wrap: anywhere，一整串比一行還長時在行尾斷、不撐破版面 */
 .ll-phrased {
-  word-break: keep-all;
   overflow-wrap: anywhere;
 }
 /* 只給螢幕閱讀器的文字；原生 radio 或 checkbox 視覺隱藏時也用它（仍可聚焦，焦點框畫在外層卡片上） */

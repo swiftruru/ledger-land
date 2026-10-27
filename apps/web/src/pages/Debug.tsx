@@ -11,7 +11,6 @@ import { site } from '../../site.config.ts';
 import { getTabbar } from '../app/Root.tsx';
 import { swState } from '../components/UpdatePrompt.tsx';
 import { guessEphemeral } from '../components/EphemeralNotice.tsx';
-import { ProseWords } from '../components/ProseWords.tsx';
 import { useBackToAbout } from '../components/useBackLabels.ts';
 import { analyticsState } from '../lib/analytics.ts';
 import { loadManifest } from '../lib/content.ts';
@@ -190,9 +189,7 @@ export default function Debug() {
         backShortLabel={back.short}
       />
       <p className="ll-muted ll-footnote">
-        <Trans id="debug.hint" render={ProseWords}>
-          這一頁只在本機顯示資訊，不會送出任何資料；「複製全部結果」由你自己決定要不要貼給別人。
-        </Trans>
+        <Trans id="debug.hint">這一頁只在本機顯示資訊，不會送出任何資料；「複製全部結果」由你自己決定要不要貼給別人。</Trans>
       </p>
       <div className="ll-row ll-debug__actions">
         <Button size="sm" icon={<RetryIcon />} onClick={() => void refresh()}>
@@ -221,7 +218,7 @@ export default function Debug() {
       <JsonSection title={label.analytics} label={label.analytics} value={report.analytics}>
         <p className="ll-small ll-muted">
           {/* 「被擋下時略過」整塊不斷（第 8 輪驗收：375 斷成「離線或被擋下」換行「時略過。」） */}
-          <Trans id="debug.analytics.note" comment="診斷資訊的流量統計說明；<0> 是不換行的片語" render={ProseWords}>
+          <Trans id="debug.analytics.note" comment="診斷資訊的流量統計說明；<0> 是不換行的片語">
             服務：Cloudflare Web Analytics。不用 cookie、不含作答資料；只在正式網址啟用，離線或<span className="ll-nowrap">被擋下時略過</span>。
           </Trans>
         </p>
@@ -249,9 +246,9 @@ export default function Debug() {
         </div>
       </JsonSection>
       <p className="ll-small ll-muted ll-debug__foot">
-        <Trans id="debug.settingsLink" comment="「我的 › 設定」是文中連結" render={ProseWords}>
+        <Trans id="debug.settingsLink" comment="「我的 › 設定」是文中連結">
           外觀、深色風味與玻璃效果在
-          <TextLink href={localePath(locale, '/me/settings/')} className="ll-nowrap">
+          <TextLink href={localePath(locale, '/me/settings/')} className="ll-keep">
             我的 › 設定
           </TextLink>
           調整。

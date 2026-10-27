@@ -3,7 +3,6 @@
 // 文字放大 200% 時超出方塊、貼到標題），用實心的愛心（第 4 輪看圖驗收：這些題目都已經收藏，作答頁按下「收藏」後也是實心；空心讀起來像「未收藏」），移除鈕是連結外側的 IconButton（可讀名稱帶題目摘錄）。600 以下卡片不畫箭頭（NavCard 的 chevron="wide"），文字欄用到整列寬。
 // 區塊標題和「學習」「這台裝置」同一種小標（footnote 600），右邊是題數的 Badge。
 // 摘錄（me.css 的 .ll-favourites__desc，最多兩行）：代號 Badge 和摘錄的第一個字在同一行。第 9 輪起依詞換行（375 原本斷成「申請一／筆」「如／果」），
-// 用長段落的 ProseWords（prose-units.ts：單位最多 6 個字，每行最多短一個詞），不用 Phrased：Phrased 的單字詞會黏成長串
 // （「股東會上有人想分股利」），排不進第二行時第二行只剩幾個字就截斷（第 5 輪看圖驗收）。
 // 卡片標題（關卡名）、已下架的說明與空清單的說明是完整顯示的短句，用 Phrased／PhrasedRich（200% 時不斷成「收／藏。」，
 // 第 9 輪：375 的「就會放／在這裡」、375 加 200% 的「從數／字倒推」）。
@@ -19,7 +18,6 @@ import { MapIcon } from '@ledgerland/web-ui/map';
 import { loadManifest, loadQuestion, loadTermIndex, type QuestionSnapshot } from '../../lib/content.ts';
 import { levelPosition, numberChapters } from '../glossary/unlocks.ts';
 import { useLevelCodeFormatter } from '../home/codes.ts';
-import { ProseWords } from '../../components/ProseWords.tsx';
 import { Phrased, PhrasedRich } from '../me/Phrased.tsx';
 import { listFavourites, removeFavourite } from './favourites.ts';
 import { renderPlain, valueContextOf } from './placeholders.ts';
@@ -198,12 +196,7 @@ export default function FavouritesSection({ locale, headingId = 'll-favourites-t
                             <Badge className="ll-favourites__code">{code(pos.chapterNo, pos.levelNo, pos.extension)}</Badge>{' '}
                           </>
                         )}
-                        {/* 摘錄不是 Lingui 訊息，直接交給 Trans 用的 render（ProseWords 只讀 translation） */}
-                        <span className="ll-favourites__excerpt">
-                          <ProseWords id={item.questionId} translation={item.excerpt}>
-                            {item.excerpt}
-                          </ProseWords>
-                        </span>
+                        <span className="ll-favourites__excerpt">{item.excerpt}</span>
                       </span>
                     )
                   }

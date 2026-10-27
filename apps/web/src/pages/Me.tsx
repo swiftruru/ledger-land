@@ -87,7 +87,7 @@ export default function Me() {
       render={PhrasedRich}
     >
       已取得{' '}
-      <span className="ll-nowrap">
+      <span className="ll-keep">
         {earned}／{total} 枚
       </span>
     </Trans>
@@ -198,7 +198,7 @@ export default function Me() {
                       <span className="ll-phrased">
                         今天要
                         <wbr />
-                        複習 <span className="ll-nowrap"># 題</span>
+                        複習 <span className="ll-keep"># 題</span>
                       </span>
                     }
                   />

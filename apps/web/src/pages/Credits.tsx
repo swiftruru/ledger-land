@@ -22,7 +22,6 @@ import {
   ToastRegion,
   TopBar,
 } from '@ledgerland/web-ui';
-import { ProseWords } from '../components/ProseWords.tsx';
 import { useBackToMe } from '../components/useBackLabels.ts';
 import { MascotEgg } from '../features/credits/MascotEgg.tsx';
 import { StackExplorer } from '../features/credits/StackExplorer.tsx';
@@ -74,7 +73,7 @@ export default function Credits() {
         backShortLabel={back.short}
       />
       <p className="ll-lede">
-        <Trans id="credits.intro" comment="幕後頁導言" render={ProseWords}>
+        <Trans id="credits.intro" comment="幕後頁導言">
           這一頁說說做這個網站的人、教我會計的老師，還有把它做出來的工具。順便藏了幾個彩蛋。
         </Trans>
       </p>
@@ -85,13 +84,13 @@ export default function Credits() {
           </Trans>
         </h2>
         <p>
-          <Trans id="credits.author.p1" comment="作者自我介紹第一段（第一人稱）" render={ProseWords}>
+          <Trans id="credits.author.p1" comment="作者自我介紹第一段（第一人稱）">
             我是潘昱如（Yu-Ru
             Pan）。我喜歡把學到的東西做成可以動手玩的樣子，會計樂園就是這樣開始的：上課聽到一家小店的帳怎麼從頭記到尾，就想把它做成一關一關的遊戲。
           </Trans>
         </p>
         <p>
-          <Trans id="credits.author.p2" comment="作者自我介紹第二段" render={ProseWords}>
+          <Trans id="credits.author.p2" comment="作者自我介紹第二段">
             平常寫的東西放在個人網站和 GitHub。這個網站的原始碼也在那裡，看到哪裡怪怪的歡迎告訴我。
           </Trans>
         </p>
@@ -124,18 +123,18 @@ export default function Credits() {
           </Trans>
         </h2>
         <p>
-          <Trans id="credits.teacher.p1" comment="老師那一節第一段（課堂師生的口吻，只致謝不背書）" render={ProseWords}>
+          <Trans id="credits.teacher.p1" comment="老師那一節第一段（課堂師生的口吻，只致謝不背書）">
             會計是跟陳彥宏老師（Yen-Hung
             Chen）學的。老師在課堂上把一家小店的帳從頭講到尾：開店、進貨、賣東西、借錢、發薪水，每一筆怎麼記、三張報表怎麼長出來。課程和專業都是老師的；我是台下那個邊聽邊想「這可以做成遊戲」的學生。
           </Trans>
         </p>
         <p>
-          <Trans id="credits.teacher.p2" comment="老師那一節第二段：內容責任歸屬" render={ProseWords}>
+          <Trans id="credits.teacher.p2" comment="老師那一節第二段：內容責任歸屬">
             網站裡的題目、解說與名詞卡都是我自己寫的，寫錯是我的責任，不代表老師的觀點。故事的情境與金額經老師授權使用，細節寫在「關於與授權」。
           </Trans>
         </p>
         <p>
-          <Trans id="credits.teacher.p3" comment="老師那一節第三段：致謝" render={ProseWords}>
+          <Trans id="credits.teacher.p3" comment="老師那一節第三段：致謝">
             謝謝老師同意我把名字寫在這裡。
           </Trans>
         </p>
@@ -145,7 +144,7 @@ export default function Credits() {
           </Trans>
         </h2>
         <p>
-          <Trans id="credits.stack.intro" comment="技術棧那一節的引言" render={ProseWords}>
+          <Trans id="credits.stack.intro" comment="技術棧那一節的引言">
             下面每個方塊都是真的在用的東西，點一個就知道它負責什麼、和誰搭配。版本號是建置時從套件清單抄來的，不會過期。
           </Trans>
         </p>
@@ -216,28 +215,20 @@ export default function Credits() {
         </h2>
         <ul className="ll-list">
           <li>
-            <Trans id="credits.values.noAccount" render={ProseWords}>
-              不用帳號、不用伺服器：進度存在你自己的裝置裡，誰都看不到。
-            </Trans>
+            <Trans id="credits.values.noAccount">不用帳號、不用伺服器：進度存在你自己的裝置裡，誰都看不到。</Trans>
           </li>
           <li>
-            <Trans id="credits.values.offline" render={ProseWords}>
-              離線也能整章作答：裝好之後搭捷運也能玩。
-            </Trans>
+            <Trans id="credits.values.offline">離線也能整章作答：裝好之後搭捷運也能玩。</Trans>
           </li>
           <li>
-            <Trans id="credits.values.integer" render={ProseWords}>
-              金額一律整數：報表不會出現一塊錢的差。
-            </Trans>
+            <Trans id="credits.values.integer">金額一律整數：報表不會出現一塊錢的差。</Trans>
           </li>
           <li>
-            <Trans id="credits.values.oneKit" render={ProseWords}>
-              全站只有一套可以點的東西：按鈕、連結、選單列長得都一樣，看一眼就知道哪裡可以按。
-            </Trans>
+            <Trans id="credits.values.oneKit">全站只有一套可以點的東西：按鈕、連結、選單列長得都一樣，看一眼就知道哪裡可以按。</Trans>
           </li>
         </ul>
         <p>
-          <Trans id="credits.values.more" comment="設計堅持那一節最後一句；<0> 是連到「關於系統設計」的連結" render={ProseWords}>
+          <Trans id="credits.values.more" comment="設計堅持那一節最後一句；<0> 是連到「關於系統設計」的連結">
             更完整的設計筆記在<TextLink href={localePath(locale, '/design/')}>關於系統設計</TextLink>。
           </Trans>
         </p>
@@ -270,7 +261,7 @@ export default function Credits() {
         data-testid="egg-dedication"
       >
         <p>
-          <Trans id="eggs.dedication.text" comment="頁底摺疊列展開後的話" render={ProseWords}>
+          <Trans id="eggs.dedication.text" comment="頁底摺疊列展開後的話">
             謝謝老師把會計講成一個聽得懂的故事；謝謝課堂上每一個舉手發問的人，你們的問題變成了很多題目；也謝謝看到這裡的你。
           </Trans>
         </p>

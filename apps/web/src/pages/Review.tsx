@@ -24,7 +24,7 @@ import { Badge, BookmarkIcon, Button, Card, EmptyState, PlayIcon, QuestionCard, 
 import { MapIcon, MapMarker } from '@ledgerland/web-ui/map';
 import { QuizLangSwitch } from '../features/quiz/LevelSession.tsx';
 import { DeferredFeedbackView as FeedbackView } from '../features/quiz/feedback-lazy.tsx';
-import { Markup, QuestionWords } from '../features/quiz/Markup.tsx';
+import { Markup } from '../features/quiz/Markup.tsx';
 import { QuestionView, valueContextOf } from '../features/quiz/QuestionView.tsx';
 import { canSubmit } from '../features/quiz/answers.ts';
 import { levelCodeLabel } from '../features/quiz/level-code.ts';
@@ -34,7 +34,6 @@ import { reviewSessionMatches } from '../features/quiz/session-entry.ts';
 import { TermsProvider, useTerms } from '../features/quiz/terms.tsx';
 import { preloadQuestionModules } from '../features/quiz/lazy-data.ts';
 import { PendingContext, usePendingScope } from '../features/quiz/useAsync.ts';
-import { phraseModule } from '../features/quiz-phrase/quiz-phrase.ts';
 import { loadChapterIndex, loadManifest, loadQuestion, resolveId, type ContentManifest, type QuestionSnapshot, type ResolvedId } from '../lib/content.ts';
 import { logError } from '../lib/errors.ts';
 import { afterFirstPaint } from '../lib/idle.ts';
@@ -115,7 +114,7 @@ export async function loadReviewItems(locale: 'zh-TW' | 'en'): Promise<ReviewIte
 export default function Review() {
   const locale = useLocale();
   return (
-    <TermsProvider locale={locale} phrase={phraseModule}>
+    <TermsProvider locale={locale}>
       <ReviewSession />
     </TermsProvider>
   );
@@ -663,7 +662,7 @@ function ReviewSession() {
       {loadFailedBanner}
       {/* 作答區還沒齊時整張題目卡隱藏、齊了淡入（和 LevelSession 同一個 .ll-question-wrap） */}
       <div className="ll-question-wrap" data-ready={area.pending ? 'false' : 'true'}>
-        <QuestionWords q={q}>
+        <>
           <QuestionCard
             className="ll-question--review"
             index={session.currentIndex + 1}
@@ -706,7 +705,7 @@ function ReviewSession() {
               </PendingContext.Provider>
             )}
           </QuestionCard>
-        </QuestionWords>
+        </>
       </div>
     </>
   );

@@ -7,7 +7,6 @@ import { formatNumber, localePath, type Locale } from '@ledgerland/i18n';
 import { Button, Card, InfoIcon, PlayIcon, ProgressBar, RetryIcon, StarIcon } from '@ledgerland/web-ui';
 import { ChapterBadge, MapIcon, NoteTag, useLevelNumber } from '@ledgerland/web-ui/map';
 import type { LevelMeta, MapChapter } from '../quest-map/data.ts';
-import { ChapterProse } from './ChapterProse.tsx';
 import { ChapterThumb } from './ChapterThumb.tsx';
 import { chapterAction, splitBadgeTitle, thumbKindFor, type ChapterStats } from './model.ts';
 
@@ -38,15 +37,15 @@ function ExtMark({ text }: { text: string }) {
 
 /** 徽章預覽的句子：徽章名（連同引號）包成 inline-block，放得下時整個換到下一行，不在名字中間斷開；
  *  比一整行還長（文字放大）時才在自己的框裡換行，不會超出卡片（model.ts 的 splitBadgeTitle）。
- *  名字前後的句子用 ChapterProse，文字放大時不斷成「可獲／得」 */
+ *  名字前後的句子照全站規則換行（07 第 3.5 節） */
 function BadgeSentence({ text, name }: { text: string; name: string }) {
   const parts = splitBadgeTitle(text, name);
-  if (!parts) return <ChapterProse text={text} />;
+  if (!parts) return <>{text}</>;
   return (
     <>
-      <ChapterProse text={parts.before} />
+      {parts.before}
       <span className="ch-hero__badge-title">{parts.title}</span>
-      <ChapterProse text={parts.after} />
+      {parts.after}
     </>
   );
 }
@@ -163,11 +162,7 @@ export function ChapterHero({ locale, chapter, stats, metas, notAdvice, mapHref,
           <span>{eyebrow}</span>
           {chapter.inExam && !chapter.notInExam && <NoteTag kind="midterm" className="ch-hero__tag" />}
         </p>
-        {chapter.summary && (
-          <p className="ch-hero__summary">
-            <ChapterProse text={chapter.summary} />
-          </p>
-        )}
+        {chapter.summary && <p className="ch-hero__summary">{chapter.summary}</p>}
 
         {chapter.levels.length > 0 && (
           <div className="ch-hero__progress" data-testid="chapter-progress">
@@ -222,9 +217,7 @@ export function ChapterHero({ locale, chapter, stats, metas, notAdvice, mapHref,
             {notes.map(({ text, testId }) => (
               <li key={testId} data-testid={testId}>
                 <InfoIcon className="ch-hero__note-icon" />
-                <span className="ch-hero__note-text">
-                  <ChapterProse text={text} />
-                </span>
+                <span className="ch-hero__note-text">{text}</span>
               </li>
             ))}
           </ul>

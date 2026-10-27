@@ -11,7 +11,6 @@ import { Button, ErrorState, TopBar, useUiLabels } from '@ledgerland/web-ui';
 import { MapIcon } from '@ledgerland/web-ui/map';
 import { levelNotesOf, type LevelNotes } from '../features/quiz/level-notes.ts';
 import { LevelSession, QuizLangSwitch } from '../features/quiz/LevelSession.tsx';
-import { phraseModule } from '../features/quiz-phrase/quiz-phrase.ts';
 import { TermsProvider } from '../features/quiz/terms.tsx';
 import { ContentLoadError, loadChapterIndex, loadLevel, loadManifest, type LevelSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
@@ -59,11 +58,7 @@ export default function Level() {
   if (state.kind === 'loading') content = <LevelLoading levelId={levelId} />;
   else if (state.kind === 'error') content = state.error.kind === 'missing' ? <NotFound /> : <OfflineError levelId={levelId} onRetry={state.retry} />;
   else content = <LevelSession snapshot={state.snapshot} notes={state.notes} />;
-  return (
-    <TermsProvider locale={locale} phrase={phraseModule}>
-      {content}
-    </TermsProvider>
-  );
+  return <TermsProvider locale={locale}>{content}</TermsProvider>;
 }
 
 /** 關卡快照還在讀：整頁還不顯示（usePageReady(false)），只畫和作答頁同一個結構的頁首（TopBar compact、右側語言切換；h1 裡是視覺隱藏的「載入中」，

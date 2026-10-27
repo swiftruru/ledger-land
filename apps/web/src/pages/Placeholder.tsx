@@ -9,7 +9,6 @@ import { localePath } from '@ledgerland/i18n';
 import { Badge, BookIcon, Button, CardsIcon, EmptyState, PageHeader, ProcessIcon, StatementIcon } from '@ledgerland/web-ui';
 import { MapIcon } from '@ledgerland/web-ui/map';
 import { useLocale } from '../lib/useLocale.ts';
-import { ProseWords } from '../components/ProseWords.tsx';
 import '../styles/lab.css';
 
 function Feature({ icon, title, children }: { icon: ReactNode; title: ReactNode; children: ReactNode }) {
@@ -41,7 +40,7 @@ export default function Placeholder() {
         pose="wave"
         title={<Trans id="lab.placeholder.soon">報表實驗室即將開放</Trans>}
         description={
-          <Trans id="lab.placeholder.body" comment="實驗室占位頁的說明，對學生說話" render={ProseWords}>
+          <Trans id="lab.placeholder.body" comment="實驗室占位頁的說明，對學生說話">
             在實驗室裡，你可以自己改一筆交易，看三張報表跟著一起變。開放之前，先到闖關地圖把基本功練起來吧。
           </Trans>
         }
@@ -61,19 +60,15 @@ export default function Placeholder() {
         aria-label={t({ id: 'lab.features.label', message: '實驗室裡可以做的事', comment: '實驗室占位頁三張預告小卡的清單名稱' })}
       >
         <Feature icon={<ProcessIcon />} title={<Trans id="lab.feature.edit.title">改一筆交易</Trans>}>
-          <Trans id="lab.feature.edit.note" render={ProseWords}>
-            自己決定金額與科目，看看怎麼記帳。
-          </Trans>
+          <Trans id="lab.feature.edit.note">自己決定金額與科目，看看怎麼記帳。</Trans>
         </Feature>
         <Feature icon={<StatementIcon />} title={<Trans id="lab.feature.link.title">三張報表一起動</Trans>}>
-          <Trans id="lab.feature.link.desc" comment="實驗室預告小卡的說明（1280 三欄時一行約 13 字）" render={ProseWords}>
+          <Trans id="lab.feature.link.desc" comment="實驗室預告小卡的說明（1280 三欄時一行約 13 字）">
             同一組分錄，同時更新資產負債表、損益表與現金流量表。
           </Trans>
         </Feature>
         <Feature icon={<BookIcon />} title={<Trans id="lab.feature.rules.title">課程版與準則版</Trans>}>
-          <Trans id="lab.feature.rules.desc" render={ProseWords}>
-            同一組交易切換兩種版面，看數字差在哪裡。
-          </Trans>
+          <Trans id="lab.feature.rules.desc">同一組交易切換兩種版面，看數字差在哪裡。</Trans>
         </Feature>
       </ul>
     </>

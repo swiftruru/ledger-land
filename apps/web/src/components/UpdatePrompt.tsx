@@ -138,7 +138,7 @@ export function UpdateBanner({ state }: { state: UpdateBannerState }) {
     >
       <p>
         <Trans id="sw.updateBody" comment="更新提示的說明">
-          你⁠的進⁠度已⁠經⁠存⁠好，按「⁠重⁠新⁠整⁠理⁠」就⁠會換⁠成⁠新⁠版⁠本。
+          你的進度已經存好，按「重新整理」就會換成新版本。
         </Trans>
       </p>
     </Banner>
