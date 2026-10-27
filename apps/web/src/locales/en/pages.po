@@ -66,6 +66,12 @@ msgstr "Every string in both languages goes through it; the language lives in th
 msgid "stack.node.zustand.role"
 msgstr "The state of the level you are answering lives here, not in the URL, so switching language or going back never starts you over."
 
+#. 彩蛋提示：吉祥物
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.mascot"
+msgstr "Rin is standing next to the paragraph about me. Say hello."
+
 #. 作者個人網站那一列的標題
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -148,6 +154,12 @@ msgstr "Night sky"
 msgid "stack.layer.platform"
 msgstr "Install and hosting"
 
+#. 彩蛋提示：離線
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.offline"
+msgstr "The PWA panel in the Install and hosting layer asks a question; ask it."
+
 #. 頁底摺疊列的標題（彩蛋）
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -196,11 +208,23 @@ msgstr "Builds and tests run on it; the site itself needs no server."
 msgid "eggs.progress"
 msgstr "Easter eggs {foundText}/{totalText}"
 
+#. 彩蛋提示摺疊列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hints.title"
+msgstr "Where are the easter eggs? A few hints"
+
 #. 作者自我介紹第一段（第一人稱）
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
 msgid "credits.author.p1"
 msgstr "I am Yu-Ru Pan (潘昱如). I like turning what I learn into something I can play with, and that is how LedgerLand began: in class I heard how a small shop keeps its books from the first day onwards, and I wanted to turn that into a game, one level at a time."
+
+#. 彩蛋提示清單：這一個已經找到
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hints.found"
+msgstr "Found"
 
 #. 作者連結那組選單列的標題
 #. js-lingui-explicit-id
@@ -249,6 +273,12 @@ msgstr "Hosts the static files. Deep links always come back to the site itself, 
 #: src/pages/Credits.tsx
 msgid "credits.teacher.title"
 msgstr "The teacher who taught me accounting"
+
+#. 彩蛋提示：版本號
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.version"
+msgstr "That version number under the blocks: give it a tap."
 
 #. 幕後頁最後一組選單列的標題
 #. js-lingui-explicit-id
@@ -340,6 +370,12 @@ msgstr "Screen"
 msgid "stack.node.react.role"
 msgstr "The skeleton of every screen. Each page is assembled from its components, and the screen follows the data as it changes."
 
+#. 彩蛋提示：三種口味
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.flavours"
+msgstr "The tokens panel in the Screen layer has three flavours; try all three."
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -416,6 +452,12 @@ msgstr "Thank you to the teacher for turning accounting into a story I could fol
 msgid "eggs.mascot.name"
 msgstr "Say hello to Rin"
 
+#. 彩蛋提示：頁底的一行
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.dedication"
+msgstr "The very last row of this page: open it."
+
 #. 彩蛋還沒找齊時的說明
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -457,6 +499,12 @@ msgstr "These are the background and marker colours of {name}."
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.progress.role"
 msgstr "The progress data model: stars, the review list, collected terms, badges. Every write is queued first, so even a page closed abruptly catches up."
+
+#. 彩蛋提示清單：這一個還沒找到
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hints.notYet"
+msgstr "Not yet"
 
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
