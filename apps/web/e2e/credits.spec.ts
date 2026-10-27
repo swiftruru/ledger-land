@@ -1,5 +1,5 @@
 // 幕後頁（02 第 1.1 節的 /credits/）：中英頁面與返回、作者的外部連結列、「我的」的新列；技術棧探索器的選取、搭配高亮、chip 換選取、鍵盤、再按取消；
-// 五個彩蛋找齊之後特別徽章寫進進度資料庫、Toast 一次、重新整理後 5／5 不再 Toast；Service Worker 接管後離線也開得了（只在 Chromium）。
+// 五個彩蛋找齊之後特別徽章寫進進度資料庫、Toast 一次、重新整理後 5／5 不再 Toast、徽章頁的特別徽章區已取得而章節徽章的計數不變；Service Worker 接管後離線也開得了（只在 Chromium）。
 // 等待一律用 expect 的 poll／自動重試，不用 requestAnimationFrame 取樣（CI 的 Linux WebKit 只在有畫面更新時才觸發 rAF）。
 import { expect, test, type Page } from '@playwright/test';
 import { waitForApp, waitForProgressDb, waitForSw } from './helpers.ts';
@@ -153,6 +153,14 @@ test.describe('幕後頁', () => {
     await expect(page.getByTestId('egg-mascot-text')).toBeVisible();
     await expect(page.getByTestId('credits-toasts')).toBeEmpty();
     expect(await readUnlockIds(page)).toContain(BADGE);
+    // 徽章頁：特別徽章那一區已取得，章節徽章的「已取得 n／m」仍是 0
+    await page.goto('/me/badges/');
+    await waitForApp(page);
+    await expect(page.locator('#ll-badges-summary')).toContainText('已取得 0／14 枚');
+    const special = page.getByTestId('badges-special');
+    await expect(special.locator('[data-special-badge="creditsEggs"]')).toHaveAttribute('data-state', 'done');
+    await expect(special).toContainText('幕後偵探');
+    await expect(special).toContainText('1／1');
   });
 
   test('Service Worker 接管後離線也開得了，離線彩蛋回「可以」', async ({ page, context, browserName }) => {

@@ -250,7 +250,7 @@ export default function Credits() {
         {celebrating && (
           <Toast
             kind="collect"
-            media={mapMod ? <mapMod.ChapterBadge state="done" size={34} /> : undefined}
+            media={mapMod ? <mapMod.SpecialBadge state="done" size={34} /> : undefined}
             title={t({ id: 'eggs.badge.title', message: '取得特別徽章', comment: '找齊彩蛋時的提示標題；第二行是徽章名稱' })}
             onDismiss={dismissCelebration}
           >

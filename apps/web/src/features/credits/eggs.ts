@@ -1,14 +1,15 @@
 // 幕後頁的彩蛋（02 第 1.1 節的 /credits/）：五個都找到就解鎖一枚特別徽章（03 的特別徽章）。找到的 id 存在進度設定的 creditsEggs（學習資料：
 // 備份匯入時取聯集，packages/progress 的 LEARNING_SETTING_KEYS）。純函式，不碰 React 與儲存。
+import { SPECIAL_BADGES } from '../badges/special.ts';
 
 export const EGG_IDS = ['mascot', 'version', 'flavours', 'offline', 'dedication'] as const;
 export type EggId = (typeof EGG_IDS)[number];
 
-/** 進度設定的 key（和 @ledgerland/progress 的 LEARNING_SETTING_KEYS 同一個字串） */
-export const CREDITS_EGGS_SETTING_KEY = 'creditsEggs';
+/** 進度設定的 key（@ledgerland/progress 的 LEARNING_SETTING_KEYS 裡的那一個：備份匯入時取聯集） */
+export { CREDITS_EGGS_SETTING_KEY } from '@ledgerland/progress';
 
 /** 找齊時解鎖的特別徽章（features/badges/special.ts 的 creditsEggs） */
-export const CREDITS_BADGE_UNLOCK_ID = 'badge:special:credits-eggs';
+export const CREDITS_BADGE_UNLOCK_ID: string = SPECIAL_BADGES.find((b) => b.key === 'creditsEggs')!.unlockId;
 
 export function isEggId(x: unknown): x is EggId {
   return typeof x === 'string' && (EGG_IDS as readonly string[]).includes(x);

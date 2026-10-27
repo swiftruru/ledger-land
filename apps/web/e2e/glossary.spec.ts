@@ -579,7 +579,9 @@ test.describe('徽章與收藏（「我的」頁，03 第 2.7、2.10 節）', ()
     await expect(locked).toHaveAttribute('data-state', 'locked');
     await expect(locked).toContainText('未取得');
     await expect(locked).not.toContainText('2026');
-    await expect(badges.locator('svg.ll-chbadge')).toHaveCount(await badges.locator('[data-chapter-id]').count());
+    // 每一格都有徽章圖：章節徽章加特別徽章（2026-10-27 起徽章頁多了「特別徽章」一區，SpecialBadge 也是 svg.ll-chbadge）
+    await expect(badges.locator('svg.ll-chbadge')).toHaveCount(await badges.locator('[data-chapter-id], [data-special-badge]').count());
+    await expect(badges.locator('[data-special-badge] svg.ll-chbadge--special')).toHaveCount(1);
   });
 
   test('收藏的取捨題：每筆連到關卡，可移除並寫回 settings', async ({ page }) => {

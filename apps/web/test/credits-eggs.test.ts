@@ -1,5 +1,7 @@
 // 幕後頁彩蛋的純函式（features/credits/eggs.ts）：設定值的容錯、去重、找齊判斷、寫回的形狀，以及特別徽章 id 的規則（03 的特別徽章）。
+import { LEARNING_SETTING_KEYS } from '@ledgerland/progress';
 import { describe, expect, it } from 'vitest';
+import { SPECIAL_BADGES } from '../src/features/badges/special.ts';
 import {
   CREDITS_BADGE_UNLOCK_ID,
   CREDITS_EGGS_SETTING_KEY,
@@ -49,9 +51,11 @@ describe('幕後頁的彩蛋', () => {
     expect(toSetting(readFound(['dedication', 'mascot', 'flavours']))).toEqual(['mascot', 'flavours', 'dedication']);
   });
 
-  it('徽章 id 用特別徽章的前綴，不以 :mastery 結尾；設定 key 固定', () => {
+  it('徽章 id 是 special.ts 登記的特別徽章、不以 :mastery 結尾；設定 key 在 LEARNING_SETTING_KEYS 裡', () => {
     expect(CREDITS_BADGE_UNLOCK_ID.startsWith('badge:special:')).toBe(true);
     expect(CREDITS_BADGE_UNLOCK_ID.endsWith(':mastery')).toBe(false);
     expect(CREDITS_EGGS_SETTING_KEY).toBe('creditsEggs');
+    expect(LEARNING_SETTING_KEYS).toContain(CREDITS_EGGS_SETTING_KEY);
+    expect(SPECIAL_BADGES.map((b) => b.unlockId)).toContain(CREDITS_BADGE_UNLOCK_ID);
   });
 });
