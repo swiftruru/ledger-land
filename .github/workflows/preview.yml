@@ -84,7 +84,7 @@ jobs:
       # 不跑 --with-deps：執行器映像已含 Chrome 的系統相依套件，apt 那一步偶爾要十分鐘（2026-10-23 量到）
       - run: pnpm exec playwright install chromium
       - name: 對預覽網址跑冒煙測試（Chromium；只有部署環境才驗得到的幾條；INP 另外跑）
-        run: pnpm e2e --project desktop-chromium shell.spec.ts offline.spec.ts locale.spec.ts preload.spec.ts term-detail-offline.spec.ts
+        run: pnpm e2e --project=desktop-chromium shell.spec.ts offline.spec.ts locale.spec.ts preload.spec.ts term-detail-offline.spec.ts
         env:
           LL_E2E_BASE_URL: ${{ steps.upload.outputs.url }}
       - name: INP（單獨一個 worker，門檻依執行器基準校正）
