@@ -553,6 +553,8 @@ test.describe('徽章與收藏（「我的」頁，03 第 2.7、2.10 節）', ()
       { id: 'badge:ch_c5f8w2', kind: 'badge', unlockedAt: '2026-10-20T10:00:00.000+08:00' },
       { id: 'badge:ch_m2t7q4', kind: 'badge', unlockedAt: '2026-10-21T10:00:00.000+08:00' },
       { id: 'badge:ch_m2t7q4:mastery', kind: 'badge', unlockedAt: '2026-10-22T10:00:00.000+08:00' },
+      // 特別徽章（03 第 2.10 節）：也是 kind badge 的 unlock，但不算進章節的 n／m
+      { id: 'badge:special:credits-eggs', kind: 'badge', unlockedAt: '2026-10-23T10:00:00.000+08:00' },
     ]);
     await page.reload();
     await waitForApp(page);
@@ -579,7 +581,20 @@ test.describe('徽章與收藏（「我的」頁，03 第 2.7、2.10 節）', ()
     await expect(locked).toHaveAttribute('data-state', 'locked');
     await expect(locked).toContainText('未取得');
     await expect(locked).not.toContainText('2026');
-    await expect(badges.locator('svg.ll-chbadge')).toHaveCount(await badges.locator('[data-chapter-id]').count());
+    // 每個章節格各一枚徽章圖；特別徽章在自己的區塊（特別徽章的圖也是 ll-chbadge，所以只數章節格裡的）
+    const chapterCount = await badges.locator('[data-chapter-id]').count();
+    await expect(badges.locator('[data-chapter-id] svg.ll-chbadge')).toHaveCount(chapterCount);
+    // 章節的摘要「已取得 2／m 枚」不含特別徽章；特別徽章一區自己是 1／1，格子寫名稱、完成與取得日期
+    await expect(badges.locator('.ll-badges__count')).toContainText('已取得 2／');
+    const special = badges.getByTestId('badges-special');
+    await expect(special).toContainText('特別徽章');
+    await expect(special).toContainText('1／1');
+    const eggs = special.locator('[data-special-badge="creditsEggs"]');
+    await expect(eggs).toHaveAttribute('data-state', 'done');
+    await expect(eggs).toContainText('幕後偵探');
+    await expect(eggs).toContainText('完成');
+    await expect(eggs).toContainText('2026');
+    await expect(eggs.locator('svg.ll-chbadge--special')).toHaveCount(1);
   });
 
   test('收藏的取捨題：每筆連到關卡，可移除並寫回 settings', async ({ page }) => {
