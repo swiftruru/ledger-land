@@ -1724,18 +1724,6 @@ msgstr "I do not want to take sides; I only want to put the differences where th
 msgid "design.layout.2"
 msgstr "What I have done is put the two side by side: the statements are shown in the course layout, with a mark beside the items that do not exist in the current International Financial Reporting Standards, and you can open each one to see what is done today. In the lab you can also switch the whole set over to the standards version and see, for the same transactions, where the numbers differ under the two sets of rules."
 
-#. 圖解最後的確認按鈕（英文畫面上用短字，可讀名稱是 install.guide.seenA11y）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.seen"
-msgstr "I’ve added it"
-
-#. 「我已加入主畫面」按鈕的可讀名稱（完整句，必須包含畫面上的字）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.seenA11y"
-msgstr "I’ve added it to my Home Screen"
-
 #. Chromium 安裝說明最後的確認按鈕（英文畫面上用短字）
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
@@ -3007,12 +2995,6 @@ msgstr "The timer doesn’t affect your stars."
 msgid "install.guide.chromium.doneMsg"
 msgstr "Got it. We won’t ask again."
 
-#. 按過「我已加入主畫面」之後的回應
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.seenDone"
-msgstr "Noted. Safari tabs will now remind you to open it from the Home Screen."
-
 #. 地圖頁的單行提示條：備份提醒
 #. js-lingui-explicit-id
 #: src/components/BackupReminder.tsx
@@ -3092,12 +3074,6 @@ msgstr "The statement format used in the course has a few names that the current
 #: src/pages/Design.tsx
 msgid "design.layout.title"
 msgstr "The course’s layout, the current standards"
-
-#. iOS Safari 分頁常駐提示的標題：按過「我已加入主畫面」之後
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.title.full"
-msgstr "Open LedgerLand from your Home Screen"
 
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
@@ -3317,12 +3293,6 @@ msgstr "This backup is from a newer version than the site. Please update the sit
 #: src/components/InAppBrowserBanner.tsx
 msgid "inapp.generic"
 msgstr "this app"
-
-#. 按過「我已加入主畫面」後的完整版說明
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.full"
-msgstr "This Safari tab and the Home Screen app keep separate records. If you have new progress here, tap ‘Export to app’ to copy a backup code, then paste it under ‘Me › Backup’ in the app. The two records will be merged."
 
 #. 名詞頁讀不到內容（離線而且這一桶沒有快取）時的標題
 #. js-lingui-explicit-id

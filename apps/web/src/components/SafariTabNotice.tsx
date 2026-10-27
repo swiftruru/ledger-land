@@ -1,12 +1,12 @@
 // iOS Safari 分頁的常駐提示（06 第 4.7 節第 4 步、02 第 6 節）：2026-10-27 起改成引導加到主畫面（維護者在手機上的提議）：標題「把會計樂園加到主畫面」、
-// 主要動作「看安裝教學」連到安裝教學頁，「匯出到 App」退成次要（給已經裝好、想把這裡的進度搬過去的人）；按過「我已加入主畫面」後才換成
-// 「請從主畫面開啟會計樂園」、主要動作「匯出到 App」。可收合成小按鈕（記在 sessionStorage）但不能永久關閉；安裝教學頁本身不顯示（Banners.tsx）。
+// 主要動作「看安裝教學」連到安裝教學頁，「匯出到 App」退成次要（給已經裝好、想把這裡的進度搬過去的人）。可收合成小按鈕（記在 sessionStorage）但不能永久關閉；
+// 安裝教學頁本身不顯示（Banners.tsx）。沒有「按過我已加入主畫面就換版本」這回事（2026-10-27 拿掉：Safari 分頁偵測不到有沒有裝，自己宣告會誤按）。
 // 「匯出到 App」連到備份頁的三步引導卡（?to=app）；在作答頁同時寫出關卡代號（LevelCode 在地圖的 chunk，以 import() 載入、不進首次載入的 JS；
 // 載不到時留在 web-ui 的 LevelCodePlaceholder：代號文字照樣看得到，只少「複製」按鈕）。
-// 要不要顯示只看環境（同步）與 sessionStorage；完整版的那一段（settings 的 installGuideSeen）與作答頁的代號模組一掛載就讀，讀齊才經 usePageReady 回報，
+// 要不要顯示只看環境（同步）與 sessionStorage；作答頁的代號模組一掛載就讀，讀到才經 usePageReady 回報，
 // 橫幅和頁面一起出現、之後不再長高（維護者 2026-10-26；2026-10-24 的回報：代號列晚插入時題目卡片往下移 36px，學生點到的位置換成別的東西）。
 // Banners 目前掛在 PageReveal 外面，這個回報要等 Root 把 Banners 放進 PageReveal 的範圍才生效（回報裡的 handoff），在那之前是 no-op。
-// 學生在教學頁按過「我已加入主畫面」（settings 的 installGuideSeen）後改成展開的完整版本。是否顯示、展開或收合由 Banners.tsx 決定（banner-rules.ts：一次只展開一條，
+// 是否顯示、展開或收合由 Banners.tsx 決定（banner-rules.ts：一次只展開一條，
 // iOS 的安裝建議出現時這條不顯示）；收合狀態也由 Banners 記，這裡只畫。
 // 外觀（站規 2.17，第 1 輪驗收改）：展開時是 Banner，主動作 secondary sm「匯出到 App」帶 ExportIcon（畫面上唯一的 primary 留給頁面主卡）、quiet sm「收合」（箭頭朝上，aria-expanded=true）；
 // 收合後是一顆 secondary sm「Safari 分頁：顯示提示」，靠左放在頁首下方的橫幅位置；圖示是 WarningIcon（站規 2.17，第 4 輪驗收：和內建瀏覽器的收合膠囊、
@@ -19,12 +19,9 @@ import { useMatches } from 'react-router';
 import { localePath } from '@ledgerland/i18n';
 import { Banner, Button, CaretDownIcon, DeviceIcon, ExportIcon, HintBar, LevelCodePlaceholder, WarningIcon } from '@ledgerland/web-ui';
 import { usePageReady } from '../lib/page-ready.tsx';
-import { getProgressStore } from '../lib/progress/index.ts';
 import { useLocale } from '../lib/useLocale.ts';
 
 export const SAFARI_NOTICE_COLLAPSED_KEY = 'll:safari-notice-collapsed';
-/** 教學頁按過「我已加入主畫面」的旗標（M3 的安裝教學頁寫入；這裡只讀） */
-export const INSTALL_GUIDE_SEEN_SETTING = 'installGuideSeen';
 
 type LevelCodeComponent = ComponentType<{ levelId: string }>;
 
@@ -44,24 +41,6 @@ function useLevelCode(needed: boolean): LevelCodeComponent | null | undefined {
     };
   }, [needed]);
   return value;
-}
-
-/** 教學頁按過「我已加入主畫面」沒有：null 是還在讀（取不到時當作沒有，不會一直是 null） */
-function useInstallGuideSeen(): boolean | null {
-  const [seen, setSeen] = useState<boolean | null>(null);
-  useEffect(() => {
-    let alive = true;
-    getProgressStore()
-      .then((s) => s.getSetting(INSTALL_GUIDE_SEEN_SETTING))
-      .then(
-        (entry) => alive && setSeen(entry?.value === true),
-        () => alive && setSeen(false),
-      );
-    return () => {
-      alive = false;
-    };
-  }, []);
-  return seen;
 }
 
 /** 目前路由是作答頁時的關卡 ID（Root 在路由之外，從 matches 的 params 取） */
@@ -97,28 +76,21 @@ function SafariTabPill({ onExpand }: { onExpand: () => void }) {
 function SafariTabBanner({ onCollapse }: { onCollapse: () => void }) {
   const { t } = useLingui();
   const locale = useLocale();
-  const full = useInstallGuideSeen();
   const levelId = useLevelIdFromRoute();
   const levelCode = useLevelCode(levelId !== null);
-  usePageReady(full !== null && levelCode !== undefined);
+  usePageReady(levelCode !== undefined);
   return (
     <Banner
       className="ll-safari-notice"
-      title={
-        full === true
-          ? t({ id: 'safari.title.full', message: '請從主畫面開啟會計樂園', comment: 'iOS Safari 分頁常駐提示的標題：按過「我已加入主畫面」之後' })
-          : t({ id: 'safari.title', message: '把會計樂園加到主畫面', comment: 'iOS Safari 分頁常駐提示（展開時）的標題：引導加到主畫面' })
-      }
+      title={t({ id: 'safari.title', message: '把會計樂園加到主畫面', comment: 'iOS Safari 分頁常駐提示（展開時）的標題：引導加到主畫面' })}
       actions={
         <>
-          {full !== true && (
-            <Button size="sm" icon={<DeviceIcon />} href={localePath(locale, '/install/')} data-testid="safari-install-link">
-              <Trans id="safari.install" comment="Safari 分頁常駐提示的主要動作：連到安裝教學頁">
-                看安裝教學
-              </Trans>
-            </Button>
-          )}
-          <Button size="sm" variant={full === true ? 'secondary' : 'quiet'} icon={<ExportIcon />} href={localePath(locale, '/me/backup/') + '?to=app'}>
+          <Button size="sm" icon={<DeviceIcon />} href={localePath(locale, '/install/')} data-testid="safari-install-link">
+            <Trans id="safari.install" comment="Safari 分頁常駐提示的主要動作：連到安裝教學頁">
+              看安裝教學
+            </Trans>
+          </Button>
+          <Button size="sm" variant="quiet" icon={<ExportIcon />} href={localePath(locale, '/me/backup/') + '?to=app'}>
             <Trans id="export.toApp" comment="Safari 分頁的「匯出到 App」捷徑，連到備份頁">
               匯出到 App
             </Trans>
@@ -138,20 +110,11 @@ function SafariTabBanner({ onCollapse }: { onCollapse: () => void }) {
         </>
       }
     >
-      {full !== true && (
-        <p>
-          <Trans id="safari.text" comment="iOS Safari 分頁頂部的常駐提示：引導加到主畫面">
-            Safari 分頁的進度可能被清掉。加到主畫面後開啟更快，進度也比較不容易被清除；已經加入的話，請從主畫面的圖示開啟。
-          </Trans>
-        </p>
-      )}
-      {full === true && (
-        <p>
-          <Trans id="safari.full" comment="按過「我已加入主畫面」後的完整版說明">
-            這個 Safari 分頁和主畫面 App 的紀錄是分開的兩份。如果這裡有新的進度，按「匯出到 App」複製備份碼，再到 App 的「我的 › 備份」貼上，兩邊的紀錄會合併。
-          </Trans>
-        </p>
-      )}
+      <p>
+        <Trans id="safari.text" comment="iOS Safari 分頁頂部的常駐提示：引導加到主畫面">
+          Safari 分頁的進度可能被清掉。加到主畫面後開啟更快，進度也比較不容易被清除；已經加入的話，請從主畫面的圖示開啟。
+        </Trans>
+      </p>
       {levelId !== null && (
         <>
           <p>

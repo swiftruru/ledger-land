@@ -260,8 +260,8 @@ test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
   });
 
   // 安裝教學的第 0 步（站規 2.13，finding pages-b-1、pages-b-3、pages-b-4）：「匯出到 App」是獨立一行的按鈕、連到備份頁的匯出區（不帶 ?import）、
-  // 至少 44px 高；按「我已加入主畫面」之後焦點移到結果訊息，不會掉到 body
-  test('安裝教學：「匯出到 App」連到 /me/backup/?to=app 而且至少 44px；按「我已加入主畫面」後焦點在結果訊息', async ({ page }) => {
+  // 至少 44px 高；iOS 的圖解沒有收尾按鈕（2026-10-27 拿掉「我已加入主畫面」）
+  test('安裝教學：「匯出到 App」連到 /me/backup/?to=app 而且至少 44px；iOS 圖解沒有「我已加入主畫面」', async ({ page }) => {
     await page.addInitScript(() => sessionStorage.setItem('ll:safari-notice-collapsed', '1'));
     await page.goto('/install/');
     await waitForApp(page);
@@ -271,10 +271,8 @@ test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
     await expect(exportLink).toHaveAttribute('href', '/me/backup/?to=app');
     const box = await exportLink.boundingBox();
     expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
-    await guide.getByRole('button', { name: '我已加入主畫面' }).click();
-    const done = page.getByTestId('install-guide-seen');
-    await expect(done).toBeVisible();
-    await expect(done).toBeFocused();
+    await expect(guide.getByRole('button', { name: '我已加入主畫面' })).toHaveCount(0);
+    await expect(page.getByTestId('install-guide-seen')).toHaveCount(0);
   });
 
   // 2026-10-24 回報：作答頁的關卡代號列在第一次繪製約 200ms 後才插入，題目與「確認答案」往下移 36px，學生點到的已經是別的東西。

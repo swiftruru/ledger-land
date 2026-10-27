@@ -1724,18 +1724,6 @@ msgstr "我不想替哪一邊選邊，只想把差異放在看得見的地方。
 msgid "design.layout.2"
 msgstr "我做的是把兩邊並排：報表照課程的版面顯示，旁邊標出哪些項目在現行的國際財務報導準則裡沒有，點開可以看到現在的做法是什麼。實驗室裡也可以整套切換成準則的版本，看看同一組交易在兩種規則下，數字差在哪裡。"
 
-#. 圖解最後的確認按鈕（英文畫面上用短字，可讀名稱是 install.guide.seenA11y）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.seen"
-msgstr "我已加入主畫面"
-
-#. 「我已加入主畫面」按鈕的可讀名稱（完整句，必須包含畫面上的字）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.seenA11y"
-msgstr "我已加入主畫面"
-
 #. Chromium 安裝說明最後的確認按鈕（英文畫面上用短字）
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
@@ -3007,12 +2995,6 @@ msgstr "計時不影響星星。"
 msgid "install.guide.chromium.doneMsg"
 msgstr "記住了，不會再跳出安裝建議。"
 
-#. 按過「我已加入主畫面」之後的回應
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.seenDone"
-msgstr "記住了。之後在 Safari 分頁會提醒你從主畫面開啟。"
-
 #. 地圖頁的單行提示條：備份提醒
 #. js-lingui-explicit-id
 #: src/components/BackupReminder.tsx
@@ -3092,12 +3074,6 @@ msgstr "課程用的報表格式，有幾個現行準則已經不再使用的名
 #: src/pages/Design.tsx
 msgid "design.layout.title"
 msgstr "課程的版面，現行的準則"
-
-#. iOS Safari 分頁常駐提示的標題：按過「我已加入主畫面」之後
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.title.full"
-msgstr "請從主畫面開啟會計樂園"
 
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
@@ -3317,12 +3293,6 @@ msgstr "這份備份的版本比網站新，請先更新網站再匯入。"
 #: src/components/InAppBrowserBanner.tsx
 msgid "inapp.generic"
 msgstr "這個 App"
-
-#. 按過「我已加入主畫面」後的完整版說明
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.full"
-msgstr "這個 Safari 分頁和主畫面 App 的紀錄是分開的兩份。如果這裡有新的進度，按「匯出到 App」複製備份碼，再到 App 的「我的 › 備份」貼上，兩邊的紀錄會合併。"
 
 #. 名詞頁讀不到內容（離線而且這一桶沒有快取）時的標題
 #. js-lingui-explicit-id
