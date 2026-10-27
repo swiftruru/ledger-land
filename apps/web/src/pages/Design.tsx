@@ -16,6 +16,7 @@ import {
   DeviceIcon,
   FileIcon,
   HandIcon,
+  HeartIcon,
   InfoIcon,
   LightbulbIcon,
   NavList,
@@ -420,6 +421,12 @@ export default function Design() {
               title={t({ id: 'me.about', message: '關於與授權', comment: '「我的」連到關於與授權' })}
               description={<Phrased text={t({ id: 'me.about.desc', message: '授權、原始碼與版本', comment: '「我的」關於與授權列的說明' })} />}
               href={localePath(locale, '/about/')}
+            />
+            <NavRow
+              icon={<HeartIcon />}
+              title={t({ id: 'me.credits', message: '幕後', comment: '「我的」連到幕後（作者、老師與技術棧）' })}
+              description={<Phrased text={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })} />}
+              href={localePath(locale, '/credits/')}
             />
           </NavList>
         </div>

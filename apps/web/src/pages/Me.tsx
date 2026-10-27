@@ -18,6 +18,7 @@ import {
   DeviceIcon,
   ExportIcon,
   GearIcon,
+  HeartIcon,
   InfoIcon,
   NavCard,
   NavList,
@@ -136,6 +137,12 @@ export default function Me() {
         title={t({ id: 'me.design', message: '關於系統設計', comment: '「我的」連到關於系統設計' })}
         description={<Phrased text={t({ id: 'me.design.desc', message: '這個網站怎麼設計出來的', comment: '「我的」關於系統設計列的說明' })} />}
         href={href('/design/')}
+      />
+      <NavRow
+        icon={<HeartIcon />}
+        title={t({ id: 'me.credits', message: '幕後', comment: '「我的」連到幕後（作者、老師與技術棧）' })}
+        description={<Phrased text={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })} />}
+        href={href('/credits/')}
       />
     </NavList>
   );

@@ -1,5 +1,6 @@
 // Vitest 5：純 TypeScript 套件在 Node 環境；web-ui 的元件測試在 Browser Mode（Playwright，WebKit）。*.local.test.ts 一律排除（09 第 8 節）。
 import { defineConfig } from 'vitest/config';
+import { readStackVersions } from './apps/web/stack-versions.config.ts';
 
 export default defineConfig({
   test: {
@@ -41,7 +42,11 @@ export default defineConfig({
       },
       // apps/web 的儲存層（IndexedDB 實作、persist、備份碼、作答工作階段 store）：Node 環境加 fake-indexeddb（06 第 4.3 節）
       {
-        define: { __LL_APP_VERSION__: JSON.stringify('0.0.0+test'), __LL_BUILT_AT__: JSON.stringify('test') },
+        define: {
+          __LL_APP_VERSION__: JSON.stringify('0.0.0+test'),
+          __LL_BUILT_AT__: JSON.stringify('test'),
+          __LL_STACK_VERSIONS__: JSON.stringify(readStackVersions()),
+        },
         test: {
           name: 'web',
           environment: 'node',

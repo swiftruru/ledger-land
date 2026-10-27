@@ -8,6 +8,7 @@ import { defineConfig, type Plugin } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { MANIFEST_COLORS, THEME_COLOR, firstPaintStyle } from '@ledgerland/tokens';
 import { site } from './site.config.ts';
+import { readStackVersions } from './stack-versions.config.ts';
 import { buildBootScript, buildNav, buildShellL10nScript, buildSplashLinks, buildThemeColorMetas } from './src/shell/shellHtml.ts';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
@@ -108,6 +109,8 @@ export default defineConfig({
   define: {
     __LL_APP_VERSION__: JSON.stringify(`${appVersion}+${process.env.GITHUB_SHA?.slice(0, 7) ?? 'local'}`),
     __LL_BUILT_AT__: JSON.stringify(new Date().toISOString().slice(0, 16).replace('T', ' ')),
+    // 幕後頁技術棧的版本號：建置時從套件清單抄（stack-versions.config.ts）
+    __LL_STACK_VERSIONS__: JSON.stringify(readStackVersions()),
   },
   css: {
     transformer: 'lightningcss',

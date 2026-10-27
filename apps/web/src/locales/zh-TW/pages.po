@@ -1,0 +1,511 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-27 13:49+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: zh-TW\n"
+
+#. 版本號按鈕給螢幕閱讀器唸的後綴（彩蛋）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.version.name"
+msgstr "，按一下看版本號的祕密"
+
+#. 作者 GitHub 那一列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.github"
+msgstr "GitHub"
+
+#. 技術棧方塊的名稱（兩個工具名，中間的連接詞要翻譯）
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lint.name"
+msgstr "oxlint 與 Prettier"
+
+#. 作者個人網站那一列的說明（網址）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.site.desc"
+msgstr "swift.moe"
+
+#. 作者 GitHub 那一列的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.github.desc"
+msgstr "swiftruru，原始碼也在這裡"
+
+#. 技術棧那一節的引言
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.stack.intro"
+msgstr "下面每個方塊都是真的在用的東西，點一個就知道它負責什麼、和誰搭配。版本號是建置時從套件清單抄來的，不會過期。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.fonts.role"
+msgstr "不下載任何字型，用你裝置本來就有的字；數字用等寬數字，報表才對得齊。"
+
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.noAccount"
+msgstr "不用帳號、不用伺服器：進度存在你自己的裝置裡，誰都看不到。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lingui.role"
+msgstr "中英兩種語言的字串都走它；語言寫在網址裡，切換不會弄丟作答中的題目。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.zustand.role"
+msgstr "作答中的狀態放在這裡，不綁在網址上，所以切換語言或回上一頁都不會重來。"
+
+#. 作者個人網站那一列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.site"
+msgstr "個人網站"
+
+#. 幕後頁第一節的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.author.title"
+msgstr "做網站的人"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.csp.role"
+msgstr "內容安全政策：只能載入自己的程式，沒有 eval，公式是先剖析成語法樹再算。"
+
+#. 技術棧的分層標題：內容、會計核心、進度儲存
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.data"
+msgstr "內容與進度"
+
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.oneKit"
+msgstr "全站只有一套可以點的東西：按鈕、連結、選單列長得都一樣，看一眼就知道哪裡可以按。"
+
+#. 彩蛋找齊之後的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.progress.done"
+msgstr "全部找到了，特別徽章放在徽章頁。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.quiz.role"
+msgstr "判分：每一種題型怎麼算對、算幾顆星，都在這裡。"
+
+#. 找齊彩蛋時的提示標題；第二行是徽章名稱
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.badge.title"
+msgstr "取得特別徽章"
+
+#. 彩蛋：有 Service Worker 時的回答
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.offline.ready"
+msgstr "可以。Service Worker 已經把這一頁存好了，離線也讀得到。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.pwa.role"
+msgstr "可以加到主畫面、離線也能開。有新版本時會問你，不會偷偷換掉。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.vitest.role"
+msgstr "單元測試，兩千多條；元件的測試直接在 WebKit 裡跑。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.typescript.role"
+msgstr "型別。套件之間只准往一個方向依賴，會計核心不碰畫面，檢查不過就不能合併。"
+
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "settings.flavor.violet"
+msgstr "夜空"
+
+#. 技術棧的分層標題：PWA 與主機
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.platform"
+msgstr "安裝與主機"
+
+#. 頁底摺疊列的標題（彩蛋）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.dedication.name"
+msgstr "寫給一路幫忙的人"
+
+#. 幕後頁的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.title"
+msgstr "幕後"
+
+#. 找齊彩蛋解鎖的特別徽章名稱（徽章頁同名）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.badge.name"
+msgstr "幕後偵探"
+
+#. 作者自我介紹第二段
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.author.p2"
+msgstr "平常寫的東西放在個人網站和 GitHub。這個網站的原始碼也在那裡，看到哪裡怪怪的歡迎告訴我。"
+
+#. 設計堅持那一節的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.title"
+msgstr "幾個不肯讓步的地方"
+
+#. 技術棧的分層標題：建置工具
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.build"
+msgstr "建置"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.node.role"
+msgstr "建置與測試在它上面跑；網站本身不需要伺服器。"
+
+#. 彩蛋進度膠囊；foundText、totalText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.progress"
+msgstr "彩蛋 {foundText}／{totalText}"
+
+#. 作者自我介紹第一段（第一人稱）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.author.p1"
+msgstr "我是潘昱如（Yu-Ru Pan）。我喜歡把學到的東西做成可以動手玩的樣子，會計樂園就是這樣開始的：上課聽到一家小店的帳怎麼從頭記到尾，就想把它做成一關一關的遊戲。"
+
+#. 作者連結那組選單列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.title"
+msgstr "找得到我的地方"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.vite.role"
+msgstr "把原始碼打包成瀏覽器能跑的檔案，順手把每一頁拆成小塊。"
+
+#. 技術棧的分層標題：測試與檢查
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.quality"
+msgstr "把關"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.zxing.role"
+msgstr "掃課堂 QR 用的解碼器，在背景執行緒裡跑，只有按下掃描才載入。"
+
+#. 「我的」關於與授權列的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "me.about.desc"
+msgstr "授權、原始碼與版本"
+
+#. 面板裡「搭配」清單的小標
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.related"
+msgstr "搭配"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.cloudflare.role"
+msgstr "放靜態檔案的主機。深層網址一律回到網站本身，少了的檔案老實回 404。"
+
+#. 幕後頁老師那一節的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.title"
+msgstr "教我會計的老師"
+
+#. 幕後頁最後一組選單列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.more"
+msgstr "更多"
+
+#. 設計堅持那一節最後一句；<0> 是連到「關於系統設計」的連結
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.more"
+msgstr "更完整的設計筆記在<0>關於系統設計</0>。"
+
+#. 老師那一節第一段（課堂師生的口吻，只致謝不背書）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.p1"
+msgstr "會計是跟陳彥宏老師（Yen-Hung Chen）學的。老師在課堂上把一家小店的帳從頭講到尾：開店、進貨、賣東西、借錢、發薪水，每一筆怎麼記、三張報表怎麼長出來。課程和專業都是老師的；我是台下那個邊聽邊想「這可以做成遊戲」的學生。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.core.role"
+msgstr "會計核心：過帳、三表、指標、五步驟檢查。金額一律整數，不會有一塊錢的差。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.zod.role"
+msgstr "檢查資料長得對不對：內容在建置時驗一次，備份匯入時再驗一次。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lighthouse.role"
+msgstr "每次改動都量一次速度與體積，超過預算就不准合併。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.router.role"
+msgstr "決定網址對到哪一頁，每一頁的程式只在需要時才載入。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.analytics.role"
+msgstr "沒有 cookie 的流量統計，只在正式網站、畫面閒下來才載入，失敗就算了。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.idb.role"
+msgstr "瀏覽器內建資料庫的小包裝。你的進度就存在這裡，不上任何伺服器。"
+
+#. 方塊上版本號前面給螢幕閱讀器唸的字
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.version"
+msgstr "版本"
+
+#. 按了版本號之後的說明；builtAt 是建置時間
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.version.text"
+msgstr "版本號後面那一小段是 git commit 的代號，每次建置都不一樣。這一版是 {builtAt} 建的。"
+
+#. 幕後頁 PWA 面板裡的彩蛋按鈕
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.offline.name"
+msgstr "現在拔掉網路也能開嗎？"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.playwright.role"
+msgstr "用三種瀏覽器真的把網站點一遍，順便跑無障礙檢查。"
+
+#. 技術棧的分層標題：畫面層（React、設計系統、色票、字串）
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.ui"
+msgstr "畫面"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.react.role"
+msgstr "畫面的骨架。每一頁都是用它拼出來的元件，資料一變畫面就跟著變。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lint.role"
+msgstr "程式碼的排版與寫法檢查，連「不准出現裸露的超連結」和台灣用語都在管。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.pnpm.role"
+msgstr "管套件。只用發布滿兩週的版本，每一條例外都要留紀錄。"
+
+#. 技術棧方塊的名稱（不是專有名詞，要翻譯）
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.fonts.name"
+msgstr "系統字型"
+
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "settings.flavor.wine"
+msgstr "紅酒"
+
+#. 老師那一節第二段：內容責任歸屬
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.p2"
+msgstr "網站裡的題目、解說與名詞卡都是我自己寫的，寫錯是我的責任，不代表老師的觀點。故事的情境與金額經老師授權使用，細節寫在「關於與授權」。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.icons.role"
+msgstr "線條圖示。建置時直接寫進頁面，不另外發請求，也不用字型檔。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.web-ui.role"
+msgstr "自家的設計系統：按鈕、選單列、面板、徽章全站只有這一套，所以每個可以點的東西長得都一樣。"
+
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "settings.flavor.berry"
+msgstr "莓果"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lightningcss.role"
+msgstr "處理 CSS：壓縮、補上舊版 iOS 需要的前綴。"
+
+#. 幕後頁 tokens 面板裡的風味切換（彩蛋）
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.flavour.hint"
+msgstr "試試三種深色口味"
+
+#. 老師那一節第三段：致謝
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.p3"
+msgstr "謝謝老師同意我把名字寫在這裡。"
+
+#. 頁底摺疊列展開後的話
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.dedication.text"
+msgstr "謝謝老師把會計講成一個聽得懂的故事；謝謝課堂上每一個舉手發問的人，你們的問題變成了很多題目；也謝謝看到這裡的你。"
+
+#. 幕後頁吉祥物按鈕的可讀名稱（彩蛋）
+#. js-lingui-explicit-id
+#: src/features/credits/MascotEgg.tsx
+msgid "eggs.mascot.name"
+msgstr "跟鈴打個招呼"
+
+#. 彩蛋還沒找齊時的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.progress.hint"
+msgstr "這一頁藏了幾個彩蛋，找齊會有一枚特別徽章。"
+
+#. 幕後頁導言
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.intro"
+msgstr "這一頁說說做這個網站的人、教我會計的老師，還有把它做出來的工具。順便藏了幾個彩蛋。"
+
+#. 彩蛋：沒有 Service Worker 時的回答
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.offline.noSw"
+msgstr "這個環境還沒有 Service Worker（開發模式或瀏覽器不支援），正式網站才會先存好。"
+
+#. 「我的」關於系統設計列的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "me.design.desc"
+msgstr "這個網站怎麼設計出來的"
+
+#. 技術棧那一節的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.stack.title"
+msgstr "這個網站是用什麼做的"
+
+#. 風味樣本裡的一句話；name 是口味名
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.flavour.sample"
+msgstr "這是「{name}」的底色和記號色。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.progress.role"
+msgstr "進度的資料模型：星星、錯題本、名詞收集、徽章。每一筆寫入都先排隊，頁面突然關掉也補得回來。"
+
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.integer"
+msgstr "金額一律整數：報表不會出現一塊錢的差。"
+
+#. 按了吉祥物之後說的話
+#. js-lingui-explicit-id
+#: src/features/credits/MascotEgg.tsx
+msgid "eggs.mascot.text"
+msgstr "鈴：嗨！謝謝你跑來看幕後。"
+
+#. 「我的」連到關於系統設計
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "me.design"
+msgstr "關於系統設計"
+
+#. 「我的」連到關於與授權
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "me.about"
+msgstr "關於與授權"
+
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.offline"
+msgstr "離線也能整章作答：裝好之後搭捷運也能玩。"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.content.role"
+msgstr "章節、關卡、題目、名詞都是 JSON 檔，建置時驗證、算好答案、切成一份份快照，裝好之後離線也能整章作答。"
+
+#. 技術棧的分層標題：路由與狀態
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.app"
+msgstr "頁面與狀態"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.tokens.role"
+msgstr "顏色、字級、間距、圓角、動態的唯一來源，建置時變成 CSS 變數。淺色一套，深色有夜空、莓果、紅酒三種口味。"
+
+#. 還沒選方塊時面板裡的提示
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.hint"
+msgstr "點一個方塊，看看它負責什麼。"

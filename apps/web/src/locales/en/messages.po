@@ -472,6 +472,16 @@ msgstr "Answers"
 msgid "privacy.stored.body"
 msgstr "Your answers, stars, review list, badges, unlocked terms, settings and language preference, plus the last 50 error records. They live in IndexedDB, localStorage and the Service Worker cache, all belonging to this site’s origin. A Safari tab and a Home Screen app keep two separate copies."
 
+#. 「我的」幕後列的說明
+#. 「我的」幕後列的說明
+#. 「我的」幕後列的說明
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+#: src/pages/Design.tsx
+#: src/pages/Me.tsx
+msgid "me.credits.desc"
+msgstr "The author, the teacher and the tech behind the site"
+
 #. 分類題作答後的摘要；correctCount 是放對的張數、total 是總張數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
@@ -1552,6 +1562,16 @@ msgstr "Market"
 #: src/pages/Term.tsx
 msgid "term.misconception"
 msgstr "Common misconception"
+
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+#: src/pages/Design.tsx
+#: src/pages/Me.tsx
+msgid "me.credits"
+msgstr "Behind the scenes"
 
 #. 指標版本名稱（04 第 12.7 節）：依年報財務分析寫法的公式；學生看的說法，不露出版本代號或教材單元
 #. js-lingui-explicit-id

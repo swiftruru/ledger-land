@@ -85,6 +85,7 @@ function buildRoutes(locale: Locale): RouteObject[] {
     { path: 'me/backup', lazy: lazyPage(() => import('../pages/Backup.tsx')), handle: { noindex: true, blocksUpdatePrompt: true } satisfies RouteHandle },
     { path: 'privacy', lazy: lazyPage(() => import('../pages/Privacy.tsx')) },
     { path: 'about', lazy: lazyPage(() => import('../pages/About.tsx')) },
+    { path: 'credits', lazy: lazyPage(() => import('../pages/Credits.tsx')) },
     // 關於系統設計在 1024 以上是內文加右側目錄的兩欄（第 2 輪驗收），所以用寬版
     { path: 'design', lazy: lazyPage(() => import('../pages/Design.tsx')), handle: { layout: 'wide' } satisfies RouteHandle },
     { path: 'debug', lazy: lazyPage(() => import('../pages/Debug.tsx')), handle: { noindex: true } satisfies RouteHandle },

@@ -77,6 +77,11 @@
       "content": []
     },
     {
+      "pattern": "^/credits/$",
+      "module": "src/pages/Credits.tsx",
+      "content": []
+    },
+    {
       "pattern": "^/design/$",
       "module": "src/pages/Design.tsx",
       "content": []

@@ -472,6 +472,16 @@ msgstr "作答紀錄"
 msgid "privacy.stored.body"
 msgstr "作答紀錄、星星、錯題本、徽章、名詞解鎖、設定與語言偏好，以及最近 50 筆錯誤紀錄。這些資料存在 IndexedDB、localStorage 與 Service Worker 快取，都屬於這個網站的來源（origin）。Safari 分頁與主畫面 App 的資料是分開的兩份。"
 
+#. 「我的」幕後列的說明
+#. 「我的」幕後列的說明
+#. 「我的」幕後列的說明
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+#: src/pages/Design.tsx
+#: src/pages/Me.tsx
+msgid "me.credits.desc"
+msgstr "作者、老師，還有做網站的技術"
+
 #. 分類題作答後的摘要；correctCount 是放對的張數、total 是總張數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
@@ -1552,6 +1562,16 @@ msgstr "市場面"
 #: src/pages/Term.tsx
 msgid "term.misconception"
 msgstr "常見誤解"
+
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+#: src/pages/Design.tsx
+#: src/pages/Me.tsx
+msgid "me.credits"
+msgstr "幕後"
 
 #. 指標版本名稱（04 第 12.7 節）：依年報財務分析寫法的公式；學生看的說法，不露出版本代號或教材單元
 #. js-lingui-explicit-id
