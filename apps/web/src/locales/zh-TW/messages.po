@@ -2623,16 +2623,16 @@ msgstr "看名詞圖鑑"
 msgid "install.guide.show"
 msgstr "看圖解教學"
 
-#. Safari 分頁常駐提示的主要動作：連到安裝教學頁
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.install"
-msgstr "看安裝教學"
-
 #. 被拒後的下一步：連到安裝教學
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.install"
+msgstr "看安裝教學"
+
+#. Safari 分頁常駐提示的主要動作：連到安裝教學頁
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.install"
 msgstr "看安裝教學"
 
 #. 結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績）
