@@ -261,29 +261,17 @@ msgstr "LedgerLand 會計樂園 is a public, open source, mobile first site for 
 msgid "quiz.ratio.na"
 msgstr "N/A"
 
-#. Safari 分頁常駐提示收合後的小按鈕
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.collapsed"
-msgstr "Safari tab: show tip"
-
 #. 引導卡的說明：Safari 分頁與主畫面 App 不共享進度
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.toApp.intro"
 msgstr "A Safari tab and the home-screen app each keep their own progress. This is the only way across:"
 
-#. iOS Safari 分頁常駐提示（展開時）的標題
+#. iOS Safari 分頁頂部的常駐提示：引導加到主畫面
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
-msgid "safari.title"
-msgstr "Progress in a Safari tab may be lost"
-
-#. 地圖頁的單行提示條：iOS Safari 分頁的常駐提示
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "play.hint.safari"
-msgstr "Progress in a Safari tab may be lost"
+msgid "safari.text"
+msgstr "Progress in a Safari tab may be cleared. From the Home Screen it opens faster and your progress is less likely to be wiped; if you have already added it, open it from the Home Screen icon."
 
 #. js-lingui-explicit-id
 #: src/pages/Placeholder.tsx
@@ -821,6 +809,18 @@ msgstr "Add to Home Screen"
 msgid "settings.protect.hint"
 msgstr "Adding the site to your home screen lowers the chance of your progress being cleared; exporting a backup regularly is the safest option."
 
+#. 地圖頁的單行提示條：iOS Safari 分頁的常駐提示（引導加到主畫面）
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "play.hint.safari"
+msgstr "Add to your Home Screen so progress is not lost"
+
+#. Safari 分頁常駐提示收合後的小按鈕
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.collapsed"
+msgstr "Home Screen: show tip"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.import.title"
@@ -1264,12 +1264,6 @@ msgstr "If you practised in a Safari tab before, use ‘Export to app’ there f
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.hint"
 msgstr "If you have turned on ‘Reduce Transparency’ on your iPhone, the web page cannot read that setting; choose ‘Solid’ here. Refraction only works in desktop Chromium browsers."
-
-#. iOS Safari 分頁頂部的常駐提示
-#. js-lingui-explicit-id
-#: src/components/SafariTabNotice.tsx
-msgid "safari.text"
-msgstr "If you’ve already added LedgerLand to your Home Screen, open it from the Home Screen icon. Your progress lives there."
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1839,6 +1833,12 @@ msgstr "Add LedgerLand to your Home Screen"
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 msgid "install.title"
+msgstr "Add LedgerLand to your Home Screen"
+
+#. iOS Safari 分頁常駐提示（展開時）的標題：引導加到主畫面
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.title"
 msgstr "Add LedgerLand to your Home Screen"
 
 #. 安裝教學頁的開頭
@@ -2623,6 +2623,12 @@ msgstr "Browse the terms"
 msgid "install.guide.show"
 msgstr "See steps"
 
+#. Safari 分頁常駐提示的主要動作：連到安裝教學頁
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.install"
+msgstr "See the install guide"
+
 #. 被拒後的下一步：連到安裝教學
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
@@ -3048,11 +3054,11 @@ msgstr "Diagnostics"
 msgid "play.hint.details.backup"
 msgstr "Details: go to Backup"
 
-#. 地圖頁 Safari 分頁提示條右側「詳細」圖示按鈕的可讀名稱（前往備份頁）
+#. 地圖頁 Safari 分頁提示條右側「詳細」圖示按鈕的可讀名稱（前往安裝教學頁）
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "play.hint.details.safari"
-msgstr "Details: export to the app"
+msgstr "Details: install guide"
 
 #. js-lingui-explicit-id
 #: src/components/LangSwitch.tsx
@@ -3086,6 +3092,12 @@ msgstr "The statement format used in the course has a few names that the current
 #: src/pages/Design.tsx
 msgid "design.layout.title"
 msgstr "The course’s layout, the current standards"
+
+#. iOS Safari 分頁常駐提示的標題：按過「我已加入主畫面」之後
+#. js-lingui-explicit-id
+#: src/components/SafariTabNotice.tsx
+msgid "safari.title.full"
+msgstr "Open LedgerLand from your Home Screen"
 
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx

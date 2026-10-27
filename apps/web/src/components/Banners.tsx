@@ -67,7 +67,8 @@ export function useExpandedBanner(): BannerKind | null {
 /** 換頁時整組重新掛載（key 是路徑）：各提示在掛載時重讀設定與路由，不必各自追蹤 pathname */
 export function Banners() {
   const location = useLocation();
-  return <BannersForRoute key={location.pathname} onMap={stripLocale(location.pathname) === '/play/'} />;
+  const path = stripLocale(location.pathname);
+  return <BannersForRoute key={location.pathname} onMap={path === '/play/'} onInstallPage={path === '/install/'} />;
 }
 
 /** 地圖頁提示條的位置：在 main 裡找 #ll-map-hint-slot（地圖晚一點才掛上，所以觀察 DOM）；waitedOut 是等太久、改顯示 Banner */
@@ -130,7 +131,7 @@ function useBannerSlot(followHeader: boolean) {
   return { slot, homeRef };
 }
 
-function BannersForRoute({ onMap }: { onMap: boolean }) {
+function BannersForRoute({ onMap, onInstallPage }: { onMap: boolean; onInstallPage: boolean }) {
   const status = useStorageStatus();
   const storageError = status.degraded || status.blocked || status.suspended || status.quotaExceeded || status.writeFailed;
   const environment = useMemo(() => environmentKind(), []);
@@ -157,12 +158,13 @@ function BannersForRoute({ onMap }: { onMap: boolean }) {
   if (update.visible) eligible.push('update');
   if (ephemeral.show) eligible.push('ephemeral');
   if (install.strategy !== 'none') eligible.push('install');
-  if (environment === 'safari-tab' && !(asHint && safariCollapsed === '1')) eligible.push('safari-tab');
+  // 安裝教學頁本身不顯示 Safari 分頁的提示（提示就是在引導人來這一頁；2026-10-27）
+  if (environment === 'safari-tab' && !onInstallPage && !(asHint && safariCollapsed === '1')) eligible.push('safari-tab');
   if (environment === 'in-app-browser') eligible.push('in-app');
   if (backup.due) eligible.push('backup');
   if (locale.target !== null) eligible.push('locale');
   const collapsed: BannerKind[] = [];
-  if (safariCollapsed === '1') collapsed.push('safari-tab');
+  if (safariCollapsed === '1' && !onInstallPage) collapsed.push('safari-tab');
   if (inAppCollapsed === '1') collapsed.push('in-app');
   const pick = pickBanners(eligible, collapsed);
 
