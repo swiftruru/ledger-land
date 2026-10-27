@@ -16,6 +16,7 @@ import {
   InfoIcon,
   NavList,
   NavRow,
+  StarIcon,
   TextLink,
   Toast,
   ToastRegion,
@@ -55,6 +56,14 @@ export default function Credits() {
   const foundText = fmt(foundCount);
   const totalText = fmt(total);
   const foundHas = (id: (typeof EGG_IDS)[number]) => found?.has(id) ?? false;
+  // 五個彩蛋的提示（維護者 2026-10-27 實機回饋：沒有提示找不到；提示說「在哪裡」，不說「怎麼觸發」）
+  const hintText: Record<(typeof EGG_IDS)[number], string> = {
+    mascot: t({ id: 'eggs.hint.mascot', message: '作者那一段的旁邊站著鈴，跟它打個招呼。', comment: '彩蛋提示：吉祥物' }),
+    version: t({ id: 'eggs.hint.version', message: '方塊板下面那一串版本號，按按看。', comment: '彩蛋提示：版本號' }),
+    flavours: t({ id: 'eggs.hint.flavours', message: '畫面那一層的 tokens 面板裡有三種口味，三種都試過才算。', comment: '彩蛋提示：三種口味' }),
+    offline: t({ id: 'eggs.hint.offline', message: '安裝與主機那一層的 PWA 面板裡有一個問題，問問它。', comment: '彩蛋提示：離線' }),
+    dedication: t({ id: 'eggs.hint.dedication', message: '這一頁的最後一列，打開它。', comment: '彩蛋提示：頁底的一行' }),
+  };
 
   return (
     <>
@@ -151,6 +160,26 @@ export default function Credits() {
           </span>
         </p>
       </div>
+      <Disclosure
+        variant="plain"
+        className="ll-credits-hints"
+        icon={<StarIcon />}
+        summary={t({ id: 'eggs.hints.title', message: '彩蛋藏在哪裡？給點提示', comment: '彩蛋提示摺疊列的標題' })}
+        data-testid="eggs-hints"
+      >
+        <ul className="ll-list ll-credits-hints__list">
+          {EGG_IDS.map((id) => (
+            <li key={id} data-egg={id} data-found={foundHas(id) ? 'true' : 'false'}>
+              <Badge kind={foundHas(id) ? 'success' : 'neutral'}>
+                {foundHas(id)
+                  ? t({ id: 'eggs.hints.found', message: '找到了', comment: '彩蛋提示清單：這一個已經找到' })
+                  : t({ id: 'eggs.hints.notYet', message: '還沒', comment: '彩蛋提示清單：這一個還沒找到' })}
+              </Badge>{' '}
+              <Phrased text={hintText[id]} />
+            </li>
+          ))}
+        </ul>
+      </Disclosure>
       <StackExplorer onEgg={mark} />
       <div className="ll-prose">
         <p className="ll-credits-version">

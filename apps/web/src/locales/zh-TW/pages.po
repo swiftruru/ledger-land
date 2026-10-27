@@ -66,6 +66,12 @@ msgstr "中英兩種語言的字串都走它；語言寫在網址裡，切換不
 msgid "stack.node.zustand.role"
 msgstr "作答中的狀態放在這裡，不綁在網址上，所以切換語言或回上一頁都不會重來。"
 
+#. 彩蛋提示：吉祥物
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.mascot"
+msgstr "作者那一段的旁邊站著鈴，跟它打個招呼。"
+
 #. 作者個人網站那一列的標題
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -148,6 +154,12 @@ msgstr "夜空"
 msgid "stack.layer.platform"
 msgstr "安裝與主機"
 
+#. 彩蛋提示：離線
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.offline"
+msgstr "安裝與主機那一層的 PWA 面板裡有一個問題，問問它。"
+
 #. 頁底摺疊列的標題（彩蛋）
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -196,11 +208,23 @@ msgstr "建置與測試在它上面跑；網站本身不需要伺服器。"
 msgid "eggs.progress"
 msgstr "彩蛋 {foundText}／{totalText}"
 
+#. 彩蛋提示摺疊列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hints.title"
+msgstr "彩蛋藏在哪裡？給點提示"
+
 #. 作者自我介紹第一段（第一人稱）
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
 msgid "credits.author.p1"
 msgstr "我是潘昱如（Yu-Ru Pan）。我喜歡把學到的東西做成可以動手玩的樣子，會計樂園就是這樣開始的：上課聽到一家小店的帳怎麼從頭記到尾，就想把它做成一關一關的遊戲。"
+
+#. 彩蛋提示清單：這一個已經找到
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hints.found"
+msgstr "找到了"
 
 #. 作者連結那組選單列的標題
 #. js-lingui-explicit-id
@@ -249,6 +273,12 @@ msgstr "放靜態檔案的主機。深層網址一律回到網站本身，少了
 #: src/pages/Credits.tsx
 msgid "credits.teacher.title"
 msgstr "教我會計的老師"
+
+#. 彩蛋提示：版本號
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.version"
+msgstr "方塊板下面那一串版本號，按按看。"
 
 #. 幕後頁最後一組選單列的標題
 #. js-lingui-explicit-id
@@ -340,6 +370,12 @@ msgstr "畫面"
 msgid "stack.node.react.role"
 msgstr "畫面的骨架。每一頁都是用它拼出來的元件，資料一變畫面就跟著變。"
 
+#. 彩蛋提示：三種口味
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.flavours"
+msgstr "畫面那一層的 tokens 面板裡有三種口味，三種都試過才算。"
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -416,6 +452,12 @@ msgstr "謝謝老師把會計講成一個聽得懂的故事；謝謝課堂上每
 msgid "eggs.mascot.name"
 msgstr "跟鈴打個招呼"
 
+#. 彩蛋提示：頁底的一行
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hint.dedication"
+msgstr "這一頁的最後一列，打開它。"
+
 #. 彩蛋還沒找齊時的說明
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -457,6 +499,12 @@ msgstr "這是「{name}」的底色和記號色。"
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.progress.role"
 msgstr "進度的資料模型：星星、錯題本、名詞收集、徽章。每一筆寫入都先排隊，頁面突然關掉也補得回來。"
+
+#. 彩蛋提示清單：這一個還沒找到
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.hints.notYet"
+msgstr "還沒"
 
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx

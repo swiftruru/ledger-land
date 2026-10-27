@@ -1,9 +1,10 @@
-// 幕後頁的技術棧探索器：六層的方塊板（每個方塊是設計系統的 Button，切換式，aria-pressed），選一個就在下面的面板說它負責什麼、和誰搭配；
+// 幕後頁的技術棧探索器：六層的方塊板（每個方塊是設計系統的 Button，切換式，aria-pressed），選一個就在「那一層的正下方」開一張面板說它負責什麼、和誰搭配
+// （2026-10-27 維護者實機回饋：面板固定放在六層最下面時，手機上點了還要往下滑才看得到；沒選時面板在最上面只放提示）；
 // 搭配的方塊外層加虛線框，面板裡同時有文字清單，不靠顏色辨認。面板裡的「搭配」是小按鈕，按了就換選取。
 // 兩個彩蛋住在面板裡：tokens 的三種深色風味（三種都看過才算找到）、PWA 的「現在拔掉網路也能開嗎」。
 // 沒有動畫、沒有新的可點元件種類（07 第 9.3 節的表不用改）；樣式在 styles/info.css 的 .ll-stack。
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Badge, Button, Card, Segmented } from '@ledgerland/web-ui';
 import { Phrased } from '../me/Phrased.tsx';
 import { type EggId } from './eggs.ts';
@@ -223,62 +224,73 @@ export function StackExplorer({ onEgg }: { onEgg: (id: EggId) => void }) {
     );
   };
 
+  // 面板放在被選方塊那一層的正下方；換了一層時面板的 DOM 位置會變，選取後把它捲進畫面（nearest：放得下就不捲，底部留 Tab bar 的高度，見 info.css 的 scroll-margin）
+  const panelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (selected !== null) panelRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [selected]);
+
+  const panel = (
+    <Card className="ll-stack__panel" id={PANEL_ID} aria-live="polite" data-testid="stack-panel" ref={panelRef}>
+      {node === undefined ? (
+        <p className="ll-muted">
+          <Trans id="stack.hint" comment="還沒選方塊時面板裡的提示">
+            點一個方塊，看看它負責什麼。
+          </Trans>
+        </p>
+      ) : (
+        <>
+          <h3 className="ll-stack__panel-title">
+            {labels.name[node.id] ?? node.name}
+            {versionOf(node) !== undefined && (
+              <Badge kind="neutral" className="ll-num">
+                {versionOf(node)}
+              </Badge>
+            )}
+          </h3>
+          <p>
+            <Phrased text={labels.role[node.id] ?? ''} />
+          </p>
+          {related.size > 0 && (
+            <>
+              <p className="ll-small ll-muted">
+                <Trans id="stack.related" comment="面板裡「搭配」清單的小標">
+                  搭配
+                </Trans>
+              </p>
+              <ul className="ll-stack__chips" data-testid="stack-related">
+                {[...related].map((id) => {
+                  const r = nodeById(id);
+                  return r === undefined ? null : (
+                    <li key={id}>
+                      <Button variant="quiet" size="sm" onClick={() => setSelected(id)} data-testid={`stack-chip-${id}`}>
+                        {labels.name[r.id] ?? r.name}
+                      </Button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+          )}
+          {node.egg === 'flavours' && <FlavourSample onSeenAll={() => onEgg('flavours')} />}
+          {node.egg === 'offline' && <OfflineCheck onChecked={() => onEgg('offline')} />}
+        </>
+      )}
+    </Card>
+  );
+
   return (
     <div className="ll-stack" data-testid="stack">
+      {node === undefined && panel}
       {STACK_LAYERS.map((layer) => (
         <section key={layer} className="ll-stack__layer" aria-labelledby={`ll-stack-layer-${layer}`}>
           <h3 id={`ll-stack-layer-${layer}`} className="ll-stack__title">
             {labels.layer[layer]}
           </h3>
           <ul className="ll-stack__nodes">{nodesInLayer(layer).map(renderNode)}</ul>
+          {node?.layer === layer && panel}
         </section>
       ))}
-      <Card className="ll-stack__panel" id={PANEL_ID} aria-live="polite" data-testid="stack-panel">
-        {node === undefined ? (
-          <p className="ll-muted">
-            <Trans id="stack.hint" comment="還沒選方塊時面板裡的提示">
-              點一個方塊，看看它負責什麼。
-            </Trans>
-          </p>
-        ) : (
-          <>
-            <h3 className="ll-stack__panel-title">
-              {labels.name[node.id] ?? node.name}
-              {versionOf(node) !== undefined && (
-                <Badge kind="neutral" className="ll-num">
-                  {versionOf(node)}
-                </Badge>
-              )}
-            </h3>
-            <p>
-              <Phrased text={labels.role[node.id] ?? ''} />
-            </p>
-            {related.size > 0 && (
-              <>
-                <p className="ll-small ll-muted">
-                  <Trans id="stack.related" comment="面板裡「搭配」清單的小標">
-                    搭配
-                  </Trans>
-                </p>
-                <ul className="ll-stack__chips" data-testid="stack-related">
-                  {[...related].map((id) => {
-                    const r = nodeById(id);
-                    return r === undefined ? null : (
-                      <li key={id}>
-                        <Button variant="quiet" size="sm" onClick={() => setSelected(id)} data-testid={`stack-chip-${id}`}>
-                          {labels.name[r.id] ?? r.name}
-                        </Button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
-            )}
-            {node.egg === 'flavours' && <FlavourSample onSeenAll={() => onEgg('flavours')} />}
-            {node.egg === 'offline' && <OfflineCheck onChecked={() => onEgg('offline')} />}
-          </>
-        )}
-      </Card>
     </div>
   );
 }

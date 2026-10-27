@@ -249,6 +249,11 @@
   color: var(--ll-text-2);
   font-size: var(--ll-type-footnote-size);
 }
+/* 面板在被選那一層的正下方（維護者 2026-10-27 實機回饋）；選取後 scrollIntoView(nearest)，底部留 Tab bar 的高度 */
+.ll-stack__panel {
+  margin-top: var(--ll-space-3);
+  scroll-margin-bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--ll-space-4));
+}
 .ll-stack__panel > p {
   margin: 0 0 var(--ll-space-2);
 }
@@ -299,6 +304,17 @@
 }
 .ll-credits-dedication {
   margin-top: var(--ll-space-6);
+}
+/* 彩蛋提示清單：每一列前面是「找到了／還沒」的膠囊 */
+.ll-credits-hints {
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-credits-hints__list {
+  margin: 0;
+  padding-inline-start: 1.2em;
+}
+.ll-credits-hints__list li {
+  margin: var(--ll-space-2) 0;
 }
 /* 找齊彩蛋的提示：固定在畫面上，手機在頁首下方、1024 以上在右下角（和作答頁的浮動提示同一個位置規則，但沒有進場動畫） */
 .ll-credits-toasts {
