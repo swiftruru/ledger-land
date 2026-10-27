@@ -941,6 +941,7 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 | 名詞 chip `TermChip` | `ll-chip`（44px）、句中的 `ll-chip--inline` | 句中 chip 是行內例外，沒有底線，用強調墨色的虛線下框表示可點 |
 | 註記標籤 `NoteTag`（按鈕形式） | `ll-notetag--btn`、內層 `ll-notetag__pill` | 按鈕本身 44px、透明，膠囊在內層，結尾 14px 資訊圖示 |
 | 星星 `Stars`、徽章 `ChapterBadge` | 不可點 | 只是圖形 |
+| 特別徽章 `SpecialBadge` | 不可點 | 只是圖形；重用 `ll-chbadge` 的 class 與變數，已取得是星星金幣面加一顆強調色的星與橫幅緞帶，未取得同 `ChapterBadge` 的灰階（03 第 2.10 節） |
 
 ---
 

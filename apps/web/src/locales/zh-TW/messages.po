@@ -22,6 +22,7 @@ msgstr "（目前）"
 #. 統計膠囊上的「已取得／總數」；a、b 已格式化
 #. 統計膠囊上的「已取得／總數」；a、b 已格式化
 #. 統計膠囊上的「已取得／總數」；a、b 已格式化
+#. 統計膠囊上的「已取得／總數」；a、b 已格式化
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
 #: src/features/me/PlayerCard.tsx
@@ -107,6 +108,7 @@ msgstr "{due, plural, other {<0>今天要<1/>複習 <2># 題</2></0>}}"
 msgid "home.due"
 msgstr "{due, plural, other {今⁠天要複⁠習 # 題}}"
 
+#. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
@@ -1083,6 +1085,12 @@ msgstr "在 {code} 遇到"
 msgid "terms.meet"
 msgstr "在 {code}「{levelTitle}」遇到"
 
+#. 特別徽章「幕後偵探」的取得條件
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.special.creditsEggs.cond"
+msgstr "在「幕後」找到全部彩蛋"
+
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.teacher.qr"
@@ -1308,6 +1316,7 @@ msgstr "安裝教學"
 msgid "me.install"
 msgstr "安裝教學"
 
+#. 徽章格的狀態：完成
 #. 徽章格的狀態：完成
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
@@ -1552,6 +1561,12 @@ msgstr "市場面"
 #: src/pages/Term.tsx
 msgid "term.misconception"
 msgstr "常見誤解"
+
+#. 特別徽章的名稱：在「幕後」頁找齊全部彩蛋
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.special.creditsEggs"
+msgstr "幕後偵探"
 
 #. 指標版本名稱（04 第 12.7 節）：依年報財務分析寫法的公式；學生看的說法，不露出版本代號或教材單元
 #. js-lingui-explicit-id
@@ -2154,6 +2169,7 @@ msgid "chapter.note.examScope"
 msgstr "期中考範圍以老師公告為準。"
 
 #. 徽章格的狀態：還沒取得
+#. 徽章格的狀態：還沒取得
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
 msgid "badges.state.locked"
@@ -2434,6 +2450,18 @@ msgstr "版本"
 #: src/pages/About.tsx
 msgid "about.more.debug.desc"
 msgstr "版本、裝置與儲存的檢查結果"
+
+#. 特別徽章格的眉標（取代章節徽章的「第 N 章」）
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.special.eyebrow"
+msgstr "特別"
+
+#. 徽章頁的分段小標：不屬於任何章的探索獎勵
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.group.special"
+msgstr "特別徽章"
 
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id

@@ -19,11 +19,13 @@ export const LAB_SANDBOX_DEFAULT_ID = 'sandbox-default';
 
 /** 取捨題的收藏（03 第 2.7 節）：存在 settings 的這個鍵，值是題目 ID 的陣列（apps/web 的 features/quiz/favourites.ts） */
 export const FAVOURITES_SETTING_KEY = 'favourites';
+/** 「幕後」頁找到的彩蛋（03 第 2.10 節的特別徽章）：存在 settings 的這個鍵，值是彩蛋 ID 的陣列；找齊時由 apps/web 寫入 badge:special:credits-eggs 的 unlock */
+export const CREDITS_EGGS_SETTING_KEY = 'creditsEggs';
 /**
- * settings 裡屬於學習資料、不是偏好的鍵（2026-10-25，core-2）：匯入時不受「也套用語言與計時設定」控制，
+ * settings 裡屬於學習資料、不是偏好的鍵（2026-10-25，core-2；2026-10-27 加彩蛋）：匯入時不受「也套用語言與計時設定」控制，
  * 合併模式取兩邊的聯集，覆蓋模式取備份的值（備份沒有就清掉）；備份預覽另外計數，不算進 hasSettings
  */
-export const LEARNING_SETTING_KEYS: readonly string[] = Object.freeze([FAVOURITES_SETTING_KEY]);
+export const LEARNING_SETTING_KEYS: readonly string[] = Object.freeze([FAVOURITES_SETTING_KEY, CREDITS_EGGS_SETTING_KEY]);
 
 /** 設定值轉成不重複的題目 ID 清單（收藏用）：不是陣列的值當作空清單；略過非字串與空字串，保留第一次出現的順序 */
 export function idListOf(value: unknown): string[] {

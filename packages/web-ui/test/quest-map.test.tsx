@@ -20,6 +20,7 @@ import {
   MapMarker,
   NoteTag,
   RollingNumber,
+  SpecialBadge,
   formatLevelCode,
   starPath,
   type LevelCodeStatus,
@@ -377,6 +378,33 @@ describe('章節徽章、章末區、角色、數字滾動（M3）', () => {
     expect(document.querySelectorAll('.ll-chbanner .ll-chbadge')).toHaveLength(0);
     expect(starPath(0, 0, 10)).toMatch(/^M0\.00 -10\.00L/);
     expect(document.querySelector('.ll-chbadge')!.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('特別徽章兩種外觀：一顆星加橫幅緞帶，沒有月桂；size 生效；aria-hidden', async () => {
+    await render(
+      wrap(
+        <>
+          <SpecialBadge state="done" size={72} />
+          <SpecialBadge state="locked" />
+        </>,
+      ),
+    );
+    const done = document.querySelector<SVGSVGElement>('.ll-chbadge--special.ll-chbadge--done')!;
+    const locked = document.querySelector<SVGSVGElement>('.ll-chbadge--special.ll-chbadge--locked')!;
+    expect(done).not.toBeNull();
+    expect(locked).not.toBeNull();
+    expect(done.getAttribute('width')).toBe('72');
+    expect(done.getAttribute('height')).toBe('84');
+    expect(locked.getAttribute('width')).toBe('36');
+    expect(done.getAttribute('aria-hidden')).toBe('true');
+    expect(done.querySelectorAll('.ll-chbadge__star')).toHaveLength(1);
+    expect(done.querySelectorAll('.ll-chbadge__ribbon')).toHaveLength(1);
+    expect(done.querySelectorAll('.ll-chbadge__laurel')).toHaveLength(0);
+    // 已取得是星星金幣面、強調色的星；未取得的星沒有填色
+    const star = getComputedStyle(done.querySelector('.ll-chbadge__star')!);
+    const face = getComputedStyle(done.querySelector('.ll-chbadge__face')!);
+    expect(face.fill).not.toBe(star.fill);
+    expect(getComputedStyle(locked.querySelector('.ll-chbadge__star')!).fill).toMatch(/transparent|rgba\(0, 0, 0, 0\)/);
   });
 
   it('章末區：未完成是路標文字；完成顯示「第 N 章完成」與徽章；精通另有文字', async () => {

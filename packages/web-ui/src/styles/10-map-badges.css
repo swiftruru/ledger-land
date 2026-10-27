@@ -45,6 +45,14 @@ html[data-theme='dark'] .ll-chend__plaque .ll-chbadge--locked {
   --ll-cb-ribbon: var(--ll-accent);
   --ll-cb-ribbon-rim: var(--ll-accent-pressed);
 }
+/* 特別徽章（SpecialBadge，03 第 2.10 節）：已取得是星星金幣面加一顆強調色的星（和精通同一組色），緞帶是強調色；未取得沿用上面的灰階 */
+.ll-chbadge--special.ll-chbadge--done {
+  --ll-cb-face: var(--ll-star);
+  --ll-cb-rim: var(--ll-warning-ink);
+  --ll-cb-ring: var(--ll-warning-ink);
+  --ll-cb-star: var(--ll-accent);
+  --ll-cb-ribbon: var(--ll-accent);
+}
 .ll-chbadge__face {
   fill: var(--ll-cb-face);
   stroke: var(--ll-cb-rim);
