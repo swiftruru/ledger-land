@@ -34,6 +34,8 @@ jobs:
     # 工作層級的 env 蓋掉 workflow 的：${{ github.workspace }} 在容器工作裡仍是執行器主機的路徑（/home/runner/…），容器裡不存在
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+      # Firefox 在容器裡要 $HOME 屬於目前使用者才肯啟動（Playwright 官方的 GitHub Actions 說明）；main 的 E2E 跑 Firefox
+      HOME: /root
       npm_config_cache: /tmp/ll-npm-cache
       pnpm_config_state_dir: /tmp/ll-pnpm-state
       XDG_CONFIG_HOME: /tmp/ll-xdg-config
@@ -127,6 +129,8 @@ jobs:
     # 工作層級的 env 蓋掉 workflow 的：${{ github.workspace }} 在容器工作裡仍是執行器主機的路徑（/home/runner/…），容器裡不存在
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+      # Firefox 在容器裡要 $HOME 屬於目前使用者才肯啟動（Playwright 官方的 GitHub Actions 說明）；main 的 E2E 跑 Firefox
+      HOME: /root
       npm_config_cache: /tmp/ll-npm-cache
       pnpm_config_state_dir: /tmp/ll-pnpm-state
       XDG_CONFIG_HOME: /tmp/ll-xdg-config
