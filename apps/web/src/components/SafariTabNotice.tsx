@@ -102,7 +102,7 @@ function SafariTabBanner({ onCollapse }: { onCollapse: () => void }) {
   return (
     <Banner
       className="ll-safari-notice"
-      title={t({ id: 'safari.title', message: 'Safari 分⁠頁⁠的進⁠度可⁠能⁠會消⁠失', comment: 'iOS Safari 分頁常駐提示（展開時）的標題' })}
+      title={t({ id: 'safari.title', message: 'Safari 分頁的進度可能會消失', comment: 'iOS Safari 分頁常駐提示（展開時）的標題' })}
       actions={
         <>
           <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/')}>
@@ -127,14 +127,13 @@ function SafariTabBanner({ onCollapse }: { onCollapse: () => void }) {
     >
       <p>
         <Trans id="safari.text" comment="iOS Safari 分頁頂部的常駐提示">
-          如⁠果你已⁠經加⁠入⁠主⁠畫⁠面，請⁠從主⁠畫⁠面圖⁠示開⁠啟，進⁠度存⁠在那⁠裡。
+          如果你已經加入主畫面，請從主畫面圖示開啟，進度存在那裡。
         </Trans>
       </p>
       {full === true && (
         <p>
           <Trans id="safari.full" comment="按過「我已加入主畫面」後的完整版說明">
-            這⁠個 Safari 分⁠頁⁠和主⁠畫⁠面 App 的紀⁠錄是分⁠開⁠的兩⁠份。如⁠果這⁠裡有新⁠的進⁠度，按「⁠匯⁠出⁠到 App」複⁠製備⁠份⁠碼，再⁠到
-            App 的「⁠我⁠的 › 備⁠份⁠」貼⁠上，兩⁠邊⁠的紀⁠錄會合⁠併。
+            這個 Safari 分頁和主畫面 App 的紀錄是分開的兩份。如果這裡有新的進度，按「匯出到 App」複製備份碼，再到 App 的「我的 › 備份」貼上，兩邊的紀錄會合併。
           </Trans>
         </p>
       )}
@@ -142,7 +141,7 @@ function SafariTabBanner({ onCollapse }: { onCollapse: () => void }) {
         <>
           <p>
             <Trans id="safari.levelCode" comment="作答頁的常駐提示裡，關卡代號前的一句話">
-              把這⁠個關⁠卡代⁠號記⁠下⁠來，在 App 裡⁠輸⁠入就能直⁠接⁠進⁠到這⁠一⁠關。
+              把這個關卡代號記下來，在 App 裡輸入就能直接進到這一關。
             </Trans>
           </p>
           {levelCode ? createElement(levelCode, { levelId }) : <LevelCodePlaceholder levelId={levelId} />}
@@ -169,7 +168,7 @@ export function SafariTabHint({ collapse }: { collapse: () => void }) {
       onClose={collapse}
       data-testid="map-hint-safari"
     >
-      {t({ id: 'play.hint.safari', message: 'Safari 分⁠頁⁠的進⁠度可⁠能⁠會消⁠失', comment: '地圖頁的單行提示條：iOS Safari 分頁的常駐提示' })}
+      {t({ id: 'play.hint.safari', message: 'Safari 分頁的進度可能會消失', comment: '地圖頁的單行提示條：iOS Safari 分頁的常駐提示' })}
     </HintBar>
   );
 }

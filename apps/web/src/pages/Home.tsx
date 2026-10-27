@@ -37,7 +37,7 @@ import '../styles/me.css';
 
 /** 有進度時的問候：短代號整塊不斷（第 9 輪：375 加 200% 字級排成「今天從 1-／3 繼續吧」，連字號落在行尾像破折號） */
 function ContinueGreeting({ code }: { code: string }) {
-  const nextCode = <span className="ll-nowrap">{code}</span>;
+  const nextCode = <span className="ll-keep">{code}</span>;
   return (
     <Trans id="home.greet.continue" comment="首頁主卡的問候（有進度）；nextCode 是下一關的短代號，例如 1-2（整塊不換行）">
       今天從 {nextCode} 繼續吧
@@ -180,7 +180,7 @@ export function Home() {
                     id="home.hero.next"
                     comment="首頁主卡的第二行（有進度）：下一關的關卡名；nextTitle 是關卡名（依詞換行）。「下一關」的字與字之間有看不見的 U+2060，兩行時不拆成「下一／關「…」」"
                   >
-                    下⁠一⁠關「{nextTitle}」
+                    下一關「{nextTitle}」
                   </Trans>
                 </p>
               ) : (
@@ -189,7 +189,7 @@ export function Home() {
                     id="home.tagline"
                     comment="首頁主卡的介紹，兩句；詞的字與字之間有看不見的 U+2060（word joiner），只在詞與詞之間、標點後換行（「會計入門」「可離線使用」整塊不拆）。闖關、實驗室是 Tab 的短名（D9）。375 排成「用闖關與實驗室學會計入門。」換行「中英雙語，可離線使用。」兩行；320 三行，在「學」或句號後換行"
                   >
-                    用闖⁠關與實⁠驗⁠室學會⁠計⁠入⁠門。中⁠英⁠雙⁠語，可⁠離⁠線⁠使⁠用。
+                    用闖關與實驗室學會計入門。中英雙語，可離線使用。
                   </Trans>
                 </p>
               )}
@@ -219,7 +219,7 @@ export function Home() {
                     id="home.due"
                     comment="首頁今日複習列的說明；due 是今天到期的題數，0 題時整列不顯示；數字和「題」之間是不換行空白，「今天」「複習」的字之間有看不見的 U+2060（首次載入的 chunk 不切詞，200% 字級不再斷成「複／習」）"
                     value={due}
-                    other="今⁠天要複⁠習 # 題"
+                    other="今天要複習 # 題"
                   />
                 }
                 trailing={<Badge kind="danger">{fmt(due)}</Badge>}
@@ -262,7 +262,7 @@ export function Home() {
               title={t({ id: 'me.settings', message: '設定', comment: '「我的」與首頁捷徑連到設定頁' })}
               description={t({
                 id: 'home.shortcut.settings.desc',
-                message: '語⁠言、外⁠觀、深⁠色⁠風⁠味',
+                message: '語言、外觀、深色風味',
                 comment: '首頁捷徑：設定的說明；詞的字與字之間有看不見的 U+2060，200% 字級時只在頓號後換行（第 9 輪：「外／觀」）',
               })}
               href={localePath(locale, '/me/settings/')}

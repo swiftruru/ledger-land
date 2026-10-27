@@ -291,37 +291,8 @@
   font-size: var(--ll-type-body-size);
   line-height: 1.6;
 }
-/* 摘要與學習目標的斷行（M3 驗收第 6 輪：「認識資／產」「股東／權益」「它的限／制」、末行只剩「什麼」；徽章預覽與說明行也用，
-   文字放大時不斷成「可獲／得」「期中／考」；容器有 inline-size 的容器查詢，flex 子項要給 flex: 1 1 0，寬度不靠內容撐開）：
-   字的換行照全站規則（web-ui 03-core-utils.css：line-break: strict、text-wrap: pretty，英文長字斷字），這裡不另外寫。
-   ChapterProse（features/chapter/prose.ts）切成兩層：.ch-w、.ch-l 是詞（資產、限制、「資產負債表，」，最多約 6 個字寬），
-   .ch-u 是幾個詞合成的單位（股東權益、本益比的分母，最多 7 個漢字加標點）。
-   欄寬（容器查詢的 em 以摘要、目標本身的字級計算）至少 12 個字時單位不拆；至少 4.5 個字時 4 個字寬以內的詞（資產、（資產＝）不拆，
-   至少 6.5 個字時更長的詞（.ch-l，「資產負債表，」「（N/A），」）也不拆，只在詞與詞之間斷。文字放大 200% 的 375 寬一行約 8 個字、
-   320 寬的目標欄一行不到六個字，這時長詞在小詞之間斷（名詞「股東權益，」是「股東」「權益，」，見 ChapterProse；沒有小詞的照一般規則斷），
-   不撐破卡片。
-   不用 .ll-nowrap：它一律不斷，單位有 7、8 個字寬，窄欄會撐破 */
-.ch-hero__summary,
-.ch-objectives__text,
-.ch-hero__badge-text,
-.ch-hero__note-text {
-  container-type: inline-size;
-}
-@container (min-width: 4.5em) {
-  .ch-w {
-    white-space: nowrap;
-  }
-}
-@container (min-width: 6.5em) {
-  .ch-l {
-    white-space: nowrap;
-  }
-}
-@container (min-width: 12em) {
-  .ch-u {
-    white-space: nowrap;
-  }
-}
+/* 摘要、學習目標、徽章預覽與說明行的文字照全站規則換行（07 第 3.5 節，2026-10-27 起：中文逐字換行、齊行，不再切詞；
+   原本依欄寬決定哪一層詞不拆的容器查詢與 .ch-w、.ch-l、.ch-u 已拿掉） */
 .ch-levels {
   display: grid;
   /* 卡片間距 12（站規 2.3） */

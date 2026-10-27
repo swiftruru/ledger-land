@@ -100,15 +100,15 @@ export function FeedbackView({
         : t({ id: 'quiz.multi.summary.anyCorrect', message: `你選了 ${chosenList}。`, comment: 'any_correct 作答後的摘要；chosenList 是你選的選項文字' });
     notes = options.map((o) => ({
       id: o.id,
-      text: <Markup text={optionTexts.get(o.id) ?? o.id} plainTerms fit={5} />,
-      feedback: o.feedback === undefined ? '' : <Markup text={o.feedback} ctx={ctx} options={optionTexts} fit={6} />,
+      text: <Markup text={optionTexts.get(o.id) ?? o.id} plainTerms />,
+      feedback: o.feedback === undefined ? '' : <Markup text={o.feedback} ctx={ctx} options={optionTexts} />,
       chosen: detail.selected.includes(o.id),
     }));
   } else if (detail.kind === 'choice') {
     notes = options.map((o) => ({
       id: o.id,
-      text: <Markup text={optionTexts.get(o.id) ?? o.id} plainTerms fit={5} />,
-      feedback: o.feedback === undefined ? '' : <Markup text={o.feedback} ctx={ctx} options={optionTexts} fit={6} />,
+      text: <Markup text={optionTexts.get(o.id) ?? o.id} plainTerms />,
+      feedback: o.feedback === undefined ? '' : <Markup text={o.feedback} ctx={ctx} options={optionTexts} />,
       chosen: o.id === detail.selected,
     }));
   } else if (detail.kind === 'classify') {
@@ -161,16 +161,16 @@ export function FeedbackView({
     const downsideLabel = t({ id: 'quiz.judgment.downside', message: '要注意', comment: '取捨題每個方案說明的小標' });
     notes = options.map((o) => ({
       id: o.id,
-      text: <Markup text={optionTexts.get(o.id) ?? o.id} plainTerms fit={5} />,
+      text: <Markup text={optionTexts.get(o.id) ?? o.id} plainTerms />,
       feedback: (
         <span>
           <strong>{upsideLabel}</strong>
           {locale === 'en' ? ': ' : '：'}
-          <Markup text={o.upside ?? ''} ctx={ctx} options={optionTexts} fit={6} />
+          <Markup text={o.upside ?? ''} ctx={ctx} options={optionTexts} />
           <br />
           <strong>{downsideLabel}</strong>
           {locale === 'en' ? ': ' : '：'}
-          <Markup text={o.downside ?? ''} ctx={ctx} options={optionTexts} fit={6} />
+          <Markup text={o.downside ?? ''} ctx={ctx} options={optionTexts} />
         </span>
       ),
       chosen: false,
@@ -185,7 +185,7 @@ export function FeedbackView({
       outcome={judgment ? 'neutral' : result.correct ? 'correct' : 'wrong'}
       {...(summary === null ? {} : { summary })}
       {...(multi === undefined ? {} : { multi })}
-      {...(explanationText === undefined ? {} : { explanation: <Markup text={explanationText} ctx={ctx} options={optionTexts} fit={6} /> })}
+      {...(explanationText === undefined ? {} : { explanation: <Markup text={explanationText} ctx={ctx} options={optionTexts} /> })}
       {...(notes === undefined ? {} : { options: notes })}
       expandAllOptions={expandAll}
       {...(q.termRefs.length === 0 ? {} : { terms: <TermChips ids={q.termRefs} fresh={fresh} />, newTerms: fresh.size })}

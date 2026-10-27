@@ -931,7 +931,7 @@ describe('M3 驗收第 2 輪（基礎組）', () => {
     await screen.unmount();
   });
 
-  it('空狀態的說明：最多 22em、balance、全站換行規則（第 7 輪拿掉 keep-all）；切好詞的節點（.ll-phrased）只在詞與詞之間換行', async () => {
+  it('空狀態的說明：最多 22em、balance、全站換行規則（第 7 輪拿掉 keep-all）；切過詞的節點（.ll-phrased）2026-10-27 起也照一般規則換行', async () => {
     const screen = await render(
       <I18nProvider i18n={i18n}>
         <EmptyState
@@ -958,7 +958,8 @@ describe('M3 驗收第 2 輪（基礎組）', () => {
     expect(cs.maxWidth).toBe(`${22 * parseFloat(cs.fontSize)}px`);
     expect(cs.wordBreak).toBe('normal');
     expect(cs.lineBreak).toBe('strict');
-    expect(getComputedStyle(desc.querySelector('.ll-phrased')!).wordBreak).toBe('keep-all');
+    expect(getComputedStyle(desc.querySelector('.ll-phrased')!).wordBreak).toBe('normal');
+    expect(getComputedStyle(desc.querySelector('.ll-phrased')!).overflowWrap).toBe('anywhere');
     await screen.unmount();
   });
 

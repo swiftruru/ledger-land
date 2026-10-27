@@ -9,7 +9,6 @@ import { localePath } from '@ledgerland/i18n';
 import { Card, DeviceIcon, Disclosure, TopBar } from '@ledgerland/web-ui';
 import { promptInstall, useInstallEventAvailable } from '../components/InstallPrompt.tsx';
 import { useBackToMe } from '../components/useBackLabels.ts';
-import { ProseWords } from '../components/ProseWords.tsx';
 import { InstallGuide } from '../features/install/InstallGuide.tsx';
 import { installGuideVariant } from '../features/install/ios-version.ts';
 import { useLocale } from '../lib/useLocale.ts';
@@ -40,7 +39,7 @@ export default function Install() {
         backShortLabel={back.short}
       />
       <p className="ll-lede" data-ll-banner-after="">
-        <Trans id="install.page.intro" comment="安裝教學頁的開頭" render={ProseWords}>
+        <Trans id="install.page.intro" comment="安裝教學頁的開頭">
           把會計樂園加到主畫面：開啟更快，進度也比較不容易被清除。
         </Trans>
       </p>

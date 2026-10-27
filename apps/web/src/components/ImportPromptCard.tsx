@@ -66,7 +66,7 @@ export function ImportPromptCard({ show, dismiss }: ImportPromptState) {
     <Banner
       className="ll-import-prompt"
       data-testid="import-prompt"
-      title={<Trans id="importPrompt.title">要從 Safari 匯⁠入進⁠度⁠嗎？</Trans>}
+      title={<Trans id="importPrompt.title">要從 Safari 匯入進度嗎？</Trans>}
       onDismiss={dismiss}
       dismissLabel={t({ id: 'importPrompt.skipA11y', message: '不用了，從這裡重新開始', comment: '匯入提示卡右上角關閉鈕的可讀名稱：不匯入、從這裡重新開始' })}
       actions={
@@ -87,9 +87,7 @@ export function ImportPromptCard({ show, dismiss }: ImportPromptState) {
       }
     >
       <p>
-        <Trans id="importPrompt.body">
-          如⁠果你之⁠前在 Safari 分⁠頁⁠練⁠習⁠過，先⁠在那⁠裡「⁠匯⁠出⁠到 App」，再⁠回⁠到這⁠裡貼⁠上⁠備⁠份⁠碼或選⁠擇⁠備⁠份⁠檔；匯⁠入會和這⁠裡⁠的紀⁠錄合⁠併。
-        </Trans>
+        <Trans id="importPrompt.body">如果你之前在 Safari 分頁練習過，先在那裡「匯出到 App」，再回到這裡貼上備份碼或選擇備份檔；匯入會和這裡的紀錄合併。</Trans>
       </p>
     </Banner>
   );

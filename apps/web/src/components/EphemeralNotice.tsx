@@ -90,7 +90,7 @@ export function EphemeralNotice({ onClose }: { onClose: () => void }) {
       kind="warning"
       role="status"
       className="ll-ephemeral-notice"
-      title={<Trans id="ephemeral.title">這⁠個畫⁠面關⁠掉後，作⁠答進⁠度不⁠會保⁠留</Trans>}
+      title={<Trans id="ephemeral.title">這個畫面關掉後，作答進度不會保留</Trans>}
       actions={
         <Button size="sm" icon={<CheckIcon />} onClick={onClose}>
           <Trans id="common.ok">知道了</Trans>
@@ -99,8 +99,7 @@ export function EphemeralNotice({ onClose }: { onClose: () => void }) {
     >
       <p>
         <Trans id="ephemeral.body">
-          你現⁠在是⁠在相⁠機開⁠啟⁠的預⁠覽⁠畫⁠面。請⁠點⁠右⁠下⁠角⁠的指⁠南⁠針圖⁠示，改⁠用 Safari 開⁠啟；如⁠果已⁠經把會⁠計樂⁠園加⁠到⁠主⁠畫⁠面，請⁠改⁠用 App
-          裡⁠的「⁠掃⁠描⁠課⁠堂 QR」。
+          你現在是在相機開啟的預覽畫面。請點右下角的指南針圖示，改用 Safari 開啟；如果已經把會計樂園加到主畫面，請改用 App 裡的「掃描課堂 QR」。
         </Trans>
       </p>
     </Banner>

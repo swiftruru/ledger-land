@@ -115,7 +115,7 @@ export function BackupReminder({ dismiss }: { dismiss: () => void }) {
     >
       <p>
         <Trans id="backupReminder.body" comment="備份提醒橫幅的說明">
-          這台⁠裝⁠置⁠的進⁠度可⁠能被清⁠除，先⁠匯⁠出一⁠份比⁠較安⁠心。
+          這台裝置的進度可能被清除，先匯出一份比較安心。
         </Trans>
       </p>
     </Banner>
@@ -135,7 +135,7 @@ export function BackupHint({ dismiss }: { dismiss: () => void }) {
       onClose={dismiss}
       data-testid="map-hint-backup"
     >
-      {t({ id: 'play.hint.backup', message: '記⁠得備⁠份進⁠度', comment: '地圖頁的單行提示條：備份提醒' })}
+      {t({ id: 'play.hint.backup', message: '記得備份進度', comment: '地圖頁的單行提示條：備份提醒' })}
     </HintBar>
   );
 }

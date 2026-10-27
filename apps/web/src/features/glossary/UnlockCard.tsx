@@ -8,7 +8,7 @@ import type { ReactElement, ReactNode } from 'react';
 import type { TransRenderProps } from '@lingui/react';
 import { ArrowRightIcon, Button, Card, CollectedStamp, InfoIcon, LockIcon } from '@ledgerland/web-ui';
 
-/** title、subtitle 由名詞頁依詞換行後傳進來，按鈕字的換行由 labelRender 決定（features/term-page/TermProse.tsx；
+/** title、subtitle 由名詞頁傳進來，照全站規則換行（07 第 3.5 節；
  *  切詞程式跟著名詞頁的 chunk，名詞列表與徽章頁不必載入） */
 export function UnlockCard({
   title,

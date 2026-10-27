@@ -166,18 +166,13 @@ export default defineConfig({
               test: /[\\/](packages[\\/]core[\\/](src[\\/]data[\\/](index|types)\.ts|data[\\/].+\.json)|apps[\\/]web[\\/]src[\\/]features[\\/]quiz[\\/]core-data\.ts)$/,
               priority: 2,
             },
-            // 說明頁長段落的切詞（components/ProseWords.tsx 與 prose-units.ts，約 1.5 KB gzip；安裝圖解、關於、隱私、系統設計、診斷、實驗室、名詞頁、
-            // 收藏區與作答頁的切詞用）：自成一個 chunk。交給 shared 時因為 4 KB 的合併門檻和 useBackLabels 併在一起，設定、備份、徽章等頁也載到切詞程式（第 7 輪 handoff）。
-            // 要在 quiz 群組之前宣告（第 9 輪 handoff）：收藏區（features/quiz/FavouritesSection.tsx）靜態匯入 ProseWords，quiz 群組連依賴一起抓時
-            // 會把它們併進 quiz-* 的 chunk，關於、安裝圖解與地圖面板的懶載入就得多載兩個作答頁的 chunk
-            // 群組會連依賴一起抓：session 與 progress 的模組都依賴 ids.ts，所以 prose 要宣告在它們之前，ids.ts 才不會被它們先拿走（2026-10-26）。
-            // M3 收尾 QA（2026-10-26，LCP 回到 2500ms 以內）：名詞頁與作答頁共用的文字工具也併進來，成為「切詞與佔位符」的 chunk：名詞頁的切詞 termProse（features/term-page/prose.ts，
-            // 作答頁的 quiz-phrase 建在它上面）、佔位符的純文字版與名詞欄位對應（features/quiz/placeholders.ts、term-fields.ts，原本在 level-view，名詞頁為了它們要多載 level-view 與 session）、
-            // 名詞旗標（features/glossary/note-kinds.ts，原本在 glossary，作答頁為了這個 10 行的函式要在第一波多載整個名詞卡 chunk），以及佔位符與 ID 規則（content-schema 的 ids.ts，
-            // 不帶 zod，原本在 session）。分開時作答頁第一波為了切詞多三個 chunk、名詞頁多兩個；合起來約 5 KB gzip，作答頁與名詞頁各只多一個請求，說明頁多載約 3 KB 用不到的佔位符與名詞切詞
+            // 佔位符的純文字版與名詞欄位對應（features/quiz/placeholders.ts、term-fields.ts）、名詞旗標（features/glossary/note-kinds.ts）與佔位符的 ID 規則
+            // （content-schema 的 ids.ts，不帶 zod）合成一個小 chunk：名詞頁與作答頁共用，分開時作答頁第一波多三個 chunk、名詞頁多兩個（2026-10-26）。
+            // 群組會連依賴一起抓：session 與 progress 的模組都依賴 ids.ts，所以要宣告在它們之前，ids.ts 才不會被它們先拿走。
+            // 2026-10-27 起中文逐字換行，原本也在這裡的切詞工具（ProseWords、prose-units、term-page/prose）已刪，群組名稱沿用
             {
               name: 'prose',
-              test: /[\\/](apps[\\/]web[\\/]src[\\/](components[\\/](ProseWords\.tsx|prose-units\.ts)|features[\\/](term-page[\\/]prose|quiz[\\/](placeholders|term-fields)|glossary[\\/]note-kinds)\.ts)|packages[\\/]content-schema[\\/]src[\\/]ids\.ts)$/,
+              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/](quiz[\\/](placeholders|term-fields)|glossary[\\/]note-kinds)\.ts|packages[\\/]content-schema[\\/]src[\\/]ids\.ts)$/,
               priority: 2,
             },
             // 作答工作階段：@ledgerland/progress 的 session 純函式、model 的常數與 ID 函式（generateAttemptId）、時間工具、apps/web 的 store 與暫存區、idb，
@@ -216,14 +211,13 @@ export default defineConfig({
             // 作答頁（關卡、錯題本）第一次繪製就要的題目模組：關卡的工作階段（LevelSession）、題型對應、名詞卡、佔位符渲染與指標的顯示資料。不用 entriesAware：
             // 延後載入的四種題型（question-types.tsx）也用到這些模組，交給 quiz 群組的 entriesAware 會依「誰用到」拆成三個 chunk，作答頁第一波多兩個請求（2026-10-24 實測）。
             // 回饋區（FeedbackView、FeedbackPanel）不在這裡，由 feedback-lazy 和判分一起預載。它們的依賴（web-ui 的選項、是非、分類與選列元件）也一起進來；題目卡（Level 直接用）、數字輸入（計時器與延後的題型共用）與判分的載入器要另外列出。
-            // 作答頁的依詞換行（features/quiz-phrase/quiz-phrase.ts，只有關卡與錯題本用）也在這裡（2026-10-26）：它下面的 termProse 與 prose-units 已由 prose 群組先拿走，不會連帶進來。
             // 原本 level-view 群組裡只有 LevelSession 用的小模組（計時器 level-timer 與 TimerDisplay、捲動錨點、收藏的 hook、結果頁的載入器 result-lazy、標題下的 level-notes）也併進來（2026-10-26）；
             // 結果頁元件（ResultView）不在第一波：由 result-lazy 和判分一起在第一次繪製後預載（level-view 的寫法曾把它一起放進第一波）。
             // level-view 群組的歷史：交給 quiz 群組的 entriesAware 會依「哪些頁面用到」拆成六個 0.3 到 2.5 KB 的 chunk，作答頁因此多發五個請求（2026-10-24 實測），
             // 所以它們一直要明確列在某個第一波的群組裡
             {
               name: 'quiz-view',
-              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/](quiz[\\/](LevelSession|QuestionView|feedback-lazy|Markup|terms|categories|useAsync|layout-lazy|ratio-lazy|lazy-data|ratio-format|scoring-lazy|result-lazy|level-favourites|level-timer|TimerDisplay|useScrollAnchor|level-notes)\.tsx?|quiz-phrase[\\/]quiz-phrase\.ts)|packages[\\/]web-ui[\\/]src[\\/]components[\\/](QuestionCard|NumberInput)\.tsx)$/,
+              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/](quiz[\\/](LevelSession|QuestionView|feedback-lazy|Markup|terms|categories|useAsync|layout-lazy|ratio-lazy|lazy-data|ratio-format|scoring-lazy|result-lazy|level-favourites|level-timer|TimerDisplay|useScrollAnchor|level-notes)\.tsx?)|packages[\\/]web-ui[\\/]src[\\/]components[\\/](QuestionCard|NumberInput)\.tsx)$/,
               priority: 2,
             },
             // 只有作答頁（關卡、錯題本）才需要的模組：quiz 判分、core、content-schema 的題目 schema、web-ui 的題目元件與 features/quiz。

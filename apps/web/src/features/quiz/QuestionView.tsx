@@ -150,7 +150,7 @@ function ChoiceQuestion({ q, answer, checked, result, shuffleSeed, promptId, onC
       promptId={promptId}
       mode={mode}
       {...(hint === undefined ? {} : { hint })}
-      options={options.map((o) => ({ id: o.id, text: <Markup text={o.text} ctx={ctx} plainTerms fit={5} /> }))}
+      options={options.map((o) => ({ id: o.id, text: <Markup text={o.text} ctx={ctx} plainTerms /> }))}
       {...(statuses === undefined ? {} : { statuses })}
       selected={selected}
       checked={checked && !judgment}
@@ -188,7 +188,7 @@ function TrueFalseQuestion({ q, answer, checked, promptId, onChange }: QuestionV
       checked={checked}
       {...(checked ? { correct } : {})}
       onChange={onChange}
-      {...(feedbackText === undefined ? {} : { feedback: <Markup text={feedbackText} ctx={ctx} fit={5} /> })}
+      {...(feedbackText === undefined ? {} : { feedback: <Markup text={feedbackText} ctx={ctx} /> })}
     />
   );
 }
@@ -286,7 +286,7 @@ function PickLineQuestion({ q, answer, checked, result, onChange }: QuestionView
     heading: r.heading,
     total: r.total,
     ...(r.value === undefined ? {} : { value: r.value }),
-    ...(feedbackByLine[r.id] === undefined ? {} : { feedback: <Markup text={feedbackByLine[r.id]!} ctx={ctx} fit={5} /> }),
+    ...(feedbackByLine[r.id] === undefined ? {} : { feedback: <Markup text={feedbackByLine[r.id]!} ctx={ctx} /> }),
   }));
   return (
     <PickLine

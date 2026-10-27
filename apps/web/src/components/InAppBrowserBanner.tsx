@@ -86,7 +86,7 @@ export function InAppBrowserBanner({ collapsed, onCollapse, onExpand }: InAppBro
     >
       <p>
         <Trans id="inapp.body" comment="內建瀏覽器提醒的本文（標題已經寫了在哪個 App 裡開啟）">
-          改⁠用 Safari 或 Chrome 開⁠啟，進⁠度比⁠較不⁠會消⁠失，也⁠能離⁠線使⁠用。
+          改用 Safari 或 Chrome 開啟，進度比較不會消失，也能離線使用。
         </Trans>
       </p>
     </Banner>

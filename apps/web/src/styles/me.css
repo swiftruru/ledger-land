@@ -222,7 +222,7 @@ html[data-theme='dark'] .ll-me-badges {
 /* 第 5 輪看圖驗收：摘要是會被截斷的散文，不沿用 NavRow 說明的 keep-all（只在標點處換行時，代號 Badge 單獨佔一行、摘要被推到下一行，
    兩行排不滿就截斷，相鄰的卡排成三種外形）。改回一般的中文換行（pretty 也不用），代號 Badge 和摘錄的第一個字在同一行、兩行都排滿。
    第 7 輪起 NavRow 的說明不再是 keep-all（word-break 與 overflow-wrap: anywhere 由 .ll-navrow__desc 繼承），這裡只蓋掉 pretty。
-   第 9 輪：摘錄用 ProseWords 依詞換行（6 個字以內的單位包成 .ll-nowrap，375 不再斷成「申請一／筆」），每行最多短一個詞，仍是兩行排滿 */
+   2026-10-27 起摘錄照全站規則逐字換行、齊行（07 第 3.5 節） */
 .ll-favourites__desc {
   display: -webkit-box;
   -webkit-box-orient: vertical;

@@ -106,7 +106,7 @@ msgstr "{due, plural, other {<0>今天要<1/>複習 <2># 題</2></0>}}"
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
 msgid "home.due"
-msgstr "{due, plural, other {今⁠天要複⁠習 # 題}}"
+msgstr "{due, plural, other {今天要複習 # 題}}"
 
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
@@ -251,7 +251,7 @@ msgstr "iPhone、iPad 的做法"
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.why.3"
-msgstr "LedgerLand 就是這樣開始的。它不是要取代課程，比較像一本可以翻、可以按的練⁠習⁠簿。"
+msgstr "LedgerLand 就是這樣開始的。它不是要取代課程，比較像一本可以翻、可以按的練習簿。"
 
 #. 關於頁導言；<0> 是不換行的片語
 #. js-lingui-explicit-id
@@ -277,13 +277,13 @@ msgstr "Safari 分頁：顯示提示"
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "safari.title"
-msgstr "Safari 分⁠頁⁠的進⁠度可⁠能⁠會消⁠失"
+msgstr "Safari 分頁的進度可能會消失"
 
 #. 地圖頁的單行提示條：iOS Safari 分頁的常駐提示
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "play.hint.safari"
-msgstr "Safari 分⁠頁⁠的進⁠度可⁠能⁠會消⁠失"
+msgstr "Safari 分頁的進度可能會消失"
 
 #. js-lingui-explicit-id
 #: src/pages/Placeholder.tsx
@@ -311,7 +311,7 @@ msgstr "下一關："
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
 msgid "home.hero.next"
-msgstr "下⁠一⁠關「{nextTitle}」"
+msgstr "下一關「{nextTitle}」"
 
 #. 錯題本空狀態下的下一次排程；date 是已格式化的日期、n 是已格式化的題數
 #. js-lingui-explicit-id
@@ -499,7 +499,7 @@ msgstr "你標成猜的"
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
 msgid "ephemeral.body"
-msgstr "你現⁠在是⁠在相⁠機開⁠啟⁠的預⁠覽⁠畫⁠面。請⁠點⁠右⁠下⁠角⁠的指⁠南⁠針圖⁠示，改⁠用 Safari 開⁠啟；如⁠果已⁠經把會⁠計樂⁠園加⁠到⁠主⁠畫⁠面，請⁠改⁠用 App 裡⁠的「⁠掃⁠描⁠課⁠堂 QR」。"
+msgstr "你現在是在相機開啟的預覽畫面。請點右下角的指南針圖示，改用 Safari 開啟；如果已經把會計樂園加到主畫面，請改用 App 裡的「掃描課堂 QR」。"
 
 #. iOS 17、18 的說明
 #. js-lingui-explicit-id
@@ -522,7 +522,7 @@ msgstr "你的答案是 {submitted}，正解是 {expected}（本題採{version}�
 #. js-lingui-explicit-id
 #: src/components/UpdatePrompt.tsx
 msgid "sw.updateBody"
-msgstr "你⁠的進⁠度已⁠經⁠存⁠好，按「⁠重⁠新⁠整⁠理⁠」就⁠會換⁠成⁠新⁠版⁠本。"
+msgstr "你的進度已經存好，按「重新整理」就會換成新版本。"
 
 #. any_correct 作答後的摘要；chosenList 是你選的選項文字
 #. js-lingui-explicit-id
@@ -1252,7 +1252,7 @@ msgstr "如何刪除"
 #. js-lingui-explicit-id
 #: src/components/ImportPromptCard.tsx
 msgid "importPrompt.body"
-msgstr "如⁠果你之⁠前在 Safari 分⁠頁⁠練⁠習⁠過，先⁠在那⁠裡「⁠匯⁠出⁠到 App」，再⁠回⁠到這⁠裡貼⁠上⁠備⁠份⁠碼或選⁠擇⁠備⁠份⁠檔；匯⁠入會和這⁠裡⁠的紀⁠錄合⁠併。"
+msgstr "如果你之前在 Safari 分頁練習過，先在那裡「匯出到 App」，再回到這裡貼上備份碼或選擇備份檔；匯入會和這裡的紀錄合併。"
 
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
@@ -1263,7 +1263,7 @@ msgstr "如果你在 iPhone 開了「降低透明度」，網頁讀不到這個�
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "safari.text"
-msgstr "如⁠果你已⁠經加⁠入⁠主⁠畫⁠面，請⁠從主⁠畫⁠面圖⁠示開⁠啟，進⁠度存⁠在那⁠裡。"
+msgstr "如果你已經加入主畫面，請從主畫面圖示開啟，進度存在那裡。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1519,7 +1519,7 @@ msgstr "已移除收藏：{name}"
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 msgid "install.ios.short"
-msgstr "已⁠經加⁠入就⁠從⁠主⁠畫⁠面圖⁠示開⁠啟，進⁠度存⁠在那⁠裡；還⁠沒⁠加⁠入就看⁠圖⁠解。"
+msgstr "已經加入就從主畫面圖示開啟，進度存在那裡；還沒加入就看圖解。"
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -1839,7 +1839,7 @@ msgstr "把課堂 QR 對準畫面，辨識後會自動前往。"
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "safari.levelCode"
-msgstr "把這⁠個關⁠卡代⁠號記⁠下⁠來，在 App 裡⁠輸⁠入就能直⁠接⁠進⁠到這⁠一⁠關。"
+msgstr "把這個關卡代號記下來，在 App 裡輸入就能直接進到這一關。"
 
 #. 分類題的分類格（現金流量活動）
 #. js-lingui-explicit-id
@@ -2023,7 +2023,7 @@ msgstr "改一筆交易"
 #. js-lingui-explicit-id
 #: src/components/InAppBrowserBanner.tsx
 msgid "inapp.body"
-msgstr "改⁠用 Safari 或 Chrome 開⁠啟，進⁠度比⁠較不⁠會消⁠失，也⁠能離⁠線使⁠用。"
+msgstr "改用 Safari 或 Chrome 開啟，進度比較不會消失，也能離線使用。"
 
 #. 掃描疊加層改用代號的按鈕
 #. 掃描疊加層改用代號的按鈕
@@ -2538,7 +2538,7 @@ msgstr "用這個瀏覽器安裝"
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
 msgid "home.tagline"
-msgstr "用闖⁠關與實⁠驗⁠室學會⁠計⁠入⁠門。中⁠英⁠雙⁠語，可⁠離⁠線⁠使⁠用。"
+msgstr "用闖關與實驗室學會計入門。中英雙語，可離線使用。"
 
 #. 診斷資訊：錯誤紀錄是空的時候，停用的「清除」旁邊的說明
 #. js-lingui-explicit-id
@@ -2915,7 +2915,7 @@ msgstr "複製連結"
 #. js-lingui-explicit-id
 #: src/components/ImportPromptCard.tsx
 msgid "importPrompt.title"
-msgstr "要從 Safari 匯⁠入進⁠度⁠嗎？"
+msgstr "要從 Safari 匯入進度嗎？"
 
 #. 取捨題每個方案說明的小標
 #. js-lingui-explicit-id
@@ -2981,7 +2981,7 @@ msgstr "記住了。之後在 Safari 分頁會提醒你從主畫面開啟。"
 #. js-lingui-explicit-id
 #: src/components/BackupReminder.tsx
 msgid "play.hint.backup"
-msgstr "記⁠得備⁠份進⁠度"
+msgstr "記得備份進度"
 
 #. 備份提醒橫幅的標題
 #. js-lingui-explicit-id
@@ -3034,7 +3034,7 @@ msgstr "語言"
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
 msgid "home.shortcut.settings.desc"
-msgstr "語⁠言、外⁠觀、深⁠色⁠風⁠味"
+msgstr "語言、外觀、深色風味"
 
 #. 「我的」設定列的說明
 #. js-lingui-explicit-id
@@ -3060,7 +3060,7 @@ msgstr "課程的版面，現行的準則"
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.blocked"
-msgstr "請⁠關⁠閉其⁠他 LedgerLand 分⁠頁，再重⁠新整⁠理。"
+msgstr "請關閉其他 LedgerLand 分頁，再重新整理。"
 
 #. 分類題的分類格（要素）
 #. js-lingui-explicit-id
@@ -3204,7 +3204,7 @@ msgstr "這一頁後面會慢慢補上那些選擇，以及為什麼。"
 #. js-lingui-explicit-id
 #: src/components/RouteError.tsx
 msgid "error.generic.hint"
-msgstr "這一⁠頁暫⁠時無⁠法顯⁠示。可⁠以重⁠新整⁠理再⁠試一⁠次，或先⁠回⁠到首⁠頁；如⁠果一⁠直出⁠現，請⁠把這⁠個畫⁠面⁠截⁠圖⁠回⁠報給我⁠們。"
+msgstr "這一頁暫時無法顯示。可以重新整理再試一次，或先回到首頁；如果一直出現，請把這個畫面截圖回報給我們。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -3280,7 +3280,7 @@ msgstr "這個 App"
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
 msgid "safari.full"
-msgstr "這⁠個 Safari 分⁠頁⁠和主⁠畫⁠面 App 的紀⁠錄是分⁠開⁠的兩⁠份。如⁠果這⁠裡有新⁠的進⁠度，按「⁠匯⁠出⁠到 App」複⁠製備⁠份⁠碼，再⁠到 App 的「⁠我⁠的 › 備⁠份⁠」貼⁠上，兩⁠邊⁠的紀⁠錄會合⁠併。"
+msgstr "這個 Safari 分頁和主畫面 App 的紀錄是分開的兩份。如果這裡有新的進度，按「匯出到 App」複製備份碼，再到 App 的「我的 › 備份」貼上，兩邊的紀錄會合併。"
 
 #. 名詞頁讀不到內容（離線而且這一桶沒有快取）時的標題
 #. js-lingui-explicit-id
@@ -3318,7 +3318,7 @@ msgstr "這個環境不適用，請定期匯出備份。"
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
 msgid "ephemeral.title"
-msgstr "這⁠個畫⁠面關⁠掉後，作⁠答進⁠度不⁠會保⁠留"
+msgstr "這個畫面關掉後，作答進度不會保留"
 
 #. js-lingui-explicit-id
 #: src/pages/NotFound.tsx
@@ -3363,18 +3363,18 @@ msgstr "這台裝置找不到可以用的相機，可以改輸入關卡代號。
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.quota"
-msgstr "這台⁠裝⁠置⁠的儲⁠存空⁠間不⁠太⁠夠，進⁠度可⁠能⁠存⁠不⁠進⁠去。建⁠議你先⁠匯⁠出備⁠份。"
+msgstr "這台裝置的儲存空間不太夠，進度可能存不進去。建議你先匯出備份。"
 
 #. 備份提醒橫幅的說明
 #. js-lingui-explicit-id
 #: src/components/BackupReminder.tsx
 msgid "backupReminder.body"
-msgstr "這台⁠裝⁠置⁠的進⁠度可⁠能被清⁠除，先⁠匯⁠出一⁠份比⁠較安⁠心。"
+msgstr "這台裝置的進度可能被清除，先匯出一份比較安心。"
 
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.degraded"
-msgstr "這台⁠裝⁠置目⁠前無⁠法儲⁠存進⁠度。你可⁠以繼⁠續練⁠習，但請⁠先匯⁠出備⁠份。"
+msgstr "這台裝置目前無法儲存進度。你可以繼續練習，但請先匯出備份。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -3433,7 +3433,7 @@ msgstr "進度暫停儲存"
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.writeFailed"
-msgstr "進⁠度暫⁠時無⁠法儲⁠存。重⁠要進⁠度⁠已⁠先⁠暫⁠存起⁠來，建⁠議你現⁠在匯⁠出備⁠份。"
+msgstr "進度暫時無法儲存。重要進度已先暫存起來，建議你現在匯出備份。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -3539,7 +3539,7 @@ msgstr "重新整理"
 #. js-lingui-explicit-id
 #: src/components/RouteError.tsx
 msgid "error.updated.hint"
-msgstr "重⁠新整⁠理一⁠下就能繼⁠續，你⁠的進⁠度已⁠經⁠存⁠好。"
+msgstr "重新整理一下就能繼續，你的進度已經存好。"
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -3605,7 +3605,7 @@ msgstr "開始闖關"
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 msgid "install.body"
-msgstr "開⁠啟更快，進⁠度也⁠比⁠較不⁠容⁠易被清⁠除。"
+msgstr "開啟更快，進度也比較不容易被清除。"
 
 #. 闖關地圖的頁面標題（頂部列中央）
 #. js-lingui-explicit-id

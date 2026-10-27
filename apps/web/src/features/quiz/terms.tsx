@@ -3,7 +3,6 @@
 // {{term:tm_x}} 與回饋區的 TermChip 都透過 openTerm 開同一張 TermSheet；關閉後焦點回到開啟它的 chip（TermSheet 卸載時自己還焦點）。
 // 名詞索引讀不到（離線又沒有 precache、部署時間差）時不永久停在空的索引：恢復連線或打開名詞卡時再讀一次；名詞卡不依賴索引，
 // 完整內容讀得到就照樣打開，兩者都讀不到才以提示說明，不會點了沒反應。
-// 中文的依詞換行（M3 驗收第 8 輪）：關卡與錯題本頁面把切詞模組（features/quiz-phrase/quiz-phrase.ts）傳進來，題幹、選項、回饋與解說依詞換行（Markup.tsx）。
 import { Trans } from '@lingui/react/macro';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { getLocale, type Locale } from '@ledgerland/i18n';
@@ -13,7 +12,6 @@ import { afterFirstPaint } from '../../lib/idle.ts';
 import { termNoteKinds } from '../glossary/note-kinds.ts';
 import { useCategoryLabel } from '../glossary/useCategoryLabel.ts';
 import { MarkupParagraphs } from './Markup.tsx';
-import type { PhraseModule } from '../quiz-phrase/quiz-phrase.ts';
 import { termFieldsOf } from './term-fields.ts';
 
 export interface TermsContextValue {
@@ -25,14 +23,6 @@ export interface TermsContextValue {
   readonly ready: boolean;
   readonly labelOf: (id: string) => string | undefined;
   readonly openTerm: (id: string, returnFocusTo?: RefObject<HTMLElement | null>) => void;
-  /** 中文的依詞換行（quiz-phrase.ts）：切詞模組與名詞資料的名稱（keep 清單）；英文介面或沒有傳切詞模組時是 null（Markup 照原字） */
-  readonly phrase: QuizPhrase | null;
-}
-
-export interface QuizPhrase {
-  readonly mod: PhraseModule;
-  /** 名詞資料的中文名稱：名稱、教材用語、現行用語與別名（整塊不斷） */
-  readonly names: readonly string[];
 }
 
 const TermsContext = createContext<TermsContextValue | null>(null);
@@ -148,11 +138,7 @@ function loadTermSheet(): Promise<TermSheetComponent> {
   return sheetPromise;
 }
 
-/** phrase：中文依詞換行的切詞模組。關卡與錯題本頁面靜態 import 後傳進來（不在這裡 import）：
- *  - 這個檔案在 vite.config.ts 的 quiz-view 群組，靜態 import 會連名詞頁的切詞（term-page/prose.ts、prose-units）一起抓進作答頁的 chunk，名詞頁與說明頁反而要載 quiz-view；
- *  - 動態 import 要等 React 掛上之後才開始讀，題目第一次繪製晚一個往返（第 9 輪節流實測 LCP 多約 200ms）。
- *  由頁面 chunk 靜態 import 時，它和名詞頁的切詞是頁面的靜態依賴，殼層依路徑預先載入的第一波就一起讀，題目畫出來時已經在了 */
-export function TermsProvider({ locale, phrase: mod, children }: { locale: Locale; phrase?: PhraseModule; children: ReactNode }) {
+export function TermsProvider({ locale, children }: { locale: Locale; children: ReactNode }) {
   const other: Locale = locale === 'en' ? 'zh-TW' : 'en';
   // 目前語系的索引載好就能畫題目；另一個語系只給名詞卡的次要名稱，第一次繪製送出後再讀，不排在 LCP 前面（06 第 8.2 節）
   // 目前語系的索引：locale 不同代表還沒讀到這個語系的（list 當作 null）；failed 時 list 是 []，題目照樣畫，chip 退回名詞 ID
@@ -169,7 +155,6 @@ export function TermsProvider({ locale, phrase: mod, children }: { locale: Local
   const [detail, setDetail] = useState<{ id: string; locale: Locale; value: TermSnapshot | null } | undefined>(undefined);
   // 名詞卡元件：第一次繪製後預載，打開名詞卡時一定等到
   const [Sheet, setSheet] = useState<TermSheetComponent | null>(null);
-  const zh = locale !== 'en';
   useEffect(() => {
     localeRef.current = locale;
   }, [locale]);
@@ -228,15 +213,6 @@ export function TermsProvider({ locale, phrase: mod, children }: { locale: Local
   const terms = useMemo(() => new Map((mine ?? []).map((t) => [t.id, t] as const)), [mine]);
   const otherTerms = useMemo(() => new Map(others.map((t) => [t.id, t] as const)), [others]);
   const labelOf = useCallback((id: string) => terms.get(id)?.label, [terms]);
-  // keep 清單：名詞資料的中文名稱（兩個字以上）
-  const phrase = useMemo<QuizPhrase | null>(() => {
-    if (!zh || !mod) return null;
-    const names = new Set<string>();
-    for (const t of mine ?? [])
-      for (const n of [t.label, t.teacherLabel, t.currentTwLabel, ...(t.aliases?.['zh-TW'] ?? [])])
-        if (n && n.length > 1 && /\p{Script=Han}/u.test(n)) names.add(n);
-    return { mod, names: [...names] };
-  }, [zh, mod, mine]);
   const openTerm = useCallback(
     (id: string, ref?: RefObject<HTMLElement | null>) => {
       setUnavailable(false);
@@ -248,8 +224,8 @@ export function TermsProvider({ locale, phrase: mod, children }: { locale: Local
     [indexFailed, loadIndex],
   );
   const value = useMemo<TermsContextValue>(
-    () => ({ locale, terms, otherTerms, ready: mine !== null, labelOf, openTerm, phrase }),
-    [locale, terms, otherTerms, mine, labelOf, openTerm, phrase],
+    () => ({ locale, terms, otherTerms, ready: mine !== null, labelOf, openTerm }),
+    [locale, terms, otherTerms, mine, labelOf, openTerm],
   );
   // 完整內容讀到（或確定讀不到）、名詞卡元件也到了才打開名詞卡：兩者都在 precache，通常只差幾毫秒，對話框不會先空著再撐高。
   // 以打開的名詞 ID 判斷，不依賴索引：索引讀不到時，完整內容（TermSnapshot 含索引的欄位）照樣當名稱來源

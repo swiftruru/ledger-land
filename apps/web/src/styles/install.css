@@ -36,7 +36,7 @@
    text-wrap: pretty，每行排滿、標點不落在行首。第 6 輪的 keep-all 讓第 0 步每行都停在逗號、右緣參差，已拿掉。
    引號裡的介面名稱（「匯出到 App」「加入主畫面」）在字串裡包 .ll-nowrap（web-ui 的全站 class，引號在 span 外面），整個名稱不拆到兩行；
    最窄的步驟欄（320 寬約 148px）放不下整個「以 Web App 打開」（整塊不斷時水平捲動 4 到 13px），只包 Web App，在名稱裡的空格處換行。
-   其餘的中文詞由 components/ProseWords.tsx 包成 .ll-nowrap，詞不拆開。不需要另加 overflow-wrap: anywhere（全部預算 40 KB 只剩幾個 bytes） */
+   其餘的中文照全站規則逐字換行（07 第 3.5 節，2026-10-27 起）。不需要另加 overflow-wrap: anywhere */
 .ll-guide__svg {
   width: 96px;
   height: auto;
