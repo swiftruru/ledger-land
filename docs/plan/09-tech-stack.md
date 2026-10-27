@@ -867,6 +867,8 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 
 ### 10.2 `ci.yml` 的工作
 
+驗證與 E2E 兩個工作在 Playwright 的官方容器（`mcr.microsoft.com/playwright`，tag 與 `@playwright/test` 同版、以 digest 釘版，`check:actions` 比對）裡執行（2026-10-27）：WebKit、Firefox 與它們的系統套件都內建，不再用 apt 安裝（apt 曾一天四次卡到工作的時間上限）；本機用同一個映像就能重現 CI 的 Linux 瀏覽器行為。建置工作不需要瀏覽器，仍直接在執行器上跑。
+
 | 工作 | 指令或內容 | 通過條件 |
 | --- | --- | --- |
 | install | `pnpm install --frozen-lockfile` | 成功；lockfile 中 `typescript` 為 6.0.3 |

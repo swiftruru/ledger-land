@@ -45,8 +45,13 @@ function findPlaywrightChromium() {
   const r = spawnSync('find', [dir, '-maxdepth', '4', '-type', 'f', '-name', 'Chromium', '-path', '*chromium-*'], { encoding: 'utf8' });
   const hit = r.stdout.split('\n').find((p) => p.includes('Chromium.app/Contents/MacOS/Chromium'));
   if (hit) return hit;
+  // Linux 的目錄名依 Playwright 版本與架構不同：chrome-linux、chrome-linux64（amd64）、chrome-linux-arm64。
+  // 一定要找到 Playwright 的 Chromium：容器裡沒有系統的 Chrome（2026-10-27 CI 改在 Playwright 容器裡跑時找不到，Lighthouse 全部失敗），
+  // 而且用同一個 Chromium 量，結果才和 E2E 一致
   const r2 = spawnSync('find', [dir, '-maxdepth', '4', '-type', 'f', '-name', 'chrome'], { encoding: 'utf8' });
-  return r2.stdout.split('\n').find((p) => /chromium-\d+\/chrome-linux\/chrome$/.test(p));
+  const hit2 = r2.stdout.split('\n').find((p) => /chromium-\d+\/chrome-linux(64|-arm64)?\/chrome$/.test(p));
+  if (!hit2) console.warn(`perf：在 ${dir} 找不到 Playwright 的 Chromium，Lighthouse 會改找系統的 Chrome（CHROME_PATH）`);
+  return hit2;
 }
 const median = (xs) => {
   const s = [...xs].sort((a, b) => a - b);
@@ -80,7 +85,9 @@ try {
         { cwd: ROOT, encoding: 'utf8', env: { ...process.env, ...(chrome ? { CHROME_PATH: chrome } : {}) } },
       );
       if (lh.status !== 0 || !existsSync(file)) {
-        fail(`perf：${u.name} 第 ${i} 次 Lighthouse 失敗：${(lh.stderr || lh.stdout).slice(-600)}`);
+        const out = (lh.stderr || lh.stdout || '').trim();
+        // 錯誤訊息在開頭（stack 在後面），開頭與結尾都留
+        fail(`perf：${u.name} 第 ${i} 次 Lighthouse 失敗：${out.length > 1200 ? `${out.slice(0, 600)}\n…\n${out.slice(-600)}` : out}`);
         continue;
       }
       const r = JSON.parse(readFileSync(file, 'utf8'));
