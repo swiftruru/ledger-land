@@ -1,6 +1,15 @@
 // 06 第 4.6 節合併表：每一列一例（含去重與衝突）、覆蓋模式、importHistory；收藏（settings 的 favourites）是學習資料，合併時取聯集（core-2）
 import { describe, expect, it } from 'vitest';
-import { FAVOURITES_SETTING_KEY, LEARNING_SETTING_KEYS, type ImportOptions, importSnapshot, mergeData, mergeSnapshots, replaceSnapshot } from '../src/index.ts';
+import {
+  CREDITS_EGGS_SETTING_KEY,
+  FAVOURITES_SETTING_KEY,
+  LEARNING_SETTING_KEYS,
+  type ImportOptions,
+  importSnapshot,
+  mergeData,
+  mergeSnapshots,
+  replaceSnapshot,
+} from '../src/index.ts';
 import {
   DEVICE_A,
   DEVICE_B,
@@ -142,8 +151,8 @@ describe('收藏（settings 的 favourites）：學習資料，不受「也套�
   const fav = (ids: unknown[], at = T1) => setting(FAVOURITES_SETTING_KEY, ids as string[], at);
   const favOf = (settings: readonly { key: string; value: unknown; updatedAt: string }[]) => settings.find((s) => s.key === FAVOURITES_SETTING_KEY);
 
-  it('LEARNING_SETTING_KEYS 只有 favourites', () => {
-    expect(LEARNING_SETTING_KEYS).toEqual(['favourites']);
+  it('LEARNING_SETTING_KEYS 是 favourites 與 creditsEggs', () => {
+    expect(LEARNING_SETTING_KEYS).toEqual(['favourites', 'creditsEggs']);
   });
 
   it('預設選項（settings: false）的合併：兩邊取聯集，本機的順序在前、來源新的接在後面；updatedAt 取較晚', () => {
@@ -193,5 +202,29 @@ describe('收藏（settings 的 favourites）：學習資料，不受「也套�
     const current = snapshot({ settings: [fav([Q1])] });
     const m = mergeSnapshots(current, data({ settings: [fav([Q2], T2)] }), opts);
     expect(favOf(m.settings)).toEqual(fav([Q1, Q2], T2));
+  });
+});
+
+describe('「幕後」的彩蛋（settings 的 creditsEggs）：和收藏一樣是學習資料', () => {
+  const eggs = (ids: unknown[], at = T1) => setting(CREDITS_EGGS_SETTING_KEY, ids as string[], at);
+  const eggsOf = (settings: readonly { key: string; value: unknown; updatedAt: string }[]) => settings.find((s) => s.key === CREDITS_EGGS_SETTING_KEY);
+
+  it('合併取聯集（不受 settings 選項控制）、去重、updatedAt 取較晚；只有一邊有就用那一邊', () => {
+    const local = data({ settings: [setting('locale', 'zh-TW'), eggs(['egg-a', 'egg-b'])] });
+    const incoming = data({ settings: [setting('locale', 'en', T2), eggs(['egg-c', 'egg-a'], T2)] });
+    expect(eggsOf(mergeData(local, incoming, { settings: false }).settings)).toEqual(eggs(['egg-a', 'egg-b', 'egg-c'], T2));
+    expect(eggsOf(mergeData(local, incoming, { settings: true }).settings)).toEqual(eggs(['egg-a', 'egg-b', 'egg-c'], T2));
+    expect(eggsOf(mergeData(data(), incoming, { settings: false }).settings)).toEqual(eggs(['egg-c', 'egg-a'], T2));
+    expect(eggsOf(mergeData(local, data(), { settings: false }).settings)).toEqual(eggs(['egg-a', 'egg-b']));
+  });
+
+  it('覆蓋模式取備份的清單；備份沒有時本機的也清掉；偏好仍保留本機', () => {
+    const current = snapshot({ settings: [setting('locale', 'zh-TW'), eggs(['egg-a'])] });
+    const withEggs = replaceSnapshot(current, data({ settings: [eggs(['egg-b'], T2), setting('locale', 'en')] }), { ...opts, mode: 'replace' });
+    expect(eggsOf(withEggs.settings)).toEqual(eggs(['egg-b'], T2));
+    expect(withEggs.settings.find((s) => s.key === 'locale')?.value).toBe('zh-TW');
+    const without = importSnapshot(current, data(), { ...opts, mode: 'replace' });
+    expect(eggsOf(without.settings)).toBeUndefined();
+    expect(without.settings).toEqual([setting('locale', 'zh-TW')]);
   });
 });
