@@ -16,7 +16,6 @@ import { loadChapterIndex } from '../../lib/content.ts';
 import { usePageReady } from '../../lib/page-ready.tsx';
 import { useGlossaryIndex } from '../glossary/useGlossaryIndex.ts';
 import { useUnlocks } from '../glossary/useUnlocks.ts';
-import { Phrased, PhrasedRich } from '../me/Phrased.tsx';
 import { awardChapterBadges } from './award.ts';
 import { badgeStatusOf, isoDatePart, unscoredChapterIds } from './badges.ts';
 import { SPECIAL_BADGES, specialBadgeStatus, type SpecialBadgeKey } from './special.ts';
@@ -39,7 +38,6 @@ function useUnscoredChapters(locale: Locale): ReadonlySet<string> | null {
 }
 
 /** 內容在徽章名裡標好的斷點（U+200B） */
-const ZWSP = '\u200b';
 
 /** 特別徽章的名稱與取得條件（字串放主 catalog；新增特別徽章時這裡與 special.ts 一起加） */
 function useSpecialBadgeText(): (key: SpecialBadgeKey) => { title: string; cond: string } {
@@ -113,7 +111,6 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
           <Trans
             id="me.badges.earned"
             comment="「我的」徽章卡與徽章頁摘要卡的取得數；earned、total 已格式化；<0> 包住的「2／14 枚」整塊不斷行（320 加 200% 時「已取得／2／14 枚」）"
-            render={PhrasedRich}
           >
             已取得{' '}
             <span className="ll-keep">
@@ -123,25 +120,20 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
         </p>
         <ProgressBar size="md" value={earnedCount} max={chapterCount || 1} />
         <p className="ll-badges__rules">
-          {/* 依詞換行（Phrased，第 7 輪 handoff 收尾：375 原本斷成「「完／成」」「外／觀」，320 斷成「延伸／章」） */}
-          <Phrased
-            text={t({
-              id: 'badges.rules',
-              message: '每一章一枚徽章：章內每關至少一星就「完成」，每關三星就是同一枚徽章的「精通」外觀。',
-              comment: '徽章頁摘要卡的取得規則',
-            })}
-          />
+          {t({
+            id: 'badges.rules',
+            message: '每一章一枚徽章：章內每關至少一星就「完成」，每關三星就是同一枚徽章的「精通」外觀。',
+            comment: '徽章頁摘要卡的取得規則',
+          })}
           {unscored !== null && unscored.size > 0 && (
             <>
               {/* 中文的句號後面不加空格 */}
               {locale === 'en' ? ' ' : ''}
-              <Phrased
-                text={t({
-                  id: 'badges.rules.unscored',
-                  message: '整章不計分的延伸章，每關讀完就完成，沒有精通。',
-                  comment: '徽章頁摘要卡的取得規則：整章不計分的延伸章',
-                })}
-              />
+              {t({
+                id: 'badges.rules.unscored',
+                message: '整章不計分的延伸章，每關讀完就完成，沒有精通。',
+                comment: '徽章頁摘要卡的取得規則：整章不計分的延伸章',
+              })}
             </>
           )}
         </p>
@@ -202,11 +194,8 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
                       <span aria-hidden="true">{short}</span>
                       <span className="ll-sr-only">{full}</span>
                     </span>
-                    {/* 徽章名依詞換行（第 9 輪：320 的「資金來源偵／探」，原本是沒切詞的 keep-all，放不下時在行尾硬斷）；
-                          內容用 U+200B 標好的斷點之間整塊不拆（「看懂／股東權益／與融資」三段） */}
-                    <span className="ll-badges__title">
-                      <Phrased text={badgeTitle} keep={badgeTitle.includes(ZWSP) ? badgeTitle.split(ZWSP) : []} />
-                    </span>
+                    {/* 徽章名照全站規則逐字換行（2026-10-27 起）；內容在詞之間放的 U+200B 仍是換行點 */}
+                    <span className="ll-badges__title">{badgeTitle}</span>
                     <span className="ll-badges__state">
                       {stateBadge}
                       {earnedDate !== null && (
@@ -240,9 +229,7 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
                 <span className="ll-badges__eyebrow">
                   {t({ id: 'badges.special.eyebrow', message: '特別', comment: '特別徽章格的眉標（取代章節徽章的「第 N 章」）' })}
                 </span>
-                <span className="ll-badges__title">
-                  <Phrased text={text.title} />
-                </span>
+                <span className="ll-badges__title">{text.title}</span>
                 <span className="ll-badges__state">
                   {status.state === 'done' ? (
                     <Badge kind="success">{t({ id: 'badges.state.done', message: '完成', comment: '徽章格的狀態：完成' })}</Badge>
@@ -250,9 +237,7 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
                     <Badge>{t({ id: 'badges.state.locked', message: '未取得', comment: '徽章格的狀態：還沒取得' })}</Badge>
                   )}
                   {/* 特別徽章各有自己的條件，寫在格子裡；已取得時再加取得日期 */}
-                  <span className="ll-badges__cond">
-                    <Phrased text={text.cond} />
-                  </span>
+                  <span className="ll-badges__cond">{text.cond}</span>
                   {earnedDate !== null && (
                     <span className="ll-badges__cond">
                       {t({

@@ -4,7 +4,7 @@
 // 置中的 quiet 按鈕靜止時沒有外框，看起來像一段文字連結）與最下方唯一的主按鈕「開始」（primary lg block），間距 12。沒有「關閉」按鈕（右上的 X 就是）。
 // 歷史紀錄（返回關閉）由頁面負責；站內連結由父層以 localePath 產生並帶結尾斜線，經 LinkProvider 走站內導覽
 // （舊介面的 onNavigate 已沒有人用，第 9 輪移除，和 LevelCard 第 7 輪一樣省地圖 chunk 的體積）。
-// 中文的標題、章名與提示依詞換行（地圖的 phrased，全站換行規則；第 9 輪：320 加 200% 的章名斷成「損／益表」），關卡編號整塊不斷（不會排成「3-」換行「1」）。
+// 中文的標題、章名與提示用地圖的 phrased 做子句換行（在「：」「，」後整段換行，字照全站規則逐字換行），關卡編號整塊不斷（不會排成「3-」換行「1」）。
 import { useLingui } from '@lingui/react/macro';
 import type { ReactNode, RefObject } from 'react';
 import { Button } from './Button.tsx';
@@ -112,7 +112,7 @@ export function LevelSheet({ open, onClose, level, returnFocusTo, teacherExtra }
       {level && (
         <>
           {level.suggestedPrevTitle && (
-            // 依詞換行（地圖的 phrased）：375 原本斷成「也可以直／接開始」；引號裡的關卡名稱整塊不斷，「也可以直接開始」整句一起換行
+            // 子句換行（地圖的 phrased）：「也可以直接開始」放得進一行時整句一起換到下一行
             <p className="ll-levelsheet__suggest ll-phrased">
               {phrased(
                 t({

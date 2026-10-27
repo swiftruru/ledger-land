@@ -27,21 +27,17 @@ html {
     hyphens: manual;
   }
 }
-/* 整塊不斷開的短串：網址、介面路徑（「我的 › 備份」）、數字加量詞、英文名稱加版本號，字串用 Lingui rich text 包成 <span class="ll-nowrap">。
-   只包很短的東西（中文 6 個字內），320 寬加 200% 字級時才不會撐破版面；中文一般的詞不包（2026-10-27 起逐字換行） */
+/* 整塊不斷開的短串：英文訊息裡的短串用 .ll-nowrap；真的不能拆的短串（關卡代號、數字加量詞、「我的 › 備份」這種介面路徑）用 .ll-keep。
+   只包很短的東西（中文 6 個字內），320 寬加 200% 字級時才不會撐破版面；中文一般的詞不包（2026-10-27 起逐字換行，
+   M3 看圖驗收時包成 .ll-nowrap 的「作答紀錄」「可離線使用」這類標籤已全部拿掉） */
 .ll-nowrap {
   white-space: nowrap;
-}
-/* 中文訊息裡包成 .ll-nowrap 的一般詞（M3 看圖驗收加的「作答紀錄」「可離線使用」這類）2026-10-27 起照一般規則換行：齊行時整塊不斷的詞會把那一行的字距拉得很開。
-   訊息的標籤先留著（拿掉要同時改兩種語言的 catalog），用 CSS 關掉；真的不能拆的短串改用 .ll-keep */
-:lang(zh-TW) .ll-nowrap {
-  white-space: normal;
 }
 .ll-keep {
   white-space: nowrap;
 }
-/* 切過詞、詞與詞之間有 <wbr> 的句子（phraseParts：EmptyState、ErrorState 的字串，apps/web 的 Phrased，地圖標題）：2026-10-27 起不再 keep-all，
-   字照全站規則換行（<wbr> 只是多餘的換行點）；只留 overflow-wrap: anywhere，一整串比一行還長時在行尾斷、不撐破版面 */
+/* 名稱與標題的長串（名詞卡的名稱與遇到的關卡、地圖標題、章末紙籤的徽章名）：字照全站規則換行，只加 overflow-wrap: anywhere，
+   一整串比一行還長時在行尾斷、不撐破版面。2026-10-27 起不再切詞、不放 <wbr>（切詞工具已刪，07 第 3.5 節） */
 .ll-phrased {
   overflow-wrap: anywhere;
 }

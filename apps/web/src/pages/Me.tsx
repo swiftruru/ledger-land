@@ -6,9 +6,7 @@
 // Me 和其他 Tab 頁一樣 lazy 載入（第 3 輪 handoff：/en/ 入口的首次載入 JS 超過 150 KB；直接開 /me/ 時由殼層預先載入它的 chunk）；
 // 統計、徽章圖（地圖的 chunk）與收藏（要讀關卡快照）都另切 chunk 以 import() 載入，但一掛載就開始讀，全部到齊才經 usePageReady 回報、整頁一次出現
 // （維護者 2026-10-26：不可以先畫版面、數字「…」或占位長條再補上）。讀到之前整頁看不見，所以這裡沒有任何占位。
-// 第 7 輪 handoff：選單列與徽章卡的說明用 Phrased（依詞換行，320 加 200% 時不再斷成「進度存在哪／裡、」「外／觀」）；Me 是懶載入的頁面，不增加首次載入的 JS。
-// 第 7 輪看圖驗收：數字和量詞之間的不換行空白會被切詞拆開（「今天要複習 1／題」「已取得 2／」「14 枚」）。錯題本與徽章卡的說明改用 rich text：
-// 數字和量詞包成 .ll-nowrap 整塊不斷，錯題本另在「今天要」後面放 <wbr>（320 加 200% 時「今天要／複習 1 題」，不從「複習」中間斷）。
+// 選單列與徽章卡的說明照全站規則逐字換行（07 第 3.5 節，2026-10-27 起）；數字和量詞包成 .ll-keep 整塊不斷（「2／14 枚」「1 題」）。
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
 import { Suspense, lazy, useEffect, useState, type MouseEvent } from 'react';
 import { formatNumber, localePath } from '@ledgerland/i18n';
@@ -30,7 +28,6 @@ import {
   StatChip,
 } from '@ledgerland/web-ui';
 import { MedalIcon, ReviewIcon } from '@ledgerland/web-ui/map';
-import { Phrased, PhrasedRich } from '../features/me/Phrased.tsx';
 import { PlayerCard } from '../features/me/PlayerCard.tsx';
 import { daysSinceLocal } from '../features/me/days.ts';
 import { useExpanded } from '../features/me/useExpanded.ts';
@@ -84,7 +81,6 @@ export default function Me() {
     <Trans
       id="me.badges.earned"
       comment="「我的」徽章卡與徽章頁摘要卡的取得數；earned、total 已格式化；<0> 包住的「2／14 枚」整塊不斷行（320 加 200% 時「已取得／2／14 枚」）"
-      render={PhrasedRich}
     >
       已取得{' '}
       <span className="ll-keep">
@@ -123,25 +119,25 @@ export default function Me() {
       <NavRow
         icon={<ShieldIcon />}
         title={t({ id: 'me.privacy', message: '隱私說明', comment: '「我的」連到隱私說明' })}
-        description={<Phrased text={t({ id: 'me.privacy.desc', message: '進度存在哪裡、誰看得到', comment: '「我的」隱私說明列的說明' })} />}
+        description={t({ id: 'me.privacy.desc', message: '進度存在哪裡、誰看得到', comment: '「我的」隱私說明列的說明' })}
         href={href('/privacy/')}
       />
       <NavRow
         icon={<InfoIcon />}
         title={t({ id: 'me.about', message: '關於與授權', comment: '「我的」連到關於與授權' })}
-        description={<Phrased text={t({ id: 'me.about.desc', message: '授權、原始碼與版本', comment: '「我的」關於與授權列的說明' })} />}
+        description={t({ id: 'me.about.desc', message: '授權、原始碼與版本', comment: '「我的」關於與授權列的說明' })}
         href={href('/about/')}
       />
       <NavRow
         icon={<CompassIcon />}
         title={t({ id: 'me.design', message: '關於系統設計', comment: '「我的」連到關於系統設計' })}
-        description={<Phrased text={t({ id: 'me.design.desc', message: '這個網站怎麼設計出來的', comment: '「我的」關於系統設計列的說明' })} />}
+        description={t({ id: 'me.design.desc', message: '這個網站怎麼設計出來的', comment: '「我的」關於系統設計列的說明' })}
         href={href('/design/')}
       />
       <NavRow
         icon={<HeartIcon />}
         title={t({ id: 'me.credits', message: '幕後', comment: '「我的」連到幕後（作者、老師與技術棧）' })}
-        description={<Phrased text={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })} />}
+        description={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })}
         href={href('/credits/')}
       />
     </NavList>
@@ -203,14 +199,11 @@ export default function Me() {
                     }
                   />
                 ) : (
-                  <Phrased
-                    text={t({
-                      id: 'me.review.desc',
-                      message: '答錯的題目會排在這裡，隔幾天回來複習',
-                      comment:
-                        '「我的」學習群組錯題本列的說明（今天沒有到期的題目）；依詞換行，「再複習」會和「隔幾天」黏成一個六字的詞，320 加 200% 時斷成「再複／習」',
-                    })}
-                  />
+                  t({
+                    id: 'me.review.desc',
+                    message: '答錯的題目會排在這裡，隔幾天回來複習',
+                    comment: '「我的」學習群組錯題本列的說明（今天沒有到期的題目）',
+                  })
                 )
               }
               trailing={due !== null && due > 0 ? <Badge kind="danger">{fmt(due)}</Badge> : undefined}
@@ -222,20 +215,20 @@ export default function Me() {
             <NavRow
               icon={<GearIcon />}
               title={t({ id: 'me.settings', message: '設定', comment: '「我的」與首頁捷徑連到設定頁' })}
-              description={<Phrased text={t({ id: 'me.settings.desc', message: '語言、外觀、計時', comment: '「我的」設定列的說明' })} />}
+              description={t({ id: 'me.settings.desc', message: '語言、外觀、計時', comment: '「我的」設定列的說明' })}
               href={href('/me/settings/')}
             />
             <NavRow
               icon={<ExportIcon />}
               title={t({ id: 'me.backup', message: '備份', comment: '「我的」連到備份頁' })}
-              description={<Phrased text={t({ id: 'me.backup.desc', message: '匯出或匯入學習進度', comment: '「我的」備份列的說明' })} />}
+              description={t({ id: 'me.backup.desc', message: '匯出或匯入學習進度', comment: '「我的」備份列的說明' })}
               trailing={backupTrail}
               href={href('/me/backup/')}
             />
             <NavRow
               icon={<DeviceIcon />}
               title={t({ id: 'me.install', message: '安裝教學', comment: '「我的」與設定頁連到安裝教學' })}
-              description={<Phrased text={t({ id: 'me.install.desc', message: '把會計樂園加到主畫面', comment: '安裝教學列的說明' })} />}
+              description={t({ id: 'me.install.desc', message: '把會計樂園加到主畫面', comment: '安裝教學列的說明' })}
               href={href('/install/')}
             />
           </NavList>

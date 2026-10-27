@@ -127,13 +127,11 @@ export function FeedbackPanel({
       )}
       {canAddMistake && (
         <Button size="sm" icon={<BookmarkIcon />} onClick={onAddMistake}>
-          {/* 詞包成 .ll-nowrap（全站換行規則，M3 驗收第 7 輪）：文字放大時斷成「我是猜的，／加入錯題本」，不斷成「加／入」「猜／的」 */}
           <Trans
             id="quiz.feedback.addMistakeGuess"
-            comment="答對時可自行加入錯題本的小按鈕；標籤包住的詞不換行。譯文要短：320 寬的回饋區一行只放得下約 160px 的標籤（英文 15px 粗體約 20 個字元）"
+            comment="答對時可自行加入錯題本的小按鈕。譯文要短：320 寬的回饋區一行只放得下約 160px 的標籤（英文 15px 粗體約 20 個字元）"
           >
-            我是<span className="ll-nowrap">猜的</span>，<span className="ll-nowrap">加入</span>
-            <span className="ll-nowrap">錯題本</span>
+            我是猜的，加入錯題本
           </Trans>
         </Button>
       )}

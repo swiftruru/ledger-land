@@ -318,7 +318,7 @@ function Strait({
       />
       <Route bandW={bandW} h={h} segments={[strait.segment]} walked={walked} />
       <div className="qm-strait__card" style={{ left: px(card.x0), bottom: px(card.y0), width: px(card.x1 - card.x0) }}>
-        {/* 標題依詞換行（phrased 加 .ll-phrased，全站換行規則）；說明句照全站規則（窄卡片時縮成 caption 字級，一行放得下） */}
+        {/* 標題用地圖的 phrased 做子句換行（在「：」「，」後整段換行）；說明句照全站規則（窄卡片時縮成 caption 字級，一行放得下） */}
         <p className="qm-strait__title ll-phrased">
           {phrased(t({ id: 'play.extensionGap', message: '延伸區：不列入期中考，想多學再來', comment: '主線與延伸區之間的分隔文字' }))}
         </p>

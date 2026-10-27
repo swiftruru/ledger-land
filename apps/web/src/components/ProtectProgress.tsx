@@ -1,7 +1,6 @@
 // 設定頁的「保護我的進度」（06 第 4.5 節、02 第 6 節）：按下去呼叫 maybePersist('settings-button')。
 // 文案只能寫「降低機率」，不得寫「安裝後就不會被刪」。Firefox 會跳權限提示，按鈕旁先說明；App 內建瀏覽器不顯示整個區塊。
 // 外觀（站規 2.9）：Button primary md；已保護時停用，旁邊顯示 CheckIcon 加「已開啟」；按下等待時是 busy。
-// 說明句用 Phrased（中文只在詞與詞之間換行，M3 驗收第 6 輪：375 的「定／期匯出備份最保險」）。
 // 被拒絕時不能只說「瀏覽器沒有同意」就停住（2026-10-27 維護者實測）：一般分頁被拒的下一步是加到主畫面、從主畫面開啟再按一次（Safari 依是否
 // 以主畫面 App 開啟決定，06 第 4.5 節），所以附上安裝教學的入口；已經是主畫面 App 仍被拒時才只剩定期備份。
 // 狀態每次進頁都重新問 persisted()，切回這個分頁時也再問一次：主畫面 App 和瀏覽器分頁的儲存是分開的，移除 App 後分頁顯示的仍是分頁自己的狀態。
@@ -9,7 +8,6 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 import { Button, CheckIcon, DeviceIcon, ShieldIcon } from '@ledgerland/web-ui';
 import { localePath } from '@ledgerland/i18n';
-import { Phrased } from '../features/me/Phrased.tsx';
 import { isAppMode, isGeckoFirefox, isInAppBrowser } from '../lib/env.ts';
 import { maybePersist, refreshPersisted, type PersistOutcome } from '../lib/progress/persist.ts';
 import { useStorageStatus } from '../lib/progress/status.ts';
@@ -51,13 +49,11 @@ export function ProtectProgress() {
         <Trans id="settings.protect.title">保護我的進度</Trans>
       </h2>
       <p className="ll-small">
-        <Phrased
-          text={t({
-            id: 'settings.protect.hint',
-            message: '加到主畫面，可以降低進度被清除的機率；定期匯出備份最保險。',
-            comment: '06 第 4.5 節：只能寫「降低機率」',
-          })}
-        />
+        {t({
+          id: 'settings.protect.hint',
+          message: '加到主畫面，可以降低進度被清除的機率；定期匯出備份最保險。',
+          comment: '06 第 4.5 節：只能寫「降低機率」',
+        })}
       </p>
       {isGeckoFirefox() && (
         <p className="ll-small ll-muted">

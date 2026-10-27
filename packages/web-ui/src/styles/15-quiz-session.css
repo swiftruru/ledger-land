@@ -380,8 +380,7 @@ html[data-motion='reduced'] .ll-question-wrap[data-ready='true'] {
   width: 22px;
   height: 22px;
 }
-/* 說明句的換行照全站規則（03-core-utils.css，M3 驗收第 7 輪起不再自己寫 keep-all）。說明句裡的專有名詞（「錯題本」「計分題」「再挑戰」「星星」）
-   在字串裡用 Lingui rich text 包成 .ll-nowrap，不從詞的中間拆開（M3 驗收第 5 輪：320px 加文字放大 200% 斷成「進錯／題本」） */
+/* 說明句的換行照全站規則（03-core-utils.css，07 第 3.5 節：中文逐字換行、齊行；M3 驗收第 7 輪起不再自己寫 keep-all） */
 .ll-result__note {
   max-width: 36em;
   margin: var(--ll-space-4) 0 0;

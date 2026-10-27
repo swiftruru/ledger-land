@@ -1,12 +1,10 @@
 // 關於與授權頁（02 第 1.1 節、11 第 4.4 節、站規 2.14）。具名致謝的段落要等老師看過文字與位置之後才加入（D6）。
 // 頁首 TopBar 的返回是「我的」；頂部提示接在導言後面（data-ll-banner-after，h1 和導言不被拆開）；開頭段落不再有句中連結；「教學用途，不構成投資建議」的聲明（11 第 1 節、第 2 節第 21 列）放在簡介下方；
 // 頁尾一組 NavList「更多」（neutral）：關於系統設計、原始碼與第三方授權聲明（外部網站）、診斷資訊（PulseIcon；齒輪只給「我的」的設定，第 2 輪驗收）。
-// 選單列的說明用 Phrased 依詞換行（第 7 輪 handoff：320 的「怎麼設計出／來的」「儲存的檢／查結果」），和「我的」同一種做法。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { localePath } from '@ledgerland/i18n';
 import { Banner, CodeIcon, CompassIcon, HeartIcon, NavList, NavRow, PulseIcon, TopBar } from '@ledgerland/web-ui';
 import { site } from '../../site.config.ts';
-import { Phrased } from '../features/me/Phrased.tsx';
 import { useBackToMe } from '../components/useBackLabels.ts';
 import { useLocale } from '../lib/useLocale.ts';
 import '../styles/info.css';
@@ -27,10 +25,9 @@ export default function About() {
           1280 時右緣比下面的選單列卡片短 25px）；導言與授權段落仍是 65ch 的行長 */}
       {/* 「可離線使用」整塊不斷（第 8 輪驗收：1280 第二行停在「中英雙語，可」；首頁標語同一句也是整塊） */}
       <p className="ll-lede" data-ll-banner-after="">
-        <Trans id="about.intro" comment="關於頁導言；<0> 是不換行的片語">
+        <Trans id="about.intro" comment="關於頁導言">
           LedgerLand
-          會計樂園是一個公開、開源、手機優先的會計入門學習網站：用闖關題目與報表實驗室，從一家小店的帳開始認識資產、負債、股東權益與三大財務報表，中英雙語，
-          <span className="ll-nowrap">可離線使用</span>。
+          會計樂園是一個公開、開源、手機優先的會計入門學習網站：用闖關題目與報表實驗室，從一家小店的帳開始認識資產、負債、股東權益與三大財務報表，中英雙語，可離線使用。
         </Trans>
       </p>
       <Banner
@@ -44,10 +41,8 @@ export default function About() {
         }
       >
         <p>
-          {/* 「會計入門」「會計觀念」整塊不斷（第 7 輪 handoff：375 與 320 斷成「會計／入門」「會計／觀念」；切詞會把它們切成兩個詞） */}
-          <Trans id="about.notAdvice.body" comment="關於頁的非投資建議聲明說明；<0>、<1> 是不換行的詞">
-            本站的題目、名詞卡與報表範例都是<span className="ll-nowrap">會計入門</span>的教學練習。涉及本益比、融資、估價的章節也一樣，只用來練習
-            <span className="ll-nowrap">會計觀念</span>，不是投資建議，也不推薦任何投資標的。
+          <Trans id="about.notAdvice.body" comment="關於頁的非投資建議聲明說明">
+            本站的題目、名詞卡與報表範例都是會計入門的教學練習。涉及本益比、融資、估價的章節也一樣，只用來練習會計觀念，不是投資建議，也不推薦任何投資標的。
           </Trans>
         </p>
       </Banner>
@@ -108,34 +103,30 @@ export default function About() {
         <NavRow
           icon={<CompassIcon />}
           title={t({ id: 'about.design', message: '關於系統設計' })}
-          description={<Phrased text={t({ id: 'about.more.design.desc', message: '這個網站怎麼設計出來的', comment: '關於頁「關於系統設計」選單列的說明' })} />}
+          description={t({ id: 'about.more.design.desc', message: '這個網站怎麼設計出來的', comment: '關於頁「關於系統設計」選單列的說明' })}
           href={localePath(locale, '/design/')}
         />
         <NavRow
           icon={<CodeIcon />}
           title={t({ id: 'about.more.repo', message: '原始碼與第三方授權聲明' })}
-          description={
-            <Phrased
-              text={t({
-                id: 'about.more.source.desc',
-                message: 'GitHub 上的程式碼與授權',
-                comment: '關於頁「原始碼與第三方授權聲明」選單列的說明（外部網站）',
-              })}
-            />
-          }
+          description={t({
+            id: 'about.more.source.desc',
+            message: 'GitHub 上的程式碼與授權',
+            comment: '關於頁「原始碼與第三方授權聲明」選單列的說明（外部網站）',
+          })}
           href={site.repo}
           external
         />
         <NavRow
           icon={<HeartIcon />}
           title={t({ id: 'me.credits', message: '幕後', comment: '「我的」連到幕後（作者、老師與技術棧）' })}
-          description={<Phrased text={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })} />}
+          description={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })}
           href={localePath(locale, '/credits/')}
         />
         <NavRow
           icon={<PulseIcon />}
           title={t({ id: 'about.debug', message: '診斷資訊' })}
-          description={<Phrased text={t({ id: 'about.more.debug.desc', message: '版本、裝置與儲存的檢查結果', comment: '關於頁「診斷資訊」選單列的說明' })} />}
+          description={t({ id: 'about.more.debug.desc', message: '版本、裝置與儲存的檢查結果', comment: '關於頁「診斷資訊」選單列的說明' })}
           href={localePath(locale, '/debug/')}
         />
       </NavList>

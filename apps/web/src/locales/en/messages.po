@@ -174,18 +174,6 @@ msgstr "<0>{scored}</0>"
 msgid "review.entry.count"
 msgstr "<0>To review today</0> <1><2>{n}</2></1>"
 
-#. 結果頁：全對時的說明（「計分題」「錯題本」包在不換行的標籤裡）
-#. js-lingui-explicit-id
-#: src/features/quiz/ResultView.tsx
-msgid "level.result.allCorrectNote"
-msgstr "All <0>scored questions</0> correct; nothing was added to your <1>review list</1>."
-
-#. 關卡讀不到時的說明（標題已經說了還沒下載，這裡不重複）；標籤包住的詞不換行
-#. js-lingui-explicit-id
-#: src/pages/Level.tsx
-msgid "level.unavailable.retryNote"
-msgstr "Try again once you are online. Content already downloaded still works."
-
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.mode.inApp"
@@ -253,7 +241,7 @@ msgstr "On iPhone or iPad"
 msgid "design.why.3"
 msgstr "That is how LedgerLand began. It is not meant to replace the course; it is more like an exercise book you can leaf through and press."
 
-#. 關於頁導言；<0> 是不換行的片語
+#. 關於頁導言
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.intro"
@@ -307,7 +295,7 @@ msgstr "Last export"
 msgid "home.minimap.nextLabel"
 msgstr "Next level: "
 
-#. 首頁主卡的第二行（有進度）：下一關的關卡名；nextTitle 是關卡名（依詞換行）。「下一關」的字與字之間有看不見的 U+2060，兩行時不拆成「下一／關「…」」
+#. 首頁主卡的第二行（有進度）：下一關的關卡名；nextTitle 是關卡名
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
 msgid "home.hero.next"
@@ -421,7 +409,7 @@ msgstr "Backed up today"
 msgid "home.greet.continue"
 msgstr "Pick up from {nextCode} today"
 
-#. 錯題本沒有到期題目時的標題；標籤包住的詞不換行（文字放大時斷成「今天沒有／要複習的題目」）
+#. 錯題本沒有到期題目時的標題
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
 msgid "review.empty.heading"
@@ -1106,7 +1094,7 @@ msgstr "Find every easter egg on the Behind the scenes page"
 msgid "about.teacher.qr"
 msgstr "‘Show QR’ there makes a QR code to download or a link to copy; scanning it, or ‘Scan classroom QR’ on the map, opens the level."
 
-#. 章節頁回到地圖並捲到該章的連結；<0> 包住的「這一章」不拆開（文字放大時按鈕換行，不斷成「這／一章」）
+#. 章節頁回到地圖並捲到該章的連結
 #. js-lingui-explicit-id
 #: src/features/chapter/ChapterHero.tsx
 msgid "chapter.onMap"
@@ -2176,7 +2164,7 @@ msgstr "A new version is available"
 msgid "backup.stat.levels.cap"
 msgstr "Levels with stars"
 
-#. 診斷資訊的流量統計說明；<0> 是不換行的片語
+#. 診斷資訊的流量統計說明
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.analytics.note"
@@ -2213,7 +2201,7 @@ msgstr "This site uses Cloudflare Web Analytics (provided and stored by Cloudfla
 msgid "about.license.materials"
 msgstr "This site’s licences do not cover the teacher’s course materials (slides, spreadsheets, questions, answers); the site does not include or distribute them."
 
-#. 關於頁的非投資建議聲明說明；<0>、<1> 是不換行的詞
+#. 關於頁的非投資建議聲明說明
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.notAdvice.body"
@@ -2605,11 +2593,11 @@ msgstr "See steps"
 msgid "settings.protect.install"
 msgstr "See the install guide"
 
-#. 結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績，都包在不換行的標籤裡）
+#. 結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績）
 #. js-lingui-explicit-id
 #: src/features/quiz/ResultView.tsx
 msgid "level.result.cheerLine"
-msgstr "Read the explanations and <0>try again</0> to light up the <1>stars</1>."
+msgstr "Read the explanations and try again to light up the stars."
 
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
@@ -2716,7 +2704,7 @@ msgstr "{correctCount} of {total} targets correct."
 msgid "review.done.score"
 msgstr "{right} of {total} correct."
 
-#. 錯題複習完成後，說明之後什麼時候再複習。不提間隔複習的「盒子」（學生看不懂的內部用語）；標籤包住的詞不換行
+#. 錯題複習完成後，說明之後什麼時候再複習。不提間隔複習的「盒子」（學生看不懂的內部用語）
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
 msgid "review.done.comeBack"
@@ -2728,19 +2716,19 @@ msgstr "The ones you got right will come back after a longer break; the ones you
 msgid "review.source.wrong"
 msgstr "Times missed: {times}"
 
-#. 錯題本沒有到期題目時的說明；標籤包住的詞不換行
+#. 錯題本沒有到期題目時的說明
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
 msgid "review.empty.comeBack"
 msgstr "Questions you miss or guess will come back over the next few days."
 
-#. 結果頁：有答錯時的說明；wrongN 是已格式化的題數（「錯題本」包在不換行的標籤裡）
+#. 結果頁：有答錯時的說明；wrongN 是已格式化的題數
 #. js-lingui-explicit-id
 #: src/features/quiz/ResultView.tsx
 msgid "level.result.wrongAddedNote"
-msgstr "The questions you got wrong are in your <0>review list</0> ({wrongN})."
+msgstr "The questions you got wrong are in your review list ({wrongN})."
 
-#. 「我的」學習群組錯題本列的說明（今天沒有到期的題目）；依詞換行，「再複習」會和「隔幾天」黏成一個六字的詞，320 加 200% 時斷成「再複／習」
+#. 「我的」學習群組錯題本列的說明（今天沒有到期的題目）
 #. js-lingui-explicit-id
 #: src/pages/Me.tsx
 msgid "me.review.desc"
@@ -2830,7 +2818,7 @@ msgstr "Continue {nextCode}"
 msgid "review.resume"
 msgstr "Carry on reviewing"
 
-#. 關卡代號疊加層的說明；標籤包住的詞不換行
+#. 關卡代號疊加層的說明；<0> 包住的「8 碼」整塊不斷行
 #. js-lingui-explicit-id
 #: src/features/quest-map-overlays/LevelCodeOverlay.tsx
 msgid "play.code.hint"
@@ -2952,6 +2940,12 @@ msgstr "Concept"
 #: src/features/quiz/ResultView.tsx
 msgid "level.result.stat.scored"
 msgstr "Scored questions"
+
+#. 結果頁：全對時的說明
+#. js-lingui-explicit-id
+#: src/features/quiz/ResultView.tsx
+msgid "level.result.allCorrectNote"
+msgstr "All scored questions correct; nothing was added to your review list."
 
 #. 設定頁計時區的標題
 #. js-lingui-explicit-id
@@ -3130,12 +3124,6 @@ msgstr "Enter a level code"
 msgid "play.code.title"
 msgstr "Enter a level code"
 
-#. 關卡快照載入失敗時的標題；標籤包住的詞不換行
-#. js-lingui-explicit-id
-#: src/pages/Level.tsx
-msgid "level.unavailable.heading"
-msgstr "This level has not been downloaded to this device yet"
-
 #. 已下架的收藏卡的說明
 #. js-lingui-explicit-id
 #: src/features/quiz/FavouritesSection.tsx
@@ -3148,17 +3136,23 @@ msgstr "This level has been retired. You can remove this favourite."
 msgid "map.qr.alt"
 msgstr "QR code for this level"
 
-#. 整關不計分的結果頁說明：沒有星星，也不進錯題本（「錯題本」包在不換行的標籤裡）
+#. 整關不計分的結果頁說明：沒有星星，也不進錯題本
 #. js-lingui-explicit-id
 #: src/features/quiz/ResultView.tsx
 msgid "level.result.unscoredNote"
-msgstr "The questions in this level have no single right answer: no stars, and nothing goes into your <0>review list</0>."
+msgstr "The questions in this level have no single right answer: no stars, and nothing goes into your review list."
 
 #. 作答頁開頭單次開啟計時的按鈕（不改設定頁的預設，03 第 2.10 節）
 #. js-lingui-explicit-id
 #: src/features/quiz/LevelSession.tsx
 msgid "level.timer.once"
 msgstr "Time this level"
+
+#. 關卡快照載入失敗時的標題
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.unavailable.heading"
+msgstr "This level has not been downloaded to this device yet"
 
 #. 主線章但不列入期中考時，主卡最下方的說明
 #. js-lingui-explicit-id
@@ -3411,6 +3405,12 @@ msgstr "This question has been retired"
 msgid "review.questionMissing"
 msgstr "This question could not be loaded. Refresh and try again."
 
+#. 關卡讀不到時的說明（標題已經說了還沒下載，這裡不重複）
+#. js-lingui-explicit-id
+#: src/pages/Level.tsx
+msgid "level.unavailable.retryNote"
+msgstr "Try again once you are online. Content already downloaded still works."
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.intro"
@@ -3488,7 +3488,7 @@ msgstr "Not in your collection yet"
 msgid "terms.progress.hint"
 msgstr "You can read the terms you have not collected yet, too."
 
-#. 收藏清單是空的；<0>、<1> 是不換行的詞；其他依詞換行（PhrasedRich）
+#. 收藏清單是空的
 #. js-lingui-explicit-id
 #: src/features/quiz/FavouritesSection.tsx
 msgid "favourites.empty"
@@ -3546,7 +3546,7 @@ msgstr "Reload to carry on. Your progress has been saved."
 msgid "debug.refresh"
 msgstr "Measure again"
 
-#. 空狀態說明；鈴是吉祥物的名字；<0> 是不換行的詞
+#. 空狀態說明；鈴是吉祥物的名字
 #. js-lingui-explicit-id
 #: src/pages/Play.tsx
 msgid "play.empty.body"
@@ -3751,7 +3751,7 @@ msgstr "The chapter didn’t load"
 msgid "backup.preview.title"
 msgstr "Preview"
 
-#. 匯入卡的說明。<0> 包住的「作答紀錄」在窄螢幕不拆成兩行；冒號後面一句保持 20 個字以內，375 寬時排成冒號前後兩行
+#. 匯入卡的說明。冒號後面一句保持 20 個字以內
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.import.hint"

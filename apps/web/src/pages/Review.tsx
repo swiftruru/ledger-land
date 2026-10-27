@@ -420,8 +420,7 @@ function ReviewSession() {
                 今天的錯題都複習完了
               </Trans>
             </h2>
-            {/* 成績一句、之後怎麼複習一句，各自一段（M3 驗收第 4 輪：寫在同一段時在「會隔／久一點」中間換行）。
-                提醒句的詞包成 .ll-nowrap（全站換行規則，第 7 輪）：手機一行放得下，文字放大時在逗號後換行，不斷成「再來／找你」「答／錯的」 */}
+            {/* 成績一句、之後怎麼複習一句，各自一段（M3 驗收第 4 輪）；字照全站規則逐字換行 */}
             <p className="ll-result__score">
               {t({
                 id: 'review.done.score',
@@ -430,12 +429,8 @@ function ReviewSession() {
               })}
             </p>
             <p className="ll-result__note ll-result__note--hint">
-              <Trans
-                id="review.done.comeBack"
-                comment="錯題複習完成後，說明之後什麼時候再複習。不提間隔複習的「盒子」（學生看不懂的內部用語）；標籤包住的詞不換行"
-              >
-                答對的會<span className="ll-nowrap">隔久一點再來</span>，<span className="ll-nowrap">答錯的</span>
-                <span className="ll-nowrap">明天再見</span>。
+              <Trans id="review.done.comeBack" comment="錯題複習完成後，說明之後什麼時候再複習。不提間隔複習的「盒子」（學生看不懂的內部用語）">
+                答對的會隔久一點再來，答錯的明天再見。
               </Trans>
             </p>
           </div>
@@ -473,17 +468,14 @@ function ReviewSession() {
                 </span>
               }
               title={
-                <Trans id="review.empty.heading" comment="錯題本沒有到期題目時的標題；標籤包住的詞不換行（文字放大時斷成「今天沒有／要複習的題目」）">
-                  今天沒有<span className="ll-nowrap">要複習</span>的題目
+                <Trans id="review.empty.heading" comment="錯題本沒有到期題目時的標題">
+                  今天沒有要複習的題目
                 </Trans>
               }
               description={
                 <>
-                  {/* 詞包成 .ll-nowrap（全站換行規則，第 7 輪）：在逗號後換行，不斷成「會／在之後」 */}
-                  <Trans id="review.empty.comeBack" comment="錯題本沒有到期題目時的說明；標籤包住的詞不換行">
-                    答錯或<span className="ll-nowrap">標成猜的</span>題目，<span className="ll-nowrap">會在之後</span>
-                    <span className="ll-nowrap">幾天</span>
-                    <span className="ll-nowrap">回來找你</span>。
+                  <Trans id="review.empty.comeBack" comment="錯題本沒有到期題目時的說明">
+                    答錯或標成猜的題目，會在之後幾天回來找你。
                   </Trans>
                   {nextLine !== null && (
                     <span className="ll-review-empty__next" data-testid="review-next">

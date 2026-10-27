@@ -1,5 +1,5 @@
 // 地圖標題的子句（MapPhrase 的 phrased，M3 驗收第 7 輪）：章名、關卡名稱、海峽說明卡在「：」「，」「、」「；」後面與開括號前面切成 inline-block 子句，
-// 放得進一行的子句整段換行；結尾（章名的最後兩個字與箭頭）放在最後一個子句裡
+// 放得進一行的子句整段換行；結尾（章名的最後兩個字與箭頭）放在最後一個子句裡。2026-10-27 起不再切詞：子句裡沒有 <wbr>、沒有不換行的 span
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { phrased } from '../src/map.ts';
@@ -24,37 +24,22 @@ describe('phrased 的子句', () => {
     expect(await clausesOf('流動、非流動與留下的利益')).toEqual(['流動、']);
     // 接在「：」後面：長也包（「綜合挑戰：」單獨一行）
     expect(await clausesOf('綜合挑戰：一年內還得出來嗎')).toEqual(['綜合挑戰：', '一年內還得出來嗎']);
+    // 只有一個子句（結尾另外接）：照原字，不包
     expect(await clausesOf('損益表：', true)).toEqual([]);
   });
 
-  it('詞尾的標點和前一個字整塊不斷：比一行寬的子句緊急換行時不會把「：」「、」單獨斷到下一行（第 9 輪）', async () => {
+  it('子句裡只有原字：沒有 <wbr>、沒有不換行的 span，textContent 不變', async () => {
     const screen = await render(<p className="ll-phrased">{phrased('資產負債表：結帳那天的全貌')}</p>);
-    expect([...screen.container.querySelectorAll('.ll-nowrap')].map((n) => n.textContent)).toEqual(['表：']);
     expect(screen.container.textContent).toBe('資產負債表：結帳那天的全貌');
+    expect(screen.container.querySelector('.ll-nowrap')).toBeNull();
+    expect(screen.container.querySelector('.ll-phrased__clause wbr')).toBeNull();
     await screen.unmount();
-    const narrow = await render(
-      <p data-testid="n" className="ll-phrased" style={{ width: '4.5em', fontSize: '20px' }}>
-        {phrased('財務比率（獲利能力、償債能力）')}
-      </p>,
-    );
-    // 每一行的開頭都不是標點
-    const el = narrow.getByTestId('n').element();
-    const lines = new Map<number, string>();
-    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-    for (let n = walker.nextNode(); n; n = walker.nextNode())
-      for (let i = 0; i < n.textContent!.length; i++) {
-        const r = document.createRange();
-        r.setStart(n, i);
-        r.setEnd(n, i + 1);
-        const top = Math.round(r.getBoundingClientRect().top);
-        lines.set(top, (lines.get(top) ?? '') + n.textContent![i]);
-      }
-    for (const line of lines.values()) expect(line).not.toMatch(/^[、：，）]/);
   });
 
-  it('沒有子句標點、英文時照原本的切詞（不包子句）', async () => {
+  it('沒有子句標點、英文時照原字（不包子句）', async () => {
     expect(await clausesOf('一家小店的帳')).toEqual([]);
     expect(phrased('Balance sheet: the full picture')).toBe('Balance sheet: the full picture');
+    expect(phrased('一家小店的帳')).toBe('一家小店的帳');
   });
 
   it('放得進一行的子句不會被拆開：寬 10 個字時「不列入期中考，」整段在第二行', async () => {

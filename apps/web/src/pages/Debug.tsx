@@ -217,9 +217,8 @@ export default function Debug() {
       <JsonSection title={label.numbers} label={label.numbers} value={numbers} />
       <JsonSection title={label.analytics} label={label.analytics} value={report.analytics}>
         <p className="ll-small ll-muted">
-          {/* 「被擋下時略過」整塊不斷（第 8 輪驗收：375 斷成「離線或被擋下」換行「時略過。」） */}
-          <Trans id="debug.analytics.note" comment="診斷資訊的流量統計說明；<0> 是不換行的片語">
-            服務：Cloudflare Web Analytics。不用 cookie、不含作答資料；只在正式網址啟用，離線或<span className="ll-nowrap">被擋下時略過</span>。
+          <Trans id="debug.analytics.note" comment="診斷資訊的流量統計說明">
+            服務：Cloudflare Web Analytics。不用 cookie、不含作答資料；只在正式網址啟用，離線或被擋下時略過。
           </Trans>
         </p>
       </JsonSection>

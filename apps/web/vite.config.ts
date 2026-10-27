@@ -148,14 +148,13 @@ export default defineConfig({
             // 不放的話它們被 quiz-view 群組連依賴一起抓走，名詞圖鑑、名詞頁與章節頁為了一個小函式要在第一波多載 quiz-view、level-view 與 session（約 30 KB gzip）。
             // 2026-10-25 本機 Lighthouse（3 次中位數）：這一段與下面 overlay、glossary、award、地圖 CSS 的調整合起來，名詞圖鑑 2761 到 2459ms、名詞頁 2872 到 2419ms、
             // 地圖 2901 到 2451ms、章節頁 2873 到 2423ms，回到 2500ms 門檻內。
-            // 第 6 輪 handoff：中文切詞 phrase.ts（名詞卡與設定、備份頁的說明句共用，約 0.5 KB gzip）也放這裡；放在 glossary 的話設定與備份頁要多載整個名詞卡 chunk
             // M3 收尾 QA（2026-10-26）：「中途離開的關卡」紀錄（lib/level-exit.ts，兩個不到 100 bytes 的函式，作答頁寫、地圖讀）從 session 移到這裡：
             // 地圖頁原本為了它要在第一波多載整個作答工作階段（store、idb、session-cache，約 5.6 KB）。地圖改成動態載入它的話，Rolldown 會把執行期輔助函式
             // 拆成另一個入口 chunk（rolldown-runtime，每一頁第一波多一個請求），所以放在這裡。這個 chunk 的大小要留意：本機 Lighthouse 的模擬下
             // 同時 6 個請求時每條連線一次往返只送約 4.3 KB（含約 0.9 KB 的回應標頭），common 目前約 3.4 KB gzip，再大就多一次往返
             {
               name: 'common',
-              test: /[\\/](packages[\\/](i18n[\\/]src[\\/]format\.ts|web-ui[\\/]src[\\/]components[\\/](icons|NoteTag|Skeleton|Toast|States|Stars|Badge|TopBar|BackButton|Disclosure|motion|Card|phrase)\.tsx?)|apps[\\/]web[\\/]src[\\/](features[\\/]glossary[\\/]useCategoryLabel|lib[\\/]level-exit)\.ts)$/,
+              test: /[\\/](packages[\\/](i18n[\\/]src[\\/]format\.ts|web-ui[\\/]src[\\/]components[\\/](icons|NoteTag|Skeleton|Toast|States|Stars|Badge|TopBar|BackButton|Disclosure|motion|Card)\.tsx?)|apps[\\/]web[\\/]src[\\/](features[\\/]glossary[\\/]useCategoryLabel|lib[\\/]level-exit)\.ts)$/,
               priority: 3,
             },
             { name: 'zod', test: /[\\/]node_modules[\\/](\.pnpm[\\/][^\\/]+[\\/]node_modules[\\/])?zod[\\/]/, priority: 2 },

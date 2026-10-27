@@ -75,9 +75,9 @@ export function LevelCodeOverlay({ open, onClose, locale, data, source, onNaviga
       testId="code-overlay"
     >
       <p className="qm-overlay__hint">
-        {/* 詞包成 .ll-nowrap（全站換行規則，M3 驗收第 6 輪：375 寬斷成「連字／號」） */}
-        <Trans id="play.code.hint" comment="關卡代號疊加層的說明；標籤包住的詞不換行">
-          老師寫在黑板或投影片上的 <span className="ll-nowrap">8 碼代號</span>；大小寫、空白與<span className="ll-nowrap">連字號</span>都可以省略。
+        {/* 數字和量詞整塊不斷（.ll-keep，07 第 3.5 節）；其他字照全站規則逐字換行 */}
+        <Trans id="play.code.hint" comment="關卡代號疊加層的說明；<0> 包住的「8 碼」整塊不斷行">
+          老師寫在黑板或投影片上的 <span className="ll-keep">8 碼</span>代號；大小寫、空白與連字號都可以省略。
         </Trans>
       </p>
       <LevelCodeInput status={status} onSubmit={(raw) => void submit(raw)} focusOnOpen={open} />

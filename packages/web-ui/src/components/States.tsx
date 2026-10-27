@@ -5,8 +5,7 @@
 // 兩顆以上的按鈕（ll-state__action--pair）一律等寬：窄螢幕直排、寬螢幕橫排（M3 驗收第 2 輪）；只有一顆時維持內容寬度。
 // 標題是 h1、直接放在 main 裡的整頁狀態（找不到頁面、路由錯誤）在 1024 以上畫成最寬 480px 的卡片（M3 驗收第 4 輪），
 // 只用 CSS 的 :has() 判斷（07-core-components.css），不加元素也不加 class：首次載入的 JS 不再增加。
-// 換行用全站規則（strict 加 balance，第 7 輪）。States 在首次載入的 chunk，不在元件裡切詞（phrase.ts 會讓首次載入的 JS 多約 0.5 KB）：
-// 說明要依詞換行時，頁面把切好詞的節點傳進來（apps/web 的 Phrased，CSS 是 web-ui 的 .ll-phrased），或在字串裡包 .ll-nowrap。
+// 換行用全站規則（07 第 3.5 節：中文逐字換行、標題與說明 balance）。
 import type { ReactElement, ReactNode } from 'react';
 import { Button, type ButtonProps } from './Button.tsx';
 import { RetryIcon } from './icons.tsx';

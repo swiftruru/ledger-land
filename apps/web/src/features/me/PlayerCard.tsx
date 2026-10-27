@@ -4,7 +4,7 @@
 // 第 4 輪看圖驗收：膠囊靠左排、右側留不對稱的空位，問候右邊也空了一大塊；鈴的圖只佔外框約八成，72px 的外框畫出來約 60px。
 // 改成：問候是鈴說的話（對話框撐滿鈴右邊的寬度，尾巴指向鈴），三個膠囊平分整列（me.css 的 .ll-player__chip），鈴的外框 375 時 92px（圖約 72px）。
 // 第 7 輪看圖驗收：文字放大 200% 時鈴仍佔左側約 40%，對話框只剩四個中文字寬，問候斷成「今天也一／起闖關吧」、英文一行一個字。
-// 問候改用 Phrased（依詞換行，兩行時是「今天也一起／闖關吧」）；卡片是容器（me.css 的 .ll-player，container-type），容器窄時鈴放在對話框上方置中、
+// 問候照全站規則逐字換行；卡片是容器（me.css 的 .ll-player，container-type），容器窄時鈴放在對話框上方置中、
 // 對話框占滿整張卡、尾巴朝上（格線在 .ll-player__body，容器查詢不能改容器自己的版面，所以鈴也放進 body）。
 // 只組合 web-ui 元件；數字由「我的」頁讀齊後才連同整頁一起出現（usePageReady），這裡沒有「…」這類占位（維護者 2026-10-26）。
 import { useLingui } from '@lingui/react/macro';
@@ -13,7 +13,6 @@ import { formatNumber, localePath } from '@ledgerland/i18n';
 import { CardsIcon, HeartIcon, StatChip } from '@ledgerland/web-ui';
 import { MapMarker, MedalIcon } from '@ledgerland/web-ui/map';
 import { useLocale } from '../../lib/useLocale.ts';
-import { Phrased } from './Phrased.tsx';
 import type { PlayerStats } from './player-stats.ts';
 
 export interface PlayerCardFavourites {
@@ -39,9 +38,7 @@ export function PlayerCard({ stats, favourites }: { stats: PlayerStats; favourit
     <section className="ll-player" aria-label={t({ id: 'me.player.label', message: '我的進度', comment: '玩家卡（「我的」頁最上面那張卡）的可讀名稱' })}>
       <div className="ll-player__body">
         <MapMarker pose="cheek" size={96} className="ll-player__bell" />
-        <p className="ll-player__greet">
-          <Phrased text={t({ id: 'me.player.greet', message: '今天也一起闖關吧', comment: '玩家卡的問候' })} />
-        </p>
+        <p className="ll-player__greet">{t({ id: 'me.player.greet', message: '今天也一起闖關吧', comment: '玩家卡的問候' })}</p>
         <ul className="ll-player__stats">
           <li className="ll-player__stat">
             <StatChip

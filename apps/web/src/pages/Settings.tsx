@@ -10,7 +10,6 @@ import { AppearanceSetting } from '../components/AppearanceSetting.tsx';
 import { LangSwitch } from '../components/LangSwitch.tsx';
 import { ProtectProgress } from '../components/ProtectProgress.tsx';
 import { TimerSetting } from '../components/TimerSetting.tsx';
-import { Phrased } from '../features/me/Phrased.tsx';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { refreshPersisted } from '../lib/progress/persist.ts';
 import { useLocale } from '../lib/useLocale.ts';
@@ -55,7 +54,7 @@ export default function Settings() {
         <NavRow
           icon={<DeviceIcon />}
           title={t({ id: 'me.install', message: '安裝教學', comment: '「我的」與設定頁連到安裝教學' })}
-          description={<Phrased text={t({ id: 'me.install.desc', message: '把會計樂園加到主畫面', comment: '安裝教學列的說明' })} />}
+          description={t({ id: 'me.install.desc', message: '把會計樂園加到主畫面', comment: '安裝教學列的說明' })}
           href={localePath(locale, '/install/')}
         />
       </NavList>

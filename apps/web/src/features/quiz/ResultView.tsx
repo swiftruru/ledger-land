@@ -6,7 +6,7 @@
 // 鈴的表情跟著成績（M3 驗收第 2 輪）：一顆星以上揮手加笑眼與星光（joy）；沒有星星時雙手交握、微笑、不閃光，
 // 標題改成「這次還沒拿到星星」、下面加一行鼓勵，兩顆按鈕對調（M3 驗收第 5 輪）：primary「再挑戰」在上、secondary「回到地圖」在下，
 // 畫面要玩家再試一次，主按鈕就不把人帶走。位置、間距與底部固定的規則不變。
-// 說明句裡的「錯題本」「計分題」與鼓勵句的「再挑戰」「星星」包成全站的不換行 span（.ll-nowrap，03-core-utils.css）：換行照全站規則（逐字換行加 line-break: strict），專有名詞不會從中間拆開。
+// 說明句與鼓勵句照全站規則換行（07 第 3.5 節：中文逐字換行、齊行，line-break: strict 讓標點不落在行首），不再把「錯題本」這類詞包成不換行的 span。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { formatNumber, formatPercent, localePath, type Locale } from '@ledgerland/i18n';
 import type { LevelScore } from '@ledgerland/quiz';
@@ -79,8 +79,8 @@ export function ResultView({ locale, levelId, title, score, wrongCount, onRetry,
           </h2>
           <p className="ll-result__level">{title}</p>
           <p className="ll-result__note">
-            <Trans id="level.result.unscoredNote" comment="整關不計分的結果頁說明：沒有星星，也不進錯題本（「錯題本」包在不換行的標籤裡）">
-              這一關的題目沒有標準答案，不算星星，也不會進<span className="ll-nowrap">錯題本</span>。
+            <Trans id="level.result.unscoredNote" comment="整關不計分的結果頁說明：沒有星星，也不進錯題本">
+              這一關的題目沒有標準答案，不算星星，也不會進錯題本。
             </Trans>
           </p>
         </div>
@@ -111,11 +111,8 @@ export function ResultView({ locale, levelId, title, score, wrongCount, onRetry,
         <p className="ll-result__level">{title}</p>
         {noStars && (
           <p className="ll-result__cheer" data-testid="result-cheer">
-            <Trans
-              id="level.result.cheerLine"
-              comment="結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績，都包在不換行的標籤裡）"
-            >
-              看過解說<span className="ll-nowrap">再挑戰</span>一次，<span className="ll-nowrap">星星</span>就會亮起來。
+            <Trans id="level.result.cheerLine" comment="結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績）">
+              看過解說再挑戰一次，星星就會亮起來。
             </Trans>
           </p>
         )}
@@ -148,12 +145,12 @@ export function ResultView({ locale, levelId, title, score, wrongCount, onRetry,
         </dl>
         <p className="ll-result__note">
           {wrongCount > 0 ? (
-            <Trans id="level.result.wrongAddedNote" comment="結果頁：有答錯時的說明；wrongN 是已格式化的題數（「錯題本」包在不換行的標籤裡）">
-              答錯的題目已放進<span className="ll-nowrap">錯題本</span>（{wrongN} 題）。
+            <Trans id="level.result.wrongAddedNote" comment="結果頁：有答錯時的說明；wrongN 是已格式化的題數">
+              答錯的題目已放進錯題本（{wrongN} 題）。
             </Trans>
           ) : (
-            <Trans id="level.result.allCorrectNote" comment="結果頁：全對時的說明（「計分題」「錯題本」包在不換行的標籤裡）">
-              <span className="ll-nowrap">計分題</span>全部答對，沒有題目進<span className="ll-nowrap">錯題本</span>。
+            <Trans id="level.result.allCorrectNote" comment="結果頁：全對時的說明">
+              計分題全部答對，沒有題目進錯題本。
             </Trans>
           )}
           {/* 兩句之間：英文要空格，中文的句號後面不加 */}

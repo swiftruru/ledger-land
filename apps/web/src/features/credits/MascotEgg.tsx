@@ -3,7 +3,6 @@
 import { useLingui } from '@lingui/react/macro';
 import { useState } from 'react';
 import { Button } from '@ledgerland/web-ui';
-import { Phrased } from '../me/Phrased.tsx';
 import type { MapModule } from './useMapModule.ts';
 
 export function MascotEgg({ mod, found, onFound }: { mod: MapModule | null; found: boolean; onFound: () => void }) {
@@ -29,7 +28,7 @@ export function MascotEgg({ mod, found, onFound }: { mod: MapModule | null; foun
       </Button>
       {waved && (
         <p className="ll-credits-mascot__say" role="status" data-testid="egg-mascot-text">
-          <Phrased text={t({ id: 'eggs.mascot.text', message: '鈴：嗨！謝謝你跑來看幕後。', comment: '按了吉祥物之後說的話' })} />
+          {t({ id: 'eggs.mascot.text', message: '鈴：嗨！謝謝你跑來看幕後。', comment: '按了吉祥物之後說的話' })}
         </p>
       )}
     </div>

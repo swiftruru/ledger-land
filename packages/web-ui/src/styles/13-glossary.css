@@ -122,7 +122,7 @@
   /* 右上角的印章不壓到長名稱 */
   padding-inline-end: 4px;
 }
-/* overflow-wrap 用 anywhere：中文名稱加的是全站的 .ll-phrased（03-core-utils.css，層疊在前面），這裡的值會蓋過它；
+/* overflow-wrap 用 anywhere：
    break-word 不讓最小寬度變小，文字放大 200% 的 320 寬時「融資（證券信用交易）」把卡片撐出 88px（第 7 輪 handoff 實測） */
 .ll-termitem__name {
   font-size: var(--ll-type-title-3-size);
@@ -274,8 +274,7 @@ html[data-motion='reduced'] .ll-termitem:hover .ll-termitem__chev {
 }
 
 /* ==== 名詞卡組的細修（2026-10-25 看圖驗收第 1 輪） ==== */
-/* 名稱：長名稱平均成兩行，不留「餘／額」「比／率」這種單字孤行。中文名稱由元件切好詞、詞之間放 <wbr>，再加全站的 .ll-phrased
-   （03-core-utils.css：keep-all 只在詞與詞之間斷，真的放不下才在任何地方斷，不溢出卡片）；這裡不另寫一套 */
+/* 名稱：長名稱平均成兩行（balance）；中文照全站規則逐字換行（07 第 3.5 節，2026-10-27 起不再切詞） */
 .ll-termitem__name {
   text-wrap: balance;
 }
@@ -285,8 +284,8 @@ html[data-motion='reduced'] .ll-termitem:hover .ll-termitem__chev {
   gap: 0;
   line-height: var(--ll-type-body-sm-line);
 }
-/* 遇到的關卡：元件把字串切好詞（詞之間 <wbr>）、外層加 .ll-phrased，只在詞與詞、標點與空白處斷（不切成「誰的／錢」）。
-   第 7 輪 handoff：原本這裡對沒有切詞的整句寫 keep-all 加 anywhere（第 7 輪禁止的組合），已刪 */
+/* 遇到的關卡：外層加 .ll-phrased（只有 overflow-wrap: anywhere），字照全站規則逐字換行。
+   第 7 輪 handoff：原本這裡對整句寫 keep-all 加 anywhere（第 7 輪禁止的組合），已刪 */
 /* 關卡名那一塊（「誰的東西、誰的錢」遇到，GlossaryItem 只在放得進一行時才包）：放不下前段就整塊換到下一行 */
 .ll-termitem__keep {
   display: inline-block;

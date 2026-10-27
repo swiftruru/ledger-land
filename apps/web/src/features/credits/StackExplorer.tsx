@@ -6,7 +6,6 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Badge, Button, Card, Segmented } from '@ledgerland/web-ui';
-import { Phrased } from '../me/Phrased.tsx';
 import { type EggId } from './eggs.ts';
 import { STACK_LAYERS, nodeById, nodesInLayer, relatedOf, versionOf, type StackLayer, type StackNode } from './stack.ts';
 
@@ -146,7 +145,7 @@ function FlavourSample({ onSeenAll }: { onSeenAll: () => void }) {
           <span className="ll-credits-sample__bg" />
           <span className="ll-credits-sample__mark" />
         </span>
-        <Phrased text={t({ id: 'eggs.flavour.sample', message: `這是「${name}」的底色和記號色。`, comment: '風味樣本裡的一句話；name 是口味名' })} />
+        {t({ id: 'eggs.flavour.sample', message: `這是「${name}」的底色和記號色。`, comment: '風味樣本裡的一句話；name 是口味名' })}
       </p>
     </div>
   );
@@ -170,21 +169,17 @@ function OfflineCheck({ onChecked }: { onChecked: () => void }) {
       </Button>
       {result !== null && (
         <p className="ll-small" role="status" data-testid="egg-offline-result">
-          <Phrased
-            text={
-              result === 'ready'
-                ? t({
-                    id: 'eggs.offline.ready',
-                    message: '可以。Service Worker 已經把這一頁存好了，離線也讀得到。',
-                    comment: '彩蛋：有 Service Worker 時的回答',
-                  })
-                : t({
-                    id: 'eggs.offline.noSw',
-                    message: '這個環境還沒有 Service Worker（開發模式或瀏覽器不支援），正式網站才會先存好。',
-                    comment: '彩蛋：沒有 Service Worker 時的回答',
-                  })
-            }
-          />
+          {result === 'ready'
+            ? t({
+                id: 'eggs.offline.ready',
+                message: '可以。Service Worker 已經把這一頁存好了，離線也讀得到。',
+                comment: '彩蛋：有 Service Worker 時的回答',
+              })
+            : t({
+                id: 'eggs.offline.noSw',
+                message: '這個環境還沒有 Service Worker（開發模式或瀏覽器不支援），正式網站才會先存好。',
+                comment: '彩蛋：沒有 Service Worker 時的回答',
+              })}
         </p>
       )}
     </div>
@@ -248,9 +243,7 @@ export function StackExplorer({ onEgg }: { onEgg: (id: EggId) => void }) {
               </Badge>
             )}
           </h3>
-          <p>
-            <Phrased text={labels.role[node.id] ?? ''} />
-          </p>
+          <p>{labels.role[node.id] ?? ''}</p>
           {related.size > 0 && (
             <>
               <p className="ll-small ll-muted">

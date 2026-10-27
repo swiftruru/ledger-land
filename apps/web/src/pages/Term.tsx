@@ -6,8 +6,6 @@
 // 在那之前只有頁首的返回鍵與空的 h1（換頁的焦點落點），沒有骨架；狀態卡第一次出現就是最後的樣子（已收進或解鎖任務卡）。
 // 中文換行（M3 驗收第 7 輪：375 的「現時經／濟資源」「存貨與設／備」「有形資／產」）：h1 的名詞名稱（第 9 輪）、定義、各段落、用語對照、狀態說明與解鎖任務卡的標題
 // 文字照全站規則換行（07 第 3.5 節，2026-10-27 起：中文逐字換行、齊行，不再切詞）。
-// 詞包成 .ll-nowrap、其他字照全站規則換行；不另寫 CSS。整塊的寬度上限依欄寬：內文 7.5 個字寬、公式框 6.8、任務卡標題 5.9、h1 約 6（320 寬加 200% 字級）。
-// 助詞「的」「地」「得」不落在行首（第 9 輪，prose.ts 第 6 點）
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useId, useMemo, useState, type MouseEvent, type ReactNode } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';

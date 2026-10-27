@@ -2,13 +2,11 @@
 // 降低透明度與折射效果開關（07 第 7.1 節）。偏好只存在 localStorage。卡片標題與小標的樣式在 styles/me.css（設定頁）。
 // 第 4 輪看圖驗收：375 時「玻璃效果」放不下一列、被元件排成格子。420 以下設定頁的分段控制改成較小的字與內距（me.css）；
 // 英文的選項改成 Auto、Solid、Frosted、Refraction（原本 Automatic、Reduce transparency 在 375 只能排成一欄四列），說明文字寫出 Solid 對應 iPhone 的 Reduce Transparency。
-// 第 5 輪看圖驗收：說明句用 Phrased，中文只在詞與詞之間換行（375 原本斷成「折／射」「讀／不到」）。
 // 風味的色票（第 1 輪看圖驗收）：16px 圓角方塊，左上是該風味的底色（bg）、右下是它的標誌色（border-strong，三種色相差最多），
 // 加 1.5px 外框，在任何主題都看得出是三種不同的夜色；實心的方塊，不像 radio。顏色是 tokens 產生的 --ll-swatch-<風味>-bg 與 -mark（唯一來源，不寫死色碼）。
 import { useLingui } from '@lingui/react/macro';
 import { useEffect, useState, type CSSProperties } from 'react';
 import { Segmented } from '@ledgerland/web-ui';
-import { Phrased } from '../features/me/Phrased.tsx';
 import { readFlavor, readGlass, readTheme, setFlavor, setGlass, setTheme, type Flavor, type GlassPref, type ThemePref } from '../lib/prefs.ts';
 
 function Swatch({ flavor }: { flavor: Flavor }) {
@@ -127,12 +125,10 @@ export function AppearanceSetting() {
         ]}
       />
       <p className="ll-settings__hint">
-        <Phrased
-          text={t({
-            id: 'settings.glass.hint',
-            message: '如果你在 iPhone 開了「降低透明度」，網頁讀不到這個設定，請在這裡選「降低透明度」。折射只在電腦版的 Chromium 瀏覽器有效。',
-          })}
-        />
+        {t({
+          id: 'settings.glass.hint',
+          message: '如果你在 iPhone 開了「降低透明度」，網頁讀不到這個設定，請在這裡選「降低透明度」。折射只在電腦版的 Chromium 瀏覽器有效。',
+        })}
       </p>
     </div>
   );

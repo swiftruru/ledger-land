@@ -7,7 +7,7 @@
 // 名詞圖鑑不再傳 pending（維護者 2026-10-26）：頁面在進度讀到之後才畫卡片，印章和卡片同一次繪製出現，不是先沒有再蓋上；
 // pending 只剩設計系統的狀態板（features/design-system/ButtonBoard.tsx）在示範，那裡拿掉後這個值與 .ll-termemblem--pending 就能刪。
 import type { MouseEventHandler, ReactNode } from 'react';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import {
   AccountIcon,
   BookIcon,
@@ -25,7 +25,6 @@ import {
   WalletIcon,
 } from './icons.tsx';
 import { UiLink } from './link-context.tsx';
-import { CLOSE_QUOTES, OPEN_QUOTES, phraseParts } from './phrase.ts';
 import { uiPrefersReducedMotion } from './motion.ts';
 
 export type TermCategory = 'statement' | 'account' | 'ratio' | 'concept' | 'process' | 'other';
@@ -149,6 +148,9 @@ export interface GlossaryItemProps {
 /** 外層 <li> 只收 data-* 屬性 */
 export type CellDataProps = { readonly [key: `data-${string}`]: string | undefined };
 
+const OPEN_QUOTES = '「『“‘（(';
+const CLOSE_QUOTES = '」』”’）)';
+
 /** 把 meet 切成「前段、關卡名那一塊、後段」：關卡名連同緊鄰的引號，以及後面到下一個空白為止的字（中文的「遇到」）排成一塊；
  *  找不到關卡名時回 undefined（整句照一般斷行） */
 export function splitMeet(meet: string, title: string | undefined): readonly [string, string, string] | undefined {
@@ -174,32 +176,16 @@ function textUnits(text: string): number {
 const KEEP_MAX_UNITS = 13;
 
 /** 遇到的關卡那一行：關卡名那一塊放得進一行時排成 inline-block（放不下前段就整塊換到下一行，不從引號中間斷）；
- *  比一行還長時不排成一塊，整句切詞後在詞與詞之間斷（排成一塊反而會變成「在 4-2」「「流動、」「非流動…」三行） */
+ *  比一行還長時不排成一塊，整句照全站規則逐字換行（排成一塊反而會變成「在 4-2」「「流動、」「非流動…」三行） */
 function MeetLine({ meet, title }: { meet: string; title?: string }) {
   const parts = splitMeet(meet, title);
-  if (!parts || textUnits(parts[1]) > KEEP_MAX_UNITS) return <Phrased text={meet} />;
+  if (!parts || textUnits(parts[1]) > KEEP_MAX_UNITS) return <>{meet}</>;
   const [before, keep, after] = parts;
   return (
     <>
-      <Phrased text={before} />
+      {before}
       <span className="ll-termitem__keep">{keep}</span>
-      <Phrased text={after} />
-    </>
-  );
-}
-
-/** 中文的字串切成詞、詞之間放 <wbr>（外層加 .ll-phrased：keep-all 只在詞與詞之間斷，全站規則在 03-core-utils.css）；不是中文時照原字 */
-function Phrased({ text }: { text: string }) {
-  const parts = phraseParts(text);
-  if (!parts) return <>{text}</>;
-  return (
-    <>
-      {parts.map((p, i) => (
-        <Fragment key={i}>
-          {i > 0 && <wbr />}
-          {p}
-        </Fragment>
-      ))}
+      {after}
     </>
   );
 }
@@ -210,9 +196,9 @@ function CodeLine({ meet, code }: { meet: string; code: string }) {
   if (at < 0) return <>{meet}</>;
   return (
     <>
-      <Phrased text={meet.slice(0, at)} />
+      {meet.slice(0, at)}
       <span className="ll-termitem__code">{code}</span>
-      <Phrased text={meet.slice(at + code.length)} />
+      {meet.slice(at + code.length)}
     </>
   );
 }
@@ -244,7 +230,6 @@ export function GlossaryItem({
   const stamping = stamp === 'play' && state === 'unlocked';
   const meetText = (state === 'locked' || state === 'pending') && meet ? meet : undefined;
   const srState = stateLabel && (state === 'unlocked' || state === 'locked') ? stateLabel : undefined;
-  const phrases = phraseParts(name);
   return (
     <li className="ll-termgrid__cell" {...cellProps}>
       <UiLink
@@ -257,15 +242,8 @@ export function GlossaryItem({
       >
         <TermEmblem category={category} element={element} state={state} />
         <span className="ll-termitem__text">
-          <span className={`ll-termitem__name${phrases ? ' ll-phrased' : ''}`} lang={lang}>
-            {phrases
-              ? phrases.map((p, i) => (
-                  <Fragment key={i}>
-                    {i > 0 && <wbr />}
-                    {p}
-                  </Fragment>
-                ))
-              : name}
+          <span className="ll-termitem__name" lang={lang}>
+            {name}
           </span>
           {english && (
             <span className="ll-termitem__en" lang="en">
@@ -284,10 +262,7 @@ export function GlossaryItem({
                 // 代號膠囊加關卡名：不會留下「在 6-1」單獨一行，最多兩行（每張卡的節奏一致）；整句只給螢幕閱讀器
                 <>
                   <span className="ll-termitem__meet ll-termitem__meet--level" aria-hidden="true">
-                    <span className="ll-termitem__code">{meetCode}</span>{' '}
-                    <span className="ll-termitem__ltitle ll-phrased">
-                      <Phrased text={meetTitle} />
-                    </span>
+                    <span className="ll-termitem__code">{meetCode}</span> <span className="ll-termitem__ltitle ll-phrased">{meetTitle}</span>
                   </span>
                   <span className="ll-sr-only">{` ${meetLabel ?? meetText}`}</span>
                 </>
@@ -295,7 +270,7 @@ export function GlossaryItem({
                 <>
                   <span className="ll-termitem__meet ll-phrased" aria-hidden="true">
                     {' '}
-                    {meetCode ? <CodeLine meet={meetText} code={meetCode} /> : <Phrased text={meetText} />}
+                    {meetCode ? <CodeLine meet={meetText} code={meetCode} /> : meetText}
                   </span>
                   <span className="ll-sr-only">{` ${meetLabel}`}</span>
                 </>

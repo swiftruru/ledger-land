@@ -85,18 +85,6 @@ msgstr "{text}: {line}. Show the note"
 msgid "quiz.classify.placed"
 msgstr "{text} placed in {label}, {n} of {total}"
 
-#. 章末區尚未取得的徽章；badgeTitle 是徽章名稱，<0> 是不換行的詞，<1> 包住引號與名稱（整組一起換行）；英文用英式彎引號
-#. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/ChapterEnd.tsx
-msgid "map.end.badgeAhead"
-msgstr "<0>Badge to earn:</0> <1>‘{badgeTitle}’</1>"
-
-#. 章末區已達精通的徽章；badgeTitle 是徽章名稱，<0> 是不換行的詞，<1> 包住名稱（整組一起換行）
-#. js-lingui-explicit-id
-#: ../../packages/web-ui/src/components/ChapterEnd.tsx
-msgid "map.end.badgeMastery"
-msgstr "<0>Mastery badge:</0> <1>{badgeTitle}</1>"
-
 #. 指標表格：分子為 0 的狀態文字
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/RatioTable.tsx
@@ -389,6 +377,12 @@ msgstr "1 minute left"
 msgid "ui.cancel"
 msgstr "Cancel"
 
+#. 章末區尚未取得的徽章；badgeTitle 是徽章名稱，<0> 包住引號與名稱（整組一起換行）；英文用英式彎引號
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterEnd.tsx
+msgid "map.end.badgeAhead"
+msgstr "Badge to earn: <0>‘{badgeTitle}’</0>"
+
 #. 名詞卡 chip 的可讀名稱；label 是名詞
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/TermChip.tsx
@@ -668,7 +662,7 @@ msgstr "Badge ‘{name}’ not earned yet"
 msgid "quiz.classify.shouldBe"
 msgstr "Should go in: {expectedLabel}"
 
-#. 答對時可自行加入錯題本的小按鈕；標籤包住的詞不換行。譯文要短：320 寬的回饋區一行只放得下約 160px 的標籤（英文 15px 粗體約 20 個字元）
+#. 答對時可自行加入錯題本的小按鈕。譯文要短：320 寬的回饋區一行只放得下約 160px 的標籤（英文 15px 粗體約 20 個字元）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/FeedbackPanel.tsx
 msgid "quiz.feedback.addMistakeGuess"
@@ -1000,6 +994,12 @@ msgstr "Correct!"
 #: ../../packages/web-ui/src/components/NoteTag.tsx
 msgid "note.simplified"
 msgstr "Simplified"
+
+#. 章末區已達精通的徽章；badgeTitle 是徽章名稱，<0> 包住名稱（整組一起換行）
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/ChapterEnd.tsx
+msgid "map.end.badgeMastery"
+msgstr "Mastery badge: <0>{badgeTitle}</0>"
 
 #. 判分前的數字預覽；value 已依介面語言格式化
 #. js-lingui-explicit-id
