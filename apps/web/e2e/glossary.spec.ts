@@ -685,8 +685,6 @@ test.describe('安裝圖解：iOS 26（06 第 2.6 節）', () => {
     await expect(guide.locator('.ll-guide__step')).toHaveCount(3);
     await expect(guide.getByText('點工具列上的「分享」按鈕。')).toBeVisible();
     await expect.poll(() => readSetting(page, 'installGuideLayout')).toBe('bar');
-    await guide.getByRole('button', { name: '我已加入主畫面' }).click();
-    await expect.poll(() => readSetting(page, 'installGuideSeen')).toBe(true);
     // 獨立的教學頁沿用記住的版面
     await page.getByRole('link', { name: '完整教學頁' }).click();
     await expect(page).toHaveURL(/\/install\/$/);

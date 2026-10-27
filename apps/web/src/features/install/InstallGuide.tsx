@@ -1,8 +1,9 @@
 // 完整安裝圖解（06 第 2.5、2.6 節、02 第 9.5 節、10 第 10 節第 7 項）：iOS 26 以上分 Compact 與 Top／Bottom 兩套（網頁偵測不到分頁列版面，
 // 由使用者選「我的 Safari 長這樣」，選擇記在 settings 的 installGuideLayout）；iOS 17、18 只有 Top／Bottom 那一套；Chromium 維持安裝按鈕；
-// 其他瀏覽器給文字。第 0 步是「先把進度帶走」（匯出到 App）。按「我已加入主畫面」寫 installGuideSeen（SafariTabNotice 讀它改成完整版提示）。
+// 其他瀏覽器給文字。第 0 步是「先把進度帶走」（匯出到 App）。iOS 的圖解沒有收尾按鈕（2026-10-27 拿掉「我已加入主畫面」：Safari 分頁偵測不到有沒有裝，
+// 只能靠使用者自己宣告，誤按一次提示就再也不引導安裝；維護者實機回饋）。
 // 按鈕（站規 2.13）：第 0 步的「匯出到 App」是獨立一行的 secondary sm（連到備份頁的匯出區，不帶 ?import，finding pages-b-3、pages-b-4）；
-// 「我已加入主畫面」secondary md 加 CheckIcon（英文畫面上是短字 I've added it，可讀名稱是完整句，第 4 輪驗收）；按下後焦點移到結果訊息（finding pages-b-1）。
+// Chromium 的「我已安裝」secondary md 加 CheckIcon；按下後焦點移到結果訊息（finding pages-b-1）。
 // Chromium（第 4 輪驗收：原本只有一句話，整頁太空）：兩步（瀏覽器選單、確認視窗）加收尾：有安裝事件時「安裝」primary md 加 DeviceIcon，
 // 否則「我已安裝」secondary md 加 CheckIcon（記成 installPromptDismissed，之後不再跳出安裝建議，和 appinstalled 同一個紀錄）。
 // 其他瀏覽器：一段說明。reference（電腦或 Android 上附的 iPhone 做法）不放這台裝置的動作按鈕。
@@ -15,7 +16,6 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { localePath } from '@ledgerland/i18n';
 import { Button, CheckCircleIcon, CheckIcon, DeviceIcon, ExportIcon, Segmented } from '@ledgerland/web-ui';
 import { INSTALL_DISMISSED_SETTING } from '../../components/InstallPrompt.tsx';
-import { INSTALL_GUIDE_SEEN_SETTING } from '../../components/SafariTabNotice.tsx';
 import { usePageReady } from '../../lib/page-ready.tsx';
 import { nowIso } from '../../lib/progress/app-info.ts';
 import { getProgressStore } from '../../lib/progress/index.ts';
@@ -32,7 +32,7 @@ export interface InstallGuideProps {
   onInstall?: () => void;
   /** 接在 iOS 安裝建議橫幅正下方的卡片裡：橫幅上已經有「匯出到 App」，第 0 步不再放第二顆 */
   embedded?: boolean;
-  /** 給別的裝置看的參考（電腦或 Android 上附的 iPhone 做法）：不放這台裝置的動作（匯出到 App、我已加入主畫面） */
+  /** 給別的裝置看的參考（電腦或 Android 上附的 iPhone 做法）：不放這台裝置的動作（匯出到 App） */
   reference?: boolean;
 }
 
@@ -107,10 +107,6 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
     install: t({ id: 'install.guide.label.install', message: '安裝', comment: '示意圖裡 Chromium 選單的「安裝」' }),
     appName: t({ id: 'install.guide.label.appName', message: '會計樂園', comment: '示意圖裡的 App 名稱（短名）' }),
   };
-  const markSeen = () =>
-    void getProgressStore()
-      .then((s) => s.setSetting(INSTALL_GUIDE_SEEN_SETTING, true, nowIso()))
-      .catch(() => {});
   // 和 appinstalled 寫同一個紀錄（InstallPrompt 的 markDismissed）：之後不再跳出安裝建議
   const markInstalled = () =>
     void getProgressStore()
@@ -278,28 +274,6 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
               之後都從主畫面的圖示開啟。Safari 分頁和 App 的紀錄是分開的兩份，新的進度記得用「匯出到 App」帶過去。
             </Trans>
           </p>
-          {!reference && (
-            <div className="ll-row ll-guide__done">
-              <DoneButton
-                label={
-                  <Trans id="install.guide.seen" comment="圖解最後的確認按鈕（英文畫面上用短字，可讀名稱是 install.guide.seenA11y）">
-                    我已加入主畫面
-                  </Trans>
-                }
-                ariaLabel={t({
-                  id: 'install.guide.seenA11y',
-                  message: '我已加入主畫面',
-                  comment: '「我已加入主畫面」按鈕的可讀名稱（完整句，必須包含畫面上的字）',
-                })}
-                message={
-                  <Trans id="install.guide.seenDone" comment="按過「我已加入主畫面」之後的回應">
-                    記住了。之後在 Safari 分頁會提醒你從主畫面開啟。
-                  </Trans>
-                }
-                onDone={markSeen}
-              />
-            </div>
-          )}
         </>
       )}
       {variant === 'chromium' && (

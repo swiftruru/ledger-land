@@ -10,7 +10,6 @@ export const BANNER_JOINED_IDS = [
   'install.ios.short',
   'safari.title',
   'safari.text',
-  'safari.full',
   'safari.levelCode',
   'play.hint.safari',
   'play.hint.backup',
