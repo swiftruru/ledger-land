@@ -21,7 +21,9 @@ function External() {
     <span className="ll-link__ext">
       {'⁠'}
       <ArrowUpRightIcon />
-      <span className="ll-sr-only">{t({ id: 'ui.externalSite', message: '（外部網站）', comment: '連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明' })}</span>
+      <span className="ll-sr-only">
+        {t({ id: 'ui.externalSite', message: '（外部網站，另開分頁）', comment: '連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明（會另開分頁）' })}
+      </span>
     </span>
   );
 }

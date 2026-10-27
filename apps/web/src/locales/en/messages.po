@@ -179,6 +179,12 @@ msgstr "<0>To review today</0> <1><2>{n}</2></1>"
 msgid "backup.mode.inApp"
 msgstr "in-app browser"
 
+#. 引導卡第三步
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.step3"
+msgstr "The first time the app opens it asks whether to import; paste the code and it merges with the records there. If you have opened it before, go to Me › Backup › Paste backup code in the app."
+
 #. 延伸章關卡的短代號（E 是 Extension）；c 章序、l 關序，都已格式化
 #. js-lingui-explicit-id
 #: src/features/home/codes.ts
@@ -260,6 +266,12 @@ msgstr "N/A"
 #: src/components/SafariTabNotice.tsx
 msgid "safari.collapsed"
 msgstr "Safari tab: show tip"
+
+#. 引導卡的說明：Safari 分頁與主畫面 App 不共享進度
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.intro"
+msgstr "A Safari tab and the home-screen app each keep their own progress. This is the only way across:"
 
 #. iOS Safari 分頁常駐提示（展開時）的標題
 #. js-lingui-explicit-id
@@ -579,6 +591,12 @@ msgstr "Backup"
 msgid "me.backup"
 msgstr "Backup"
 
+#. 匯出卡裡兩顆按鈕下面的說明：備份檔與備份碼各自的用途（維護者 2026-10-27：iOS 的分享表單找不到主畫面的 App）
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.export.fileNote"
+msgstr "A backup file can be saved to Files or sent by AirDrop to another device; to move progress into the home-screen app, use the backup code."
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.export.downloaded"
@@ -638,6 +656,12 @@ msgstr "Go on a quest first"
 #: src/pages/Play.tsx
 msgid "play.toTerms"
 msgstr "See the glossary first"
+
+#. 引導卡第一步
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.step1"
+msgstr "First copy the backup code."
 
 #. 依名稱排序、不分組時的標題
 #. js-lingui-explicit-id
@@ -806,12 +830,6 @@ msgstr "Import"
 #: src/pages/Backup.tsx
 msgid "backup.export.title"
 msgstr "Export"
-
-#. 備份頁的主按鈕：存成備份檔（手機上交給分享表單）
-#. js-lingui-explicit-id
-#: src/pages/Backup.tsx
-msgid "backup.export.fileButton"
-msgstr "Export backup file"
 
 #. Safari 分頁的「匯出到 App」捷徑，連到備份頁
 #. js-lingui-explicit-id
@@ -1262,6 +1280,12 @@ msgstr "If you find something wrong, or have a better way of putting it, please 
 #: src/pages/Privacy.tsx
 msgid "privacy.stored.title"
 msgstr "What is stored"
+
+#. 備份頁的主按鈕：存成備份檔（手機上交給分享表單）
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.export.fileButton"
+msgstr "Save as backup file"
 
 #. 「我的」選單列的群組標題
 #. js-lingui-explicit-id
@@ -1774,6 +1798,12 @@ msgstr "All the questions, explanations and term cards have been written afresh;
 msgid "design.mobile.title"
 msgstr "Phone first, and it works offline"
 
+#. 引導卡第二步
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.step2"
+msgstr "Open LedgerLand from your home screen."
+
 #. Chromium 沒有安裝事件時的說明
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
@@ -1828,6 +1858,12 @@ msgstr "Point the camera at the class QR; you will be taken there automatically 
 #: src/components/SafariTabNotice.tsx
 msgid "safari.levelCode"
 msgstr "Note this level code. Enter it in the app to go straight to this level."
+
+#. 帶 ?to=app 進備份頁時最上面那張引導卡的標題
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.title"
+msgstr "Move your progress to the home-screen app"
 
 #. 分類題的分類格（現金流量活動）
 #. js-lingui-explicit-id
@@ -3283,6 +3319,7 @@ msgid "term.error.title"
 msgstr "This term could not be loaded"
 
 #. 瀏覽器不支援壓縮（備份碼要壓縮），「複製備份碼」停用時的說明
+#. 瀏覽器不支援壓縮（備份碼要壓縮），「複製備份碼」停用時的說明
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.export.codeUnsupported"
@@ -3475,6 +3512,12 @@ msgstr "Level not downloaded yet"
 #: src/pages/Me.tsx
 msgid "me.backup.never"
 msgstr "No backup"
+
+#. 引導卡第二步：還沒加入主畫面的人連到安裝教學
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.toApp.install"
+msgstr "Not added to the home screen yet? See the install guide"
 
 #. 名詞頁解鎖任務卡的眉標：這個名詞還沒收進圖鑑（只是收藏狀態，內容照樣能讀）
 #. js-lingui-explicit-id

@@ -169,7 +169,7 @@ export default function Me() {
             description={badgesDesc}
             media={
               <span className="ll-me-badges">
-                {badgeRow ? <badgeRow.default list={shown.badges.list} total={shown.badges.total} /> : <span className="ll-me-badges__row" />}
+                {badgeRow ? <badgeRow.default list={shown.badges.list} total={shown.badges.chapterTotal} /> : <span className="ll-me-badges__row" />}
                 <ProgressBar size="sm" value={shown.badges.earned} max={shown.badges.total || 1} className="ll-me-badges__bar" />
               </span>
             }

@@ -13,15 +13,15 @@ msgstr ""
 msgid "quiz.classify.takeBackHint"
 msgstr "，再按一次拿回"
 
-#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明
-#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明
-#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明
+#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明（會另開分頁）
+#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明（會另開分頁）
+#. 連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明（會另開分頁）
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/Button.tsx
 #: ../../packages/web-ui/src/components/TextLink.tsx
 #: ../../packages/web-ui/src/components/ui-labels.ts
 msgid "ui.externalSite"
-msgstr "（外部網站）"
+msgstr "（外部網站，另開分頁）"
 
 #. 章末紙籤：本章已完成；chapter 是「第 N 章」
 #. js-lingui-explicit-id

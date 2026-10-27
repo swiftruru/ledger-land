@@ -140,12 +140,37 @@ test.describe('LINE 內建瀏覽器（06 第 4.8 節）', () => {
 test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
   test.use({ userAgent: IOS_SAFARI });
 
+  // 「匯出到 App」按了要有反應（維護者 2026-10-27 實機回饋：只是換頁、再按沒反應）：連到 /me/backup/?to=app，備份頁捲到匯出卡並把焦點移到它的標題；
+  // 已經在備份頁再按一次（react-router 的同路徑導覽，location.key 會換）也會再捲、再移焦點
+  test('「匯出到 App」：到備份頁最上面的三步引導卡、焦點在標題；複製備份碼就在卡裡；在備份頁再按一次也有反應', async ({ page, context, browserName }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']).catch(() => {});
+    await page.goto('/me/badges/');
+    await waitForApp(page);
+    const notice = page.locator('.ll-banner.ll-safari-notice');
+    await notice.getByRole('link', { name: '匯出到 App' }).click();
+    await expect(page).toHaveURL(/\/me\/backup\/\?to=app$/);
+    const card = page.getByTestId('backup-to-app');
+    const heading = card.locator('#ll-backup-toapp');
+    await expect(heading).toBeFocused();
+    await expect(card.getByTestId('to-app-install')).toHaveAttribute('href', '/install/');
+    // 第一步：複製備份碼，結果與備份碼顯示在引導卡裡，不是下面的匯出卡
+    await card.getByTestId('to-app-copy').click();
+    await expect(card.getByTestId('backup-code')).toHaveValue(/^LL1:/);
+    await expect(card.getByTestId('export-message')).toHaveText(browserName === 'chromium' ? /備份碼已複製/ : /備份碼已複製|無法自動複製/);
+    await expect(page.locator('.ll-backup__card:not(.ll-backup__toapp) [data-testid="backup-code"]')).toHaveCount(0);
+    // 再按一次捷徑：焦點回到引導卡的標題
+    await page.getByRole('heading', { level: 1 }).focus();
+    await expect(heading).not.toBeFocused();
+    await notice.getByRole('link', { name: '匯出到 App' }).click();
+    await expect(heading).toBeFocused();
+  });
+
   test('常駐提示可收合成小按鈕但不會消失，附「匯出到 App」；作答頁同時顯示關卡代號', async ({ page }) => {
     await page.goto('/');
     await waitForApp(page);
     const notice = page.locator('.ll-banner.ll-safari-notice');
     await expect(notice).toContainText(joinable('如果你已經加入主畫面，請從主畫面圖示開啟'));
-    await expect(notice.getByRole('link', { name: '匯出到 App' })).toHaveAttribute('href', '/me/backup/');
+    await expect(notice.getByRole('link', { name: '匯出到 App' })).toHaveAttribute('href', '/me/backup/?to=app');
     await page.getByRole('button', { name: '收合主畫面提示' }).click();
     await expect(notice).toHaveCount(0);
     const expand = page.getByRole('button', { name: 'Safari 分頁：顯示提示' });
@@ -159,7 +184,7 @@ test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
     await page.goto('/level/lv_h2zx7srx/');
     await waitForApp(page);
     await expect(notice.locator('.ll-levelcode__code')).toHaveText('h2zx 7srx');
-    await expect(notice.getByRole('link', { name: '匯出到 App' })).toHaveAttribute('href', '/me/backup/');
+    await expect(notice.getByRole('link', { name: '匯出到 App' })).toHaveAttribute('href', '/me/backup/?to=app');
   });
 
   // 第 1 輪驗收的 blocker：Safari 分頁提示與 iOS 安裝建議同時展開，「匯出到 App」出現兩次、英文版把第一屏佔滿。
@@ -220,14 +245,14 @@ test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
 
   // 安裝教學的第 0 步（站規 2.13，finding pages-b-1、pages-b-3、pages-b-4）：「匯出到 App」是獨立一行的按鈕、連到備份頁的匯出區（不帶 ?import）、
   // 至少 44px 高；按「我已加入主畫面」之後焦點移到結果訊息，不會掉到 body
-  test('安裝教學：「匯出到 App」連到 /me/backup/ 而且至少 44px；按「我已加入主畫面」後焦點在結果訊息', async ({ page }) => {
+  test('安裝教學：「匯出到 App」連到 /me/backup/?to=app 而且至少 44px；按「我已加入主畫面」後焦點在結果訊息', async ({ page }) => {
     await page.addInitScript(() => sessionStorage.setItem('ll:safari-notice-collapsed', '1'));
     await page.goto('/install/');
     await waitForApp(page);
     const guide = page.getByTestId('install-guide');
     await expect(guide).toHaveAttribute('data-variant', 'ios-modern');
     const exportLink = guide.getByTestId('install-guide-export');
-    await expect(exportLink).toHaveAttribute('href', '/me/backup/');
+    await expect(exportLink).toHaveAttribute('href', '/me/backup/?to=app');
     const box = await exportLink.boundingBox();
     expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
     await guide.getByRole('button', { name: '我已加入主畫面' }).click();
@@ -312,7 +337,7 @@ test.describe('安裝建議（06 第 2.5 節）', () => {
     await expect(card).toContainText('把會計樂園加到主畫面');
     if (browserName === 'chromium') await expect(card.getByRole('button', { name: '安裝', exact: true })).toBeVisible();
     else {
-      await expect(card.getByRole('link', { name: '匯出到 App' })).toHaveAttribute('href', '/me/backup/');
+      await expect(card.getByRole('link', { name: '匯出到 App' })).toHaveAttribute('href', '/me/backup/?to=app');
       // 一句話說明加「看圖解教學」與「完整教學頁」（圖解內容另見 glossary.spec 的安裝圖解測試）；
       // 第 5 輪起說明是「已經加入就從主畫面圖示開啟，進度存在那裡；還沒加入就看圖解。」
       await expect(card).toContainText(joinable('已經加入就從主畫面圖示開啟'));

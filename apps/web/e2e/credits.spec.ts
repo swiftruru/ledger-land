@@ -61,7 +61,8 @@ test.describe('幕後頁', () => {
     const links = page.getByTestId('credits-links');
     const site = links.getByRole('link', { name: /個人網站/ });
     await expect(site).toHaveAttribute('href', 'https://swift.moe');
-    await expect(site).toContainText('（外部網站）');
+    await expect(site).toContainText('（外部網站，另開分頁）');
+    await expect(site).toHaveAttribute('target', '_blank');
     await expect(links.getByRole('link', { name: /GitHub/ })).toHaveAttribute('href', 'https://github.com/swiftruru');
     await expect(page.getByTestId('stack-panel')).toHaveText('點一個方塊，看看它負責什麼。');
     await page.getByRole('link', { name: '回到我的' }).click();
@@ -156,7 +157,7 @@ test.describe('幕後頁', () => {
     // 徽章頁：特別徽章那一區已取得，章節徽章的「已取得 n／m」仍是 0
     await page.goto('/me/badges/');
     await waitForApp(page);
-    await expect(page.locator('#ll-badges-summary')).toContainText('已取得 0／14 枚');
+    await expect(page.locator('#ll-badges-summary')).toContainText('已取得 1／15 枚');
     const special = page.getByTestId('badges-special');
     await expect(special.locator('[data-special-badge="creditsEggs"]')).toHaveAttribute('data-state', 'done');
     await expect(special).toContainText('幕後偵探');

@@ -8,7 +8,7 @@
 // 讀到之前整頁看不見，所以膠囊沒有「…」、上次匯出沒有骨架。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useLocation, useSearchParams } from 'react-router';
 import { formatDate, formatNumber, localePath } from '@ledgerland/i18n';
 import {
   DB_SCHEMA_VERSION,
@@ -31,6 +31,7 @@ import {
   Card,
   CheckCircleIcon,
   ConfirmSheet,
+  DeviceIcon,
   Disclosure,
   ExportIcon,
   FieldError,
@@ -119,6 +120,7 @@ export default function Backup() {
   const locale = useLocale();
   const { t } = useLingui();
   const [params] = useSearchParams();
+  const location = useLocation();
   const status = useStorageStatus();
   const [stats, setStats] = useState<BackupStats | null>(null);
   // navigator.storage.persisted() 問過一次了（status.persisted 才是現況，不然「保護進度」那一行會在頁面出現後才換字）
@@ -162,6 +164,27 @@ export default function Backup() {
   }, [refresh]);
   usePageReady(stats !== null && persistChecked);
   const revealed = useRevealed();
+  // 「匯出到 App」捷徑（Safari 分頁提示、安裝建議、安裝教學第 0 步）帶 ?to=app 進來：最上面多一張「把進度搬到主畫面的 App」的三步引導卡
+  // （維護者 2026-10-27 實機回饋：按了只是換頁、再按沒反應，而且備份檔在 iOS 的分享表單裡找不到主畫面的 App，搬進度只能靠備份碼）。
+  // 焦點移到卡的標題；布幕掀開時換頁的焦點會先移到 h1（PageReveal 在 requestAnimationFrame 裡做），所以排到再下一個影格；
+  // 已經在備份頁再按一次捷徑（react-router 的同路徑導覽，location.key 會換）也會再捲、再移焦點
+  const toApp = params.get('to') === 'app';
+  const toAppJump = toApp ? location.key : null;
+  useEffect(() => {
+    if (toAppJump === null || !revealed) return;
+    let id = 0;
+    const run = () => {
+      const heading = document.getElementById('ll-backup-toapp');
+      if (!heading) return;
+      const reduced = document.documentElement.dataset.motion === 'reduced' || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      heading.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
+      heading.focus({ preventScroll: true });
+    };
+    id = requestAnimationFrame(() => {
+      id = requestAnimationFrame(run);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [toAppJump, revealed]);
 
   // 匯入提示卡（ImportPromptCard）帶 ?import=code 或 ?import=file 進來：焦點放到對應的欄位或按鈕。
   // 等布幕真的掀開（useRevealed）才移：隱形的元素拿不到焦點，自己回報齊了的那一次 commit 畫面還沒換
@@ -398,6 +421,42 @@ export default function Backup() {
   const codeError = importError?.source === 'code' ? importError.text : null;
   const fileError = importError?.source === 'file' ? importError.text : null;
 
+  // 複製的結果與備份碼：在匯出卡裡；帶 ?to=app 進來時改放在引導卡裡（使用者的眼睛在那裡）
+  const exportResult = (
+    <>
+      <div role="status" className="ll-backup__status" data-testid="export-message">
+        {exportNotice?.kind === 'ok' && (
+          <p className="ll-backup__ok">
+            <CheckCircleIcon size={16} />
+            <span>{exportNotice.text}</span>
+          </p>
+        )}
+        {exportNotice?.kind === 'error' && <FieldError id={ids.exportError}>{exportNotice.text}</FieldError>}
+      </div>
+      {code !== null && (
+        <div className="ll-backup__field">
+          <label className="ll-backup__label" id={ids.outLabel} htmlFor={`${uid}-out`}>
+            <Trans id="backup.code.label">備份碼</Trans>
+          </label>
+          <textarea
+            id={`${uid}-out`}
+            className="ll-input ll-backup__code"
+            readOnly
+            value={code}
+            rows={4}
+            data-testid="backup-code"
+            onFocus={(e) => {
+              const el = e.currentTarget;
+              el.select();
+              // 聚焦時全選會讓 Chrome 略過聚焦本身的捲動（E2E 量到：375 寬時框停在 Tab bar 後面）；自己捲進 scroll-padding 以內
+              el.scrollIntoView({ block: 'nearest' });
+            }}
+          />
+        </div>
+      )}
+    </>
+  );
+
   return (
     <div className="ll-backup">
       <TopBar
@@ -412,6 +471,65 @@ export default function Backup() {
 
       {/* 狀態卡（第 3 輪看圖驗收）：標題和其他卡片同一種 title-3；學習紀錄改成三個統計膠囊（和玩家卡同一種語言，膠囊下面一行短標籤），
           其餘三項是兩欄的清單（標籤 footnote、值 body 600） */}
+      {toApp && (
+        <Card as="section" aria-labelledby="ll-backup-toapp" className="ll-backup__card ll-backup__toapp" data-testid="backup-to-app">
+          <h2 id="ll-backup-toapp" className="ll-backup__title" tabIndex={-1}>
+            <Trans id="backup.toApp.title" comment="帶 ?to=app 進備份頁時最上面那張引導卡的標題">
+              把進度搬到主畫面的 App
+            </Trans>
+          </h2>
+          <p className="ll-backup__note">
+            <Trans id="backup.toApp.intro" comment="引導卡的說明：Safari 分頁與主畫面 App 不共享進度">
+              Safari 分頁和主畫面的 App 各存各的進度，搬過去只有這一條路：
+            </Trans>
+          </p>
+          <ol className="ll-backup__steps">
+            <li>
+              <p>
+                <Trans id="backup.toApp.step1" comment="引導卡第一步">
+                  先複製備份碼。
+                </Trans>
+              </p>
+              <Button
+                icon={<CopyIcon />}
+                busy={busy === 'code'}
+                disabled={!canCode || (busy !== null && busy !== 'code')}
+                onClick={() => void copyCode()}
+                data-testid="to-app-copy"
+              >
+                <Trans id="backup.export.code">複製備份碼</Trans>
+              </Button>
+              {!canCode && (
+                <p className="ll-backup__note">
+                  <Trans id="backup.export.codeUnsupported" comment="瀏覽器不支援壓縮（備份碼要壓縮），「複製備份碼」停用時的說明">
+                    這個瀏覽器不支援備份碼，請改用備份檔。
+                  </Trans>
+                </p>
+              )}
+              {exportResult}
+            </li>
+            <li>
+              <p>
+                <Trans id="backup.toApp.step2" comment="引導卡第二步">
+                  打開主畫面的會計樂園。
+                </Trans>
+              </p>
+              <Button variant="quiet" size="sm" icon={<DeviceIcon />} href={localePath(locale, '/install/')} data-testid="to-app-install">
+                <Trans id="backup.toApp.install" comment="引導卡第二步：還沒加入主畫面的人連到安裝教學">
+                  還沒加入主畫面？看安裝教學
+                </Trans>
+              </Button>
+            </li>
+            <li>
+              <p>
+                <Trans id="backup.toApp.step3" comment="引導卡第三步">
+                  App 第一次打開會問要不要匯入，貼上備份碼就會和那裡的紀錄合併；已經打開過的話，到 App 的「我的 › 備份 › 貼上備份碼」。
+                </Trans>
+              </p>
+            </li>
+          </ol>
+        </Card>
+      )}
       <Card as="section" aria-labelledby="ll-backup-status" className="ll-backup__card">
         <h2 id="ll-backup-status" className="ll-backup__title">
           <Trans id="backup.status.title">這台裝置</Trans>
@@ -529,7 +647,7 @@ export default function Backup() {
             onClick={() => void exportFile()}
           >
             <Trans id="backup.export.fileButton" comment="備份頁的主按鈕：存成備份檔（手機上交給分享表單）">
-              匯出備份檔
+              存成備份檔
             </Trans>
           </Button>
           <Button block icon={<CopyIcon />} busy={busy === 'code'} disabled={!canCode || (busy !== null && busy !== 'code')} onClick={() => void copyCode()}>
@@ -543,6 +661,14 @@ export default function Backup() {
             </Trans>
           </p>
         )}
+        <p className="ll-backup__note">
+          <Trans
+            id="backup.export.fileNote"
+            comment="匯出卡裡兩顆按鈕下面的說明：備份檔與備份碼各自的用途（維護者 2026-10-27：iOS 的分享表單找不到主畫面的 App）"
+          >
+            備份檔可以存到「檔案」或 AirDrop 到別台裝置；要搬進主畫面的 App，請用備份碼。
+          </Trans>
+        </p>
         <Switch
           checked={includeErrors}
           onChange={setIncludeErrors}
@@ -550,36 +676,7 @@ export default function Backup() {
           description={t({ id: 'backup.export.includeErrorsDesc', message: '只用於回報問題。', comment: '「附上錯誤紀錄」開關的說明' })}
           className="ll-backup__switch"
         />
-        <div role="status" className="ll-backup__status" data-testid="export-message">
-          {exportNotice?.kind === 'ok' && (
-            <p className="ll-backup__ok">
-              <CheckCircleIcon size={16} />
-              <span>{exportNotice.text}</span>
-            </p>
-          )}
-          {exportNotice?.kind === 'error' && <FieldError id={ids.exportError}>{exportNotice.text}</FieldError>}
-        </div>
-        {code !== null && (
-          <div className="ll-backup__field">
-            <label className="ll-backup__label" id={ids.outLabel} htmlFor={`${uid}-out`}>
-              <Trans id="backup.code.label">備份碼</Trans>
-            </label>
-            <textarea
-              id={`${uid}-out`}
-              className="ll-input ll-backup__code"
-              readOnly
-              value={code}
-              rows={4}
-              data-testid="backup-code"
-              onFocus={(e) => {
-                const el = e.currentTarget;
-                el.select();
-                // 聚焦時全選會讓 Chrome 略過聚焦本身的捲動（E2E 量到：375 寬時框停在 Tab bar 後面）；自己捲進 scroll-padding 以內
-                el.scrollIntoView({ block: 'nearest' });
-              }}
-            />
-          </div>
-        )}
+        {!toApp && exportResult}
       </Card>
 
       <Card as="section" aria-labelledby="ll-backup-import" className="ll-backup__card">

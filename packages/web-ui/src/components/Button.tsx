@@ -35,7 +35,7 @@ type NativeButtonAttrs = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'classNam
 export type ButtonLinkProps = ButtonBaseProps &
   AnchorAttrs & {
     href: string;
-    /** 站外網址：不加 target，自動附外部圖示與視覺隱藏的「（外部網站）」 */
+    /** 站外網址：另開分頁，自動附外部圖示與視覺隱藏的「（外部網站，另開分頁）」 */
     external?: boolean;
     /** 連結形式停用時渲染成不可聚焦的 span（旁邊必須有文字說明原因） */
     disabled?: boolean;
@@ -89,7 +89,9 @@ function ExternalHint() {
   return (
     <>
       <ArrowUpRightIcon className="ll-btn__ext" />
-      <span className="ll-sr-only">{t({ id: 'ui.externalSite', message: '（外部網站）', comment: '連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明' })}</span>
+      <span className="ll-sr-only">
+        {t({ id: 'ui.externalSite', message: '（外部網站，另開分頁）', comment: '連到站外網址的按鈕或連結後面，給螢幕閱讀器的說明（會另開分頁）' })}
+      </span>
     </>
   );
 }

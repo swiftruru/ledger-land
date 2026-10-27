@@ -900,7 +900,7 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 
 | 元件 | 什麼時候用 | 外觀與規則 |
 | --- | --- | --- |
-| `Button` | 下一步用 primary（一個畫面一顆）；替代動作 secondary；第三層 quiet；破壞性 danger；`back` 只在少數平面情境 | 第 4.6 節的尺寸與底邊；`icon`、`iconEnd` 的大小由尺寸決定；`busy` 轉圈但寬度不變；`pressed` 輸出 `aria-pressed`；`external` 自動加外連箭頭與「（外部網站）」，不加 `target`；連結形式停用時是不可聚焦的 span，旁邊要寫原因；`minWidth="action"` 是列表右側的動作鈕（最小 96px） |
+| `Button` | 下一步用 primary（一個畫面一顆）；替代動作 secondary；第三層 quiet；破壞性 danger；`back` 只在少數平面情境 | 第 4.6 節的尺寸與底邊；`icon`、`iconEnd` 的大小由尺寸決定；`busy` 轉圈但寬度不變；`pressed` 輸出 `aria-pressed`；`external` 自動加外連箭頭與「（外部網站，另開分頁）」，`target="_blank"` 加 `rel="noopener"`（維護者 2026-10-27 決定站外連結另開分頁）；連結形式停用時是不可聚焦的 span，旁邊要寫原因；`minWidth="action"` 是列表右側的動作鈕（最小 96px） |
 | `IconButton` | 只有圖示（關閉、介紹、HUD 的工具） | 44px 圓形、圖示 22px、沒有底邊；`label` 必填，同時是 `aria-label` 與 `title`；quiet 給面板、橫幅、Toast，chrome 給頁首與 HUD |
 | `BackButton`、`TopBar`、`PageHeader` | 返回與頁首 | 頂層五頁用 PageHeader（三欄 grid，手機 56px、600 以上 64px；闖關頁 sticky）；其他頁用 TopBar 加 BackButton，返回目的地固定（02 第 3.6 節） |
 | `StatChip` | 頁首的狀態數字（星星、徽章、錯題、圖鑑） | 44px 平面膠囊；`value` 是畫面上的數字，`label` 是完整的可讀名稱；有 href 是連結，沒有是不可聚焦的 span；`dot` 是需要注意時的小紅點 |
