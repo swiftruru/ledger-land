@@ -1069,7 +1069,7 @@ document.addEventListener('focusout', () => {
 | Lighthouse 無障礙分數 | ≥ 95 | 同上 | 另有人工檢查，見 07 第 8 節 |
 | 首次載入 JS | ≤ 150 KB（gzip 後，暫定）；CI 的檢查值 152 KB（2026-10-26 放寬，見 8.2 的收尾紀錄） | 首頁與 QR 落地頁 | 從 M0b 起由 CI 把關；M0a 實測後調整，只能附理由放寬。放寬的理由：M3 收尾的頁面布幕進了入口 chunk，給老師的說明與關卡 QR 的介面字串進了兩種語言的 catalog，/en/ 入口實測 150.4 KB；英文作答頁的 LCP 實測 2420ms |
 | 首次載入 CSS | ≤ 30 KB（gzip 後，暫定）；CI 只算 `index.html` 引用的入口 CSS（`initialCssGzipKb`，2026-10-25 起，懶載入頁面的 CSS 和頁面 chunk 一樣不算） | 同上 | 同上 |
-| 全部 CSS | ≤ 40 KB（gzip 後，暫定）；`assets` 底下所有 CSS 的合計，含懶載入頁面自己的 CSS（`allCssGzipKb`，2026-10-25 起） | 建置產物 | 維護者 2026-10-25 決定把 CSS 預算拆成兩項。理由：原本的檢查名為首次載入，實際加總所有 CSS，地圖、章節頁、名詞圖鑑的版面 CSS 拆成頁面 CSS 以後，那個數字已經不是開頁時要下載的量；入口那一項管開頁速度，合計這一項防止頁面 CSS 不受控制地長大。M3 新增設計系統（遊戲按鈕、選單列、名詞卡、面板、橫幅）並重做地圖與章節頁，全部 CSS 從約 14 KB 變成 36.8 KB，40 是實測值加約一成的餘裕；只能附理由放寬 |
+| 全部 CSS | ≤ 44 KB（gzip 後，暫定；2026-10-25 到 26 是 40）；`assets` 底下所有 CSS 的合計，含懶載入頁面自己的 CSS（`allCssGzipKb`，2026-10-25 起） | 建置產物 | 維護者 2026-10-25 決定把 CSS 預算拆成兩項。理由：原本的檢查名為首次載入，實際加總所有 CSS，地圖、章節頁、名詞圖鑑的版面 CSS 拆成頁面 CSS 以後，那個數字已經不是開頁時要下載的量；入口那一項管開頁速度，合計這一項防止頁面 CSS 不受控制地長大。M3 新增設計系統（遊戲按鈕、選單列、名詞卡、面板、橫幅）並重做地圖與章節頁，全部 CSS 從約 14 KB 變成 36.8 KB，40 是實測值加約一成的餘裕；只能附理由放寬。2026-10-27 放寬到 44：幕後頁（`/credits/`）的技術棧探索器、彩蛋與浮動提示的版面加進說明頁的 CSS（`info.css`，和其他說明頁一起懶載入，不在入口），全部 CSS 實測到 40 的邊上；頁面 CSS 本來就會隨頁數成長，入口 30 KB 不動所以開頁速度不受影響，44 仍是實測值加約一成的餘裕 |
 | precache 總量 | ≤ 5 MB（未壓縮，暫定）；CI 的檢查值 3600 KB（`precacheKb` 3600，2026-10-24 從 2048 提高；2026-10-23 從 1024 提高到 2048） | 第一次安裝 SW | 見 3.2 |
 | `/en/` 首次載入 JS | ≤ 150 KB（gzip，和首次載入 JS 同一個上限） | 英文網址的入口 JS 加英文訊息 catalog（`tools/budget.mjs` 的 `initialJsEnGzipKb`） | M3 收尾不提高 150、也不拆 catalog，M4a 開工時拆兩層（14 第 5.2 節）；2026-10-26 實測 149.5 KB |
 | 闖關地圖 chunk | ≤ 28 KB（gzip，`mapChunkGzipKb`） | Play 頁與 `quest-map` chunk 的合計，不在首頁與其他頁的第一波 | 2026-10-25 從 25 改成 28（M3 地圖重做實測 26.8 KB，17 第 8 節）；2026-10-26 實測 27.5 KB |
@@ -1116,7 +1116,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
     "categories.performance": { "min": 0.9 },
     "categories.accessibility": { "min": 0.95 }
   },
-  "budgets": { "initialJsGzipKb": 152, "initialCssGzipKb": 30, "allCssGzipKb": 40, "precacheKb": 3600 }
+  "budgets": { "initialJsGzipKb": 152, "initialCssGzipKb": 30, "allCssGzipKb": 44, "precacheKb": 3600 }
 }
 ```
 

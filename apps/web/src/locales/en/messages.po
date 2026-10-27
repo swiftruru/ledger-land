@@ -22,6 +22,7 @@ msgstr " (current)"
 #. 統計膠囊上的「已取得／總數」；a、b 已格式化
 #. 統計膠囊上的「已取得／總數」；a、b 已格式化
 #. 統計膠囊上的「已取得／總數」；a、b 已格式化
+#. 統計膠囊上的「已取得／總數」；a、b 已格式化
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
 #: src/features/me/PlayerCard.tsx
@@ -107,6 +108,7 @@ msgstr "{due, plural, one {<0><2># question</2> to review today</0>} other {<0><
 msgid "home.due"
 msgstr "{due, plural, one {# question to review today} other {# questions to review today}}"
 
+#. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
@@ -471,6 +473,16 @@ msgstr "Answers"
 #: src/pages/Privacy.tsx
 msgid "privacy.stored.body"
 msgstr "Your answers, stars, review list, badges, unlocked terms, settings and language preference, plus the last 50 error records. They live in IndexedDB, localStorage and the Service Worker cache, all belonging to this site’s origin. A Safari tab and a Home Screen app keep two separate copies."
+
+#. 「我的」幕後列的說明
+#. 「我的」幕後列的說明
+#. 「我的」幕後列的說明
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+#: src/pages/Design.tsx
+#: src/pages/Me.tsx
+msgid "me.credits.desc"
+msgstr "The author, the teacher and the tech behind the site"
 
 #. 分類題作答後的摘要；correctCount 是放對的張數、total 是總張數
 #. js-lingui-explicit-id
@@ -1083,6 +1095,12 @@ msgstr "Met in {code}"
 msgid "terms.meet"
 msgstr "Met in {code} ‘{levelTitle}’"
 
+#. 特別徽章「幕後偵探」的取得條件
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.special.creditsEggs.cond"
+msgstr "Find every easter egg on the Behind the scenes page"
+
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.teacher.qr"
@@ -1308,6 +1326,7 @@ msgstr "How to install"
 msgid "me.install"
 msgstr "How to install"
 
+#. 徽章格的狀態：完成
 #. 徽章格的狀態：完成
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
@@ -1552,6 +1571,22 @@ msgstr "Market"
 #: src/pages/Term.tsx
 msgid "term.misconception"
 msgstr "Common misconception"
+
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. 「我的」連到幕後（作者、老師與技術棧）
+#. js-lingui-explicit-id
+#: src/pages/About.tsx
+#: src/pages/Design.tsx
+#: src/pages/Me.tsx
+msgid "me.credits"
+msgstr "Behind the scenes"
+
+#. 特別徽章的名稱：在「幕後」頁找齊全部彩蛋
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.special.creditsEggs"
+msgstr "Behind-the-scenes detective"
 
 #. 指標版本名稱（04 第 12.7 節）：依年報財務分析寫法的公式；學生看的說法，不露出版本代號或教材單元
 #. js-lingui-explicit-id
@@ -2154,6 +2189,7 @@ msgid "chapter.note.examScope"
 msgstr "Check your teacher’s announcement for the exact midterm scope."
 
 #. 徽章格的狀態：還沒取得
+#. 徽章格的狀態：還沒取得
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
 msgid "badges.state.locked"
@@ -2434,6 +2470,18 @@ msgstr "Version"
 #: src/pages/About.tsx
 msgid "about.more.debug.desc"
 msgstr "Version, device and storage checks"
+
+#. 特別徽章格的眉標（取代章節徽章的「第 N 章」）
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.special.eyebrow"
+msgstr "Special"
+
+#. 徽章頁的分段小標：不屬於任何章的探索獎勵
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.group.special"
+msgstr "Special badges"
 
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id

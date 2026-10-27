@@ -47,6 +47,8 @@ const targets = [
   join(ROOT, 'NOTICE'),
   join(ROOT, 'apps/web/src/locales/zh-TW/messages.po'),
   join(ROOT, 'apps/web/src/locales/en/messages.po'),
+  join(ROOT, 'apps/web/src/locales/zh-TW/pages.po'),
+  join(ROOT, 'apps/web/src/locales/en/pages.po'),
   join(ROOT, 'packages/web-ui/src/locales/zh-TW/messages.po'),
   join(ROOT, 'packages/web-ui/src/locales/en/messages.po'),
   ...walk(join(ROOT, 'apps/web/src'), { ext: ['.tsx', '.ts'] }),
@@ -81,7 +83,7 @@ for (const f of targets) {
         ok = false;
       }
     }
-    if (f.endsWith('locales/en/messages.po') && line.startsWith('msgstr')) {
+    if (/locales\/en\/[a-z]+\.po$/.test(f) && line.startsWith('msgstr')) {
       for (const re of US_SPELLING)
         if (re.test(line)) {
           fail(`check:tw：${rel}:${i + 1} 英文介面字串請用英式拼字：${line.trim()}`);

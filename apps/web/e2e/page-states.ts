@@ -546,6 +546,8 @@ export const CASES: readonly PageCase[] = [
   { group: '其他子頁', name: '隱私說明', path: '/privacy/' },
   { group: '其他子頁', name: '關於與授權', path: '/about/' },
   { group: '其他子頁', name: '關於系統設計', path: '/design/' },
+  { group: '其他子頁', name: '幕後', path: '/credits/' },
+  { group: '其他子頁', name: '幕後：技術棧面板', path: '/credits/', prepare: (page) => page.getByTestId('stack-node-react').click() },
   { group: '其他子頁', name: '診斷資訊', path: '/debug/' },
 
   // 頂層與錯誤

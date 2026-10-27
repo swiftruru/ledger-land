@@ -6,6 +6,7 @@ export { ChapterBanner, useChapterLabels, type ChapterBannerProps } from './comp
 export { ChapterEnd, type ChapterEndProps } from './components/ChapterEnd.tsx';
 export { MapMarker, type MapMarkerProps, type MarkerPose, type MarkerExpression } from './components/MapMarker.tsx';
 export { ChapterBadge, starPath, type ChapterBadgeProps, type ChapterBadgeState } from './components/ChapterBadge.tsx';
+export { SpecialBadge, type SpecialBadgeProps, type SpecialBadgeState } from './components/SpecialBadge.tsx';
 export { RollingNumber, type RollingNumberProps } from './components/RollingNumber.tsx';
 export { NoteTag, type NoteTagKind } from './components/NoteTag.tsx';
 export { MapHud, type MapHudProps, type MapHudTool } from './components/MapHud.tsx';

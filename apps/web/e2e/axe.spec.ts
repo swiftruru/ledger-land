@@ -26,6 +26,7 @@ const PAGES = [
   '/privacy/',
   '/about/',
   '/design/',
+  '/credits/',
   '/debug/',
   '/lab/',
 ];

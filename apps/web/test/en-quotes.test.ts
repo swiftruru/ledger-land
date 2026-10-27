@@ -5,7 +5,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const CATALOGS = ['../src/locales/en/messages.po', '../../../packages/web-ui/src/locales/en/messages.po'];
+const CATALOGS = ['../src/locales/en/messages.po', '../src/locales/en/pages.po', '../../../packages/web-ui/src/locales/en/messages.po'];
 const CONTENT = new URL('../../../content/', import.meta.url);
 
 function messages(): [id: string, text: string][] {

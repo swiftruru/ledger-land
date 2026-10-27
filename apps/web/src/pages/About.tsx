@@ -4,7 +4,7 @@
 // 選單列的說明用 Phrased 依詞換行（第 7 輪 handoff：320 的「怎麼設計出／來的」「儲存的檢／查結果」），和「我的」同一種做法。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { localePath } from '@ledgerland/i18n';
-import { Banner, CodeIcon, CompassIcon, NavList, NavRow, PulseIcon, TopBar } from '@ledgerland/web-ui';
+import { Banner, CodeIcon, CompassIcon, HeartIcon, NavList, NavRow, PulseIcon, TopBar } from '@ledgerland/web-ui';
 import { site } from '../../site.config.ts';
 import { ProseWords } from '../components/ProseWords.tsx';
 import { Phrased } from '../features/me/Phrased.tsx';
@@ -132,6 +132,12 @@ export default function About() {
           }
           href={site.repo}
           external
+        />
+        <NavRow
+          icon={<HeartIcon />}
+          title={t({ id: 'me.credits', message: '幕後', comment: '「我的」連到幕後（作者、老師與技術棧）' })}
+          description={<Phrased text={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })} />}
+          href={localePath(locale, '/credits/')}
         />
         <NavRow
           icon={<PulseIcon />}

@@ -194,3 +194,134 @@
 .ll-debug__foot {
   margin: var(--ll-space-6) 0 0;
 }
+
+/* 幕後頁（Credits.tsx，02 第 1.1 節，2026-10-27）：吉祥物、彩蛋進度、技術棧探索器與面板。沒有 transition 或 animation。
+   元件（Button、Card、Badge、Segmented、Toast）的外觀不在這裡改；只排版面。全站 CSS 預算因此放寬到 44 KB（06 第 8.2 節） */
+.ll-credits-mascot {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-3);
+  margin: var(--ll-space-3) 0;
+}
+.ll-credits-mascot__say {
+  margin: 0;
+}
+.ll-credits-eggs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-credits-version {
+  margin: var(--ll-space-3) 0 0;
+}
+.ll-stack {
+  display: grid;
+  gap: var(--ll-space-4);
+  margin: var(--ll-space-3) 0;
+}
+.ll-stack__title {
+  margin: 0 0 var(--ll-space-2);
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: var(--ll-type-title-3-weight);
+}
+.ll-stack__nodes,
+.ll-stack__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* 被選方塊的「搭配」：外層虛線框（不只靠顏色：面板裡同時有文字清單）；框畫在 li 上，不動按鈕本身的邊框與焦點框 */
+.ll-stack__item {
+  border-radius: var(--ll-radius-md);
+}
+.ll-stack__item[data-related='true'] {
+  outline: 2px dashed var(--ll-accent);
+  outline-offset: 2px;
+}
+.ll-stack__ver {
+  margin-inline-start: var(--ll-space-1);
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+}
+.ll-stack__panel > p {
+  margin: 0 0 var(--ll-space-2);
+}
+.ll-stack__panel > p:last-child {
+  margin-bottom: 0;
+}
+.ll-stack__panel-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0 0 var(--ll-space-2);
+}
+.ll-stack__chips {
+  gap: var(--ll-space-1);
+  margin: 0 0 var(--ll-space-3);
+}
+.ll-stack__egg {
+  display: grid;
+  justify-items: start;
+  gap: var(--ll-space-2);
+  margin-top: var(--ll-space-3);
+}
+/* 風味色樣：兩個 24px 方塊（底色、記號色）在那句話前面；--_sample-* 由元件依口味設成 tokens 的 --ll-swatch-* */
+.ll-credits-sample {
+  display: flex;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: 0;
+}
+.ll-credits-sample__swatches {
+  display: inline-flex;
+  flex: none;
+  gap: var(--ll-space-1);
+}
+.ll-credits-sample__bg,
+.ll-credits-sample__mark {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ll-radius-sm);
+  box-shadow: inset 0 0 0 1px var(--ll-border-strong);
+}
+.ll-credits-sample__bg {
+  background: var(--_sample-bg);
+}
+.ll-credits-sample__mark {
+  background: var(--_sample-mark);
+}
+.ll-credits-dedication {
+  margin-top: var(--ll-space-6);
+}
+/* 找齊彩蛋的提示：固定在畫面上，手機在頁首下方、1024 以上在右下角（和作答頁的浮動提示同一個位置規則，但沒有進場動畫） */
+.ll-credits-toasts {
+  position: fixed;
+  z-index: var(--ll-z-toast);
+  top: calc(env(safe-area-inset-top, 0px) + 72px);
+  left: max(var(--ll-space-4), env(safe-area-inset-left));
+  right: max(var(--ll-space-4), env(safe-area-inset-right));
+  max-width: 480px;
+  margin-inline: auto;
+  pointer-events: none;
+}
+.ll-credits-toasts > * {
+  pointer-events: auto;
+}
+@media (min-width: 1024px) {
+  .ll-credits-toasts {
+    top: auto;
+    left: auto;
+    right: var(--ll-space-6);
+    bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--ll-space-6));
+    width: max-content;
+    max-width: min(360px, calc(100vw - 2 * var(--ll-space-6)));
+    margin: 0;
+  }
+}

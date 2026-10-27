@@ -1,0 +1,511 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-27 13:49+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#. 版本號按鈕給螢幕閱讀器唸的後綴（彩蛋）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.version.name"
+msgstr ", tap to learn the secret of the version number"
+
+#. 作者 GitHub 那一列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.github"
+msgstr "GitHub"
+
+#. 技術棧方塊的名稱（兩個工具名，中間的連接詞要翻譯）
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lint.name"
+msgstr "oxlint and Prettier"
+
+#. 作者個人網站那一列的說明（網址）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.site.desc"
+msgstr "swift.moe"
+
+#. 作者 GitHub 那一列的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.github.desc"
+msgstr "swiftruru, where the source code lives"
+
+#. 技術棧那一節的引言
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.stack.intro"
+msgstr "Every block below is something the site really uses. Tap one to see what it does and what it works with. Version numbers are copied from the package list at build time, so they never go stale."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.fonts.role"
+msgstr "No font is downloaded; the site uses the fonts already on your device, with tabular figures so the statements line up."
+
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.noAccount"
+msgstr "No account, no server: your progress stays on your own device, where nobody else can see it."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lingui.role"
+msgstr "Every string in both languages goes through it; the language lives in the URL, so switching never loses the question you are answering."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.zustand.role"
+msgstr "The state of the level you are answering lives here, not in the URL, so switching language or going back never starts you over."
+
+#. 作者個人網站那一列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.site"
+msgstr "Personal site"
+
+#. 幕後頁第一節的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.author.title"
+msgstr "The person behind the site"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.csp.role"
+msgstr "Content Security Policy: only the site's own code may load, there is no eval, and formulas are parsed into a syntax tree before they are evaluated."
+
+#. 技術棧的分層標題：內容、會計核心、進度儲存
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.data"
+msgstr "Content and progress"
+
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.oneKit"
+msgstr "One set of tappable things across the whole site: buttons, links and list rows all look the same, so you can tell at a glance what you can press."
+
+#. 彩蛋找齊之後的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.progress.done"
+msgstr "All found. The special badge is on the badges page."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.quiz.role"
+msgstr "Scoring: how each question type counts as correct and how many stars it earns, all in one place."
+
+#. 找齊彩蛋時的提示標題；第二行是徽章名稱
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.badge.title"
+msgstr "Special badge earned"
+
+#. 彩蛋：有 Service Worker 時的回答
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.offline.ready"
+msgstr "Yes. The service worker has already stored this page, so it reads offline too."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.pwa.role"
+msgstr "Can be added to the home screen and opens offline. When a new version is ready it asks you, rather than swapping it in silently."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.vitest.role"
+msgstr "Unit tests, more than two thousand of them; component tests run directly in WebKit."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.typescript.role"
+msgstr "Types. Packages may only depend in one direction, the accounting core never touches the screen, and nothing merges until the check passes."
+
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "settings.flavor.violet"
+msgstr "Night sky"
+
+#. 技術棧的分層標題：PWA 與主機
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.platform"
+msgstr "Install and hosting"
+
+#. 頁底摺疊列的標題（彩蛋）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.dedication.name"
+msgstr "For everyone who helped along the way"
+
+#. 幕後頁的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.title"
+msgstr "Behind the scenes"
+
+#. 找齊彩蛋解鎖的特別徽章名稱（徽章頁同名）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.badge.name"
+msgstr "Backstage detective"
+
+#. 作者自我介紹第二段
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.author.p2"
+msgstr "What I write lives on my personal site and on GitHub. The source code of this site is there too; if something looks odd, do let me know."
+
+#. 設計堅持那一節的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.title"
+msgstr "A few things I would not give up"
+
+#. 技術棧的分層標題：建置工具
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.build"
+msgstr "Build"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.node.role"
+msgstr "Builds and tests run on it; the site itself needs no server."
+
+#. 彩蛋進度膠囊；foundText、totalText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.progress"
+msgstr "Easter eggs {foundText}/{totalText}"
+
+#. 作者自我介紹第一段（第一人稱）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.author.p1"
+msgstr "I am Yu-Ru Pan (潘昱如). I like turning what I learn into something I can play with, and that is how LedgerLand began: in class I heard how a small shop keeps its books from the first day onwards, and I wanted to turn that into a game, one level at a time."
+
+#. 作者連結那組選單列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.links.title"
+msgstr "Where to find me"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.vite.role"
+msgstr "Bundles the source into files a browser can run, and splits each page into small chunks along the way."
+
+#. 技術棧的分層標題：測試與檢查
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.quality"
+msgstr "Quality checks"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.zxing.role"
+msgstr "The decoder for scanning classroom QR codes. It runs in a background thread and loads only when you press scan."
+
+#. 「我的」關於與授權列的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "me.about.desc"
+msgstr "Licences, source code and version"
+
+#. 面板裡「搭配」清單的小標
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.related"
+msgstr "Works with"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.cloudflare.role"
+msgstr "Hosts the static files. Deep links always come back to the site itself, and a missing file honestly returns 404."
+
+#. 幕後頁老師那一節的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.title"
+msgstr "The teacher who taught me accounting"
+
+#. 幕後頁最後一組選單列的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.more"
+msgstr "More"
+
+#. 設計堅持那一節最後一句；<0> 是連到「關於系統設計」的連結
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.more"
+msgstr "The full design notes are on the <0>About the design</0> page."
+
+#. 老師那一節第一段（課堂師生的口吻，只致謝不背書）
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.p1"
+msgstr "I learnt accounting from Dr Yen-Hung Chen (陳彥宏). In class the teacher took a small shop's books from start to finish: opening the shop, buying stock, selling, borrowing, paying wages, how each entry is recorded and how the three statements grow out of them. The course and the expertise are the teacher's; I was the student in the back row thinking ‘this could be a game’."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.core.role"
+msgstr "The accounting core: posting, the three statements, ratios, the five-step check. Amounts are always whole numbers, so there is never a one-dollar difference."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.zod.role"
+msgstr "Checks that data has the right shape: content is validated at build time, and backups again on import."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lighthouse.role"
+msgstr "Measures speed and size on every change; anything over budget cannot be merged."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.router.role"
+msgstr "Decides which page a URL maps to, and loads each page's code only when it is needed."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.analytics.role"
+msgstr "Cookie-free traffic statistics, loaded only on the production site and only once the screen is idle; if it fails, nothing happens."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.idb.role"
+msgstr "A small wrapper around the browser's built-in database. Your progress is stored here and never sent to a server."
+
+#. 方塊上版本號前面給螢幕閱讀器唸的字
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.version"
+msgstr "version"
+
+#. 按了版本號之後的說明；builtAt 是建置時間
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.version.text"
+msgstr "The short bit after the version number is the git commit code, different for every build. This build was made at {builtAt}."
+
+#. 幕後頁 PWA 面板裡的彩蛋按鈕
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.offline.name"
+msgstr "Would it still open with the network unplugged?"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.playwright.role"
+msgstr "Really clicks through the site in three browsers, running accessibility checks along the way."
+
+#. 技術棧的分層標題：畫面層（React、設計系統、色票、字串）
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.ui"
+msgstr "Screen"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.react.role"
+msgstr "The skeleton of every screen. Each page is assembled from its components, and the screen follows the data as it changes."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lint.role"
+msgstr "Formatting and style checks for the code, right down to ‘no bare hyperlinks’ and Taiwanese wording."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.pnpm.role"
+msgstr "Manages packages. Only versions published at least two weeks ago are used, and every exception is written down."
+
+#. 技術棧方塊的名稱（不是專有名詞，要翻譯）
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.fonts.name"
+msgstr "System fonts"
+
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "settings.flavor.wine"
+msgstr "Red wine"
+
+#. 老師那一節第二段：內容責任歸屬
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.p2"
+msgstr "The questions, explanations and term cards on this site are my own work. Any mistakes are mine and do not reflect the teacher's views. The story's setting and figures are used with the teacher's permission; the details are under ‘About and licences’."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.icons.role"
+msgstr "Line icons. They are written straight into the page at build time, with no extra request and no icon font."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.web-ui.role"
+msgstr "Our own design system: buttons, list rows, panels and badges come from this one set across the whole site, so everything tappable looks the same."
+
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "settings.flavor.berry"
+msgstr "Berry"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.lightningcss.role"
+msgstr "Handles the CSS: minifies it and adds the prefixes older iOS versions need."
+
+#. 幕後頁 tokens 面板裡的風味切換（彩蛋）
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.flavour.hint"
+msgstr "Try the three dark flavours"
+
+#. 老師那一節第三段：致謝
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.p3"
+msgstr "Thank you to the teacher for agreeing to be named here."
+
+#. 頁底摺疊列展開後的話
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.dedication.text"
+msgstr "Thank you to the teacher for turning accounting into a story I could follow; thank you to everyone who raised a hand in class, your questions became many of these levels; and thank you, for reading this far."
+
+#. 幕後頁吉祥物按鈕的可讀名稱（彩蛋）
+#. js-lingui-explicit-id
+#: src/features/credits/MascotEgg.tsx
+msgid "eggs.mascot.name"
+msgstr "Say hello to Rin"
+
+#. 彩蛋還沒找齊時的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "eggs.progress.hint"
+msgstr "A few easter eggs are hidden on this page. Find them all and a special badge is yours."
+
+#. 幕後頁導言
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.intro"
+msgstr "This page is about the person who made the site, the teacher who taught me accounting, and the tools that built it. A few easter eggs are hidden along the way."
+
+#. 彩蛋：沒有 Service Worker 時的回答
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.offline.noSw"
+msgstr "There is no service worker in this environment (development mode, or a browser without support); the production site stores the page first."
+
+#. 「我的」關於系統設計列的說明
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "me.design.desc"
+msgstr "How this site was designed"
+
+#. 技術棧那一節的標題
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.stack.title"
+msgstr "What this site is built with"
+
+#. 風味樣本裡的一句話；name 是口味名
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "eggs.flavour.sample"
+msgstr "These are the background and marker colours of {name}."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.progress.role"
+msgstr "The progress data model: stars, the review list, collected terms, badges. Every write is queued first, so even a page closed abruptly catches up."
+
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.integer"
+msgstr "Amounts are always whole numbers: the statements never show a one-dollar difference."
+
+#. 按了吉祥物之後說的話
+#. js-lingui-explicit-id
+#: src/features/credits/MascotEgg.tsx
+msgid "eggs.mascot.text"
+msgstr "Rin: Hi! Thanks for coming backstage."
+
+#. 「我的」連到關於系統設計
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "me.design"
+msgstr "About the design"
+
+#. 「我的」連到關於與授權
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "me.about"
+msgstr "About and licences"
+
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.values.offline"
+msgstr "A whole chapter works offline: once installed, you can play on the train."
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.content.role"
+msgstr "Chapters, levels, questions and terms are JSON files, validated at build time, with answers precomputed and cut into snapshots, so a whole chapter works offline once installed."
+
+#. 技術棧的分層標題：路由與狀態
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.layer.app"
+msgstr "Pages and state"
+
+#. 技術棧節點的角色說明
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.node.tokens.role"
+msgstr "The single source of colours, type sizes, spacing, radii and motion, turned into CSS variables at build time. One light theme, and three dark flavours: night sky, berry and red wine."
+
+#. 還沒選方塊時面板裡的提示
+#. js-lingui-explicit-id
+#: src/features/credits/StackExplorer.tsx
+msgid "stack.hint"
+msgstr "Tap a block to see what it does."

@@ -1383,6 +1383,12 @@ describe('章節徽章（03 第 2.10 節）', () => {
     expect(p.badges.size).toBe(3);
     expect(q.badges.has('badge:ch_c')).toBe(true);
   });
+
+  it('特別徽章（badge:special:）不計入章節徽章數', () => {
+    const p = progressOf({}, ['badge:ch_a', 'badge:special:credits-eggs']);
+    expect(badgeCount(p)).toBe(1);
+    expect(badgeCount(withBadges(p, ['badge:special:other']))).toBe(1);
+  });
 });
 
 describe('不計分關卡（level.unscored）', () => {
