@@ -213,7 +213,7 @@ html[data-theme='dark'] .ll-me-badges {
   padding: 0;
   list-style: none;
 }
-/* 關卡名：兩行時上下等長。中文用 Phrased 依詞換行（FavouritesSection.tsx，第 9 輪），只在詞與詞之間斷，balance 不會在詞中間平分 */
+/* 關卡名：兩行時上下等長（balance）；中文照全站規則逐字換行（07 第 3.5 節） */
 .ll-favourites__name {
   display: block;
   text-wrap: balance;
@@ -338,9 +338,7 @@ html[data-theme='dark'] .ll-badges__item[data-state='done'] {
   align-self: end;
   white-space: nowrap;
 }
-/* 徽章名：兩行時上下等長（balance）。中文用 Phrased 依詞換行（BadgesSection.tsx，第 9 輪：沒切詞的 keep-all 在 320 把「資金來源偵探」硬斷成「資金來源偵／探」），
-   內容用 U+200B 標好的斷點之間整塊不拆（「看懂​股東權益​與融資」：375 時「看懂股東權益／與融資」，320 時「看懂／股東權益／與融資」）；
-   只在詞與詞之間斷，balance 不會再把它平分在「權」與「益」中間（第 2 輪看圖驗收當初只給英文 balance 的原因） */
+/* 徽章名：兩行時上下等長（balance）；中文照全站規則逐字換行（07 第 3.5 節，2026-10-27 起），內容在詞之間放的 U+200B 仍是換行點 */
 .ll-badges__title {
   align-self: start;
   text-wrap: balance;
@@ -403,12 +401,6 @@ html[data-theme='dark'] .ll-badges__item[data-state='done'] {
   border-radius: 5px;
   background: linear-gradient(135deg, var(--_sw-a) 0 50%, var(--_sw-b) 50% 100%);
   box-shadow: inset 0 0 0 1.5px var(--ll-text-3);
-}
-
-/* ---- 說明句的換行（features/me/Phrased.tsx）：.ll-phrased 在 web-ui 的 03-core-utils.css（全站一套，第 7 輪 handoff 刪掉這裡的重複規則）；
-   block 版只要自己排成區塊（text-wrap: pretty 由 html 繼承） ---- */
-.ll-phrased--block {
-  display: block;
 }
 
 /* ---- 備份（2.10）：錯誤只有一種紅色（FieldError 與 .ll-input 的 aria-invalid，元件的樣式）；這裡只排版面 ---- */

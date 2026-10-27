@@ -543,7 +543,7 @@ test.describe('結果頁的版面', () => {
     await expect(retry).toHaveClass(/\bll-btn--primary\b/);
     await expect(back).toHaveClass(/\bll-btn--secondary\b/);
     expect((await retry.boundingBox())!.y).toBeLessThan((await back.boundingBox())!.y);
-    await expect(page.locator('.ll-result__note .ll-nowrap')).toHaveText(['錯題本']);
+    await expect(page.locator('.ll-result__note').first()).toContainText('錯題本');
   });
 
   test('文字放大 200% 時成績小卡的數字不溢出、卡片不重疊（375 與 320）', async ({ page, request }) => {

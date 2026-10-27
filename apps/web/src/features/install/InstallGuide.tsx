@@ -7,11 +7,8 @@
 // 否則「我已安裝」secondary md 加 CheckIcon（記成 installPromptDismissed，之後不再跳出安裝建議，和 appinstalled 同一個紀錄）。
 // 其他瀏覽器：一段說明。reference（電腦或 Android 上附的 iPhone 做法）不放這台裝置的動作按鈕。
 // 字串都在 en catalog（/en/ 的首次載入），所以句子盡量短、不另外加可讀名稱（「我已安裝」本身就是完整的意思）。
-// 斷行（第 7 輪：全站同一套規則）：說明文字用全站預設的逐字換行（line-break: strict、text-wrap: pretty），每行排滿、標點不落在行首；
-// 引號裡的介面名稱（「匯出到 App」「加入主畫面」）在中文訊息裡包 <span className="ll-nowrap">（web-ui 的全站 class），整個名稱不拆到兩行。
-// 引號放在 span 外面（第 7 輪 handoff：Chromium 的 text-spacing-trim 在 nowrap 的 span 裡不作用，開括號落在行首時會多半個字的空白；
-// 開括號後與閉括號前本來就不能換行，引號仍黏著名稱）。步驟欄最窄（320 寬約 148px）的「以 Web App 打開」只把 Web App 包起來：
-// 整個名稱不斷時比欄寬多 4 到 13px（水平捲動），在名稱裡的空格處換行就放得下。
+// 斷行：說明文字照全站規則（07 第 3.5 節，2026-10-27 起中文逐字換行、段落齊行、line-break: strict 讓標點不落在行首），
+// 引號裡的介面名稱（「匯出到 App」「加入主畫面」）也照一般規則換行，不再包成不換行的 span。
 // 英文訊息不包（英文在空格處換行；Add to Home Screen 整串不斷的話，320 寬放大 200% 會超出步驟欄）。步驟編號是懸掛的一欄（install.css）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
@@ -139,7 +136,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
           step: 'chromium-menu',
           text: (
             <Trans id="install.guide.chromium.menu" comment="Chromium 沒有安裝事件時的說明">
-              打開右上角的選單，找「安裝」或「<span className="ll-nowrap">加入主畫面</span>」。
+              打開右上角的選單，找「安裝」或「加入主畫面」。
             </Trans>
           ),
         },
@@ -188,7 +185,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
         step: 'add-row',
         text: (
           <Trans id="install.guide.add" comment="往下找到加入主畫面">
-            往下找到「<span className="ll-nowrap">加入主畫面</span>」。
+            往下找到「加入主畫面」。
           </Trans>
         ),
       },
@@ -199,7 +196,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
             id="install.guide.confirm"
             comment="確認對話框：iOS 17、18 沒有「以 Web App 打開」開關，所以寫成「有…就開啟」；要短：375 的步驟說明一行約 10 字、1280 的步驟方塊約 12 字，都排成兩行"
           >
-            有「以 <span className="ll-nowrap">Web App</span> 打開」就開啟，點「加入」。
+            有「以 Web App 打開」就開啟，點「加入」。
           </Trans>
         ),
       },
@@ -225,8 +222,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
           <div className="ll-guide__step0">
             <p>
               <Trans id="install.guide.step0" comment="iOS 圖解的第 0 步：先把進度帶走">
-                第 0 步：先把這裡的進度帶走。按「<span className="ll-nowrap">匯出到 App</span>」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App
-                時貼上，進度就會合併。
+                第 0 步：先把這裡的進度帶走。按「匯出到 App」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App 時貼上，進度就會合併。
               </Trans>
             </p>
             {/* 接在安裝建議下方時，正上方橫幅的主動作就是「匯出到 App」，這裡不再放第二顆 */}
@@ -272,14 +268,14 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
           ) : (
             <p className="ll-small ll-muted">
               <Trans id="install.guide.legacyNote" comment="iOS 17、18 的說明">
-                你的 iOS 版本沒有縮小的網址列，也沒有「<span className="ll-nowrap">以 Web App 打開</span>」的開關；加入主畫面後會直接以 App 開啟。
+                你的 iOS 版本沒有縮小的網址列，也沒有「以 Web App 打開」的開關；加入主畫面後會直接以 App 開啟。
               </Trans>
             </p>
           )}
           {stepList}
           <p className="ll-small ll-muted ll-guide__note">
             <Trans id="install.guide.after" comment="加入之後的提醒">
-              之後都從主畫面的圖示開啟。Safari 分頁和 App 的紀錄是分開的兩份，新的進度記得用「<span className="ll-nowrap">匯出到 App</span>」帶過去。
+              之後都從主畫面的圖示開啟。Safari 分頁和 App 的紀錄是分開的兩份，新的進度記得用「匯出到 App」帶過去。
             </Trans>
           </p>
           {!reference && (

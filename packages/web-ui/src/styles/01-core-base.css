@@ -502,8 +502,8 @@ html[data-motion='reduced'] .ll-btn__dots {
   --_press: color-mix(in oklab, currentColor 18%, transparent);
   color: inherit;
 }
-/* 標題與內文的換行用全站規則（03-core-utils.css：strict 加 pretty）。第 7 輪拿掉第 6 輪的 keep-all 加 anywhere：
-   分句比一行長時句號被硬斷到下一行；不該拆開的詞由字串包 .ll-nowrap */
+/* 標題與內文的換行用全站規則（03-core-utils.css，07 第 3.5 節：中文逐字換行、line-break: strict）。第 7 輪拿掉第 6 輪的 keep-all 加 anywhere：
+   分句比一行長時句號被硬斷到下一行 */
 /* 寬的橫幅（容器 720px 以上，例如 1280 時頁首下方約 1040px 寬）：文字很短時動作列放在下一列太空，改到文字右側、靠上。
    第一行字（標題或內文）、左側圖示與右上角的關閉鈕都和 sm 按鈕的面（44px）同一條中線：字的行高 24，往下 10px；圖示 20，往下 12px。
    內文很長（例如展開的安裝圖解）時按鈕仍在右上角，不跑到長內容的中間。容器是橫幅本身（inline-size），窄欄、地圖的提示位置與手機維持上下排 */

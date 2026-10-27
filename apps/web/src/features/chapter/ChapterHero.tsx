@@ -206,8 +206,8 @@ export function ChapterHero({ locale, chapter, stats, metas, notAdvice, mapHref,
             </Button>
           )}
           <Button variant="secondary" size="md" block icon={<MapIcon />} href={mapHref} data-testid="chapter-on-map">
-            <Trans id="chapter.onMap" comment="章節頁回到地圖並捲到該章的連結；<0> 包住的「這一章」不拆開（文字放大時按鈕換行，不斷成「這／一章」）">
-              在地圖上看<span className="ll-nowrap">這一章</span>
+            <Trans id="chapter.onMap" comment="章節頁回到地圖並捲到該章的連結">
+              在地圖上看這一章
             </Trans>
           </Button>
         </div>

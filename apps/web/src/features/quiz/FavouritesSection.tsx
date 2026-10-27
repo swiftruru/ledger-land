@@ -4,8 +4,7 @@
 // 區塊標題和「學習」「這台裝置」同一種小標（footnote 600），右邊是題數的 Badge。
 // 摘錄（me.css 的 .ll-favourites__desc，最多兩行）：代號 Badge 和摘錄的第一個字在同一行。第 9 輪起依詞換行（375 原本斷成「申請一／筆」「如／果」），
 // （「股東會上有人想分股利」），排不進第二行時第二行只剩幾個字就截斷（第 5 輪看圖驗收）。
-// 卡片標題（關卡名）、已下架的說明與空清單的說明是完整顯示的短句，用 Phrased／PhrasedRich（200% 時不斷成「收／藏。」，
-// 第 9 輪：375 的「就會放／在這裡」、375 加 200% 的「從數／字倒推」）。
+// 卡片標題（關卡名）、已下架的說明與空清單的說明是完整顯示的短句，照全站規則逐字換行（07 第 3.5 節）。
 // 題目已下架時是不可點的卡（同版面、沒有箭頭），說明「這一關已下架」，一樣可以移除。
 // 移除後焦點移到同一位置的下一張（沒有就上一張，都沒有就回到區塊標題），並由常駐的 role=status 播報（finding pages-a-2）。
 // 只在「我的」頁以 lazy 載入；名稱與摘錄從已 precache 的快照取。一掛載就讀（維護者 2026-10-26：整頁資料齊了才一次出現），讀到後經 onCount 回報題數，
@@ -18,7 +17,6 @@ import { MapIcon } from '@ledgerland/web-ui/map';
 import { loadManifest, loadQuestion, loadTermIndex, type QuestionSnapshot } from '../../lib/content.ts';
 import { levelPosition, numberChapters } from '../glossary/unlocks.ts';
 import { useLevelCodeFormatter } from '../home/codes.ts';
-import { Phrased, PhrasedRich } from '../me/Phrased.tsx';
 import { listFavourites, removeFavourite } from './favourites.ts';
 import { renderPlain, valueContextOf } from './placeholders.ts';
 import '../../styles/me.css';
@@ -152,9 +150,8 @@ export default function FavouritesSection({ locale, headingId = 'll-favourites-t
       {items !== null && items.length === 0 && (
         <div className="ll-favourites__empty" data-testid="favourites-empty">
           <p className="ll-favourites__empty-text">
-            {/* 按鈕名稱「收藏」與「取捨題」不斷開（320 加 200% 原本斷成「按「收／藏」」）；引號在 span 外面（design-system.md 第 22 節） */}
-            <Trans id="favourites.empty" comment="收藏清單是空的；<0>、<1> 是不換行的詞；其他依詞換行（PhrasedRich）" render={PhrasedRich}>
-              還沒有收藏。作答<span className="ll-nowrap">取捨題</span>時按「<span className="ll-nowrap">收藏</span>」，就會放在這裡。
+            <Trans id="favourites.empty" comment="收藏清單是空的">
+              還沒有收藏。作答取捨題時按「收藏」，就會放在這裡。
             </Trans>
           </p>
           <Button size="sm" icon={<MapIcon />} href={localePath(locale, '/play/')}>
@@ -181,14 +178,10 @@ export default function FavouritesSection({ locale, headingId = 'll-favourites-t
                   as="div"
                   chevron="wide"
                   icon={<HeartIcon filled />}
-                  title={
-                    <span className="ll-favourites__name">
-                      <Phrased text={nameOf(item)} />
-                    </span>
-                  }
+                  title={<span className="ll-favourites__name">{nameOf(item)}</span>}
                   description={
                     retired ? (
-                      <Phrased text={t({ id: 'favourites.retiredLevel', message: '這一關已下架，可以移除這筆收藏。', comment: '已下架的收藏卡的說明' })} />
+                      t({ id: 'favourites.retiredLevel', message: '這一關已下架，可以移除這筆收藏。', comment: '已下架的收藏卡的說明' })
                     ) : (
                       <span className="ll-favourites__desc">
                         {pos && (

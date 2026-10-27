@@ -339,7 +339,7 @@ html[data-theme='dark'] .ll-node__stars {
 .ll-chbanner__name {
   min-width: 0;
 }
-/* 章名與紙籤：兩行時兩行等長。中文章名依詞換行（ChapterBanner 用 phrased 切詞加 .ll-phrased，全站換行規則，不在這裡另寫 keep-all）；
+/* 章名與紙籤：兩行時兩行等長。中文章名照全站規則逐字換行，子句換行由 ChapterBanner 的 phrased 處理（不在這裡另寫 keep-all）；
    紙籤的「第 N 章終點」與徽章文字很短，照全站規則（line-break: strict），徽章名稱整組 inline-block。
    章名的 balance 由 .ll-chbanner__title 繼承（text-wrap 是繼承屬性），這裡只寫紙籤 */
 .ll-chend__lines {
@@ -636,7 +636,7 @@ html .ll-chend[data-badge-state='mastery'] .ll-chend__text {
   overflow-wrap: anywhere;
 }
 /* 整組一起換行的子句：紙籤的徽章名稱（含引號），以及 phrased 切出來的子句（章名、關卡名稱、海峽說明卡；第 7 輪看圖驗收）：
-   放得進一行的子句整段移到下一行，標題只在「：」「，」「、」後面斷；比一行長時（文字放大）在詞與詞之間斷，兩行等長，不留「版本」這種短的一行 */
+   放得進一行的子句整段移到下一行，標題只在「：」「，」「、」後面斷；比一行長時（文字放大）字照全站規則逐字換行，兩行等長 */
 .ll-phrased__clause {
   display: inline-block;
   text-wrap: balance;
@@ -964,7 +964,7 @@ html[data-theme='dark'] .ll-marker {
 
 /* 關卡介紹面板（站規 1.10、1.20）：頭部三欄（關卡圓章、標題與章名、關閉鈕）、學習目標、最佳成績、給老師的代號。
    第 4 輪看圖驗收：圓章、星星、標題、章名原本由上往下疊成四列，左邊一條窄柱、右邊一大片空白；改成圓章在左欄、跨標題與章名兩列，垂直置中。
-   第 9 輪：文字放大 200% 時 44px 的圓章放不下「3-1」，原本斷成「3-」換行「1」、字跑出圓外。編號整塊不斷（ll-nowrap），字級最大 16px，
+   第 9 輪：文字放大 200% 時 44px 的圓章放不下「3-1」，原本斷成「3-」換行「1」、字跑出圓外。編號整塊不斷（.ll-keep），字級最大 16px，
    圓章維持 44px：改成跟著編號變寬的膠囊時，320 寬的標題欄只剩約 150px，英文標題的長字在字中間斷。
    圓章直接放在 Sheet 的 .ll-sheet__lead（flex）裡，不再多包一層 span（原本的 .ll-levelsheet__lead） */
 .ll-sheet--level .ll-sheet__heading:has(> .ll-sheet__lead) {

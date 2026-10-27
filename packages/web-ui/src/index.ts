@@ -38,7 +38,6 @@ export {
   type TermCategory,
   type ElementKind,
 } from './components/GlossaryItem.tsx';
-export { KNOWN_WORDS, phraseParts, punctTail } from './components/phrase.ts';
 export { SearchField, type SearchFieldProps } from './components/SearchField.tsx';
 export { ProgressBar, type ProgressBarProps } from './components/ProgressBar.tsx';
 export { HintBar, type HintBarProps } from './components/HintBar.tsx';

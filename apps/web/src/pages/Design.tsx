@@ -30,7 +30,6 @@ import {
 } from '@ledgerland/web-ui';
 import { MapIcon } from '@ledgerland/web-ui/map';
 import { useBackToMe } from '../components/useBackLabels.ts';
-import { Phrased } from '../features/me/Phrased.tsx';
 import { useLocale } from '../lib/useLocale.ts';
 import '../styles/info.css';
 
@@ -390,19 +389,19 @@ export default function Design() {
             <NavRow
               icon={<ShieldIcon />}
               title={t({ id: 'me.privacy', message: '隱私說明', comment: '「我的」連到隱私說明' })}
-              description={<Phrased text={t({ id: 'me.privacy.desc', message: '進度存在哪裡、誰看得到', comment: '「我的」隱私說明列的說明' })} />}
+              description={t({ id: 'me.privacy.desc', message: '進度存在哪裡、誰看得到', comment: '「我的」隱私說明列的說明' })}
               href={localePath(locale, '/privacy/')}
             />
             <NavRow
               icon={<InfoIcon />}
               title={t({ id: 'me.about', message: '關於與授權', comment: '「我的」連到關於與授權' })}
-              description={<Phrased text={t({ id: 'me.about.desc', message: '授權、原始碼與版本', comment: '「我的」關於與授權列的說明' })} />}
+              description={t({ id: 'me.about.desc', message: '授權、原始碼與版本', comment: '「我的」關於與授權列的說明' })}
               href={localePath(locale, '/about/')}
             />
             <NavRow
               icon={<HeartIcon />}
               title={t({ id: 'me.credits', message: '幕後', comment: '「我的」連到幕後（作者、老師與技術棧）' })}
-              description={<Phrased text={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })} />}
+              description={t({ id: 'me.credits.desc', message: '作者、老師，還有做網站的技術', comment: '「我的」幕後列的說明' })}
               href={localePath(locale, '/credits/')}
             />
           </NavList>

@@ -3,7 +3,7 @@
 // 匯入先驗證（packages/progress 的 validateBackup）並顯示預覽卡（含收藏數），確認後才寫入；預設合併，「覆蓋現有進度」在進階選項裡，
 // 是 danger 按鈕，按下先開確認面板，確認後先自動匯出一份目前的進度、匯出沒有完成就不覆蓋（06 第 4.6 節）。
 // 錯誤只有一種紅色（站規 1.2.4）：備份碼的錯誤在文字框下方（框變紅），檔案的錯誤在「選擇備份檔」下方，同樣的圖示與顏色。所有文字欄位當純文字顯示。
-// 第 5 輪看圖驗收：頁首與卡片的說明句用 Phrased（中文只在詞與詞之間換行）；「附上錯誤紀錄」的用途移到開關的說明行；三個統計膠囊和玩家卡同一套排法（me.css）。
+// 第 5 輪看圖驗收：「附上錯誤紀錄」的用途移到開關的說明行；三個統計膠囊和玩家卡同一套排法（me.css）。
 // 統計（作答、關卡、徽章、上次匯出、用量）與保留許可的現況讀齊才經 usePageReady 回報、整頁一次出現（維護者 2026-10-26）；
 // 讀到之前整頁看不見，所以膠囊沒有「…」、上次匯出沒有骨架。
 import { Trans, useLingui } from '@lingui/react/macro';
@@ -43,7 +43,6 @@ import {
   TrashIcon,
 } from '@ledgerland/web-ui';
 import { CopyIcon, MedalIcon } from '@ledgerland/web-ui/map';
-import { Phrased, PhrasedRich } from '../features/me/Phrased.tsx';
 import { readBackupStats, type BackupStats } from '../features/me/progress-reads.ts';
 import { environmentKind } from '../lib/env.ts';
 import { appVersion, getContentVersion, nowIso, todayLocal } from '../lib/progress/app-info.ts';
@@ -408,7 +407,7 @@ export default function Backup() {
         backShortLabel={t({ id: 'me.back.short', message: '我的', comment: '子頁返回「我的」在畫面上的短字' })}
       />
       <p className="ll-backup__intro">
-        <Phrased text={t({ id: 'backup.intro', message: '進度只存在這台裝置。換裝置、重灌，或把 Safari 的進度搬進主畫面 App 時，用備份檔或備份碼轉移。' })} />
+        {t({ id: 'backup.intro', message: '進度只存在這台裝置。換裝置、重灌，或把 Safari 的進度搬進主畫面 App 時，用備份檔或備份碼轉移。' })}
       </p>
 
       {/* 狀態卡（第 3 輪看圖驗收）：標題和其他卡片同一種 title-3；學習紀錄改成三個統計膠囊（和玩家卡同一種語言，膠囊下面一行短標籤），
@@ -484,16 +483,11 @@ export default function Backup() {
             <Trans id="backup.status.persist">保護進度</Trans>
           </dt>
           <dd>
-            {/* 依詞換行（第 9 輪：375 加 200% 的「尚未取得保／留許可」） */}
-            <Phrased
-              text={
-                status.persisted === true
-                  ? t({ id: 'backup.status.persisted', message: '瀏覽器已同意保留' })
-                  : status.persisted === false
-                    ? t({ id: 'backup.status.notPersisted', message: '尚未取得保留許可' })
-                    : t({ id: 'backup.status.persistUnknown', message: '這個瀏覽器無法查詢' })
-              }
-            />
+            {status.persisted === true
+              ? t({ id: 'backup.status.persisted', message: '瀏覽器已同意保留' })
+              : status.persisted === false
+                ? t({ id: 'backup.status.notPersisted', message: '尚未取得保留許可' })
+                : t({ id: 'backup.status.persistUnknown', message: '這個瀏覽器無法查詢' })}
             {triggerLabel !== null && persistDate !== null && (
               <span className="ll-backup__aside">
                 {' '}
@@ -553,9 +547,7 @@ export default function Backup() {
           checked={includeErrors}
           onChange={setIncludeErrors}
           label={t({ id: 'backup.export.includeErrors', message: '附上錯誤紀錄', comment: '匯出卡的開關標籤（用途寫在下面的說明行）' })}
-          description={
-            <Phrased block text={t({ id: 'backup.export.includeErrorsDesc', message: '只用於回報問題。', comment: '「附上錯誤紀錄」開關的說明' })} />
-          }
+          description={t({ id: 'backup.export.includeErrorsDesc', message: '只用於回報問題。', comment: '「附上錯誤紀錄」開關的說明' })}
           className="ll-backup__switch"
         />
         <div role="status" className="ll-backup__status" data-testid="export-message">
@@ -594,15 +586,10 @@ export default function Backup() {
         <h2 id="ll-backup-import" className="ll-backup__title">
           <Trans id="backup.import.title">匯入</Trans>
         </h2>
-        {/* 第 6 輪看圖驗收：375 斷成「…合併：作答／紀錄取聯集…」。「作答紀錄」包成不斷開的 span（PhrasedRich），冒號後面一句縮到 20 個字
-            （「作答紀錄都保留、星星取最高、徽章不會少。」），375 排成「…合併：」與規則一句兩行，320 是三行、每行都斷在標點後 */}
+        {/* 第 6 輪看圖驗收：冒號後面一句縮到 20 個字（「作答紀錄都保留、星星取最高、徽章不會少。」）；2026-10-27 起照全站規則逐字換行 */}
         <p className="ll-backup__hint">
-          <Trans
-            id="backup.import.hint"
-            comment="匯入卡的說明。<0> 包住的「作答紀錄」在窄螢幕不拆成兩行；冒號後面一句保持 20 個字以內，375 寬時排成冒號前後兩行"
-            render={PhrasedRich}
-          >
-            預設會和這台裝置的紀錄合併：<span className="ll-nowrap">作答紀錄</span>都保留、星星取最高、徽章不會少。
+          <Trans id="backup.import.hint" comment="匯入卡的說明。冒號後面一句保持 20 個字以內">
+            預設會和這台裝置的紀錄合併：作答紀錄都保留、星星取最高、徽章不會少。
           </Trans>
         </p>
         <input
@@ -688,11 +675,10 @@ export default function Backup() {
             <Trans id="backup.preview.title">預覽</Trans>
           </h2>
           <p className="ll-backup__summary" data-testid="import-preview">
-            {/* 依詞換行（PhrasedRich，第 9 輪：375 加 200% 的「作答紀／錄」「星／星」）；數字和後面的量詞之間是不換行空白（U+00A0） */}
+            {/* 數字和後面的量詞之間是不換行空白（U+00A0）；其他字照全站規則逐字換行 */}
             <Trans
               id="backup.preview.summaryWithFavourites"
               comment="previewAttempts、previewLevels、previewBadges、previewFavourites 是已格式化的數字；數字和量詞（筆、個、題）之間是不換行空白"
-              render={PhrasedRich}
             >
               將匯入 {previewAttempts} 筆作答紀錄、{previewLevels} 個關卡的星星、{previewBadges} 個徽章、{previewFavourites} 題收藏
             </Trans>
@@ -736,13 +722,11 @@ export default function Backup() {
             className="ll-backup__advanced"
           >
             <p className="ll-backup__hint">
-              <Phrased
-                text={t({
-                  id: 'backup.preview.replaceHint',
-                  message: '覆蓋：除了語言、計時這類偏好設定之外，全部（包括收藏）改成備份裡的內容。覆蓋之前會先自動匯出一份目前的進度。',
-                  comment: '進階選項裡覆蓋的說明',
-                })}
-              />
+              {t({
+                id: 'backup.preview.replaceHint',
+                message: '覆蓋：除了語言、計時這類偏好設定之外，全部（包括收藏）改成備份裡的內容。覆蓋之前會先自動匯出一份目前的進度。',
+                comment: '進階選項裡覆蓋的說明',
+              })}
             </p>
             <Button
               variant="danger"

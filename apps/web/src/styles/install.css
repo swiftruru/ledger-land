@@ -34,9 +34,8 @@
 }
 /* 斷行（第 7 輪：全站同一套規則，基礎組定在 web-ui）：圖解裡的說明（步驟、第 0 步、提醒）用全站預設的逐字換行加 line-break: strict、
    text-wrap: pretty，每行排滿、標點不落在行首。第 6 輪的 keep-all 讓第 0 步每行都停在逗號、右緣參差，已拿掉。
-   引號裡的介面名稱（「匯出到 App」「加入主畫面」）在字串裡包 .ll-nowrap（web-ui 的全站 class，引號在 span 外面），整個名稱不拆到兩行；
-   最窄的步驟欄（320 寬約 148px）放不下整個「以 Web App 打開」（整塊不斷時水平捲動 4 到 13px），只包 Web App，在名稱裡的空格處換行。
-   其餘的中文照全站規則逐字換行（07 第 3.5 節，2026-10-27 起）。不需要另加 overflow-wrap: anywhere */
+   中文照全站規則逐字換行（07 第 3.5 節，2026-10-27 起），引號裡的介面名稱（「匯出到 App」「加入主畫面」）也不再包成不換行的 span。
+   不需要另加 overflow-wrap: anywhere */
 .ll-guide__svg {
   width: 96px;
   height: auto;
@@ -149,9 +148,6 @@
 @container (max-width: 12em) {
   .ll-guide__step {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .ll-guide .ll-nowrap {
-    white-space: normal;
   }
 }
 /* 寬的圖解（卡片內容 720px 以上，例如 1280 時首頁安裝建議橫幅下方的圖解卡片，約 1000px 寬）：一列一步時示意圖靠左、右邊一大片空白，

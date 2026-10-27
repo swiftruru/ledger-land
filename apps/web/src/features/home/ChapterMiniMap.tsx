@@ -14,7 +14,6 @@ import { MapMarker } from '@ledgerland/web-ui/map';
 import { layoutMap, trackGeometry, type ChapterLayout, type RouteSegment } from '../quest-map/layout.ts';
 import { sceneFor } from '../quest-map/scenes.tsx';
 import { SCENE_TERRAIN } from '../quest-map/terrain.ts';
-import { PhrasedParts } from '../me/PhrasedParts.tsx';
 import { useLevelCodeFormatter } from './codes.ts';
 import type { HomeQuest } from './home-quest.ts';
 import { LAYOUT_MAX, MINI, frameMiniMap } from './minimap-frame.ts';
@@ -23,7 +22,7 @@ import { LAYOUT_MAX, MINI, frameMiniMap } from './minimap-frame.ts';
  * 小地圖卡的說明（站規 1.16，第 4 輪看圖驗收改）。有進度時是這一章的進度：進度條 sm、「2／3 關」與星星數，和寬版主卡的「這一章的進度」
  * 同一組數字與字串（首頁傳進來，不新增字串；主卡第二行已經寫下一關的關名，這裡不再重複）。螢幕閱讀器念「這一章的進度 2／3 關 這一章的星星 4／9 顆」；
  * 整章不計分（滿星數 0）時不畫星星；1024 起主卡已有同一組進度，home.css 把這段隱藏，卡片只留章名。
- * 新使用者（主卡第二行是介紹）寫第一關的關名（依詞換行，home-quest.ts 切好的 titleParts；第 9 輪：200% 的「誰／的錢」），螢幕閱讀器多念「下一關」；
+ * 新使用者（主卡第二行是介紹）寫第一關的關名，螢幕閱讀器多念「下一關」；
  * 全部完成時寫「全部關卡都完成了」。
  * 放在這個 lazy 模組裡，首頁首次載入的 JS 不增加。
  */
@@ -49,7 +48,7 @@ export function MiniMapDesc({
         <span className="ll-sr-only">
           {t({ id: 'home.minimap.nextLabel', message: '下一關：', comment: '首頁章節小地圖卡說明前只給螢幕閱讀器的字，後面接關卡名' })}
         </span>
-        <PhrasedParts text={quest.next.title} parts={quest.next.titleParts} />
+        {quest.next.title}
       </>
     );
   return (

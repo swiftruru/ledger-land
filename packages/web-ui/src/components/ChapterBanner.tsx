@@ -58,8 +58,7 @@ export function useChapterLabels() {
 /**
  * 章名的結尾和箭頭綁在一起，箭頭不會自己掉到下一行：英文是最後一個單字；中文是最後兩個字（四個字以上的章名），
  * 換行時第二行至少兩個字，不會只剩「帳 ›」一個孤字（第 2 輪看圖驗收的 200%：中文章名整串沒有斷點時只能斷在箭頭前）。
- * 前面的部分依詞換行（phrased 切詞加 .ll-phrased，全站換行規則），兩部分之間是字與字，keep-all 不會從那裡斷；
- * 結尾放進 phrased 的最後一個子句裡（第 7 輪看圖驗收：標題只在「：」「，」後面換行，子句是 inline-block）
+ * 前面的部分照全站規則逐字換行；結尾放進 phrased 的最後一個子句裡（第 7 輪看圖驗收：放得進一行的子句整段換行，子句是 inline-block）
  */
 function splitTail(title: string): [string, string] {
   const t = title.trimEnd();

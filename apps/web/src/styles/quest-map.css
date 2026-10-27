@@ -405,7 +405,7 @@ html[data-theme='dark'] .qm-strait__card {
     inset 0 0 0 1px var(--ll-border-strong),
     var(--ll-shadow-3);
 }
-/* 整段平衡兩行的長度；標題依詞換行（QuestMap 用 phrased 切詞加 .ll-phrased），說明句照全站換行規則 */
+/* 整段平衡兩行的長度；標題用地圖的 phrased 做子句換行，說明句照全站換行規則 */
 .qm-strait__card {
   container-type: inline-size;
   text-wrap: balance;

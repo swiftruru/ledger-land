@@ -26,7 +26,6 @@ import { MapIcon, MapMarker, MedalIcon } from '@ledgerland/web-ui/map';
 import { useExpandedBanner } from '../components/Banners.tsx';
 import { ImportPromptCard, useImportPrompt } from '../components/ImportPromptCard.tsx';
 import { LangSwitch } from '../components/LangSwitch.tsx';
-import { PhrasedParts } from '../features/me/PhrasedParts.tsx';
 import { useLevelCodeFormatter } from '../features/home/codes.ts';
 import { useHomeData } from '../features/home/useHomeData.ts';
 import { useDueCount } from '../features/quiz/useDueCount.ts';
@@ -58,7 +57,7 @@ export function Home() {
   const fmt = (n: number) => formatNumber(n, locale);
   const next = quest?.next;
   const nextCode = next ? code(next.chapterNo, next.levelNo, next.extension) : '';
-  const nextTitleText = next?.title ?? '';
+  const nextTitle = next?.title ?? '';
   const state = quest?.state ?? 'new';
   const playHref = localePath(locale, '/play/');
   // 匯入提示卡出現時（App 第一次啟動、資料庫是空的），它的「貼上備份碼」是這個畫面唯一的主按鈕，主卡的按鈕改成 secondary（站規 5.2）；
@@ -103,11 +102,9 @@ export function Home() {
     </Button>
   );
 
-  // 章名與關卡名依詞換行（第 9 輪看圖驗收：320 的「下一關「綜合挑／戰：…」」、200% 的「一／家小店的帳」）：
-  // 詞在懶載入的 home-quest.ts 切好（titleParts），這裡只用 PhrasedParts 放 <wbr>，首次載入的 JS 不帶切詞程式
+  // 章名與關卡名照全站規則逐字換行（07 第 3.5 節，2026-10-27 起不再切詞）
   const chapterNo = quest ? fmt(quest.chapter.chapterNo) : '';
-  const chapterName = quest ? <PhrasedParts text={quest.chapter.title} parts={quest.chapter.titleParts} /> : null;
-  const nextTitle = <PhrasedParts text={nextTitleText} parts={next?.titleParts} />;
+  const chapterName = quest ? quest.chapter.title : null;
   const chapterTitle = quest ? (
     quest.chapter.extension ? (
       <Trans id="home.minimap.chapterTitleExt" comment="首頁章節小地圖卡的標題（延伸章）；chapterNo 是已格式化的章序，chapterName 是章名">
@@ -174,12 +171,9 @@ export function Home() {
               <h2 id="ll-home-greet" className="ll-home-hero__greet">
                 {greeting}
               </h2>
-              {state === 'continue' && nextTitleText !== '' ? (
+              {state === 'continue' && nextTitle !== '' ? (
                 <p className="ll-home-hero__tag ll-home-hero__tag--next" data-testid="home-next-title">
-                  <Trans
-                    id="home.hero.next"
-                    comment="首頁主卡的第二行（有進度）：下一關的關卡名；nextTitle 是關卡名（依詞換行）。「下一關」的字與字之間有看不見的 U+2060，兩行時不拆成「下一／關「…」」"
-                  >
+                  <Trans id="home.hero.next" comment="首頁主卡的第二行（有進度）：下一關的關卡名；nextTitle 是關卡名">
                     下一關「{nextTitle}」
                   </Trans>
                 </p>

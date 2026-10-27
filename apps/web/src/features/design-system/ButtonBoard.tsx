@@ -61,7 +61,6 @@ import {
   type ButtonVariant,
 } from '@ledgerland/web-ui';
 import { ChapterBadge, KeyboardIcon, ListIcon, LocateIcon, MapIcon, MedalIcon, QrIcon } from '@ledgerland/web-ui/map';
-import { Phrased } from '../me/Phrased.tsx';
 import './ButtonBoard.css';
 
 type State = 'rest' | 'hover' | 'active' | 'pressed' | 'focus' | 'disabled' | 'busy';
@@ -256,11 +255,10 @@ export default function ButtonBoard() {
             在地圖上看這一章
           </Button>
           <Button size="sm" variant="quiet" pressed icon={<BookmarkIcon filled />}>
-            我是<span className="ll-nowrap">猜的</span>，<span className="ll-nowrap">加入</span>
-            <span className="ll-nowrap">錯題本</span>
+            我是猜的，加入錯題本
           </Button>
           <Button size="sm" icon={<RetryIcon />}>
-            <Phrased text="再挑戰這一關的題目" />
+            再挑戰這一關的題目
           </Button>
         </div>
         <div className="ll-board__row">
@@ -564,10 +562,9 @@ export default function ButtonBoard() {
       </Section>
 
       <Section id="banner" title="HintBar、Banner">
-        {/* 換行用全站規則（strict 加 pretty）；不該拆開的詞包 .ll-nowrap（design-system.md 第 22 節） */}
+        {/* 換行用全站規則（07 第 3.5 節：中文逐字換行、齊行） */}
         <HintBar kind="warning" detailsHref="/me/backup/" detailsLabel="詳細：Safari 分頁" onClose={() => {}}>
-          Safari 分頁的進度<span className="ll-nowrap">可能會消失</span>，文字<span className="ll-nowrap">放大時</span>
-          <span className="ll-nowrap">會換行</span>，<span className="ll-nowrap">不會被截斷</span>
+          Safari 分頁的進度可能會消失，文字放大時會換行，不會被截斷
         </HintBar>
         {/* 站規 2.17：只有儲存層五種的主動作是 primary sm，其他橫幅的主動作是 secondary sm 加圖示、次動作 quiet sm */}
         <Banner
@@ -585,8 +582,7 @@ export default function ButtonBoard() {
             </>
           }
         >
-          加到<span className="ll-nowrap">主畫面</span>後，進度<span className="ll-nowrap">不會因為</span>
-          <span className="ll-nowrap">清除瀏覽紀錄</span>而<span className="ll-nowrap">消失</span>。
+          加到主畫面後，進度不會因為清除瀏覽紀錄而消失。
         </Banner>
         <Banner kind="warning" role="status">
           <p>舊寫法：只有 children 的橫幅，圖示自動加上。</p>
@@ -600,25 +596,19 @@ export default function ButtonBoard() {
             </Button>
           }
         >
-          這台裝置的<span className="ll-nowrap">儲存空間</span>被<span className="ll-nowrap">瀏覽器</span>
-          <span className="ll-nowrap">擋住了</span>，<span className="ll-nowrap">先匯出備份檔</span>。
+          這台裝置的儲存空間被瀏覽器擋住了，先匯出備份檔。
         </Banner>
         <Banner kind="success" title="備份碼已複製" role="status">
-          貼到另一台裝置或 App 的「<span className="ll-nowrap">貼上備份碼</span>」就能匯入。
+          貼到另一台裝置或 App 的「貼上備份碼」就能匯入。
         </Banner>
       </Section>
 
-      {/* 空狀態的說明依詞換行：頁面把 Phrased 切好詞的節點傳進來（元件在首次載入的 chunk，不自己切詞；design-system.md 第 22 節） */}
       <Section id="states" title="EmptyState、ErrorState、Sheet、Menu">
         <div className="ll-board__cols">
-          {/* 和錯題本的空狀態同一組字（第 7 輪 handoff）：標題的「要複習」不換行；說明示範 Phrased（錯題本頁本身用 rich text 的 .ll-nowrap） */}
+          {/* 和錯題本的空狀態同一組字（第 7 輪 handoff） */}
           <EmptyState
-            title={
-              <>
-                今天沒有<span className="ll-nowrap">要複習</span>的題目
-              </>
-            }
-            description={<Phrased text="答錯或標成猜的題目，會在之後幾天回來找你。" />}
+            title="今天沒有要複習的題目"
+            description="答錯或標成猜的題目，會在之後幾天回來找你。"
             action={
               <Button variant="primary" icon={<MapIcon />} href="/play/">
                 去闖關地圖
@@ -627,7 +617,7 @@ export default function ButtonBoard() {
           />
           <ErrorState
             title="地圖載入失敗"
-            description={<Phrased text="這一頁還沒下載到這台裝置。連上網路後再試一次。" />}
+            description="這一頁還沒下載到這台裝置。連上網路後再試一次。"
             onRetry={() => {}}
             action={
               <Button icon={<CardsIcon />} href="/terms/">

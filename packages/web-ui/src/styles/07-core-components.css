@@ -342,8 +342,7 @@ html[data-motion='reduced'] .ll-toast--collect .ll-toast__media {
   gap: var(--ll-space-2);
 }
 /* 空狀態與錯誤狀態（站規 1.20、2.18）：鈴 96px 在上，標題 title-3、說明最多 22em（置中的短段落），按鈕列置中（主要的在前）。
-   標題與說明用 balance 讓各行等長；換行用全站規則（03-core-utils.css，第 7 輪拿掉 keep-all 加 anywhere），
-   不該拆開的詞（「闖關地圖」）由字串包 .ll-nowrap */
+   標題與說明用 balance 讓各行等長；換行用全站規則（03-core-utils.css，07 第 3.5 節：中文逐字換行） */
 .ll-state {
   display: grid;
   justify-items: center;

@@ -265,15 +265,14 @@ html { line-break: strict; text-wrap: pretty; }   /* 句號、逗號、頓號不
   :lang(en) { hyphens: auto; hyphenate-limit-chars: 8 4 3; }
   :is([class*='title'], [class*='name'], .ll-btn), :is([class*='title'], [class*='name'], .ll-btn) * { hyphens: manual; }
 }
-.ll-nowrap { white-space: nowrap; }                /* 英文訊息裡整塊不斷的短串 */
-:lang(zh-TW) .ll-nowrap { white-space: normal; }   /* 中文一般的詞不再整塊不斷 */
+.ll-nowrap { white-space: nowrap; }                /* 英文訊息裡整塊不斷的短串（目前沒有地方用到） */
 .ll-keep { white-space: nowrap; }                  /* 真的不能拆的短串：關卡代號、數字加量詞、介面路徑 */
-.ll-phrased { overflow-wrap: anywhere; }           /* 切過詞的句子只保留行尾硬斷，字照一般規則換行 */
+.ll-phrased { overflow-wrap: anywhere; }           /* 名稱與標題的長串只在行尾硬斷、不撐破版面 */
 ```
 
 - **中文（我 2026-10-27 的決定）**：照印刷慣例逐字換行、標點不落行首、段落與清單左右對齊，每一行排滿；最後一行靠左，偶爾只剩一兩個字是正常的。中英夾雜時英文字仍不拆，那一行的字距稍微拉開。標題、按鈕、選單列的標題不齊行。
-- **拿掉的東西**：M3 看圖驗收第 5 到 9 輪加上的「詞不拆開」（`Intl.Segmenter` 切詞、詞之間放 `<wbr>`、詞包成 `.ll-nowrap`、章節頁依欄寬決定哪一層不拆的容器查詢）與中文的 `text-wrap: pretty`。理由：詞不拆開是英文的規矩，套到中文上每一行都排不滿；iPhone 的 Safari 對 `pretty` 的做法是把整段的右緣修齊，結果看起來像提早換行（維護者 2026-10-27 實機回饋）。刪掉的程式：`components/prose-units.ts` 與 `ProseWords`、`features/term-page/prose.ts` 與 `TermProse`、`features/chapter/prose.ts` 與 `ChapterProse`、`features/quiz-phrase/quiz-phrase.ts` 與 `Markup` 的切詞路徑。保留的：web-ui 的 `phraseParts`（名詞卡名稱、地圖標題的子句換行、`Phrased` 的說明句）仍會在詞之間放 `<wbr>`，但 `.ll-phrased` 不再 keep-all，所以畫面上就是一般換行；之後再決定要不要一併拿掉。
-- **真的不能拆的短串用 `.ll-keep`**：關卡代號、數字和量詞（或用不換行空白 U+00A0）、「我的 › 備份」這種介面路徑。中文訊息裡原本包成 `.ll-nowrap` 的一般詞（「作答紀錄」「可離線使用」）先留著標籤、由 `:lang(zh-TW) .ll-nowrap { white-space: normal }` 關掉（拿掉標籤要同時改兩種語言的 catalog，之後再清）；英文訊息裡的 `.ll-nowrap` 照舊。首次載入的字串裡原本用來黏住字的 U+2060 也拿掉了。
+- **拿掉的東西**：M3 看圖驗收第 5 到 9 輪加上的「詞不拆開」（`Intl.Segmenter` 切詞、詞之間放 `<wbr>`、詞包成 `.ll-nowrap`、章節頁依欄寬決定哪一層不拆的容器查詢）與中文的 `text-wrap: pretty`。理由：詞不拆開是英文的規矩，套到中文上每一行都排不滿；iPhone 的 Safari 對 `pretty` 的做法是把整段的右緣修齊，結果看起來像提早換行（維護者 2026-10-27 實機回饋）。刪掉的程式：`components/prose-units.ts` 與 `ProseWords`、`features/term-page/prose.ts` 與 `TermProse`、`features/chapter/prose.ts` 與 `ChapterProse`、`features/quiz-phrase/quiz-phrase.ts` 與 `Markup` 的切詞路徑。同一天稍後第二批清掉剩下的切詞程式：web-ui 的 `components/phrase.ts`（`phraseParts`、`punctTail`、`KNOWN_WORDS`）、apps/web 的 `features/me/Phrased.tsx`（`Phrased`、`PhrasedRich`）、`PhrasedParts.tsx` 與 `home-quest.ts` 的 `titleParts`，呼叫處改成直接放字串；名詞卡的名稱、選項群組的狀態行也不再放 `<wbr>`。留下的只有 web-ui 的 `MapPhrase.tsx`：地圖標題（章名、關卡名稱、海峽說明卡）在「：」「，」「、」「；」後面與開括號前面切成子句，放得進一行的子句包成 inline-block（`.ll-phrased__clause`）整段換到下一行，這是標題的排版、不是段落的換行規則；子句裡的字照一般規則逐字換行。`.ll-phrased` 只剩 `overflow-wrap: anywhere`。
+- **真的不能拆的短串用 `.ll-keep`**：關卡代號、數字和量詞（或用不換行空白 U+00A0）、「我的 › 備份」這種介面路徑。中文訊息裡原本包成 `.ll-nowrap` 的一般詞（「作答紀錄」「可離線使用」）的標籤已全部拿掉（兩種語言的 catalog 一起改，關掉用的 `:lang(zh-TW) .ll-nowrap` 規則也刪了）；`.ll-nowrap` 留給英文訊息裡整塊不斷的短串，目前沒有地方用到。首次載入的字串裡原本用來黏住字的 U+2060 也拿掉了。
 - **英文**：維持靠左、只在空格換行、`text-wrap: pretty`；手機一行只有八到十個字，齊行會出現河流般的空隙，所以不齊行。
 
 ### 4.1 間距（4px 基準）

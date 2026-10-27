@@ -836,9 +836,8 @@ export default function Play() {
           <EmptyState
             title={t({ id: 'play.empty.title', message: '關卡準備中', comment: '內容快照還沒有關卡時的空狀態標題' })}
             description={
-              // 「發布」整塊不斷（第 7 輪 handoff：320 與 375 斷成「發／布」）；EmptyState 不切詞，Phrased 會把切詞帶進地圖的 chunk
-              <Trans id="play.empty.body" comment="空狀態說明；鈴是吉祥物的名字；<0> 是不換行的詞">
-                鈴還在整理路線，關卡<span className="ll-nowrap">發布</span>後就會出現在這裡。
+              <Trans id="play.empty.body" comment="空狀態說明；鈴是吉祥物的名字">
+                鈴還在整理路線，關卡發布後就會出現在這裡。
               </Trans>
             }
             action={

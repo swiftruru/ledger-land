@@ -129,8 +129,7 @@
   /* 窄欄裡的長英文字也要能斷，不壓到右側的狀態 */
   overflow-wrap: anywhere;
 }
-/* 說明的換行用全站規則（03-core-utils.css：strict 加 pretty；第 7 輪拿掉 keep-all，320 加 200% 時「進度存在哪／裡、」是它在行尾硬斷）。
-   不該拆開的詞由字串包 .ll-nowrap，數字和量詞之間用不換行空白（「1 題」） */
+/* 說明的換行用全站規則（03-core-utils.css，07 第 3.5 節：中文逐字換行、齊行）；數字和量詞之間用不換行空白或 .ll-keep（「1 題」） */
 .ll-navrow__desc {
   font-size: var(--ll-type-body-sm-size);
   line-height: var(--ll-type-footnote-line);

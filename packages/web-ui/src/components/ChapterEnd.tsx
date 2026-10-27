@@ -119,27 +119,23 @@ export function ChapterEnd({
   const text = completed
     ? t({ id: 'map.end.completed', message: `${chapter}完成`, comment: '章末紙籤：本章已完成；chapter 是「第 N 章」' })
     : t({ id: 'map.end.goal', message: `${chapter}終點`, comment: '章末紙籤：本章尚未完成；chapter 是「第 N 章」，英文寫成 End of Chapter N' });
-  // 徽章名稱（含引號）包成一個 inline-block：整組一起換行，不會斷成「開店/了」（第 1 輪看圖驗收）；前面的「可獲得徽章」「精通徽章」包 .ll-nowrap
-  // （全站換行規則：320 寬的紙籤原本斷成「可獲得徽／章「拆開 ROE」」）。名稱比一行長時只在詞與詞之間斷：內容的徽章名在詞之間放了 U+200B
-  // （「看懂」「股東權益」「與融資」之間），名稱加全站的 .ll-phrased（keep-all），320 寬不再斷成「看懂股東權／益與融資」（第 7 輪 handoff）。
+  // 徽章名稱（含引號）包成一個 inline-block：整組一起換行，不會斷成「開店/了」（第 1 輪看圖驗收）；前面的「可獲得徽章」「精通徽章」
+  // 照全站規則逐字換行（2026-10-27 起）。名稱比一行長時在內容放的 U+200B（「看懂」「股東權益」「與融資」之間）或任何字之間斷，
+  // 名稱加全站的 .ll-phrased（overflow-wrap: anywhere），不撐破紙籤。
   // inline-block 和地圖標題的子句共用 .ll-phrased__clause（第 8 輪，CSS 預算）。ll-chend__name 沒有自己的規則，但不能拿掉：class 名稱含 name，
   // 全站換行規則（03-core-utils.css 的 [class*='name']）靠它讓英文徽章名在窄紙籤裡不斷字（「Book-／keeper」）；單元測試也用它找名稱
   const badgeText = badgeTitle ? (
     state === 'mastery' ? (
-      <Trans id="map.end.badgeMastery" comment="章末區已達精通的徽章；badgeTitle 是徽章名稱，<0> 是不換行的詞，<1> 包住名稱（整組一起換行）">
-        <span className="ll-nowrap">精通徽章</span>：<span className="ll-chend__name ll-phrased__clause ll-phrased">{badgeTitle}</span>
+      <Trans id="map.end.badgeMastery" comment="章末區已達精通的徽章；badgeTitle 是徽章名稱，<0> 包住名稱（整組一起換行）">
+        精通徽章：<span className="ll-chend__name ll-phrased__clause ll-phrased">{badgeTitle}</span>
       </Trans>
     ) : state === 'done' ? (
       <Trans id="map.end.badgeGot" comment="章末區已取得的徽章；badgeTitle 是徽章名稱，<0> 包住名稱（整組一起換行）">
         徽章：<span className="ll-chend__name ll-phrased__clause ll-phrased">{badgeTitle}</span>
       </Trans>
     ) : (
-      <Trans
-        id="map.end.badgeAhead"
-        comment="章末區尚未取得的徽章；badgeTitle 是徽章名稱，<0> 是不換行的詞，<1> 包住引號與名稱（整組一起換行）；英文用英式彎引號"
-      >
-        <span className="ll-nowrap">可獲得徽章</span>
-        <span className="ll-chend__name ll-phrased__clause ll-phrased">「{badgeTitle}」</span>
+      <Trans id="map.end.badgeAhead" comment="章末區尚未取得的徽章；badgeTitle 是徽章名稱，<0> 包住引號與名稱（整組一起換行）；英文用英式彎引號">
+        可獲得徽章<span className="ll-chend__name ll-phrased__clause ll-phrased">「{badgeTitle}」</span>
       </Trans>
     )
   ) : null;

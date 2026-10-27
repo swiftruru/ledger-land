@@ -110,18 +110,14 @@ function OfflineError({ levelId, onRetry }: { levelId: string | undefined; onRet
       </div>
       <ErrorState
         className="ll-level-offline"
-        // 標題與說明的詞包成 .ll-nowrap（全站換行規則，M3 驗收第 7 輪）：說明在逗號後換行（不是「已下載／的內容」），文字放大時「下載」不拆開
         title={
-          <Trans id="level.unavailable.heading" comment="關卡快照載入失敗時的標題；標籤包住的詞不換行">
-            這一關<span className="ll-nowrap">還沒下載</span>到<span className="ll-nowrap">這台裝置</span>
+          <Trans id="level.unavailable.heading" comment="關卡快照載入失敗時的標題">
+            這一關還沒下載到這台裝置
           </Trans>
         }
         description={
-          <Trans id="level.unavailable.retryNote" comment="關卡讀不到時的說明（標題已經說了還沒下載，這裡不重複）；標籤包住的詞不換行">
-            <span className="ll-nowrap">連上網路後</span>
-            <span className="ll-nowrap">再試一次</span>，<span className="ll-nowrap">已下載的內容</span>
-            <span className="ll-nowrap">現在也能</span>
-            <span className="ll-nowrap">繼續使用</span>。
+          <Trans id="level.unavailable.retryNote" comment="關卡讀不到時的說明（標題已經說了還沒下載，這裡不重複）">
+            連上網路後再試一次，已下載的內容現在也能繼續使用。
           </Trans>
         }
         onRetry={onRetry}

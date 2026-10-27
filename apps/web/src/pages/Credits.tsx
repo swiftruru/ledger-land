@@ -28,7 +28,6 @@ import { StackExplorer } from '../features/credits/StackExplorer.tsx';
 import { EGG_IDS } from '../features/credits/eggs.ts';
 import { useEggs } from '../features/credits/useEggs.ts';
 import { useMapModule } from '../features/credits/useMapModule.ts';
-import { Phrased } from '../features/me/Phrased.tsx';
 import { usePagesCatalog } from '../i18n/pages-catalog.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -104,14 +103,14 @@ export default function Credits() {
         <NavRow
           icon={<CompassIcon />}
           title={t({ id: 'credits.links.site', message: '個人網站', comment: '作者個人網站那一列的標題' })}
-          description={<Phrased text={t({ id: 'credits.links.site.desc', message: 'swift.moe', comment: '作者個人網站那一列的說明（網址）' })} />}
+          description={t({ id: 'credits.links.site.desc', message: 'swift.moe', comment: '作者個人網站那一列的說明（網址）' })}
           href={AUTHOR_SITE}
           external
         />
         <NavRow
           icon={<CodeIcon />}
           title={t({ id: 'credits.links.github', message: 'GitHub', comment: '作者 GitHub 那一列的標題' })}
-          description={<Phrased text={t({ id: 'credits.links.github.desc', message: 'swiftruru，原始碼也在這裡', comment: '作者 GitHub 那一列的說明' })} />}
+          description={t({ id: 'credits.links.github.desc', message: 'swiftruru，原始碼也在這裡', comment: '作者 GitHub 那一列的說明' })}
           href={AUTHOR_GITHUB}
           external
         />
@@ -174,7 +173,7 @@ export default function Credits() {
                   ? t({ id: 'eggs.hints.found', message: '找到了', comment: '彩蛋提示清單：這一個已經找到' })
                   : t({ id: 'eggs.hints.notYet', message: '還沒', comment: '彩蛋提示清單：這一個還沒找到' })}
               </Badge>{' '}
-              <Phrased text={hintText[id]} />
+              {hintText[id]}
             </li>
           ))}
         </ul>
@@ -199,13 +198,11 @@ export default function Credits() {
         </p>
         {versionOpen && (
           <p className="ll-small ll-muted" role="status" data-testid="egg-version-text">
-            <Phrased
-              text={t({
-                id: 'eggs.version.text',
-                message: `版本號後面那一小段是 git commit 的代號，每次建置都不一樣。這一版是 ${builtAt} 建的。`,
-                comment: '按了版本號之後的說明；builtAt 是建置時間',
-              })}
-            />
+            {t({
+              id: 'eggs.version.text',
+              message: `版本號後面那一小段是 git commit 的代號，每次建置都不一樣。這一版是 ${builtAt} 建的。`,
+              comment: '按了版本號之後的說明；builtAt 是建置時間',
+            })}
           </p>
         )}
         <h2>
@@ -242,13 +239,13 @@ export default function Credits() {
         <NavRow
           icon={<InfoIcon />}
           title={t({ id: 'me.about', message: '關於與授權', comment: '「我的」連到關於與授權' })}
-          description={<Phrased text={t({ id: 'me.about.desc', message: '授權、原始碼與版本', comment: '「我的」關於與授權列的說明' })} />}
+          description={t({ id: 'me.about.desc', message: '授權、原始碼與版本', comment: '「我的」關於與授權列的說明' })}
           href={localePath(locale, '/about/')}
         />
         <NavRow
           icon={<CompassIcon />}
           title={t({ id: 'me.design', message: '關於系統設計', comment: '「我的」連到關於系統設計' })}
-          description={<Phrased text={t({ id: 'me.design.desc', message: '這個網站怎麼設計出來的', comment: '「我的」關於系統設計列的說明' })} />}
+          description={t({ id: 'me.design.desc', message: '這個網站怎麼設計出來的', comment: '「我的」關於系統設計列的說明' })}
           href={localePath(locale, '/design/')}
         />
       </NavList>

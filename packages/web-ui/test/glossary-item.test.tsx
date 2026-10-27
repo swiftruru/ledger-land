@@ -8,7 +8,6 @@ import { render } from 'vitest-browser-react';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { GlossaryGrid, GlossaryItem, LinkProvider, loadWebUiMessages, type LinkComponentProps } from '../src/index.ts';
 import { splitMeet } from '../src/components/GlossaryItem.tsx';
-import { phraseParts, punctTail } from '../src/components/phrase.ts';
 
 beforeAll(async () => {
   i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
@@ -41,105 +40,6 @@ describe('splitMeet', () => {
   it('沒有關卡名或找不到時不切', () => {
     expect(splitMeet('在 1-1 遇到', undefined)).toBeUndefined();
     expect(splitMeet('在 1-1 遇到', '別的關')).toBeUndefined();
-  });
-});
-
-/** 切好的詞接回原字：英文後面空一格接「的」時，那個空格換成了不換行空白（第 9 輪），比對時換回來 */
-const rejoin = (parts: readonly string[]) => parts.join('').replace(/\u00A0(?=的)/g, ' ');
-
-describe('phraseParts', () => {
-  it('中文名稱切成詞：接回去是原字，標點不放在詞的開頭，開括號後面不斷', () => {
-    for (const name of ['長期資金占固定資產比率', '不動產、廠房及設備週轉率', '每股盈餘（EPS）', '期末現金及約當現金餘額']) {
-      const parts = phraseParts(name)!;
-      expect(parts.length).toBeGreaterThan(1);
-      expect(parts.join('')).toBe(name);
-      for (const p of parts) expect(p).not.toMatch(/^[、，。：）」]/);
-    }
-    expect(phraseParts('每股盈餘（EPS）')!.some((p) => p.endsWith('（'))).toBe(false);
-    // Segmenter 切成單字的「約當」不從中間斷；連接詞「及」前後可以斷
-    expect(phraseParts('期末現金及約當現金餘額')!.some((p) => p.endsWith('約'))).toBe(false);
-    expect(phraseParts('期末現金及約當現金餘額')!.join('|')).toContain('及|');
-  });
-  it('貨幣符號和後面的數字不斷（NT$1,200、US$30）', () => {
-    for (const text of ['每月收費 NT$1,200 元', '價格是NT$1,200元', '另付 US$30 的手續費']) {
-      // 整句沒有可以斷的地方時回 undefined（照一般斷行），等於一整塊
-      const parts = phraseParts(text) ?? [text];
-      expect(rejoin(parts)).toBe(text);
-      for (const p of parts) expect(p).not.toMatch(/^\d/);
-    }
-  });
-  it('不換行空白的前後不斷（第 7 輪：「今天要複習 1／題」）；否定詞黏著後面的詞（「也不／影響星星」）', () => {
-    expect(phraseParts('今天要複習 1\u00A0題')!.at(-1)).toBe('1\u00A0題');
-    for (const text of ['今天要複習 1\u00A0題', '已取得 2\u00A0/\u00A014\u00A0枚', '以\u2060Web App\u2060打開']) {
-      const parts = phraseParts(text) ?? [text];
-      expect(parts.join('')).toBe(text);
-      for (const p of parts) expect(p).not.toMatch(/^[\u00A0\u202F\u2060]|[\u00A0\u202F\u2060]$/);
-    }
-    for (const text of ['時間到不會送出，也不影響星星。', '只有不收集個資的匿名流量統計。', '這題尚未作答，沒關係'])
-      expect(phraseParts(text)!.some((p) => /[不沒未]$/.test(p))).toBe(false);
-    expect(phraseParts('時間到不會送出，也不影響星星。')!.join('|')).toContain('也不影響');
-    // 單字的「別」也黏著後面的詞（和 prose-units.ts 同一組）；「類別」結尾的「別」不算否定詞
-    expect(phraseParts('先別關掉這個頁面')!.some((p) => p.endsWith('別'))).toBe(false);
-    expect(phraseParts('依類別篩選名詞')!.join('|')).toContain('依類別|篩選');
-  });
-  it('keep 的詞整塊不拆（名詞頁傳名詞自己的名稱）；沒有 keep 時照 Segmenter', () => {
-    const text = '資產、負債與股東權益，以及它們之間';
-    expect(phraseParts(text)!.join('|')).toContain('股東|權益');
-    const kept = phraseParts(text, ['股東權益'])!;
-    expect(kept.join('')).toBe(text);
-    expect(kept.join('|')).toContain('股東權益，');
-    expect(phraseParts('期末現金及約當現金餘額', ['現金及約當現金'])).toEqual(['期末', '現金及約當現金', '餘額']);
-  });
-  it('助詞「的」「地」「得」不落在行首：「的」黏著前面的詞、後面照常可以斷（M3 收尾）', () => {
-    for (const text of [
-      '公司為了長期營業使用而持有的有形資產',
-      '以及它們之間永遠成立的關係。',
-      '慢慢地累積，做得好就有星星',
-      '股東的權益',
-      // Segmenter 把「的是」切成一段；前面是英文或閉引號
-      '唯一直接沿用的是故事裡那家公司的情境',
-      'GitHub repo 的 issue 頁面',
-      '按「匯出到 App」的按鈕',
-    ]) {
-      const parts = phraseParts(text) ?? [text];
-      expect(rejoin(parts)).toBe(text);
-      for (const p of parts) expect(p).not.toMatch(/^[的地得]/);
-    }
-    expect(phraseParts('公司為了長期營業使用而持有的有形資產')!.join('|')).toContain('持有的|');
-  });
-  it('第 9 輪 handoff：英文後面的「的」、「的」後面的孤字、英數字串、黏成一長串的標題、括號裡的頓號', () => {
-    // 英文後面空一格接「的」：空格是瀏覽器的斷點，換成不換行空白（「ROA／的差距」）
-    expect(phraseParts('ROE 與 ROA 的差距')).toContain('ROA\u00A0的');
-    expect(phraseParts('把 Safari 的進度')).toContain('Safari\u00A0的');
-    // 「的」後面只剩一個字時黏著，不留「帳」「錢」單獨一行
-    expect(phraseParts('一家小店的帳')).toEqual(['一家', '小店的帳']);
-    expect(phraseParts('誰的東西、誰的錢')!.at(-1)).toBe('誰的錢');
-    // 英數字串中間不斷（「N/」「A」）
-    expect(phraseParts('N/A 與 0 不一樣')![0]).toBe('N/A ');
-    expect(phraseParts('時顯示 N/A。本課故事沒有研發費用。')!.some((p) => /^A|\/$/.test(p))).toBe(false);
-    // 「在」「從」「而」前面可以斷、黏著後面；「後」「時」後面可以斷，前面不到兩個字時不拆
-    expect(phraseParts('四個勾稽點在哪裡')).toEqual(['四個', '勾稽點', '在哪裡']);
-    expect(phraseParts('資本公積從哪裡來')).toEqual(['資本公積', '從哪裡來']);
-    expect(phraseParts('開啟後作答頁顯示剩餘時間')!.join('|')).toContain('開啟後|作答頁顯示');
-    expect(phraseParts('貼上時請確認沒有夾帶其他文字')!.join('|')).toContain('貼上時|請確認');
-    expect(phraseParts('稅後淨利')).toBeUndefined();
-    // 單字的否定詞前面可以斷（和 prose-units 同一條），後面仍黏著
-    expect(phraseParts('關閉後倒數照常顯示，只是不唸出來。')!.join('|')).toContain('只是|不唸出來。');
-    expect(phraseParts('期後事項')).toBeUndefined();
-    // 括號裡整段不斷，頓號後面例外
-    expect(phraseParts('六大指標：產出（獲利能力、償債能力）')!.join('|')).toContain('（獲利能力、|償債能力）');
-    expect(phraseParts('每股盈餘（EPS）')!.some((p) => p.endsWith('（'))).toBe(false);
-  });
-  it('punctTail：詞尾的標點連同前一個字（渲染時整塊不斷，緊急換行不會把標點單獨斷到行首）', () => {
-    expect(punctTail('資產負債表：')).toEqual(['資產負債', '表：']);
-    expect(punctTail('只是不唸出來。')).toEqual(['只是不唸出', '來。']);
-    expect(punctTail('（獲利能力、')).toEqual(['（獲利能', '力、']);
-    expect(punctTail('表：')).toBeUndefined();
-    expect(punctTail('現金流量')).toBeUndefined();
-  });
-  it('英文或單一個詞不切', () => {
-    expect(phraseParts('Cash and cash equivalents')).toBeUndefined();
-    expect(phraseParts('現金')).toBeUndefined();
   });
 });
 
