@@ -68,7 +68,7 @@ function shell(): Plugin {
 }
 
 // SVG 圖示直接寫成 data: URI（M3 收尾 QA，2026-10-26）：瀏覽器在 load 之後才抓 favicon，本機 Lighthouse 的模擬（HTTP/1.1、6 條連線）把它算進每一頁 LCP 前的請求；
-// 寫進 HTML 就少一個請求（約 0.6 KB）。來源仍是 public/favicon.svg（檔案照常部署、進 precache）；CSP 的 img-src 本來就允許 data:。48×48 的 favicon.ico 保留給不支援 SVG 圖示的瀏覽器
+// 寫進 HTML 就少一個請求（占位圖時約 0.6 KB；2026-10-28 換成小綠綠的描圖版後約 5.4 KB、gzip 2.2 KB，06 第 2.2 節）。來源仍是 public/favicon.svg（檔案照常部署、進 precache）；CSP 的 img-src 本來就允許 data:。favicon.ico（48、32、16）保留給不支援 SVG 圖示的瀏覽器
 function buildFaviconLink(): string {
   const svg = readFileSync(`${root}public/favicon.svg`, 'utf8')
     .trim()
@@ -278,7 +278,11 @@ export default defineConfig({
       filename: 'sw.js',
       manifestFilename: site.manifestFile,
       scope: site.base,
-      includeAssets: ['favicon.svg', 'icons/favicon.ico', 'icons/apple-touch-icon-180x180.png', 'glass/refract-map.svg'],
+      // 安裝用的 PNG（manifest 的 icons 與 apple-touch-icon）不進 precache：系統在「加入主畫面」那一刻自己抓，離線時用不到；
+      // 2026-10-28 圖示換成小綠綠的插圖後五個 PNG 合計約 350 KB，precache 預算（3600 KB）放不下（06 第 2.2 節）
+      includeAssets: ['favicon.svg', 'icons/favicon.ico', 'glass/refract-map.svg'],
+      // generateSW 預設會把 manifest 的 icons 加進 precache，光靠 globIgnores 擋不住
+      includeManifestIcons: false,
       manifest: {
         id: site.manifestId,
         name: site.name,
@@ -305,7 +309,15 @@ export default defineConfig({
         // /assets/ 與 /content/ 找不到檔案時不回殼層；Cloudflare 保留的 /cdn-cgi/ 與 stub 端點一律走網路（06 第 3.1 節）
         navigateFallbackDenylist: [/^\/assets\//, /^\/content\//, /^\/sw\.js$/, /^\/cdn-cgi\//, /^\/__ll/],
         globPatterns: ['**/*.{html,js,css,woff2,svg,png,webmanifest,json}'],
-        globIgnores: ['splash/**', 'icons/source.svg', 'site-config.json', 'build-report.json', '_headers'],
+        globIgnores: [
+          'splash/**',
+          'icons/pwa-*.png',
+          'icons/maskable-*.png',
+          'icons/apple-touch-icon-*.png',
+          'site-config.json',
+          'build-report.json',
+          '_headers',
+        ],
         cleanupOutdatedCaches: true,
       },
       devOptions: { enabled: false },
