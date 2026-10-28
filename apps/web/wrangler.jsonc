@@ -9,7 +9,10 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    "html_handling": "auto-trailing-slash",
+    // none（2026-10-28 起）：auto-trailing-slash 會把 /index.html 以 307 轉到 /，Service Worker 的導覽 fallback 在 precache 沒有 index.html 時
+    // 直接 fetch /index.html，拿到「有轉址」的回應，Safari 對導覽拒收（Response served by service worker has redirections）；
+    // 站內路由本來就不是實際的 HTML 檔，只有 index.html 一個，拿掉結尾斜線的處理對其他網址沒有影響（06 第 3.3 節）
+    "html_handling": "none",
     "run_worker_first": ["/assets/*"],
   },
   "workers_dev": true,

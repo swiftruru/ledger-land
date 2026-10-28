@@ -1334,6 +1334,7 @@ V 系列在對應的里程碑執行，結果寫進該里程碑的回報（M0a �
 | pnpm 11 能否在 `package.json` 宣告 Node 版本並自動下載到專案內（M0b）；可行就採用，否則沿用版本管理工具加 `.node-version`（寫 24） | 09 第 7.5 節 | 已採用（2026-10-22，M0b 實測）：Node 24.21.0 下載到 `.pnpm-store/v11/links/@/node`，lockfile 記錄；npx 不認得 `onFail: download`，用 `.cache/npx-boot` 啟動 pnpm。原查證：`package.json` 的 `devEngines.runtime`（`{ name: "node", version: "^24.x", onFail: "download" }`，pnpm 10.14 起）會在 `pnpm install` 時解析並下載符合的 Node，精確版本與雜湊寫進 lockfile，scripts 使用這個 Node；下載到哪個目錄文件沒寫，M0b 實測並確認能設在專案內。另：`stateDir` 自 pnpm 11.22 起不能寫在 `pnpm-workspace.yaml`（會被忽略並警告），只能用全域設定或指令列，M0b 用 env 檔指定 |
 | 退回 Cloudflare Workers 保留的上一個版本的指令與步驟（M0b），查證後寫入 09 | 09 第 7.5 節 | 已演練（2026-10-22，M0b）。查證：`wrangler rollback [<VERSION_ID>] [--message]`（省略版本 ID 時退回上一個版本；互動模式可從最近 100 個版本選）；`wrangler versions list` 與 `wrangler deployments list` 查版本；儀表板在 Workers & Pages › 該 Worker › Deployments › 版本旁的選單選 Rollback。退回只換程式與資產版本，不改綁定的資源。M0b 寫進 09 第 7.5 節並實際演練一次 |
 | pnpm store 放在 repo 內（`.pnpm-store/`、`.cache/pnpm/`）時，CI 快取的設定寫法（M0b） | 09 第 2.5、7.5 節 | 已查證（2026-10-22）：`setup-node` 的 `cache: pnpm` 不適用，改用 `actions/cache` 快取 `.pnpm-store` 與 `.cache/pnpm`，key 用 lockfile 的 hash；`stateDir` 由 env 設定 |
+| iOS Safari 在 SW 更新後按「重新整理」出現「Response served by service worker has redirections」（2026-10-28 實機） | 06 第 3.3、3.5 節 | 已處理（2026-10-28）：Cloudflare 的 `auto-trailing-slash` 把 `/index.html` 以 307 轉到 `/`，Workbox 的導覽 fallback 在 precache 沒有 `index.html` 的瞬間退回網路拿到轉址回應，Safari 對導覽拒收；`wrangler.jsonc` 的 `html_handling` 改 `none`，`/index.html` 直接回 200，其他網址行為不變，`shell.spec.ts` 加檢查。桌面 WebKit 沒重現，實機再確認一次更新流程 |
 
 ---
 

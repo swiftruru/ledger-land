@@ -45,6 +45,12 @@ test.describe('殼層與深層連結（10 M0b 完成標準）', () => {
     expect(res.headers()['cache-control']).toBe('no-store');
   });
 
+  test('/index.html 直接回 200、不轉址（SW 的導覽 fallback 退回網路時 Safari 不接受轉址回應，06 第 3.3 節）', async ({ request }) => {
+    const res = await request.get('/index.html', { maxRedirects: 0 });
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toContain('text/html');
+  });
+
   test('未知路徑回殼層 200，頁面顯示找不到並加 noindex', async ({ page }) => {
     const res = await page.goto('/no-such-page/');
     expect(res?.status()).toBe(200);
