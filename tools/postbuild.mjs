@@ -72,6 +72,13 @@ if (others.length) fail(`有未預期的 inline 腳本 ${others.length} 段`);
 if (inlineStyles.length !== 1) fail(`inline style 應該只有 1 段，實際 ${inlineStyles.length} 段`);
 if (/\sstyle=/.test(html)) fail('index.html 有 style 屬性（CSP 不允許）');
 if (!/<div id="root">/.test(html)) fail('index.html 沒有 #root');
+// 入口樣式表不擋第一次繪製（06 第 2.4 節）：每個樣式表都是 media="print" 加 data-ll="entry-css"，前面有同一個 href 的 preload；boot 載完切回 all
+for (const m of html.matchAll(/<link rel="stylesheet"([^>]*)>/g)) {
+  const href = /href="([^"]+)"/.exec(m[1])?.[1] ?? '';
+  if (!/media="print"/.test(m[1]) || !/data-ll="entry-css"/.test(m[1])) fail(`樣式表 ${href} 不是 media="print" 加 data-ll="entry-css"（會擋住第一次繪製）`);
+  if (!html.includes(`<link rel="preload" as="style" crossorigin href="${href}">`)) fail(`樣式表 ${href} 沒有對應的 preload`);
+}
+if (!html.includes('html:not([data-css]) body>:not(#ll-launch){visibility:hidden}')) fail('首次繪製 style 少了 data-css 之前藏內容的那一條');
 // 啟動畫面（06 第 2.4 節）：body 的第一個子節點、aria-hidden、三個內嵌 SVG（插圖、小 logo、字樣），在 #root 之前
 const launch = html.match(/<body>\s*<div id="ll-launch" aria-hidden="true">([\s\S]*?)<\/div><\/div>/);
 if (!launch) fail('index.html 的 body 沒有以 #ll-launch 開頭（啟動畫面）');

@@ -93,6 +93,16 @@
     navigatorStandalone: navigator.standalone === true,
   };
   root.dataset.display = dm.standalone || dm.fullscreen || dm.navigatorStandalone ? 'app' : 'browser';
+  // 入口樣式表建置時是 media="print"（不擋第一次繪製，啟動圖換到 App 內畫面才不會白一下，vite.config.ts 的 ll-entry-stylesheet-non-blocking）：
+  // 載完就切回 all 並標 data-css，首次繪製 style 在那之前把 body 裡除了啟動畫面以外的內容藏起來；載入失敗也標，頁面退成沒樣式而不是一直空白
+  function cssReady(e) {
+    var t = e.target;
+    if (!t || !t.getAttribute || t.getAttribute('data-ll') !== 'entry-css') return;
+    t.media = 'all';
+    root.dataset.css = '1';
+  }
+  document.addEventListener('load', cssReady, true);
+  document.addEventListener('error', cssReady, true);
   // 啟動畫面（06 第 2.4 節）：主畫面 App 的視窗有時從狀態列底下開始、比整個螢幕矮（WebKit bug 301994，2026-10-28 iPhone 實機：插圖往下 25 點、字樣 7 點），
   // 而 iOS 的啟動圖是依整個螢幕截的；把少掉的高度記成 --ll-launch-top，覆蓋層往上延伸同樣的高度，版面才和啟動圖一樣。視窗和螢幕一樣高時不設（0）
   if (root.dataset.display === 'app' && window.screen && window.innerWidth === screen.width) {
