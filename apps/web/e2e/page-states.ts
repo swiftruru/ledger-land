@@ -27,6 +27,8 @@ export const IOS_LINE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) 
 
 /** 第 1 章第 1 關（6 題，第 1 題是單選 q_g1ze90s7：o_80gh 對、o_60qb 錯） */
 export const LEVEL = 'lv_h2zx7srx';
+/** LEVEL 所屬的章節：關卡在章節包裡（schemaVersion 3），攔關卡的快照要攔章節包 content/<語系>/ch_c5f8w2.<hash>.json */
+const LEVEL_CHAPTER = 'ch_c5f8w2';
 const LEVEL_Q1 = 'q_g1ze90s7';
 /** 這一題目前的 rev（content 的 rev，M3 收尾第 9 輪的引號修正是文字改版，1 改 2）：種子的作答與錯題用同一個 rev，錯題本不會多出「文字有更新」 */
 const LEVEL_Q1_REV = 2;
@@ -162,7 +164,12 @@ function answerKey(page: Page, levelId: string): Promise<AnswerKey> {
     const manifest = (await (await fetch('/content/content-manifest.json')).json()) as { levels: { id: string; files: Record<string, string> }[] };
     const file = manifest.levels.find((l) => l.id === levelId)?.files[locale];
     if (!file) throw new Error(`內容清單裡沒有 ${levelId}`);
-    const snap = (await (await fetch(`/${file}`)).json()) as { questions: { id: string; type: string; correctOptionId?: string; correct?: boolean }[] };
+    // 關卡在所屬章節的章節包裡（schemaVersion 3）
+    const bundle = (await (await fetch(`/${file}`)).json()) as {
+      levels: { level: { id: string }; questions: { id: string; type: string; correctOptionId?: string; correct?: boolean }[] }[];
+    };
+    const snap = bundle.levels.find((l) => l.level.id === levelId);
+    if (!snap) throw new Error(`章節包 ${file} 裡沒有 ${levelId}`);
     const key: Record<string, { type: string; right: string }> = {};
     for (const q of snap.questions) key[q.id] = { type: q.type, right: q.type === 'true_false' ? String(q.correct === true) : (q.correctOptionId ?? '') };
     return key;
@@ -387,7 +394,7 @@ export const CASES: readonly PageCase[] = [
     group: '作答',
     name: '載入中',
     path: `/level/${LEVEL}/`,
-    route: hold(`**/content/*/${LEVEL}.*.json`),
+    route: hold(`**/content/*/${LEVEL_CHAPTER}.*.json`),
     // 沒有骨架：快照到之前整頁不顯示（.ll-page[data-ready="false"]），0.7 秒後只有一個小載入圈（lib/page-ready.tsx）
     pending: (page) => expect(page.locator('.ll-page__wait')).toBeVisible(),
   },
@@ -395,7 +402,7 @@ export const CASES: readonly PageCase[] = [
     group: '作答',
     name: '離線',
     path: `/level/${LEVEL}/`,
-    route: abort(`**/content/*/${LEVEL}.*.json`),
+    route: abort(`**/content/*/${LEVEL_CHAPTER}.*.json`),
     prepare: (page) => expect(page.locator('main .ll-state--error')).toBeVisible(),
   },
 

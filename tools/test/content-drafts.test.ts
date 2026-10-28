@@ -76,10 +76,12 @@ describe('content:build 含草稿模式（LL_INCLUDE_DRAFTS=1）', () => {
     expect(manifest.chapters[0]!.levelIds).toEqual(['lv_pb000001', 'lv_dr4ft002']);
     const draftLevel = manifest.levels.find((l: { id: string }) => l.id === 'lv_dr4ft002');
     expect(draftLevel).toMatchObject({ chapterId: 'ch_n3f8q1', order: 2, questionIds: ['q_dr4ft001'] });
-    const snapshot = JSON.parse(files.get(draftLevel!.files['zh-TW']!.slice('content/'.length))!);
+    const bundle = JSON.parse(files.get(draftLevel!.files['zh-TW']!.slice('content/'.length))!);
+    expect(bundle.levels.map((l: { level: { id: string } }) => l.level.id)).toEqual(['lv_pb000001', 'lv_dr4ft002']);
+    const snapshot = bundle.levels[1];
     expect(snapshot.level.status).toBe('draft');
     expect(snapshot.questions[0].id).toBe('q_dr4ft001');
-    // 已下架：不在任何關卡檔裡，只在墓碑檔
+    // 已下架：不在任何章節包裡，只在墓碑檔
     const tombstones = JSON.parse(files.get(manifest.tombstones.slice('content/'.length))!);
     expect(tombstones).toEqual([{ kind: 'question', id: 'q_r3t1red1', supersededBy: 'q_p9k4r7cx', retiredNote: undefined }]);
     for (const l of manifest.levels)

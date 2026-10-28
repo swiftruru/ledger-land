@@ -22,8 +22,10 @@ const PRELOAD = {
     ci: { 'zh-TW': 'content/zh-TW/chapter-index.111111.json', en: 'content/en/chapter-index.222222.json' },
     ti: { 'zh-TW': 'content/zh-TW/term-index.333333.json', en: 'content/en/term-index.444444.json' },
     tb: 'content/tombstones.555555.json',
-    lv: { lv_h2zx7srx: ['7825d1', 'fc75c6'] },
-    td: { 'zh-TW': { e: 'c8fd7d' }, en: { e: 'e5755a' } },
+    // 關卡在所屬章節的章節包裡：lv 是關卡 ID 對章節 ID，ch 是章節 ID 對各語言的雜湊；名詞分桶是 ID 末字元的字元碼除以 8 的餘數（'e' 是 5）
+    ch: { ch_c5f8w2: ['7825d1', 'fc75c6'] },
+    lv: { lv_h2zx7srx: 'ch_c5f8w2' },
+    td: { 'zh-TW': { '5': 'c8fd7d' }, en: { '5': 'e5755a' } },
   },
 };
 
@@ -66,12 +68,12 @@ function runBoot(pathname: string, preload: unknown = PRELOAD): FakeLink[] {
 }
 
 describe('boot 腳本的依路徑預先載入', () => {
-  it('作答頁：目前語言的 catalog、頁面 chunk 用 modulepreload；關卡檔與名詞索引用 preload as=fetch 加 crossorigin', () => {
+  it('作答頁：目前語言的 catalog、頁面 chunk 用 modulepreload；所屬章節的章節包與名詞索引用 preload as=fetch 加 crossorigin', () => {
     expect(runBoot('/level/lv_h2zx7srx/')).toEqual([
       { rel: 'modulepreload', as: undefined, href: '/assets/catalog-zh-TW-1.js', crossOrigin: undefined },
       { rel: 'modulepreload', as: undefined, href: '/assets/Level-3.js', crossOrigin: undefined },
       { rel: 'modulepreload', as: undefined, href: '/assets/common-4.js', crossOrigin: undefined },
-      { rel: 'preload', as: 'fetch', href: '/content/zh-TW/lv_h2zx7srx.7825d1.json', crossOrigin: 'anonymous' },
+      { rel: 'preload', as: 'fetch', href: '/content/zh-TW/ch_c5f8w2.7825d1.json', crossOrigin: 'anonymous' },
       { rel: 'preload', as: 'fetch', href: '/content/zh-TW/term-index.333333.json', crossOrigin: 'anonymous' },
     ]);
   });
@@ -82,7 +84,7 @@ describe('boot 腳本的依路徑預先載入', () => {
       '/assets/catalog-en-2.js',
       '/assets/Level-3.js',
       '/assets/common-4.js',
-      '/content/en/lv_h2zx7srx.fc75c6.json',
+      '/content/en/ch_c5f8w2.fc75c6.json',
       '/content/en/term-index.444444.json',
     ]);
     const play = runBoot('/en/play/');
@@ -95,12 +97,12 @@ describe('boot 腳本的依路徑預先載入', () => {
     expect(play.at(-1)?.href).toBe('/content/en/chapter-index.222222.json');
   });
 
-  it('名詞頁：兩種語言的這個名詞所在的分桶都預先載入；表裡沒有的關卡或分桶不加', () => {
+  it('名詞頁：兩種語言的這個名詞所在的分桶都預先載入；表裡沒有的關卡、章節或分桶不加', () => {
     expect(runBoot('/terms/tm_r4w8n2qe/').map((l) => l.href)).toEqual([
       '/assets/catalog-zh-TW-1.js',
       '/assets/Term-7.js',
-      '/content/zh-TW/terms-e.c8fd7d.json',
-      '/content/en/terms-e.e5755a.json',
+      '/content/zh-TW/terms-5.c8fd7d.json',
+      '/content/en/terms-5.e5755a.json',
       '/content/zh-TW/chapter-index.111111.json',
     ]);
     expect(runBoot('/terms/tm_r4w8n2qa/').map((l) => l.href)).toEqual([
@@ -114,6 +116,9 @@ describe('boot 腳本的依路徑預先載入', () => {
       '/assets/common-4.js',
       '/content/zh-TW/term-index.333333.json',
     ]);
+    // 關卡有列但章節包的雜湊缺了：不組出錯的路徑
+    const noChapter = { ...PRELOAD, m: { ...PRELOAD.m, ch: {} } };
+    expect(runBoot('/level/lv_h2zx7srx/', noChapter).map((l) => l.href)).not.toContainEqual(expect.stringContaining('ch_c5f8w2'));
   });
 
   it('首頁只預先載入 catalog；開發模式（表格是 null）與壞掉的表格什麼都不加、也不丟錯', () => {

@@ -177,15 +177,17 @@ async function freshProgress(page: Page): Promise<void> {
   });
 }
 
-/** 第 1 章第 1 關只留單選與是非（點第一個選項就能確認），讓流程不依賴題目內容；manifest 與兩種語言的關卡檔一起改 */
+/** 第 1 章第 1 關只留單選與是非（點第一個選項就能確認），讓流程不依賴題目內容；manifest 與兩種語言的章節包（關卡在裡面，schemaVersion 3）一起改 */
 const FLOW_LEVEL = 'lv_h2zx7srx';
-type LevelJson = { level: { questionIds: string[] }; questions: { id: string; type: string }[] };
+type LevelJson = { level: { id: string; questionIds: string[] }; questions: { id: string; type: string }[] };
+type BundleJson = { levels: LevelJson[] };
 async function onlyChoiceQuestions(page: Page): Promise<void> {
   const manifest = (await (await page.request.get('/content/content-manifest.json')).json()) as {
     levels: { id: string; questionIds: string[]; files: Record<string, string> }[];
   };
   const lv = manifest.levels.find((l) => l.id === FLOW_LEVEL)!;
-  const file = (await (await page.request.get(`/${lv.files['zh-TW']}`)).json()) as LevelJson;
+  const bundle = (await (await page.request.get(`/${lv.files['zh-TW']}`)).json()) as BundleJson;
+  const file = bundle.levels.find((l) => l.level.id === FLOW_LEVEL)!;
   const ids = file.questions.filter((q) => q.type === 'single_choice' || q.type === 'true_false').map((q) => q.id);
   expect(ids.length).toBeGreaterThan(1);
   await page.route('**/content/content-manifest.json', async (route) => {
@@ -197,9 +199,10 @@ async function onlyChoiceQuestions(page: Page): Promise<void> {
   for (const locale of ['zh-TW', 'en'])
     await page.route(`**/${lv.files[locale]}`, async (route) => {
       const res = await route.fetch();
-      const json = (await res.json()) as LevelJson;
-      json.questions = json.questions.filter((q) => ids.includes(q.id));
-      json.level.questionIds = ids;
+      const json = (await res.json()) as BundleJson;
+      const target = json.levels.find((l) => l.level.id === FLOW_LEVEL)!;
+      target.questions = target.questions.filter((q) => ids.includes(q.id));
+      target.level.questionIds = ids;
       await route.fulfill({ response: res, json });
     });
 }

@@ -278,7 +278,10 @@ async function installTimedLevel(page: Page): Promise<void> {
     ];
     await route.fulfill({ response: res, json });
   });
-  await page.route(`**/content/*/${TIMED_FILE}`, (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(TIMED_LEVEL) }));
+  // 關卡的檔是章節包 { levels: [{ level, questions }] }（schemaVersion 3）
+  await page.route(`**/content/*/${TIMED_FILE}`, (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ levels: [TIMED_LEVEL] }) }),
+  );
 }
 
 test.describe('單次計時、結果頁的用時與提醒設定（03 第 2.10 節）', () => {

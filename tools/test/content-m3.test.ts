@@ -261,7 +261,7 @@ describe('快照：manifest.chapters[] 帶 scope 與 examScope；名詞帶 first
       ['ch_x4d9p2', 'core', 'midterm', undefined],
       ['ch_e4j7r2', 'extension', 'not_in_exam', 'journal'],
     ]);
-    const chapterFile = JSON.parse(files.get(manifest.chapters[2]!.files['zh-TW']!.slice('content/'.length))!);
+    const chapterFile = JSON.parse(files.get(manifest.chapters[2]!.files['zh-TW']!.slice('content/'.length))!).chapter;
     expect(chapterFile).toMatchObject({ scope: 'extension', examScope: 'not_in_exam', kind: 'journal' });
   });
 
@@ -278,8 +278,8 @@ describe('快照：manifest.chapters[] 帶 scope 與 examScope；名詞帶 first
     ]);
     expect('notices' in out.manifest.chapters[0]!).toBe(false);
     for (const locale of ['zh-TW', 'en']) {
-      expect(fileOf(out, out.manifest.chapters[2]!.files[locale]!).notices).toEqual(['not_investment_advice']);
-      expect('notices' in fileOf(out, out.manifest.chapters[0]!.files[locale]!)).toBe(false);
+      expect(fileOf(out, out.manifest.chapters[2]!.files[locale]!).chapter.notices).toEqual(['not_investment_advice']);
+      expect('notices' in fileOf(out, out.manifest.chapters[0]!.files[locale]!).chapter).toBe(false);
       const index = fileOf(out, out.manifest.chapterIndex[locale]) as Record<string, unknown>[];
       expect(index.map((c) => c.notices)).toEqual([undefined, undefined, ['not_investment_advice']]);
     }
@@ -314,9 +314,9 @@ describe('快照：manifest.chapters[] 帶 scope 與 examScope；名詞帶 first
     });
   });
 
-  it('名詞兩層（schemaVersion 2）：索引只有 TERM_INDEX_FIELDS；完整內容依 ID 最後一個字元分桶，桶的聯集就是全部名詞；兩者的 firstLevel 相同', () => {
+  it('名詞兩層（schemaVersion 3）：索引只有 TERM_INDEX_FIELDS；完整內容依 ID 分 8 桶，桶的聯集就是全部名詞；兩者的 firstLevel 相同', () => {
     const out = build();
-    expect(out.manifest.schemaVersion).toBe(2);
+    expect(out.manifest.schemaVersion).toBe(3);
     expect('terms' in out.manifest).toBe(false);
     for (const locale of ['zh-TW', 'en']) {
       const index = termsOf(out, locale) as Record<string, unknown>[];
@@ -324,6 +324,7 @@ describe('快照：manifest.chapters[] 帶 scope 與 examScope；名詞帶 first
       expect(index.every((t) => !('definition' in t) && !('related' in t) && !('misconception' in t))).toBe(true);
       const buckets = out.manifest.termDetails[locale] as Record<string, string>;
       const details = Object.entries(buckets).flatMap(([b, path]) => {
+        expect(b).toMatch(/^[0-7]$/);
         expect(path).toMatch(new RegExp(`^content/${locale}/terms-${b}\\.[0-9a-f]{6}\\.json$`));
         const list = fileOf(out, path) as Record<string, unknown>[];
         for (const t of list) expect(termDetailBucket(t.id as string)).toBe(b);
@@ -334,7 +335,10 @@ describe('快照：manifest.chapters[] 帶 scope 與 examScope；名詞帶 first
       const firstOf = (list: Record<string, unknown>[]) => Object.fromEntries(list.map((t) => [t.id, t.firstLevel]));
       expect(firstOf(details)).toEqual(firstOf(index));
     }
-    expect(termDetailBucket('tm_r4w8n2qe')).toBe('e');
+    // 'e' 的字元碼 101 除以 8 餘 5；'0' 是 48 餘 0、'z' 是 122 餘 2
+    expect(termDetailBucket('tm_r4w8n2qe')).toBe('5');
+    expect(termDetailBucket('tm_abcdefg0')).toBe('0');
+    expect(termDetailBucket('tm_abcdefgz')).toBe('2');
   });
 
   it('草稿章節裡已發布的關卡不進正式快照（core-4）：manifest.levels、關卡檔與名詞的 firstLevel 都沒有它；含草稿模式才收', () => {
@@ -349,7 +353,9 @@ describe('快照：manifest.chapters[] 帶 scope 與 examScope；名詞帶 first
     expect(out.manifest.chapters.map((c: { id: string }) => c.id)).toEqual(['ch_n3f8q1', 'ch_e4j7r2']);
     expect(out.manifest.levels.map((l: { id: string }) => l.id)).toEqual(['lv_f1rst001']);
     expect(out.counts.levels).toBe(1);
-    expect([...out.files.keys()].some((k) => k.includes('lv_k4t3r001'))).toBe(false);
+    // 草稿章節沒有章節包，它的關卡也不會出現在任何檔案裡
+    expect([...out.files.keys()].some((k) => k.includes('ch_x4d9p2'))).toBe(false);
+    expect([...out.files.values()].some((t) => t.includes('lv_k4t3r001'))).toBe(false);
     // termLater 只在草稿章節的關卡出現：正式快照裡沒有 firstLevel
     expect(Object.fromEntries(termsOf(out, 'zh-TW').map((t) => [t.id, t.firstLevel]))[termLater]).toBeUndefined();
     const drafts = buildSnapshot(parsed, acct.compiled, { contentVersion: 1, items: [] }, { ...meta, includeDrafts: true });
@@ -400,7 +406,7 @@ describe('快照：manifest.chapters[] 帶 scope 與 examScope；名詞帶 first
       expect(index.map((c) => c.id)).toEqual(out.manifest.chapters.map((c: { id: string }) => c.id));
       for (const [i, c] of index.entries()) {
         for (const k of Object.keys(c)) expect([...CHAPTER_INDEX_FIELDS, 'objectives']).toContain(k);
-        const full = fileOf(out, out.manifest.chapters[i].files[locale]);
+        const full = fileOf(out, out.manifest.chapters[i].files[locale]).chapter;
         expect(c.title).toBe(full.title);
         expect(c.levels).toEqual(full.levels);
         expect(c.objectives).toEqual(
@@ -475,7 +481,8 @@ describe('five_step_fill 的 compiled.cells（判分的 expectedCells）', () =>
       { contentVersion: 1, items: [] },
       { builtAt: '2026-10-24T00:00:00Z' },
     );
-    const snapshot = JSON.parse(files.get(manifest.levels[0]!.files['zh-TW']!.slice('content/'.length))!);
+    const chapterBundle = JSON.parse(files.get(manifest.levels[0]!.files['zh-TW']!.slice('content/'.length))!);
+    const snapshot = chapterBundle.levels.find((l: { level: { id: string } }) => l.level.id === manifest.levels[0]!.id);
     expect(snapshot.questions[0].compiled.cells).toEqual({ bs_cash: q172Expected.t1.after, bs_inventory: 0, is_gross_profit: q172Expected.t3.after });
   });
 
@@ -681,7 +688,7 @@ describe('struct.levelSize 的例外：延伸章的全 judgment 關卡（E03）�
     expect(mixed[0]!.message).toContain('5 到 8');
   });
 
-  it('快照：全 judgment 關卡在關卡檔 level、章節檔 levels 摘要與 manifest.levels 都標 unscored: true；一般關卡沒有這個欄位', () => {
+  it('快照：全 judgment 關卡在章節包的 level、chapter 的 levels 摘要與 manifest.levels 都標 unscored: true；一般關卡沒有這個欄位', () => {
     const scoredFive = [q172, qMulti, { ...qMulti, id: 'q_p9k4r7c2' }, { ...qMulti, id: 'q_p9k4r7c3' }, { ...qMulti, id: 'q_p9k4r7c4' }];
     const normal = levelFile(
       'lv_n0rm4701',
@@ -704,11 +711,12 @@ describe('struct.levelSize 的例外：延伸章的全 judgment 關卡（E03）�
     const entry = (id: string) => manifest.levels.find((l: { id: string }) => l.id === id);
     expect(entry('lv_jdgm3nt1')).toMatchObject({ unscored: true, questionIds: j(4).map((q) => q.id) });
     expect('unscored' in entry('lv_n0rm4701')).toBe(false);
-    const levelFileOf = (id: string) => JSON.parse(files.get(entry(id).files['zh-TW'].slice('content/'.length))!);
+    const levelFileOf = (id: string) =>
+      JSON.parse(files.get(entry(id).files['zh-TW'].slice('content/'.length))!).levels.find((l: { level: { id: string } }) => l.level.id === id);
     expect(levelFileOf('lv_jdgm3nt1').level.unscored).toBe(true);
     expect('unscored' in levelFileOf('lv_n0rm4701').level).toBe(false);
     const chapterFileOf = (id: string) =>
-      JSON.parse(files.get(manifest.chapters.find((c: { id: string }) => c.id === id)!.files['zh-TW']!.slice('content/'.length))!);
+      JSON.parse(files.get(manifest.chapters.find((c: { id: string }) => c.id === id)!.files['zh-TW']!.slice('content/'.length))!).chapter;
     expect(chapterFileOf('ch_e4j7r2').levels).toEqual([
       { id: 'lv_jdgm3nt1', order: 1, title: '關卡 lv_jdgm3nt1', objectiveIds: [], questionCount: 4, unscored: true },
     ]);

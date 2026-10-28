@@ -1037,12 +1037,12 @@ interface SourceLocation {
 ### 7.3 建置輸出與 content-manifest
 
 - 交付格式是「帶 hash 檔名的 JSON，執行期以 fetch 載入」，不使用 `import.meta.glob` 把內容編進 JS chunk。理由：內容可以和程式分開更新與快取；Service Worker 依 hash 檔名預先快取（見 06）；日後若要加遠端快照，格式不必改。
-- 依語系、依章節切分：每章一個檔案，名詞、範本、故事各自成檔。名詞分兩層（2026-10-24，`schemaVersion` 2）：每個語系一份名詞索引，加上依名詞 ID 分桶的完整內容檔；章節另有每個語系一份章節索引（見本節末）。zh-TW 與 en 都是 complete 語系，已發布內容在兩種語言都齊全，正式快照的 en 檔案不會有退回；只有含草稿的預覽建置，或日後新增的 beta 語系，才會在該語系的檔案中直接放入 zh-TW 文字並標記退回，學習端不必同時載入兩個語系的檔案。
+- 依語系、依章節切分：每章一個「章節包」（2026-10-29，`schemaVersion` 3：章節本身加該章全部關卡與題目，關卡不再各自一檔），名詞、範本、故事各自成檔。名詞分兩層（2026-10-24，`schemaVersion` 2）：每個語系一份名詞索引，加上依名詞 ID 分桶的完整內容檔（2026-10-29 起固定 8 桶）；章節另有每個語系一份章節索引（見本節末）。檔案數要少：Service Worker 的 precache 是一個項目一個項目抓的，十四章雙語的內容從每語系 96 個檔併成 24 個，第一次安裝少 145 趟往返（06 第 3.2 節）。zh-TW 與 en 都是 complete 語系，已發布內容在兩種語言都齊全，正式快照的 en 檔案不會有退回；只有含草稿的預覽建置，或日後新增的 beta 語系，才會在該語系的檔案中直接放入 zh-TW 文字並標記退回，學習端不必同時載入兩個語系的檔案。
 - 草稿不進正式快照；已下架項目只以墓碑形式出現。
 
 ```json
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "contentVersion": 12,
   "builtAt": "2026-11-03T08:00:00Z",
   "gitCommit": "a1b2c3d",
@@ -1056,6 +1056,19 @@ interface SourceLocation {
       "order": 5,
       "scope": "core",
       "examScope": "midterm",
+      "levelIds": ["lv_k7m2q9xd"],
+      "files": {
+        "zh-TW": "content/zh-TW/ch_c5f8w2.8e41b7.json",
+        "en": "content/en/ch_c5f8w2.0c93f2.json"
+      }
+    }
+  ],
+  "levels": [
+    {
+      "id": "lv_k7m2q9xd",
+      "chapterId": "ch_c5f8w2",
+      "order": 1,
+      "questionIds": ["q_tx7h2c9d"],
       "files": {
         "zh-TW": "content/zh-TW/ch_c5f8w2.8e41b7.json",
         "en": "content/en/ch_c5f8w2.0c93f2.json"
@@ -1071,8 +1084,8 @@ interface SourceLocation {
     "en": "content/en/term-index.71fe03.json"
   },
   "termDetails": {
-    "zh-TW": { "e": "content/zh-TW/terms-e.c8fd7d.json", "q": "content/zh-TW/terms-q.18b2e0.json" },
-    "en": { "e": "content/en/terms-e.e5755a.json", "q": "content/en/terms-q.6a7d93.json" }
+    "zh-TW": { "0": "content/zh-TW/terms-0.c8fd7d.json", "1": "content/zh-TW/terms-1.18b2e0.json" },
+    "en": { "0": "content/en/terms-0.e5755a.json", "1": "content/en/terms-1.6a7d93.json" }
   },
   "templates": {
     "zh-TW": "content/zh-TW/templates.b7d145.json",
@@ -1091,15 +1104,15 @@ interface SourceLocation {
 }
 ```
 
-manifest 的 `chapters[]` 另帶章節的 `scope` 與 `examScope`（延伸章再加 `kind`），地圖與章節列表不必載入章節檔就能標示「不在期中考範圍」與「範圍以老師公告為準」；章節有 `notices` 時也一併帶上（2026-10-24），用代號或 QR 直接進關卡的作答頁只讀 manifest 就能標「非投資建議」；章節檔本身也有同樣的欄位。名詞檔的每個名詞另帶 `firstLevel: { levelId, chapterId }`（M3 起）：依章節 `order`、章節 `levelIds` 與關卡 `questionIds` 的順序，第一個 `termRefs` 含該名詞的已發布關卡，名詞圖鑑用它顯示未解鎖名詞「在哪一關會遇到」（03 第 2.10 節）；沒有任何關卡用到的名詞省略這個欄位，名詞另設 `unlock.levelId` 時以 `unlock` 為準。關卡檔的 `level`、章節檔的 `levels[]` 摘要與 manifest 的 `levels[]` 在「全 judgment」關卡（3.5 節的例外）帶 `unscored: true`，其餘關卡沒有這個欄位；介面據此不算星星、不顯示星等，改顯示已讀完的狀態。題目的 `compiled` 另有 `five_step_fill` 的 `cells`（`openCells` 線 ID 對金額）與 `ratio_interpret` 的 `ratios`（`ratioTable` 的指標，3.6 節）。章節徽章「完成」與「精通」不需要額外資料：定義（章內每關至少一星、每關三星）在 03 第 2.10 節，外觀在章節的 `badge`，判定只用章節檔的 `levelIds` 與學習進度。
+章節包（`chapters[].files`，`schemaVersion` 3）的形狀是 `{ "chapter": …, "levels": [ { "level": …, "questions": […] }, … ] }`：`chapter` 是章節本身加該章已發布的學習目標與關卡摘要（`levels[]`），`levels` 是該章每一關的 `{ level, questions }`（題目依 `questionIds` 順序、帶 `answerRev` 與 `compiled`），順序依 `chapter.levelIds`，已發布章節漏列的關卡接在最後。manifest 的 `levels[]` 列出每一關的 `chapterId`、`order`、`questionIds` 與 `files`，`files` 就是所屬章節的章節包；學習端 `loadLevel` 讀章節包再依 `level.id` 取關卡，章節包依路徑快取，同一章換下一關不再讀第二次。manifest 的 `chapters[]` 另帶章節的 `scope` 與 `examScope`（延伸章再加 `kind`），地圖與章節列表不必載入章節檔就能標示「不在期中考範圍」與「範圍以老師公告為準」；章節有 `notices` 時也一併帶上（2026-10-24），用代號或 QR 直接進關卡的作答頁只讀 manifest 就能標「非投資建議」；章節檔本身也有同樣的欄位。名詞檔的每個名詞另帶 `firstLevel: { levelId, chapterId }`（M3 起）：依章節 `order`、章節 `levelIds` 與關卡 `questionIds` 的順序，第一個 `termRefs` 含該名詞的已發布關卡，名詞圖鑑用它顯示未解鎖名詞「在哪一關會遇到」（03 第 2.10 節）；沒有任何關卡用到的名詞省略這個欄位，名詞另設 `unlock.levelId` 時以 `unlock` 為準。關卡檔的 `level`、章節檔的 `levels[]` 摘要與 manifest 的 `levels[]` 在「全 judgment」關卡（3.5 節的例外）帶 `unscored: true`，其餘關卡沒有這個欄位；介面據此不算星星、不顯示星等，改顯示已讀完的狀態。題目的 `compiled` 另有 `five_step_fill` 的 `cells`（`openCells` 線 ID 對金額）與 `ratio_interpret` 的 `ratios`（`ratioTable` 的指標，3.6 節）。章節徽章「完成」與「精通」不需要額外資料：定義（章內每關至少一星、每關三星）在 03 第 2.10 節，外觀在章節的 `badge`，判定只用章節檔的 `levelIds` 與學習進度。
 
-名詞與章節的兩層快照（2026-10-24，`schemaVersion` 從 1 改成 2；學習端只接受自己認得的版本，舊程式遇到新快照會顯示「這一頁還沒下載到這台裝置」而不是讀錯欄位）：
+名詞與章節的兩層快照（2026-10-24，`schemaVersion` 從 1 改成 2；2026-10-29 關卡併進章節包、名詞改 8 桶，改成 3；學習端只接受自己認得的版本，舊程式遇到新快照會顯示「這一頁還沒下載到這台裝置」而不是讀錯欄位）：
 
 - `termIndex`：每個語系一檔，全部名詞但只有 `tools/lib/content-snapshot.mjs` 的 `TERM_INDEX_FIELDS`（`id`、`category`、`label`、`teacherLabel`、`currentTwLabel`、`ifrsEnglish`、兩種語言的 `aliases`、`flags`、`accountRef`、`ratioRef`、`firstLevel`、`unlock`）。作答頁的名詞 chip 與科目、指標名稱，名詞圖鑑的列表、分組與搜尋，名詞卡的標題列都只用這些欄位；十四章 163 個名詞約 10 KB gzip。
-- `termDetails`：完整內容（索引欄位加上定義、例子、常見誤解、公式、IFRS 說明、相關名詞等），依名詞 ID 的最後一個字元分桶（Crockford Base32，最多 32 桶，每桶約 5 個名詞，各 1 到 4 KB gzip），檔名 `terms-<桶>.<雜湊>.json`，manifest 只列有名詞的桶。學習端由 ID 就算得出要讀哪一桶（`apps/web/src/lib/content.ts` 的 `termDetailBucket` 必須和工具的同名函式一致），名詞頁與名詞卡不必先讀索引；打開名詞卡或名詞頁時才讀。
-- `chapterIndex`：每個語系一檔、依 `order` 排列，全部章節的 `CHAPTER_INDEX_FIELDS`（`id`、`order`、`scope`、`examScope`、`kind`、`notices`、`title`、`summary`、`levelIds`、`badge`、`levels` 摘要、`chapterEndLinks`）加上只留 `id`、`order`、`statement` 的學習目標。闖關地圖、章節頁、名詞圖鑑與徽章第一次繪製只讀這一檔（約 8 KB gzip），不再逐章讀十四個章節檔（合計約 23 KB gzip、十四個請求）；每章的章節檔照舊輸出。
+- `termDetails`：完整內容（索引欄位加上定義、例子、常見誤解、公式、IFRS 說明、相關名詞等），依名詞 ID 分桶：桶是 ID 最後一個字元的字元碼除以 8 的餘數（`0` 到 `7`，2026-10-29 起；之前是末字元本身，最多 32 桶），十四章 163 個名詞每桶 14 到 29 個、約 11 KB gzip，檔名 `terms-<桶>.<雜湊>.json`，manifest 只列有名詞的桶。學習端由 ID 就算得出要讀哪一桶（`apps/web/src/lib/content.ts` 的 `termDetailBucket`、殼層 `boot.js` 的預先載入與 E2E 的 `glossary-data.ts` 必須和工具的同名函式一致），名詞頁與名詞卡不必先讀索引；打開名詞卡或名詞頁時才讀。桶數是快照格式的一部分（改桶數就改 `schemaVersion`）。
+- `chapterIndex`：每個語系一檔、依 `order` 排列，全部章節的 `CHAPTER_INDEX_FIELDS`（`id`、`order`、`scope`、`examScope`、`kind`、`notices`、`title`、`summary`、`levelIds`、`badge`、`levels` 摘要、`chapterEndLinks`）加上只留 `id`、`order`、`statement` 的學習目標。闖關地圖、章節頁、名詞圖鑑與徽章第一次繪製只讀這一檔（約 8 KB gzip），不再逐章讀十四個章節包（每個 8 到 18 KB gzip、十四個請求）；每章的章節包照舊輸出。
 
-拆分的理由是 06 第 8.2 節的 LCP 預算：十二章發布後單一名詞檔漲到 52 KB gzip，作答頁、名詞列表與名詞頁第一次繪製都要等它（14 第 5.2 節）。兩層的檔案都帶內容雜湊、都在 precache，離線照樣能讀。
+拆分的理由是 06 第 8.2 節的 LCP 預算：十二章發布後單一名詞檔漲到 52 KB gzip，作答頁、名詞列表與名詞頁第一次繪製都要等它（14 第 5.2 節）。合併（關卡進章節包、名詞 8 桶）的理由是 06 第 3.2 節的 precache 項目數：第一次安裝的時間和項目數成正比，兩種做法的平衡是「第一次繪製只讀一個索引加一個包，包的大小在 LCP 餘裕內」。兩層的檔案都帶內容雜湊、都在 precache，離線照樣能讀。
 
 `contentVersion` 是遞增的整數（6.4 節）；`locales` 的狀態取自 `packages/i18n` 的語系登錄檔，zh-TW 與 en 從 M0b 起都是 `complete`，`beta` 只保留給日後新增的第三種語言。`schemaVersion` 是快照格式的版本；學習端程式只接受自己認得的 schemaVersion，避免日後遠端快照與舊版程式不相容。快照路徑相對於部署的 base path；已決定（D4，2026-10-20）base path 為 `/`，所以正式網址是 `https://ledgerland.swift.moe/content/...`（見 [09 技術選擇](09-tech-stack.md)）。英文介面的 `/en/` 前綴只屬於頁面路由（D5），快照檔案不分路由前綴，兩種語言都讀同一個 manifest。預先快取的體積預算見 06。
 

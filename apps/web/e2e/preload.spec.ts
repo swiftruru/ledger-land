@@ -5,7 +5,7 @@
 // 名詞的名稱與定義一律從正在服務的快照讀（glossary-data.ts），內容改寫後不必改測試（finding glossary-6）。
 import { expect, test, type Page } from '@playwright/test';
 import { waitForApp, watchCsp } from './helpers.ts';
-import { escapeRegExp, termBucketPath, termDetailOf, termIndexOf, visibleChunk } from './glossary-data.ts';
+import { escapeRegExp, levelBundlePath, termBucketPath, termDetailBucket, termDetailOf, termIndexOf, visibleChunk } from './glossary-data.ts';
 
 const LEVEL_1 = 'lv_h2zx7srx';
 const LEVEL_PICK_STATEMENT = 'lv_kfcqkmya';
@@ -35,7 +35,12 @@ function contentRequests(page: Page): string[] {
 }
 
 test.describe('依路徑預先載入與兩層名詞快照', () => {
-  test('作答頁：預先載入 Level chunk、zh-TW catalog、關卡檔與名詞索引（as=fetch 帶 crossorigin），不讀完整名詞內容；CSP 沒有違規', async ({ page }) => {
+  test('作答頁：預先載入 Level chunk、zh-TW catalog、所屬章節的章節包與名詞索引（as=fetch 帶 crossorigin），不讀完整名詞內容；CSP 沒有違規', async ({
+    page,
+    request,
+  }) => {
+    // 關卡在所屬章節的章節包裡（schemaVersion 3）：作答頁預先載入的是那一章的檔
+    const bundle = await levelBundlePath(request, LEVEL_1, 'zh-TW');
     const csp = await watchCsp(page);
     const requests = contentRequests(page);
     await page.goto(`/level/${LEVEL_1}/`);
@@ -44,12 +49,15 @@ test.describe('依路徑預先載入與兩層名詞快照', () => {
     expect(links.some((l) => l.rel === 'modulepreload' && /^\/assets\/Level-[^/]+\.js$/.test(l.href))).toBe(true);
     expect(links.some((l) => l.rel === 'modulepreload' && /^\/assets\/catalog-zh-TW-[^/]+\.js$/.test(l.href))).toBe(true);
     expect(links.some((l) => l.rel === 'modulepreload' && /catalog-en-/.test(l.href))).toBe(false);
-    const level = links.find((l) => l.rel === 'preload' && l.href.startsWith(`/content/zh-TW/${LEVEL_1}.`));
+    expect(bundle).toMatch(/^\/content\/zh-TW\/ch_[0-9a-z]+\.[0-9a-f]{6}\.json$/);
+    const level = links.find((l) => l.rel === 'preload' && l.href === bundle);
     expect(level).toMatchObject({ as: 'fetch', crossOrigin: 'anonymous' });
     expect(links.some((l) => l.rel === 'preload' && /^\/content\/zh-TW\/term-index\.[0-9a-f]{6}\.json$/.test(l.href))).toBe(true);
     await expect(page.locator('.ll-question__prompt').first()).toBeVisible();
-    // 名詞的完整內容在打開名詞卡之前都不讀；章節檔與舊的單一名詞檔也不讀
-    expect(requests.filter((p) => /\/terms-[0-9a-z]\.|\/terms\.[0-9a-f]{6}\.json$|\/ch_[0-9a-z]+\./.test(p))).toEqual([]);
+    // 名詞的完整內容在打開名詞卡之前都不讀；其他章的章節包、舊格式的關卡檔與單一名詞檔也不讀
+    expect(
+      requests.filter((p) => /\/terms-[0-9a-z]\.|\/terms\.[0-9a-f]{6}\.json$|\/lv_[0-9a-z]+\./.test(p) || (/\/ch_[0-9a-z]+\./.test(p) && p !== bundle)),
+    ).toEqual([]);
     await csp();
   });
 
@@ -73,7 +81,7 @@ test.describe('依路徑預先載入與兩層名詞快照', () => {
 
   test('名詞頁（英文）：預先載入兩種語言的那一桶與英文章節索引；定義、中文名稱與「會在哪一關遇到」一起出現', async ({ page, request }) => {
     const [en, zh] = await Promise.all([termDetailOf(request, TERM_ASSET, 'en'), termDetailOf(request, TERM_ASSET, 'zh-TW')]);
-    const bucket = TERM_ASSET.slice(-1);
+    const bucket = termDetailBucket(TERM_ASSET);
     const csp = await watchCsp(page);
     await page.goto(`/en/terms/${TERM_ASSET}/`);
     await waitForApp(page);

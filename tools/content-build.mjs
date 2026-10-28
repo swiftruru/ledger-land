@@ -1,5 +1,5 @@
 // content:build（08 第 7.3 節）：ContentAdapter（files）到正規化模型，核心算出答案（04 第 15.2 節），再產出 content-manifest.json 與
-// 依語系、依章節、依關卡切分的 hashed JSON。快照形狀在 lib/content-snapshot.mjs；這支只讀檔、檢查與寫檔。
+// 依語系、依章節切分的 hashed JSON（關卡併在所屬章節的章節包裡、名詞分 8 桶，schemaVersion 3）。快照形狀在 lib/content-snapshot.mjs；這支只讀檔、檢查與寫檔。
 // 輸出到 apps/web/public/content/（已被 .gitignore 排除；Vite 會把 public/ 原樣複製進 dist/）。
 // 草稿不進快照；已下架項目只以墓碑形式出現；en 檔案不放退回文字（zh-TW 與 en 都是 complete，正式快照要求兩種語言齊全）。
 // 例外：環境變數 LL_INCLUDE_DRAFTS=1 時連草稿一起收（manifest 標 includesDrafts，debug 頁會顯示），只給本機開發與 E2E 用；CI 與部署不設。

@@ -123,7 +123,7 @@ describe('content:build 的快照形狀（08 第 7.3 節、04 第 15.2 節）', 
     levels: [level, levelFile('lv_dr4ft000', 'ch_n3f8q1', [], 'draft')],
   };
 
-  it('引用自洽；manifest 列出章節的 levelIds 與每關的 questionIds 與檔案；關卡檔含題目與核心答案；草稿與 authorNotes 不進快照', () => {
+  it('引用自洽；manifest 列出章節的 levelIds 與每關的 questionIds 與檔案；章節包含該章的關卡、題目與核心答案；草稿與 authorNotes 不進快照', () => {
     expect(validateBundle(bundle)).toEqual([]);
     const parsed = parseBundle(bundle);
     const acct = runAccountingChecks(parsed, FAST);
@@ -136,9 +136,14 @@ describe('content:build 的快照形狀（08 第 7.3 節、04 第 15.2 節）', 
     expect(manifest.levels).toHaveLength(1);
     expect(manifest.levels[0]).toMatchObject({ id: 'lv_k7m2q9xd', chapterId: 'ch_n3f8q1', order: 1, questionIds: scoredFive.map((q) => q.id) });
     for (const locale of ['zh-TW', 'en']) {
+      // 關卡的檔就是所屬章節的章節包（schemaVersion 3）：{ chapter, levels }
       const path = manifest.levels[0]!.files[locale]!;
-      expect(path).toMatch(new RegExp(`^content/${locale}/lv_k7m2q9xd\\.[0-9a-f]{6}\\.json$`));
-      const snapshot = JSON.parse(out.get(path.slice('content/'.length))!);
+      expect(path).toMatch(new RegExp(`^content/${locale}/ch_n3f8q1\\.[0-9a-f]{6}\\.json$`));
+      expect(path).toBe(manifest.chapters[0]!.files[locale]);
+      const bundle = JSON.parse(out.get(path.slice('content/'.length))!);
+      expect(Object.keys(bundle)).toEqual(['chapter', 'levels']);
+      expect(bundle.levels.map((l: { level: { id: string } }) => l.level.id)).toEqual(['lv_k7m2q9xd']);
+      const snapshot = bundle.levels[0];
       expect(snapshot.level).toMatchObject({ id: 'lv_k7m2q9xd', questionIds: scoredFive.map((q) => q.id) });
       expect(snapshot.questions.map((q: { id: string }) => q.id)).toEqual(scoredFive.map((q) => q.id));
       const first = snapshot.questions[0];
@@ -151,30 +156,35 @@ describe('content:build 的快照形狀（08 第 7.3 節、04 第 15.2 節）', 
       expect(snapshot.questions[1].compiled).toBeUndefined();
       expect(snapshot.questions[4].authorNotes).toBeUndefined();
       expect(JSON.stringify(snapshot)).not.toContain('q_p9k4r7c5');
-      const chapterFile = JSON.parse(out.get(manifest.chapters[0]!.files[locale]!.slice('content/'.length))!);
+      const chapterFile = bundle.chapter;
       expect(chapterFile.levelIds).toEqual(['lv_k7m2q9xd']);
       expect(chapterFile.objectives.map((o: { id: string }) => o.id)).toEqual(['obj_5vk2m7', 'obj_4tw8m3']);
       expect(typeof chapterFile.objectives[0].statement).toBe('string');
     }
-    expect(JSON.parse(out.get(manifest.levels[0]!.files.en!.slice('content/'.length))!).questions[0].prompt).toMatch(/^Lime Leaf/);
+    expect(JSON.parse(out.get(manifest.levels[0]!.files.en!.slice('content/'.length))!).levels[0].questions[0].prompt).toMatch(/^Lime Leaf/);
     expect(manifest.tombstones).toMatch(/^content\/tombstones\.[0-9a-f]{6}\.json$/);
   });
 
-  it('章節檔的 levels：已發布關卡的摘要（id、order、title、objectiveIds、questionCount），順序同 levelIds，title 依語系展開', () => {
+  it('章節包 chapter 的 levels：已發布關卡的摘要（id、order、title、objectiveIds、questionCount），順序同 levelIds，title 依語系展開', () => {
     const withObjectives = { ...level, data: { ...level.data, objectiveIds: ['obj_5vk2m7'] } };
     const parsed = parseBundle({ ...bundle, levels: [withObjectives, levelFile('lv_dr4ft000', 'ch_n3f8q1', [], 'draft')] });
     const acct = runAccountingChecks(parsed, FAST);
     const { manifest, files: out } = buildSnapshot(parsed, acct.compiled, { contentVersion: 1, items: [] }, { builtAt: '2026-10-23T00:00:00Z' });
-    const zh = JSON.parse(out.get(manifest.chapters[0]!.files['zh-TW']!.slice('content/'.length))!);
-    const en = JSON.parse(out.get(manifest.chapters[0]!.files.en!.slice('content/'.length))!);
+    const zh = JSON.parse(out.get(manifest.chapters[0]!.files['zh-TW']!.slice('content/'.length))!).chapter;
+    const en = JSON.parse(out.get(manifest.chapters[0]!.files.en!.slice('content/'.length))!).chapter;
     expect(zh.levels).toEqual([{ id: 'lv_k7m2q9xd', order: 1, title: '測試關卡', objectiveIds: ['obj_5vk2m7'], questionCount: 5 }]);
     expect(en.levels[0]).toMatchObject({ id: 'lv_k7m2q9xd', title: 'Test level', questionCount: 5 });
     expect(zh.levels.map((l: { id: string }) => l.id)).toEqual(zh.levelIds);
     // 其他章沒有關卡：levels 是空陣列而不是缺欄位
-    expect(JSON.parse(out.get(manifest.chapters[1]!.files['zh-TW']!.slice('content/'.length))!).levels).toEqual([]);
+    const empty = JSON.parse(out.get(manifest.chapters[1]!.files['zh-TW']!.slice('content/'.length))!);
+    expect(empty.chapter.levels).toEqual([]);
+    expect(empty.levels).toEqual([]);
     // 含草稿模式：草稿關卡接在後面，questionCount 只算快照收進來的題目
     const drafts = buildSnapshot(parsed, acct.compiled, { contentVersion: 1, items: [] }, { includeDrafts: true });
-    const draftChapter = JSON.parse(drafts.files.get(drafts.manifest.chapters[0]!.files['zh-TW']!.slice('content/'.length))!);
+    const draftBundle = JSON.parse(drafts.files.get(drafts.manifest.chapters[0]!.files['zh-TW']!.slice('content/'.length))!);
+    const draftChapter = draftBundle.chapter;
+    // 章節包的 levels 和摘要同序，草稿關卡也在
+    expect(draftBundle.levels.map((l: { level: { id: string } }) => l.level.id)).toEqual(['lv_k7m2q9xd', 'lv_dr4ft000']);
     expect(draftChapter.levels.map((l: { id: string; questionCount: number }) => [l.id, l.questionCount])).toEqual([
       ['lv_k7m2q9xd', 5],
       ['lv_dr4ft000', 0],
@@ -226,8 +236,8 @@ describe('content:build 的快照形狀（08 第 7.3 節、04 第 15.2 節）', 
     // 其他題型沒有 lines；lock 的 answerHash 不含 lines（questionAnswerFields 只取 expected）
     expect(acct.compiled.get('q_p9k4r7cx')?.lines).toBeUndefined();
     const { manifest, files: out } = buildSnapshot(parsed, acct.compiled, { contentVersion: 1, items: [] }, { builtAt: '2026-10-23T00:00:00Z' });
-    const zh = JSON.parse(out.get(manifest.levels[0]!.files['zh-TW']!.slice('content/'.length))!).questions[0];
-    const en = JSON.parse(out.get(manifest.levels[0]!.files.en!.slice('content/'.length))!).questions[0];
+    const zh = JSON.parse(out.get(manifest.levels[0]!.files['zh-TW']!.slice('content/'.length))!).levels[0].questions[0];
+    const en = JSON.parse(out.get(manifest.levels[0]!.files.en!.slice('content/'.length))!).levels[0].questions[0];
     expect(zh.compiled.lines.find((l: { id: string }) => l.id === 'bs_cash')).toEqual({
       id: 'bs_cash',
       label: cash.label['zh-TW'],
