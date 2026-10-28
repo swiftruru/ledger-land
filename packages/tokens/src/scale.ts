@@ -48,7 +48,8 @@ export const control = {
 
 export const radius = { xs: 6, sm: 10, md: 14, lg: 20, xl: 28, full: 999 } as const;
 
-export const z = { sticky: 10, tabbar: 50, sheet: 60, toast: 70, skiplink: 100 } as const;
+/** launch：App 模式冷啟動時蓋住整頁的啟動畫面（06 第 2.4 節），要在 Tab bar、面板、Toast 與跳過連結之上 */
+export const z = { sticky: 10, tabbar: 50, sheet: 60, toast: 70, skiplink: 100, launch: 200 } as const;
 
 /** Tab bar 的尺寸（07 第 6.1 節；鏡片的放大倍數與膠囊寬度比例在 apps/web 的 tabbar.css） */
 export const tabbar = { heightPx: 64, maxWidthPx: 480, sideInsetPx: 21, railWidthPx: 88 } as const;

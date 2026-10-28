@@ -205,11 +205,13 @@ Chrome 目前的可安裝條件：HTTPS；manifest 有 `name` 或 `short_name`�
 | `favicon.svg` | 向量 | HTML `<link rel="icon" type="image/svg+xml">`（建置時寫成 data: URI） | 瀏覽器分頁；Safari 26 起介面上所有圖示位置都支援 SVG | 可在 SVG 內用 `prefers-color-scheme` 切換深色版；現行版本背景透明、沒有深色版（深色外框在淺色與深色分頁列都看得清楚） |
 | `icons/favicon.ico` | 48、32、16 | HTML `<link rel="icon" sizes="48x48">` | 舊瀏覽器 | 由 favicon 的原圖縮成三個尺寸 |
 | `screenshots/*.png` | 依實際截圖 | manifest | Chrome 安裝對話框 | 每次大改版更新 |
-| `apple-touch-startup-image`（選配） | 依裝置尺寸 | HTML `<link rel="apple-touch-startup-image" media="...">` | iOS 啟動畫面 | 是否仍有效【待實測 V05】 |
+| `splash/apple-splash-{light|dark}-{寬x高}.png` | 9 種直向 iPhone 尺寸乘淺深（`src/shell/splash-devices.json`），共 18 張 | HTML `<link rel="apple-touch-startup-image" media="...">`（`shellHtml.ts` 依同一份 JSON 產 link） | iOS 啟動畫面 | 和 App 內的停留畫面（2.4 節）同一份圖：用 Chromium 對建置好的殼層截圖產生，不進 precache |
 
 為什麼 apple-touch-icon 一定要不透明：Safari iOS 只在頁面沒有 apple-touch-icon 時才用 manifest 圖示，而且只用 purpose 為 `any` 的那幾個，不會優先選 maskable；透明背景的 PNG 在主畫面會出現黑邊（WebKit bug 255596，仍是 NEW）。所以 maskable 只對 Android 有意義，iOS 一律靠不透明的 180×180 PNG。apple-touch-icon 是否接受 SVG 沒有官方說明，維持 PNG。
 
-產生方式（2026-10-28 起）：App 圖示是小綠綠（維護者的原創角色）抱著帳本的插圖，原圖在 `apps/web/brand/icon-source.webp`（1254×1254，滿版的淡彩背景，主體收在中央 70% 內）。五個 PNG 從原圖縮成各尺寸再壓成 256 色（512 約 135 KB、192 約 29 KB、180 約 26 KB）；`any` 與 `maskable` 用同一張圖，因為主體本來就在安全區內，iOS 的 180×180 也是同一張。這五個 PNG 不進 precache（3.2 節）。之前的占位圖示是用 `@vite-pwa/assets-generator` 2.0.0 的 `minimal-2023` 預設從一份 SVG 產生的，Apple 啟動畫面（含深色版）仍是那一批。圖示原圖為原創設計，不使用 Apple 素材（見 07 第 12 節）。`favicon.svg` 是同一角色的平面簡化版（只有頭、領口和帳本，粗外框，背景透明），原圖在 `apps/web/brand/favicon-source.webp`，用 `apps/web/brand/trace-favicon.py` 描成向量：固定 14 色色盤、逐色取輪廓再簡化成 128 格的整數多邊形，約 5.4 KB（gzip 2.2 KB），因為它會寫進每一頁的 HTML（2.3 節）。`favicon.ico` 由同一份原圖去背後縮成 48、32、16 三個尺寸（帶透明通道）。
+產生方式（2026-10-28 起）：App 圖示是小綠綠（維護者的原創角色）抱著帳本的插圖，原圖在 `apps/web/brand/icon-source.webp`（1254×1254，滿版的淡彩背景，主體收在中央 70% 內）。五個 PNG 從原圖縮成各尺寸再壓成 256 色（512 約 135 KB、192 約 29 KB、180 約 26 KB）；`any` 與 `maskable` 用同一張圖，因為主體本來就在安全區內，iOS 的 180×180 也是同一張。這五個 PNG 不進 precache（3.2 節）。之前的占位圖示是用 `@vite-pwa/assets-generator` 2.0.0 的 `minimal-2023` 預設從一份 SVG 產生的，2026-10-28 連同 Apple 啟動畫面一起換掉。圖示原圖為原創設計，不使用 Apple 素材（見 07 第 12 節）。
+
+啟動畫面的素材（2026-10-28 起，都在 `apps/web/brand/`）：維護者的原創剪紙插圖（小綠綠抱紅帳簿，`launch-illustration-source.png`，1254×1254 透明）與小 logo（紅帳簿加一撮金髮，`launch-mark-source.png`）用 `trace-launch.py` 描成 SVG（`tracelib.py`：k-means 自動取色並吸附到真實顏色、面積太小的混色併掉、逐色膨脹後取輪廓、Douglas-Peucker 簡化、座標取整到 512 或 256 格、相對路徑指令；很小又接近圓的色塊寫成 `<circle>`、小的洞不挖，帳簿上的金色圓點才不會變菱形；插圖用釘住的 9 色（`--palette`，自動取色會把面積太小的金色併掉）約 3.8 KB、gzip 1.7 KB，小 logo 5 色約 1.2 KB）。「LedgerLand」字樣用 `wordmark.py`（fontTools）把 jf open 粉圓（OFL 1.1）的字母轉成字形外框 `launch-wordmark.svg`（每 em 100 單位，約 3.2 KB、gzip 1.5 KB），字型檔放在不進 git 的 `references/fonts/`，網站仍不散布任何字型檔（07 第 3.1、12 節；THIRD_PARTY_NOTICES 有列）。三個 SVG 由 `shellHtml.ts` 的 `buildLaunchScreen()` 內嵌進殼層。18 張啟動圖由 `make-launch.mjs splash` 產生：Playwright 的 Chromium 開建置好的 `dist/index.html`（file://，資源都 404 所以 React 不會掛載、停留畫面不會被移除）、假裝 `navigator.standalone` 讓 boot 腳本寫 `data-display=app`、依裝置尺寸與淺深色截圖，再用 `quantise-png.py`（Pillow）壓成 128 色（每張 17 到 38 KB，18 張共約 600 KB，不進 precache）；三個 SVG 內嵌後殼層 HTML 的 gzip 一度從 11.2 KB 變成 16.8 KB，超過 Lighthouse 模擬的 TCP 第一個視窗（約 14.6 KB，含約 1 KB 的回應標頭），每一頁 LCP 多一趟往返；建置時改用 Vite 的壓縮器壓 boot 腳本（gzip 省 1.7 KB）、描圖的格數縮小、favicon 從 128 格改 96 格（瀏覽器分頁的圖示最大 48px，看不出差別）後回到 12.9 KB，並新增預算 `indexHtmlGzipKb` 13.5（8.2 節）；`make-launch.mjs sheet` 把描圖和原圖並排算差異、把 18 張拼成一張給人看。這些產生器都是維護者手動跑的，不進 CI。favicon.svg` 是同一角色的平面簡化版（只有頭、領口和帳本，粗外框，背景透明），原圖在 `apps/web/brand/favicon-source.webp`，用 `apps/web/brand/trace-favicon.py` 描成向量：固定 14 色色盤、逐色取輪廓再簡化成 128 格的整數多邊形，約 5.4 KB（gzip 2.2 KB），因為它會寫進每一頁的 HTML（2.3 節）。`favicon.ico` 由同一份原圖去背後縮成 48、32、16 三個尺寸（帶透明通道）。
 
 來源：https://raw.githubusercontent.com/mdn/browser-compat-data/main/manifests/webapp/icons.json 、https://bugs.webkit.org/show_bug.cgi?id=255596 、https://registry.npmjs.org/@vite-pwa/assets-generator （查證日期 2026-10-20）
 
@@ -257,6 +259,7 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 
 - **Tab bar 寫在初始 HTML 殼層**（已決定 D8，2026-10-20）：iOS 17 以下有「頁面載入後才插入的元素不套用 backdrop-filter」的問題（Safari 18 才修正），所以帶玻璃的 `nav` 不由 React 建立，而是殼層裡 `body` 直屬的元素。React 掛載後以 ref 取得 `#ll-tabbar`，只更新 `aria-current`、標籤文字、`href` 與收合狀態，不建立也不替換 `nav` 與其子元素，也不使用 React portal；平板與電腦的 rail、側邊欄也是同一個元素，由 CSS 依斷點改變外觀（細節見 07 第 6.1 節）。iOS 17 上靜態 Tab bar、切換語言與換版面之後是否仍有模糊，列入 M0a 的 iOS 17 驗證（第 10 節）。
 - 殼層在地化的小段腳本緊接在 `nav` 之後，讓英文網址第一次繪製時就是英文標籤（「跳到主要內容」連結的文字也一起改寫）；和 boot 腳本一樣由建置腳本產生並納入 CSP 的 sha256【待實測 V15】。
+- 啟動畫面 `#ll-launch` 是 `body` 的第一個子節點（2026-10-28 起，2.4 節第 5 點）：三個內嵌 SVG，樣式接在首次繪製那段 `<style>` 的後面（postbuild 只允許一段 inline style），只靠內嵌的標記與這段 style 就畫得出來，不依賴外部 CSS、JS 或圖片，因為 iOS 的啟動圖就是對它截的圖；瀏覽器模式是 `display:none`。
 - D7 的統計腳本**不寫在殼層 HTML 裡**，由 App 掛載後動態載入（第 8.3 節），避免網路很差時 `defer` 腳本拖住 App 的模組腳本。
 - **不寫** `maximum-scale=1` 或 `user-scalable=no`。防止連點放大改用 `touch-action: manipulation`（第 7 節），讓需要放大的人仍然可以雙指縮放。
 - `viewport-fit=cover` 是 `env(safe-area-inset-*)` 有非零值的前提。
@@ -281,9 +284,10 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 1. 淺深兩個 `theme-color` meta 都保留（Chrome Android 會用，iOS 沒有壞處）。已決定（2026-10-21）：設定頁可以手動選擇外觀與深色風味，`theme-color` 有四個值（淺色 `#FCF8F0`、夜空 `#121018`、莓果 `#171018`、紅酒 `#181012`）；手動指定時 boot 腳本與設定頁把兩個 meta 的 `content` 都改成目前主題的值（16 第 7 節）。
 2. 真正決定顏色的三個來源要一致：`html`／`body` 背景、頂部區域的背景、`theme-color`。頂部用 `padding-top: env(safe-area-inset-top)` 加上與 `body` 同色的實色區域，這樣不論狀態列是否透明、safe area 是否回傳 0，畫面都不會破。
 3. 浮動 Tab bar 不貼齊螢幕底邊（離 safe area 至少 8px），避免被 Safari 當成取色來源；隱藏的覆蓋層用 `display: none`，不要只設 `visibility: hidden` 或 `opacity: 0`（細節見 07 第 6.6 節）。
-4. **Android 啟動畫面**：由 `name`、`background_color` 與 512 圖示自動產生，確定要做。
+4. **Android 啟動畫面**：由 `name`、`background_color` 與 512 圖示自動產生，確定要做。2026-10-28 起它之後接著 App 內的停留畫面（第 5 點），使用者看到的是同一張插圖。
 5. **iOS 啟動畫面**：M0a 用 assets-generator 產生淺深兩套 `apple-touch-startup-image`，在 iOS 26 與 27 實機上確認是否生效。M0a 結果（2026-10-21，iOS 27 與 18.6 Simulator，實機待重測）：有效，但有三個條件。(a) 頁面必須有 `<meta name="apple-mobile-web-app-capable" content="yes">`，iOS 才會下載啟動圖，只靠 manifest 的 `display: standalone` 不夠（另加 `mobile-web-app-capable`，避免 Chromium 的棄用警告）；(b) 啟動圖在「加入主畫面」那一刻依 iPhone 系統當時的淺色或深色固定一張，之後切換系統外觀或網站自己的外觀設定都不會跟著變（WebKit bug 259328），網站的外觀設定也不會帶進新加入的 App，因為 Safari 的網站資料不會複製到 App；(c) `media` 條件不要測 `device-height`（WebKit bug 326500，iOS 27.0.1），只用寬度與像素比。實機（iOS 27）的「深色啟動圖失敗」在 2026-10-22 查明不是 bug：我的 iPhone 系統其實是淺色，Safari 分頁看起來是深色是因為網站自己的外觀設定選了深色；新加入的 App 從空的 localStorage 開始（V02 的儲存隔離），所以跟隨系統顯示淺色，iOS 也正確選了淺色啟動圖。結論兩條：測深色啟動圖要用「設定 › 螢幕顯示與亮度 › 深色」，不是網站的外觀設定；Safari 裡手動選的外觀不會帶進新加入的 App，App 第一次啟動一律跟隨系統，所以 App 內要提供外觀選項（16 第 7 節的設定頁已涵蓋），安裝教學可以提一句。系統切成深色後重新加入，實機（iOS 27）看到深色啟動圖，V05 淺色與深色都已通過（2026-10-22）。若無效或效果不佳，退路是不提供啟動圖，改由 HTML 內聯的單色背景加置中圖示（inline SVG）當作載入畫面，React 掛載後移除；這個載入畫面要固定尺寸，不能造成版面位移。
-6. M0a 完成標準：Android 與 iPhone 實機安裝截圖，涵蓋主畫面圖示、啟動畫面、狀態列顏色，淺色與深色各一張【待實測 V05】。
+   已決定（2026-10-28，維護者提供原創素材）：**啟動畫面和 App 內的停留畫面是同一份圖**。殼層 `index.html` 的 body 第一個子節點是 `#ll-launch`（插圖、小 logo、「LedgerLand」字樣三個內嵌 SVG；樣式接在首次繪製那段 `<style>` 的後面，仍是唯一一段），只在 App 模式（`html[data-display=app]`）顯示並蓋住整頁含 Tab bar（z 200）；瀏覽器分頁永遠是 `display:none`，不影響 LCP（只有 HTML 多了內嵌的 SVG）。版面全用覆蓋層自己的百分比（插圖框寬 50%（內容約占框的九成）、中心在 46% 高；底部一列中心在 85% 高，小 logo 寬 5%、字樣（含上下伸）高 2.8%、間距 2%；數字在 `splash-devices.json` 的 `launch`），不用 vh 也不用安全區，因為 18 張啟動圖就是用 Chromium 對這段標記截的圖（2.2 節），系統啟動圖換到 App 內畫面時才不會跳。停留（`shell/launch-screen.ts`）：系統啟動圖只閃一下沒有記憶點，所以至少停到導覽開始後 1.5 秒，而且等第一頁掀開布幕（PageReveal）才淡出 250ms；重新整理（更新提示、重試）不算冷啟動不等；頁面一直沒掀開時 4 秒上限移除；減少動態不轉場、直接移除。底色跟主題與風味（莓果 `#171018`、紅酒 `#181012` 用自己的底色，和底下的頁面一樣），字色淺色 `#292622`、深色 `#F8F8F2`；系統啟動圖只有夜空色的深版，選了莓果或紅酒的人在交接那一格會有一點色差，接受。按住期間鍵盤可以 Tab 進底下的頁面，和系統啟動畫面一樣；覆蓋層 `aria-hidden`。
+6. M0a 完成標準：Android 與 iPhone 實機安裝截圖，涵蓋主畫面圖示、啟動畫面、狀態列顏色，淺色與深色各一張【待實測 V05】。2026-10-28 換圖後要重截：看系統啟動圖換到 App 內畫面有沒有跳動（WebKit bug 301994 可能讓 App 的視窗少掉狀態列高度，有的話在產生器加位移）。
 
 來源：https://bugs.webkit.org/show_bug.cgi?id=301994 、https://bugs.webkit.org/show_bug.cgi?id=305546 、https://github.com/mdn/browser-compat-data/pull/28503 （查證日期 2026-10-20）
 
@@ -395,7 +399,7 @@ document.documentElement.dataset.display = isAppMode() ? 'app' : 'browser';
 規則：
 
 - 一定提供 manifest，並設 `display: standalone`。
-- CSS 版面一律寫 `html[data-display='app']` 或 `html[data-display='browser']`，不直接寫 `@media (display-mode: ...)`，判斷邏輯只有一份。
+- CSS 版面一律寫 `html[data-display='app']` 或 `html[data-display='browser']`，不直接寫 `@media (display-mode: ...)`，判斷邏輯只有一份。 殼層的啟動畫面 `#ll-launch`（2.4 節）是第一個靠這個屬性顯示的東西：boot 腳本在首次繪製前寫好 `data-display`，覆蓋層才會從第一格就在。
 - debug 頁分別列出四種 display-mode 的 `matches`、`navigator.standalone`、是否有 manifest，以及最後的判定結果。
 - M0a 在 iOS 26 與 27 實機上各測三種情況：從 Safari 分頁開啟、從主畫面開啟（有 manifest）、從主畫面開啟一個不帶 manifest 的測試頁；結果記錄在 debug 頁與 M0a 報告【待實測 V01】。
 
@@ -453,7 +457,7 @@ generateSW 只處理 precache、導覽 fallback 與明確設定的 `runtimeCachi
 | --- | --- | --- |
 | app shell（HTML、帶 hash 的 JS 與 CSS） | precache | 與 SW 版本一致 |
 | 內容 JSON（題目、名詞、範本、章節、故事） | precache | build 時輸出帶 content hash 的檔名，例如 `content/zh-TW/ch_c5f8w2.8e41b7.json`，另加一份小型 `content-manifest.json`（含整數的 `contentVersion` 與各檔案路徑，格式見 [08 題庫管理](08-content-admin.md) 第 7.3 節）。核心課程的 zh-TW 與 en 都放進 precache，確保介面與內容版本一致，第一次安裝後即可完整離線 |
-| 圖示 | favicon 進 precache；安裝用的 PNG 不進 | `favicon.svg` 與 `favicon.ico` 進 precache。manifest 的 icons 與 apple-touch-icon 由系統在加入主畫面那一刻抓取，離線時用不到；2026-10-28 圖示換成插圖後五個 PNG 約 350 KB，precache 預算放不下，所以移出。Tab bar 的圖示直接內嵌在殼層 HTML（2.3） |
+| 圖示 | favicon 進 precache；安裝用的 PNG 不進 | `favicon.svg` 與 `favicon.ico` 進 precache。manifest 的 icons 與 apple-touch-icon 由系統在加入主畫面那一刻抓取，離線時用不到；2026-10-28 圖示換成插圖後五個 PNG 約 350 KB，precache 預算放不下，所以移出。Tab bar 的圖示與啟動畫面的三個 SVG 直接內嵌在殼層 HTML（2.3、2.4）；18 張 `splash/` 啟動圖由系統在加入主畫面那一刻抓一張，不進 precache |
 | QR 解碼器（D10(a)） | precache，動態載入 | 打包成獨立 chunk，只在打開掃描畫面時才 `import()`，不計入首次載入 JS；放進 precache，離線也能掃描站內 QR；體積計入 precache 預算（4.9） |
 | 安裝教學插圖 | runtime CacheFirst | 第一次瀏覽安裝教學頁後快取（與 02 的頁面總表一致）；多數學生只看一次，不必占第一次安裝的流量。若全部是小型 SVG 且在預算內，可以改成 precache |
 | 字型 | 無 | 使用系統字型，不下載字型檔（見 07 第 3 節） |
@@ -1075,6 +1079,7 @@ document.addEventListener('focusout', () => {
 | Lighthouse 無障礙分數 | ≥ 95 | 同上 | 另有人工檢查，見 07 第 8 節 |
 | 首次載入 JS | ≤ 150 KB（gzip 後，暫定）；CI 的檢查值 152 KB（2026-10-26 放寬，見 8.2 的收尾紀錄） | 首頁與 QR 落地頁 | 從 M0b 起由 CI 把關；M0a 實測後調整，只能附理由放寬。放寬的理由：M3 收尾的頁面布幕進了入口 chunk，給老師的說明與關卡 QR 的介面字串進了兩種語言的 catalog，/en/ 入口實測 150.4 KB；英文作答頁的 LCP 實測 2420ms |
 | 首次載入 CSS | ≤ 30 KB（gzip 後，暫定）；CI 只算 `index.html` 引用的入口 CSS（`initialCssGzipKb`，2026-10-25 起，懶載入頁面的 CSS 和頁面 chunk 一樣不算） | 同上 | 同上 |
+| 殼層 HTML | ≤ 13.5 KB（`index.html` 的 gzip，`indexHtmlGzipKb`，2026-10-28 起） | 建置產物 | Lighthouse 的模擬用 TCP 慢啟動，第一個視窗約 14.6 KB；HTML 的 gzip 加上約 1 KB 的回應標頭（CSP 很長）超過它，每一頁的 LCP 就多一趟往返（約 150ms）。啟動畫面的三個 SVG 內嵌進殼層後實測 13.6 KB 時轉移大小 14,621 剛好超過（本機 home 2121 變 2265ms、CI 的 chapter 與 quiz-effect 超過 2700）；壓縮 boot 腳本、縮描圖的格數與 favicon 後 12.9 KB，LCP 回到原本的數字。殼層再放東西先量這一項 |
 | 全部 CSS | ≤ 44 KB（gzip 後，暫定；2026-10-25 到 26 是 40）；`assets` 底下所有 CSS 的合計，含懶載入頁面自己的 CSS（`allCssGzipKb`，2026-10-25 起） | 建置產物 | 維護者 2026-10-25 決定把 CSS 預算拆成兩項。理由：原本的檢查名為首次載入，實際加總所有 CSS，地圖、章節頁、名詞圖鑑的版面 CSS 拆成頁面 CSS 以後，那個數字已經不是開頁時要下載的量；入口那一項管開頁速度，合計這一項防止頁面 CSS 不受控制地長大。M3 新增設計系統（遊戲按鈕、選單列、名詞卡、面板、橫幅）並重做地圖與章節頁，全部 CSS 從約 14 KB 變成 36.8 KB，40 是實測值加約一成的餘裕；只能附理由放寬。2026-10-27 放寬到 44：幕後頁（`/credits/`）的技術棧探索器、彩蛋與浮動提示的版面加進說明頁的 CSS（`info.css`，和其他說明頁一起懶載入，不在入口），全部 CSS 實測到 40 的邊上；頁面 CSS 本來就會隨頁數成長，入口 30 KB 不動所以開頁速度不受影響，44 仍是實測值加約一成的餘裕 |
 | precache 總量 | ≤ 5 MB（未壓縮，暫定）；CI 的檢查值 3600 KB（`precacheKb` 3600，2026-10-24 從 2048 提高；2026-10-23 從 1024 提高到 2048） | 第一次安裝 SW | 見 3.2 |
 | `/en/` 首次載入 JS | ≤ 150 KB（gzip，和首次載入 JS 同一個上限） | 英文網址的入口 JS 加英文訊息 catalog（`tools/budget.mjs` 的 `initialJsEnGzipKb`） | M3 收尾不提高 150、也不拆 catalog，M4a 開工時拆兩層（14 第 5.2 節）；2026-10-26 實測 149.5 KB |
@@ -1122,7 +1127,7 @@ Core Web Vitals 的門檻以第 75 百分位為準，行動與桌面分開計算
     "categories.performance": { "min": 0.9 },
     "categories.accessibility": { "min": 0.95 }
   },
-  "budgets": { "initialJsGzipKb": 152, "initialCssGzipKb": 30, "allCssGzipKb": 44, "precacheKb": 3600 }
+  "budgets": { "initialJsGzipKb": 152, "initialCssGzipKb": 30, "allCssGzipKb": 44, "precacheKb": 3600, "indexHtmlGzipKb": 13.5 }
 }
 ```
 

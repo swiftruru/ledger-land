@@ -52,6 +52,45 @@ export function buildShellL10nScript(): string {
   return `<script data-ll="shell-l10n">${body}</script>`;
 }
 
+const LAUNCH_FILES = [
+  { file: 'launch-illustration.svg', cls: 'll-launch__girl', currentColor: false },
+  { file: 'launch-mark.svg', cls: 'll-launch__mark', currentColor: true },
+  { file: 'launch-wordmark.svg', cls: 'll-launch__word', currentColor: true },
+] as const;
+
+function defaultReadBrand(file: string): string {
+  return readFileSync(new URL(`../../brand/${file}`, import.meta.url), 'utf8');
+}
+
+/**
+ * 啟動畫面（06 第 2.4 節）：App 模式冷啟動時蓋住整頁的一塊，放在 body 的第一個子節點；樣式在 tokens 的 launchScreenStyle()。
+ * 三個 SVG 來自 brand/（描圖與字形外框的產物），內嵌時只留 viewBox 與 path：去掉 xml 宣告、註解、title、desc、metadata 與根元素的 width、height；
+ * 含 style 屬性、<style>、<script>、<image>、<foreignObject> 或外部 href 就讓建置失敗（CSP 與 postbuild 的規則）。
+ * 小 logo 與字樣用 currentColor，顏色跟著覆蓋層的 color；插圖自帶顏色。
+ */
+export function buildLaunchScreen(read: (file: string) => string = defaultReadBrand): string {
+  const parts = LAUNCH_FILES.map(({ file, cls, currentColor }) => {
+    let svg = read(file)
+      .replace(/<\?xml[\s\S]*?\?>/g, '')
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/<(title|desc|metadata)\b[\s\S]*?<\/\1>/g, '')
+      .trim();
+    for (const bad of [/\sstyle=/, /<style\b/, /<script\b/, /<image\b/, /<foreignObject\b/, /href="https?:/, /xlink:href="https?:/]) {
+      if (bad.test(svg)) throw new Error(`buildLaunchScreen：${file} 含 ${bad.source}，殼層不接受（改用 fill、stroke 屬性，不內嵌外部資源）`);
+    }
+    const open = /^<svg\b([^>]*)>/.exec(svg);
+    if (!open) throw new Error(`buildLaunchScreen：${file} 不是以 <svg 開頭`);
+    const viewBox = /\bviewBox="([^"]+)"/.exec(open[1] ?? '')?.[1];
+    if (!viewBox) throw new Error(`buildLaunchScreen：${file} 的 <svg> 沒有 viewBox`);
+    const inner = svg.slice(open[0].length).replace(/<\/svg>\s*$/, '');
+    const fill = currentColor ? ' fill="currentColor"' : '';
+    svg = `<svg class="${cls}" viewBox="${viewBox}"${fill} aria-hidden="true" focusable="false">${inner}</svg>`;
+    return svg;
+  });
+  const [girl, mark, word] = parts as [string, string, string];
+  return `<div id="ll-launch" aria-hidden="true"><div class="ll-launch__art">${girl}</div><div class="ll-launch__brand">${mark}${word}</div></div>`;
+}
+
 export function buildBootScript(bootSource: string): string {
   return `<script data-ll="boot">${bootSource.trim()}</script>`;
 }

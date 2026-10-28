@@ -1,17 +1,72 @@
 {
-  "_note": "iOS 啟動圖（apple-touch-startup-image）的裝置尺寸，單位是 CSS px；make-splash.mjs 產圖、shellHtml.ts 產 link 都讀這份（06 第 2.4 節，M0a V05）。只做直向 iPhone；iPad 與橫向不在 M0a 範圍",
-  "background": { "light": "#FCF8F0", "dark": "#121018" },
-  "iconPt": 120,
-  "radiusPt": 27,
+  "_note": "iOS 啟動圖（apple-touch-startup-image）的裝置尺寸，單位是 CSS px；apps/web/brand/make-launch.mjs 對建置好的殼層截圖產 18 張、shellHtml.ts 產 link，都讀這份（06 第 2.4 節，M0a V05；2026-10-28 起啟動圖就是 App 內停留畫面 #ll-launch 的截圖）。只做直向 iPhone；iPad 與橫向不在範圍",
+  "background": {
+    "light": "#FCF8F0",
+    "dark": "#121018"
+  },
+  "launch": {
+    "_note": "停留畫面的版面比例（tokens 的 launchScreenStyle 與 06 第 2.4 節引用同一份數字；都是覆蓋層自己的百分比，不用 vh 與安全區）",
+    "illustrationWidth": 0.5,
+    "illustrationCentreY": 0.46,
+    "footerCentreY": 0.85,
+    "markWidth": 0.05,
+    "wordmarkHeight": 0.028,
+    "gap": 0.02
+  },
   "devices": [
-    { "w": 440, "h": 956, "dpr": 3, "examples": "6.9 吋大螢幕機型（2024 年起）" },
-    { "w": 430, "h": 932, "dpr": 3, "examples": "6.7 吋機型（2022 到 2024 年）" },
-    { "w": 428, "h": 926, "dpr": 3, "examples": "6.7 吋機型（2020 到 2022 年）" },
-    { "w": 420, "h": 912, "dpr": 3, "examples": "iPhone Air" },
-    { "w": 402, "h": 874, "dpr": 3, "examples": "6.3 吋機型（2024 年起，含 iPhone 17）" },
-    { "w": 393, "h": 852, "dpr": 3, "examples": "6.1 吋動態島機型（2022 到 2024 年，含 iPhone 16）" },
-    { "w": 390, "h": 844, "dpr": 3, "examples": "6.1 吋瀏海機型（iPhone 12、13、14、16e）" },
-    { "w": 375, "h": 812, "dpr": 3, "examples": "5.4 吋機型（iPhone 12 mini、13 mini）" },
-    { "w": 375, "h": 667, "dpr": 2, "examples": "iPhone SE 第 2、3 代" }
+    {
+      "w": 440,
+      "h": 956,
+      "dpr": 3,
+      "examples": "6.9 吋大螢幕機型（2024 年起）"
+    },
+    {
+      "w": 430,
+      "h": 932,
+      "dpr": 3,
+      "examples": "6.7 吋機型（2022 到 2024 年）"
+    },
+    {
+      "w": 428,
+      "h": 926,
+      "dpr": 3,
+      "examples": "6.7 吋機型（2020 到 2022 年）"
+    },
+    {
+      "w": 420,
+      "h": 912,
+      "dpr": 3,
+      "examples": "iPhone Air"
+    },
+    {
+      "w": 402,
+      "h": 874,
+      "dpr": 3,
+      "examples": "6.3 吋機型（2024 年起，含 iPhone 17）"
+    },
+    {
+      "w": 393,
+      "h": 852,
+      "dpr": 3,
+      "examples": "6.1 吋動態島機型（2022 到 2024 年，含 iPhone 16）"
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "dpr": 3,
+      "examples": "6.1 吋瀏海機型（iPhone 12、13、14、16e）"
+    },
+    {
+      "w": 375,
+      "h": 812,
+      "dpr": 3,
+      "examples": "5.4 吋機型（iPhone 12 mini、13 mini）"
+    },
+    {
+      "w": 375,
+      "h": 667,
+      "dpr": 2,
+      "examples": "iPhone SE 第 2、3 代"
+    }
   ]
 }

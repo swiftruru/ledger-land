@@ -73,7 +73,11 @@ const sceneChunks = [...sceneEntries, ...sceneShared.filter((f) => !kitChunks.in
 const sceneSizes = Object.fromEntries(sceneChunks.map((f) => [f, +kb(gz(join(assets, f)))]));
 const sceneTotalGz = sceneChunks.reduce((s, f) => s + gz(join(assets, f)), 0);
 const kitGz = kitChunks.reduce((s, f) => s + gz(join(assets, f)), 0);
+// 殼層 HTML（2026-10-28）：Lighthouse 的模擬用 TCP 慢啟動，第一個視窗約 14.6 KB；index.html 的 gzip 加上約 1 KB 的回應標頭（CSP 很長）超過它，
+// 每一頁的 LCP 就多一趟往返（約 150ms）。啟動畫面的三個 SVG 內嵌進殼層後實測 13.6 KB 時剛好超過（轉移 14,621），壓縮 boot 腳本、縮描圖的格數與 favicon 後回到 13.2 KB 左右
+const indexGz = gz(join(dist, 'index.html'));
 const result = {
+  indexHtmlGzipKb: +kb(indexGz),
   initialJsGzipKb: +kb(initialJs),
   initialJsEnGzipKb: +kb(enInitial),
   initialCssGzipKb: +kb(cssGz),
@@ -86,6 +90,8 @@ const result = {
   ...(sceneChunks.length ? { sceneChunksTotalGzipKb: +kb(sceneTotalGz), sceneChunks: sceneSizes } : {}),
   ...(kitChunks.length ? { sceneKitGzipKb: +kb(kitGz), sceneKitChunks: kitChunks } : {}),
 };
+if (typeof budgets.indexHtmlGzipKb === 'number' && indexGz > budgets.indexHtmlGzipKb * 1024)
+  fail(`budget：殼層 index.html ${kb(indexGz)} KB（gzip）超過預算 ${budgets.indexHtmlGzipKb} KB，加上回應標頭會超過 TCP 第一個視窗，每一頁 LCP 多一趟往返`);
 if (initialJs > budgets.initialJsGzipKb * 1024) fail(`budget：中文入口首次載入 JS ${kb(initialJs)} KB 超過預算 ${budgets.initialJsGzipKb} KB`);
 if (enInitial > budgets.initialJsGzipKb * 1024) fail(`budget：/en/ 入口首次載入 JS ${kb(enInitial)} KB 超過預算 ${budgets.initialJsGzipKb} KB`);
 if (cssGz > budgets.initialCssGzipKb * 1024) fail(`budget：首次載入 CSS ${kb(cssGz)} KB（${cssFiles.join('、')}）超過預算 ${budgets.initialCssGzipKb} KB`);

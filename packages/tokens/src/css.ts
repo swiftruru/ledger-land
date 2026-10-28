@@ -123,6 +123,39 @@ export function firstPaintStyle(): string {
   ].join('');
 }
 
+/**
+ * 啟動畫面（06 第 2.4 節）的樣式，接在首次繪製的 <style> 後面、同一段：只在 App 模式（boot 腳本寫的 html[data-display=app]）顯示，
+ * 蓋住整頁含 Tab bar；底色與字色依主題與風味（莓果、紅酒用自己的底色，和底下的頁面一樣）。
+ * 版面全用覆蓋層自己的百分比，不用 vh 與安全區：iOS 的啟動圖就是用 Chromium 對這段標記截的圖，兩邊才會一模一樣。
+ * 離場用 data-leave 淡出 250ms；減少動態時沒有轉場，直接移除。
+ */
+export function launchScreenStyle(): string {
+  const dark = (flavor: Flavor) => THEME_COLOR[flavor];
+  const lightText = lightColors.text;
+  const darkText = darkColors('violet').text;
+  return [
+    '#ll-launch{display:none}',
+    `html[data-display=app] #ll-launch{display:block;position:fixed;inset:0;z-index:${z.launch};overflow:hidden;background:${THEME_COLOR.light};color:${lightText};transition:opacity 250ms ease-out}`,
+    `@media (prefers-color-scheme:dark){html[data-display=app] #ll-launch{background:${dark('violet')};color:${darkText}}}`,
+    `html[data-display=app][data-theme=light] #ll-launch{background:${THEME_COLOR.light};color:${lightText}}`,
+    `html[data-display=app][data-theme=dark] #ll-launch{background:${dark('violet')};color:${darkText}}`,
+    `html[data-display=app][data-theme=dark][data-flavor=berry] #ll-launch{background:${dark('berry')}}`,
+    `html[data-display=app][data-theme=dark][data-flavor=wine] #ll-launch{background:${dark('wine')}}`,
+    '#ll-launch[data-leave]{opacity:0;pointer-events:none}',
+    // 選擇器要和上面顯示的那條一樣重（html[…] #ll-launch），寫在後面才蓋得過它的 transition
+    '@media (prefers-reduced-motion:reduce){html[data-display=app] #ll-launch{transition:none}}',
+    'html[data-motion=reduced] #ll-launch{transition:none}',
+    '.ll-launch__art,.ll-launch__brand{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center}',
+    '.ll-launch__art{top:0;height:92%}',
+    '.ll-launch__brand{top:80%;height:10%;gap:2%}',
+    // 尺寸的規則都帶 #ll-launch，和上面 svg 的通用規則一樣重、寫在後面才生效
+    '#ll-launch svg{display:block}',
+    '#ll-launch .ll-launch__girl{width:50%;height:auto;max-height:70%}',
+    '#ll-launch .ll-launch__mark{width:5%;height:auto}',
+    '#ll-launch .ll-launch__word{height:28%;width:auto}',
+  ].join('');
+}
+
 export const BREAKPOINT_QUERIES = {
   medium: `(min-width: ${breakpoints.medium}px)`,
   expanded: `(min-width: ${breakpoints.expanded}px)`,

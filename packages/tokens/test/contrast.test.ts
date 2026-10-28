@@ -2,28 +2,29 @@
 import { describe, expect, it } from 'vitest';
 import {
   COMPONENT_COLOR_TOKENS,
-  DARK_SUCCESS_INK,
-  FLAVORS,
-  FLAVOR_TOKENS,
-  PAPER_PRIMARY_LEDGE,
   componentThemes,
+  DARK_SUCCESS_INK,
   darkAccent,
+  darkColors,
   darkSuccessTint,
-  paper,
-  sceneThemes,
-  SEMANTIC_COLOR_TOKENS,
-  THEME_COLOR,
+  FLAVOR_TOKENS,
   flavorBase,
   flavorColors,
   flavorDerived,
+  FLAVORS,
   lightColors,
   night,
+  paper,
+  PAPER_PRIMARY_LEDGE,
+  sceneThemes,
+  SEMANTIC_COLOR_TOKENS,
+  THEME_COLOR,
   themes,
   type ThemeColors,
   type ThemeName,
 } from '../src/colors.ts';
 import { blendHex, contrastRatio, deltaEOk, hexToOklab, hslToHex, mixOklab, oklabToHex, relativeLuminance, resolveColor } from '../src/contrast.ts';
-import { firstPaintStyle, generateTokensCss } from '../src/css.ts';
+import { firstPaintStyle, generateTokensCss, launchScreenStyle } from '../src/css.ts';
 
 const THEMES: ThemeName[] = ['light', 'violet', 'berry', 'wine'];
 const isHex = (v: string) => /^#[0-9A-F]{6}$/i.test(v);
@@ -297,6 +298,20 @@ describe('產生物', () => {
   it('theme-color 四個值與首次繪製 style 一致', () => {
     const css = firstPaintStyle();
     for (const name of THEMES) expect(css).toContain(THEME_COLOR[name]);
+    expect(css).not.toMatch(/\s{2,}/);
+  });
+  it('啟動畫面的 style：只在 App 模式顯示、四種底色與兩種字色、離場與減少動態、沒有 vh 與安全區', () => {
+    const css = launchScreenStyle();
+    expect(css.startsWith('#ll-launch{display:none}')).toBe(true);
+    expect(css).toContain('html[data-display=app] #ll-launch{display:block;position:fixed;inset:0;z-index:200');
+    for (const name of THEMES) expect(css).toContain(THEME_COLOR[name]);
+    expect(css).toContain(`color:${lightColors.text}`);
+    expect(css).toContain(`color:${darkColors('violet').text}`);
+    expect(css).toContain('#ll-launch[data-leave]{opacity:0;pointer-events:none}');
+    expect(css).toContain('@media (prefers-reduced-motion:reduce){html[data-display=app] #ll-launch{transition:none}}');
+    expect(css).toContain('html[data-motion=reduced] #ll-launch{transition:none}');
+    expect(css).not.toMatch(/\d+(s?vh|dvh|lvh)\b/);
+    expect(css).not.toContain('env(');
     expect(css).not.toMatch(/\s{2,}/);
   });
   it('tokens.css 含四個主題區塊與減少動態的覆寫，沒有破折號', () => {

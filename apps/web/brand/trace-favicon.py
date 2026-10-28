@@ -20,7 +20,9 @@ PAL = [
     ('spine', '#703227'), ('pink', '#F7B6C4'), ('mint', '#A9D6BE'), ('iris', '#D7962A'), ('cheek', '#FEB9B1'),
     ('green', '#1E6B48'), ('gold', '#E9BA5F'), ('white', '#FFFFFF'), ('line', '#461B0E'),
 ]
-N, V, EPS, DILATE, MIN_AREA = 512, 128, 1.4, 3, 24
+# 2026-10-28：128 格改 96 格、EPS 1.4 改 1.8（5.5 KB 變 3.5 KB，gzip 2.3 變 1.5 KB）：殼層內嵌了啟動畫面的 SVG 後 HTML 要留在 TCP 第一個視窗內（06 第 8.2 節）；
+# 瀏覽器分頁的圖示最大 48px，和 128 格看起來一樣
+N, V, EPS, DILATE, MIN_AREA = 512, 96, 1.8, 3, 32
 
 
 def main() -> None:

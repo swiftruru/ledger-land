@@ -101,3 +101,4 @@
 | 項目 | 版本 | 授權 | 首頁 |
 | --- | --- | --- | --- |
 | Phosphor Icons（@phosphor-icons/core 的 SVG 原始檔，建置時內嵌進殼層） | 2.1.1 | MIT | https://phosphoricons.com/ |
+| jf open 粉圓（justfont；只在產生啟動畫面「LedgerLand」字樣時把字母轉成 SVG 輪廓，字型檔不隨網站散布） | 2.1 | OFL-1.1 | https://github.com/justfont/open-huninn-font |

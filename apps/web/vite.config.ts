@@ -4,12 +4,12 @@ import { lingui } from '@lingui/vite-plugin';
 import react from '@vitejs/plugin-react';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig, minifySync, type Plugin } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import { MANIFEST_COLORS, THEME_COLOR, firstPaintStyle } from '@ledgerland/tokens';
+import { MANIFEST_COLORS, THEME_COLOR, firstPaintStyle, launchScreenStyle } from '@ledgerland/tokens';
 import { site } from './site.config.ts';
 import { readStackVersions } from './stack-versions.config.ts';
-import { buildBootScript, buildNav, buildShellL10nScript, buildSplashLinks, buildThemeColorMetas } from './src/shell/shellHtml.ts';
+import { buildBootScript, buildLaunchScreen, buildNav, buildShellL10nScript, buildSplashLinks, buildThemeColorMetas } from './src/shell/shellHtml.ts';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const workspaceRoot = fileURLToPath(new URL('../../', import.meta.url));
@@ -40,24 +40,35 @@ const isProduction = process.env.LL_DEPLOY_TARGET === 'production';
 
 // 殼層：boot 腳本、首次繪製的 style、theme-color meta、Tab bar 的完整 nav、殼層在地化腳本都由同一份設定在建置時寫入 index.html（09 第 3.2 節）
 function shell(): Plugin {
+  let building = false;
   return {
     name: 'll-shell',
+    configResolved(config) {
+      building = config.command === 'build';
+    },
     transformIndexHtml: {
       order: 'pre',
       handler(html) {
-        // 依路徑預先載入的表要等 chunk 檔名確定後才填（tools/postbuild.mjs），這裡先換成 null 加上讓 postbuild 找得到的註記；開發模式就一直是 null
-        const boot = readFileSync(`${root}src/shell/boot.js`, 'utf8')
-          .replaceAll('__LL_THEME_COLOR__', JSON.stringify(THEME_COLOR))
-          .replaceAll('__LL_PRELOAD__', '/*ll:preload*/null');
-        return html
-          .replace('<!--ll:favicon-->', buildFaviconLink())
-          .replace('<!--ll:theme-color-->', buildThemeColorMetas())
-          .replace('<!--ll:robots-->', isProduction ? '' : '<meta name="robots" content="noindex">')
-          .replace('<!--ll:splash-->', buildSplashLinks())
-          .replace('<!--ll:first-paint-->', `<style>${firstPaintStyle()}</style>`)
-          .replace('<!--ll:boot-->', buildBootScript(boot))
-          .replace('<!--ll:tabbar-->', buildNav())
-          .replace('<!--ll:shell-l10n-->', buildShellL10nScript());
+        // 建置時用 Vite 自帶的壓縮器把 boot 腳本壓小（2026-10-28：殼層 HTML 內嵌了啟動畫面的 SVG 後超過 TCP 第一個視窗，Lighthouse 的模擬每頁多一趟往返，
+        // 06 第 8.2 節）；開發模式不壓，看得懂。__LL_PRELOAD__ 是未宣告的全域識別字，壓縮後原樣保留，壓完再換成 postbuild 找得到的佔位：
+        // 依路徑預先載入的表要等 chunk 檔名確定後才填（tools/postbuild.mjs），開發模式就一直是 null
+        const source = readFileSync(`${root}src/shell/boot.js`, 'utf8').replaceAll('__LL_THEME_COLOR__', JSON.stringify(THEME_COLOR));
+        const code = building ? minifySync('boot.js', source, {}).code : source;
+        if (!code.includes('__LL_PRELOAD__')) throw new Error('boot 腳本壓縮後找不到 __LL_PRELOAD__，postbuild 會填不進預先載入的表');
+        const boot = code.replaceAll('__LL_PRELOAD__', '/*ll:preload*/null');
+        return (
+          html
+            .replace('<!--ll:favicon-->', buildFaviconLink())
+            .replace('<!--ll:theme-color-->', buildThemeColorMetas())
+            .replace('<!--ll:robots-->', isProduction ? '' : '<meta name="robots" content="noindex">')
+            .replace('<!--ll:splash-->', buildSplashLinks())
+            // 啟動畫面的樣式接在同一段 style 裡（postbuild 只允許一段 inline style）
+            .replace('<!--ll:first-paint-->', `<style>${firstPaintStyle()}${launchScreenStyle()}</style>`)
+            .replace('<!--ll:boot-->', buildBootScript(boot))
+            .replace('<!--ll:launch-->', buildLaunchScreen())
+            .replace('<!--ll:tabbar-->', buildNav())
+            .replace('<!--ll:shell-l10n-->', buildShellL10nScript())
+        );
       },
     },
     generateBundle() {

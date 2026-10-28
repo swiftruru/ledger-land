@@ -7,6 +7,7 @@
 import { useUiLabels } from '@ledgerland/web-ui';
 import { createContext, useContext, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { useLocation } from 'react-router';
+import { dismissLaunchScreen } from '../shell/launch-screen.ts';
 
 const WAIT_MS = 700;
 
@@ -66,6 +67,10 @@ export function PageReveal({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (ready && !state.revealed) setState((s) => (s.revealed || s.pending.size > 0 ? s : { ...s, revealed: true }));
   }, [ready, state.revealed]);
+  // 第一頁掀開了：App 模式的啟動畫面可以離場（至少停到 1.5 秒，shell/launch-screen.ts）；之後換頁再呼叫沒有作用
+  useEffect(() => {
+    if (state.revealed) dismissLaunchScreen();
+  }, [state.revealed]);
   // 還沒齊的那一頁的 key（齊了是 null）：換頁重新計時，超過 WAIT_MS 才顯示載入圈
   const waitingFor = ready ? null : state.key;
   useEffect(() => {
