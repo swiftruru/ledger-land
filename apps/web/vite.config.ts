@@ -6,10 +6,10 @@ import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
 import { defineConfig, type Plugin } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import { MANIFEST_COLORS, THEME_COLOR, firstPaintStyle } from '@ledgerland/tokens';
+import { MANIFEST_COLORS, THEME_COLOR, firstPaintStyle, launchScreenStyle } from '@ledgerland/tokens';
 import { site } from './site.config.ts';
 import { readStackVersions } from './stack-versions.config.ts';
-import { buildBootScript, buildNav, buildShellL10nScript, buildSplashLinks, buildThemeColorMetas } from './src/shell/shellHtml.ts';
+import { buildBootScript, buildLaunchScreen, buildNav, buildShellL10nScript, buildSplashLinks, buildThemeColorMetas } from './src/shell/shellHtml.ts';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const workspaceRoot = fileURLToPath(new URL('../../', import.meta.url));
@@ -49,15 +49,19 @@ function shell(): Plugin {
         const boot = readFileSync(`${root}src/shell/boot.js`, 'utf8')
           .replaceAll('__LL_THEME_COLOR__', JSON.stringify(THEME_COLOR))
           .replaceAll('__LL_PRELOAD__', '/*ll:preload*/null');
-        return html
-          .replace('<!--ll:favicon-->', buildFaviconLink())
-          .replace('<!--ll:theme-color-->', buildThemeColorMetas())
-          .replace('<!--ll:robots-->', isProduction ? '' : '<meta name="robots" content="noindex">')
-          .replace('<!--ll:splash-->', buildSplashLinks())
-          .replace('<!--ll:first-paint-->', `<style>${firstPaintStyle()}</style>`)
-          .replace('<!--ll:boot-->', buildBootScript(boot))
-          .replace('<!--ll:tabbar-->', buildNav())
-          .replace('<!--ll:shell-l10n-->', buildShellL10nScript());
+        return (
+          html
+            .replace('<!--ll:favicon-->', buildFaviconLink())
+            .replace('<!--ll:theme-color-->', buildThemeColorMetas())
+            .replace('<!--ll:robots-->', isProduction ? '' : '<meta name="robots" content="noindex">')
+            .replace('<!--ll:splash-->', buildSplashLinks())
+            // 啟動畫面的樣式接在同一段 style 裡（postbuild 只允許一段 inline style）
+            .replace('<!--ll:first-paint-->', `<style>${firstPaintStyle()}${launchScreenStyle()}</style>`)
+            .replace('<!--ll:boot-->', buildBootScript(boot))
+            .replace('<!--ll:launch-->', buildLaunchScreen())
+            .replace('<!--ll:tabbar-->', buildNav())
+            .replace('<!--ll:shell-l10n-->', buildShellL10nScript())
+        );
       },
     },
     generateBundle() {

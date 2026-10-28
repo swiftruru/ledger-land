@@ -43,6 +43,12 @@ const SKIP = ['node'];
 /** 手動補上不經套件管理的項目 */
 const MANUAL = [
   { name: 'Phosphor Icons（@phosphor-icons/core 的 SVG 原始檔，建置時內嵌進殼層）', version: '2.1.1', license: 'MIT', homepage: 'https://phosphoricons.com/' },
+  {
+    name: 'jf open 粉圓（justfont；只在產生啟動畫面「LedgerLand」字樣時把字母轉成 SVG 輪廓，字型檔不隨網站散布）',
+    version: '2.1',
+    license: 'OFL-1.1',
+    homepage: 'https://github.com/justfont/open-huninn-font',
+  },
 ];
 
 function run(args) {

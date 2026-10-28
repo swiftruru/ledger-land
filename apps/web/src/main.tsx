@@ -16,8 +16,11 @@ import { installErrorLog } from './lib/errors.ts';
 import { afterFirstPaint } from './lib/idle.ts';
 import { getProgressStore } from './lib/progress/index.ts';
 import { maybePersist } from './lib/progress/persist.ts';
+import { armLaunchScreen } from './shell/launch-screen.ts';
 
 installErrorLog();
+// 啟動畫面（06 第 2.4 節）：App 模式起 4 秒上限、瀏覽器模式直接拿掉；掀開第一頁時 PageReveal 再叫它離場
+armLaunchScreen();
 // 內容 manifest 在殼層已 preload，這裡立刻開始讀，讓名詞頁的快照請求不用等頁面 chunk（06 第 8.2 節的 LCP 預算）
 void loadManifest().catch(() => {});
 async function start() {

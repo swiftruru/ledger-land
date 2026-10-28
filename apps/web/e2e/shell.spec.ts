@@ -84,6 +84,11 @@ test.describe('殼層與深層連結（10 M0b 完成標準）', () => {
     expect(html).not.toMatch(/\sstyle=/);
     expect(html).not.toContain('cloudflareinsights');
     expect((html.match(/<script(?![^>]*src=)/g) ?? []).length).toBe(2);
+    // 啟動畫面（06 第 2.4 節）：樣式併在唯一那段 inline style 裡，標記是 body 的第一個子節點、三個內嵌 SVG
+    expect((html.match(/<style/g) ?? []).length).toBe(1);
+    expect(html).toMatch(/<body>\s*<div id="ll-launch" aria-hidden="true">/);
+    const launch = html.match(/<div id="ll-launch"[\s\S]*?<\/div><\/div>/)?.[0] ?? '';
+    expect((launch.match(/<svg\b/g) ?? []).length).toBe(3);
   });
 });
 

@@ -72,6 +72,11 @@ if (others.length) fail(`有未預期的 inline 腳本 ${others.length} 段`);
 if (inlineStyles.length !== 1) fail(`inline style 應該只有 1 段，實際 ${inlineStyles.length} 段`);
 if (/\sstyle=/.test(html)) fail('index.html 有 style 屬性（CSP 不允許）');
 if (!/<div id="root">/.test(html)) fail('index.html 沒有 #root');
+// 啟動畫面（06 第 2.4 節）：body 的第一個子節點、aria-hidden、三個內嵌 SVG（插圖、小 logo、字樣），在 #root 之前
+const launch = html.match(/<body>\s*<div id="ll-launch" aria-hidden="true">([\s\S]*?)<\/div><\/div>/);
+if (!launch) fail('index.html 的 body 沒有以 #ll-launch 開頭（啟動畫面）');
+else if ((launch[1].match(/<svg\b/g) ?? []).length < 3) fail('#ll-launch 應該有三個 SVG（插圖、小 logo、字樣）');
+else if (html.indexOf('<div id="ll-launch"') > html.indexOf('<div id="root">')) fail('#ll-launch 應該在 #root 之前');
 const navMatch = html.match(/<nav id="ll-tabbar"[\s\S]*?<\/nav>\s*<script data-ll="shell-l10n">/);
 if (!navMatch) fail('index.html 沒有完整的 #ll-tabbar，或殼層在地化腳本沒有緊接在 nav 之後');
 else {

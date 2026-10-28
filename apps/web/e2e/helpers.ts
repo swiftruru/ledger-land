@@ -14,6 +14,11 @@ export async function watchCsp(page: Page): Promise<() => Promise<void>> {
   };
 }
 
+/** 假裝是主畫面的 App（boot 腳本看到 navigator.standalone 就寫 html[data-display=app]）；和 page-states.ts 的 Env.appMode 同一招 */
+export async function emulateAppMode(page: Page): Promise<void> {
+  await page.addInitScript(() => Object.defineProperty(Navigator.prototype, 'standalone', { get: () => true, configurable: true }));
+}
+
 /** 等到 Service Worker 安裝完成並接管頁面（離線測試的前置）：prompt 模式不 clientsClaim，第一次載入的頁面要重新整理一次才受控 */
 export async function waitForSw(page: Page): Promise<void> {
   await page.waitForFunction(() => navigator.serviceWorker?.ready.then(() => true), null, { timeout: 30_000 });
@@ -28,6 +33,8 @@ export async function waitForApp(page: Page): Promise<void> {
   // 再等淡入動畫播完（axe 的對比與焦點外框的檢查不能量到半透明的那幾格）
   await page.locator('main h1').first().waitFor({ state: 'attached' });
   await page.locator('.ll-page[data-ready="true"], .ll-page__wait').first().waitFor({ state: 'attached' });
+  // 啟動畫面（shell/launch-screen.ts）：瀏覽器模式掛載時就移除；App 模式至少停到 1.5 秒再淡出，之前它蓋住整頁，點不到底下的東西
+  await page.locator('#ll-launch').waitFor({ state: 'detached', timeout: 10_000 });
   // 只等布幕的淡入（ll-page-in）：地圖節點的呼吸、載入圈是無限循環的動畫，finished 永遠不會 resolve
   await page
     .evaluate(() =>
