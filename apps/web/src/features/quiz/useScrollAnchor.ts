@@ -35,7 +35,7 @@ export function restoreScrollAnchor(anchor: ScrollAnchor, root: Document = docum
   return true;
 }
 
-/** 掛載時依 store 的錨點還原；之後每次捲動（rAF 節流）更新錨點。
+/** 掛載時依 store 的錨點還原；之後每次捲動（rAF 節流）更新錨點；切換語言的那一刻由 LevelSession 的 flushScrollAnchor 先同步記一次，不等影格。
  *  使用者還沒自己捲動之前，頁面高度若改變（上方晚一步插入的提示：相機預覽的暫存情境提示要等 storage.estimate 才出現、Safari 分頁提示的關卡代號延後載入），
  *  就在接下來幾個影格裡檢查同一個錨點有沒有偏掉，偏了才還原、回到 1px 內就停（06 第 8.2 節）。使用者一捲動就只重新記錄錨點。 */
 export function useScrollAnchor(enabled: boolean, read: () => ScrollAnchor | undefined, write: (anchor: ScrollAnchor | undefined) => void): void {
