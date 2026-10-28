@@ -15,8 +15,10 @@ import { NavigationRoute, registerRoute } from 'workbox-routing';
 
 declare const self: ServiceWorkerGlobalScope & { __WB_MANIFEST: Array<PrecacheEntry | string> };
 
-/** 同時抓幾個 precache 項目：Cloudflare 走 HTTP/2，8 個在飛行中時 147 項約 19 輪往返；本機 wrangler dev 是 HTTP/1.1，瀏覽器自己排到 6 條連線 */
-const CONCURRENCY = 8;
+/** 同時抓幾個 precache 項目。Cloudflare 走 HTTP/2，一條連線可以同時跑很多個請求；2026-10-29 在 PR 預覽網址用頁面的 fetch 抓整份清單（147 項、cache: 'reload'）實測：
+ * 逐項 27.5 秒、8 個 4.4 到 5.4 秒、16 個 1.7 到 2.6 秒、32 個 1.0 到 1.6 秒，狀態碼全是 200。取 16：再往上省不到 1 秒，對行動網路與低階手機的記憶體比較客氣（06 第 3.2 節）。
+ * 本機 wrangler dev 是 HTTP/1.1，瀏覽器自己排到 6 條連線 */
+const CONCURRENCY = 16;
 
 const controller = new PrecacheController();
 const manifest = self.__WB_MANIFEST;
