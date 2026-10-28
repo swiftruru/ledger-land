@@ -544,6 +544,8 @@ export function useAppUpdate() {
 
 來源：https://vite-pwa-org.netlify.app/guide/prompt-for-update.html 、https://vite-pwa-org.netlify.app/guide/periodic-sw-updates.html 、https://developer.chrome.com/docs/workbox/handling-service-worker-updates （查證日期 2026-10-20）
 
+- 「重新整理」按了要有反應（2026-10-28，維護者桌面的 App 視窗按不了、手機正常）：`updateServiceWorker(true)` 叫等待中的新版 skipWaiting，要等它接管的 `controlling` 事件才重新載入；同一個站在別的分頁或視窗按過、或新版早就接管時事件不會再來。現在按下後 1.5 秒內沒重新載入就自己 `location.reload()`，使用者要的就是換成新版本；新版若還沒接管完，重新載入後會再看到一次提示。
+
 ### 3.4 `sw.js` 固定路徑與 kill-switch
 
 - SW 路徑固定為站台 base 底下的 `sw.js`。base 為 `/`（D4），所以就是 `https://ledgerland.swift.moe/sw.js`，scope 為 `/`，同時涵蓋中文頁與 `/en/` 開頭的英文頁。日後若為了預先產生 HTML 改用 injectManifest，也沿用同一個檔名。
