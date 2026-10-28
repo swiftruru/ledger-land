@@ -283,10 +283,13 @@ export default defineConfig({
     react(),
     lingui({ macroTransform: true }),
     VitePWA({
-      strategies: 'generateSW',
+      // injectManifest（2026-10-29，06 第 3.1 節）：SW 的邏輯在 src/sw.ts，Vite 先打包成 dist/sw.js，再把 precache 清單注入 self.__WB_MANIFEST；
+      // 改用它是為了讓 precache 並行抓（generateSW 的 install 逐項 await，第一次安裝 147 項要 27 到 29 秒）。導覽 fallback 與 denylist、SKIP_WAITING 都在 sw.ts
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts', // 原始檔；輸出與註冊的網址仍是 sw.js（06 第 3.4 節：永遠不改）
       registerType: 'prompt',
       injectRegister: false,
-      filename: 'sw.js',
       manifestFilename: site.manifestFile,
       scope: site.base,
       // 安裝用的 PNG（manifest 的 icons 與 apple-touch-icon）不進 precache：系統在「加入主畫面」那一刻自己抓，離線時用不到；
@@ -316,10 +319,7 @@ export default defineConfig({
           { src: '/icons/maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
-      workbox: {
-        navigateFallback: 'index.html',
-        // /assets/ 與 /content/ 找不到檔案時不回殼層；Cloudflare 保留的 /cdn-cgi/ 與 stub 端點一律走網路（06 第 3.1 節）
-        navigateFallbackDenylist: [/^\/assets\//, /^\/content\//, /^\/sw\.js$/, /^\/cdn-cgi\//, /^\/__ll/],
+      injectManifest: {
         globPatterns: ['**/*.{html,js,css,woff2,svg,png,json}'],
         globIgnores: [
           'splash/**',
@@ -330,7 +330,6 @@ export default defineConfig({
           'build-report.json',
           '_headers',
         ],
-        cleanupOutdatedCaches: true,
       },
       devOptions: { enabled: false },
     }),

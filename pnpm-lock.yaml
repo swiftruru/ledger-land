@@ -106,6 +106,12 @@ importers:
       web-vitals:
         specifier: 6.2.3
         version: 6.2.3
+      workbox-precaching:
+        specifier: 7.4.1
+        version: 7.4.1
+      workbox-routing:
+        specifier: 7.4.1
+        version: 7.4.1
       workbox-window:
         specifier: 7.4.1
         version: 7.4.1

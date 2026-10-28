@@ -91,6 +91,9 @@
 | use-sync-external-store | 1.7.0 | MIT | https://github.com/react/react#readme |
 | web-vitals | 6.2.3 | Apache-2.0 | https://github.com/GoogleChrome/web-vitals#readme |
 | workbox-core | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
+| workbox-precaching | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
+| workbox-routing | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
+| workbox-strategies | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | workbox-window | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | yallist | 3.1.1 | ISC | https://github.com/isaacs/yallist#readme |
 | zod | 4.6.6 | MIT | https://zod.dev |

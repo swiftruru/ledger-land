@@ -6,7 +6,7 @@
 
 - **學習者不登入、進度只存在裝置本機、不收集個資。** 學習端不載入任何驗證 SDK，也不使用匿名登入（這也是 [08 題庫管理](08-content-admin.md) 後台方案的硬性限制）。唯一的外部請求是 D7 決定加入的流量統計，它不用 cookie、不收集個資，也不送出作答與進度（第 8.3 節）。
 - **正式 origin 與主機（D4）**：`https://ledgerland.swift.moe`，Cloudflare Workers Static Assets，base path 為 `/`；用 `_headers` 設定 CSP、`frame-ancestors` 與快取；深層連結以 SPA fallback 回 200；PR 預覽網址只放測試資料（第 3.5 節、第 5 節）。
-- **網址與離線殼層（D5）**：中文在根路徑、英文在 `/en/`；不預先產生 HTML，框架用 React Router 8 data mode 加 vite-plugin-pwa 的 `generateSW`；中文與英文的所有導覽都由同一份殼層 `index.html` 回應，Cloudflare 的 SPA fallback 也回傳這份殼層（本案沒有語言選擇頁）；作答狀態放在路由外的 store，切換語言時保留（第 3.1、3.5 節）。
+- **網址與離線殼層（D5）**：中文在根路徑、英文在 `/en/`；不預先產生 HTML，框架用 React Router 8 data mode 加 vite-plugin-pwa（2026-10-29 起 `injectManifest` 加自寫的 `src/sw.ts`，第 3.1 節）；中文與英文的所有導覽都由同一份殼層 `index.html` 回應，Cloudflare 的 SPA fallback 也回傳這份殼層（本案沒有語言選擇頁）；作答狀態放在路由外的 store，切換語言時保留（第 3.1、3.5 節）。
 - **完整的安裝資訊**：manifest 含固定的 `id`、`name`、`short_name`、`description`、`screenshots`、`display: standalone`、`theme_color`、`background_color`（由 `packages/tokens` 產生，見 07 第 2.1 節）與含 maskable 的 `icons`；HTML 放 180×180 不透明的 `apple-touch-icon`、`favicon.svg`，以及淺色與深色兩個帶 `media` 的 `theme-color` meta（第 2 節）。
 - **啟動畫面**：Android 由 manifest 自動產生。iOS 的 `apple-touch-startup-image` 與狀態列顏色在 iOS 26、27 的效果未經證實，M0a 實機驗證；退路是單色背景加圖示，並在首次繪製前替 `html` 與 `body` 設定背景色【待實測 V05】。
 - **安裝提示依平台分流**：iOS 用圖解教學（Safari 分頁列 Compact 與 Top／Bottom 兩種版面各一套）；Chromium 用 `beforeinstallprompt`；第一次完成一個關卡之後才提示，可關閉並記住選擇；QR 落地頁、作答中、App 內建瀏覽器、已經以 App 模式執行時一律不提示（第 2.5 節）。
@@ -81,7 +81,7 @@ origin 一旦讓學生用了就很難換（第 5 節），這也是 D4 要在第
 
 | 面向 | 決定後的做法 |
 | --- | --- |
-| SW 產生方式 | vite-plugin-pwa 的 `generateSW`（第 3.1 節） |
+| SW 產生方式 | vite-plugin-pwa 的 `injectManifest` 加 `src/sw.ts`（第 3.1 節；2026-10-29 之前是 `generateSW`） |
 | 離線導覽的 fallback | `index.html`，也就是唯一的殼層；`/`、`/level/<levelId>/`、`/en/`、`/en/level/<levelId>/` 等所有導覽都由它回應，語系由網址決定（`/en/` 開頭為 en，其餘為 zh-TW） |
 | 線上深層連結 | Cloudflare 的 `not_found_handling = "single-page-application"` 回傳同一份殼層，狀態碼 200；本案沒有語言選擇頁（第 3.5 節） |
 | 預先快取體積 | 最小：殼層、帶 hash 的 JS 與 CSS、中英兩種語言的內容 JSON，沒有 HTML 或 `.data` 的重複 |
@@ -415,39 +415,55 @@ document.documentElement.dataset.display = isAppMode() ? 'app' : 'browser';
 
 | 項目 | 做法 |
 | --- | --- |
-| SW 產生 | vite-plugin-pwa 2.0.0（2026-10-03，Node 20.19 以上，peer 支援 Vite 3 到 8）的 `generateSW` |
+| SW 產生 | vite-plugin-pwa 2.0.0（2026-10-03，Node 20.19 以上，peer 支援 Vite 3 到 8）的 `injectManifest`（2026-10-29 起；之前是 `generateSW`）：SW 原始碼在 `apps/web/src/sw.ts`，Vite 先打包成 `dist/sw.js`，再把 precache 清單注入 `self.__WB_MANIFEST` |
 | 更新模式 | `registerType: 'prompt'`，React 用 `virtual:pwa-register/react` 的 `useRegisterSW` |
-| SKIP_WAITING 監聽 | generateSW 在 `skipWaiting: false`（預設）時會自動內建 |
-| 舊快取清理 | `cleanupOutdatedCaches: true` |
-| 離線導覽 | `navigateFallback` 指向殼層 `index.html`；中文與 `/en/` 開頭的路徑都由同一份殼層回應，語系由網址決定 |
-| SW 檔名 | 固定 `sw.js` |
+| SKIP_WAITING 監聽 | `sw.ts` 自己寫（和 generateSW 內建的那段一樣：收到 `{ type: 'SKIP_WAITING' }` 才 `skipWaiting()`） |
+| 舊快取清理 | `sw.ts` 呼叫 `cleanupOutdatedCaches()` |
+| 離線導覽 | `sw.ts` 註冊 `NavigationRoute(controller.createHandlerBoundToURL('index.html'), { denylist })`；中文與 `/en/` 開頭的路徑都由同一份殼層回應，語系由網址決定 |
+| precache 的抓取 | `sw.ts` 自己建 `PrecacheController`，install 改成 8 個項目同時抓（第 3.2 節的規則） |
+| SW 檔名 | 固定 `sw.js`（原始檔叫 `sw.ts`，輸出與註冊的網址不變） |
 
-未採用的分支：`react-router build` 之後用 workbox-build 7.4.1 的 `injectManifest`，自寫 SW 並用 `workbox-window` 監聽 `waiting`。這條路只有預先產生 HTML 時才需要（vite-plugin-pwa 沒有 React Router framework mode 的官方整合，issue #809 仍 open），D5 決定先不預先產生，所以不做（日後的注意事項見 3.5 節末）。
+已決定（2026-10-29，我的決定）：從 `generateSW` 改成 `injectManifest` 加自寫的 `src/sw.ts`，原因只有一個：Workbox 7.4.1 的 `PrecacheController.install` 對清單逐項 `await`，第一次安裝的時間等於項目數乘上往返時間（3.2 節），generateSW 沒有任何選項可以改這件事。`sw.ts` 做的事和 generateSW 的產物一樣（precache 加路由、`cleanupOutdatedCaches`、導覽 fallback 與 denylist、SKIP_WAITING），只有 install 改成並行；precache 清單仍由 vite-plugin-pwa 依同一組 `globPatterns` 與 `globIgnores` 產生（`injectManifest` 選項），`includeAssets` 與 `includeManifestIcons: false` 照舊。TypeScript 的 WebWorker lib 和 DOM lib 不能放在同一個程式，所以 `sw.ts` 從 `apps/web/tsconfig.json` 排除、另有 `tsconfig.sw.json`，`pnpm typecheck` 兩份都跑。建置產物只有一份 `sw.js`（generateSW 另外有一個 `workbox-<hash>.js`，現在沒有了），`tools/postbuild.mjs` 同步 `index.html` 的 revision 時兩種清單寫法都認（injectManifest 注入的是鍵名排序的 JSON）。
 
-generateSW 的底層同樣是 Workbox：7.4.1 發布於 2026-05-04，近幾版以相依套件更新為主，維護節奏偏慢但仍持續發布新版本；SW 邏輯盡量只用 precaching、routing、strategies 這幾個常用模組。
+原本未採用的分支是「`react-router build` 之後用 workbox-build 的 `injectManifest`、自寫 SW 並用 `workbox-window` 監聽 `waiting`」，那是預先產生 HTML 時才需要的做法（vite-plugin-pwa 沒有 React Router framework mode 的官方整合，issue #809 仍 open）；現在改用的是 vite-plugin-pwa 自己的 `injectManifest`，不是 workbox-build，D5「不預先產生 HTML」不變（日後的注意事項見 3.5 節末）。
+
+底層同樣是 Workbox：7.4.1 發布於 2026-05-04，近幾版以相依套件更新為主，維護節奏偏慢但仍持續發布新版本；`sw.ts` 只用 `workbox-precaching` 與 `workbox-routing`（`apps/web` 的 dependencies 釘 7.4.1，和 `workbox-window` 同版），不用其他模組。
 
 要在 M0a 確認的坑：vite-plugin-pwa 的 issue #940（Vite 8 的 sharedConfigBuild 會產生多份 SW）在 2026-10-20 仍是 open。M0a 與之後的 CI 都要檢查建置產物裡只有一份 `sw.js`，而且 precache 清單完整。
 
-設定草圖：
+設定草圖（實作在 `apps/web/vite.config.ts` 與 `apps/web/src/sw.ts`）：
 
 ```ts
 VitePWA({
-  strategies: 'generateSW',
+  strategies: 'injectManifest',
+  srcDir: 'src',
+  filename: 'sw.ts',              // 原始檔；輸出與註冊的網址仍是 sw.js，永遠不改
   registerType: 'prompt',
   injectRegister: false,          // 由 useRegisterSW 註冊
-  filename: 'sw.js',              // 永遠不改
   scope: site.base,               // 與 manifest scope 同一份設定（'/'）
   manifest: buildManifest(site),  // 2.1 的欄位由同一份設定產生
-  workbox: {
-    cleanupOutdatedCaches: true,
-    navigateFallback: `${site.base}index.html`, // 唯一的殼層，中文與 /en/ 共用
-    navigateFallbackDenylist: [/^\/cdn-cgi\//],  // Cloudflare 保留的路徑一律走網路，不回傳殼層（8.3）
-    globPatterns: ['**/*.{html,js,css,json,svg,png,webp}'],
+  injectManifest: {
+    globPatterns: ['**/*.{html,js,css,woff2,svg,png,json}'],
+    globIgnores: ['splash/**', 'icons/pwa-*.png', /* … */],
   },
 });
 ```
 
-generateSW 只處理 precache、導覽 fallback 與明確設定的 `runtimeCaching`（目前只有 3.2 的安裝教學插圖等同源靜態檔，以 CacheFirst 快取）；其餘請求，包括 D7 的統計腳本與它送出的請求，直接走網路，離線時失敗就略過，不會被快取。`runtimeCaching` 的規則一律限定同源路徑，不寫萬用比對。
+```ts
+// src/sw.ts 的骨架：和 generateSW 的產物同一組行為，只有 install 並行
+const controller = new PrecacheController();
+controller.addToCacheList(self.__WB_MANIFEST);
+self.addEventListener('install', (event) => event.waitUntil(installInParallel(event)));   // 3.2 節
+self.addEventListener('activate', (event) => event.waitUntil(controller.activate(event))); // 刪掉不在清單裡的舊項目
+cleanupOutdatedCaches();
+registerRoute(new PrecacheRoute(controller));
+registerRoute(new NavigationRoute(controller.createHandlerBoundToURL('index.html'), {
+  denylist: [/^\/assets\//, /^\/content\//, /^\/sw\.js$/, /^\/cdn-cgi\//, /^\/__ll/], // 這些路徑一律走網路，不回傳殼層（8.3）
+}));
+self.addEventListener('message', (event) => { if (event.data?.type === 'SKIP_WAITING') void self.skipWaiting(); });
+```
+
+`sw.ts` 只處理 precache 與導覽 fallback，沒有 `runtimeCaching`（3.2 的安裝教學插圖等同源靜態檔若要以 CacheFirst 快取，在 `sw.ts` 用 `registerRoute` 加，規則一律限定同源路徑，不寫萬用比對）；其餘請求，包括 D7 的統計腳本與它送出的請求，直接走網路，離線時失敗就略過，不會被快取。
 
 來源：https://vite-pwa-org.netlify.app/guide/service-worker-strategies-and-behaviors.html 、https://raw.githubusercontent.com/GoogleChrome/workbox/v7/packages/workbox-build/src/templates/sw-template.ts 、https://registry.npmjs.org/vite-plugin-pwa （查證日期 2026-10-20）
 
@@ -468,6 +484,7 @@ generateSW 只處理 precache、導覽 fallback 與明確設定的 `runtimeCachi
 
 - **第一次啟動要上線完成快取才能離線**（M0a 實機發現，2026-10-22）：新加入主畫面的 App 有自己的儲存（V02），第一次啟動時才在背景下載 precache；加入後馬上關掉再離線開啟，會看到 Safari 的「未連接網際網路」頁。Simulator 重現：加入後約 1.5 秒就關掉，離線開啟就是錯誤頁；開一次開到快取完成，離線就正常。原本決定用 vite-plugin-pwa 的 `offlineReady` 顯示一次性提示「已經可以離線使用了。」；已改決定（2026-10-23，使用者覺得這則提示干擾又沒有意義）：不顯示提示，離線就緒的狀態只在 debug 頁看得到；安裝教學與老師的課堂說明改成提醒「加入主畫面後先打開，停留幾秒再離線」。這也是課堂情境的風險：學生裝完就失去訊號時，App 還不能離線用。
 - **precache 是一個項目一個項目抓的，所以項目數就是第一次安裝的時間**（2026-10-28 量測、2026-10-29 改內容檔的切法）：Workbox v7 的 `PrecacheController.install` 對每個項目逐一 `await`，不並行，第一次安裝（或 SW 更新時新增的項目）要花的時間就是項目數乘上到 Cloudflare 節點的往返時間。2026-10-28 實測：正式站 292 個項目（192 個內容 JSON：47 關乘兩種語言的關卡檔 94 個、名詞依 ID 末字元分桶 64 個、章節檔 28 個、索引與 manifest 6 個；92 個 `assets/`；殼層與圖示 8 個，其中 3 個是重複列出的），台灣到 LAX／SJC 節點每個請求中位數約 180 到 250 ms，第一次安裝 57 到 75 秒才啟用；CI 執行器（美東）平常約 15 秒，當天 Cloudflare 阿什本（IAD）網路異常時超過 30 秒，部署環境的冒煙測試（`offline.spec.ts`、`term-detail-offline.spec.ts`）因此逾時（E2E 的 `waitForSw` 第一步改等 120 秒止血）。這影響的是「加入主畫面後多久可以離線」（上一條的課堂風險），頁面本身不受影響。已決定（2026-10-29，我的決定）：把內容 JSON 從每語系 96 個檔併成 24 個，precache 項目 292 變 147（內容 192 變 50，`assets/` 92 個與殼層 5 個不變），做法是 (1) 關卡併進所屬章節的「章節包」（一章一檔：章節本身加該章全部關卡與題目，`manifest.levels[].files` 指向章節包，學習端讀章節包再取關卡；作答頁第一次繪製要讀的檔從一關約 4 到 5 KB gzip 變一章約 8 到 18 KB gzip，同一章換下一關不必再讀）；(2) 名詞完整內容從「ID 末字元一桶」（最多 32 桶）改成固定 8 桶（每桶約 20 個名詞、約 11 KB gzip，名詞頁兩種語言合計多讀約 16 KB gzip）；(3) `includeAssets` 不再重複列出 glob 已抓到的 `favicon.svg`、`glass/refract-map.svg` 與 `manifest.webmanifest`。沒有採用的做法：只 precache 目前語言（上一條已決定雙語都進）；內容管線另外輸出每語系一個合併檔、SW 執行期再拆進 Cache（要改 SW 的安裝流程，而且讀取路徑與 precache 的項目不一致，除錯困難）；把 `assets/` 的小 chunk 併起來（每個 chunk 的切法都是 8.2 節為了 LCP 調出來的，併了就要重量）。LCP 沒有退步（本機 Lighthouse 3 次中位數：首頁 2119、作答頁 2418、英文作答頁 2417、交易影響開頭的作答頁 2416、名詞圖鑑 2563、名詞頁 2562ms，門檻 2700；名詞頁比 2026-10-26 的 2434 多約 130ms，是兩種語言的桶變大的代價）。第一次安裝的實測（2026-10-29 晚上，台灣，Playwright 的 Chromium 用全新的 context 開首頁，到 `registration.active.state` 變成 activated；正式站與 PR 51 的預覽網址背對背各量 3 次）：292 項的正式站 50.0、50.3、94.9 秒，147 項的預覽 28.9、50.6、28.1 秒，再量兩次 27.3、26.6 秒；穩定時每個項目約 180 到 190 ms，偶爾整輪慢一倍是節點或線路的波動。時間照項目數減半，但還不到 20 秒；要再縮短只剩兩條路，都是之後的決定：讓 precache 並行抓（改成 `injectManifest`、自己寫 install 的並行版本，或等 Workbox 提供），或把 92 個 `assets/` 併成更少的 chunk 再重量 LCP。
+- **precache 改成 8 個項目同時抓**（已決定，2026-10-29，我的決定；上一條的第一條路）：`src/sw.ts` 自己建 `PrecacheController`，install 不呼叫 Workbox 的 `install`，改成自己的並行版本：把 `getURLsToCacheKeys()` 排成一列，開 8 個工作者各自取下一項，每一項仍交給 Workbox 自己的 `controller.strategy.handleAll({ params: { cacheKey }, request, event })`，request 的參數和 Workbox 一模一樣（`credentials: 'same-origin'`、帶 revision 的項目 `cache: 'reload'`、雜湊檔名的 `'default'`、integrity 照清單）。所以 cache key（帶 revision 的項目加 `__WB_REVISION__` 查詢參數）、狀態碼 400 以上不存且讓 install 失敗、轉址回應先複製再存、`activate` 時刪掉不在清單裡的舊項目，全都是 Workbox 原本的規則，只有順序從逐項變成 8 個並行；任何一項失敗整個 install 失敗（Workbox 的規則），已經存進快取的項目留著，下一次 install 先命中快取（`PrecacheStrategy._handle` 先 `cacheMatch` 才抓網路，讀 7.4.1 的原始碼確認過）、只補沒抓到的。8 的理由：Cloudflare 走 HTTP/2，8 個在飛行中時 147 項約 19 輪往返、理論上 4 秒上下，再多對行動網路的頻寬沒有幫助；本機 wrangler dev 是 HTTP/1.1，瀏覽器自己排到 6 條連線。沒有採用的做法：保留 `precacheAndRoute`、另外在 install 事件先並行塞滿快取讓 Workbox 的迴圈命中：兩個 install 監聽器同時跑，Workbox 的迴圈從頭跟著抓、開頭幾項會抓兩次，而且可快取的判斷（狀態碼、轉址）要自己再寫一份，不如直接用同一個 strategy 並行；等 Workbox 提供並行選項（7.4.1 的 `install` 寫死逐項、沒有選項，升版時再看）。
 - **課程內容不用 stale-while-revalidate**：會造成介面與內容版本混用，也會讓學生在同一堂課看到前後不同版本的題目。內容更新一律走 SW 更新流程（3.3）。
 - Workbox v7 在 install 時，對帶 revision 的項目（例如 `index.html`）用 `cache: 'reload'` 繞過 HTTP 快取，hash 檔名的資源用 `'default'`。所以就算 HTTP 快取標頭設錯（例如 GitHub Pages 那種固定 `max-age=600` 的主機），precache 也不會抓到舊版；Cloudflare 上的快取標頭見 3.5 與 9.4。會變動但檔名不帶 hash 的檔案都要放進 precache 清單並帶 revision。
 - **precache 體積預算**（暫定）：未壓縮總和不超過 5 MB，從 M0b 起由 CI 加總 precache manifest 並把關；QR 解碼器的 chunk 也算在內。若雙語內容讓總量超過預算，改成只 precache 目前介面語言，另一個語言包用 runtime CacheFirst，並在切換語言時提示下載（這會影響 05 的切換流程與離線切換語言，屆時回報）。雙語核心內容的實際大小在 M1 之後估算。已決定（2026-10-24，M3）：CI 的檢查值（`apps/web/perf/urls.json` 的 `precacheKb`）從 2048 提高到 3600，上限 5 MB 不變。內容擴到 14 章、雙語，名詞快照分成索引與分桶的完整內容、另加章節索引後 precache 實測 2793 KB（拆分前 2633 KB），取實測值加約 30% 的餘裕；名詞內容與章節快照一律留在 precache，不為了壓預算移出（離線整章可作答是 M2 與 M3 的完成標準），超過 5 MB 才改成只 precache 目前語言。原決定（2026-10-23）：CI 的檢查值從 1024 提高到 2048；M2 發布三章後 precache 約 1.1 MB（量測值 1094 KB）。
@@ -549,7 +566,7 @@ export function useAppUpdate() {
 
 ### 3.4 `sw.js` 固定路徑與 kill-switch
 
-- SW 路徑固定為站台 base 底下的 `sw.js`。base 為 `/`（D4），所以就是 `https://ledgerland.swift.moe/sw.js`，scope 為 `/`，同時涵蓋中文頁與 `/en/` 開頭的英文頁。日後若為了預先產生 HTML 改用 injectManifest，也沿用同一個檔名。
+- SW 路徑固定為站台 base 底下的 `sw.js`。base 為 `/`（D4），所以就是 `https://ledgerland.swift.moe/sw.js`，scope 為 `/`，同時涵蓋中文頁與 `/en/` 開頭的英文頁。2026-10-29 改用 injectManifest 時原始檔叫 `src/sw.ts`，輸出與註冊的檔名仍是 `sw.js`（vite-plugin-pwa 把 `.ts` 的 `filename` 輸出成 `.js`）；日後若為了預先產生 HTML 改用 workbox-build，也沿用同一個檔名。
 - CI 在部署前檢查建置產物一定有 `sw.js`，沒有就讓部署失敗。
 - **為什麼絕不能刪檔或改名**：Safari 27.0 的修正清單有一項是讓 SW 在主腳本不存在時被解除註冊（原文：Fixed service worker registrations to be unregistered when the main script is missing），所以 iOS 27 使用者遇到 `sw.js` 消失，SW 與它的離線能力會被直接移除；而在 iOS 26 與 Chromium 上，`sw.js` 回 404 時更新失敗、舊 SW 繼續控制頁面，可能永遠停在舊版。兩種結果都不是我們要的。
 - 要停用 SW 時，在同一個路徑部署 kill-switch 版本：
@@ -623,7 +640,7 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 **日後若加入預先產生 HTML（目前不做，V08 暫不需要）**：D5 留下「日後為加強搜尋收錄再評估」的空間。屆時要重新走一次 V08 的驗證，主要注意事項如下：
 
 - React Router 8 framework mode（`ssr: false` 加 `prerender`）會另外輸出 `__spa-fallback.html` 當作通用殼層，根目錄的 `index.html` 會變成根路徑那一頁本身。Cloudflare 的 `single-page-application` 模式固定回傳 `/index.html`，就不能再用；要改用 `not_found_handling = "404-page"` 加上把 `__spa-fallback.html` 複製成 `404.html`、只對不 prerender 的路由前綴寫 200 改寫規則，或用 Worker 回傳 `env.ASSETS` 裡的 `__spa-fallback.html`（計入 Worker 請求額度），三者擇一。
-- SW 要改成建置後用 workbox-build 的 injectManifest，自寫 `NavigationRoute(createHandlerBoundToURL('/__spa-fallback.html'), { denylist })`，並在 SW 裡自己監聽 SKIP_WAITING。
+- SW 要改成建置後用 workbox-build 的 injectManifest（現在是 vite-plugin-pwa 的 injectManifest，3.1 節），`src/sw.ts` 裡的 `NavigationRoute`、denylist 與 SKIP_WAITING 監聽都已經有了，只要把 fallback 的檔名換成 `/__spa-fallback.html`、precache 的 glob 加上 `**/*.data` 與 `manifest-*.js`。
 - 只 prerender 要讓搜尋引擎收錄的頁面：名詞約 375 筆（底稿約 300 筆）乘兩個語系，全部 prerender 會產生約 750 個 HTML 與同樣數量的 `.data`。
 - precache 至少要包含 `**/*.html`、`**/*.data`（v8 對結尾帶斜線的路徑產生 `<path>/_.data`，例如 `/en/_.data`，根路徑是 `/_.data`）與 React Router 的 `manifest-*.js`（issue #809 回報會漏掉）；確認離線時沒有任何 `/__manifest` 請求；Lingui 外掛與 `reactRouter()` 共存【待實測 V09】。
 - 每頁的 inline 腳本不同，CSP 改成逐頁注入 meta，header 只放與腳本、樣式無關的指令（見 09）。
