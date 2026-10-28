@@ -60,14 +60,14 @@ def cmd_trace(args: argparse.Namespace) -> None:
             print(f'trace：拿掉面積不到 {args.min_share:.1%} 的色 {", ".join(c for c in palette if c not in kept)}', file=sys.stderr)
             palette = kept
             idx = assign(rgb, alpha, palette)
-    layers = trace_layers(idx, palette, args.n, args.v, args.eps, args.dilate, args.min_area)
+    layers = trace_layers(idx, palette, args.n, args.v, args.eps, args.dilate, args.min_area, dark_last=args.dark_last)
     sc = args.v / args.n
     svg = write_svg(layers, round(w * sc), round(h * sc))
     raw, gz = sizes(svg)
     print(f'trace：色盤 {", ".join(palette)}', file=sys.stderr)
     for layer in layers:
         pts = sum(len(p) for p in layer.polygons)
-        print(f'  {layer.colour} 面積 {layer.area} 多邊形 {len(layer.polygons)} 點 {pts}', file=sys.stderr)
+        print(f'  {layer.colour} 面積 {layer.area} 多邊形 {len(layer.polygons)} 點 {pts} 圓 {len(layer.circles)}', file=sys.stderr)
     print(f'trace：{args.out} {raw} bytes（gzip {gz}）', file=sys.stderr)
     if raw > args.max_bytes:
         raise SystemExit(f'trace：{raw} bytes 超過上限 {args.max_bytes}，調 --eps、--k 或 --v 再試')
@@ -94,6 +94,7 @@ def main() -> None:
     t.add_argument('--min-share', type=float, default=0.004, help='面積比例低於這個的色併掉（自動取色時）')
     t.add_argument('--max-bytes', type=int, default=12288)
     t.add_argument('--palette', default='', help='逗號分隔的十六進位色，指定就不自動取色')
+    t.add_argument('--dark-last', action='store_true', help='最暗的色最後畫（有描邊線的圖）；預設面積大的先畫、小色塊在上面')
     t.set_defaults(fn=cmd_trace)
     args = ap.parse_args()
     args.fn(args)

@@ -24,6 +24,8 @@ class Layer:
     colour: str
     polygons: list[list[tuple[int, int]]]
     area: int
+    # 很小又接近圓形的色塊（帳簿上的金色圓點、腮紅）直接寫成 <circle>：多邊形簡化後會變成菱形，圓只要三個數字
+    circles: list[tuple[int, int, int]]
 
 
 def load_rgba(path: str, n: int) -> tuple[np.ndarray, np.ndarray, tuple[int, int]]:
@@ -93,8 +95,20 @@ def luma(hex_colour: str) -> float:
     return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
 
 
-def trace_layers(idx: np.ndarray, palette: list[str], n: int, v: int, eps: float, dilate: int, min_area: int) -> list[Layer]:
-    """逐色描輪廓；回傳的順序就是畫的順序（面積大的先、最暗的最後）"""
+def trace_layers(
+    idx: np.ndarray,
+    palette: list[str],
+    n: int,
+    v: int,
+    eps: float,
+    dilate: int,
+    min_area: int,
+    circle_area: int = 2500,
+    circularity: float = 0.82,
+    dark_last: bool = False,
+) -> list[Layer]:
+    """逐色描輪廓；回傳的順序就是畫的順序：面積大的先畫，小色塊蓋在上面；dark_last 讓最暗的色最後畫（有描邊線的圖，像 favicon）。
+    面積（n 的尺度）小於 circle_area 且圓度 4πA/P² 高於 circularity 的外輪廓寫成圓；小於 circle_area 的洞不挖。"""
     sc = v / n
     kernel = np.ones((dilate, dilate), np.uint8) if dilate > 1 else None
     layers: list[Layer] = []
@@ -105,11 +119,25 @@ def trace_layers(idx: np.ndarray, palette: list[str], n: int, v: int, eps: float
             continue
         if kernel is not None:
             mask = cv2.dilate(mask, kernel)
-        contours, _ = cv2.findContours(mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+        contours, hierarchy = cv2.findContours(mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
         polys: list[list[tuple[int, int]]] = []
-        for c in contours:
-            if cv2.contourArea(c) < min_area:
+        circles: list[tuple[int, int, int]] = []
+        for ci, c in enumerate(contours):
+            a = cv2.contourArea(c)
+            if a < min_area:
                 continue
+            is_outer = hierarchy is None or hierarchy[0][ci][3] < 0
+            # 小的洞不挖：洞裡是後畫的小色塊（圓點、腮紅），簡化後的洞會比色塊大、露出底色
+            if not is_outer and a < circle_area:
+                continue
+            if is_outer and a < circle_area:
+                per = cv2.arcLength(c, True)
+                if per > 0 and 4 * np.pi * a / (per * per) >= circularity:
+                    (cx, cy), r = cv2.minEnclosingCircle(c)
+                    # 膨脹過的半徑要縮回去（dilate 是整個核的寬度，半邊是 dilate // 2）
+                    rr = max(1, int(round((r - dilate // 2) * sc)))
+                    circles.append((int(round(cx * sc)), int(round(cy * sc)), rr))
+                    continue
             approx = cv2.approxPolyDP(c, eps / sc, True).reshape(-1, 2)
             pts: list[tuple[int, int]] = []
             for x, y in approx:
@@ -120,10 +148,10 @@ def trace_layers(idx: np.ndarray, palette: list[str], n: int, v: int, eps: float
                 pts.pop()
             if len(pts) >= 3:
                 polys.append(pts)
-        if polys:
-            layers.append(Layer(colour, polys, area))
+        if polys or circles:
+            layers.append(Layer(colour, polys, area, circles))
     layers.sort(key=lambda l: -l.area)
-    if len(layers) > 1:
+    if dark_last and len(layers) > 1:
         darkest = min(layers, key=lambda l: luma(l.colour))
         layers.remove(darkest)
         layers.append(darkest)
@@ -149,7 +177,12 @@ def path_d(polygons: list[list[tuple[int, int]]]) -> str:
 
 
 def write_svg(layers: list[Layer], width: int, height: int) -> str:
-    paths = ''.join(f'<path fill="{l.colour}" fill-rule="evenodd" d="{path_d(l.polygons)}"/>' for l in layers)
+    paths = ''
+    for l in layers:
+        if l.polygons:
+            paths += f'<path fill="{l.colour}" fill-rule="evenodd" d="{path_d(l.polygons)}"/>'
+        for cx, cy, r in l.circles:
+            paths += f'<circle fill="{l.colour}" cx="{cx}" cy="{cy}" r="{r}"/>'
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">{paths}</svg>\n'
 
 

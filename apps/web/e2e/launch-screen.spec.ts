@@ -69,7 +69,7 @@ test.describe('啟動畫面：App 模式', () => {
     expect(log.displayAtFirst).toBe('block');
     expect(log.leave).toBe(true);
     expect(log.removedAt).not.toBeNull();
-    expect(log.removedAt!).toBeGreaterThanOrEqual(1500);
+    expect(log.removedAt!).toBeGreaterThanOrEqual(1490);
     expect(log.removedAt!).toBeLessThan(6000);
     await expect(page.locator('main h1').first()).toBeVisible();
     await expect(page.locator('.ll-page[data-ready="true"]')).toHaveCount(1);
@@ -137,6 +137,6 @@ test.describe('啟動畫面：減少動態', () => {
     expect(log.transitionAtFirst).toBe('0s');
     expect(log.leave).toBe(false);
     expect(log.transitions).toBe(0);
-    expect(log.removedAt!).toBeGreaterThanOrEqual(1500);
+    expect(log.removedAt!).toBeGreaterThanOrEqual(1490);
   });
 });

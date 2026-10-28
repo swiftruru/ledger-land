@@ -61,7 +61,8 @@ export function dismissLaunchScreen(): void {
   if (done) return;
   if (!armed) armLaunchScreen();
   if (done) return;
-  const wait = isReload() ? 0 : HOLD_MS - performance.now();
+  // 計時器只有毫秒的解析度，取整後再多等 1ms，離場不會早於 1.5 秒
+  const wait = isReload() ? 0 : Math.ceil(HOLD_MS - performance.now()) + 1;
   clearTimeout(timer);
   if (wait <= 0) leave();
   else timer = window.setTimeout(leave, wait);

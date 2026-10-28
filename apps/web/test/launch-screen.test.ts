@@ -72,7 +72,7 @@ describe('launch-screen', () => {
     m.dismissLaunchScreen();
     vi.advanceTimersByTime(1100);
     expect(node.dataset.leave).toBeUndefined();
-    vi.advanceTimersByTime(100);
+    vi.advanceTimersByTime(102);
     expect(node.dataset.leave).toBe('');
     expect(node.removed).toBe(false);
     node.listeners.transitionend?.();
@@ -98,7 +98,7 @@ describe('launch-screen', () => {
     m.armLaunchScreen();
     vi.advanceTimersByTime(200);
     m.dismissLaunchScreen();
-    vi.advanceTimersByTime(1300);
+    vi.advanceTimersByTime(1302);
     expect(node.removed).toBe(true);
     expect(node.dataset.leave).toBeUndefined();
   });
