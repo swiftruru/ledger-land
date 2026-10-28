@@ -471,6 +471,8 @@ generateSW 只處理 precache、導覽 fallback 與明確設定的 `runtimeCachi
 
 ### 3.3 更新流程（prompt 模式）
 
+**更新後第一次導覽在 iOS Safari 失敗（2026-10-28 實機）**：維護者在 Safari 分頁按更新提示的「重新整理」後，看到「Safari 無法打開網頁，錯誤碼為 Response served by service worker has redirections」，再手動重新整理一次才正常。原因：Workbox 的導覽 fallback（`createHandlerBoundToURL('index.html')`）在 precache 找不到 `index.html` 時會退回網路、直接 fetch `/index.html` 並把回應原樣回給導覽；Cloudflare 的 `auto-trailing-slash` 把 `/index.html` 以 307 轉到 `/`，所以那個回應帶著「經過轉址」的標記，而瀏覽器規定導覽請求（redirect 模式是 manual）不能收 SW 回的轉址回應；新舊 SW 交接的那一瞬間 precache 正在換 `index.html` 的 revision，就踩到這條路。桌面 WebKit（Playwright）模擬同樣的更新沒有重現，時機和 iOS 不同。處理：`wrangler.jsonc` 的 `html_handling` 改成 `none`（3.5 節），`/index.html` 直接回 200，退回網路時拿到的就不是轉址回應；`shell.spec.ts` 加一條「`/index.html` 不轉址」的檢查守住。更新提示的流程本身不變。
+
 **檢查更新的時機**
 
 | 時機 | 做法 |
@@ -564,7 +566,7 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 
 已決定（D4、D5，2026-10-20）：主機是 Cloudflare Workers Static Assets，深層連結以 SPA fallback 回 200；因為不預先產生 HTML，`index.html` 就是唯一的殼層，SPA fallback 回傳的正是它（本案沒有語言選擇頁，D5 也明文規定 fallback 必須回傳殼層）。
 
-**SPA fallback 設定**（示意；資料夾結構見 [09 技術選擇](09-tech-stack.md) 第 8 節）。已決定（2026-10-20）：wrangler 設定不放在根目錄，而是 `apps/web/wrangler.jsonc`，每個要部署的 app 自己帶部署設定；`assets.directory` 相對於設定檔，改為 `"./dist"`（建置產物在 `apps/web/dist/`），其餘設定（`not_found_handling`、`html_handling`、自訂網域）不變，Worker 名稱維持 `ledgerland`：
+**SPA fallback 設定**（示意；資料夾結構見 [09 技術選擇](09-tech-stack.md) 第 8 節）。已決定（2026-10-20）：wrangler 設定不放在根目錄，而是 `apps/web/wrangler.jsonc`，每個要部署的 app 自己帶部署設定；`assets.directory` 相對於設定檔，改為 `"./dist"`（建置產物在 `apps/web/dist/`），其餘設定（`not_found_handling`、`html_handling`、自訂網域）不變，Worker 名稱維持 `ledgerland`（`html_handling` 於 2026-10-28 改成 `none`，見下面）：
 
 ```json
 {
@@ -574,10 +576,12 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application",
-    "html_handling": "auto-trailing-slash"
+    "html_handling": "none"
   }
 }
 ```
+
+已決定（2026-10-28）：`html_handling` 從 `auto-trailing-slash` 改成 `none`。原因在 3.3 節：`auto-trailing-slash` 會把 `/index.html` 以 307 轉到 `/`，SW 的導覽 fallback 在 precache 沒有 `index.html` 的瞬間直接 fetch 它，拿到「有轉址」的回應，Safari 對導覽拒收。本案只有 `index.html` 一個實際的 HTML 檔，站內路由都走 SPA fallback，所以 `none` 對其他網址沒有影響：`/`、`/play`、`/play/`、未知路徑都仍回 200 加殼層，`_headers` 照常套用（本機 wrangler dev 與 WebKit 的冒煙測試確認）；E2E `shell.spec.ts` 檢查 `/index.html` 不轉址。
 
 1. **線上**：導覽請求沒有對應的靜態檔時，Cloudflare 回傳 `/index.html`，狀態碼 200。`/level/lv_k7m2q9xd/` 與 `/en/level/lv_k7m2q9xd/` 拿到的是同一份殼層，boot 腳本依網址把 `html lang` 設成 zh-TW 或 en（05）。
 2. **離線**：SW 的 `navigateFallback` 回傳 precache 裡的同一份 `index.html`（3.1），線上與離線的行為一致。

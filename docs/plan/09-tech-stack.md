@@ -373,7 +373,7 @@ export const pwa = VitePWA({
 （`injectRegister: false` 表示由程式碼透過 `virtual:pwa-register/react` 的 `useRegisterSW` 註冊，好控制更新提示的時機。base path 已定為 `/`，fallback 與 denylist 不必再加前綴；中文與英文的導覽請求都由同一份 `index.html` 回應。D7 的統計腳本在其他網域，generateSW 預設不處理跨來源請求，也不放進 `globPatterns`，所以不會進 precache。）
 
 - 主機 fallback：`index.html` 本來就是通用殼層。Cloudflare Workers 的 SPA fallback 對沒有對應檔案的路徑（包括 `/en/` 開頭的深層連結）都回傳它，狀態碼 200（第 7.3 節）。本案沒有語言選擇頁，不會發生 fallback 回傳語言選擇頁的問題。
-- 結尾斜線：所有站內連結都帶結尾斜線（路由格式見 [02 網站架構](02-site-architecture.md)）。Workers 的 `auto-trailing-slash` 處理的是實際存在的 HTML 檔案；經由 SPA fallback 開啟、沒有結尾斜線的網址，由路由在用戶端以 `replace` 補上斜線（這是推論，M0a 確認）。CI 檢查站內連結都有結尾斜線。
+- 結尾斜線：所有站內連結都帶結尾斜線（路由格式見 [02 網站架構](02-site-architecture.md)）。Workers 的 `html_handling` 自 2026-10-28 起設 `none`（原本的 `auto-trailing-slash` 會把 `/index.html` 轉到 `/`，讓 Safari 在 SW 更新後的第一次導覽失敗，06 第 3.3 節）；本案只有 `index.html` 一個實際的 HTML 檔，經由 SPA fallback 開啟、沒有結尾斜線的網址，由路由在用戶端以 `replace` 補上斜線（M0a 確認）。CI 檢查站內連結都有結尾斜線。
 - SEO：只有一份 HTML，內容由用戶端產生，公開頁面的收錄有限；hreflang 的處理方式見 05。日後若要加強搜尋收錄，再評估預先產生 HTML（第 3.3 節）。
 
 ### 3.3 日後再評估：framework mode（`ssr: false` 加 prerender）
@@ -555,7 +555,7 @@ D4 已選 Cloudflare Workers Static Assets；GitHub Pages 與 Cloudflare Pages �
 | CSP | 只能用 `<meta http-equiv>`，無法設定 `frame-ancestors` | 用 header 設定 | 用 header 設定 |
 | 找不到檔案時 | 自訂的 `404.html`，狀態碼是 404 | `not_found_handling` 可設 `single-page-application`（回傳 `/index.html`，狀態碼 200）或 `404-page`；compatibility date 在 2025-04-01 以後時，導覽請求不執行 Worker | 沒有頂層 `404.html` 時視為 SPA，對找不到的路徑回傳根目錄 `/`；有 `404.html` 時回 404 頁 |
 | 轉址規則 | 不支援 `_redirects` | `_redirects`：2,000 條靜態加 100 條動態規則；200 改寫只能指向站內相對網址；不支援依國家、語言、cookie、query 條件轉址 | 支援 `_redirects`（細節本次未重新查證） |
-| 結尾斜線 | `/x` 以 301 轉到 `/x/`；路徑區分大小寫（實測 `/Versions/` 回 404） | 預設 `auto-trailing-slash`，資料夾 `/x` 以 307 轉到 `/x/` | 本次未查證 |
+| 結尾斜線 | `/x` 以 301 轉到 `/x/`；路徑區分大小寫（實測 `/Versions/` 回 404） | 預設 `auto-trailing-slash`，資料夾 `/x` 以 307 轉到 `/x/`、`/index.html` 轉到 `/`；本案改用 `none`（2026-10-28，06 第 3.3 節） | 本次未查證 |
 | PR 預覽 | 沒有 | Workers 有 Previews 功能，可做分支與 PR 的隔離測試（存取保護與費用細節本次未查證） | 同一 repo 發起的 PR 與非正式分支會自動產生預覽（`<hash>.<project>.pages.dev` 與分支別名）；預設公開；access policy 只保護預覽部署，不保護正式網址；fork 的 PR 不產生預覽 |
 | 私有 repo | GitHub Free 的私有 repo 不能發布 Pages | 用 GitHub Actions 執行 wrangler 上傳建置產物，與 repo 是否公開無關 | 同左，用 Actions 上傳建置產物；Git 整合對私有 repo 的支援本次未查證 |
 | 自訂網域與 DNS | 子網域以 CNAME 指向 `<owner>.github.io`，Let's Encrypt 自動簽發 HTTPS，可強制 HTTPS；若有其他指向非 GitHub 的記錄，可能無法簽發 | 必須是在 Cloudflare 上啟用的 zone（nameserver 在 Cloudflare）；不能建立在已有 CNAME 記錄的主機名稱上。把外部 DNS 的子網域接到 Cloudflare 的 partial（CNAME）設定只有 Business 或 Enterprise 方案能用，所以 DNS 在學校的子網域不能用 | 外部 DNS 的子網域可以 CNAME 到 `<project>.pages.dev`，但要先在 Pages 後台加入網域，否則會出現 522；apex 網域仍必須是 Cloudflare zone；CAA 記錄可能阻擋憑證簽發 |
