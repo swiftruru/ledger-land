@@ -75,7 +75,10 @@ async function take(page: Page): Promise<Entry[]> {
 async function ratioLevel(request: APIRequestContext): Promise<{ levelId: string; before: number } | null> {
   const m = (await (await request.get('/content/content-manifest.json')).json()) as { levels: { id: string; files: Record<string, string> }[] };
   for (const l of m.levels) {
-    const snap = (await (await request.get(`/${l.files['zh-TW']}`)).json()) as { questions: { type: string }[] };
+    // 關卡在所屬章節的章節包裡（schemaVersion 3）：讀章節包再取這一關
+    const bundle = (await (await request.get(`/${l.files['zh-TW']}`)).json()) as { levels: { level: { id: string }; questions: { type: string }[] }[] };
+    const snap = bundle.levels.find((x) => x.level.id === l.id);
+    if (!snap) continue;
     const i = snap.questions.findIndex((q) => q.type === 'ratio_numeric');
     // 前面的題目都要能用「選第一個選項」帶過
     if (i >= 0 && snap.questions.slice(0, i).every((q) => ['single_choice', 'true_false', 'ratio_interpret', 'judgment'].includes(q.type)))
