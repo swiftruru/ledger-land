@@ -101,7 +101,13 @@ export function UpdatePrompt() {
     if (!visible) return;
     publish({
       visible: true,
-      reload: () => void updateServiceWorker(true),
+      reload: () => {
+        // updateServiceWorker(true) 叫等待中的新版 skipWaiting，等它接管（controlling 事件）才重新載入；新版早就接管了（同一個站在別的分頁或
+        // 視窗按過「重新整理」、或這一頁開很久）時事件不會再來，按了就沒反應（維護者 2026-10-28：桌面的 App 視窗按不了，手機正常）。
+        // 1.5 秒內沒重新載入就自己來：使用者要的就是換成新版本
+        void updateServiceWorker(true);
+        window.setTimeout(() => location.reload(), 1500);
+      },
       later: () => {
         setDismissed(true);
         setNeedRefresh(false);
