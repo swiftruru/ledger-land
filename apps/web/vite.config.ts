@@ -92,6 +92,40 @@ function buildFaviconLink(): string {
 // Chrome 看到 manifest 就會在 load 前後抓 manifest 與它的 192px 圖示（安裝條件的檢查），本機 Lighthouse 的模擬把這兩個請求算進每一頁 LCP 前；
 // 它們不影響第一次繪製，和 Service Worker 的註冊一樣延後。manifest 檔照常產生、進 precache，Chrome 與 Safari 都會處理之後才加進來的 manifest 連結。
 // 要排在 VitePWA 之後（enforce: 'post'、order: 'post'），而且在 Workbox 算 index.html 的 precache revision 之前
+// 入口樣式表不擋第一次繪製（2026-10-28，維護者 iPhone 實機：啟動圖換到 App 內畫面之間白一下）：iOS 在網頁第一次繪製前就拿掉啟動圖，
+// 而 WebKit 只要有還在載入的樣式表就整頁不畫（放在 body 也一樣，實測 Chromium 會先畫前面的內容、WebKit 不會），要等 Service Worker 把 CSS 送來。
+// 建置時把 <link rel="stylesheet"> 改成 media="print"（不擋繪製），前面加一個 rel="preload" as="style"（Chromium 對不符合 media 的樣式表降到閒置優先度，
+// preload 讓它照常先抓）；boot 腳本在它載完時把 media 切回 all 並在 html 標 data-css，在那之前 body 裡除了 #ll-launch 以外都 visibility:hidden
+// （首次繪製 style 的最後一條，只在建置時加；開發模式的 CSS 走 JS 模組，沒有這個連結），瀏覽器分頁不會看到沒樣式的畫面，只是和以前一樣先是底色。
+// 樣式表載入失敗時 boot 也會標 data-css，頁面退成沒樣式而不是一直空白。
+function entryStylesheetNonBlocking(): Plugin {
+  return {
+    name: 'll-entry-stylesheet-non-blocking',
+    enforce: 'post',
+    apply: 'build',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html) {
+        const links = [...html.matchAll(/<link rel="stylesheet"([^>]*)>/g)];
+        if (links.length === 0) throw new Error('ll-entry-stylesheet-non-blocking：index.html 沒有入口樣式表');
+        let out = html;
+        for (const m of links) {
+          const tag = m[0];
+          const href = /href="([^"]+)"/.exec(m[1] ?? '')?.[1];
+          if (!href) throw new Error('ll-entry-stylesheet-non-blocking：樣式表連結沒有 href');
+          out = out.replace(
+            tag,
+            `<link rel="preload" as="style" crossorigin href="${href}">\n    <link rel="stylesheet" media="print" data-ll="entry-css" crossorigin href="${href}">`,
+          );
+        }
+        const styleEnd = '</style>';
+        if (out.split(styleEnd).length !== 2) throw new Error('ll-entry-stylesheet-non-blocking：index.html 應該剛好有一段 <style>');
+        return out.replace(styleEnd, 'html:not([data-css]) body>:not(#ll-launch){visibility:hidden}' + styleEnd);
+      },
+    },
+  };
+}
+
 function deferManifestLink(): Plugin {
   return {
     name: 'll-defer-manifest-link',
@@ -334,6 +368,7 @@ export default defineConfig({
       devOptions: { enabled: false },
     }),
     deferManifestLink(),
+    entryStylesheetNonBlocking(),
   ],
   server: { port: 5173, strictPort: true },
 });

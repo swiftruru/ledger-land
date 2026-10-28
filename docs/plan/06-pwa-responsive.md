@@ -260,6 +260,7 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 - **Tab bar 寫在初始 HTML 殼層**（已決定 D8，2026-10-20）：iOS 17 以下有「頁面載入後才插入的元素不套用 backdrop-filter」的問題（Safari 18 才修正），所以帶玻璃的 `nav` 不由 React 建立，而是殼層裡 `body` 直屬的元素。React 掛載後以 ref 取得 `#ll-tabbar`，只更新 `aria-current`、標籤文字、`href` 與收合狀態，不建立也不替換 `nav` 與其子元素，也不使用 React portal；平板與電腦的 rail、側邊欄也是同一個元素，由 CSS 依斷點改變外觀（細節見 07 第 6.1 節）。iOS 17 上靜態 Tab bar、切換語言與換版面之後是否仍有模糊，列入 M0a 的 iOS 17 驗證（第 10 節）。
 - 殼層在地化的小段腳本緊接在 `nav` 之後，讓英文網址第一次繪製時就是英文標籤（「跳到主要內容」連結的文字也一起改寫）；和 boot 腳本一樣由建置腳本產生並納入 CSP 的 sha256【待實測 V15】。
 - 啟動畫面 `#ll-launch` 是 `body` 的第一個子節點（2026-10-28 起，2.4 節第 5 點）：三個內嵌 SVG，樣式接在首次繪製那段 `<style>` 的後面（postbuild 只允許一段 inline style），只靠內嵌的標記與這段 style 就畫得出來，不依賴外部 CSS、JS 或圖片，因為 iOS 的啟動圖就是對它截的圖；瀏覽器模式是 `display:none`。
+- 入口樣式表**不擋第一次繪製**（2026-10-28，2.4 節第 6 點）：建置時改成 `media="print"` 加 `data-ll="entry-css"`，前面放同一個 href 的 `rel="preload" as="style"`（Chromium 對不符合 media 的樣式表降到閒置優先度，preload 讓它照常先抓）；boot 腳本在它載完（或失敗）時切回 `all` 並在 `html` 標 `data-css`，首次繪製 style 的最後一條 `html:not([data-css]) body>:not(#ll-launch){visibility:hidden}` 讓瀏覽器分頁在那之前只看到底色，不會看到沒樣式的 Tab bar。postbuild 檢查這一組。
 - D7 的統計腳本**不寫在殼層 HTML 裡**，由 App 掛載後動態載入（第 8.3 節），避免網路很差時 `defer` 腳本拖住 App 的模組腳本。
 - **不寫** `maximum-scale=1` 或 `user-scalable=no`。防止連點放大改用 `touch-action: manipulation`（第 7 節），讓需要放大的人仍然可以雙指縮放。
 - `viewport-fit=cover` 是 `env(safe-area-inset-*)` 有非零值的前提。
@@ -287,7 +288,7 @@ D5 決定不預先產生 HTML，所以整站只有一份 `index.html`，它就�
 4. **Android 啟動畫面**：由 `name`、`background_color` 與 512 圖示自動產生，確定要做。2026-10-28 起它之後接著 App 內的停留畫面（第 5 點），使用者看到的是同一張插圖。
 5. **iOS 啟動畫面**：M0a 用 assets-generator 產生淺深兩套 `apple-touch-startup-image`，在 iOS 26 與 27 實機上確認是否生效。M0a 結果（2026-10-21，iOS 27 與 18.6 Simulator，實機待重測）：有效，但有三個條件。(a) 頁面必須有 `<meta name="apple-mobile-web-app-capable" content="yes">`，iOS 才會下載啟動圖，只靠 manifest 的 `display: standalone` 不夠（另加 `mobile-web-app-capable`，避免 Chromium 的棄用警告）；(b) 啟動圖在「加入主畫面」那一刻依 iPhone 系統當時的淺色或深色固定一張，之後切換系統外觀或網站自己的外觀設定都不會跟著變（WebKit bug 259328），網站的外觀設定也不會帶進新加入的 App，因為 Safari 的網站資料不會複製到 App；(c) `media` 條件不要測 `device-height`（WebKit bug 326500，iOS 27.0.1），只用寬度與像素比。實機（iOS 27）的「深色啟動圖失敗」在 2026-10-22 查明不是 bug：我的 iPhone 系統其實是淺色，Safari 分頁看起來是深色是因為網站自己的外觀設定選了深色；新加入的 App 從空的 localStorage 開始（V02 的儲存隔離），所以跟隨系統顯示淺色，iOS 也正確選了淺色啟動圖。結論兩條：測深色啟動圖要用「設定 › 螢幕顯示與亮度 › 深色」，不是網站的外觀設定；Safari 裡手動選的外觀不會帶進新加入的 App，App 第一次啟動一律跟隨系統，所以 App 內要提供外觀選項（16 第 7 節的設定頁已涵蓋），安裝教學可以提一句。系統切成深色後重新加入，實機（iOS 27）看到深色啟動圖，V05 淺色與深色都已通過（2026-10-22）。若無效或效果不佳，退路是不提供啟動圖，改由 HTML 內聯的單色背景加置中圖示（inline SVG）當作載入畫面，React 掛載後移除；這個載入畫面要固定尺寸，不能造成版面位移。
    已決定（2026-10-28，維護者提供原創素材）：**啟動畫面和 App 內的停留畫面是同一份圖**。殼層 `index.html` 的 body 第一個子節點是 `#ll-launch`（插圖、小 logo、「LedgerLand」字樣三個內嵌 SVG；樣式接在首次繪製那段 `<style>` 的後面，仍是唯一一段），只在 App 模式（`html[data-display=app]`）顯示並蓋住整頁含 Tab bar（z 200）；瀏覽器分頁永遠是 `display:none`，不影響 LCP（只有 HTML 多了內嵌的 SVG）。版面全用覆蓋層自己的百分比（插圖框寬 50%（內容約占框的九成）、中心在 46% 高；底部一列中心在 85% 高，小 logo 寬 5%、字樣（含上下伸）高 2.8%、間距 2%；數字在 `splash-devices.json` 的 `launch`），不用 vh 也不用安全區，因為 18 張啟動圖就是用 Chromium 對這段標記截的圖（2.2 節），系統啟動圖換到 App 內畫面時才不會跳。停留（`shell/launch-screen.ts`）：系統啟動圖只閃一下沒有記憶點，所以至少停到導覽開始後 1.5 秒，而且等第一頁掀開布幕（PageReveal）才淡出 250ms；重新整理（更新提示、重試）不算冷啟動不等；頁面一直沒掀開時 4 秒上限移除；減少動態不轉場、直接移除。底色跟主題與風味（莓果 `#171018`、紅酒 `#181012` 用自己的底色，和底下的頁面一樣），字色淺色 `#292622`、深色 `#F8F8F2`；系統啟動圖只有夜空色的深版，選了莓果或紅酒的人在交接那一格會有一點色差，接受。按住期間鍵盤可以 Tab 進底下的頁面，和系統啟動畫面一樣；覆蓋層 `aria-hidden`。
-6. M0a 完成標準：Android 與 iPhone 實機安裝截圖，涵蓋主畫面圖示、啟動畫面、狀態列顏色，淺色與深色各一張【待實測 V05】。2026-10-28 換圖後實機（iPhone、iOS 27）：系統啟動圖換到 App 內畫面時插圖往下跳 25 點、字樣 7 點，就是 WebKit bug 301994：App 的視窗從狀態列底下開始、比螢幕矮約 54 點，而啟動圖是依整個螢幕截的，百分比版面各自偏了。修法不改產生器（檔案 file:// 下視窗等於螢幕）：boot 腳本在首次繪製前量 `screen.height` 減 `innerHeight`（直向、0 到 160 點之間才算）寫成 `--ll-launch-top`，覆蓋層 `top` 往上、`height` 加回同樣的高度，版面就和整個螢幕一樣；視窗沒被切時是 0。維護者也覺得交接時「閃一下」，位移修掉後再看一次。
+6. M0a 完成標準：Android 與 iPhone 實機安裝截圖，涵蓋主畫面圖示、啟動畫面、狀態列顏色，淺色與深色各一張【待實測 V05】。2026-10-28 換圖後實機（iPhone、iOS 27）：系統啟動圖換到 App 內畫面時插圖往下跳 25 點、字樣 7 點，就是 WebKit bug 301994：App 的視窗從狀態列底下開始、比螢幕矮約 54 點，而啟動圖是依整個螢幕截的，百分比版面各自偏了。修法不改產生器（檔案 file:// 下視窗等於螢幕）：boot 腳本在首次繪製前量 `screen.height` 減 `innerHeight`（直向、0 到 160 點之間才算）寫成 `--ll-launch-top`，覆蓋層 `top` 往上、`height` 加回同樣的高度，版面就和整個螢幕一樣；視窗沒被切時是 0。位移修掉後維護者再看：對齊了，但交接時整個畫面白一下。原因：iOS 在網頁第一次繪製前就拿掉啟動圖，WebKit 只要有還在載入的樣式表就整頁不畫（放到 body 也一樣；本機用 Paint Timing 量，樣式表延遲 3 秒時第一次繪製 3076ms），等 Service Worker 把 CSS 送來的那幾格就是白的。做法：入口樣式表改成不擋繪製（2.3 節的規則），第一次繪製提早到 192ms、CSS 照樣 3 秒後才到；覆蓋層只靠內嵌的 SVG 與 style，第一格就有。部署後待實機再看。
 
 來源：https://bugs.webkit.org/show_bug.cgi?id=301994 、https://bugs.webkit.org/show_bug.cgi?id=305546 、https://github.com/mdn/browser-compat-data/pull/28503 （查證日期 2026-10-20）
 
@@ -563,6 +564,8 @@ export function useAppUpdate() {
 `useRegisterSW` 的 options 不是 reactive，只在第一次呈現時讀取，所以上面的邏輯放在 App 根部、只掛一次。
 
 來源：https://vite-pwa-org.netlify.app/guide/prompt-for-update.html 、https://vite-pwa-org.netlify.app/guide/periodic-sw-updates.html 、https://developer.chrome.com/docs/workbox/handling-service-worker-updates （查證日期 2026-10-20）
+
+- 「重新整理」按了要有反應（2026-10-28，維護者桌面的 App 視窗按不了、手機正常）：`updateServiceWorker(true)` 叫等待中的新版 skipWaiting，要等它接管的 `controlling` 事件才重新載入；同一個站在別的分頁或視窗按過、或新版早就接管時事件不會再來。現在按下後 1.5 秒內沒重新載入就自己 `location.reload()`，使用者要的就是換成新版本；新版若還沒接管完，重新載入後會再看到一次提示。
 
 ### 3.4 `sw.js` 固定路徑與 kill-switch
 

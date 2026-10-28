@@ -89,6 +89,18 @@ test.describe('殼層與深層連結（10 M0b 完成標準）', () => {
     expect(html).toMatch(/<body>\s*<div id="ll-launch" aria-hidden="true">/);
     const launch = html.match(/<div id="ll-launch"[\s\S]*?<\/div><\/div>/)?.[0] ?? '';
     expect((launch.match(/<svg\b/g) ?? []).length).toBe(3);
+    // 入口樣式表不擋第一次繪製（06 第 2.4 節）：preload 加 media="print" 的連結，載完由 boot 切回 all 並標 data-css；在那之前 body 的內容藏起來
+    expect(html).toMatch(/<link rel="preload" as="style" crossorigin href="\/assets\/index-[^"]+\.css">/);
+    expect(html).toMatch(/<link rel="stylesheet" media="print" data-ll="entry-css" crossorigin href="\/assets\/index-[^"]+\.css">/);
+    expect(html).toContain('html:not([data-css]) body>:not(#ll-launch){visibility:hidden}');
+  });
+
+  test('入口樣式表載完才顯示內容：data-css 標上、media 切回 all、Tab bar 可見', async ({ page }) => {
+    await page.goto('/');
+    await waitForApp(page);
+    await expect(page.locator('html')).toHaveAttribute('data-css', '1');
+    await expect(page.locator('link[data-ll="entry-css"]')).toHaveAttribute('media', 'all');
+    await expect(page.locator('#ll-tabbar')).toBeVisible();
   });
 });
 
