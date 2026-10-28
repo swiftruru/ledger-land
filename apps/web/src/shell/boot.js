@@ -69,10 +69,13 @@
           if (kind === 'chapterIndex') addLink('/' + cm.ci[lang], 'json');
           else if (kind === 'termIndex') addLink('/' + cm.ti[lang], 'json');
           else if (kind === 'tombstones') addLink('/' + cm.tb, 'json');
-          else if (kind === 'level' && id && cm.lv[id]) addLink('/content/' + lang + '/' + id + '.' + cm.lv[id][langIndex] + '.json', 'json');
+          else if (kind === 'level' && id && cm.lv[id] && cm.ch[cm.lv[id]])
+            // 關卡在所屬章節的章節包裡（lv 是關卡 ID 對章節 ID，ch 是章節 ID 對各語言的雜湊）
+            addLink('/content/' + lang + '/' + cm.lv[id] + '.' + cm.ch[cm.lv[id]][langIndex] + '.json', 'json');
           else if (kind === 'termDetail' && id)
             for (var t = 0; t < cm.l.length; t++) {
-              var bucket = id.slice(-1);
+              // 名詞分桶：ID 最後一個字元的字元碼除以 8 的餘數，和 lib/content.ts 的 termDetailBucket 一致
+              var bucket = String(id.charCodeAt(id.length - 1) % 8);
               var h = cm.td[cm.l[t]] && cm.td[cm.l[t]][bucket];
               if (h) addLink('/content/' + cm.l[t] + '/terms-' + bucket + '.' + h + '.json', 'json');
             }

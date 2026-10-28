@@ -16,14 +16,32 @@ interface Manifest {
   levels: { id: string; questionIds: string[]; files: Record<string, string> }[];
 }
 interface LevelFile {
-  level: { questionIds: string[] };
+  level: { id: string; questionIds: string[] };
   questions: QuestionSnapshot[];
+}
+/** 關卡在所屬章節的章節包裡（schemaVersion 3）：manifest.levels[].files 指向章節包 */
+interface ChapterBundle {
+  levels: LevelFile[];
 }
 
 async function getJson<T>(request: APIRequestContext, path: string): Promise<T> {
   const res = await request.get(path.startsWith('/') ? path : `/${path}`);
   expect(res.ok(), path).toBe(true);
   return (await res.json()) as T;
+}
+
+const bundleCache = new Map<string, Promise<ChapterBundle>>();
+/** 一關的快照：讀所屬章節的章節包（同一檔只讀一次）再取關卡 */
+async function levelFileOf(request: APIRequestContext, l: Manifest['levels'][number], locale: string): Promise<LevelFile> {
+  const path = l.files[locale]!;
+  let p = bundleCache.get(path);
+  if (!p) {
+    p = getJson<ChapterBundle>(request, path);
+    bundleCache.set(path, p);
+  }
+  const found = (await p).levels.find((x) => x.level.id === l.id);
+  if (!found) throw new Error(`${path} 裡沒有關卡 ${l.id}`);
+  return found;
 }
 
 /** 題目快照裡給人看的字串（compiled 是核心算出的資料，不含佔位符） */
@@ -51,7 +69,7 @@ test.describe('真實內容的數值佔位符', () => {
     let placeholders = 0;
     for (const locale of LOCALES)
       for (const l of m.levels) {
-        const file = await getJson<LevelFile>(request, l.files[locale]!);
+        const file = await levelFileOf(request, l, locale);
         for (const q of file.questions) {
           const ctx = valueContextOf(q);
           for (const [path, text] of stringsOf(q, ''))
@@ -69,7 +87,7 @@ test.describe('真實內容的數值佔位符', () => {
     expect(unresolved).toEqual([]);
   });
 
-  /** 關卡只留指定的題目（manifest 與兩種語言的關卡檔都改），作答頁直接從第一題開始 */
+  /** 關卡只留指定的題目（manifest 與兩種語言的章節包裡的這一關都改），作答頁直接從第一題開始 */
   async function onlyQuestions(page: Page, m: Manifest, levelId: string, ids: readonly string[]): Promise<void> {
     await page.route('**/content/content-manifest.json', async (route) => {
       const res = await route.fetch();
@@ -81,9 +99,11 @@ test.describe('真實內容的數值佔位符', () => {
     for (const locale of LOCALES)
       await page.route(`**/${lv.files[locale]}`, async (route) => {
         const res = await route.fetch();
-        const json = (await res.json()) as LevelFile;
-        json.questions = json.questions.filter((q) => ids.includes(q.id));
-        json.level.questionIds = [...ids];
+        const json = (await res.json()) as ChapterBundle;
+        const target = json.levels.find((x) => x.level.id === levelId);
+        if (!target) throw new Error(`${lv.files[locale]} 裡沒有關卡 ${levelId}`);
+        target.questions = target.questions.filter((q) => ids.includes(q.id));
+        target.level.questionIds = [...ids];
         await route.fulfill({ response: res, json });
       });
   }
@@ -95,7 +115,7 @@ test.describe('真實內容的數值佔位符', () => {
       const problems: string[] = [];
       let count = 0;
       for (const l of m.levels) {
-        const file = await getJson<LevelFile>(request, l.files[locale]!);
+        const file = await levelFileOf(request, l, locale);
         const qs = file.questions.filter((q) => usesAnswer(q) && q.compiled?.ratio?.status !== 'na');
         if (qs.length === 0) continue;
         await page.unrouteAll({ behavior: 'ignoreErrors' });

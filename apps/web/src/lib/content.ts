@@ -11,17 +11,18 @@ export interface ContentManifest {
   /** 只在 LL_INCLUDE_DRAFTS=1 的本機或 E2E 快照出現：快照含草稿（debug 頁顯示） */
   includesDrafts?: boolean;
   locales: Record<string, { status: 'complete' | 'beta' }>;
-  /** 章節檔是章節本身加該章已發布的學習目標（objectives）；levelIds 只列已發布的關卡，順序依 chapter.levelIds（M2 起） */
+  /** 章節包（schemaVersion 3，一章一檔的 { chapter, levels }）：chapter 是章節本身加該章已發布的學習目標（objectives），levels 是該章每一關的快照；
+   *  levelIds 只列已發布的關卡，順序依 chapter.levelIds（M2 起） */
   /** scope（core、extension）與 examScope（midterm、not_in_exam、unconfirmed）是 M3 起才有的欄位（T32；tools/lib/content-snapshot.mjs）；
    *  notices 是章節標記的固定聲明（例如 not_investment_advice，2026-10-24 起），沒有時省略 */
   chapters: { id: string; order: number; scope?: string; examScope?: string; notices?: string[]; levelIds?: string[]; files: Record<string, string> }[];
-  /** M2 起：每關一檔 { level, questions }，questions 依 questionIds 順序，每題帶 answerRev 與核心算出的 compiled（tools/lib/content-snapshot.mjs） */
+  /** 關卡：files 指向所屬章節的章節包（schemaVersion 3 起關卡不另成檔），讀章節包再依 level.id 取關卡（tools/lib/content-snapshot.mjs） */
   levels?: LevelManifestEntry[];
   /** 章節索引（schemaVersion 2 起）：每個語系一檔，全部章節的摘要（ChapterSummary），依 order 排列 */
   chapterIndex: Record<string, string>;
   /** 名詞索引（schemaVersion 2 起）：每個語系一檔，只有關卡、名詞 chip 與圖鑑列表要的欄位（tools/lib/content-snapshot.mjs 的 TERM_INDEX_FIELDS） */
   termIndex: Record<string, string>;
-  /** 名詞的完整內容：語系 → 分桶（名詞 ID 的最後一個字元，見 termDetailBucket）→ 檔案路徑；只列有名詞的桶 */
+  /** 名詞的完整內容：語系 → 分桶（'0' 到 '7'，見 termDetailBucket）→ 檔案路徑；只列有名詞的桶 */
   termDetails: Record<string, Record<string, string>>;
   tombstones: string;
 }
@@ -34,7 +35,7 @@ export interface LevelManifestEntry {
   files: Record<string, string>;
 }
 
-/** 關卡檔的形狀（M2 起）：題目是依語系展開的 Question（LocalizedText 已換成單一字串），加 answerRev 與 compiled；
+/** 關卡的快照（M2 起；schemaVersion 3 起放在章節包的 levels 裡）：題目是依語系展開的 Question（LocalizedText 已換成單一字串），加 answerRev 與 compiled；
  * 作者填的 scenario.expected 已移除，答案一律看 compiled（04 第 15.2 節） */
 export interface LevelSnapshot {
   level: {
@@ -62,7 +63,7 @@ export interface ChapterLevelSummary {
   questionCount: number;
 }
 
-/** 章節檔（M2 起）：章節本身加該章已發布的學習目標，以及已發布關卡的摘要（levels，順序同 levelIds） */
+/** 章節（M2 起；章節包的 chapter）：章節本身加該章已發布的學習目標，以及已發布關卡的摘要（levels，順序同 levelIds） */
 export interface ChapterSnapshot {
   id: string;
   rev: number;
@@ -76,6 +77,13 @@ export interface ChapterSnapshot {
   badge?: { icon: string; title: string };
   termRefs?: string[];
   [field: string]: unknown;
+}
+
+/** 章節包（schemaVersion 3，08 第 7.3 節）：一章一檔，章節本身加該章每一關的快照。作答頁讀所屬章節的章節包再取關卡；
+ *  同一章其他關卡的內容也就在記憶體快取裡，換下一關不必再讀。Workbox 的 precache 是一個項目一個項目抓的，一章一檔讓第一次安裝少 94 趟往返（06 第 3.2 節） */
+export interface ChapterBundle {
+  chapter: ChapterSnapshot;
+  levels: LevelSnapshot[];
 }
 
 /** 章節索引的一筆（08 第 7.3 節）：地圖、章節頁、名詞圖鑑與徽章只用這些欄位；學習目標只有 id、order、statement */
@@ -210,8 +218,8 @@ export class ContentLoadError extends Error {
   }
 }
 
-/** 2：名詞分成索引與分桶的完整內容（2026-10-24） */
-const SUPPORTED_SCHEMA = 2;
+/** 3：關卡併進章節包、名詞分 8 桶（2026-10-29）；2：名詞分成索引與分桶的完整內容（2026-10-24） */
+const SUPPORTED_SCHEMA = 3;
 let manifestPromise: Promise<ContentManifest> | null = null;
 const cache = new Map<string, Promise<unknown>>();
 
@@ -245,10 +253,13 @@ export function loadManifest(): Promise<ContentManifest> {
   return manifestPromise;
 }
 
-/** 完整內容檔的分桶：名詞 ID 的最後一個字元（必須和 tools/lib/content-snapshot.mjs 的 termDetailBucket 一致）。
+/** 完整內容檔的桶數（必須和 tools/lib/content-snapshot.mjs 的 TERM_DETAIL_BUCKETS 一致；殼層 shell/boot.js 的預先載入寫死同一個數） */
+export const TERM_DETAIL_BUCKETS = 8;
+
+/** 完整內容檔的分桶：名詞 ID 最後一個字元的字元碼除以桶數的餘數（'0' 到 '7'；必須和 tools/lib/content-snapshot.mjs 的 termDetailBucket 一致）。
  *  由 ID 直接算出桶，名詞頁與名詞卡不必先讀索引就能讀完整內容（06 第 8.2 節） */
 export function termDetailBucket(id: string): string {
-  return id.slice(-1);
+  return String(id.charCodeAt(id.length - 1) % TERM_DETAIL_BUCKETS);
 }
 
 /** 名詞索引（每個語系一檔，約 10 KB gzip）：作答頁、名詞列表、收藏與 resolveId 都只讀它 */
@@ -259,7 +270,7 @@ export async function loadTermIndex(locale: Locale): Promise<TermIndexEntry[]> {
   return cached<TermIndexEntry[]>(path);
 }
 
-/** 一個名詞的完整內容：讀它所在的桶（約 5 個名詞）；快照裡沒有這個名詞時回傳 undefined，檔案讀不到時丟 ContentLoadError */
+/** 一個名詞的完整內容：讀它所在的桶（約 20 個名詞）；快照裡沒有這個名詞時回傳 undefined，檔案讀不到時丟 ContentLoadError */
 export async function loadTermDetail(id: string, locale: Locale): Promise<TermSnapshot | undefined> {
   const m = await loadManifest();
   const byBucket = m.termDetails?.[locale];
@@ -280,21 +291,28 @@ function cached<T>(path: string): Promise<T> {
   return p;
 }
 
-/** 關卡檔：{ level, questions }，題目依 questionIds 順序並帶 compiled；找不到關卡（草稿、下架或打錯）丟 missing */
+/** 關卡：讀 manifest.levels 指的章節包，再依 level.id 取出 { level, questions }（題目依 questionIds 順序並帶 compiled）；
+ *  找不到關卡（草稿、下架或打錯）丟 missing。章節包依路徑快取，同一章的其他關卡與章節本身不再讀第二次 */
 export async function loadLevel(levelId: string, locale: Locale): Promise<LevelSnapshot> {
   const m = await loadManifest();
   const entry = (m.levels ?? []).find((l) => l.id === levelId);
   const path = entry?.files[locale];
   if (!entry || !path) throw new ContentLoadError(`沒有關卡 ${levelId} 的 ${locale} 快照`, 'missing');
-  return cached<LevelSnapshot>(path);
+  const bundle = await cached<ChapterBundle>(path);
+  const found = Array.isArray(bundle.levels) ? bundle.levels.find((l) => l.level?.id === levelId) : undefined;
+  if (!found) throw new ContentLoadError(`章節包 ${path} 裡沒有關卡 ${levelId}`, 'missing');
+  return found;
 }
 
+/** 章節本身（章節包的 chapter）：章節加該章的學習目標與關卡摘要 */
 export async function loadChapter(chapterId: string, locale: Locale): Promise<ChapterSnapshot> {
   const m = await loadManifest();
   const entry = m.chapters.find((c) => c.id === chapterId);
   const path = entry?.files[locale];
   if (!entry || !path) throw new ContentLoadError(`沒有章節 ${chapterId} 的 ${locale} 快照`, 'missing');
-  return cached<ChapterSnapshot>(path);
+  const bundle = await cached<ChapterBundle>(path);
+  if (!bundle.chapter) throw new ContentLoadError(`章節包 ${path} 沒有 chapter`, 'invalid');
+  return bundle.chapter;
 }
 
 /** 章節索引（每個語系一檔，約 8 KB gzip）：地圖與名詞圖鑑第一次繪製只讀它，不必逐章讀章節檔 */

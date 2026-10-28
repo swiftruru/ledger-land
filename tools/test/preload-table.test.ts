@@ -24,8 +24,10 @@ const contentManifest = {
   chapterIndex: { 'zh-TW': 'content/zh-TW/chapter-index.111111.json', en: 'content/en/chapter-index.222222.json' },
   termIndex: { 'zh-TW': 'content/zh-TW/term-index.333333.json', en: 'content/en/term-index.444444.json' },
   tombstones: 'content/tombstones.555555.json',
-  levels: [{ id: 'lv_h2zx7srx', files: { 'zh-TW': 'content/zh-TW/lv_h2zx7srx.7825d1.json', en: 'content/en/lv_h2zx7srx.fc75c6.json' } }],
-  termDetails: { 'zh-TW': { e: 'content/zh-TW/terms-e.c8fd7d.json' }, en: { e: 'content/en/terms-e.e5755a.json' } },
+  // 關卡在所屬章節的章節包裡（schemaVersion 3）：levels[].files 和 chapters[].files 是同一個檔
+  chapters: [{ id: 'ch_c5f8w2', files: { 'zh-TW': 'content/zh-TW/ch_c5f8w2.7825d1.json', en: 'content/en/ch_c5f8w2.fc75c6.json' } }],
+  levels: [{ id: 'lv_h2zx7srx', chapterId: 'ch_c5f8w2', files: { 'zh-TW': 'content/zh-TW/ch_c5f8w2.7825d1.json', en: 'content/en/ch_c5f8w2.fc75c6.json' } }],
+  termDetails: { 'zh-TW': { '5': 'content/zh-TW/terms-5.c8fd7d.json' }, en: { '5': 'content/en/terms-5.e5755a.json' } },
 };
 const routes = [
   { pattern: '^/level/([^/]+)/$', module: 'src/pages/Level.tsx', content: ['level', 'termIndex'] },
@@ -62,14 +64,15 @@ describe('buildPreloadTable', () => {
     ]);
   });
 
-  it('內容只存路徑或雜湊：關卡與名詞分桶依語言列雜湊，索引與墓碑是完整路徑', () => {
+  it('內容只存路徑或雜湊：章節包與名詞分桶依語言列雜湊、關卡只記所屬章節，索引與墓碑是完整路徑', () => {
     const { m } = build();
     expect(m.l).toEqual(['zh-TW', 'en']);
     expect(m.ci['zh-TW']).toBe('content/zh-TW/chapter-index.111111.json');
     expect(m.ti.en).toBe('content/en/term-index.444444.json');
     expect(m.tb).toBe('content/tombstones.555555.json');
-    expect(m.lv).toEqual({ lv_h2zx7srx: ['7825d1', 'fc75c6'] });
-    expect(m.td).toEqual({ 'zh-TW': { e: 'c8fd7d' }, en: { e: 'e5755a' } });
+    expect(m.ch).toEqual({ ch_c5f8w2: ['7825d1', 'fc75c6'] });
+    expect(m.lv).toEqual({ lv_h2zx7srx: 'ch_c5f8w2' });
+    expect(m.td).toEqual({ 'zh-TW': { '5': 'c8fd7d' }, en: { '5': 'e5755a' } });
   });
 
   it('找不到模組、不認得的內容種類、不合法的 pattern、檔名格式不符、少了 catalog 都丟錯（建置失敗）', () => {
@@ -79,9 +82,19 @@ describe('buildPreloadTable', () => {
     expect(() => build({ catalogs: { 'zh-TW': 'src/i18n/catalog-zh-TW.ts' } })).toThrow(/catalogs 沒有 en/);
     const renamed = {
       ...contentManifest,
-      levels: [{ id: 'lv_h2zx7srx', files: { 'zh-TW': 'content/zh-TW/level-lv_h2zx7srx.json', en: 'content/en/lv_h2zx7srx.fc75c6.json' } }],
+      chapters: [{ id: 'ch_c5f8w2', files: { 'zh-TW': 'content/zh-TW/chapter-ch_c5f8w2.json', en: 'content/en/ch_c5f8w2.fc75c6.json' } }],
     };
-    expect(() => build({ contentManifest: renamed })).toThrow(/不是 content\/zh-TW\/lv_h2zx7srx<雜湊>\.json 的格式/);
+    expect(() => build({ contentManifest: renamed })).toThrow(/不是 content\/zh-TW\/ch_c5f8w2<雜湊>\.json 的格式/);
+    // 關卡另成檔的舊格式（schemaVersion 2）：關卡的檔不是所屬章節的章節包
+    const separate = {
+      ...contentManifest,
+      levels: [
+        { id: 'lv_h2zx7srx', chapterId: 'ch_c5f8w2', files: { 'zh-TW': 'content/zh-TW/lv_h2zx7srx.7825d1.json', en: 'content/en/ch_c5f8w2.fc75c6.json' } },
+      ],
+    };
+    expect(() => build({ contentManifest: separate })).toThrow(/關卡 lv_h2zx7srx 的 zh-TW 檔不是章節 ch_c5f8w2 的章節包/);
+    const orphan = { ...contentManifest, levels: [{ ...contentManifest.levels[0]!, chapterId: 'ch_n0where' }] };
+    expect(() => build({ contentManifest: orphan })).toThrow(/章節 ch_n0where 不在 content-manifest 的 chapters 裡/);
     expect(() => build({ contentManifest: { ...contentManifest, termIndex: undefined } })).toThrow(/沒有 termIndex\.zh-TW/);
   });
 });

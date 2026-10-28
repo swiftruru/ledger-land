@@ -13,7 +13,7 @@ export interface ManifestChapter {
 }
 export interface Manifest {
   chapters: ManifestChapter[];
-  levels: { id: string; chapterId: string; order: number; questionIds: string[]; unscored?: boolean }[];
+  levels: { id: string; chapterId: string; order: number; questionIds: string[]; unscored?: boolean; files: Record<string, string> }[];
   termIndex: Record<string, string>;
   termDetails: Record<string, Record<string, string>>;
   chapterIndex: Record<string, string>;
@@ -60,19 +60,33 @@ export async function termIndexOf(request: APIRequestContext, locale: Locale): P
   return json<TermEntry[]>(request, m.termIndex[locale]!);
 }
 
-/** 一個名詞的完整內容（分桶：名詞 ID 的最後一個字元，和 apps/web/src/lib/content.ts 的 termDetailBucket 相同） */
+/** 名詞完整內容的分桶（和 apps/web/src/lib/content.ts 的 termDetailBucket 相同）：ID 最後一個字元的字元碼除以 8 的餘數 */
+export const TERM_DETAIL_BUCKETS = 8;
+export function termDetailBucket(id: string): string {
+  return String(id.charCodeAt(id.length - 1) % TERM_DETAIL_BUCKETS);
+}
+
+/** 一個名詞的完整內容（讀它所在的桶） */
 export async function termDetailOf(request: APIRequestContext, id: string, locale: Locale): Promise<TermDetail> {
   const m = await manifestOf(request);
-  const list = await json<TermDetail[]>(request, m.termDetails[locale]![id.slice(-1)]!);
+  const list = await json<TermDetail[]>(request, m.termDetails[locale]![termDetailBucket(id)]!);
   const hit = list.find((t) => t.id === id);
   if (!hit) throw new Error(`快照裡沒有 ${id} 的 ${locale} 內容`);
   return hit;
 }
 
-/** 名詞完整內容的分桶檔路徑（/content/zh-TW/terms-x.<hash>.json） */
+/** 名詞完整內容的分桶檔路徑（/content/zh-TW/terms-<桶>.<hash>.json） */
 export async function termBucketPath(request: APIRequestContext, id: string, locale: Locale): Promise<string> {
   const m = await manifestOf(request);
-  return `/${m.termDetails[locale]![id.slice(-1)]!}`;
+  return `/${m.termDetails[locale]![termDetailBucket(id)]!}`;
+}
+
+/** 關卡所在章節的章節包路徑（schemaVersion 3：關卡的檔就是章節包，/content/<語言>/ch_<id>.<hash>.json） */
+export async function levelBundlePath(request: APIRequestContext, levelId: string, locale: Locale): Promise<string> {
+  const m = await manifestOf(request);
+  const entry = m.levels.find((l) => l.id === levelId);
+  if (!entry) throw new Error(`manifest 裡沒有關卡 ${levelId}`);
+  return `/${entry.files[locale]!}`;
 }
 
 export async function chapterIndexOf(request: APIRequestContext, locale: Locale): Promise<ChapterSummary[]> {

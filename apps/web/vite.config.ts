@@ -291,7 +291,8 @@ export default defineConfig({
       scope: site.base,
       // 安裝用的 PNG（manifest 的 icons 與 apple-touch-icon）不進 precache：系統在「加入主畫面」那一刻自己抓，離線時用不到；
       // 2026-10-28 圖示換成小綠綠的插圖後五個 PNG 合計約 350 KB，precache 預算（3600 KB）放不下（06 第 2.2 節）
-      includeAssets: ['favicon.svg', 'icons/favicon.ico', 'glass/refract-map.svg'],
+      // favicon.svg 與 glass/refract-map.svg 已被 globPatterns 的 svg 抓到，manifest.webmanifest 由外掛自己加；再列一次會在 precache 清單出現兩筆同樣的項目（2026-10-29 清掉）
+      includeAssets: ['icons/favicon.ico'],
       // generateSW 預設會把 manifest 的 icons 加進 precache，光靠 globIgnores 擋不住
       includeManifestIcons: false,
       manifest: {
@@ -319,7 +320,7 @@ export default defineConfig({
         navigateFallback: 'index.html',
         // /assets/ 與 /content/ 找不到檔案時不回殼層；Cloudflare 保留的 /cdn-cgi/ 與 stub 端點一律走網路（06 第 3.1 節）
         navigateFallbackDenylist: [/^\/assets\//, /^\/content\//, /^\/sw\.js$/, /^\/cdn-cgi\//, /^\/__ll/],
-        globPatterns: ['**/*.{html,js,css,woff2,svg,png,webmanifest,json}'],
+        globPatterns: ['**/*.{html,js,css,woff2,svg,png,json}'],
         globIgnores: [
           'splash/**',
           'icons/pwa-*.png',

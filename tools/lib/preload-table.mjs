@@ -2,8 +2,9 @@
 // 純函式，不讀檔：輸入 Vite 的 .vite/manifest.json、內容的 content-manifest.json 與 apps/web/src/shell/route-preload.json，
 // 輸出 boot 腳本（apps/web/src/shell/boot.js 的 preload 區塊）讀的精簡表格：
 //   a：資產檔名（/assets/ 底下）；c：各語言的訊息 catalog（route-preload.json 的 catalogs 指的模組與它的靜態 import）在 a 的索引；
-//   r：[pattern, a 的索引, 內容種類]；m：內容快照的路徑或雜湊（ci 章節索引、ti 名詞索引、tb 墓碑、lv 關卡 ID 對各語言雜湊、td 各語言的名詞分桶對雜湊）。
-// 關卡與名詞分桶只存雜湊，路徑由 boot 腳本依固定格式組回；格式不符（例如日後改了檔名規則）時直接丟錯，建置失敗，不會默默預先載入錯的檔案。
+//   r：[pattern, a 的索引, 內容種類]；m：內容快照的路徑或雜湊（ci 章節索引、ti 名詞索引、tb 墓碑、ch 章節 ID 對各語言的章節包雜湊、lv 關卡 ID 對所屬章節 ID、
+//   td 各語言的名詞分桶對雜湊）。關卡在所屬章節的章節包裡（schemaVersion 3，08 第 7.3 節），作答頁預先載入的是那一章的章節包。
+// 章節包與名詞分桶只存雜湊，路徑由 boot 腳本依固定格式組回；格式不符（例如日後改了檔名規則）或關卡的檔不是所屬章節的章節包時直接丟錯，建置失敗，不會默默預先載入錯的檔案。
 
 /** Vite manifest 裡某個模組的 chunk 與靜態 import（遞迴，不含殼層入口 chunk）；css 一併收集 */
 function closure(viteManifest, key, out) {
@@ -76,14 +77,25 @@ export function buildPreloadTable({ viteManifest, contentManifest, routes, catal
     if (typeof v !== 'string' || !v.startsWith('content/')) throw new Error(`preload：content-manifest 沒有 ${name}`);
     return v;
   };
-  // 關卡檔：content/<語言>/<關卡 ID>.<雜湊>.json；名詞分桶：content/<語言>/terms-<桶>.<雜湊>.json
+  // 章節包：content/<語言>/<章節 ID>.<雜湊>.json；名詞分桶：content/<語言>/terms-<桶>.<雜湊>.json
   const hashOf = (path, prefix) => {
     const match = path.startsWith(prefix) ? /^\.([0-9a-f]+)\.json$/.exec(path.slice(prefix.length)) : null;
     if (!match) throw new Error(`preload：${path} 不是 ${prefix}<雜湊>.json 的格式`);
     return match[1];
   };
+  const chapters = new Map((m.chapters ?? []).map((c) => [c.id, c]));
+  const ch = Object.fromEntries(
+    [...chapters.values()].map((c) => [c.id, locales.map((loc) => hashOf(required(c.files?.[loc], `chapters.${c.id}.${loc}`), `content/${loc}/${c.id}`))]),
+  );
+  // 關卡只記所屬章節；關卡的檔必須就是那一章的章節包（關卡另成檔的舊格式會在這裡失敗）
   const lv = Object.fromEntries(
-    (m.levels ?? []).map((l) => [l.id, locales.map((loc) => hashOf(required(l.files?.[loc], `levels.${l.id}.${loc}`), `content/${loc}/${l.id}`))]),
+    (m.levels ?? []).map((l) => {
+      const chapter = chapters.get(l.chapterId);
+      if (!chapter) throw new Error(`preload：關卡 ${l.id} 的章節 ${l.chapterId} 不在 content-manifest 的 chapters 裡`);
+      for (const loc of locales)
+        if (l.files?.[loc] !== chapter.files?.[loc]) throw new Error(`preload：關卡 ${l.id} 的 ${loc} 檔不是章節 ${l.chapterId} 的章節包（${l.files?.[loc]}）`);
+      return [l.id, l.chapterId];
+    }),
   );
   const td = Object.fromEntries(
     locales.map((loc) => [
@@ -98,7 +110,7 @@ export function buildPreloadTable({ viteManifest, contentManifest, routes, catal
     c: catalogs,
     w,
     r,
-    m: { l: locales, ci: perLocale('chapterIndex'), ti: perLocale('termIndex'), tb: required(m.tombstones, 'tombstones'), lv, td },
+    m: { l: locales, ci: perLocale('chapterIndex'), ti: perLocale('termIndex'), tb: required(m.tombstones, 'tombstones'), ch, lv, td },
   };
 }
 

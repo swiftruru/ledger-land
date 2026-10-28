@@ -466,10 +466,12 @@ test.describe('作答流程（純鍵盤）', () => {
       });
       db.close();
     });
-    await page.route(/\/content\/zh-TW\/lv_h2zx7srx\.[0-9a-f]+\.json$/, async (route) => {
+    // 關卡在所屬章節的章節包裡（schemaVersion 3）：改章節包裡 lv_h2zx7srx 那一關的題目
+    await page.route(/\/content\/zh-TW\/ch_[0-9a-z]+\.[0-9a-f]+\.json$/, async (route) => {
       const res = await route.fetch();
-      const json = (await res.json()) as { questions: { id: string; rev: number; revKind: string }[] };
-      for (const q of json.questions) if (q.id === 'q_g1ze90s7') Object.assign(q, { rev: q.rev + 1, revKind: 'answer' });
+      const json = (await res.json()) as { levels: { level: { id: string }; questions: { id: string; rev: number; revKind: string }[] }[] };
+      const target = json.levels.find((l) => l.level.id === 'lv_h2zx7srx');
+      for (const q of target?.questions ?? []) if (q.id === 'q_g1ze90s7') Object.assign(q, { rev: q.rev + 1, revKind: 'answer' });
       await route.fulfill({ response: res, json });
     });
     await page.goto('/review/');

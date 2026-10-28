@@ -118,7 +118,7 @@ const LEVEL = {
   questions: QUESTIONS,
 };
 
-/** 把測試關卡接進 manifest，關卡檔由 route 直接回 JSON；level 可以換成同形狀的變體（窄螢幕測試給指標計算題加上名詞） */
+/** 把測試關卡接進 manifest，關卡的檔（章節包 { levels: [{ level, questions }] }，schemaVersion 3）由 route 直接回 JSON；level 可以換成同形狀的變體（窄螢幕測試給指標計算題加上名詞） */
 async function installFixture(page: Page, level: { level: typeof LEVEL.level; questions: readonly unknown[] } = LEVEL): Promise<void> {
   await page.route('**/content/content-manifest.json', async (route) => {
     const res = await route.fetch();
@@ -135,7 +135,9 @@ async function installFixture(page: Page, level: { level: typeof LEVEL.level; qu
     ];
     await route.fulfill({ response: res, json });
   });
-  await page.route(`**/content/*/${FILE}`, (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(level) }));
+  await page.route(`**/content/*/${FILE}`, (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ levels: [level] }) }),
+  );
 }
 
 async function clearProgress(page: Page): Promise<void> {
@@ -411,7 +413,7 @@ async function installUnscoredFixture(page: Page): Promise<void> {
     await route.fulfill({ response: res, json });
   });
   await page.route(`**/content/*/${UNSCORED_FILE}`, (route) =>
-    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(UNSCORED_LEVEL) }),
+    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ levels: [UNSCORED_LEVEL] }) }),
   );
 }
 
@@ -753,14 +755,17 @@ async function installOneQuestion(page: Page, sourceLevelId: string, questionId:
     const locale = route.request().url().includes('/content/en/') ? 'en' : 'zh-TW';
     const path = sources[locale];
     if (path === undefined) throw new Error(`還沒讀到 ${sourceLevelId} 的 ${locale} 關卡檔路徑`);
+    // 來源關卡在它所屬章節的章節包裡（schemaVersion 3）
     const res = await route.fetch({ url: new URL(`/${path}`, route.request().url()).toString() });
-    const real = (await res.json()) as { level: Record<string, unknown>; questions: { id: string }[] };
+    const bundle = (await res.json()) as { levels: { level: Record<string, unknown>; questions: { id: string }[] }[] };
+    const real = bundle.levels.find((l) => l.level['id'] === sourceLevelId);
+    if (real === undefined) throw new Error(`${path} 裡沒有關卡 ${sourceLevelId}`);
     const q = real.questions.find((x) => x.id === questionId);
     if (q === undefined) throw new Error(`${sourceLevelId} 裡沒有 ${questionId}`);
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ level: { ...real.level, id: ONE_ID, questionIds: [questionId] }, questions: [q] }),
+      body: JSON.stringify({ levels: [{ level: { ...real.level, id: ONE_ID, questionIds: [questionId] }, questions: [q] }] }),
     });
   });
 }

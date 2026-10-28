@@ -162,7 +162,12 @@ function answerKey(page: Page, levelId: string): Promise<AnswerKey> {
     const manifest = (await (await fetch('/content/content-manifest.json')).json()) as { levels: { id: string; files: Record<string, string> }[] };
     const file = manifest.levels.find((l) => l.id === levelId)?.files[locale];
     if (!file) throw new Error(`內容清單裡沒有 ${levelId}`);
-    const snap = (await (await fetch(`/${file}`)).json()) as { questions: { id: string; type: string; correctOptionId?: string; correct?: boolean }[] };
+    // 關卡在所屬章節的章節包裡（schemaVersion 3）
+    const bundle = (await (await fetch(`/${file}`)).json()) as {
+      levels: { level: { id: string }; questions: { id: string; type: string; correctOptionId?: string; correct?: boolean }[] }[];
+    };
+    const snap = bundle.levels.find((l) => l.level.id === levelId);
+    if (!snap) throw new Error(`章節包 ${file} 裡沒有 ${levelId}`);
     const key: Record<string, { type: string; right: string }> = {};
     for (const q of snap.questions) key[q.id] = { type: q.type, right: q.type === 'true_false' ? String(q.correct === true) : (q.correctOptionId ?? '') };
     return key;
