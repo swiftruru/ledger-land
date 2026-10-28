@@ -48,7 +48,7 @@ import { prefetchTermDetails, useTerms } from './terms.tsx';
 import { TIMER_ANNOUNCE_SETTING, TIMER_RELAXED_SETTING, parseTimerSettings } from './timer.ts';
 import { TimerDisplay, timerDisplayProps } from './TimerDisplay.tsx';
 import { PendingContext, usePendingScope } from './useAsync.ts';
-import { useScrollAnchor } from './useScrollAnchor.ts';
+import { captureScrollAnchor, useScrollAnchor } from './useScrollAnchor.ts';
 import type { LevelSnapshot, QuestionSnapshot } from '../../lib/content.ts';
 import { generateAttemptId } from '@ledgerland/progress';
 import { logError } from '../../lib/errors.ts';
@@ -88,11 +88,19 @@ function loadQuizLangMenu(): Promise<QuizLangMenuModule> {
   return quizLangMenuPromise;
 }
 
+/** 切換語言前先同步記下捲動錨點：useScrollAnchor 平常在捲動後的下一個影格才記錄，慢的環境（CI 的 Linux WebKit，影格可以晚超過 300ms）
+ *  來不及記就切換、整頁重新掛載，還原用的會是上一次捲動的舊錨點（2026-10-28 main 的 E2E）。這一刻版面還沒動，記到的就是使用者看到的位置；
+ *  載入中或離線的頁面沒有錨點元素時不覆蓋（可能是剛從暫存讀回、等著還原的錨點） */
+function flushScrollAnchor(): void {
+  const anchor = captureScrollAnchor();
+  if (anchor) useQuiz.getState().setAnchor(anchor);
+}
+
 export function QuizLangSwitch() {
   const { t } = useLingui();
   const current = useLocale();
   // 和 LangSwitch 同一個實作：以 replace 換到另一種語言的同一頁並記住偏好；作答狀態在路由外的 store，不受影響
-  const go = useSwitchLocale();
+  const go = useSwitchLocale(flushScrollAnchor);
   const currentNote = t({ id: 'quiz.lang.current', message: '（目前）', comment: '作答頁語言選單裡，目前語言那一項後面的視覺隱藏補充' });
   const label = t({ id: 'quiz.lang.menu', message: '切換語言', comment: '作答頁頁首窄的時候，語言圖示按鈕的可讀名稱（點了開語言選單）' });
   const [menu, setMenu] = useState<QuizLangMenuModule | null>(quizLangMenu);
@@ -127,7 +135,7 @@ export function QuizLangSwitch() {
   return (
     <div className="ll-quiz-lang" ref={wrap}>
       <span className="ll-quiz-lang__wide">
-        <LangSwitch size="sm" />
+        <LangSwitch size="sm" beforeSwitch={flushScrollAnchor} />
       </span>
       {menu ? (
         <menu.QuizLangMenu className="ll-quiz-lang__narrow" label={label} current={current} currentNote={currentNote} onSelect={go} defaultOpen={openOnLoad} />

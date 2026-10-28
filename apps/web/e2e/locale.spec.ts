@@ -109,7 +109,8 @@ test.describe('語言切換（05 第 7.5、8 節；10 M0b 完成標準）', () =
 });
 
 // 上方提示在切換語言之後才插入（06 第 8.2 節）：用 iPhone Safari 的 UA 加上注入的 storage.estimate
-// 讓相機預覽的暫存情境提示在每個瀏覽器都穩定地「晚一步」出現（延遲 4 秒、quota 1 GB）；useScrollAnchor 要在使用者捲動前用原錨點再還原，題目留在畫面同一個位置
+// 讓相機預覽的暫存情境提示在每個瀏覽器都穩定地「晚一步」出現（estimate 等測試放行才回 quota 1 GB，不用固定秒數：慢的執行器第一次載入
+// 就超過 4 秒，提示會在切換前出現）；useScrollAnchor 要在使用者捲動前用原錨點再還原，題目留在畫面同一個位置
 test.describe('切換語言後上方提示才插入', () => {
   test.use({
     userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1',
@@ -123,7 +124,12 @@ test.describe('切換語言後上方提示才插入', () => {
     await page.addInitScript(() => sessionStorage.setItem('ll:safari-notice-collapsed', '1'));
     await page.addInitScript(() => {
       // WebKit 在初始化腳本階段還沒有 navigator.storage，改從 Navigator.prototype 覆寫 getter 才攔得到
-      const slow = () => new Promise<StorageEstimate>((resolve) => setTimeout(() => resolve({ quota: 1024 ** 3, usage: 0 }), 4000));
+      let release: (() => void) | undefined;
+      const gate = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      (window as unknown as { __llReleaseEstimate: () => void }).__llReleaseEstimate = () => release?.();
+      const slow = (): Promise<StorageEstimate> => gate.then(() => ({ quota: 1024 ** 3, usage: 0 }));
       Object.defineProperty(Navigator.prototype, 'storage', { configurable: true, get: () => ({ estimate: slow }) });
     });
     const viewport = page.viewportSize();
@@ -147,7 +153,8 @@ test.describe('切換語言後上方提示才插入', () => {
     await page.evaluate(() => document.querySelector<HTMLButtonElement>('.ll-lang [role="radio"][lang="en"]')?.click());
     await expect(page).toHaveURL(/\/en\/level\/lv_h2zx7srx\/$/);
     await expect(page.getByRole('button', { name: 'Check answer' })).toBeEnabled();
-    // 提示在這之後才出現，等它插入後再量
+    // 切換完成、新語言的頁面掛好了才放行 estimate：提示在這之後才出現，等它插入後再量
+    await page.evaluate(() => (window as unknown as { __llReleaseEstimate: () => void }).__llReleaseEstimate());
     await expect(page.locator('.ll-ephemeral-notice')).toBeVisible({ timeout: 10_000 });
     await page.waitForTimeout(200);
     const afterTop = await page.evaluate((id) => document.getElementById(id)?.getBoundingClientRect().top ?? null, before!.id);
