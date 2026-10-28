@@ -10,6 +10,7 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { useLocation, useSearchParams } from 'react-router';
 import { formatDate, formatNumber, localePath } from '@ledgerland/i18n';
+import { markExportedToApp } from '../features/install/exported.ts';
 import {
   DB_SCHEMA_VERSION,
   MAX_BACKUP_CODE_LENGTH,
@@ -235,6 +236,7 @@ export default function Backup() {
       const outcome = await saveFile(serialiseBackup(backup), backupFileName(todayLocal().replaceAll('-', '')));
       if (outcome !== 'cancelled') {
         await markExported();
+        markExportedToApp();
         await refresh();
         setExportNotice({
           kind: 'ok',
@@ -272,6 +274,7 @@ export default function Backup() {
         copied = false;
       }
       await markExported();
+      markExportedToApp();
       await refresh();
       setExportNotice({
         kind: 'ok',
@@ -514,7 +517,15 @@ export default function Backup() {
                   打開主畫面的會計樂園。
                 </Trans>
               </p>
-              <Button variant="quiet" size="sm" icon={<DeviceIcon />} href={localePath(locale, '/install/')} data-testid="to-app-install">
+              {/* 匯出成功後升成 secondary、帶 ?step=2：安裝教學把第 1 步畫成已完成、焦點接到第 2 步（2026-10-28 維護者實機回饋：
+                  按了教學第 1 步的「匯出到 App」就離開教學頁，回來要接得上） */}
+              <Button
+                variant={exportNotice?.kind === 'ok' ? 'secondary' : 'quiet'}
+                size="sm"
+                icon={<DeviceIcon />}
+                href={localePath(locale, '/install/') + (exportNotice?.kind === 'ok' ? '?step=2' : '')}
+                data-testid="to-app-install"
+              >
                 <Trans id="backup.toApp.install" comment="引導卡第二步：還沒加入主畫面的人連到安裝教學">
                   還沒加入主畫面？看安裝教學
                 </Trans>

@@ -39,6 +39,18 @@ export function installGuideVariant(userAgent: string, maxTouchPoints = 0): Inst
   return isChromiumUa(userAgent) ? 'chromium' : 'generic';
 }
 
+/** Safari 的選單長相（2026-10-28 維護者 iOS 27 實機截圖）：iOS 27 的縮小網址列左邊是三條線的選單按鈕，點開是帶圖示的彈出選單（翻譯網站、分享、加入書籤⋯），
+ *  分享表單上方有 App 圖示與一排圓形動作、「加入主畫面」在清單第一組的最後；iOS 26 是網址列右邊的「⋯」加一張有 Aa 的面板。 */
+export type IosMenuStyle = 'ios26' | 'ios27';
+export const IOS_MENU_SINCE = 27;
+
+/** Version/ 27 以上是新選單；26 以下（含 17、18 的分享表單）是舊的；沒有 Version/ 的第三方瀏覽器認不出版本，給最新的 */
+export function iosMenuStyle(userAgent: string, maxTouchPoints = 0): IosMenuStyle {
+  if (!isIosUa(userAgent, maxTouchPoints)) return 'ios27';
+  const v = SAFARI_VERSION.exec(userAgent);
+  return v && Number(v[1]) < IOS_MENU_SINCE ? 'ios26' : 'ios27';
+}
+
 export function parseSafariLayout(value: unknown, fallback: SafariLayout = 'compact'): SafariLayout {
   return value === 'compact' || value === 'bar' ? value : fallback;
 }

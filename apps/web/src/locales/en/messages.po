@@ -600,6 +600,12 @@ msgstr "Backup code"
 msgid "backup.error.codeTooLong"
 msgstr "The backup code is too long; please use a backup file instead."
 
+#. iOS 圖解第 1 步做過之後（這個分頁已複製備份碼或存成備份檔）換成的一句
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.exported"
+msgstr "Backup code copied. Next, add to Home Screen."
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.code.copied"
@@ -637,6 +643,12 @@ msgstr "Storage space is low"
 #: src/pages/Placeholder.tsx
 msgid "lab.placeholder.go"
 msgstr "Go on a quest first"
+
+#. iOS 圖解的第 1 步：先把進度帶走（2026-10-28 之前是清單外的「第 0 步」）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.export"
+msgstr "First, take your progress with you: tap ‘Export to app’ to copy a backup code (you can save a backup file too). Paste it the first time you open the app from the Home Screen and the records merge."
 
 #. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
 #. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
@@ -2716,12 +2728,6 @@ msgstr "Chapter {no}"
 msgid "terms.group.chapterName"
 msgstr "Chapter {no}: {title}"
 
-#. iOS 圖解的第 0 步：先把進度帶走
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.step0"
-msgstr "Step 0: take your progress with you. Tap ‘Export to app’ to copy a backup code (you can save a backup file too); paste it the first time you open the app from the Home Screen and the records merge."
-
 #. 交易影響題作答後的摘要；correctCount 是答對的目標數、total 是目標數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
@@ -2912,6 +2918,12 @@ msgstr "Device and environment"
 #: src/pages/Backup.tsx
 msgid "backup.export.code"
 msgstr "Copy backup code"
+
+#. 示意圖裡備份頁「複製備份碼」按鈕的文字；要短，96px 的圖裡按鈕約 10 個英文字母寬
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.copyCode"
+msgstr "Copy code"
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -3810,7 +3822,7 @@ msgstr "Colours"
 msgid "map.qr.show"
 msgstr "Show QR"
 
-#. Compact 分頁列第二步
+#. 縮小網址列第二步
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
 msgid "install.guide.compact.2"
@@ -3822,7 +3834,13 @@ msgstr "Tap ‘Share’."
 msgid "install.guide.bar.1"
 msgstr "Tap the ‘Share’ button on the toolbar."
 
-#. Compact 分頁列第一步
+#. iOS 27 的縮小網址列第一步：網址列左邊三條線的選單按鈕
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact27.1"
+msgstr "Tap the menu button (three lines) on the left of the address bar."
+
+#. iOS 26 的縮小網址列第一步
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
 msgid "install.guide.compact.1"

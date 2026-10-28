@@ -25,6 +25,7 @@ const DB = 'ledgerland';
 // iOS 26 的 Safari：UA 裡的系統版本凍結在 18_x，只有 Version/ 是 26（finding pages-b-2；06 第 2.6 節依 Version/ 判斷）
 const IOS_SAFARI_26 = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1';
 const IOS_SAFARI_18 = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1';
+const IOS_SAFARI_27 = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Mobile/15E148 Safari/604.1';
 // 第 3 關的取捨題（收藏的測試用）
 const JUDGMENT_QUESTION = 'q_ytrpj345';
 const JUDGMENT_LEVEL = 'lv_k51ne1k1';
@@ -677,12 +678,15 @@ test.describe('安裝圖解：iOS 26（06 第 2.6 節）', () => {
     const guide = page.getByTestId('install-guide');
     await expect(guide).toHaveAttribute('data-variant', 'ios-modern');
     await expect(guide).toHaveAttribute('data-layout', 'compact');
-    await expect(guide.locator('.ll-guide__step')).toHaveCount(4);
+    // 第 1 步是「匯出到 App」（接在安裝建議下方時橫幅上已經有那顆按鈕，這裡沒有第二顆），接著四步加入主畫面
+    await expect(guide.locator('.ll-guide__step')).toHaveCount(5);
+    await expect(guide.locator('.ll-guide__step').first()).toHaveAttribute('data-step', 'export');
+    await expect(guide.getByTestId('install-guide-export')).toHaveCount(0);
     await expect(guide.locator('.ll-guide__step[data-step="compact-more"] svg')).toBeVisible();
     await expect(guide.getByText('點網址列旁的「⋯」（更多）。')).toBeVisible();
     await guide.getByRole('radio', { name: '完整的工具列' }).click();
     await expect(guide).toHaveAttribute('data-layout', 'bar');
-    await expect(guide.locator('.ll-guide__step')).toHaveCount(3);
+    await expect(guide.locator('.ll-guide__step')).toHaveCount(4);
     await expect(guide.getByText('點工具列上的「分享」按鈕。')).toBeVisible();
     await expect.poll(() => readSetting(page, 'installGuideLayout')).toBe('bar');
     // 獨立的教學頁沿用記住的版面
@@ -690,6 +694,29 @@ test.describe('安裝圖解：iOS 26（06 第 2.6 節）', () => {
     await expect(page).toHaveURL(/\/install\/$/);
     await expect(page.getByRole('heading', { level: 1, name: '安裝教學' })).toBeVisible();
     await expect(page.getByTestId('install-guide')).toHaveAttribute('data-layout', 'bar');
+  });
+});
+
+test.describe('安裝圖解：iOS 27 的新選單（06 第 2.6 節，2026-10-28 實機截圖）', () => {
+  test.use({ userAgent: IOS_SAFARI_27 });
+
+  test('縮小網址列那一套是左邊的選單按鈕、彈出選單與新的分享表單；完整工具列那一套也用新的分享表單', async ({ page }) => {
+    await page.addInitScript(() => sessionStorage.setItem('ll:safari-notice-collapsed', '1'));
+    await page.goto('/install/');
+    await waitForApp(page);
+    const guide = page.getByTestId('install-guide');
+    await expect(guide).toHaveAttribute('data-variant', 'ios-modern');
+    const steps = guide.locator('.ll-guide__step');
+    await expect(steps).toHaveCount(5);
+    await expect(steps.nth(0)).toHaveAttribute('data-step', 'export');
+    await expect(steps.nth(1)).toHaveAttribute('data-step', 'compact-menu');
+    await expect(steps.nth(2)).toHaveAttribute('data-step', 'menu-share');
+    await expect(steps.nth(3)).toHaveAttribute('data-step', 'share-row');
+    await expect(guide.getByText('點網址列左邊的選單按鈕（三條線）。')).toBeVisible();
+    await guide.getByRole('radio', { name: '完整的工具列' }).click();
+    await expect(steps).toHaveCount(4);
+    await expect(steps.nth(1)).toHaveAttribute('data-step', 'bar-share');
+    await expect(steps.nth(2)).toHaveAttribute('data-step', 'share-row');
   });
 });
 
@@ -704,7 +731,8 @@ test.describe('安裝圖解：iOS 18 只用 Top／Bottom 那一套（06 第 1 �
     await expect(guide).toHaveAttribute('data-layout', 'bar');
     await expect(guide.getByRole('radiogroup')).toHaveCount(0);
     await expect(guide.getByText(/沒有縮小的網址列/)).toBeVisible();
-    await expect(guide.locator('.ll-guide__step')).toHaveCount(3);
+    await expect(guide.locator('.ll-guide__step')).toHaveCount(4);
+    await expect(guide.locator('.ll-guide__step').nth(2)).toHaveAttribute('data-step', 'add-row');
   });
 });
 
