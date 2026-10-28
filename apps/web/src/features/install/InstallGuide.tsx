@@ -1,8 +1,10 @@
 // 完整安裝圖解（06 第 2.5、2.6 節、02 第 9.5 節、10 第 10 節第 7 項）：iOS 26 以上分 Compact 與 Top／Bottom 兩套（網頁偵測不到分頁列版面，
 // 由使用者選「我的 Safari 長這樣」，選擇記在 settings 的 installGuideLayout）；iOS 17、18 只有 Top／Bottom 那一套；Chromium 維持安裝按鈕；
-// 其他瀏覽器給文字。第 0 步是「先把進度帶走」（匯出到 App）。iOS 的圖解沒有收尾按鈕（2026-10-27 拿掉「我已加入主畫面」：Safari 分頁偵測不到有沒有裝，
-// 只能靠使用者自己宣告，誤按一次提示就再也不引導安裝；維護者實機回饋）。
-// 按鈕（站規 2.13）：第 0 步的「匯出到 App」是獨立一行的 secondary sm（連到備份頁的匯出區，不帶 ?import，finding pages-b-3、pages-b-4）；
+// 其他瀏覽器給文字。iOS 的第 1 步是「先把進度帶走」（匯出到 App），和加入主畫面的步驟排在同一份清單裡（2026-10-28 維護者實機回饋：原本是清單外的「第 0 步」，
+// 按下按鈕就離開教學頁，注意力沒有留在真正要教的步驟）；備份頁匯出成功後帶 ?step=2 回來，第 1 步換成打勾的一句、焦點移到第 2 步。
+// iOS 27 的 Safari 選單和 26 不同（ios-version.ts 的 iosMenuStyle），縮小網址列那一套的第 2、3 步與分享表單的示意圖分兩版。
+// iOS 的圖解沒有收尾按鈕（2026-10-27 拿掉「我已加入主畫面」：Safari 分頁偵測不到有沒有裝，只能靠使用者自己宣告，誤按一次提示就再也不引導安裝；維護者實機回饋）。
+// 按鈕（站規 2.13）：第 1 步的「匯出到 App」是獨立一行的 secondary sm（連到備份頁的匯出區，不帶 ?import，finding pages-b-3、pages-b-4）；
 // Chromium 的「我已安裝」secondary md 加 CheckIcon；按下後焦點移到結果訊息（finding pages-b-1）。
 // Chromium（第 4 輪驗收：原本只有一句話，整頁太空）：兩步（瀏覽器選單、確認視窗）加收尾：有安裝事件時「安裝」primary md 加 DeviceIcon，
 // 否則「我已安裝」secondary md 加 CheckIcon（記成 installPromptDismissed，之後不再跳出安裝建議，和 appinstalled 同一個紀錄）。
@@ -21,7 +23,7 @@ import { nowIso } from '../../lib/progress/app-info.ts';
 import { getProgressStore } from '../../lib/progress/index.ts';
 import { useLocale } from '../../lib/useLocale.ts';
 import { GuideIllustration, type GuideLabels, type GuideStep } from './illustrations.tsx';
-import { INSTALL_GUIDE_LAYOUT_SETTING, parseSafariLayout, type InstallGuideVariant, type SafariLayout } from './ios-version.ts';
+import { INSTALL_GUIDE_LAYOUT_SETTING, parseSafariLayout, type InstallGuideVariant, type IosMenuStyle, type SafariLayout } from './ios-version.ts';
 // 圖解的 CSS 在 install.css，由 info.css 以 @import 併成同一個 CSS 檔（全部 CSS 的預算）
 import '../../styles/info.css';
 
@@ -34,7 +36,14 @@ export interface InstallGuideProps {
   embedded?: boolean;
   /** 給別的裝置看的參考（電腦或 Android 上附的 iPhone 做法）：不放這台裝置的動作（匯出到 App） */
   reference?: boolean;
+  /** Safari 選單的長相：iOS 27 起是網址列左邊的選單按鈕與彈出選單（預設），26 是右邊的「⋯」 */
+  menuStyle?: IosMenuStyle;
+  /** 這個分頁已經按過「匯出到 App」（備份頁複製或存檔成功）：第 1 步畫成已完成 */
+  exported?: boolean;
 }
+
+/** 從備份頁帶 ?step=2 回來時要捲到、聚焦的那一步（第一個加入主畫面的步驟）；只有獨立教學頁上這台裝置的教學有這個 id */
+export const INSTALL_GUIDE_STEP2_ID = 'll-guide-step-2';
 
 function useSafariLayout(): [SafariLayout, (v: SafariLayout) => void] {
   const [layout, setLayout] = useState<SafariLayout>('compact');
@@ -94,12 +103,17 @@ function DoneButton({ label, ariaLabel, message, onDone }: { label: ReactNode; a
   );
 }
 
-export function InstallGuide({ variant, installAvailable, onInstall, embedded, reference }: InstallGuideProps) {
+export function InstallGuide({ variant, installAvailable, onInstall, embedded, reference, menuStyle = 'ios27', exported = false }: InstallGuideProps) {
   const { t } = useLingui();
   const locale = useLocale();
   const [layout, setLayout] = useSafariLayout();
   const layoutLabelId = useId();
   const labels: GuideLabels = {
+    copyCode: t({
+      id: 'install.guide.label.copyCode',
+      message: '複製備份碼',
+      comment: '示意圖裡備份頁「複製備份碼」按鈕的文字；要短，96px 的圖裡按鈕約 10 個英文字母寬',
+    }),
     share: t({ id: 'install.guide.label.share', message: '分享', comment: '示意圖裡 Safari「分享」按鈕的文字' }),
     addToHome: t({ id: 'install.guide.label.addToHome', message: '加入主畫面', comment: '示意圖裡「加入主畫面」那一列的文字' }),
     openAsApp: t({ id: 'install.guide.label.openAsApp', message: '以 Web App 打開', comment: '示意圖裡 iOS 26 的開關文字' }),
@@ -115,7 +129,33 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
   const canPrompt = installAvailable === true && onInstall !== undefined;
   const isIos = variant === 'ios-modern' || variant === 'ios-legacy';
   const effectiveLayout: SafariLayout = variant === 'ios-legacy' ? 'bar' : layout;
-  const steps: { step: GuideStep; text: React.ReactNode }[] = [];
+  const steps: { step: GuideStep; text: ReactNode; id?: string; action?: ReactNode }[] = [];
+  if (isIos) {
+    // 第 1 步：先把進度帶走。接在安裝建議下方（embedded）時正上方橫幅的主動作就是「匯出到 App」、給別的裝置看的參考（reference）不放這台裝置的動作，都不放第二顆
+    const exportAction = exported ? (
+      <span className="ll-statusline ll-ok" data-testid="install-guide-exported">
+        <CheckCircleIcon />
+        <span>
+          <Trans id="install.guide.exported" comment="iOS 圖解第 1 步做過之後（這個分頁已複製備份碼或存成備份檔）換成的一句">
+            備份碼已複製，接著加入主畫面。
+          </Trans>
+        </span>
+      </span>
+    ) : !embedded && !reference ? (
+      <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/') + '?to=app'} data-testid="install-guide-export">
+        <Trans id="export.toApp">匯出到 App</Trans>
+      </Button>
+    ) : undefined;
+    steps.push({
+      step: 'export',
+      text: (
+        <Trans id="install.guide.export" comment="iOS 圖解的第 1 步：先把進度帶走（2026-10-28 之前是清單外的「第 0 步」）">
+          先把這裡的進度帶走：按「匯出到 App」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App 時貼上，進度就會合併。
+        </Trans>
+      ),
+      action: exportAction,
+    });
+  }
   if (variant === 'chromium') {
     if (canPrompt)
       steps.push({
@@ -147,20 +187,33 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
       );
   }
   if (isIos) {
+    const ios27 = menuStyle === 'ios27';
+    const step2Id = !embedded && !reference ? INSTALL_GUIDE_STEP2_ID : undefined;
     if (effectiveLayout === 'compact') {
       steps.push(
+        ios27
+          ? {
+              step: 'compact-menu',
+              id: step2Id,
+              text: (
+                <Trans id="install.guide.compact27.1" comment="iOS 27 的縮小網址列第一步：網址列左邊三條線的選單按鈕">
+                  點網址列左邊的選單按鈕（三條線）。
+                </Trans>
+              ),
+            }
+          : {
+              step: 'compact-more',
+              id: step2Id,
+              text: (
+                <Trans id="install.guide.compact.1" comment="iOS 26 的縮小網址列第一步">
+                  點網址列旁的「⋯」（更多）。
+                </Trans>
+              ),
+            },
         {
-          step: 'compact-more',
+          step: ios27 ? 'menu-share' : 'compact-share',
           text: (
-            <Trans id="install.guide.compact.1" comment="Compact 分頁列第一步">
-              點網址列旁的「⋯」（更多）。
-            </Trans>
-          ),
-        },
-        {
-          step: 'compact-share',
-          text: (
-            <Trans id="install.guide.compact.2" comment="Compact 分頁列第二步">
+            <Trans id="install.guide.compact.2" comment="縮小網址列第二步">
               點「分享」。
             </Trans>
           ),
@@ -169,6 +222,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
     } else {
       steps.push({
         step: 'bar-share',
+        id: step2Id,
         text: (
           <Trans id="install.guide.bar.1" comment="Top／Bottom 分頁列第一步">
             點工具列上的「分享」按鈕。
@@ -178,7 +232,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
     }
     steps.push(
       {
-        step: 'add-row',
+        step: ios27 ? 'share-row' : 'add-row',
         text: (
           <Trans id="install.guide.add" comment="往下找到加入主畫面">
             往下找到「加入主畫面」。
@@ -201,10 +255,14 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
   const stepList = (
     <ol className="ll-guide__steps" data-count={steps.length}>
       {steps.map((s) => (
-        <li key={s.step} className="ll-guide__step" data-step={s.step}>
+        // 第 2 步有 id 與 tabIndex：從備份頁回來時 Install.tsx 把焦點移到這裡
+        <li key={s.step} id={s.id} tabIndex={s.id ? -1 : undefined} className="ll-guide__step" data-step={s.step}>
           <GuideIllustration step={s.step} labels={labels} />
           <p className="ll-guide__step-text">
-            <span>{s.text}</span>
+            <span>
+              {s.text}
+              {s.action && <span className="ll-guide__step-action">{s.action}</span>}
+            </span>
           </p>
         </li>
       ))}
@@ -215,19 +273,7 @@ export function InstallGuide({ variant, installAvailable, onInstall, embedded, r
     <div className="ll-guide" data-testid="install-guide" data-variant={variant} data-layout={isIos ? effectiveLayout : undefined}>
       {isIos && (
         <>
-          <div className="ll-guide__step0">
-            <p>
-              <Trans id="install.guide.step0" comment="iOS 圖解的第 0 步：先把進度帶走">
-                第 0 步：先把這裡的進度帶走。按「匯出到 App」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App 時貼上，進度就會合併。
-              </Trans>
-            </p>
-            {/* 接在安裝建議下方時，正上方橫幅的主動作就是「匯出到 App」，這裡不再放第二顆 */}
-            {!embedded && !reference && (
-              <Button size="sm" icon={<ExportIcon />} href={localePath(locale, '/me/backup/') + '?to=app'} data-testid="install-guide-export">
-                <Trans id="export.toApp">匯出到 App</Trans>
-              </Button>
-            )}
-          </div>
+          {/* 版面選擇放在整份清單上方：第 1 步（匯出）與加入主畫面的步驟是同一份清單，選項改的是第 2 步起的畫面 */}
           {variant === 'ios-modern' ? (
             <div className="ll-guide__layout">
               <p className="ll-small ll-muted" id={layoutLabelId}>

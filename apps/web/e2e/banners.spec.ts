@@ -163,6 +163,19 @@ test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
     await expect(heading).not.toBeFocused();
     await notice.getByRole('link', { name: '匯出到 App' }).click();
     await expect(heading).toBeFocused();
+    // 複製過之後（2026-10-28 維護者實機回饋）：第二步的「看安裝教學」升成次要按鈕並帶 ?step=2；教學頁把第 1 步換成打勾的一句、
+    // 「匯出到 App」不再出現、焦點在第 2 步（這個 UA 是 Version/26，第 2 步是網址列旁的「⋯」）
+    const toInstall = card.getByTestId('to-app-install');
+    await expect(toInstall).toHaveAttribute('href', '/install/?step=2');
+    await expect(toInstall).toHaveClass(/ll-btn--secondary/);
+    await toInstall.click();
+    await expect(page).toHaveURL(/\/install\/\?step=2$/);
+    const guide = page.getByTestId('install-guide');
+    await expect(guide.getByTestId('install-guide-exported')).toHaveText(/備份碼已複製/);
+    await expect(guide.getByTestId('install-guide-export')).toHaveCount(0);
+    const step2 = guide.locator('#ll-guide-step-2');
+    await expect(step2).toHaveAttribute('data-step', 'compact-more');
+    await expect(step2).toBeFocused();
   });
 
   // 安裝教學頁本身不顯示這條提示（它就是在引導人來這一頁），收合的膠囊也不顯示
@@ -259,14 +272,16 @@ test.describe('iPhone Safari 分頁（06 第 4.7 節第 4 步）', () => {
     expect(exportBox?.y ?? Infinity, '匯出到 App 在展開的圖解上方').toBeLessThan(box?.y ?? 0);
   });
 
-  // 安裝教學的第 0 步（站規 2.13，finding pages-b-1、pages-b-3、pages-b-4）：「匯出到 App」是獨立一行的按鈕、連到備份頁的匯出區（不帶 ?import）、
-  // 至少 44px 高；iOS 的圖解沒有收尾按鈕（2026-10-27 拿掉「我已加入主畫面」）
-  test('安裝教學：「匯出到 App」連到 /me/backup/?to=app 而且至少 44px；iOS 圖解沒有「我已加入主畫面」', async ({ page }) => {
+  // 安裝教學的第 1 步（站規 2.13，finding pages-b-1、pages-b-3、pages-b-4；2026-10-28 起是清單裡的第 1 步，不再是清單外的第 0 步）：
+  // 「匯出到 App」是獨立一行的按鈕、連到備份頁的匯出區（不帶 ?import）、至少 44px 高；iOS 的圖解沒有收尾按鈕（2026-10-27 拿掉「我已加入主畫面」）
+  test('安裝教學：第 1 步的「匯出到 App」連到 /me/backup/?to=app 而且至少 44px；iOS 圖解沒有「我已加入主畫面」', async ({ page }) => {
     await page.addInitScript(() => sessionStorage.setItem('ll:safari-notice-collapsed', '1'));
     await page.goto('/install/');
     await waitForApp(page);
     const guide = page.getByTestId('install-guide');
     await expect(guide).toHaveAttribute('data-variant', 'ios-modern');
+    await expect(guide.locator('.ll-guide__step').first()).toHaveAttribute('data-step', 'export');
+    await expect(guide.getByTestId('install-guide-exported')).toHaveCount(0);
     const exportLink = guide.getByTestId('install-guide-export');
     await expect(exportLink).toHaveAttribute('href', '/me/backup/?to=app');
     const box = await exportLink.boundingBox();

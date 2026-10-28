@@ -1,7 +1,7 @@
 // 安裝圖解要用哪一套（06 第 1 節、第 2.6 節）：UA 的 iOS 版本、Chromium 判斷、分頁列版面設定值。
 // Safari 26 起 UA 的系統版本凍結在 OS 18_6、18_6_2 或 18_7，真正的版本在 Version/（finding pages-b-2）
 import { describe, expect, it } from 'vitest';
-import { installGuideVariant, iosMajorVersion, isChromiumUa, parseSafariLayout } from '../src/features/install/ios-version.ts';
+import { installGuideVariant, iosMajorVersion, iosMenuStyle, isChromiumUa, parseSafariLayout } from '../src/features/install/ios-version.ts';
 
 // 真機 iOS 26 Safari 的 UA：OS 凍結在 18_6，Version/ 才是 26
 const IOS26 = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1';
@@ -58,5 +58,20 @@ describe('parseSafariLayout', () => {
     expect(parseSafariLayout('compact')).toBe('compact');
     expect(parseSafariLayout(42)).toBe('compact');
     expect(parseSafariLayout(undefined, 'bar')).toBe('bar');
+  });
+});
+
+describe('iosMenuStyle', () => {
+  it('Version/ 27 以上是新選單（網址列左邊的選單按鈕、彈出選單、新的分享表單）；26 以下是舊的；沒有 Version/ 的第三方瀏覽器與非 iOS 給最新的', () => {
+    const ios = (v: string) =>
+      `Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/${v} Mobile/15E148 Safari/604.1`;
+    expect(iosMenuStyle(ios('27.0'))).toBe('ios27');
+    expect(iosMenuStyle(ios('27.2'))).toBe('ios27');
+    expect(iosMenuStyle(ios('26.1'))).toBe('ios26');
+    expect(iosMenuStyle(ios('18.6'))).toBe('ios26');
+    expect(
+      iosMenuStyle('Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/142.0 Mobile/15E148 Safari/604.1'),
+    ).toBe('ios27');
+    expect(iosMenuStyle('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0 Safari/537.36')).toBe('ios27');
   });
 });

@@ -600,6 +600,12 @@ msgstr "備份碼"
 msgid "backup.error.codeTooLong"
 msgstr "備份碼太長，請改用備份檔。"
 
+#. iOS 圖解第 1 步做過之後（這個分頁已複製備份碼或存成備份檔）換成的一句
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.exported"
+msgstr "備份碼已複製，接著加入主畫面。"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.code.copied"
@@ -637,6 +643,12 @@ msgstr "儲存空間不足"
 #: src/pages/Placeholder.tsx
 msgid "lab.placeholder.go"
 msgstr "先去闖關"
+
+#. iOS 圖解的第 1 步：先把進度帶走（2026-10-28 之前是清單外的「第 0 步」）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.export"
+msgstr "先把這裡的進度帶走：按「匯出到 App」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App 時貼上，進度就會合併。"
 
 #. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
 #. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
@@ -2716,12 +2728,6 @@ msgstr "第 {no} 章"
 msgid "terms.group.chapterName"
 msgstr "第 {no} 章：{title}"
 
-#. iOS 圖解的第 0 步：先把進度帶走
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.step0"
-msgstr "第 0 步：先把這裡的進度帶走。按「匯出到 App」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App 時貼上，進度就會合併。"
-
 #. 交易影響題作答後的摘要；correctCount 是答對的目標數、total 是目標數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
@@ -2911,6 +2917,12 @@ msgstr "裝置與環境"
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.export.code"
+msgstr "複製備份碼"
+
+#. 示意圖裡備份頁「複製備份碼」按鈕的文字；要短，96px 的圖裡按鈕約 10 個英文字母寬
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.copyCode"
 msgstr "複製備份碼"
 
 #. js-lingui-explicit-id
@@ -3810,7 +3822,7 @@ msgstr "顏色"
 msgid "map.qr.show"
 msgstr "顯示 QR"
 
-#. Compact 分頁列第二步
+#. 縮小網址列第二步
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
 msgid "install.guide.compact.2"
@@ -3822,7 +3834,13 @@ msgstr "點「分享」。"
 msgid "install.guide.bar.1"
 msgstr "點工具列上的「分享」按鈕。"
 
-#. Compact 分頁列第一步
+#. iOS 27 的縮小網址列第一步：網址列左邊三條線的選單按鈕
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact27.1"
+msgstr "點網址列左邊的選單按鈕（三條線）。"
+
+#. iOS 26 的縮小網址列第一步
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
 msgid "install.guide.compact.1"

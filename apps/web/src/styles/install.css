@@ -74,6 +74,9 @@
   fill: var(--ll-text-2);
   stroke: none;
 }
+.ll-guide__glyph--onaccent {
+  stroke: var(--ll-accent-contrast);
+}
 .ll-guide__highlight {
   fill: var(--ll-accent-tint);
   stroke: var(--ll-accent);
@@ -114,15 +117,20 @@
 .ll-guide__note {
   margin: var(--ll-space-3) 0 0;
 }
-/* 第 0 步：說明一段，「匯出到 App」獨立一行（站規 2.13，不接在句子後面） */
-.ll-guide__step0 {
-  display: grid;
-  justify-items: start;
-  gap: var(--ll-space-2);
-  margin: 0 0 var(--ll-space-3);
+/* 第 1 步（2026-10-28 之前是獨立的「第 0 步」段落）：說明之後獨立一行放「匯出到 App」（站規 2.13，不接在句子後面），
+   做過了就換成打勾的一句（焦點與注意力留在第 2 步） */
+.ll-guide__step-action {
+  display: block;
+  margin-top: var(--ll-space-2);
 }
-.ll-guide__step0 > p {
-  margin: 0;
+.ll-guide__step-action > .ll-statusline {
+  display: inline-flex;
+}
+/* 從備份頁回來時焦點移到第 2 步：外框和全站焦點樣式一致 */
+.ll-guide__step:focus-visible {
+  outline: 2px solid var(--ll-accent);
+  outline-offset: 4px;
+  border-radius: var(--ll-radius-sm);
 }
 /* 最後的確認：按鈕或「記住了」的結果訊息（同一個位置，焦點移到訊息上） */
 .ll-guide__done {
@@ -176,6 +184,10 @@
   .ll-guide__steps > .ll-guide__step .ll-guide__step-text {
     justify-self: stretch;
     padding-top: 0;
+  }
+  /* 方塊裡第 1 步的按鈕排在說明下方、靠左（和說明的字對齊） */
+  .ll-guide__steps > .ll-guide__step .ll-guide__step-action {
+    justify-self: start;
   }
   .ll-guide__steps + .ll-guide__note {
     margin-top: var(--ll-space-4);

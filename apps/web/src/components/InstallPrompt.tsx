@@ -29,7 +29,7 @@ import { usePageReady } from '../lib/page-ready.tsx';
 import { getProgressStore } from '../lib/progress/index.ts';
 import { useLocale } from '../lib/useLocale.ts';
 import { installPromptStrategy, isInstallRoute, type InstallStrategy } from './banner-rules.ts';
-import { installGuideVariant } from '../features/install/ios-version.ts';
+import { installGuideVariant, iosMenuStyle } from '../features/install/ios-version.ts';
 
 // 完整圖解（06 第 2.6 節）不進首次載入的 chunk：iOS 的安裝建議出現後閒置時先預載，按「看圖解教學」時通常已經到了
 const loadGuide = () => import('../features/install/InstallGuide.tsx');
@@ -154,6 +154,7 @@ export function InstallPrompt({ strategy, dismiss }: InstallPromptState) {
     const v = installGuideVariant(navigator.userAgent, navigator.maxTouchPoints);
     return v === 'ios-modern' || v === 'ios-legacy' ? v : 'ios-modern';
   }, []);
+  const menuStyle = useMemo(() => iosMenuStyle(navigator.userAgent, navigator.maxTouchPoints), []);
   useEffect(() => {
     if (strategy !== 'ios-guide') return;
     return whenIdle(() => void loadGuide().catch(() => {}));
@@ -252,7 +253,7 @@ export function InstallPrompt({ strategy, dismiss }: InstallPromptState) {
       <Card id="ll-install-guide" className="ll-install-prompt__guide" hidden={!guideOpen}>
         {guideOpen && (
           <Suspense fallback={null}>
-            <InstallGuide variant={variant} embedded />
+            <InstallGuide variant={variant} menuStyle={menuStyle} embedded />
           </Suspense>
         )}
       </Card>
