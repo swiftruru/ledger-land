@@ -197,19 +197,19 @@ Chrome 目前的可安裝條件：HTTPS；manifest 有 `name` 或 `short_name`�
 
 | 檔案 | 尺寸 | 宣告位置與 purpose | 誰會用 | 規則 |
 | --- | --- | --- | --- | --- |
-| `icons/icon-192.png` | 192×192 | manifest，`any` | Chrome 安裝條件、Android | 可透明背景 |
-| `icons/icon-512.png` | 512×512 | manifest，`any` | Chrome 安裝條件、Android 啟動畫面 | 可透明背景 |
-| `icons/icon-maskable-192.png` | 192×192 | manifest，`maskable` | Android 自適應圖示 | 滿版不透明背景；主體放在中央安全區（直徑為邊長 80% 的圓形）內 |
-| `icons/icon-maskable-512.png` | 512×512 | manifest，`maskable` | 同上 | 同上 |
-| `apple-touch-icon.png` | 180×180 | HTML `<link rel="apple-touch-icon">` | iOS 主畫面 | **必須不透明**，背景用品牌色。有它時 iOS 不使用 manifest icons |
-| `favicon.svg` | 向量 | HTML `<link rel="icon" type="image/svg+xml">` | 瀏覽器分頁；Safari 26 起介面上所有圖示位置都支援 SVG | 可在 SVG 內用 `prefers-color-scheme` 切換深色版 |
-| `favicon.ico` | 32×32 | HTML `<link rel="icon" sizes="32x32">` | 舊瀏覽器 | 由同一份原圖產生 |
+| `icons/pwa-192x192.png` | 192×192 | manifest，`any` | Chrome 安裝條件、Android | 可透明背景；現行版本與 maskable 用同一張不透明的圖 |
+| `icons/pwa-512x512.png` | 512×512 | manifest，`any` | Chrome 安裝條件、Android 啟動畫面 | 同上 |
+| `icons/maskable-icon-192x192.png` | 192×192 | manifest，`maskable` | Android 自適應圖示 | 滿版不透明背景；主體放在中央安全區（直徑為邊長 80% 的圓形）內 |
+| `icons/maskable-icon-512x512.png` | 512×512 | manifest，`maskable` | 同上 | 同上 |
+| `icons/apple-touch-icon-180x180.png` | 180×180 | HTML `<link rel="apple-touch-icon">` | iOS 主畫面 | **必須不透明**，背景用品牌色。有它時 iOS 不使用 manifest icons |
+| `favicon.svg` | 向量 | HTML `<link rel="icon" type="image/svg+xml">`（建置時寫成 data: URI） | 瀏覽器分頁；Safari 26 起介面上所有圖示位置都支援 SVG | 可在 SVG 內用 `prefers-color-scheme` 切換深色版；現行版本背景透明、沒有深色版（深色外框在淺色與深色分頁列都看得清楚） |
+| `icons/favicon.ico` | 48、32、16 | HTML `<link rel="icon" sizes="48x48">` | 舊瀏覽器 | 由 favicon 的原圖縮成三個尺寸 |
 | `screenshots/*.png` | 依實際截圖 | manifest | Chrome 安裝對話框 | 每次大改版更新 |
 | `apple-touch-startup-image`（選配） | 依裝置尺寸 | HTML `<link rel="apple-touch-startup-image" media="...">` | iOS 啟動畫面 | 是否仍有效【待實測 V05】 |
 
 為什麼 apple-touch-icon 一定要不透明：Safari iOS 只在頁面沒有 apple-touch-icon 時才用 manifest 圖示，而且只用 purpose 為 `any` 的那幾個，不會優先選 maskable；透明背景的 PNG 在主畫面會出現黑邊（WebKit bug 255596，仍是 NEW）。所以 maskable 只對 Android 有意義，iOS 一律靠不透明的 180×180 PNG。apple-touch-icon 是否接受 SVG 沒有官方說明，維持 PNG。
 
-產生方式：用 `@vite-pwa/assets-generator` 2.0.0（2026-09-12 發布，需要 Node 20.19 以上）的 `minimal-2023` 預設，從一份 SVG 原圖產生上述 PNG；它也能產生 Apple 啟動畫面（含深色版，裝置清單已有 iPhone 17 與 iPhone Air）。圖示原圖為原創設計，不使用 Apple 素材（見 07 第 12 節）。
+產生方式（2026-10-28 起）：App 圖示是小綠綠（維護者的原創角色）抱著帳本的插圖，原圖在 `apps/web/brand/icon-source.webp`（1254×1254，滿版的淡彩背景，主體收在中央 70% 內）。五個 PNG 從原圖縮成各尺寸再壓成 256 色（512 約 135 KB、192 約 29 KB、180 約 26 KB）；`any` 與 `maskable` 用同一張圖，因為主體本來就在安全區內，iOS 的 180×180 也是同一張。這五個 PNG 不進 precache（3.2 節）。之前的占位圖示是用 `@vite-pwa/assets-generator` 2.0.0 的 `minimal-2023` 預設從一份 SVG 產生的，Apple 啟動畫面（含深色版）仍是那一批。圖示原圖為原創設計，不使用 Apple 素材（見 07 第 12 節）。`favicon.svg` 是同一角色的平面簡化版（只有頭、領口和帳本，粗外框，背景透明），原圖在 `apps/web/brand/favicon-source.webp`，用 `apps/web/brand/trace-favicon.py` 描成向量：固定 14 色色盤、逐色取輪廓再簡化成 128 格的整數多邊形，約 5.4 KB（gzip 2.2 KB），因為它會寫進每一頁的 HTML（2.3 節）。`favicon.ico` 由同一份原圖去背後縮成 48、32、16 三個尺寸（帶透明通道）。
 
 來源：https://raw.githubusercontent.com/mdn/browser-compat-data/main/manifests/webapp/icons.json 、https://bugs.webkit.org/show_bug.cgi?id=255596 、https://registry.npmjs.org/@vite-pwa/assets-generator （查證日期 2026-10-20）
 
@@ -451,7 +451,7 @@ generateSW 只處理 precache、導覽 fallback 與明確設定的 `runtimeCachi
 | --- | --- | --- |
 | app shell（HTML、帶 hash 的 JS 與 CSS） | precache | 與 SW 版本一致 |
 | 內容 JSON（題目、名詞、範本、章節、故事） | precache | build 時輸出帶 content hash 的檔名，例如 `content/zh-TW/ch_c5f8w2.8e41b7.json`，另加一份小型 `content-manifest.json`（含整數的 `contentVersion` 與各檔案路徑，格式見 [08 題庫管理](08-content-admin.md) 第 7.3 節）。核心課程的 zh-TW 與 en 都放進 precache，確保介面與內容版本一致，第一次安裝後即可完整離線 |
-| 圖示 | precache | 使用 SVG 或 PNG，控制體積；Tab bar 的圖示直接內嵌在殼層 HTML（2.3） |
+| 圖示 | favicon 進 precache；安裝用的 PNG 不進 | `favicon.svg` 與 `favicon.ico` 進 precache。manifest 的 icons 與 apple-touch-icon 由系統在加入主畫面那一刻抓取，離線時用不到；2026-10-28 圖示換成插圖後五個 PNG 約 350 KB，precache 預算放不下，所以移出。Tab bar 的圖示直接內嵌在殼層 HTML（2.3） |
 | QR 解碼器（D10(a)） | precache，動態載入 | 打包成獨立 chunk，只在打開掃描畫面時才 `import()`，不計入首次載入 JS；放進 precache，離線也能掃描站內 QR；體積計入 precache 預算（4.9） |
 | 安裝教學插圖 | runtime CacheFirst | 第一次瀏覽安裝教學頁後快取（與 02 的頁面總表一致）；多數學生只看一次，不必占第一次安裝的流量。若全部是小型 SVG 且在預算內，可以改成 precache |
 | 字型 | 無 | 使用系統字型，不下載字型檔（見 07 第 3 節） |

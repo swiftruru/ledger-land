@@ -132,7 +132,7 @@
 | React 外掛 | `@vitejs/plugin-react` | 6.1.2（2026-10-05） | v6 起不依賴 Babel，改用 Oxc 處理 React Refresh | `reactRouter()` 外掛（只在日後改用 framework mode 時使用） |
 | PWA | vite-plugin-pwa，generateSW，`registerType: 'prompt'` | 2.0.0（2026-10-03） | 官方 Vite 整合；不自動 skipWaiting 的更新流程 | injectManifest（需要自訂 SW 邏輯時）；workbox-build 7.4.1（2026-05-04，只在日後改用 framework mode 時需要，見第 3.3 節） |
 | CSS 前綴 | Lightning CSS 或 PostCSS 加 Autoprefixer，依 browserslist 補前綴（已決定 D8） | 未查證，M0a 選定 | browserslist 納入 iOS 17，自動補 `-webkit-backdrop-filter`（第 6.8 節） | 手寫前綴（容易漏，不採用） |
-| 圖示產生 | @vite-pwa/assets-generator | 2.0.0（2026-09-12） | 產生 favicon、maskable、apple-touch-icon；Apple 啟動畫面為選用 | 手動產生 |
+| 圖示產生 | @vite-pwa/assets-generator | 2.0.0（2026-09-12） | 只用過一次，產生占位圖示與 Apple 啟動畫面；2026-10-28 起 App 圖示從插圖原圖手動縮成各尺寸（06 第 2.2 節） | 手動產生 |
 | 介面字串 | Lingui（`@lingui/core`、`@lingui/react`、`@lingui/cli`、`@lingui/vite-plugin`） | 6.9.0（2026-10-01） | runtime 約 2.03 kB 加 1.24 kB（gzip）；ICU 複數、PO catalog、抽取與缺字檢查、依語系動態載入 | Paraglide JS 2、i18next 26、react-intl 12（見第 6 節） |
 | Schema | Zod 4 | 4.6.5（2026-09-13） | 一份 schema 同時負責建置期驗證、輸出 draft-07 JSON Schema、匯入備份時的執行期驗證 | Valibot 1.5.0（體積更小）、ArkType 2.2 |
 | 狀態 | Zustand | 5.0.15（2026-08-13） | 約 0.49 kB；作答狀態放在 store，不綁在路由參數上，切換語言不會遺失 | Jotai 3（2026-09 剛發 major） |
