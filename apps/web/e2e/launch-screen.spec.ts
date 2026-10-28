@@ -108,6 +108,45 @@ test.describe('啟動畫面：App 模式', () => {
   });
 });
 
+test.describe('啟動畫面：視窗比螢幕矮（主畫面 App 從狀態列底下開始）', () => {
+  test('boot 腳本把差值記成 --ll-launch-top，覆蓋層往上延伸同樣的高度', async ({ page }) => {
+    await emulateAppMode(page);
+    // 假裝螢幕比視窗高 54 點（狀態列）；寬度一樣才算直向
+    await page.addInitScript(() => {
+      Object.defineProperty(Screen.prototype, 'height', { get: () => window.innerHeight + 54, configurable: true });
+      Object.defineProperty(Screen.prototype, 'width', { get: () => window.innerWidth, configurable: true });
+    });
+    await page.goto('/', { waitUntil: 'commit' });
+    const launch = page.locator('#ll-launch');
+    await expect(launch).toBeVisible();
+    const box = await launch.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      return { top: r.top, height: r.height, inner: innerHeight, prop: getComputedStyle(document.documentElement).getPropertyValue('--ll-launch-top').trim() };
+    });
+    expect(box.prop).toBe('54px');
+    expect(box.top).toBe(-54);
+    expect(box.height).toBe(box.inner + 54);
+  });
+
+  test('視窗和螢幕一樣高：沒有 --ll-launch-top，覆蓋層就是整個視窗', async ({ page }) => {
+    await emulateAppMode(page);
+    await page.addInitScript(() => {
+      Object.defineProperty(Screen.prototype, 'height', { get: () => window.innerHeight, configurable: true });
+      Object.defineProperty(Screen.prototype, 'width', { get: () => window.innerWidth, configurable: true });
+    });
+    await page.goto('/', { waitUntil: 'commit' });
+    const launch = page.locator('#ll-launch');
+    await expect(launch).toBeVisible();
+    const box = await launch.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      return { top: r.top, height: r.height, inner: innerHeight, prop: getComputedStyle(document.documentElement).getPropertyValue('--ll-launch-top').trim() };
+    });
+    expect(box.prop).toBe('');
+    expect(box.top).toBe(0);
+    expect(box.height).toBe(box.inner);
+  });
+});
+
 test.describe('啟動畫面：瀏覽器模式', () => {
   test('標記在 HTML 裡但 display 是 none，App 掛載時就移除', async ({ page, request }) => {
     const html = await (await request.get('/')).text();

@@ -303,7 +303,9 @@ describe('產生物', () => {
   it('啟動畫面的 style：只在 App 模式顯示、四種底色與兩種字色、離場與減少動態、沒有 vh 與安全區', () => {
     const css = launchScreenStyle();
     expect(css.startsWith('#ll-launch{display:none}')).toBe(true);
-    expect(css).toContain('html[data-display=app] #ll-launch{display:block;position:fixed;inset:0;z-index:200');
+    expect(css).toContain(
+      'html[data-display=app] #ll-launch{display:block;position:fixed;left:0;right:0;top:calc(0px - var(--ll-launch-top,0px));height:calc(100% + var(--ll-launch-top,0px));z-index:200',
+    );
     for (const name of THEMES) expect(css).toContain(THEME_COLOR[name]);
     expect(css).toContain(`color:${lightColors.text}`);
     expect(css).toContain(`color:${darkColors('violet').text}`);

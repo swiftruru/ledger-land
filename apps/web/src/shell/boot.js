@@ -93,6 +93,12 @@
     navigatorStandalone: navigator.standalone === true,
   };
   root.dataset.display = dm.standalone || dm.fullscreen || dm.navigatorStandalone ? 'app' : 'browser';
+  // 啟動畫面（06 第 2.4 節）：主畫面 App 的視窗有時從狀態列底下開始、比整個螢幕矮（WebKit bug 301994，2026-10-28 iPhone 實機：插圖往下 25 點、字樣 7 點），
+  // 而 iOS 的啟動圖是依整個螢幕截的；把少掉的高度記成 --ll-launch-top，覆蓋層往上延伸同樣的高度，版面才和啟動圖一樣。視窗和螢幕一樣高時不設（0）
+  if (root.dataset.display === 'app' && window.screen && window.innerWidth === screen.width) {
+    var gap = screen.height - window.innerHeight;
+    if (gap > 0 && gap < 160) root.style.setProperty('--ll-launch-top', gap + 'px');
+  }
 
   // 主題（16 第 7 節）：ll:theme 為 system、light、dark（預設 system）；ll:dark-flavor 為 violet、berry、wine（預設 violet）。
   // 色碼由 packages/tokens 在建置時填入（vite.config.ts 的殼層外掛會把下一行的佔位換成色碼）

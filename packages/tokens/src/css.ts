@@ -126,7 +126,7 @@ export function firstPaintStyle(): string {
 /**
  * 啟動畫面（06 第 2.4 節）的樣式，接在首次繪製的 <style> 後面、同一段：只在 App 模式（boot 腳本寫的 html[data-display=app]）顯示，
  * 蓋住整頁含 Tab bar；底色與字色依主題與風味（莓果、紅酒用自己的底色，和底下的頁面一樣）。
- * 版面全用覆蓋層自己的百分比，不用 vh 與安全區：iOS 的啟動圖就是用 Chromium 對這段標記截的圖，兩邊才會一模一樣。
+ * 版面全用覆蓋層自己的百分比，不用 vh 與安全區：iOS 的啟動圖就是用 Chromium 對這段標記截的圖，兩邊才會一模一樣；主畫面 App 的視窗比螢幕矮時（狀態列），boot 腳本把差值寫在 --ll-launch-top，覆蓋層往上延伸補回來。
  * 離場用 data-leave 淡出 250ms；減少動態時沒有轉場，直接移除。
  */
 export function launchScreenStyle(): string {
@@ -135,7 +135,8 @@ export function launchScreenStyle(): string {
   const darkText = darkColors('violet').text;
   return [
     '#ll-launch{display:none}',
-    `html[data-display=app] #ll-launch{display:block;position:fixed;inset:0;z-index:${z.launch};overflow:hidden;background:${THEME_COLOR.light};color:${lightText};transition:opacity 250ms ease-out}`,
+    // top 與 height 用 --ll-launch-top 補回主畫面 App 視窗少掉的狀態列高度（boot 腳本量的，沒有就是 0），版面才和依整個螢幕截的啟動圖一樣
+    `html[data-display=app] #ll-launch{display:block;position:fixed;left:0;right:0;top:calc(0px - var(--ll-launch-top,0px));height:calc(100% + var(--ll-launch-top,0px));z-index:${z.launch};overflow:hidden;background:${THEME_COLOR.light};color:${lightText};transition:opacity 250ms ease-out}`,
     `@media (prefers-color-scheme:dark){html[data-display=app] #ll-launch{background:${dark('violet')};color:${darkText}}}`,
     `html[data-display=app][data-theme=light] #ll-launch{background:${THEME_COLOR.light};color:${lightText}}`,
     `html[data-display=app][data-theme=dark] #ll-launch{background:${dark('violet')};color:${darkText}}`,
