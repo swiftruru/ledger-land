@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 /** 監聽 CSP 違規（09 第 10.2 節）：頁面建立後立刻掛上，測試結尾斷言為空 */
 export async function watchCsp(page: Page): Promise<() => Promise<void>> {
@@ -19,9 +19,12 @@ export async function emulateAppMode(page: Page): Promise<void> {
   await page.addInitScript(() => Object.defineProperty(Navigator.prototype, 'standalone', { get: () => true, configurable: true }));
 }
 
-/** 等到 Service Worker 安裝完成並接管頁面（離線測試的前置）：prompt 模式不 clientsClaim，第一次載入的頁面要重新整理一次才受控 */
+/** 等到 Service Worker 安裝完成並接管頁面（離線測試的前置）：prompt 模式不 clientsClaim，第一次載入的頁面要重新整理一次才受控。
+ * Workbox 的 precache 是一個一個抓（06 第 3.3 節）：292 個項目乘上到 Cloudflare 的往返時間，
+ * 部署環境的冒煙測試在 CI 執行器上平常約 15 秒，2026-10-28 Cloudflare 的網路狀況讓它超過 30 秒；所以第一步等 120 秒，測試本身的時限也跟著放寬 */
 export async function waitForSw(page: Page): Promise<void> {
-  await page.waitForFunction(() => navigator.serviceWorker?.ready.then(() => true), null, { timeout: 30_000 });
+  test.info().setTimeout(Math.max(test.info().timeout, 180_000));
+  await page.waitForFunction(() => navigator.serviceWorker?.ready.then(() => true), null, { timeout: 120_000 });
   await page.waitForFunction(async () => (await navigator.serviceWorker.getRegistration())?.active?.state === 'activated', null, { timeout: 30_000 });
   if (!(await page.evaluate(() => !!navigator.serviceWorker.controller))) await page.reload();
   await page.waitForFunction(() => !!navigator.serviceWorker?.controller, null, { timeout: 30_000 });
