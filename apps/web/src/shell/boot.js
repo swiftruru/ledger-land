@@ -203,7 +203,8 @@
     root.dataset.flavor = flavor;
     root.style.colorScheme = theme;
     // 跟隨系統時兩個 meta 依 media 各自取值；手動指定時兩個都改成目前主題的值（06 第 2.4 節第 1 點）
-    var metas = DARK_META ? [] : document.querySelectorAll('meta[name="theme-color"]');
+    // 實驗 R10：boot 完全不碰 theme-color meta
+    var metas = [];
     for (var i = 0; i < metas.length; i++) {
       var isDarkMeta = (metas[i].getAttribute('media') || '').indexOf('dark') >= 0;
       var useDark = pref === 'system' ? isDarkMeta : theme === 'dark';
