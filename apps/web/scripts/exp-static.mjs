@@ -112,7 +112,19 @@ let nekoRoot = readFileSync(new URL('../scripts/exp-neko.html', import.meta.url)
 writeFileSync(new URL('index.html', dist), nekoRoot);
 writeFileSync(new URL('sw.js', dist), readFileSync(new URL('../scripts/exp-neko-sw.js', import.meta.url), 'utf8'));
 writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify(nekoManifest));
-console.log('exp-static: 根路徑換成 NekoServe（H6）');
+// 第十八輪：H7 補上 NekoServe 的 80 張啟動圖（它的 SW 不 precache 這些，所以之前沒抓；H6 在 iPhone 上因此沒有啟動圖，而且不閃）
+const splashHrefs = [...nekoRoot.matchAll(/<link rel="apple-touch-startup-image"[^>]*href="\/([^"]+)"/g)].map((m) => m[1]);
+let splashFetched = 0;
+for (const u of splashHrefs) {
+  const target = new URL(u, dist);
+  if (!exists(target)) {
+    const res = await fetch('https://nekoserve.pages.dev/' + u);
+    if (!res.ok) throw new Error(`exp-static: 抓不到啟動圖 ${u} (${res.status})`);
+    writeFileSync(target, Buffer.from(await res.arrayBuffer()));
+  }
+  splashFetched++;
+}
+console.log(`exp-static: 根路徑換成 NekoServe（H7，啟動圖 ${splashFetched} 張）`);
 const headersPath = new URL('_headers', dist);
 writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n\n/\n  ! Content-Security-Policy\n\n/index.html\n  ! Content-Security-Policy\n\n/settings\n  ! Content-Security-Policy\n\n/exp-m1.html\n  ! Content-Security-Policy\n\n/exp-m2.html\n  ! Content-Security-Policy\n\n/exp-l.html\n  ! Content-Security-Policy\n\n/exp-k.html\n  ! Content-Security-Policy\n\n/exp-j1.html\n  ! Content-Security-Policy\n\n/exp-h5.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n\n/exp-h4.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n\n/exp-h2.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n\n/exp-h.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
 writeFileSync(new URL('exp-b.html', dist), b);
