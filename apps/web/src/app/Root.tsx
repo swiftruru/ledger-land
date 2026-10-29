@@ -123,7 +123,8 @@ export function Root() {
           </PageReveal>
         )}
       </main>
-      {swReady && <UpdatePrompt />}
+      {/* 實驗 F2：不註冊 Service Worker */}
+      {swReady && false && <UpdatePrompt />}
       <RefractFilter />
       <div className="ll-safearea-probe" aria-hidden="true" />
     </LinkProvider>
