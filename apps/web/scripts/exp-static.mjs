@@ -118,10 +118,13 @@ if (ROOT === 'neko') {
 } else if (ROOT === 'ours-r2') {
   // R2：R1 再一次改三件事：拿掉 App 內停留畫面、入口樣式表改回擋繪製（連結保留 data-ll，boot 載完照樣標 data-css）、啟動圖連結的 media 改成 NekoServe 的寫法
   // B 系列（R13 之後）：BACK 列出要「還原成正式版」的項目，其餘維持 R13 的樣子；一次還原一項，看閃不閃回來
-  const BACK = new Set((process.env.LL_EXP_BACK ?? 'preloads').split(','));
+  const BACK = new Set((process.env.LL_EXP_BACK ?? 'overlay,overlay-img').split(','));
   console.log('exp-static: BACK ' + [...BACK].join(','));
   let r2 = BACK.has('manifest-link') ? html : html.replace('</head>', '    <link rel="manifest" href="/manifest.webmanifest">\n  </head>');
   if (!BACK.has('overlay')) r2 = r2.replace(/<div id="ll-launch"[\s\S]*?<\/div><\/div>/, '');
+  // B1 的變化：停留畫面裡多放一張 64×64 的圖（overlay-img）或 300 字文字（overlay-text），測 WebKit 的 first visually non-empty layout 是不是關鍵
+  if (BACK.has('overlay-img')) r2 = r2.replace('<div id="ll-launch" aria-hidden="true">', '<div id="ll-launch" aria-hidden="true"><img width="64" height="64" alt="" src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2764%27 height=%2764%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23E1B15A%27/%3E%3C/svg%3E">');
+  if (BACK.has('overlay-text')) r2 = r2.replace('<div id="ll-launch" aria-hidden="true">', '<div id="ll-launch" aria-hidden="true"><p>' + 'LedgerLand '.repeat(30) + '</p>');
   if (!BACK.has('stylesheet')) r2 = r2.replace(/<link rel="preload" as="style" crossorigin href="([^"]+)">\s*<link rel="stylesheet" media="print" data-ll="entry-css" crossorigin href="\1">/, '<link rel="stylesheet" data-ll="entry-css" crossorigin href="$1">');
   if (!BACK.has('links')) r2 = r2.replace(/<link rel="apple-touch-startup-image" media="screen and \(device-width: (\d+)px\) and \(-webkit-device-pixel-ratio: (\d+)\) and \(orientation: portrait\) and \(prefers-color-scheme: (light|dark)\)" href="(\/splash\/apple-splash-\3-(\d+)x(\d+)\.png)">/g, (m, w, dpr, scheme, href, pw, ph) => `<link rel="apple-touch-startup-image" media="screen and ${scheme === 'dark' ? '(prefers-color-scheme: dark) and ' : ''}(device-width: ${w}px) and (device-height: ${Number(ph) / Number(dpr)}px) and (-webkit-device-pixel-ratio: ${dpr}) and (orientation: portrait)" href="${href}">`);
   if (!BACK.has('overlay') && r2.includes('id="ll-launch"')) throw new Error('exp-static: 停留畫面沒拿掉');
