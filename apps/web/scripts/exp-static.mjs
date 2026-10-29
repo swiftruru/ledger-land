@@ -34,6 +34,11 @@ const neko = JSON.parse(readFileSync(new URL('../scripts/exp-neko-splash.json', 
 writeFileSync(new URL('exp-d.html', dist), a.replace(splash, neko).replace('Exp A', 'Exp D').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 D：A 換成 NekoServe 的啟動圖。'));
 writeFileSync(new URL('exp-e.html', dist), a.replace(splash, '').replace('Exp A', 'Exp E').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 E：A 拿掉全部啟動圖。'));
 writeFileSync(new URL('exp-f.html', dist), a.replace('Exp A', 'Exp F').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 F：A 拿掉 CSP 等標頭、Cache-Control 改 no-cache。'));
+// 第八輪：G 是 A 加上寫在 HTML 裡的 manifest 連結（和 NekoServe 一樣在初始 HTML 就有，不是之後用 JS 插的），manifest 有 display_override 與 background_color
+const manifest = JSON.parse(readFileSync(new URL('manifest.webmanifest', dist), 'utf8'));
+const g = { ...manifest, name: 'Exp G', short_name: 'Exp G', start_url: '/exp-g.html', scope: '/', display: 'standalone', display_override: ['standalone', 'minimal-ui'], orientation: 'any', lang: 'zh-TW' };
+writeFileSync(new URL('manifest-exp-g.webmanifest', dist), JSON.stringify(g));
+writeFileSync(new URL('exp-g.html', dist), a.replace('<title>Exp A</title>', '<title>Exp G</title>\n    <link rel="manifest" href="/manifest-exp-g.webmanifest">').replace('Exp A', 'Exp G').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 G：A 加上寫在 HTML 裡的 manifest 連結。'));
 const headersPath = new URL('_headers', dist);
 writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
 writeFileSync(new URL('exp-b.html', dist), b);
