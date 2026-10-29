@@ -126,7 +126,7 @@ async function sheet() {
   const cfg = JSON.parse(readFileSync(join(web, 'src/shell/splash-devices.json'), 'utf8'));
   const tiles = [];
   for (const d of cfg.devices) {
-    for (const scheme of ['light', 'dark']) {
+    for (const scheme of ['light']) {
       const f = join(splashDir, `apple-splash-${scheme}-${d.w * d.dpr}x${d.h * d.dpr}.png`);
       if (existsSync(f))
         tiles.push(
@@ -159,7 +159,8 @@ async function splash() {
   mkdirSync(out, { recursive: true });
   const cfg = JSON.parse(readFileSync(join(web, 'src/shell/splash-devices.json'), 'utf8'));
   const only = opt('only', '') ? new Set(opt('only', '').split(',')) : null;
-  const schemes = opt('scheme', '') ? [opt('scheme', '')] : ['light', 'dark'];
+  // 已決定（2026-10-29，06 第 2.4 節第 7 點）：啟動圖只用淺色一套；要看深色版面時才用 --scheme dark 另外產
+  const schemes = opt('scheme', '') ? [opt('scheme', '')] : ['light'];
   const browser = await chromium.launch();
   const files = [];
   for (const d of cfg.devices) {

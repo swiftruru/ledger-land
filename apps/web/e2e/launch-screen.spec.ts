@@ -76,7 +76,7 @@ test.describe('啟動畫面：App 模式', () => {
     await assertCsp();
   });
 
-  test('React 還沒載入時啟動畫面不消失；固定定位、在最上層、底色依主題與風味；axe 沒有問題', async ({ page, browserName }) => {
+  test('React 還沒載入時啟動畫面不消失；固定定位、在最上層、深色主題也是紙色底（06 第 2.4 節第 7 點）；axe 沒有問題', async ({ page, browserName }) => {
     test.skip(browserName !== 'chromium', 'route 延遲在 Chromium 上最穩');
     await emulateAppMode(page);
     // 把 App 的進入點延後 3 秒：這段時間只有殼層，啟動畫面要一直在（goto 只等 commit，不然會等到模組腳本載完）
@@ -95,8 +95,9 @@ test.describe('啟動畫面：App 模式', () => {
     });
     expect(style.position).toBe('fixed');
     expect(style.z).toBe('200');
-    expect(style.bg).toBe('rgb(23, 16, 24)');
-    expect(style.color).toBe('rgb(248, 248, 242)');
+    // 深色主題加莓果風味也一樣是紙色底、墨色字：啟動圖只有淺色一套，停留畫面要和它一樣
+    expect(style.bg).toBe('rgb(252, 248, 240)');
+    expect(style.color).toBe('rgb(41, 38, 34)');
     expect(style.leave).toBeUndefined();
     // React 還沒掛載，整頁沒有 main 與 h1，只檢查啟動畫面這一塊（整頁的 axe 在 axe.spec）
     const axe = await new AxeBuilder({ page }).include('#ll-launch').analyze();

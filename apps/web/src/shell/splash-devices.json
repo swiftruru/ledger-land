@@ -1,5 +1,5 @@
 {
-  "_note": "iOS 啟動圖（apple-touch-startup-image）的裝置尺寸，單位是 CSS px；apps/web/brand/make-launch.mjs 對建置好的殼層截圖產 18 張、shellHtml.ts 產 link，都讀這份（06 第 2.4 節，M0a V05；2026-10-28 起啟動圖就是 App 內停留畫面 #ll-launch 的截圖）。只做直向 iPhone；iPad 與橫向不在範圍",
+  "_note": "iOS 啟動圖（apple-touch-startup-image）的裝置尺寸，單位是 CSS px；apps/web/brand/make-launch.mjs 對建置好的殼層截圖產淺色 9 張（2026-10-29 起只用淺色，06 第 2.4 節第 7 點）、shellHtml.ts 產 link，都讀這份（06 第 2.4 節，M0a V05；2026-10-28 起啟動圖就是 App 內停留畫面 #ll-launch 的截圖）。只做直向 iPhone；iPad 與橫向不在範圍",
   "background": {
     "light": "#FCF8F0",
     "dark": "#121018"

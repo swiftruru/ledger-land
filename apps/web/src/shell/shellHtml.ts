@@ -97,17 +97,16 @@ export function buildBootScript(bootSource: string): string {
 
 /**
  * iOS 啟動圖（06 第 2.4 節，M0a V05 定案）：頁面必須有 apple-mobile-web-app-capable 才會下載啟動圖；
- * media 不測 device-height（WebKit bug 326500）；只做直向 iPhone。
+ * media 不測 device-height（WebKit bug 326500）；只做直向 iPhone；只有淺色一套（2026-10-29 決定，06 第 2.4 節第 7 點）。
  */
 export function buildSplashLinks(): string {
   const cfg = JSON.parse(readFileSync(new URL('./splash-devices.json', import.meta.url), 'utf8')) as { devices: { w: number; h: number; dpr: number }[] };
   const keys = cfg.devices.map((d) => `${d.w}@${d.dpr}`);
   if (new Set(keys).size !== keys.length) throw new Error('splash-devices.json：寬度與像素比的組合重複，啟動圖的 media 會無法區分');
-  const links = cfg.devices.flatMap((d) =>
-    (['light', 'dark'] as const).map(
-      (scheme) =>
-        `<link rel="apple-touch-startup-image" media="screen and (device-width: ${d.w}px) and (-webkit-device-pixel-ratio: ${d.dpr}) and (orientation: portrait) and (prefers-color-scheme: ${scheme})" href="/splash/apple-splash-${scheme}-${d.w * d.dpr}x${d.h * d.dpr}.png">`,
-    ),
+  // 已決定（2026-10-29，06 第 2.4 節第 7 點）：啟動圖不分主題，一律淺色那一套（和 App 內的停留畫面一樣），所以 media 不帶 prefers-color-scheme
+  const links = cfg.devices.map(
+    (d) =>
+      `<link rel="apple-touch-startup-image" media="screen and (device-width: ${d.w}px) and (-webkit-device-pixel-ratio: ${d.dpr}) and (orientation: portrait)" href="/splash/apple-splash-light-${d.w * d.dpr}x${d.h * d.dpr}.png">`,
   );
   return ['<meta name="apple-mobile-web-app-capable" content="yes">', '<meta name="mobile-web-app-capable" content="yes">', ...links].join('\n    ');
 }

@@ -300,15 +300,16 @@ describe('產生物', () => {
     for (const name of THEMES) expect(css).toContain(THEME_COLOR[name]);
     expect(css).not.toMatch(/\s{2,}/);
   });
-  it('啟動畫面的 style：只在 App 模式顯示、四種底色與兩種字色、離場與減少動態、沒有 vh 與安全區', () => {
+  it('啟動畫面的 style：只在 App 模式顯示、一律紙色底與淺色字（不分主題，06 第 2.4 節第 7 點）、離場與減少動態、沒有 vh 與安全區', () => {
     const css = launchScreenStyle();
     expect(css.startsWith('#ll-launch{display:none}')).toBe(true);
     expect(css).toContain(
       'html[data-display=app] #ll-launch{display:block;position:fixed;left:0;right:0;top:calc(0px - var(--ll-launch-top,0px));height:calc(100% + var(--ll-launch-top,0px));z-index:200',
     );
-    for (const name of THEMES) expect(css).toContain(THEME_COLOR[name]);
-    expect(css).toContain(`color:${lightColors.text}`);
-    expect(css).toContain(`color:${darkColors('violet').text}`);
+    expect(css).toContain(`background:${THEME_COLOR.light};color:${lightColors.text}`);
+    for (const name of THEMES) if (name !== 'light') expect(css).not.toContain(THEME_COLOR[name]);
+    expect(css).not.toContain('data-theme=dark');
+    expect(css).not.toContain('prefers-color-scheme:dark');
     expect(css).toContain('#ll-launch[data-leave]{opacity:0;pointer-events:none}');
     expect(css).toContain('@media (prefers-reduced-motion:reduce){html[data-display=app] #ll-launch{transition:none}}');
     expect(css).toContain('html[data-motion=reduced] #ll-launch{transition:none}');

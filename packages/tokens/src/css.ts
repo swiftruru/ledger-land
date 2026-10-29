@@ -130,18 +130,13 @@ export function firstPaintStyle(): string {
  * 離場用 data-leave 淡出 250ms；減少動態時沒有轉場，直接移除。
  */
 export function launchScreenStyle(): string {
-  const dark = (flavor: Flavor) => THEME_COLOR[flavor];
   const lightText = lightColors.text;
-  const darkText = darkColors('violet').text;
   return [
     '#ll-launch{display:none}',
     // top 與 height 用 --ll-launch-top 補回主畫面 App 視窗少掉的狀態列高度（boot 腳本量的，沒有就是 0），版面才和依整個螢幕截的啟動圖一樣
     `html[data-display=app] #ll-launch{display:block;position:fixed;left:0;right:0;top:calc(0px - var(--ll-launch-top,0px));height:calc(100% + var(--ll-launch-top,0px));z-index:${z.launch};overflow:hidden;background:${THEME_COLOR.light};color:${lightText};transition:opacity 250ms ease-out}`,
-    `@media (prefers-color-scheme:dark){html[data-display=app] #ll-launch{background:${dark('violet')};color:${darkText}}}`,
-    `html[data-display=app][data-theme=light] #ll-launch{background:${THEME_COLOR.light};color:${lightText}}`,
-    `html[data-display=app][data-theme=dark] #ll-launch{background:${dark('violet')};color:${darkText}}`,
-    `html[data-display=app][data-theme=dark][data-flavor=berry] #ll-launch{background:${dark('berry')}}`,
-    `html[data-display=app][data-theme=dark][data-flavor=wine] #ll-launch{background:${dark('wine')}}`,
+    // 已決定（2026-10-29，06 第 2.4 節第 7 點）：停留畫面不分主題，一律紙色；深色主題在停留畫面淡出時才接到夜空色的頁面。
+    // iOS 把啟動圖換成 WebKit 第一格之間會露出一格白的視窗底（WebKit bug 311569），兩邊都是深色時那一格就是閃光燈；啟動圖與停留畫面都是淺色時看不見
     '#ll-launch[data-leave]{opacity:0;pointer-events:none}',
     // 選擇器要和上面顯示的那條一樣重（html[…] #ll-launch），寫在後面才蓋得過它的 transition
     '@media (prefers-reduced-motion:reduce){html[data-display=app] #ll-launch{transition:none}}',
