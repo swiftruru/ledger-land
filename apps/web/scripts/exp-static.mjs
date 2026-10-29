@@ -117,18 +117,24 @@ if (ROOT === 'neko') {
   writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify(nekoManifest));
 } else if (ROOT === 'ours-r2') {
   // R2：R1 再一次改三件事：拿掉 App 內停留畫面、入口樣式表改回擋繪製（連結保留 data-ll，boot 載完照樣標 data-css）、啟動圖連結的 media 改成 NekoServe 的寫法
-  let r2 = html.replace('</head>', '    <link rel="manifest" href="/manifest.webmanifest">\n  </head>');
-  r2 = r2.replace(/<div id="ll-launch"[\s\S]*?<\/div><\/div>/, '');
-  r2 = r2.replace(/<link rel="preload" as="style" crossorigin href="([^"]+)">\s*<link rel="stylesheet" media="print" data-ll="entry-css" crossorigin href="\1">/, '<link rel="stylesheet" data-ll="entry-css" crossorigin href="$1">');
-  r2 = r2.replace(/<link rel="apple-touch-startup-image" media="screen and \(device-width: (\d+)px\) and \(-webkit-device-pixel-ratio: (\d+)\) and \(orientation: portrait\) and \(prefers-color-scheme: (light|dark)\)" href="(\/splash\/apple-splash-\3-(\d+)x(\d+)\.png)">/g, (m, w, dpr, scheme, href, pw, ph) => `<link rel="apple-touch-startup-image" media="screen and ${scheme === 'dark' ? '(prefers-color-scheme: dark) and ' : ''}(device-width: ${w}px) and (device-height: ${Number(ph) / Number(dpr)}px) and (-webkit-device-pixel-ratio: ${dpr}) and (orientation: portrait)" href="${href}">`);
-  if (r2.includes('id="ll-launch"') || !/<link rel="stylesheet" data-ll="entry-css" crossorigin/.test(r2) || /<link rel="stylesheet" media="print"/.test(r2) || !/apple-touch-startup-image" media="screen and \(prefers-color-scheme: dark\) and \(device-width/.test(r2) || !r2.includes('rel="manifest"')) throw new Error('exp-static: R2 的改寫沒有全部命中');
+  // B 系列（R13 之後）：BACK 列出要「還原成正式版」的項目，其餘維持 R13 的樣子；一次還原一項，看閃不閃回來
+  const BACK = new Set((process.env.LL_EXP_BACK ?? 'stylesheet').split(','));
+  console.log('exp-static: BACK ' + [...BACK].join(','));
+  let r2 = BACK.has('manifest-link') ? html : html.replace('</head>', '    <link rel="manifest" href="/manifest.webmanifest">\n  </head>');
+  if (!BACK.has('overlay')) r2 = r2.replace(/<div id="ll-launch"[\s\S]*?<\/div><\/div>/, '');
+  if (!BACK.has('stylesheet')) r2 = r2.replace(/<link rel="preload" as="style" crossorigin href="([^"]+)">\s*<link rel="stylesheet" media="print" data-ll="entry-css" crossorigin href="\1">/, '<link rel="stylesheet" data-ll="entry-css" crossorigin href="$1">');
+  if (!BACK.has('links')) r2 = r2.replace(/<link rel="apple-touch-startup-image" media="screen and \(device-width: (\d+)px\) and \(-webkit-device-pixel-ratio: (\d+)\) and \(orientation: portrait\) and \(prefers-color-scheme: (light|dark)\)" href="(\/splash\/apple-splash-\3-(\d+)x(\d+)\.png)">/g, (m, w, dpr, scheme, href, pw, ph) => `<link rel="apple-touch-startup-image" media="screen and ${scheme === 'dark' ? '(prefers-color-scheme: dark) and ' : ''}(device-width: ${w}px) and (device-height: ${Number(ph) / Number(dpr)}px) and (-webkit-device-pixel-ratio: ${dpr}) and (orientation: portrait)" href="${href}">`);
+  if (!BACK.has('overlay') && r2.includes('id="ll-launch"')) throw new Error('exp-static: 停留畫面沒拿掉');
+  if (!BACK.has('stylesheet') && /<link rel="stylesheet" media="print"/.test(r2)) throw new Error('exp-static: 樣式表沒改成擋繪製');
   // R4：manifest 的欄位也改成 NekoServe 的樣子（加 display_override 與 orientation any，拿掉 dir 與 prefer_related_applications）
-  const ours = JSON.parse(readFileSync(new URL('manifest.webmanifest', dist), 'utf8'));
-  delete ours.dir; delete ours.prefer_related_applications;
-  writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify({ ...ours, display_override: ['standalone', 'minimal-ui'], orientation: 'any', categories: ['education', 'productivity'] }));
+  if (!BACK.has('manifest-fields')) {
+    const ours = JSON.parse(readFileSync(new URL('manifest.webmanifest', dist), 'utf8'));
+    delete ours.dir; delete ours.prefer_related_applications;
+    writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify({ ...ours, display_override: ['standalone', 'minimal-ui'], orientation: 'any', categories: ['education', 'productivity'] }));
+  }
   // R6：啟動圖換成 NekoServe 的 80 張（連結與圖都是它的，圖已鏡像到 dist）；R7：再拿掉 inline 樣式與 boot 腳本（VARIANT 決定）
   const VARIANT = process.env.LL_EXP_VARIANT ?? 'r6';
-  if (VARIANT === 'r6' || VARIANT === 'r7') {
+  if (!BACK.has('images') && (VARIANT === 'r6' || VARIANT === 'r7')) {
     const nekoSplash = (nekoRoot.match(/<link rel="apple-touch-startup-image"[^>]*>/g) ?? []).join('\n    ');
     r2 = r2.replace(/<link rel="apple-touch-startup-image"[^>]*>\s*/g, '').replace('</head>', '    ' + nekoSplash + '\n  </head>');
     if ((r2.match(/<link rel="apple-touch-startup-image"/g) ?? []).length !== 80) throw new Error('exp-static: R6 的啟動圖連結不是 80 個');
