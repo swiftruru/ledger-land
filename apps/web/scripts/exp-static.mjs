@@ -122,6 +122,10 @@ if (ROOT === 'neko') {
   r2 = r2.replace(/<link rel="preload" as="style" crossorigin href="([^"]+)">\s*<link rel="stylesheet" media="print" data-ll="entry-css" crossorigin href="\1">/, '<link rel="stylesheet" data-ll="entry-css" crossorigin href="$1">');
   r2 = r2.replace(/<link rel="apple-touch-startup-image" media="screen and \(device-width: (\d+)px\) and \(-webkit-device-pixel-ratio: (\d+)\) and \(orientation: portrait\) and \(prefers-color-scheme: (light|dark)\)" href="(\/splash\/apple-splash-\3-(\d+)x(\d+)\.png)">/g, (m, w, dpr, scheme, href, pw, ph) => `<link rel="apple-touch-startup-image" media="screen and ${scheme === 'dark' ? '(prefers-color-scheme: dark) and ' : ''}(device-width: ${w}px) and (device-height: ${Number(ph) / Number(dpr)}px) and (-webkit-device-pixel-ratio: ${dpr}) and (orientation: portrait)" href="${href}">`);
   if (r2.includes('id="ll-launch"') || !/<link rel="stylesheet" data-ll="entry-css" crossorigin/.test(r2) || /<link rel="stylesheet" media="print"/.test(r2) || !/apple-touch-startup-image" media="screen and \(prefers-color-scheme: dark\) and \(device-width/.test(r2) || !r2.includes('rel="manifest"')) throw new Error('exp-static: R2 的改寫沒有全部命中');
+  // R4：manifest 的欄位也改成 NekoServe 的樣子（加 display_override 與 orientation any，拿掉 dir 與 prefer_related_applications）
+  const ours = JSON.parse(readFileSync(new URL('manifest.webmanifest', dist), 'utf8'));
+  delete ours.dir; delete ours.prefer_related_applications;
+  writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify({ ...ours, display_override: ['standalone', 'minimal-ui'], orientation: 'any', categories: ['education', 'productivity'] }));
   writeFileSync(new URL('index.html', dist), r2);
   console.log('exp-static: 根路徑是我們的 App，R2（沒有停留畫面、擋繪製的樣式表、NekoServe 式啟動圖連結、HTML 裡的 manifest）');
 } else if (ROOT === 'ours-manifest') {
