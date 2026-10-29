@@ -39,8 +39,19 @@ const manifest = JSON.parse(readFileSync(new URL('manifest.webmanifest', dist), 
 const g = { ...manifest, name: 'Exp G', short_name: 'Exp G', start_url: '/exp-g.html', scope: '/', display: 'standalone', display_override: ['standalone', 'minimal-ui'], orientation: 'any', lang: 'zh-TW' };
 writeFileSync(new URL('manifest-exp-g.webmanifest', dist), JSON.stringify(g));
 writeFileSync(new URL('exp-g.html', dist), a.replace('<title>Exp A</title>', '<title>Exp G</title>\n    <link rel="manifest" href="/manifest-exp-g.webmanifest">').replace('Exp A', 'Exp G').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 G：A 加上寫在 HTML 裡的 manifest 連結。'));
+// 第九輪：H 是 NekoServe 正式站的 HTML 原封不動搬到我們的網域（資源連回它的網域；拿掉它的 React 進入點，第一格就是它的樣式表畫出來的空頁；manifest 換成我們這邊的檔）
+let nekoHtml = readFileSync(new URL('../scripts/exp-neko.html', import.meta.url), 'utf8');
+nekoHtml = nekoHtml.replace(/<script type="module"[^>]*><\/script>/g, '').replace(/<link rel="modulepreload"[^>]*>/g, '');
+nekoHtml = nekoHtml.replace(/(href|src)="\/(?!manifest\.webmanifest)/g, '$1="https://nekoserve.swift.moe/');
+nekoHtml = nekoHtml.replace('href="/manifest.webmanifest"', 'href="/manifest-exp-h.webmanifest"');
+nekoHtml = nekoHtml.replace('<div id="root"></div>', '<div id="root"><p>靜態頁 H：NekoServe 的 HTML 搬到我們的網域。</p></div>');
+writeFileSync(new URL('exp-h.html', dist), nekoHtml);
+writeFileSync(new URL('manifest-exp-h.webmanifest', dist), JSON.stringify({ ...g, name: 'Exp H', short_name: 'Exp H', start_url: '/exp-h.html' }));
+// 第九輪：I 是 G 但 manifest 的 background_color 與 theme_color 都是夜空色（測那一格白色是不是 manifest 的 background_color）
+writeFileSync(new URL('manifest-exp-i.webmanifest', dist), JSON.stringify({ ...g, name: 'Exp I', short_name: 'Exp I', start_url: '/exp-i.html', background_color: '#121018', theme_color: '#121018' }));
+writeFileSync(new URL('exp-i.html', dist), readFileSync(new URL('exp-g.html', dist), 'utf8').replace('manifest-exp-g.webmanifest', 'manifest-exp-i.webmanifest').replace('Exp G', 'Exp I').replace('靜態頁 G：A 加上寫在 HTML 裡的 manifest 連結。', '靜態頁 I：G 的 manifest 改成夜空色的 background_color。'));
 const headersPath = new URL('_headers', dist);
-writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
+writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n\n/exp-h.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
 writeFileSync(new URL('exp-b.html', dist), b);
 writeFileSync(new URL('exp-c.html', dist), c);
 console.log('exp-static: a/b/c written; splash links', (splash.match(/<link/g) ?? []).length);
