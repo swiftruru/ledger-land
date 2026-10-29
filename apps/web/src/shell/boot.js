@@ -42,6 +42,16 @@
       tm[ti].setAttribute('content', '#121018');
     }
   }
+  // 第三輪：第一格就有 WebKit 算得到的「看得見的內容」。text 寫一段 300 字的文字，img 寫一張 64×64 的圖（WebKit 的 first visually non-empty layout
+  // 只數文字字元與圖片像素，內嵌 SVG 與藏起來的內容都不算；iOS 可能等這個訊號才把啟動圖換掉）
+  if (EXP.indexOf('text') >= 0) {
+    var words = '';
+    for (var wi = 0; wi < 30; wi++) words += 'LedgerLand ';
+    document.write('<p>' + words + '</p>');
+  }
+  if (EXP.indexOf('img') >= 0) {
+    document.write('<img width="64" height="64" alt="" src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2764%27 height=%2764%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%23121018%27/%3E%3C/svg%3E">');
+  }
   if (EXP.indexOf('noiw') >= 0) {
     var vp = document.querySelector('meta[name="viewport"]');
     if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
