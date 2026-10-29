@@ -136,7 +136,7 @@ if (ROOT === 'neko') {
     writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify({ ...ours, display_override: ['standalone', 'minimal-ui'], orientation: 'any', categories: ['education', 'productivity'] }));
   }
   // R6：啟動圖換成 NekoServe 的 80 張（連結與圖都是它的，圖已鏡像到 dist）；R7：再拿掉 inline 樣式與 boot 腳本（VARIANT 決定）
-  const VARIANT = process.env.LL_EXP_VARIANT ?? 'r6';
+  const VARIANT = process.env.LL_EXP_VARIANT ?? 'r8';
   if (!BACK.has('images') && (VARIANT === 'r6' || VARIANT === 'r7')) {
     const nekoSplash = (nekoRoot.match(/<link rel="apple-touch-startup-image"[^>]*>/g) ?? []).join('\n    ');
     r2 = r2.replace(/<link rel="apple-touch-startup-image"[^>]*>\s*/g, '').replace('</head>', '    ' + nekoSplash + '\n  </head>');
@@ -146,6 +146,13 @@ if (ROOT === 'neko') {
   if (VARIANT === 'r7' || VARIANT === 'r9') r2 = r2.replace(/<style>[\s\S]*?<\/style>/, '');
   if (VARIANT === 'r7' || VARIANT === 'r8') r2 = r2.replace(/<script data-ll="boot">[\s\S]*?<\/script>/, '');
   if (VARIANT === 'r7' && (r2.includes('<style>') || r2.includes('data-ll="boot"'))) throw new Error('exp-static: R7 沒拿乾淨');
+  // T 系列：在 R8（沒有 boot、內容永遠藏著、0/5 不閃）之上，用一支外部腳本在 T 毫秒後把 data-css 標上讓內容出現，找出交接的時間窗
+  const T = process.env.LL_EXP_T ?? '0';
+  if (VARIANT === 'r8' && T !== 'off') {
+    writeFileSync(new URL('exp-t.js', dist), `(function(){function show(){document.documentElement.dataset.css='1';}var t=${Number(T)};if(t<=0)show();else setTimeout(show,t);})();`);
+    r2 = r2.replace('</head>', '    <script src="/exp-t.js"></script>\n  </head>');
+    console.log('exp-static: T ' + T);
+  }
   writeFileSync(new URL('index.html', dist), r2);
   console.log('exp-static: VARIANT ' + VARIANT);
   console.log('exp-static: 根路徑是我們的 App，R2（沒有停留畫面、擋繪製的樣式表、NekoServe 式啟動圖連結、HTML 裡的 manifest）');
