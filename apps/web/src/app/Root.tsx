@@ -123,7 +123,8 @@ export function Root() {
           </PageReveal>
         )}
       </main>
-      {swReady && !(window as unknown as { __llExp?: string[] }).__llExp?.includes('nosw') && <UpdatePrompt />}
+      {/* 實驗 R5：不註冊 Service Worker */}
+      {swReady && false && <UpdatePrompt />}
       <RefractFilter />
       <div className="ll-safearea-probe" aria-hidden="true" />
     </LinkProvider>
