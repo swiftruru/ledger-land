@@ -21,6 +21,7 @@
   var xm = /^\/x-([a-z-]+)\/?/.exec(location.pathname);
   if (xm) {
     EXP = xm[1].split('-');
+    if (EXP.indexOf('all') >= 0) EXP = ['nooverlay', 'block', 'noiw', 'media', 'noglass', 'nonav', 'manifest'];
     root.dataset.exp = EXP.join(' ');
     window.__llExp = EXP;
     history.replaceState(history.state, '', '/' + location.search + location.hash);
@@ -70,6 +71,13 @@
         ln.setAttribute('media', hm[1] === 'dark' ? 'screen and (prefers-color-scheme: dark) and ' + geo : 'screen and ' + geo);
       }
     }
+  }
+  // 第五輪：noglass 玻璃改實色（沒有 backdrop-filter）、nonav 不畫 Tab bar（首次繪製 style 的規則）、manifest 掛一份有 display_override 的 manifest
+  if (EXP.indexOf('manifest') >= 0) {
+    var ml = document.createElement('link');
+    ml.rel = 'manifest';
+    ml.href = '/manifest-exp.webmanifest';
+    document.head.appendChild(ml);
   }
   if (EXP.indexOf('noiw') >= 0) {
     var vp = document.querySelector('meta[name="viewport"]');
@@ -221,6 +229,7 @@
   var legacy = !unprefixed && prefixed;
   root.dataset.glassLegacy = legacy ? 'true' : 'false';
   function resolveGlass() {
+    if (EXP.indexOf('noglass') >= 0) return 'solid';
     var pref = read('ll:transparency');
     if (pref === 'reduced') return 'solid';
     if (mq('(prefers-reduced-transparency: reduce)') || mq('(prefers-contrast: more)') || mq('(forced-colors: active)')) return 'solid';
