@@ -127,7 +127,7 @@ if (ROOT === 'neko') {
   delete ours.dir; delete ours.prefer_related_applications;
   writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify({ ...ours, display_override: ['standalone', 'minimal-ui'], orientation: 'any', categories: ['education', 'productivity'] }));
   // R6：啟動圖換成 NekoServe 的 80 張（連結與圖都是它的，圖已鏡像到 dist）；R7：再拿掉 inline 樣式與 boot 腳本（VARIANT 決定）
-  const VARIANT = process.env.LL_EXP_VARIANT ?? 'r6';
+  const VARIANT = process.env.LL_EXP_VARIANT ?? 'r7';
   if (VARIANT === 'r6' || VARIANT === 'r7') {
     const nekoSplash = (nekoRoot.match(/<link rel="apple-touch-startup-image"[^>]*>/g) ?? []).join('\n    ');
     r2 = r2.replace(/<link rel="apple-touch-startup-image"[^>]*>\s*/g, '').replace('</head>', '    ' + nekoSplash + '\n  </head>');
