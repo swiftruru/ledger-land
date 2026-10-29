@@ -145,6 +145,7 @@ export function launchScreenStyle(): string {
     '#ll-launch[data-leave]{opacity:0;pointer-events:none}',
     'html[data-exp~=nooverlay] #ll-launch{display:none}',
     'html[data-exp~=nonav] #ll-tabbar{display:none}',
+    'html[data-exp~=absnav] #ll-tabbar{position:absolute}',
     // 選擇器要和上面顯示的那條一樣重（html[…] #ll-launch），寫在後面才蓋得過它的 transition
     '@media (prefers-reduced-motion:reduce){html[data-display=app] #ll-launch{transition:none}}',
     'html[data-motion=reduced] #ll-launch{transition:none}',

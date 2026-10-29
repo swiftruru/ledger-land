@@ -166,6 +166,8 @@
     navigatorStandalone: navigator.standalone === true,
   };
   root.dataset.display = dm.standalone || dm.fullscreen || dm.navigatorStandalone ? 'app' : 'browser';
+  // 實驗 V：第一格裡沒有固定定位的 Tab bar（nonav 不畫；absnav 改絕對定位）
+  root.dataset.exp = 'nonav';
   // 入口樣式表建置時是 media="print"（不擋第一次繪製，啟動圖換到 App 內畫面才不會白一下，vite.config.ts 的 ll-entry-stylesheet-non-blocking）：
   // 載完就切回 all 並標 data-css，首次繪製 style 在那之前把 body 裡除了啟動畫面以外的內容藏起來；載入失敗也標，頁面退成沒樣式而不是一直空白
   function cssReady(e) {
