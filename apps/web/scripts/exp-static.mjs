@@ -29,6 +29,13 @@ const a = `<!doctype html>
 const b = `<!doctype html>\n<html lang="zh-TW">\n  <head>${headNoApp}</head>\n  <body><p>靜態頁 B：我們完整的 head（inline style、boot、入口樣式表、啟動圖），沒有 React、沒有 Service Worker。</p></body>\n</html>`;
 const c = `<!doctype html>\n<html lang="zh-TW">\n  <head>${headNoApp}</head>\n  <body>${launch}<p>靜態頁 C：B 加上停留畫面（不會消失）。</p></body>\n</html>`;
 writeFileSync(new URL('exp-a.html', dist), a);
+// 第七輪：D 換成 NekoServe 的啟動圖（跨網域連結）、E 沒有啟動圖、F 和 A 一樣但 _headers 拿掉 CSP 等標頭並改成 no-cache
+const neko = JSON.parse(readFileSync(new URL('../scripts/exp-neko-splash.json', import.meta.url), 'utf8')).join('\n');
+writeFileSync(new URL('exp-d.html', dist), a.replace(splash, neko).replace('Exp A', 'Exp D').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 D：A 換成 NekoServe 的啟動圖。'));
+writeFileSync(new URL('exp-e.html', dist), a.replace(splash, '').replace('Exp A', 'Exp E').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 E：A 拿掉全部啟動圖。'));
+writeFileSync(new URL('exp-f.html', dist), a.replace('Exp A', 'Exp F').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 F：A 拿掉 CSP 等標頭、Cache-Control 改 no-cache。'));
+const headersPath = new URL('_headers', dist);
+writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
 writeFileSync(new URL('exp-b.html', dist), b);
 writeFileSync(new URL('exp-c.html', dist), c);
 console.log('exp-static: a/b/c written; splash links', (splash.match(/<link/g) ?? []).length);
