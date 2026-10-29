@@ -546,11 +546,16 @@ async function expectNoHorizontalOverflow(page: Page, where: string): Promise<vo
   expect(scrollWidth, `${where}：整頁不應該有水平溢出（${culprits.join('、')}）`).toBeLessThanOrEqual(clientWidth);
 }
 
+/** 觸控目標至少 44×44。量元素自己回報的矩形，不用 Playwright 的 boundingBox()：Firefox 的 boundingBox() 從四個角的 float32 座標換算，
+ * 元素落在非整數的 y 位置時 44px 高的元素會回 43.99998（CI 的 Linux Firefox，2026-10-29 在同一個容器映像重現；getBoundingClientRect 是 44）；
+ * 另留 0.01px 的餘裕給各引擎的次像素取整 */
 async function expectTarget(locator: Locator, name: string): Promise<void> {
-  const box = await locator.boundingBox();
-  expect(box, name).not.toBeNull();
-  expect(box!.width, `${name} 的寬`).toBeGreaterThanOrEqual(44);
-  expect(box!.height, `${name} 的高`).toBeGreaterThanOrEqual(44);
+  const box = await locator.evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    return { width: r.width, height: r.height };
+  });
+  expect(box.width, `${name} 的寬`).toBeGreaterThanOrEqual(44 - 0.01);
+  expect(box.height, `${name} 的高`).toBeGreaterThanOrEqual(44 - 0.01);
 }
 
 /** 按鈕的中心點真的點得到它自己（沒有被表格或其他元素蓋住） */
