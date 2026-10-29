@@ -52,6 +52,25 @@
   if (EXP.indexOf('img') >= 0) {
     document.write('<img width="64" height="64" alt="" src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2764%27 height=%2764%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%23121018%27/%3E%3C/svg%3E">');
   }
+  // 第四輪：啟動圖連結的寫法。media 改成和 NekoServe 一樣（淺色不帶 prefers-color-scheme、深色把它放最前面、都帶 device-height）；nolight 只留深色的啟動圖
+  if (EXP.indexOf('media') >= 0 || EXP.indexOf('nolight') >= 0) {
+    var links = document.querySelectorAll('link[rel="apple-touch-startup-image"]');
+    for (var li = 0; li < links.length; li++) {
+      var ln = links[li];
+      var hm = /apple-splash-(light|dark)-(\d+)x(\d+)\.png$/.exec(ln.getAttribute('href') || '');
+      var wm = /device-width: (\d+)px\) and \(-webkit-device-pixel-ratio: (\d+)\)/.exec(ln.getAttribute('media') || '');
+      if (!hm || !wm) continue;
+      if (EXP.indexOf('nolight') >= 0 && hm[1] === 'light') {
+        ln.parentNode.removeChild(ln);
+        continue;
+      }
+      if (EXP.indexOf('media') >= 0) {
+        var dpr = Number(wm[2]);
+        var geo = '(device-width: ' + wm[1] + 'px) and (device-height: ' + Number(hm[3]) / dpr + 'px) and (-webkit-device-pixel-ratio: ' + dpr + ') and (orientation: portrait)';
+        ln.setAttribute('media', hm[1] === 'dark' ? 'screen and (prefers-color-scheme: dark) and ' + geo : 'screen and ' + geo);
+      }
+    }
+  }
   if (EXP.indexOf('noiw') >= 0) {
     var vp = document.querySelector('meta[name="viewport"]');
     if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
