@@ -11,7 +11,7 @@
     "content:drafts": "LL_INCLUDE_DRAFTS=1 node ../../tools/content-build.mjs",
     "e2e:build": "LL_INCLUDE_DRAFTS=1 node ../../tools/content-build.mjs && pnpm build",
     "e2e:build:fixtures": "LL_INCLUDE_DRAFTS=1 node ../../tools/content-build.mjs && VITE_LL_FIXTURES=1 pnpm build",
-    "build": "vite build && node ../../tools/postbuild.mjs",
+    "build": "vite build && node ../../tools/postbuild.mjs && node scripts/exp-fix.mjs",
     "preview": "vite preview --port 4173 --strictPort",
     "cf:dev": "wrangler dev --port 8787",
     "cf:deploy": "wrangler deploy",
