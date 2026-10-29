@@ -75,8 +75,35 @@ const abs = (u) => (typeof u === 'string' && u.startsWith('/') ? 'https://nekose
 const h4m = { ...nekoManifest, start_url: '/exp-h4.html', scope: '/', icons: (nekoManifest.icons ?? []).map((i) => ({ ...i, src: abs(i.src) })), shortcuts: (nekoManifest.shortcuts ?? []).map((sc) => ({ ...sc, url: '/exp-h4.html', icons: (sc.icons ?? []).map((i) => ({ ...i, src: abs(i.src) })) })) };
 writeFileSync(new URL('manifest-exp-h4.webmanifest', dist), JSON.stringify(h4m));
 writeFileSync(new URL('exp-h4.html', dist), neko2.replace('manifest-exp-h2.webmanifest', 'manifest-exp-h4.webmanifest'));
+// 第十五輪：H5 是 NekoServe 的 HTML 原封不動加它真正的 Service Worker，資源全部同網域：建置時把它 precache 清單裡的檔案從 pages.dev 抓到我們的 dist
+// 同一路徑（hash 檔名不會撞到我們的），只有 index.html、sw.js、manifest 另外命名（跨網域 precache 會因 cache: reload 觸發 CORS preflight 而失敗）
+let sw5 = readFileSync(new URL('../scripts/exp-neko-sw.js', import.meta.url), 'utf8');
+const entries = [...sw5.matchAll(/url:"([^"]+)"/g)].map((m) => m[1]);
+const skip = new Set(['index.html', 'sw.js', 'manifest.webmanifest', 'favicon.ico']);
+const { mkdirSync, existsSync: exists } = await import('node:fs');
+let fetched = 0;
+for (const u of entries) {
+  if (skip.has(u)) continue;
+  const target = new URL(u, dist);
+  if (exists(target)) { fetched++; continue; }
+  const res = await fetch('https://nekoserve.pages.dev/' + u);
+  if (!res.ok) throw new Error(`exp-static: 抓不到 ${u} (${res.status})`);
+  mkdirSync(new URL('./', target), { recursive: true });
+  writeFileSync(target, Buffer.from(await res.arrayBuffer()));
+  fetched++;
+}
+console.log(`exp-static: NekoServe 的資源 ${fetched} 個放進 dist`);
+sw5 = sw5.replace('url:"index.html"', 'url:"exp-h5.html"').replace('E="/index.html"', 'E="/exp-h5.html"').replace('/\\.[a-z0-9]+$/i', '/^$/');
+if (!sw5.includes('E="/exp-h5.html"') || !sw5.includes('url:"exp-h5.html"')) throw new Error('exp-static: sw-h5 的改寫沒有命中');
+writeFileSync(new URL('sw-h5.js', dist), sw5);
+let h5 = readFileSync(new URL('../scripts/exp-neko.html', import.meta.url), 'utf8');
+h5 = h5.replace('href="/manifest.webmanifest"', 'href="/manifest-exp-h5.webmanifest"');
+h5 = h5.replace('<script src="/theme-init.js"></script>', '<script>try{localStorage.setItem("nekoserve:theme","dark")}catch(e){};if(navigator.serviceWorker){var o=navigator.serviceWorker.register.bind(navigator.serviceWorker);navigator.serviceWorker.register=function(){return o("/sw-h5.js",{scope:"/exp-h5"})}};history.pushState=function(){};history.replaceState=function(){};</script><script src="/theme-init.js"></script>');
+if (!h5.includes('/sw-h5.js') || !h5.includes('manifest-exp-h5')) throw new Error('exp-static: h5 的改寫沒有命中');
+writeFileSync(new URL('exp-h5.html', dist), h5);
+writeFileSync(new URL('manifest-exp-h5.webmanifest', dist), JSON.stringify({ ...nekoManifest, start_url: '/exp-h5.html', scope: '/', shortcuts: [] }));
 const headersPath = new URL('_headers', dist);
-writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n\n/exp-l.html\n  ! Content-Security-Policy\n\n/exp-k.html\n  ! Content-Security-Policy\n\n/exp-j1.html\n  ! Content-Security-Policy\n\n/exp-h4.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n\n/exp-h2.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n\n/exp-h.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
+writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n\n/exp-l.html\n  ! Content-Security-Policy\n\n/exp-k.html\n  ! Content-Security-Policy\n\n/exp-j1.html\n  ! Content-Security-Policy\n\n/exp-h5.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n\n/exp-h4.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n\n/exp-h2.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n\n/exp-h.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
 writeFileSync(new URL('exp-b.html', dist), b);
 writeFileSync(new URL('exp-c.html', dist), c);
 console.log('exp-static: a/b/c written; splash links', (splash.match(/<link/g) ?? []).length);
