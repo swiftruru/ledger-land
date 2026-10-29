@@ -155,7 +155,7 @@ if (ROOT === 'neko') {
   }
   // U 系列：T0（R8 加內容馬上出現，不閃）之上，把 boot 的各段做成外部腳本 /exp-boot.js 放回 head（外部檔不受 inline 的 CSP 雜湊限制）
   // U1 前半段（語系、display 模式、樣式表就緒、狀態列高度）；U2 只有主題段；U3 只有玻璃段（真正的判斷，不壓 solid）
-  const U = process.env.LL_EXP_U ?? 'u1';
+  const U = process.env.LL_EXP_U ?? 'u2';
   if (VARIANT === 'r8' && U) {
     const src = readFileSync(new URL('../src/shell/boot.js', import.meta.url), 'utf8').split('\n');
     const L = (a, b) => src.slice(a - 1, b).join('\n');
