@@ -118,7 +118,7 @@ if (ROOT === 'neko') {
 } else if (ROOT === 'ours-r2') {
   // R2：R1 再一次改三件事：拿掉 App 內停留畫面、入口樣式表改回擋繪製（連結保留 data-ll，boot 載完照樣標 data-css）、啟動圖連結的 media 改成 NekoServe 的寫法
   // B 系列（R13 之後）：BACK 列出要「還原成正式版」的項目，其餘維持 R13 的樣子；一次還原一項，看閃不閃回來
-  const BACK = new Set((process.env.LL_EXP_BACK ?? 'overlay').split(','));
+  const BACK = new Set((process.env.LL_EXP_BACK ?? 'preloads').split(','));
   console.log('exp-static: BACK ' + [...BACK].join(','));
   let r2 = BACK.has('manifest-link') ? html : html.replace('</head>', '    <link rel="manifest" href="/manifest.webmanifest">\n  </head>');
   if (!BACK.has('overlay')) r2 = r2.replace(/<div id="ll-launch"[\s\S]*?<\/div><\/div>/, '');
