@@ -55,8 +55,13 @@ writeFileSync(new URL('exp-i.html', dist), readFileSync(new URL('exp-g.html', di
 const emptyBody = (title, body) => a.replace('<title>Exp A</title>', `<title>${title}</title>`).replace('Exp A', title).replace(/<body>[\s\S]*<\/body>/, body);
 writeFileSync(new URL('exp-j1.html', dist), emptyBody('Exp J1', '<body><div id="root"></div><script>setTimeout(function(){document.getElementById("root").innerHTML="<p>靜態頁 J1：內容在 1 秒後才出現。</p>"},1000)</script></body>'));
 writeFileSync(new URL('exp-j2.html', dist), emptyBody('Exp J2', '<body><div id="root"></div></body>'));
+// 第十一輪：K 是 A 加一個最簡單的 Service Worker（第一次開啟時把 exp-k.html 放進快取，之後的導覽都從快取回應）
+writeFileSync(new URL('sw-k.js', dist), `self.addEventListener('install', function (e) { e.waitUntil(caches.open('k').then(function (c) { return c.add('/exp-k.html'); }).then(function () { return self.skipWaiting(); })); });
+self.addEventListener('activate', function (e) { e.waitUntil(self.clients.claim()); });
+self.addEventListener('fetch', function (e) { if (e.request.mode === 'navigate') e.respondWith(caches.match('/exp-k.html').then(function (r) { return r || fetch(e.request); })); });`);
+writeFileSync(new URL('exp-k.html', dist), a.replace('<title>Exp A</title>', '<title>Exp K</title>').replace('Exp A', 'Exp K').replace('靜態頁 A：沒有 JS、沒有 Service Worker，只有外部 CSS 與啟動圖。', '靜態頁 K：A 加上最簡單的 Service Worker，第二次之後的冷啟動由快取回應。').replace('</body>', '<script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw-k.js", { scope: "/exp-k" }).then(function (r) { document.body.insertAdjacentHTML("beforeend", "<p>SW: " + (navigator.serviceWorker.controller ? "這一次由快取回應" : "剛註冊，下一次冷啟動才由快取回應") + "</p>"); });</script></body>'));
 const headersPath = new URL('_headers', dist);
-writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n\n/exp-j1.html\n  ! Content-Security-Policy\n\n/exp-h.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
+writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n\n/exp-k.html\n  ! Content-Security-Policy\n\n/exp-j1.html\n  ! Content-Security-Policy\n\n/exp-h.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
 writeFileSync(new URL('exp-b.html', dist), b);
 writeFileSync(new URL('exp-c.html', dist), c);
 console.log('exp-static: a/b/c written; splash links', (splash.match(/<link/g) ?? []).length);
