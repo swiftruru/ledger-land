@@ -153,6 +153,23 @@ if (ROOT === 'neko') {
     r2 = r2.replace('</head>', '    <script src="/exp-t.js"></script>\n  </head>');
     console.log('exp-static: T ' + T);
   }
+  // U 系列：T0（R8 加內容馬上出現，不閃）之上，把 boot 的各段做成外部腳本 /exp-boot.js 放回 head（外部檔不受 inline 的 CSP 雜湊限制）
+  // U1 前半段（語系、display 模式、樣式表就緒、狀態列高度）；U2 只有主題段；U3 只有玻璃段（真正的判斷，不壓 solid）
+  const U = process.env.LL_EXP_U ?? 'u1';
+  if (VARIANT === 'r8' && U) {
+    const src = readFileSync(new URL('../src/shell/boot.js', import.meta.url), 'utf8').split('\n');
+    const L = (a, b) => src.slice(a - 1, b).join('\n');
+    const prelude = L(1, 17) + "\n  var EXP = []; var DARK_META = false; var ENTRY_CSS = null;\n";
+    const locale = L(87, 95), display = L(160, 168), cssReady = L(171, 180), launchTop = L(181, 186), darkMq = L(188, 188), theme = L(189, 233), glassSolid = L(234, 268), tail = '})();';
+    const glass = glassSolid.replace("if (EXP.indexOf('noglass') >= 0 || true) return 'solid';", "if (EXP.indexOf('noglass') >= 0) return 'solid';");
+    const parts = { u1: [prelude, locale, display, cssReady, launchTop, darkMq, tail], u2: [prelude, darkMq, theme, tail], u3: [prelude, darkMq, glass, tail], u4: [prelude, display, darkMq, tail] };
+    if (!parts[U]) throw new Error('exp-static: 不認得的 U ' + U);
+    const js = parts[U].join('\n').replaceAll('__LL_THEME_COLOR__', '{"light":"#FCF8F0","violet":"#121018","berry":"#171018","wine":"#181012"}').replaceAll('__LL_PRELOAD__', 'null').replaceAll('__LL_ENTRY_CSS__', 'null');
+    if (!js.trim().endsWith('})();')) throw new Error('exp-static: exp-boot 的結尾不對');
+    writeFileSync(new URL('exp-boot.js', dist), js);
+    r2 = r2.replace('</head>', '    <script src="/exp-boot.js"></script>\n  </head>');
+    console.log('exp-static: U ' + U);
+  }
   writeFileSync(new URL('index.html', dist), r2);
   console.log('exp-static: VARIANT ' + VARIANT);
   console.log('exp-static: 根路徑是我們的 App，R2（沒有停留畫面、擋繪製的樣式表、NekoServe 式啟動圖連結、HTML 裡的 manifest）');
