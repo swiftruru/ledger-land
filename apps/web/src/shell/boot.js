@@ -229,8 +229,8 @@
     window.__llApplyTheme = applyTheme;
 
   }
-  // 實驗 R12：主題那段照跑（上面），玻璃這段不跑
-  if (window.__llExpHalfB) {
+  // 實驗 R13：玻璃這段照跑，但 resolveGlass 一律回 solid（Tab bar 沒有 backdrop-filter）
+  {
     // 玻璃閘門（07 第 5.2 節）
     var LEGACY_SAFARI_SOLID = false;
     var unprefixed = CSS.supports('backdrop-filter', 'blur(1px)');
@@ -238,7 +238,7 @@
     var legacy = !unprefixed && prefixed;
     root.dataset.glassLegacy = legacy ? 'true' : 'false';
     function resolveGlass() {
-      if (EXP.indexOf('noglass') >= 0) return 'solid';
+      if (EXP.indexOf('noglass') >= 0 || true) return 'solid';
       var pref = read('ll:transparency');
       if (pref === 'reduced') return 'solid';
       if (mq('(prefers-reduced-transparency: reduce)') || mq('(prefers-contrast: more)') || mq('(forced-colors: active)')) return 'solid';
