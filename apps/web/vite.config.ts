@@ -55,7 +55,7 @@ function shell(): Plugin {
         const source = readFileSync(`${root}src/shell/boot.js`, 'utf8').replaceAll('__LL_THEME_COLOR__', JSON.stringify(THEME_COLOR));
         const code = building ? minifySync('boot.js', source, {}).code : source;
         if (!code.includes('__LL_PRELOAD__')) throw new Error('boot 腳本壓縮後找不到 __LL_PRELOAD__，postbuild 會填不進預先載入的表');
-        const boot = code.replaceAll('__LL_PRELOAD__', '/*ll:preload*/null');
+        const boot = code.replaceAll('__LL_PRELOAD__', '/*ll:preload*/null').replaceAll('__LL_ENTRY_CSS__', '/*ll:entrycss*/null');
         return (
           html
             .replace('<!--ll:favicon-->', buildFaviconLink())
@@ -118,6 +118,8 @@ function entryStylesheetNonBlocking(): Plugin {
             `<link rel="preload" as="style" crossorigin href="${href}">\n    <link rel="stylesheet" media="print" data-ll="entry-css" crossorigin href="${href}">`,
           );
         }
+        const firstHref = /href="([^"]+)"/.exec(links[0]?.[1] ?? '')?.[1] ?? '';
+        out = out.replace('/*ll:entrycss*/null', JSON.stringify(firstHref));
         const styleEnd = '</style>';
         if (out.split(styleEnd).length !== 2) throw new Error('ll-entry-stylesheet-non-blocking：index.html 應該剛好有一段 <style>');
         return out.replace(styleEnd, 'html:not([data-css]) body>:not(#ll-launch){visibility:hidden}' + styleEnd);

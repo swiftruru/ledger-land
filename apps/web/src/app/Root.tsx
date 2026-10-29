@@ -123,7 +123,7 @@ export function Root() {
           </PageReveal>
         )}
       </main>
-      {swReady && <UpdatePrompt />}
+      {swReady && !(window as unknown as { __llExp?: string[] }).__llExp?.includes('nosw') && <UpdatePrompt />}
       <RefractFilter />
       <div className="ll-safearea-probe" aria-hidden="true" />
     </LinkProvider>

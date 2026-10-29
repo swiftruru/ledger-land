@@ -5,7 +5,9 @@
 import { site } from '../../site.config.ts';
 
 export function attachManifestLink(): void {
-  if (!import.meta.env.PROD || typeof document === 'undefined') return;
+  // 實驗（launch-flash-experiments 分支）：不插 manifest，加入主畫面時 iOS 用當下的網址（含 /x-旗標/ 前綴）當 start_url
+  const LAUNCH_EXPERIMENT = true;
+  if (!import.meta.env.PROD || typeof document === 'undefined' || LAUNCH_EXPERIMENT) return;
   if (document.querySelector('link[rel="manifest"]')) return;
   const link = document.createElement('link');
   link.rel = 'manifest';

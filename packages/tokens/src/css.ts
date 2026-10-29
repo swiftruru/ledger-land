@@ -143,6 +143,7 @@ export function launchScreenStyle(): string {
     `html[data-display=app][data-theme=dark][data-flavor=berry] #ll-launch{background:${dark('berry')}}`,
     `html[data-display=app][data-theme=dark][data-flavor=wine] #ll-launch{background:${dark('wine')}}`,
     '#ll-launch[data-leave]{opacity:0;pointer-events:none}',
+    'html[data-exp~=nooverlay] #ll-launch{display:none}',
     // 選擇器要和上面顯示的那條一樣重（html[…] #ll-launch），寫在後面才蓋得過它的 transition
     '@media (prefers-reduced-motion:reduce){html[data-display=app] #ll-launch{transition:none}}',
     'html[data-motion=reduced] #ll-launch{transition:none}',

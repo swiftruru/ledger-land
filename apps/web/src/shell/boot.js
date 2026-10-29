@@ -16,6 +16,19 @@
     return window.matchMedia(q).matches;
   }
 
+  // 實驗（launch-flash-experiments 分支）：/x-<旗標>-<旗標>/ 當 start_url，旗標記在 data-exp，網址改回 /
+  var EXP = [];
+  var xm = /^\/x-([a-z-]+)\/?/.exec(location.pathname);
+  if (xm) {
+    EXP = xm[1].split('-');
+    root.dataset.exp = EXP.join(' ');
+    window.__llExp = EXP;
+    history.replaceState(history.state, '', '/' + location.search + location.hash);
+  }
+  var ENTRY_CSS = __LL_ENTRY_CSS__;
+  if (EXP.indexOf('block') >= 0 && ENTRY_CSS) {
+    document.write('<link rel="stylesheet" data-ll="entry-css" crossorigin href="' + ENTRY_CSS + '">');
+  }
   // 語系：網址為準。只有根路徑依已存偏好轉到 /en/（05 第 7.4 節第 3 點）
   var path = location.pathname;
   var rootRedirected = false;
