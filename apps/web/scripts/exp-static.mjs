@@ -109,12 +109,21 @@ writeFileSync(new URL('exp-m1.html', dist), mk('Exp M1', 'load'));
 writeFileSync(new URL('exp-m2.html', dist), mk('Exp M2', 'dcl'));
 // 第十七輪：H6 把 NekoServe 整個 App 放到這個預覽網域的根路徑（index.html、sw.js、manifest 都換成它的原版，主題不強制），只剩網域不同
 // ROOT 決定根路徑放什麼：'neko' 是 H6/H7（NekoServe 整個 App）；'ours-manifest' 是 R1（我們的 App，但 manifest 連結寫在 HTML 裡、不延後插入）
-const ROOT = 'ours-manifest';
+const ROOT = 'ours-r2';
 let nekoRoot = readFileSync(new URL('../scripts/exp-neko.html', import.meta.url), 'utf8').replace(/<script>\(function\(\)\{[^<]*cdn-cgi[^<]*<\/script>/, '');
 if (ROOT === 'neko') {
   writeFileSync(new URL('index.html', dist), nekoRoot);
   writeFileSync(new URL('sw.js', dist), readFileSync(new URL('../scripts/exp-neko-sw.js', import.meta.url), 'utf8'));
   writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify(nekoManifest));
+} else if (ROOT === 'ours-r2') {
+  // R2：R1 再一次改三件事：拿掉 App 內停留畫面、入口樣式表改回擋繪製（連結保留 data-ll，boot 載完照樣標 data-css）、啟動圖連結的 media 改成 NekoServe 的寫法
+  let r2 = html.replace('</head>', '    <link rel="manifest" href="/manifest.webmanifest">\n  </head>');
+  r2 = r2.replace(/<div id="ll-launch"[\s\S]*?<\/div><\/div>/, '');
+  r2 = r2.replace(/<link rel="preload" as="style" crossorigin href="([^"]+)">\s*<link rel="stylesheet" media="print" data-ll="entry-css" crossorigin href="\1">/, '<link rel="stylesheet" data-ll="entry-css" crossorigin href="$1">');
+  r2 = r2.replace(/<link rel="apple-touch-startup-image" media="screen and \(device-width: (\d+)px\) and \(-webkit-device-pixel-ratio: (\d+)\) and \(orientation: portrait\) and \(prefers-color-scheme: (light|dark)\)" href="(\/splash\/apple-splash-\3-(\d+)x(\d+)\.png)">/g, (m, w, dpr, scheme, href, pw, ph) => `<link rel="apple-touch-startup-image" media="screen and ${scheme === 'dark' ? '(prefers-color-scheme: dark) and ' : ''}(device-width: ${w}px) and (device-height: ${Number(ph) / Number(dpr)}px) and (-webkit-device-pixel-ratio: ${dpr}) and (orientation: portrait)" href="${href}">`);
+  if (r2.includes('id="ll-launch"') || !/<link rel="stylesheet" data-ll="entry-css" crossorigin/.test(r2) || /<link rel="stylesheet" media="print"/.test(r2) || !/apple-touch-startup-image" media="screen and \(prefers-color-scheme: dark\) and \(device-width/.test(r2) || !r2.includes('rel="manifest"')) throw new Error('exp-static: R2 的改寫沒有全部命中');
+  writeFileSync(new URL('index.html', dist), r2);
+  console.log('exp-static: 根路徑是我們的 App，R2（沒有停留畫面、擋繪製的樣式表、NekoServe 式啟動圖連結、HTML 裡的 manifest）');
 } else if (ROOT === 'ours-manifest') {
   const withManifest = html.replace('</head>', '    <link rel="manifest" href="/manifest.webmanifest">\n  </head>');
   if (!withManifest.includes('rel="manifest"')) throw new Error('exp-static: R1 的 manifest 連結沒插進去');

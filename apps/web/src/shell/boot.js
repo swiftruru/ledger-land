@@ -28,7 +28,8 @@
   }
   var ENTRY_CSS = __LL_ENTRY_CSS__;
   if (EXP.indexOf('block') >= 0 && ENTRY_CSS) {
-    document.write('<link rel="stylesheet" data-ll="entry-css" crossorigin href="' + ENTRY_CSS + '">');
+    // 屬性順序刻意和建置的連結不同，vite.config.ts 的 ll-entry-stylesheet-non-blocking 才不會把這段字串也當成樣式表連結改掉
+    document.write('<link data-ll="entry-css" rel="stylesheet" crossorigin href="' + ENTRY_CSS + '">');
   }
   // 第二輪（頁面以外的變因）：nosplash 拿掉全部 iOS 啟動圖、darkmeta 兩個 theme-color 都改成夜空色且不帶 media、noiw 的 viewport 不帶 interactive-widget
   if (EXP.indexOf('nosplash') >= 0) {
