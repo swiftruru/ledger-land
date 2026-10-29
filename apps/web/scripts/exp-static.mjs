@@ -126,7 +126,19 @@ if (ROOT === 'neko') {
   const ours = JSON.parse(readFileSync(new URL('manifest.webmanifest', dist), 'utf8'));
   delete ours.dir; delete ours.prefer_related_applications;
   writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify({ ...ours, display_override: ['standalone', 'minimal-ui'], orientation: 'any', categories: ['education', 'productivity'] }));
+  // R6：啟動圖換成 NekoServe 的 80 張（連結與圖都是它的，圖已鏡像到 dist）；R7：再拿掉 inline 樣式與 boot 腳本（VARIANT 決定）
+  const VARIANT = process.env.LL_EXP_VARIANT ?? 'r6';
+  if (VARIANT === 'r6' || VARIANT === 'r7') {
+    const nekoSplash = (nekoRoot.match(/<link rel="apple-touch-startup-image"[^>]*>/g) ?? []).join('\n    ');
+    r2 = r2.replace(/<link rel="apple-touch-startup-image"[^>]*>\s*/g, '').replace('</head>', '    ' + nekoSplash + '\n  </head>');
+    if ((r2.match(/<link rel="apple-touch-startup-image"/g) ?? []).length !== 80) throw new Error('exp-static: R6 的啟動圖連結不是 80 個');
+  }
+  if (VARIANT === 'r7') {
+    r2 = r2.replace(/<style>[\s\S]*?<\/style>/, '').replace(/<script data-ll="boot">[\s\S]*?<\/script>/, '');
+    if (r2.includes('<style>') || r2.includes('data-ll="boot"')) throw new Error('exp-static: R7 沒拿乾淨');
+  }
   writeFileSync(new URL('index.html', dist), r2);
+  console.log('exp-static: VARIANT ' + VARIANT);
   console.log('exp-static: 根路徑是我們的 App，R2（沒有停留畫面、擋繪製的樣式表、NekoServe 式啟動圖連結、HTML 裡的 manifest）');
 } else if (ROOT === 'ours-manifest') {
   const withManifest = html.replace('</head>', '    <link rel="manifest" href="/manifest.webmanifest">\n  </head>');
