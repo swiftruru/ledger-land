@@ -108,10 +108,19 @@ const mk = (name, when) => a.replace('<title>Exp A</title>', `<title>${name}</ti
 writeFileSync(new URL('exp-m1.html', dist), mk('Exp M1', 'load'));
 writeFileSync(new URL('exp-m2.html', dist), mk('Exp M2', 'dcl'));
 // 第十七輪：H6 把 NekoServe 整個 App 放到這個預覽網域的根路徑（index.html、sw.js、manifest 都換成它的原版，主題不強制），只剩網域不同
+// ROOT 決定根路徑放什麼：'neko' 是 H6/H7（NekoServe 整個 App）；'ours-manifest' 是 R1（我們的 App，但 manifest 連結寫在 HTML 裡、不延後插入）
+const ROOT = 'ours-manifest';
 let nekoRoot = readFileSync(new URL('../scripts/exp-neko.html', import.meta.url), 'utf8').replace(/<script>\(function\(\)\{[^<]*cdn-cgi[^<]*<\/script>/, '');
-writeFileSync(new URL('index.html', dist), nekoRoot);
-writeFileSync(new URL('sw.js', dist), readFileSync(new URL('../scripts/exp-neko-sw.js', import.meta.url), 'utf8'));
-writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify(nekoManifest));
+if (ROOT === 'neko') {
+  writeFileSync(new URL('index.html', dist), nekoRoot);
+  writeFileSync(new URL('sw.js', dist), readFileSync(new URL('../scripts/exp-neko-sw.js', import.meta.url), 'utf8'));
+  writeFileSync(new URL('manifest.webmanifest', dist), JSON.stringify(nekoManifest));
+} else if (ROOT === 'ours-manifest') {
+  const withManifest = html.replace('</head>', '    <link rel="manifest" href="/manifest.webmanifest">\n  </head>');
+  if (!withManifest.includes('rel="manifest"')) throw new Error('exp-static: R1 的 manifest 連結沒插進去');
+  writeFileSync(new URL('index.html', dist), withManifest);
+  console.log('exp-static: 根路徑是我們的 App 加 HTML 裡的 manifest 連結（R1）');
+}
 // 第十八輪：H7 補上 NekoServe 的 80 張啟動圖（它的 SW 不 precache 這些，所以之前沒抓；H6 在 iPhone 上因此沒有啟動圖，而且不閃）
 const splashHrefs = [...nekoRoot.matchAll(/<link rel="apple-touch-startup-image"[^>]*href="\/([^"]+)"/g)].map((m) => m[1]);
 let splashFetched = 0;
