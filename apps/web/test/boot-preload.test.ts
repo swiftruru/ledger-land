@@ -67,6 +67,48 @@ function runBoot(pathname: string, preload: unknown = PRELOAD): FakeLink[] {
   return links.map((l) => ({ rel: l.rel, as: l.as, href: l.href, crossOrigin: l.crossOrigin }));
 }
 
+/** 在假的瀏覽器環境執行 boot 腳本，回傳 html 的 dataset 與 window（玻璃閘門用；standalone 決定 display 模式） */
+function runBootGlass(standalone: boolean): { dataset: Record<string, string>; window: Record<string, unknown> } {
+  const mql = (q: string) => ({ matches: standalone && q === '(display-mode: standalone)', addEventListener() {} });
+  const documentElement = { dataset: {} as Record<string, string>, style: { setProperty() {} } as Record<string, unknown>, lang: '' };
+  const window: Record<string, unknown> = { matchMedia: mql };
+  const context = {
+    document: { documentElement, head: { appendChild() {} }, createElement: () => ({}), addEventListener() {}, querySelectorAll: () => [] },
+    window,
+    location: { pathname: '/', search: '', hash: '' },
+    history: { state: null, replaceState() {} },
+    localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
+    navigator: {},
+    CSS: { supports: () => true },
+    URLSearchParams,
+    RegExp,
+    String,
+    JSON,
+  };
+  runInNewContext(
+    boot.replaceAll('__LL_THEME_COLOR__', '{"light":"#fff","violet":"#000","berry":"#000","wine":"#000"}').replaceAll('__LL_PRELOAD__', 'null'),
+    context,
+  );
+  return { dataset: documentElement.dataset, window };
+}
+
+describe('boot 腳本的玻璃閘門（07 第 5.2 節；06 第 2.4 節第 7 點）', () => {
+  it('瀏覽器模式一開始就套用判斷出來的層級', () => {
+    const { dataset } = runBootGlass(false);
+    expect(dataset.display).toBe('browser');
+    expect(dataset.glass).toBe('frost');
+  });
+
+  it('App 模式先 solid，launch-screen 設 __llGlassReady 再呼叫 __llReapplyGlass 才開回 frost', () => {
+    const { dataset, window } = runBootGlass(true);
+    expect(dataset.display).toBe('app');
+    expect(dataset.glass).toBe('solid');
+    window.__llGlassReady = true;
+    (window.__llReapplyGlass as () => void)();
+    expect(dataset.glass).toBe('frost');
+  });
+});
+
 describe('boot 腳本的依路徑預先載入', () => {
   it('作答頁：目前語言的 catalog、頁面 chunk 用 modulepreload；所屬章節的章節包與名詞索引用 preload as=fetch 加 crossorigin', () => {
     expect(runBoot('/level/lv_h2zx7srx/')).toEqual([

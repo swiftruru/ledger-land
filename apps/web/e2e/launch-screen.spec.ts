@@ -64,7 +64,13 @@ test.describe('啟動畫面：App 模式', () => {
       return 'covers';
     });
     expect(covers === 'covers' || covers === 'gone', covers).toBe(true);
+    // 玻璃在交接後才開（06 第 2.4 節第 7 點）：停留畫面還在時 Tab bar 是 solid，離場後回到 frost 或 refract
+    const glassDuring = await page.evaluate(() =>
+      document.getElementById('ll-launch')?.dataset.leave === undefined ? document.documentElement.dataset.glass : 'gone',
+    );
+    expect(glassDuring === 'solid' || glassDuring === 'gone', glassDuring).toBe(true);
     await expect(launch).toHaveCount(0, { timeout: 8000 });
+    await expect(page.locator('html')).not.toHaveAttribute('data-glass', 'solid');
     const log = await readLog(page);
     expect(log.displayAtFirst).toBe('block');
     expect(log.leave).toBe(true);

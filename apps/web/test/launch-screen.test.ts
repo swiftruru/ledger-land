@@ -56,6 +56,35 @@ describe('launch-screen', () => {
     vi.unstubAllGlobals();
   });
 
+  it('玻璃在停留畫面離場時才開（06 第 2.4 節第 7 點）：App 模式離場前沒有 __llGlassReady，離場時設好並呼叫 __llReapplyGlass 一次', async () => {
+    const node = setup({ display: 'app' });
+    const reapply = vi.fn<() => void>();
+    (globalThis as unknown as { window: Record<string, unknown> }).window.__llReapplyGlass = reapply;
+    const m = await load();
+    m.armLaunchScreen();
+    vi.advanceTimersByTime(1000);
+    expect((globalThis as unknown as { window: Record<string, unknown> }).window.__llGlassReady).toBeUndefined();
+    expect(reapply).not.toHaveBeenCalled();
+    m.dismissLaunchScreen();
+    vi.advanceTimersByTime(502);
+    expect(node.dataset.leave).toBe('');
+    expect((globalThis as unknown as { window: Record<string, unknown> }).window.__llGlassReady).toBe(true);
+    expect(reapply).toHaveBeenCalledTimes(1);
+    node.listeners.transitionend?.();
+    expect(reapply).toHaveBeenCalledTimes(1);
+  });
+
+  it('減少動態直接移除時也會開玻璃', async () => {
+    setup({ display: 'app', reduce: true });
+    const reapply = vi.fn<() => void>();
+    (globalThis as unknown as { window: Record<string, unknown> }).window.__llReapplyGlass = reapply;
+    const m = await load();
+    m.armLaunchScreen();
+    m.dismissLaunchScreen();
+    vi.advanceTimersByTime(1502);
+    expect(reapply).toHaveBeenCalledTimes(1);
+  });
+
   it('瀏覽器模式：arm 就直接移除', async () => {
     const node = setup({ display: 'browser' });
     const m = await load();

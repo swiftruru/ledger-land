@@ -99,6 +99,8 @@ test.describe('殼層與深層連結（10 M0b 完成標準）', () => {
     await page.goto('/');
     await waitForApp(page);
     await expect(page.locator('html')).toHaveAttribute('data-css', '1');
+    // 瀏覽器分頁沒有啟動圖的交接，玻璃一開始就套用（App 模式才延後，launch-screen.spec）
+    await expect(page.locator('html')).not.toHaveAttribute('data-glass', 'solid');
     await expect(page.locator('link[data-ll="entry-css"]')).toHaveAttribute('media', 'all');
     await expect(page.locator('#ll-tabbar')).toBeVisible();
   });

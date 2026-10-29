@@ -3,6 +3,13 @@
 // 系統啟動圖只閃一下，沒有記憶點），而且要等第一頁的資料齊了（PageReveal 掀開布幕）才淡出，不會露出空的殼層。
 // 重新整理（更新提示的「重新整理」、重試按鈕）不算冷啟動，不等 1.5 秒；頁面一直沒掀開時 4 秒上限移除，壞掉的頁面不會被蓋住。
 // 減少動態：沒有轉場，直接移除。這個模組不 import 任何東西（在首次載入的 chunk 裡，/en/ 的預算只剩約 1 KB）。
+declare global {
+  interface Window {
+    __llGlassReady?: boolean;
+    __llReapplyGlass?: () => void;
+  }
+}
+
 const HOLD_MS = 1500;
 const CAP_MS = 4000;
 const FADE_FALLBACK_MS = 400;
@@ -15,10 +22,18 @@ function node(): HTMLElement | null {
   return document.getElementById('ll-launch');
 }
 
+/** 系統啟動圖換到 App 畫面的交接已經過了，boot 腳本在 App 模式先壓成 solid 的玻璃可以開回來（06 第 2.4 節第 7 點） */
+function enableGlass(): void {
+  if (window.__llGlassReady) return;
+  window.__llGlassReady = true;
+  window.__llReapplyGlass?.();
+}
+
 function remove(): void {
   if (done) return;
   done = true;
   clearTimeout(timer);
+  enableGlass();
   node()?.remove();
 }
 
@@ -35,6 +50,8 @@ function leave(): void {
     return;
   }
   clearTimeout(timer);
+  // 玻璃在覆蓋層淡出時開回來：這時交接早就結束，而且覆蓋層還蓋著 Tab bar，看不到切換
+  enableGlass();
   el.addEventListener('transitionend', remove, { once: true });
   el.dataset.leave = '';
   timer = window.setTimeout(remove, FADE_FALLBACK_MS);

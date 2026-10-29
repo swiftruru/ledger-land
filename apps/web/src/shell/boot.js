@@ -178,8 +178,11 @@
     if (chromium && (pref === 'refract' || (pref === null && uad.mobile === false))) return 'refract';
     return 'frost';
   }
+  // 主畫面 App 的冷啟動：系統啟動圖換到 App 畫面的那一格如果有 backdrop-filter 的圖層（Tab bar 的玻璃），iOS 會先露出一格白的視窗底
+  // （2026-10-29 iPhone 實機，二十九輪對照實驗定案，06 第 2.4 節第 7 點）。所以 App 模式先給 solid，等 launch-screen.ts 在停留畫面離場時
+  // 設 __llGlassReady 再呼叫 __llReapplyGlass 開回原本的層級；瀏覽器分頁沒有這個交接，照舊一開始就套用
   function apply() {
-    root.dataset.glass = resolveGlass();
+    root.dataset.glass = root.dataset.display === 'app' && !window.__llGlassReady ? 'solid' : resolveGlass();
   }
   apply();
   ['(prefers-reduced-transparency: reduce)', '(prefers-contrast: more)', '(forced-colors: active)'].forEach(function (q) {

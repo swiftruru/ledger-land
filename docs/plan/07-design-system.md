@@ -420,6 +420,8 @@ html[data-motion="reduced"] { --ll-dur-fast: 0ms; --ll-dur-base: 120ms; --ll-dur
 
 已決定（2026-10-20）：閘門腳本與 Tab bar 的玻璃樣式屬於 `apps/web` 的殼層，不放進 `packages/web-ui` 或 `packages/tokens`；其他玻璃元件（例如實驗室的浮動步驟控制列，6.8）的樣式在 `packages/web-ui`。以下的判斷流程與樣式不變。
 
+已決定（2026-10-29）：**主畫面 App 的冷啟動先不開玻璃**。iOS 把系統啟動圖換成 App 畫面時，第一格裡若有 backdrop-filter 的圖層會先露出一格白的視窗底（06 第 2.4 節第 7 點，實機對照定案）。所以閘門在 `html[data-display=app]` 時先寫 `data-glass=solid`，等停留畫面離場（`launch-screen.ts`，導覽後至少 1.5 秒、覆蓋層還蓋著 Tab bar）才設 `window.__llGlassReady` 並呼叫 `__llReapplyGlass()` 套用判斷出來的層級；瀏覽器分頁沒有這個交接，一開始就套用。判斷流程本身不變，使用者看不到切換（覆蓋層蓋著）。
+
 ```js
 (function () {
   var root = document.documentElement;
