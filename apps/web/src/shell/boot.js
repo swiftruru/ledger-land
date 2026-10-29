@@ -184,8 +184,8 @@
   }
 
   var darkMq = window.matchMedia('(prefers-color-scheme: dark)');
-  // 實驗 R11：主題與玻璃這兩段整段不跑（window.__llExpHalfB 永遠沒設），看閃的來源在不在這裡
-  if (window.__llExpHalfB) {
+  // 實驗 R12：主題這段照跑
+  {
     // 主題（16 第 7 節）：ll:theme 為 system、light、dark（預設 system）；ll:dark-flavor 為 violet、berry、wine（預設 violet）。
     // 色碼由 packages/tokens 在建置時填入（vite.config.ts 的殼層外掛會把下一行的佔位換成色碼）
     var THEME_COLOR = __LL_THEME_COLOR__;
@@ -228,6 +228,9 @@
     darkMq.addEventListener('change', applyTheme);
     window.__llApplyTheme = applyTheme;
 
+  }
+  // 實驗 R12：主題那段照跑（上面），玻璃這段不跑
+  if (window.__llExpHalfB) {
     // 玻璃閘門（07 第 5.2 節）
     var LEGACY_SAFARI_SOLID = false;
     var unprefixed = CSS.supports('backdrop-filter', 'blur(1px)');
