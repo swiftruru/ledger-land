@@ -147,7 +147,7 @@ if (ROOT === 'neko') {
   if (VARIANT === 'r7' || VARIANT === 'r8') r2 = r2.replace(/<script data-ll="boot">[\s\S]*?<\/script>/, '');
   if (VARIANT === 'r7' && (r2.includes('<style>') || r2.includes('data-ll="boot"'))) throw new Error('exp-static: R7 沒拿乾淨');
   // T 系列：在 R8（沒有 boot、內容永遠藏著、0/5 不閃）之上，用一支外部腳本在 T 毫秒後把 data-css 標上讓內容出現，找出交接的時間窗
-  const T = process.env.LL_EXP_T ?? '300';
+  const T = process.env.LL_EXP_T ?? '1000';
   if (VARIANT === 'r8' && T !== 'off') {
     writeFileSync(new URL('exp-t.js', dist), `(function(){function show(){document.documentElement.dataset.css='1';}var t=${Number(T)};if(t<=0)show();else setTimeout(show,t);})();`);
     r2 = r2.replace('</head>', '    <script src="/exp-t.js"></script>\n  </head>');
