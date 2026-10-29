@@ -183,81 +183,84 @@
     if (gap > 0 && gap < 160) root.style.setProperty('--ll-launch-top', gap + 'px');
   }
 
-  // 主題（16 第 7 節）：ll:theme 為 system、light、dark（預設 system）；ll:dark-flavor 為 violet、berry、wine（預設 violet）。
-  // 色碼由 packages/tokens 在建置時填入（vite.config.ts 的殼層外掛會把下一行的佔位換成色碼）
   var darkMq = window.matchMedia('(prefers-color-scheme: dark)');
-  var THEME_COLOR = __LL_THEME_COLOR__;
-  function themePref() {
-    var v = read('ll:theme');
-    return v === 'light' || v === 'dark' ? v : 'system';
-  }
-  function flavorPref() {
-    var v = read('ll:dark-flavor');
-    return v === 'berry' || v === 'wine' ? v : 'violet';
-  }
-  function applyTheme() {
-    var pref = themePref();
-    var flavor = flavorPref();
-    var theme = pref === 'system' ? (darkMq.matches ? 'dark' : 'light') : pref;
-    root.dataset.theme = theme;
-    root.dataset.flavor = flavor;
-    root.style.colorScheme = theme;
-    // 跟隨系統時兩個 meta 依 media 各自取值；手動指定時兩個都改成目前主題的值（06 第 2.4 節第 1 點）
-    // 實驗 R10：boot 完全不碰 theme-color meta
-    var metas = [];
-    for (var i = 0; i < metas.length; i++) {
-      var isDarkMeta = (metas[i].getAttribute('media') || '').indexOf('dark') >= 0;
-      var useDark = pref === 'system' ? isDarkMeta : theme === 'dark';
-      metas[i].setAttribute('content', useDark ? THEME_COLOR[flavor] : THEME_COLOR.light);
+  // 實驗 R11：主題與玻璃這兩段整段不跑（window.__llExpHalfB 永遠沒設），看閃的來源在不在這裡
+  if (window.__llExpHalfB) {
+    // 主題（16 第 7 節）：ll:theme 為 system、light、dark（預設 system）；ll:dark-flavor 為 violet、berry、wine（預設 violet）。
+    // 色碼由 packages/tokens 在建置時填入（vite.config.ts 的殼層外掛會把下一行的佔位換成色碼）
+    var THEME_COLOR = __LL_THEME_COLOR__;
+    function themePref() {
+      var v = read('ll:theme');
+      return v === 'light' || v === 'dark' ? v : 'system';
     }
-  }
-  // 測試用：網址帶 ?ll-theme=system|light|dark 與 ?ll-flavor=violet|berry|wine 時先寫入同樣的兩個 key（axe 與截圖矩陣用，對使用者無害）
-  try {
-    var params = new URLSearchParams(location.search);
-    var qt = params.get('ll-theme');
-    var qf = params.get('ll-flavor');
-    if (qt === 'system') localStorage.removeItem('ll:theme');
-    else if (qt === 'light' || qt === 'dark') localStorage.setItem('ll:theme', qt);
-    if (qf === 'violet' || qf === 'berry' || qf === 'wine') localStorage.setItem('ll:dark-flavor', qf);
-  } catch (e) {
-    /* 本機儲存不可用時忽略 */
-  }
-  applyTheme();
-  darkMq.addEventListener('change', applyTheme);
-  window.__llApplyTheme = applyTheme;
+    function flavorPref() {
+      var v = read('ll:dark-flavor');
+      return v === 'berry' || v === 'wine' ? v : 'violet';
+    }
+    function applyTheme() {
+      var pref = themePref();
+      var flavor = flavorPref();
+      var theme = pref === 'system' ? (darkMq.matches ? 'dark' : 'light') : pref;
+      root.dataset.theme = theme;
+      root.dataset.flavor = flavor;
+      root.style.colorScheme = theme;
+      // 跟隨系統時兩個 meta 依 media 各自取值；手動指定時兩個都改成目前主題的值（06 第 2.4 節第 1 點）
+      // 實驗 R10：boot 完全不碰 theme-color meta
+      var metas = [];
+      for (var i = 0; i < metas.length; i++) {
+        var isDarkMeta = (metas[i].getAttribute('media') || '').indexOf('dark') >= 0;
+        var useDark = pref === 'system' ? isDarkMeta : theme === 'dark';
+        metas[i].setAttribute('content', useDark ? THEME_COLOR[flavor] : THEME_COLOR.light);
+      }
+    }
+    // 測試用：網址帶 ?ll-theme=system|light|dark 與 ?ll-flavor=violet|berry|wine 時先寫入同樣的兩個 key（axe 與截圖矩陣用，對使用者無害）
+    try {
+      var params = new URLSearchParams(location.search);
+      var qt = params.get('ll-theme');
+      var qf = params.get('ll-flavor');
+      if (qt === 'system') localStorage.removeItem('ll:theme');
+      else if (qt === 'light' || qt === 'dark') localStorage.setItem('ll:theme', qt);
+      if (qf === 'violet' || qf === 'berry' || qf === 'wine') localStorage.setItem('ll:dark-flavor', qf);
+    } catch (e) {
+      /* 本機儲存不可用時忽略 */
+    }
+    applyTheme();
+    darkMq.addEventListener('change', applyTheme);
+    window.__llApplyTheme = applyTheme;
 
-  // 玻璃閘門（07 第 5.2 節）
-  var LEGACY_SAFARI_SOLID = false;
-  var unprefixed = CSS.supports('backdrop-filter', 'blur(1px)');
-  var prefixed = CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
-  var legacy = !unprefixed && prefixed;
-  root.dataset.glassLegacy = legacy ? 'true' : 'false';
-  function resolveGlass() {
-    if (EXP.indexOf('noglass') >= 0) return 'solid';
-    var pref = read('ll:transparency');
-    if (pref === 'reduced') return 'solid';
-    if (mq('(prefers-reduced-transparency: reduce)') || mq('(prefers-contrast: more)') || mq('(forced-colors: active)')) return 'solid';
-    if (!unprefixed && !prefixed) return 'solid';
-    if (legacy && LEGACY_SAFARI_SOLID) return 'solid';
-    var uad = navigator.userAgentData;
-    var chromium = !!(
-      uad &&
-      uad.brands &&
-      uad.brands.some(function (b) {
-        return b.brand === 'Chromium';
-      })
-    );
-    if (chromium && (pref === 'refract' || (pref === null && uad.mobile === false))) return 'refract';
-    return 'frost';
+    // 玻璃閘門（07 第 5.2 節）
+    var LEGACY_SAFARI_SOLID = false;
+    var unprefixed = CSS.supports('backdrop-filter', 'blur(1px)');
+    var prefixed = CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
+    var legacy = !unprefixed && prefixed;
+    root.dataset.glassLegacy = legacy ? 'true' : 'false';
+    function resolveGlass() {
+      if (EXP.indexOf('noglass') >= 0) return 'solid';
+      var pref = read('ll:transparency');
+      if (pref === 'reduced') return 'solid';
+      if (mq('(prefers-reduced-transparency: reduce)') || mq('(prefers-contrast: more)') || mq('(forced-colors: active)')) return 'solid';
+      if (!unprefixed && !prefixed) return 'solid';
+      if (legacy && LEGACY_SAFARI_SOLID) return 'solid';
+      var uad = navigator.userAgentData;
+      var chromium = !!(
+        uad &&
+        uad.brands &&
+        uad.brands.some(function (b) {
+          return b.brand === 'Chromium';
+        })
+      );
+      if (chromium && (pref === 'refract' || (pref === null && uad.mobile === false))) return 'refract';
+      return 'frost';
+    }
+    function apply() {
+      root.dataset.glass = resolveGlass();
+    }
+    apply();
+    ['(prefers-reduced-transparency: reduce)', '(prefers-contrast: more)', '(forced-colors: active)'].forEach(function (q) {
+      window.matchMedia(q).addEventListener('change', apply);
+    });
+    window.__llReapplyGlass = apply;
   }
-  function apply() {
-    root.dataset.glass = resolveGlass();
-  }
-  apply();
-  ['(prefers-reduced-transparency: reduce)', '(prefers-contrast: more)', '(forced-colors: active)'].forEach(function (q) {
-    window.matchMedia(q).addEventListener('change', apply);
-  });
-  window.__llReapplyGlass = apply;
   window.__llBoot = {
     displayMode: dm,
     unprefixedBackdrop: unprefixed,
