@@ -66,7 +66,7 @@ writeFileSync(new URL('exp-l.html', dist), a.replace('<title>Exp A</title>', '<t
 let neko2 = readFileSync(new URL('../scripts/exp-neko.html', import.meta.url), 'utf8');
 neko2 = neko2.replace(/(href|src)="\/(?!manifest\.webmanifest)/g, '$1="https://nekoserve.swift.moe/');
 neko2 = neko2.replace('href="/manifest.webmanifest"', 'href="/manifest-exp-h2.webmanifest"');
-neko2 = neko2.replace('<script src="https://nekoserve.swift.moe/theme-init.js"></script>', '<script>try{localStorage.setItem("nekoserve:theme","dark")}catch(e){};if(navigator.serviceWorker)navigator.serviceWorker.register=function(){return Promise.reject(new Error("exp: no sw"))};</script><script src="https://nekoserve.swift.moe/theme-init.js"></script>');
+neko2 = neko2.replace('<script src="https://nekoserve.swift.moe/theme-init.js"></script>', '<script>try{localStorage.setItem("nekoserve:theme","dark")}catch(e){};if(navigator.serviceWorker)navigator.serviceWorker.register=function(){return Promise.reject(new Error("exp: no sw"))};history.pushState=function(){};history.replaceState=function(){};</script><script src="https://nekoserve.swift.moe/theme-init.js"></script>');
 writeFileSync(new URL('exp-h2.html', dist), neko2);
 writeFileSync(new URL('manifest-exp-h2.webmanifest', dist), JSON.stringify({ ...g, name: 'Exp H2', short_name: 'Exp H2', start_url: '/exp-h2.html' }));
 const headersPath = new URL('_headers', dist);
