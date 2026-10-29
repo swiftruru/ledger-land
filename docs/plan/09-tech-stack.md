@@ -130,7 +130,7 @@
 | 建置 | Vite 8 | 8.3.3（M0b 釘版；8.3.4 於 2026-10-08 發布，M0b 開工時未滿兩週） | Rolldown 加 Oxc；8.3.3 修補了 2026-10-06 公布的三則 dev server 安全公告 | Vite 7.3.7（只修重要與安全問題的版線） |
 | 路由 | React Router 8（`react-router`）的 data mode（已決定 D5） | 8.4.0（2026-09-15） | `createBrowserRouter` 加 lazy route；中文在根路徑、英文在 `/en/`；v8 已移除 `react-router-dom`，一律從 `react-router` 與 `react-router/dom` 匯入，只出 ESM | 8.5.0（2026-10-19，未滿兩週）；framework mode 加 prerender（日後再評估，見第 3.3 節）；TanStack Router（見第 4 節） |
 | React 外掛 | `@vitejs/plugin-react` | 6.1.2（2026-10-05） | v6 起不依賴 Babel，改用 Oxc 處理 React Refresh | `reactRouter()` 外掛（只在日後改用 framework mode 時使用） |
-| PWA | vite-plugin-pwa，generateSW，`registerType: 'prompt'` | 2.0.0（2026-10-03） | 官方 Vite 整合；不自動 skipWaiting 的更新流程 | injectManifest（需要自訂 SW 邏輯時）；workbox-build 7.4.1（2026-05-04，只在日後改用 framework mode 時需要，見第 3.3 節） |
+| PWA | vite-plugin-pwa，injectManifest 加自寫的 `apps/web/src/sw.ts`（2026-10-29 起；之前是 generateSW），`registerType: 'prompt'`；`workbox-precaching` 與 `workbox-routing` 釘 7.4.1 | 2.0.0（2026-10-03） | 官方 Vite 整合；不自動 skipWaiting 的更新流程；install 並行抓 precache（generateSW 做不到，06 第 3.1、3.2 節） | workbox-build 7.4.1（2026-05-04，只在日後改用 framework mode 時需要，見第 3.3 節） |
 | CSS 前綴 | Lightning CSS 或 PostCSS 加 Autoprefixer，依 browserslist 補前綴（已決定 D8） | 未查證，M0a 選定 | browserslist 納入 iOS 17，自動補 `-webkit-backdrop-filter`（第 6.8 節） | 手寫前綴（容易漏，不採用） |
 | 圖示產生 | @vite-pwa/assets-generator | 2.0.0（2026-09-12） | 只用過一次，產生占位圖示與 Apple 啟動畫面；2026-10-28 起 App 圖示從插圖原圖手動縮成各尺寸（06 第 2.2 節） | 手動產生 |
 | 介面字串 | Lingui（`@lingui/core`、`@lingui/react`、`@lingui/cli`、`@lingui/vite-plugin`） | 6.9.0（2026-10-01） | runtime 約 2.03 kB 加 1.24 kB（gzip）；ICU 複數、PO catalog、抽取與缺字檢查、依語系動態載入 | Paraglide JS 2、i18next 26、react-intl 12（見第 6 節） |
@@ -351,26 +351,24 @@ pnpm 的 store 放在 repo 內的 `.pnpm-store/`（第 7.5 節）時，CI 快取
   - 緊接在 `nav` 之後的 inline 殼層在地化腳本：英文網址（`/en/` 開頭）時，在首次繪製前把 Tab bar 的標籤、`href` 與 `aria-label` 換成英文，並標出 `aria-current`（「跳到主要內容」連結的文字也一起改寫，見 06 第 2.3 節）；和 boot 腳本一樣由建置腳本產生，雜湊納入 CSP（第 11.1 節）。
   - `index.html` 裡任何元素（包括靜態 Tab bar 的標記）都不得有 `style` 屬性（第 11.1 節）。Tab bar 在 React 根節點之外，換頁時不會被重新建立，預期換頁後玻璃效果都能維持（M0a 在 iOS 17 實機上確認）。
 - Lingui catalog：依網址的語系載入；en catalog 只在 `/en/` 開頭的網址或切換到英文時才動態載入，並和其他 chunk 一起進 precache，離線時也能切換語言。
-- SW：vite-plugin-pwa 2.0.0 的 generateSW。generateSW 在不 skipWaiting 時，會自動內建 `SKIP_WAITING` 訊息的監聽。
+- SW：vite-plugin-pwa 2.0.0 的 injectManifest 加自寫的 `apps/web/src/sw.ts`（2026-10-29 起；之前是 generateSW，它在不 skipWaiting 時會自動內建 `SKIP_WAITING` 訊息的監聽，現在這段寫在 `sw.ts`）。改用的原因與 `sw.ts` 的骨架見 06 第 3.1 節，並行抓 precache 的規則見 06 第 3.2 節。
 
 ```ts
 import { VitePWA } from "vite-plugin-pwa";
 
 export const pwa = VitePWA({
-  strategies: "generateSW",
+  strategies: "injectManifest",
+  srcDir: "src",
+  filename: "sw.ts", // 輸出與註冊的網址仍是 sw.js
   registerType: "prompt",
   injectRegister: false,
-  filename: "sw.js",
-  workbox: {
-    navigateFallback: "index.html",
-    navigateFallbackDenylist: [/^\/assets\//, /^\/sw\.js$/],
-    globPatterns: ["**/*.{html,js,css,woff2,svg,png,webmanifest,json}"],
-    cleanupOutdatedCaches: true
+  injectManifest: {
+    globPatterns: ["**/*.{html,js,css,woff2,svg,png,json}"]
   }
 });
 ```
 
-（`injectRegister: false` 表示由程式碼透過 `virtual:pwa-register/react` 的 `useRegisterSW` 註冊，好控制更新提示的時機。base path 已定為 `/`，fallback 與 denylist 不必再加前綴；中文與英文的導覽請求都由同一份 `index.html` 回應。D7 的統計腳本在其他網域，generateSW 預設不處理跨來源請求，也不放進 `globPatterns`，所以不會進 precache。）
+（`injectRegister: false` 表示由程式碼透過 `virtual:pwa-register/react` 的 `useRegisterSW` 註冊，好控制更新提示的時機。導覽 fallback 與 denylist、`cleanupOutdatedCaches`、SKIP_WAITING 都寫在 `sw.ts`；base path 已定為 `/`，fallback 與 denylist 不必再加前綴；中文與英文的導覽請求都由同一份 `index.html` 回應。D7 的統計腳本在其他網域，不放進 `globPatterns`，`sw.ts` 也沒有任何跨來源的路由，所以不會進 precache。）
 
 - 主機 fallback：`index.html` 本來就是通用殼層。Cloudflare Workers 的 SPA fallback 對沒有對應檔案的路徑（包括 `/en/` 開頭的深層連結）都回傳它，狀態碼 200（第 7.3 節）。本案沒有語言選擇頁，不會發生 fallback 回傳語言選擇頁的問題。
 - 結尾斜線：所有站內連結都帶結尾斜線（路由格式見 [02 網站架構](02-site-architecture.md)）。Workers 的 `html_handling` 自 2026-10-28 起設 `none`（原本的 `auto-trailing-slash` 會把 `/index.html` 轉到 `/`，讓 Safari 在 SW 更新後的第一次導覽失敗，06 第 3.3 節）；本案只有 `index.html` 一個實際的 HTML 檔，經由 SPA fallback 開啟、沒有結尾斜線的網址，由路由在用戶端以 `replace` 補上斜線（M0a 確認）。CI 檢查站內連結都有結尾斜線。

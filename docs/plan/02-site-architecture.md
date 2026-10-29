@@ -118,7 +118,7 @@
 ### 1.3 不預先產生 HTML，以及收錄與分享預覽（已決定 D5）
 
 - **殼層與 fallback**：建置輸出只有一份殼層 `index.html`，加上帶 hash 的 assets 與內容 JSON。Cloudflare Workers Static Assets 設 `not_found_handling = "single-page-application"`（設定檔是 `apps/web/wrangler.jsonc`），任何沒有對應檔案的導覽請求（例如 `/level/lv_k7m2q9xd/`、`/en/terms/tm_n7v3k8pq/`）都回傳這份殼層並給 200。殼層就是網站本身，不是語言選擇頁；本案沒有語言選擇頁，所以 fallback 不會、也不得回傳語言選擇頁。主機設定細節見 [09 技術選擇](09-tech-stack.md)。
-- **離線**：Service Worker 由 vite-plugin-pwa 的 generateSW 產生，離線導覽的 fallback 是 `index.html`；precache 包含殼層、JS、CSS、兩種語言的 Lingui catalog 與內容快照，沒有逐頁 HTML 或 `.data`，所以名詞頁的數量不影響預先快取的體積。中文與英文網址離線時都能開啟，也能離線切換語言。快取策略見 06。
+- **離線**：Service Worker 由 vite-plugin-pwa 的 injectManifest 加自寫的 `apps/web/src/sw.ts` 產生（2026-10-29 起，之前是 generateSW；06 第 3.1 節），離線導覽的 fallback 是 `index.html`；precache 包含殼層、JS、CSS、兩種語言的 Lingui catalog 與內容快照，沒有逐頁 HTML 或 `.data`，所以名詞頁的數量不影響預先快取的體積。中文與英文網址離線時都能開啟，也能離線切換語言。快取策略見 06。
 - **`html lang`**：殼層寫 `lang="zh-TW"`，boot 腳本在第一次繪製前依路徑改成正確值（`/en/` 開頭為 `en`），經由 SPA fallback 開啟的英文深層連結也一樣（05 第 9.1 節）。
 - **收錄**：初始 HTML 只有殼層，搜尋引擎要執行 JavaScript 才看得到內容。hreflang 以建置時產生的 `sitemap.xml` 為主：上表「列入 sitemap」的頁面，中文與英文網址各一筆，互相列為 `xhtml:link` 的 alternate，x-default 指向中文網址（05 第 9.3 節）。頁面渲染後，用戶端也在 head 寫入 canonical 與 hreflang 的 `<link>`，但不依賴它。「不列入」的頁面不放進 sitemap，設 `noindex` 的頁面由用戶端在 head 加上 `<meta name="robots" content="noindex">`。**還沒做（既有缺口，2026-10-26 M3 回報時發現）**：建置時產生 `sitemap.xml` 這一步從 M0b 起都沒有實作，目前只有用戶端寫入的 canonical、hreflang 與 `noindex`；網站本身不受影響，只影響搜尋收錄。做法照本節（建置後依 content-manifest 列出「列入 sitemap」的頁面，中英網址互列）；排程由我決定，我建議在 M4a 開工時順手補上（只是建置後的一支腳本），最晚在 M8 公開上線前（14 第 5.2 節）。
 - **分享預覽**：LINE 與社群網站產生預覽時通常不執行 JavaScript，所以所有頁面共用殼層裡同一組 og 標籤（站名與描述），中文與英文網址也相同。分享預覽暫時不顯示關卡或名詞的名稱。

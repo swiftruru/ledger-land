@@ -46,9 +46,11 @@ if (html.includes(PRELOAD_PLACEHOLDER)) {
       const swPath = join(dist, 'sw.js');
       const md5 = (t) => createHash('md5').update(t, 'utf8').digest('hex');
       const swText = readFileSync(swPath, 'utf8');
-      const oldRev = `{url:"index.html",revision:"${md5(before)}"}`;
-      if (!swText.includes(oldRev)) fail('sw.js 找不到 index.html 的 precache revision（格式改了？），無法同步更新');
-      else writeFileSync(swPath, swText.replace(oldRev, `{url:"index.html",revision:"${md5(html)}"}`));
+      // 清單項目的寫法：injectManifest 注入的是 JSON（鍵名排序，{"revision":"…","url":"index.html"}）；generateSW 壓縮後是 {url:"…",revision:"…"}，兩種都認
+      const entries = swText.match(/\{"?(?:url|revision)"?:"[^"]*","?(?:url|revision)"?:"[^"]*"\}/g) ?? [];
+      const oldEntry = entries.find((e) => e.includes('"index.html"') && e.includes(`"${md5(before)}"`));
+      if (!oldEntry) fail('sw.js 找不到 index.html 的 precache revision（格式改了？），無法同步更新');
+      else writeFileSync(swPath, swText.replace(oldEntry, oldEntry.replace(md5(before), md5(html))));
       preloadSummary = { assets: table.a.length, routes: table.r.length, bytes: JSON.stringify(table).length };
     } catch (e) {
       fail(`依路徑預先載入的表：${e instanceof Error ? e.message : String(e)}`);
