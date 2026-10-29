@@ -76,7 +76,7 @@
   if (EXP.indexOf('manifest') >= 0) {
     var ml = document.createElement('link');
     ml.rel = 'manifest';
-    ml.href = '/manifest-exp.webmanifest';
+    ml.href = '/manifest-exp-' + xm[1] + '.webmanifest';
     document.head.appendChild(ml);
   }
   if (EXP.indexOf('noiw') >= 0) {
