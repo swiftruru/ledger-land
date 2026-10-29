@@ -98,7 +98,9 @@
   // 和殼層入口 chunk 同時開始下載，不必等入口執行完、路由解析完才一層一層發請求。表格由 tools/postbuild.mjs 在建置後填入
   // （tools/lib/preload-table.mjs，路由表在 src/shell/route-preload.json）；開發模式與沒有表格時是 null，什麼都不做。
   // 內容快照用 as=fetch 加 crossorigin，和 lib/content.ts 的 fetch() 同一組 mode 與 credentials 才會被重用。
-  var PRELOAD = __LL_PRELOAD__;
+  // 實驗 R3：boot 不加任何預先載入的連結（正式版一開機就加約 40 個 preload，全部同時打到 Service Worker）
+  window.__llPreloadTable = __LL_PRELOAD__;
+  var PRELOAD = null;
   if (PRELOAD) {
     try {
       var lang = root.lang;
