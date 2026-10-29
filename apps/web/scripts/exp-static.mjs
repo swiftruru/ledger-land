@@ -44,6 +44,7 @@ let nekoHtml = readFileSync(new URL('../scripts/exp-neko.html', import.meta.url)
 nekoHtml = nekoHtml.replace(/<script type="module"[^>]*><\/script>/g, '').replace(/<link rel="modulepreload"[^>]*>/g, '');
 nekoHtml = nekoHtml.replace(/(href|src)="\/(?!manifest\.webmanifest)/g, '$1="https://nekoserve.swift.moe/');
 nekoHtml = nekoHtml.replace('href="/manifest.webmanifest"', 'href="/manifest-exp-h.webmanifest"');
+nekoHtml = nekoHtml.replace('<script src="https://nekoserve.swift.moe/theme-init.js"></script>', '<script>try{localStorage.setItem("nekoserve:theme","dark")}catch(e){}</script><script src="https://nekoserve.swift.moe/theme-init.js"></script>');
 nekoHtml = nekoHtml.replace('<div id="root"></div>', '<div id="root"><p>靜態頁 H：NekoServe 的 HTML 搬到我們的網域。</p></div>');
 writeFileSync(new URL('exp-h.html', dist), nekoHtml);
 writeFileSync(new URL('manifest-exp-h.webmanifest', dist), JSON.stringify({ ...g, name: 'Exp H', short_name: 'Exp H', start_url: '/exp-h.html' }));
