@@ -29,6 +29,23 @@
   if (EXP.indexOf('block') >= 0 && ENTRY_CSS) {
     document.write('<link rel="stylesheet" data-ll="entry-css" crossorigin href="' + ENTRY_CSS + '">');
   }
+  // 第二輪（頁面以外的變因）：nosplash 拿掉全部 iOS 啟動圖、darkmeta 兩個 theme-color 都改成夜空色且不帶 media、noiw 的 viewport 不帶 interactive-widget
+  if (EXP.indexOf('nosplash') >= 0) {
+    var sl = document.querySelectorAll('link[rel="apple-touch-startup-image"]');
+    for (var si = 0; si < sl.length; si++) sl[si].parentNode.removeChild(sl[si]);
+  }
+  var DARK_META = EXP.indexOf('darkmeta') >= 0;
+  if (DARK_META) {
+    var tm = document.querySelectorAll('meta[name="theme-color"]');
+    for (var ti = 0; ti < tm.length; ti++) {
+      tm[ti].removeAttribute('media');
+      tm[ti].setAttribute('content', '#121018');
+    }
+  }
+  if (EXP.indexOf('noiw') >= 0) {
+    var vp = document.querySelector('meta[name="viewport"]');
+    if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
+  }
   // 語系：網址為準。只有根路徑依已存偏好轉到 /en/（05 第 7.4 節第 3 點）
   var path = location.pathname;
   var rootRedirected = false;
@@ -146,7 +163,7 @@
     root.dataset.flavor = flavor;
     root.style.colorScheme = theme;
     // 跟隨系統時兩個 meta 依 media 各自取值；手動指定時兩個都改成目前主題的值（06 第 2.4 節第 1 點）
-    var metas = document.querySelectorAll('meta[name="theme-color"]');
+    var metas = DARK_META ? [] : document.querySelectorAll('meta[name="theme-color"]');
     for (var i = 0; i < metas.length; i++) {
       var isDarkMeta = (metas[i].getAttribute('media') || '').indexOf('dark') >= 0;
       var useDark = pref === 'system' ? isDarkMeta : theme === 'dark';
