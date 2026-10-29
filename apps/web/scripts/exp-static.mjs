@@ -51,8 +51,12 @@ writeFileSync(new URL('manifest-exp-h.webmanifest', dist), JSON.stringify({ ...g
 // 第九輪：I 是 G 但 manifest 的 background_color 與 theme_color 都是夜空色（測那一格白色是不是 manifest 的 background_color）
 writeFileSync(new URL('manifest-exp-i.webmanifest', dist), JSON.stringify({ ...g, name: 'Exp I', short_name: 'Exp I', start_url: '/exp-i.html', background_color: '#121018', theme_color: '#121018' }));
 writeFileSync(new URL('exp-i.html', dist), readFileSync(new URL('exp-g.html', dist), 'utf8').replace('manifest-exp-g.webmanifest', 'manifest-exp-i.webmanifest').replace('Exp G', 'Exp I').replace('靜態頁 G：A 加上寫在 HTML 裡的 manifest 連結。', '靜態頁 I：G 的 manifest 改成夜空色的 background_color。'));
+// 第十輪：J1 body 一開始是空的、1 秒後才用 JS 放文字（像 NekoServe 的 React 晚一點才畫內容）；J2 body 永遠是空的
+const emptyBody = (title, body) => a.replace('<title>Exp A</title>', `<title>${title}</title>`).replace('Exp A', title).replace(/<body>[\s\S]*<\/body>/, body);
+writeFileSync(new URL('exp-j1.html', dist), emptyBody('Exp J1', '<body><div id="root"></div><script>setTimeout(function(){document.getElementById("root").innerHTML="<p>靜態頁 J1：內容在 1 秒後才出現。</p>"},1000)</script></body>'));
+writeFileSync(new URL('exp-j2.html', dist), emptyBody('Exp J2', '<body><div id="root"></div></body>'));
 const headersPath = new URL('_headers', dist);
-writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n\n/exp-h.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
+writeFileSync(headersPath, readFileSync(headersPath, 'utf8') + `\n/exp-f.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n\n/exp-j1.html\n  ! Content-Security-Policy\n\n/exp-h.html\n  ! Content-Security-Policy\n  ! X-Content-Type-Options\n  ! Referrer-Policy\n  ! Permissions-Policy\n  ! Cache-Control\n  Cache-Control: no-cache\n`);
 writeFileSync(new URL('exp-b.html', dist), b);
 writeFileSync(new URL('exp-c.html', dist), c);
 console.log('exp-static: a/b/c written; splash links', (splash.match(/<link/g) ?? []).length);
