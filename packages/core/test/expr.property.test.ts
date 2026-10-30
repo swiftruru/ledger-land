@@ -263,8 +263,9 @@ describe('性質：有理數', () => {
         expect(ratMul(a, b)).toEqual(ratMul(b, a));
         if (b.num !== 0n) expect(unwrap(ratDiv(ratMul(a, b), b))).toEqual(a);
         else expect(ratDiv(a, b).ok).toBe(false);
-        expect(ratCmp(a, b)).toBe(-ratCmp(b, a));
-        expect(ratCmp(ratNeg(a), ratNeg(b))).toBe(-ratCmp(a, b));
+        // 反對稱用相加等於 0 來寫：兩邊相等時 -ratCmp(b, a) 是 -0，toBe 用 Object.is 會把 +0 和 -0 當成不同（2026-10-30 main 的 CI 抽到 0/1 與 0/1 才踩到）
+        expect(ratCmp(a, b) + ratCmp(b, a)).toBe(0);
+        expect(ratCmp(ratNeg(a), ratNeg(b)) + ratCmp(a, b)).toBe(0);
         expect(ratCmp(a, a)).toBe(0);
       }),
     );
