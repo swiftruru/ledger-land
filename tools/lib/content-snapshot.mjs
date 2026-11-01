@@ -17,7 +17,8 @@
 // 關卡只收所屬章節也進快照的（2026-10-25）：草稿章節裡已發布的關卡（連同只在那一關的題目）不進正式快照；已發布章節漏列的關卡照舊收（content:check 另有警告）。
 // 不讀檔也不寫檔：回傳 { manifest, files: Map<相對路徑, JSON 文字> }，content-build.mjs 負責寫到 apps/web/public/content/。
 import { createHash } from 'node:crypto';
-import { defaultAccounts } from '@ledgerland/core';
+import { createCoreContext, defaultAccounts } from '@ledgerland/core';
+import { storyFirstPaint } from './content-rules.mjs';
 import { LOCALES } from '@ledgerland/i18n';
 import { isUnscoredLevel } from './content-schema-bridge.mjs';
 
@@ -76,6 +77,15 @@ export function localize(value, locale) {
   return value;
 }
 const strip = ({ authorNotes: _a, ...rest }) => rest;
+/** 故事與每一步加上第一次繪製要的數字與列名（storyFirstPaint 的結果；重播失敗時不加，學習端退回等核心） */
+const withFirstPaint = (story, firstPaint) =>
+  firstPaint === null
+    ? story
+    : {
+        ...story,
+        firstPaint: { lines: firstPaint.lines },
+        steps: story.steps.map((st) => (firstPaint.steps[st.id] === undefined ? st : { ...st, firstPaint: firstPaint.steps[st.id] })),
+      };
 const hash = (text) => createHash('sha256').update(text).digest('hex').slice(0, 6);
 /** 正式快照只收已發布的項目；含草稿模式（LL_INCLUDE_DRAFTS=1，只給本機開發與 E2E）另收 draft，已下架的仍只以墓碑出現 */
 const selectItems = (list, includeDrafts) =>
@@ -138,7 +148,7 @@ function questionSnapshot(q, compiled, answerRev) {
  * @param {import('./content-rules.mjs').ParsedBundle} parsed Zod 通過的內容（validateBundle 應已無錯誤）
  * @param {Map<string, import('./content-rules.mjs').CompiledQuestion>} compiled runAccountingChecks 的結果
  * @param {{ contentVersion?: number; items?: { id: string; answerRev?: number; rev: number }[] }} lock published.lock.json
- * @param {{ gitCommit?: string; builtAt?: string; includeDrafts?: boolean; accounts?: readonly { id: string; element: string }[] }} [meta] includeDrafts：快照連草稿一起收（manifest 標 includesDrafts），
+ * @param {{ gitCommit?: string; builtAt?: string; includeDrafts?: boolean; accounts?: readonly { id: string; element: string }[]; coreContext?: import('@ledgerland/core').CoreContext }} [meta] includeDrafts：快照連草稿一起收（manifest 標 includesDrafts），
  *   只給本機開發與 E2E；CI 與部署不設。accounts：查名詞要素用的科目表，預設是核心內建的科目表（測試可以換）
  */
 export function buildSnapshot(parsed, compiled, lock, meta = {}) {
@@ -157,6 +167,9 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
   const accounts = meta.accounts ?? defaultAccounts;
   const elementOfAccount = new Map(accounts.map((a) => /** @type {[string, string]} */ ([a.id, a.element])));
 
+  // 故事的第一次繪製數字（content-rules.mjs 的 storyFirstPaint）要用核心的執行環境；只有故事進快照時才建
+  let ctx = null;
+  const coreContext = () => (ctx ??= meta.coreContext ?? createCoreContext());
   const terms = selectItems(parsed.terms, includeDrafts);
   const chapters = selectItems(parsed.chapters, includeDrafts).sort((a, b) => a.order - b.order);
   const objectives = selectItems(parsed.objectives, includeDrafts);
@@ -314,7 +327,7 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
       id: s.id,
       rev: s.rev,
       stepIds: s.steps.map((st) => st.id),
-      files: perLocale(s.id, (locale) => localize(strip(s), locale)),
+      files: perLocale(s.id, (locale) => localize(withFirstPaint(strip(s), storyFirstPaint(s, coreContext())), locale)),
     })),
     tombstones: (() => {
       const text = JSON.stringify(tombstones);

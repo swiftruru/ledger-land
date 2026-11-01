@@ -1,7 +1,7 @@
 // 報表實驗室（M4a，03 第 3 節、10 第 11.1 節）：首頁、故事步驟列表、步驟頁的 10 個階段（預測閘門、揭曉、報表、燈號、指標、完成與進度）、
 // 單獨練習不動故事進度、直接看結果、方向鍵、自由實驗（擋下與可輸入範圍、連動清單、插入與本筆無影響、重設）、勾稽練習（三格、提示三層、完成卡）、
 // 指標實驗室（分組、版本切換、N/A 的建議）、英文介面。等待一律用 expect 的自動重試。
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page, type Route } from '@playwright/test';
 import { waitForApp } from './helpers.ts';
 
 const STORY = 'story_ywv2dy';
@@ -152,6 +152,44 @@ test.describe('故事步驟頁', () => {
     await page.goto('/lab/');
     await waitForApp(page);
     await expect(page.getByTestId('lab-continue')).toHaveText('繼續第 8 步');
+  });
+
+  test('核心晚到：交易卡與預測先用快照的數字出現，「下一步」等核心載好才切到階段 3，成績照常存（V24）', async ({ page }) => {
+    // 把核心包裝的 chunk 攔下來不回應：畫面掀開後頁面會自己來抓，先讓它等著
+    const held: Route[] = [];
+    const coreChunk = /\/assets\/lab-core-[^/]+\.js$/;
+    await page.route(coreChunk, (route) => {
+      held.push(route);
+    });
+    await page.goto(`/lab/story/${STORY}/${STEP7}/`);
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-session')).toHaveAttribute('data-core', 'pending');
+    await expect(page.getByTestId('lab-equation')).toHaveText('資產總計 NT$4,250,000 ＝ 負債總額 NT$0 ＋ 股東權益總額 NT$4,250,000');
+    await expect(page.getByTestId('lab-card')).toContainText('3,000,000');
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
+    await predictAllUp(page);
+    await expect.poll(() => held.length).toBeGreaterThan(0);
+    await page.getByTestId('lab-next').click();
+    // 核心還沒到：停在階段 2，按鈕沒有變成不能按
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
+    await expect(page.getByTestId('lab-next')).toBeEnabled();
+    // 放行；之後（故事頁）的核心請求不再攔（unroute 會把還攔著的請求一起處理掉，所以先放行再解除）
+    for (const r of held.splice(0)) await r.continue();
+    await page.unroute(coreChunk);
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 3／10：科目變動');
+    await expect(page.getByTestId('lab-session')).toHaveAttribute('data-core', 'ready');
+    await expect(page.getByTestId('lab-reveal').getByRole('heading')).toHaveText('揭曉：8 個猜對 7 個');
+    // 核心載好以後恆等式的數字沒有變（快照的數字就是同一份核心算的）
+    await expect(page.getByTestId('lab-equation')).toContainText('NT$4,250,000');
+    // 成績在核心載好之後才算、照常存進進度：走完這一步後故事頁顯示預測成績
+    await page.getByTestId('lab-skip').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-finish-score')).toHaveText('這一步的預測猜對 7／8；整個故事到目前 7／8（1 步）');
+    await page.goto(`/lab/story/${STORY}/`);
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-story-score')).toHaveText('預測成績：1 步猜對 7／8');
   });
 
   test('單獨練習：前情摘要、預測必填、完成卡三個按鈕、不動故事進度；直接看結果與方向鍵', async ({ page }) => {

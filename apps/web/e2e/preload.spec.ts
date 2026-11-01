@@ -116,6 +116,49 @@ test.describe('依路徑預先載入與兩層名詞快照', () => {
     for (const d of shown) expect(definitions.has(d), `報表卡片的說明「${d.slice(0, 20)}…」應該是某個報表名詞的定義`).toBe(true);
   });
 
+  test('實驗室步驟頁：預先載入頁面 chunk、第三層 catalog、故事快照與名詞索引，核心不在第一波、畫面掀開之後才載（V24）', async ({ page }) => {
+    // 布幕掀開的時刻記在頁面自己的時鐘上（MutationObserver 看 .ll-page 的 data-ready；init script 跑的時候 documentElement 還不存在，所以觀察 document），和核心 chunk 的 resource timing 比；
+    // Playwright 的請求事件在 WebKit 也會看到 Service Worker 預快取的抓取，不能拿來判斷是誰、什麼時候發的
+    await page.addInitScript(() => {
+      new MutationObserver((records) => {
+        for (const r of records) {
+          const el = r.target as HTMLElement;
+          if (el.classList?.contains('ll-page') && el.getAttribute('data-ready') === 'true' && !('__llRevealedAt' in window))
+            (window as unknown as { __llRevealedAt: number }).__llRevealedAt = performance.now();
+        }
+      }).observe(document, { subtree: true, attributes: true, attributeFilter: ['data-ready'] });
+    });
+    const csp = await watchCsp(page);
+    await page.goto('/lab/story/story_ywv2dy/st_98tppx/');
+    await waitForApp(page);
+    const links = await preloads(page);
+    expect(links.some((l) => l.rel === 'modulepreload' && /^\/assets\/LabStep-[^/]+\.js$/.test(l.href))).toBe(true);
+    // 實驗室共用的模組合成的 lab-ui chunk（vite.config.ts 的 lab-ui 群組）
+    expect(links.some((l) => l.rel === 'modulepreload' && /^\/assets\/lab-ui-[^/]+\.js$/.test(l.href))).toBe(true);
+    expect(links.some((l) => l.rel === 'modulepreload' && /^\/assets\/lab-[^/]+\.js$/.test(l.href))).toBe(true);
+    expect(links.some((l) => l.rel === 'preload' && /^\/content\/zh-TW\/story_ywv2dy\.[0-9a-f]{6}\.json$/.test(l.href))).toBe(true);
+    expect(links.some((l) => l.rel === 'preload' && /^\/content\/zh-TW\/term-index\.[0-9a-f]{6}\.json$/.test(l.href))).toBe(true);
+    // 核心的重播模組與內建資料不預先載入
+    expect(links.filter((l) => /\/assets\/(lab-core|core-data)-/.test(l.href))).toEqual([]);
+    // 交易卡、恆等式用快照的數字先畫出來
+    await expect(page.getByTestId('lab-equation')).toContainText('NT$4,250,000');
+    await expect(page.getByTestId('lab-card')).toContainText('3,000,000');
+    // 核心在畫面掀開之後自己載（不必按任何東西），而且是掀開之後才開始抓
+    await expect(page.getByTestId('lab-session')).toHaveAttribute('data-core', 'ready', { timeout: 10_000 });
+    const timing = await page.evaluate(() => ({
+      revealedAt: (window as unknown as { __llRevealedAt?: number }).__llRevealedAt ?? null,
+      coreStart:
+        performance
+          .getEntriesByType('resource')
+          .filter((e) => /\/assets\/lab-core-[^/]+\.js$/.test(e.name))
+          .map((e) => e.startTime)[0] ?? null,
+    }));
+    expect(timing.revealedAt).not.toBeNull();
+    expect(timing.coreStart).not.toBeNull();
+    expect(timing.coreStart!, '核心的請求要在布幕掀開之後才開始').toBeGreaterThan(timing.revealedAt!);
+    await csp();
+  });
+
   test('首頁不預先載入任何頁面 chunk 或內容快照，只有目前語言的 catalog', async ({ page }) => {
     await page.goto('/');
     await waitForApp(page);

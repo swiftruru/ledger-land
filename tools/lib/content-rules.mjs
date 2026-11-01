@@ -297,6 +297,62 @@ function checkStory(entry, ctx, issues) {
   return run.value;
 }
 
+/** 步驟頁第一次繪製就要畫的列（06 第 8.2 節、14 的 V24）：恆等式的三個合計、前情摘要的三列、預測面板固定的六個目標。
+ *  學習端 apps/web/src/features/lab/predict.ts 的 DEFAULT_LINE_TARGETS 與 LabStep.tsx 的恆等式、TransactionCard.tsx 的前情摘要要和這裡一致 */
+export const FIRST_PAINT_LINES = {
+  equation: ['bs_total_assets', 'bs_total_liabilities', 'bs_total_equity'],
+  recap: ['bs_cash', 'bs_inventory', 'bs_retained_earnings'],
+  predict: ['bs_cash', 'is_gross_profit', 'is_operating_income', 'is_ordinary_income', 'is_pretax_income', 'is_net_income'],
+};
+
+/**
+ * 步驟頁第一次繪製要的數字與列名（2026-11-01，V24）：核心的重播模組與內建資料不在步驟頁的第一波，交易卡、恆等式與前情摘要先用快照裡建置時算好的數字畫，
+ * 核心在畫面掀開之後才載入，載好以後畫面改用核心的結果（兩者同一份核心、同一個政策，數字一定相同）。
+ * 回傳每一步的佔位符值（事件參數加推導值，和 lab-core.ts 的 valuesOf 一樣）、交易前的前情摘要三列、交易後的恆等式三列，
+ * 以及這些列加全部預測目標的列在版面裡的名稱與 termRef（學習端有名詞時優先用名詞的名稱）。重播失敗回傳 null（acct.storyReplay 另外報錯）。
+ * @param {any} story
+ * @param {import('@ledgerland/core').CoreContext} ctx
+ * @returns {{ lines: Record<string, { label: { 'zh-TW': string; en: string }; termRef?: string }>; steps: Record<string, { values: Record<string, number>; before: Record<string, number>; after: Record<string, number> }> } | null}
+ */
+export function storyFirstPaint(story, ctx) {
+  const run = replayStory(story, [], ctx);
+  if (!run.ok) return null;
+  const { layout, policy } = ctx;
+  const steps = [...story.steps].sort((a, b) => a.order - b.order);
+  const lineIds = new Set([...FIRST_PAINT_LINES.equation, ...FIRST_PAINT_LINES.recap, ...FIRST_PAINT_LINES.predict]);
+  for (const step of steps) for (const t of step.predictTargets ?? []) if (t.kind === 'line' && t.measure === 'direction') lineIds.add(t.line);
+  /** @type {Record<string, { label: { 'zh-TW': string; en: string }; termRef?: string }>} */
+  const lines = {};
+  for (const id of lineIds) {
+    const line = Object.values(layout.statements)
+      .flat()
+      .find((l) => l.id === id);
+    if (line === undefined) throw new Error(`storyFirstPaint：版面沒有 ${id} 這一列`);
+    lines[id] = { label: line.label, ...(line.termRef ? { termRef: line.termRef } : {}) };
+  }
+  const pick = (statements, ids) => Object.fromEntries(ids.map((id) => [id, statements.lines.get(id)?.value ?? 0]));
+  /** @type {Record<string, { values: Record<string, number>; before: Record<string, number>; after: Record<string, number> }>} */
+  const out = {};
+  let previous = buildStatements(
+    { steps: [], finalState: createLedger(ctx.chart, run.value.finalState.opening) },
+    { kind: 'cumulative', to: null },
+    layout,
+    policy,
+  );
+  for (const [i, step] of steps.entries()) {
+    const posted = run.value.steps[i];
+    if (posted === undefined || posted.stepId !== step.id) throw new Error(`storyFirstPaint：重播的第 ${i + 1} 步不是 ${step.id}`);
+    const after = buildStatements(run.value, { kind: 'cumulative', to: step.id }, layout, policy);
+    /** @type {Record<string, number>} */
+    const values = {};
+    for (const ev of step.events) for (const [k, v] of Object.entries(ev.params)) values[`${ev.id}.${k}`] = v;
+    for (const [k, v] of Object.entries(posted.derivedValues)) if (typeof v === 'number') values[k] = v;
+    out[step.id] = { values, before: pick(previous, FIRST_PAINT_LINES.recap), after: pick(after, FIRST_PAINT_LINES.equation) };
+    previous = after;
+  }
+  return { lines, steps: out };
+}
+
 const DIMENSION_VALUES = {
   element: ['asset', 'liability', 'equity', 'revenue', 'expense'],
   current: ['current', 'noncurrent'],

@@ -956,6 +956,12 @@ msgstr "Record prediction"
 msgid "lab.sandbox.invalid"
 msgstr "Enter a whole number from 0 to {0}"
 
+#. 核心模組載入失敗（離線）時的錯誤標題；重試會再載一次
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.coreError"
+msgstr "Could not load the statement calculator"
+
 #. 實驗室離線時的錯誤標題
 #. 實驗室離線時的錯誤標題
 #. 實驗室離線時的錯誤標題
