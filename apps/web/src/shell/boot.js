@@ -26,7 +26,7 @@
   }
   root.lang = /^\/en(\/|$)/i.test(path) ? 'en' : 'zh-TW';
 
-  // 依路徑預先載入（06 第 8.2 節、14 第 5.2 節）：這一頁的頁面 chunk（含靜態 import）、目前語言的訊息 catalog 與第一次繪製要讀的內容快照，
+  // 依路徑預先載入（06 第 8.2 節、14 第 5.2 節）：這一頁的頁面 chunk（含靜態 import）、目前語言的訊息 catalog（子頁再加第二層的 pages.po）與第一次繪製要讀的內容快照，
   // 和殼層入口 chunk 同時開始下載，不必等入口執行完、路由解析完才一層一層發請求。表格由 tools/postbuild.mjs 在建置後填入
   // （tools/lib/preload-table.mjs，路由表在 src/shell/route-preload.json）；開發模式與沒有表格時是 null，什麼都不做。
   // 內容快照用 as=fetch 加 crossorigin，和 lib/content.ts 的 fetch() 同一組 mode 與 credentials 才會被重用。
@@ -62,6 +62,8 @@
         var hit = new RegExp(route[0]).exec(rel);
         if (!hit) continue;
         addAssets(route[1]);
+        // 第二層 catalog（pages.po）：只有說明頁等子頁要（route-preload.json 的 catalog 為 pages），目前語言那一份
+        if (route[3]) addAssets((PRELOAD.p && PRELOAD.p[lang]) || []);
         var id = hit[1];
         for (var k = 0; k < route[2].length; k++) {
           var kind = route[2][k];

@@ -1,7 +1,7 @@
 // 幕後（02 第 1.1 節的 /credits/，2026-10-27）：做網站的人、教我會計的老師、技術棧探索器與五個彩蛋；找齊解鎖一枚特別徽章（03 的特別徽章，分開計數）。
 // 口吻是課堂上的師生：只是致謝，不寫審閱或背書（11 第 4.7 節；老師 2026-10-27 同意具名，14 的 T34）。
 // 字串在第二層 catalog（locales/*/pages.po，i18n/pages-catalog.ts 延遲載入），不進首次載入的 JS（14 第 5.2 節）。
-// 頁面本身沒有任何動畫；吉祥物與徽章圖來自地圖的 chunk（useMapModule）。彩蛋狀態、徽章解鎖、地圖模組、頁面 catalog 四樣齊了才整頁出現（usePageReady）。
+// 頁面本身沒有任何動畫；吉祥物與徽章圖來自地圖的 chunk（useMapModule）。彩蛋狀態、徽章解鎖、地圖模組三樣齊了才整頁出現（usePageReady）；第二層 catalog 由路由在載入頁面 chunk 時一起載好（router.tsx 的 lazyPage）。
 // 頁首 TopBar 回「我的」；不 noindex；可離線。樣式在 styles/info.css 的 .ll-credits-* 與 .ll-stack*。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useState } from 'react';
@@ -28,7 +28,6 @@ import { StackExplorer } from '../features/credits/StackExplorer.tsx';
 import { EGG_IDS } from '../features/credits/eggs.ts';
 import { useEggs } from '../features/credits/useEggs.ts';
 import { useMapModule } from '../features/credits/useMapModule.ts';
-import { usePagesCatalog } from '../i18n/pages-catalog.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
 import '../styles/info.css';
@@ -40,12 +39,11 @@ export default function Credits() {
   const { t } = useLingui();
   const locale = useLocale();
   const back = useBackToMe();
-  const catalogReady = usePagesCatalog(locale);
   const mapMod = useMapModule();
   const { found, unlocks, celebrating, dismissCelebration, mark } = useEggs();
   const [versionOpen, setVersionOpen] = useState(false);
   const builtAt = __LL_BUILT_AT__;
-  usePageReady(catalogReady && mapMod !== undefined && found !== null && unlocks !== null);
+  usePageReady(mapMod !== undefined && found !== null && unlocks !== null);
 
   const fmt = (n: number) => formatNumber(n, locale);
   const foundCount = found?.size ?? 0;

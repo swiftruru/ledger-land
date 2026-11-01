@@ -2,6 +2,7 @@ import { createBrowserRouter, type RouteObject } from 'react-router';
 import type { Locale } from '@ledgerland/i18n';
 import { site } from '../../site.config.ts';
 import { loadChapterIndex, loadLevel, loadTermDetail, loadTermIndex } from '../lib/content.ts';
+import { loadPagesCatalog } from '../i18n/pages-catalog.ts';
 import { RouteError } from '../components/RouteError.tsx';
 import { Home } from '../pages/Home.tsx';
 import { NotFound } from '../pages/NotFound.tsx';
@@ -18,9 +19,13 @@ export interface RouteHandle {
 
 // 同一個函式產生中文（/）與英文（/en）兩組子路由，頁面元件共用（05 第 7.4 節第 2 點、09 第 3.2 節）；每條路由都有 ErrorBoundary（06 第 9.1 節）
 function buildRoutes(locale: Locale): RouteObject[] {
-  const lazyPage = (load: () => Promise<{ default: React.ComponentType }>, prefetch?: () => void) => async () => {
+  // catalog 為 'pages' 的頁面（說明頁、我的底下的子頁、debug，lingui.config.ts 的 PAGE_CATALOG_SOURCES）：字串在第二層 catalog，
+  // 和頁面 chunk 一起載入（兩個請求並行，殼層依路徑也會預先載入），載好才交出元件，頁面第一次繪製就有字；載入失敗時照樣交出元件，
+  // 缺的字串退回 zh-TW 或訊息 ID（14 第 5.2 節）
+  const lazyPage = (load: () => Promise<{ default: React.ComponentType }>, prefetch?: () => void, catalog?: 'pages') => async () => {
     prefetch?.();
-    return { Component: (await load()).default };
+    const [mod] = await Promise.all([load(), catalog === 'pages' ? loadPagesCatalog(locale).catch(() => {}) : undefined]);
+    return { Component: mod.default };
   };
   // 作答頁與名詞列表在載入頁面 chunk 的同時就開始讀目前語言的名詞索引（失敗由頁面自己處理，這裡只吞掉）；
   // 另一種語言只給名詞卡的次要名稱，由 TermsProvider 在第一次繪製後補讀，不跟第二波搶頻寬（06 第 8.2 節）
@@ -75,20 +80,24 @@ function buildRoutes(locale: Locale): RouteObject[] {
     },
     { path: 'terms/:termId', lazy: lazyPage(() => import('../pages/Term.tsx')), loader: prefetchTermDetail },
     { path: 'me', lazy: lazyPage(() => import('../pages/Me.tsx')), handle: { noindex: true, layout: 'wide' } satisfies RouteHandle },
-    { path: 'me/settings', lazy: lazyPage(() => import('../pages/Settings.tsx')), handle: { noindex: true } satisfies RouteHandle },
+    { path: 'me/settings', lazy: lazyPage(() => import('../pages/Settings.tsx'), undefined, 'pages'), handle: { noindex: true } satisfies RouteHandle },
     {
       path: 'me/badges',
-      lazy: lazyPage(() => import('../pages/Badges.tsx'), prefetchChapters),
+      lazy: lazyPage(() => import('../pages/Badges.tsx'), prefetchChapters, 'pages'),
       handle: { noindex: true, layout: 'wide' } satisfies RouteHandle,
     },
-    { path: 'install', lazy: lazyPage(() => import('../pages/Install.tsx')), handle: { layout: 'wide' } satisfies RouteHandle },
-    { path: 'me/backup', lazy: lazyPage(() => import('../pages/Backup.tsx')), handle: { noindex: true, blocksUpdatePrompt: true } satisfies RouteHandle },
-    { path: 'privacy', lazy: lazyPage(() => import('../pages/Privacy.tsx')) },
-    { path: 'about', lazy: lazyPage(() => import('../pages/About.tsx')) },
-    { path: 'credits', lazy: lazyPage(() => import('../pages/Credits.tsx')) },
+    { path: 'install', lazy: lazyPage(() => import('../pages/Install.tsx'), undefined, 'pages'), handle: { layout: 'wide' } satisfies RouteHandle },
+    {
+      path: 'me/backup',
+      lazy: lazyPage(() => import('../pages/Backup.tsx'), undefined, 'pages'),
+      handle: { noindex: true, blocksUpdatePrompt: true } satisfies RouteHandle,
+    },
+    { path: 'privacy', lazy: lazyPage(() => import('../pages/Privacy.tsx'), undefined, 'pages') },
+    { path: 'about', lazy: lazyPage(() => import('../pages/About.tsx'), undefined, 'pages') },
+    { path: 'credits', lazy: lazyPage(() => import('../pages/Credits.tsx'), undefined, 'pages') },
     // 關於系統設計在 1024 以上是內文加右側目錄的兩欄（第 2 輪驗收），所以用寬版
-    { path: 'design', lazy: lazyPage(() => import('../pages/Design.tsx')), handle: { layout: 'wide' } satisfies RouteHandle },
-    { path: 'debug', lazy: lazyPage(() => import('../pages/Debug.tsx')), handle: { noindex: true } satisfies RouteHandle },
+    { path: 'design', lazy: lazyPage(() => import('../pages/Design.tsx'), undefined, 'pages'), handle: { layout: 'wide' } satisfies RouteHandle },
+    { path: 'debug', lazy: lazyPage(() => import('../pages/Debug.tsx'), undefined, 'pages'), handle: { noindex: true } satisfies RouteHandle },
     { path: '*', Component: NotFound, handle: { locale, noindex: true } },
   ];
 }

@@ -18,6 +18,9 @@ const viteManifest = {
   '_progress-KKKK.js': { file: 'assets/progress-KKKK.js', imports: ['_session-DDDD.js', 'index.html'] },
   'src/i18n/catalog-zh-TW.ts': { file: 'assets/catalog-zh-TW-IIII.js', isDynamicEntry: true },
   'src/i18n/catalog-en.ts': { file: 'assets/catalog-en-JJJJ.js', isDynamicEntry: true },
+  'src/pages/About.tsx': { file: 'assets/About-LLLL.js', isDynamicEntry: true, imports: ['_common-CCCC.js'] },
+  'src/locales/zh-TW/pages.po': { file: 'assets/pages-MMMM.js', isDynamicEntry: true },
+  'src/locales/en/pages.po': { file: 'assets/pages-NNNN.js', isDynamicEntry: true },
 };
 const contentManifest = {
   locales: { 'zh-TW': { status: 'complete' }, en: { status: 'complete' } },
@@ -34,6 +37,7 @@ const routes = [
   { pattern: '^/play/$', module: 'src/pages/Play.tsx', content: ['chapterIndex'] },
 ];
 const catalogs = { 'zh-TW': 'src/i18n/catalog-zh-TW.ts', en: 'src/i18n/catalog-en.ts' };
+const pagesCatalogs = { 'zh-TW': 'src/locales/zh-TW/pages.po', en: 'src/locales/en/pages.po' };
 const chunkModules = {
   'assets/progress-KKKK.js': ['src/lib/progress/runtime.ts', 'src/lib/progress/indexeddb-store.ts'],
   'assets/session-DDDD.js': ['src/store/quiz.ts'],
@@ -62,6 +66,25 @@ describe('buildPreloadTable', () => {
       ['^/level/([^/]+)/$', ['level', 'termIndex']],
       ['^/play/$', ['chapterIndex']],
     ]);
+  });
+
+  it('第二層 catalog（pages.po）：只有 catalog 為 pages 的路由標 1，p 依語言列 chunk；沒有路由要它時 p 是空的、表裡沒列也不丟錯', () => {
+    const about = { pattern: '^/about/$', module: 'src/pages/About.tsx', content: [], catalog: 'pages' };
+    const t = build({ routes: [...routes, about], pagesCatalogs });
+    const names = (list: number[]) => list.map((i) => t.a[i]);
+    expect(t.r.map((r) => [r[0], r[3]])).toEqual([
+      ['^/level/([^/]+)/$', 0],
+      ['^/play/$', 0],
+      ['^/about/$', 1],
+    ]);
+    expect(names(t.p['zh-TW']!)).toEqual(['pages-MMMM.js']);
+    expect(names(t.p.en!)).toEqual(['pages-NNNN.js']);
+    expect(names(t.r[2]![1])).toEqual(['About-LLLL.js', 'common-CCCC.js']);
+    const none = build();
+    expect(none.p).toEqual({ 'zh-TW': [], en: [] });
+    expect(none.r.map((r) => r[3])).toEqual([0, 0]);
+    expect(() => build({ routes: [about], pagesCatalogs: { 'zh-TW': pagesCatalogs['zh-TW'] } })).toThrow(/pagesCatalogs 沒有 en/);
+    expect(() => build({ routes: [{ ...about, catalog: 'lab' }], pagesCatalogs })).toThrow(/不認得的 catalog lab/);
   });
 
   it('內容只存路徑或雜湊：章節包與名詞分桶依語言列雜湊、關卡只記所屬章節，索引與墓碑是完整路徑', () => {
