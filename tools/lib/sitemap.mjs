@@ -54,17 +54,21 @@ export function buildSitemap({ origin, locales, pages }) {
 
 /**
  * 要列進 sitemap 的頁面路徑（不含語系前綴）：固定頁面加 content-manifest 裡已發布的章節與名詞（02 第 1.1 節「列入 sitemap」的頁面）。
- * 名詞 ID 從名詞索引（termIndex 的內容，陣列）取；章節從 manifest 的 chapters。關卡、錯題本、我的底下的子頁、debug 都不列（設 noindex）。
- * @param {{ table: { static: readonly string[]; dynamic: readonly string[] }; contentManifest: { chapters?: { id: string }[] }; termIndex: { id: string }[] }} input
+ * 名詞 ID 從名詞索引（termIndex 的內容，陣列）取；章節從 manifest 的 chapters；故事步驟列表從 manifest 的 stories（M4a）。關卡、錯題本、我的底下的子頁、debug、故事步驟頁、自由實驗、勾稽練習都不列（設 noindex）。
+ * @param {{ table: { static: readonly string[]; dynamic: readonly string[] }; contentManifest: { chapters?: { id: string }[]; stories?: { id: string }[] }; termIndex: { id: string }[] }} input
  */
 export function sitemapPages({ table, contentManifest, termIndex }) {
-  const kinds = { chapter: () => (contentManifest.chapters ?? []).map((c) => `/chapter/${c.id}/`), term: () => termIndex.map((t) => `/terms/${t.id}/`) };
+  const kinds = {
+    chapter: () => (contentManifest.chapters ?? []).map((c) => `/chapter/${c.id}/`),
+    term: () => termIndex.map((t) => `/terms/${t.id}/`),
+    story: () => (contentManifest.stories ?? []).map((s) => `/lab/story/${s.id}/`),
+  };
   const pages = [...table.static];
   for (const kind of table.dynamic) {
     const make = kinds[kind];
     if (!make) throw new Error(`sitemap：不認得的動態頁面種類 ${kind}（只認得 ${Object.keys(kinds).join('、')}）`);
     const list = make();
-    for (const p of list) if (!/^\/[a-z]+\/[a-z0-9_]+\/$/.test(p)) throw new Error(`sitemap：內容 ID 的格式不對：${p}`);
+    for (const p of list) if (!/^(\/[a-z]+)+\/[a-z0-9_]+\/$/.test(p)) throw new Error(`sitemap：內容 ID 的格式不對：${p}`);
     pages.push(...list);
   }
   return pages;

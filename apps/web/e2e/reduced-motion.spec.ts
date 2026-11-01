@@ -344,3 +344,41 @@ test.describe('減少動態：滑過與按下沒有位移（站規 4.2 第 7 項
     expect(violations).toEqual([]);
   });
 });
+
+// 報表實驗室（M4a，10 第 11.1 節的完成標準）：減少動態時走完第 7 步，天平沒有動畫、數字直接是結束狀態、沒有任何位移或縮放的動態；每個階段截圖留給 CI 的 artifact
+test('減少動態：實驗室第 7 步從頭走到尾沒有動畫，天平直接是結束狀態', async ({ page }) => {
+  await installMotionProbe(page);
+  await page.goto('/lab/story/story_ywv2dy/st_98tppx/');
+  await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／10：交易卡');
+  await page.screenshot({ path: 'test-results/reduced-motion-lab-1.png', fullPage: true });
+  await page.getByTestId('lab-next').click();
+  const radios = page.getByTestId('lab-predict').getByRole('radio', { name: /^增加$/ });
+  const n = await radios.count();
+  for (let i = 0; i < n; i++) await radios.nth(i).check();
+  await page.getByTestId('lab-predict-submit').click();
+  for (let stage = 3; stage <= 10; stage++) {
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stagebar')).toHaveAttribute('data-stage', String(stage - 1));
+    if (stage === 3) {
+      // 減少動態：沒有 .ll-lab-animate（沒有脈衝），金額直接是交易後、不滾動
+      await expect(page.locator('.ll-lab-session__content')).not.toHaveClass(/ll-lab-animate/);
+      await expect(page.locator('[data-account="cash"] .ll-lab-roll')).toHaveText('NT$3,450,000');
+      await expect(page.locator('[data-account="cash"] .ll-lab-roll')).not.toHaveAttribute('data-rolling', 'true');
+    }
+    if (stage === 4) {
+      await expect(page.locator('.ll-lab-scale')).not.toHaveClass(/is-animated/);
+      await expect(page.getByTestId('lab-scale-verdict')).toHaveText('兩邊相等');
+    }
+    if (stage === 5) {
+      expect(
+        await page
+          .locator('#ll-lab-table-is .ll-lab-row.is-changed td')
+          .first()
+          .evaluate((el) => getComputedStyle(el).animationName),
+      ).toBe('none');
+    }
+    await page.screenshot({ path: `test-results/reduced-motion-lab-${stage}.png`, fullPage: true });
+  }
+  const motion = await page.evaluate(() => (window as unknown as { __motion: string[] }).__motion);
+  expect(motion.filter((m) => /ll-lab/.test(m))).toEqual([]);
+});

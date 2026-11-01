@@ -73,7 +73,10 @@ describe('sitemapPages', () => {
   });
 
   it('不認得的動態種類與格式不對的內容 ID 都丟錯', () => {
-    expect(() => sitemapPages({ table: { static: [], dynamic: ['story'] }, contentManifest, termIndex })).toThrow(/不認得的動態頁面種類 story/);
+    expect(() => sitemapPages({ table: { static: [], dynamic: ['level'] }, contentManifest, termIndex })).toThrow(/不認得的動態頁面種類 level/);
+    expect(
+      sitemapPages({ table: { static: [], dynamic: ['story'] }, contentManifest: { ...contentManifest, stories: [{ id: 'story_ywv2dy' }] }, termIndex }),
+    ).toEqual(['/lab/story/story_ywv2dy/']);
     expect(() => sitemapPages({ table, contentManifest, termIndex: [{ id: 'tm_x/y' }] })).toThrow(/內容 ID 的格式不對/);
   });
 });

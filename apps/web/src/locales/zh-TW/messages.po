@@ -69,6 +69,12 @@ msgstr "{done}／{total} 已收進"
 msgid "chapter.progress.levels"
 msgstr "{done}／{total} 關"
 
+#. 故事進度；數字已代入
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.progress"
+msgstr "{doneCount, plural, other {已走完 {doneCount}／{total} 步}}"
+
 #. 頁首統計膠囊上的收集數（畫面上的短字，可讀名稱另有 terms.stat.label）；doneText、totalText 是已格式化的數字
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -183,10 +189,11 @@ msgstr "N/A"
 msgid "safari.text"
 msgstr "Safari 分頁的進度可能被清掉。加到主畫面後開啟更快，進度也比較不容易被清除；已經加入的話，請從主畫面的圖示開啟。"
 
+#. 實驗室首頁故事卡的說明；total 是故事的步數
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.feature.link.title"
-msgstr "三張報表一起動"
+#: src/pages/Lab.tsx
+msgid "lab.home.storyDesc"
+msgstr "一家公司的第一年，{total} 筆交易一步一步走，看每一筆怎麼流進三張報表與財務指標。"
 
 #. 已下架題目那一列的上次作答日期；date 已格式化（整段日期不換行）
 #. js-lingui-explicit-id
@@ -230,6 +237,12 @@ msgstr "下面這句話對不對？"
 #: src/components/ImportPromptCard.tsx
 msgid "importPrompt.skipA11y"
 msgstr "不用了，從這裡重新開始"
+
+#. 實驗室首頁底部的一句話
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.hint"
+msgstr "不計分，放心試。"
 
 #. js-lingui-explicit-id
 #: src/app/Root.tsx
@@ -378,6 +391,12 @@ msgstr "例子"
 msgid "terms.group.name"
 msgstr "依名稱"
 
+#. 實驗室入口的說明；total 是故事的步數
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.mode.story.desc"
+msgstr "依序走過 {total} 筆交易，每一步都可以單獨練習。"
+
 #. 名詞圖鑑分組選項
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -425,11 +444,6 @@ msgstr "儲存暫時失敗"
 #: src/components/StorageBanners.tsx
 msgid "storage.quota.title"
 msgstr "儲存空間不足"
-
-#. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.placeholder.go"
-msgstr "先去闖關"
 
 #. iOS 圖解的第 1 步：先把進度帶走（2026-10-28 之前是清單外的「第 0 步」）
 #. js-lingui-explicit-id
@@ -592,6 +606,12 @@ msgstr "加到主畫面，進度才不會消失"
 msgid "safari.collapsed"
 msgstr "加到主畫面：顯示提示"
 
+#. 實驗室入口
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.mode.reconcile"
+msgstr "勾稽練習"
+
 #. Safari 分頁的「匯出到 App」捷徑，連到備份頁
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
@@ -605,12 +625,6 @@ msgstr "匯出到 App"
 #: src/pages/Me.tsx
 msgid "me.backup.desc"
 msgstr "匯出或匯入學習進度"
-
-#. 實驗室占位頁預告小卡右上角的標示：還不能用
-#. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.feature.soon"
-msgstr "即將開放"
 
 #. 找不到頁面的第二顆按鈕
 #. js-lingui-explicit-id
@@ -666,17 +680,6 @@ msgstr "取消"
 msgid "quiz.loadFailed.bodyShort"
 msgstr "可能是網路中斷或網站剛更新。你的作答已經存好，再試一次或重新整理就能繼續。"
 
-#. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.feature.rules.desc"
-msgstr "同一組交易切換兩種版面，看數字差在哪裡。"
-
-#. 實驗室預告小卡的說明（1280 三欄時一行約 13 字）
-#. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.feature.link.desc"
-msgstr "同一組分錄，同時更新資產負債表、損益表與現金流量表。"
-
 #. 搜尋欄的提示文字（只是例子，標籤另外寫）
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -706,6 +709,12 @@ msgstr "名詞圖鑑載入失敗"
 #: src/features/quiz/QuestionView.tsx
 msgid "ratio.flag.singlePeriod"
 msgstr "單期近似：平均值以期末代替"
+
+#. 實驗室四個入口的清單標題
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.modes"
+msgstr "四種模式"
 
 #. 名詞頁返回按鈕的可讀名稱與頁尾按鈕
 #. js-lingui-explicit-id
@@ -815,12 +824,6 @@ msgstr "在 {code}「{levelTitle}」遇到"
 msgid "chapter.onMap"
 msgstr "在地圖上看這一章"
 
-#. 實驗室占位頁的說明，對學生說話
-#. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.placeholder.body"
-msgstr "在實驗室裡，你可以自己改一筆交易，看三張報表跟著一起變。開放之前，先到闖關地圖把基本功練起來吧。"
-
 #. 未收進名詞的說明，只知道是延伸區的哪一章；chapterNo 是延伸區自己的章序（和地圖的「延伸第 N 章」相同）
 #. js-lingui-explicit-id
 #: src/features/glossary/MeetLevel.tsx
@@ -886,11 +889,6 @@ msgstr "報表"
 #: src/features/quiz/question-types.tsx
 msgid "quiz.journal.note"
 msgstr "報表上的「本期進貨」「期末存貨」是由存貨帳推導出來的列，不是分錄裡的科目；分錄只寫科目。"
-
-#. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.placeholder.soon"
-msgstr "報表實驗室即將開放"
 
 #. 五步驟勾稽填格作答後的摘要；correctCount 是填對的格數、total 是總格數
 #. js-lingui-explicit-id
@@ -978,15 +976,9 @@ msgstr "完整的工具列"
 
 #. 實驗室頁（Tab bar 頂層頁）的頁首標題
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
+#: src/pages/Lab.tsx
 msgid "lab.page.title"
 msgstr "實驗室"
-
-#. 實驗室占位頁三張預告小卡的清單名稱
-#. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.features.label"
-msgstr "實驗室裡可以做的事"
 
 #. 計時寬鬆選項的標籤
 #. js-lingui-explicit-id
@@ -1306,6 +1298,12 @@ msgstr "投資活動"
 msgid "terms.category.ratio"
 msgstr "指標"
 
+#. 實驗室入口
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.mode.ratios"
+msgstr "指標實驗室"
+
 #. Chromium 有安裝事件時的說明（一步，下面就是「安裝」按鈕）
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
@@ -1444,10 +1442,11 @@ msgstr "收起 QR"
 msgid "install.guide.hide"
 msgstr "收起圖解"
 
+#. 實驗室入口的說明
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.feature.edit.title"
-msgstr "改一筆交易"
+#: src/pages/Lab.tsx
+msgid "lab.mode.sandbox.desc"
+msgstr "改任何一步的金額，三表與指標立刻重算。"
 
 #. 內建瀏覽器提醒的本文（標題已經寫了在哪個 App 裡開啟）
 #. js-lingui-explicit-id
@@ -1462,6 +1461,18 @@ msgstr "改用 Safari 或 Chrome 開啟，進度比較不會消失，也能離�
 #: src/features/quest-map/QrScanner.tsx
 msgid "play.scan.useCode"
 msgstr "改輸入關卡代號"
+
+#. 實驗室入口
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.mode.story"
+msgstr "故事"
+
+#. 故事開頭的授權標示（D6）
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.licence"
+msgstr "故事的情境與金額經陳彥宏老師授權使用，敘述文字為網站原創。"
 
 #. 涉及投資（本益比、融資、估價）的延伸章，作答頁標題下的聲明（11 第 1 節）
 #. js-lingui-explicit-id
@@ -1707,6 +1718,12 @@ msgstr "用語說明"
 msgid "home.tagline"
 msgstr "用闖關與實驗室學會計入門。中英雙語，可離線使用。"
 
+#. 快照裡沒有故事時
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.none.title"
+msgstr "目前沒有已發布的故事"
+
 #. 「參考名詞」區的說明：隨時可讀、不算收集數；之後有關卡用到會自動移到收集區
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -1737,11 +1754,11 @@ msgstr "相關名詞"
 msgid "chapter.endLinks"
 msgstr "相關實驗室步驟"
 
-#. 實驗室占位頁的第二顆按鈕
+#. 故事卡的次要按鈕
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.placeholder.terms"
-msgstr "看名詞圖鑑"
+#: src/pages/Lab.tsx
+msgid "lab.home.steps"
+msgstr "看全部步驟"
 
 #. 展開內嵌的安裝圖解
 #. js-lingui-explicit-id
@@ -1754,6 +1771,12 @@ msgstr "看圖解教學"
 #: src/components/SafariTabNotice.tsx
 msgid "safari.install"
 msgstr "看安裝教學"
+
+#. 實驗室入口的說明
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.mode.ratios.desc"
+msgstr "看每個指標的公式、版本與狀態，和它為什麼是 N/A。"
 
 #. 結果頁沒有拿到星星（正確率很低）時，標題下面的一行鼓勵（「再挑戰」是按鈕的名稱、「星星」是成績）
 #. js-lingui-explicit-id
@@ -1915,6 +1938,13 @@ msgstr "繼續 {actionCode}"
 msgid "home.continue.code"
 msgstr "繼續 {nextCode}"
 
+#. 故事卡主按鈕；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: nextStep.order
+#: src/pages/Lab.tsx
+msgid "lab.home.continue"
+msgstr "繼續第 {0} 步"
+
 #. 錯題本入口：今天的複習做到一半時的按鈕
 #. js-lingui-explicit-id
 #: src/pages/Review.tsx
@@ -1933,10 +1963,17 @@ msgstr "老師寫在黑板或投影片上的 <0>8 碼</0>代號；大小寫、�
 msgid "classify.element.equity"
 msgstr "股東權益"
 
+#. 實驗室入口的說明
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.feature.edit.note"
-msgstr "自己決定金額與科目，看看怎麼記帳。"
+#: src/pages/Lab.tsx
+msgid "lab.mode.reconcile.desc"
+msgstr "自己填跨表的勾稽格子，燈號即時檢查。"
+
+#. 實驗室入口
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.mode.sandbox"
+msgstr "自由實驗"
 
 #. 計時提醒開關的說明
 #. js-lingui-explicit-id
@@ -2064,15 +2101,22 @@ msgstr "語言、外觀、深色風味"
 msgid "me.settings.desc"
 msgstr "語言、外觀、計時"
 
+#. 實驗室首頁離線時的說明
 #. js-lingui-explicit-id
-#: src/pages/Placeholder.tsx
-msgid "lab.feature.rules.title"
-msgstr "課程版與準則版"
+#: src/pages/Lab.tsx
+msgid "lab.error.desc"
+msgstr "請連上網路後再試一次。"
 
 #. js-lingui-explicit-id
 #: src/components/StorageBanners.tsx
 msgid "storage.blocked"
 msgstr "請關閉其他 LedgerLand 分頁，再重新整理。"
+
+#. 實驗室首頁離線時的錯誤標題
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.error.title"
+msgstr "讀不到實驗室的故事"
 
 #. 分類題的分類格（要素）
 #. js-lingui-explicit-id
@@ -2467,6 +2511,12 @@ msgstr "開始 {actionCode}"
 #: src/features/quest-map-overlays/ScanOverlay.tsx
 msgid "play.scan.start"
 msgstr "開始掃描"
+
+#. 故事卡主按鈕（還沒走過）
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.start"
+msgstr "開始故事"
 
 #. 錯題本入口的主要按鈕
 #. js-lingui-explicit-id

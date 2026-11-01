@@ -28,6 +28,16 @@ const PAGE_CATALOG_SOURCES = [
   '<rootDir>/src/components/ProtectProgress.tsx',
 ];
 
+/** 第三層（lab.po，M4a 2026-11-01）：報表實驗室的子頁與元件；實驗室首頁 src/pages/Lab.tsx 是 Tab 的第一屏，留在第一層 */
+const LAB_CATALOG_SOURCES = [
+  '<rootDir>/src/pages/LabStory.tsx',
+  '<rootDir>/src/pages/LabStep.tsx',
+  '<rootDir>/src/pages/LabSandbox.tsx',
+  '<rootDir>/src/pages/LabReconcile.tsx',
+  '<rootDir>/src/pages/LabRatios.tsx',
+  '<rootDir>/src/features/lab',
+];
+
 export default defineConfig({
   sourceLocale: BASE_LOCALE,
   locales: LOCALES.map((l) => l.code),
@@ -38,12 +48,17 @@ export default defineConfig({
     {
       path: '<rootDir>/src/locales/{locale}/messages',
       include: ['<rootDir>/src'],
-      exclude: PAGE_CATALOG_SOURCES,
+      exclude: [...PAGE_CATALOG_SOURCES, ...LAB_CATALOG_SOURCES],
     },
     // 第二層（14 第 5.2 節，2026-10-27 起）：只在子頁用到的字串，路由在載入頁面 chunk 時一起載入（i18n/pages-catalog.ts），不進首次載入的 JS
     {
       path: '<rootDir>/src/locales/{locale}/pages',
       include: PAGE_CATALOG_SOURCES,
+    },
+    // 第三層：報表實驗室（路由在載入實驗室子頁的 chunk 時一起載入）
+    {
+      path: '<rootDir>/src/locales/{locale}/lab',
+      include: LAB_CATALOG_SOURCES,
     },
     // M0b 驗證結果（14 第 5.3 節）：macroTransform 本身能處理 workspace 套件的原始碼（web-ui 自己的 lingui extract 抽得到，app 建置時 macro 也正確轉換），
     // 但 @lingui/vite-plugin 載入 .po 時只接受「消費端 lingui.config 的 catalogs.path」底下的檔案，所以退路的一半要啟用：

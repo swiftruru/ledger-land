@@ -1,0 +1,256 @@
+// 報表實驗室（M4a，03 第 3 節、10 第 11.1 節）：首頁、故事步驟列表、步驟頁的 10 個階段（預測閘門、揭曉、報表、燈號、指標、完成與進度）、
+// 單獨練習不動故事進度、直接看結果、方向鍵、自由實驗（擋下與可輸入範圍、連動清單、插入與本筆無影響、重設）、勾稽練習（三格、提示三層、完成卡）、
+// 指標實驗室（分組、版本切換、N/A 的建議）、英文介面。等待一律用 expect 的自動重試。
+import { expect, test, type Page } from '@playwright/test';
+import { waitForApp } from './helpers.ts';
+
+const STORY = 'story_ywv2dy';
+const STEP7 = 'st_98tppx';
+const STEP6 = 'st_g4h3hx';
+const STEP12 = 'st_q5rssq';
+
+function readLabState(page: Page): Promise<unknown[]> {
+  return page.evaluate(
+    () =>
+      new Promise<unknown[]>((resolve) => {
+        const req = indexedDB.open('ledgerland');
+        req.onerror = () => resolve([]);
+        req.onsuccess = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains('labState')) {
+            db.close();
+            resolve([]);
+            return;
+          }
+          const r = db.transaction('labState').objectStore('labState').getAll();
+          r.onsuccess = () => {
+            db.close();
+            resolve(r.result as unknown[]);
+          };
+          r.onerror = () => {
+            db.close();
+            resolve([]);
+          };
+        };
+      }),
+  );
+}
+
+/** 替預測面板的每個目標選「增加」或「上升」 */
+async function predictAllUp(page: Page): Promise<void> {
+  const panel = page.getByTestId('lab-predict');
+  await expect(panel).toBeVisible();
+  const radios = panel.getByRole('radio', { name: /^(增加|▲ 上升|Increase|▲ Up)$/ });
+  const n = await radios.count();
+  expect(n).toBeGreaterThanOrEqual(6);
+  for (let i = 0; i < n; i++) await radios.nth(i).check();
+  await page.getByTestId('lab-predict-submit').click();
+}
+
+test.describe('實驗室首頁與故事步驟列表', () => {
+  test('首頁：故事卡（綠芽商行、進度 0）、四個入口、授權標示；英文介面', async ({ page }) => {
+    await page.goto('/lab/');
+    await waitForApp(page);
+    const hero = page.getByTestId('lab-hero');
+    await expect(hero).toContainText('綠芽商行');
+    await expect(hero).toContainText('經陳彥宏老師授權使用');
+    await expect(page.getByTestId('lab-continue')).toHaveText('開始故事');
+    await expect(page.getByRole('link', { name: /自由實驗/ })).toHaveAttribute('href', '/lab/sandbox/');
+    await expect(page.getByRole('link', { name: /指標實驗室/ })).toHaveAttribute('href', '/lab/ratios/');
+    await page.goto('/en/lab/');
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-hero')).toContainText('Green Bud Trading');
+    await expect(page.getByTestId('lab-continue')).toHaveText('Start the story');
+  });
+
+  test('故事步驟列表：五章、18 步、每步有開始與單獨練習、章末相關關卡', async ({ page }) => {
+    await page.goto(`/lab/story/${STORY}/`);
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-chapter')).toHaveCount(5);
+    await expect(page.getByTestId('lab-step-row')).toHaveCount(18);
+    await expect(page.getByTestId('lab-step-start').first()).toHaveAttribute('href', `/lab/story/${STORY}/st_9htcrg/`);
+    await expect(page.getByTestId('lab-step-practice').first()).toHaveAttribute('href', `/lab/story/${STORY}/st_9htcrg/?mode=practice`);
+    await expect(page.getByRole('heading', { name: '相關關卡' }).first()).toBeVisible();
+  });
+});
+
+test.describe('故事步驟頁', () => {
+  test('第 7 步從頭走到尾：預測閘門、揭曉、三表、燈號、指標、意涵與利害關係人、完成後進度寫入', async ({ page }) => {
+    await page.goto(`/lab/story/${STORY}/${STEP7}/`);
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／10：交易卡');
+    await expect(page.getByTestId('lab-card')).toContainText('3,000,000');
+    await expect(page.getByTestId('lab-inferred')).toBeVisible();
+    await expect(page.getByTestId('lab-card-terms').getByRole('button')).toHaveCount(4);
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
+    // 預測沒完成不能前進，也沒有「直接看結果」
+    await expect(page.getByTestId('lab-next')).toBeDisabled();
+    await expect(page.getByTestId('lab-skip')).toHaveCount(0);
+    await predictAllUp(page);
+    await expect(page.getByTestId('lab-next')).toBeEnabled();
+    await expect(page.getByTestId('lab-skip')).toBeVisible();
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 3／10：科目變動');
+    const effects = page.getByTestId('lab-effects');
+    await expect(effects.locator('li')).toHaveCount(4);
+    await expect(effects.locator('[data-account="cash"]')).toContainText('3,000,000');
+    await expect(page.getByTestId('lab-cash-verdict')).toHaveText('你的預測正確');
+    // 分錄層預設收合，展開後有分錄與 T 字帳
+    await expect(page.getByTestId('lab-journal-entry')).toBeHidden();
+    await page.locator('.ll-lab-journal summary').click();
+    await expect(page.getByTestId('lab-journal-entry')).toBeVisible();
+    await expect(page.getByTestId('lab-taccounts').locator('table')).toHaveCount(4);
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-scale-verdict')).toHaveText('兩邊相等');
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 5／10：損益表');
+    await expect(page.getByTestId('lab-summary')).toContainText('本筆變動');
+    await expect(page.getByTestId('lab-level-verdicts').locator('li')).toHaveCount(5);
+    await expect(page.locator('#ll-lab-table-is .ll-lab-row.is-changed').first()).toBeVisible();
+    // 更新動態：沒有減少動態時，變動列有脈衝動畫、變動格的金額會滾動（滾完和交易後的金額一樣）
+    await expect(page.locator('.ll-lab-session__content')).toHaveClass(/ll-lab-animate/);
+    expect(
+      await page
+        .locator('#ll-lab-table-is .ll-lab-row.is-changed td')
+        .first()
+        .evaluate((el) => getComputedStyle(el).animationName),
+    ).toBe('ll-lab-pulse');
+    await expect(page.locator('#ll-lab-table-is [data-line="is_revenue"] .ll-lab-roll')).toHaveText('NT$3,000,000');
+    await expect(page.locator('#ll-lab-table-is [data-line="is_revenue"] .ll-lab-roll')).not.toHaveAttribute('data-rolling', 'true');
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 6／10：現金流量表');
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 7／10：資產負債表');
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 8／10：勾稽燈號');
+    for (const s of [2, 3, 4, 5]) await expect(page.getByTestId(`lab-light-${s}`)).toHaveAttribute('data-state', 'pass');
+    await expect(page.getByTestId('lab-live')).toHaveText('四個勾稽點都相符。');
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 9／10：指標變化');
+    await expect(page.getByTestId('lab-ratios-changed').locator('li').first()).toBeVisible();
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
+    await expect(page.getByTestId('lab-stakeholders').locator('li')).toHaveCount(2);
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-finished')).toBeVisible();
+    await expect(page.getByTestId('lab-next-step')).toHaveAttribute('href', `/lab/story/${STORY}/st_skx6ss/`);
+    await expect.poll(() => readLabState(page)).toEqual([expect.objectContaining({ storyId: STORY, stepId: STEP7 })]);
+    // 故事列表標記走完
+    await page.goto(`/lab/story/${STORY}/`);
+    await waitForApp(page);
+    await expect(page.locator(`[data-step="${STEP7}"]`)).toContainText('走完了');
+    await page.goto('/lab/');
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-continue')).toHaveText('繼續第 8 步');
+  });
+
+  test('單獨練習：前情摘要、預測必填、完成卡三個按鈕、不動故事進度；直接看結果與方向鍵', async ({ page }) => {
+    await page.goto(`/lab/story/${STORY}/${STEP7}/?mode=practice`);
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-practice-flag')).toBeVisible();
+    await expect(page.getByTestId('lab-recap')).toContainText('到上一步為止');
+    await page.keyboard.press('ArrowRight');
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
+    await page.keyboard.press('ArrowRight');
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
+    await predictAllUp(page);
+    await page.getByTestId('lab-skip').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
+    await page.keyboard.press('ArrowLeft');
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 9／10：指標變化');
+    await page.getByTestId('lab-next').click();
+    await page.getByTestId('lab-next').click();
+    const card = page.getByTestId('lab-finished');
+    await expect(card).toContainText('練習完成');
+    await expect(card.getByRole('button', { name: '再練一次' })).toBeVisible();
+    await expect(card.getByRole('link', { name: '回到故事地圖' })).toHaveAttribute('href', `/lab/story/${STORY}/`);
+    await expect(card.getByRole('button', { name: '從這一步接著走故事' })).toBeVisible();
+    expect(await readLabState(page)).toEqual([]);
+  });
+
+  test('英文介面：階段標題與預測面板', async ({ page }) => {
+    await page.goto(`/en/lab/story/${STORY}/${STEP7}/`);
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('Stage 1 of 10: Transaction card');
+    await expect(page.getByTestId('lab-card')).toContainText('NT$3,000,000');
+    await page.getByTestId('lab-next').click();
+    await predictAllUp(page);
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-cash-verdict')).toHaveText('Your prediction was right');
+  });
+});
+
+test.describe('自由實驗', () => {
+  test('改金額：被擋下顯示可輸入範圍；上游改小讓下游跟著變；插入一步金額 0 是本筆無影響；重設', async ({ page }) => {
+    await page.goto('/lab/sandbox/');
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-sandbox-step')).toHaveCount(18);
+    // 第 12 步收回應收帳款最多 15,000,000（第 10 步賒銷的金額）
+    const step12 = page.locator(`[data-step="${STEP12}"]`);
+    await step12.getByRole('textbox').fill('99999999999');
+    await step12.getByTestId('lab-sandbox-apply').click();
+    await expect(step12).toContainText('最多可以輸入 NT$15,000,000');
+    await step12.getByRole('textbox').fill('3000000');
+    await step12.getByTestId('lab-sandbox-apply').click();
+    await expect(step12).not.toContainText('最多可以輸入');
+    // 第 6 步進貨改成 1,600,000：第 7 步的成本跟著變
+    const step6 = page.locator(`[data-step="${STEP6}"]`);
+    await step6.getByRole('textbox').fill('1600000');
+    await step6.getByTestId('lab-sandbox-apply').click();
+    await expect(page.getByTestId('lab-affected')).toContainText('第 7 步');
+    await expect(page.getByTestId('lab-affected')).toContainText('NT$1,500,000 → NT$1,600,000');
+    await page.getByTestId('lab-sandbox-reset').click();
+    await expect(page.getByTestId('lab-affected')).toHaveCount(0);
+    // 從指標實驗室帶 ?insert= 進來：插在最後、金額 0、本筆無影響
+    await page.goto('/lab/sandbox/?insert=tpl.borrow_short_term');
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-sandbox-step')).toHaveCount(19);
+    await expect(page.getByTestId('lab-sandbox-noeffect')).toHaveCount(1);
+    await expect(page).toHaveURL(/\/lab\/sandbox\/$/);
+  });
+});
+
+test.describe('勾稽練習', () => {
+  test('三格：填錯燈號變紅並提示上游，用提示第三層取得答案，全部相符出完成卡', async ({ page }) => {
+    await page.goto(`/lab/reconcile/?step=${STEP7}`);
+    await waitForApp(page);
+    for (const s of [2, 3, 4, 5]) await expect(page.getByTestId(`lab-light-${s}`)).toHaveAttribute('data-state', 'empty');
+    const cells = ['cf_pretax_income', 'bs_cash', 'bs_retained_earnings'];
+    await page.getByTestId(`lab-cell-${cells[0]}`).getByRole('textbox').fill('1');
+    await page.getByTestId(`lab-cell-${cells[1]}`).getByRole('textbox').fill('1');
+    await page.getByTestId(`lab-cell-${cells[2]}`).getByRole('textbox').fill('1');
+    await expect(page.getByTestId('lab-light-2')).toHaveAttribute('data-state', 'fail');
+    await expect(page.getByText(/先修正步驟 2 用到的格子/)).toBeVisible();
+    for (const id of cells) {
+      const cell = page.getByTestId(`lab-cell-${id}`);
+      const hint = cell.getByRole('button', { name: /的提示$/ });
+      await hint.click();
+      await hint.click();
+      await hint.click();
+      const text = await cell.getByRole('status').textContent();
+      const answer = (text ?? '').replace(/[^0-9-]/g, '');
+      await cell.getByRole('textbox').fill(answer);
+    }
+    for (const s of [2, 3, 4, 5]) await expect(page.getByTestId(`lab-light-${s}`)).toHaveAttribute('data-state', 'pass');
+    await expect(page.getByTestId('lab-reconcile-done')).toBeVisible();
+  });
+});
+
+test.describe('指標實驗室', () => {
+  test('分組、版本切換（杜邦）、N/A 的建議連到自由實驗', async ({ page }) => {
+    await page.goto('/lab/ratios/');
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-ratios-context')).toContainText('綠芽商行');
+    await expect(page.getByRole('heading', { name: '資產結構' })).toBeVisible();
+    await expect(page.locator('.ll-lab-ratio').first()).toBeVisible();
+    await expect(page.getByTestId('lab-dupont')).toContainText('＝');
+    await page.getByRole('radio', { name: '0-2 投影片' }).click();
+    await expect(page.getByRole('heading', { name: '部門指標' })).toBeVisible();
+    await expect(page.locator('.ll-lab-ratio[data-ratio="equity_multiplier@slides02"]')).toBeVisible();
+    await page.getByRole('radio', { name: 'Excel 版' }).click();
+    const na = page.locator('.ll-lab-ratio.is-na').first();
+    await expect(na).toBeVisible();
+    await expect(na.getByRole('link')).toHaveAttribute('href', /\/lab\/sandbox\//);
+  });
+});

@@ -2786,6 +2786,16 @@
       "optionIds": []
     },
     {
+      "id": "story_ywv2dy",
+      "kind": "story",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "answerHash": "sha256:05a7a26c3770bcb424a9cd918c98b9155e247f6de5b5fdb190b7b5eb3bc9d507",
+      "optionIds": []
+    },
+    {
       "id": "q_00c37f3f",
       "kind": "question",
       "rev": 3,

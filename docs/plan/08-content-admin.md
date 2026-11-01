@@ -561,6 +561,9 @@ content/
 | `predictTargets` | 預測題要問的目標，格式同 `scenario.targets`，使用交易影響題元件（見 03） |
 | `stakeholders` | 利害關係人卡：`[{ role, positive, negative, advice }]`，全部原創撰寫；只有重點步驟才有（見 03） |
 | `verification` | `excel_verified`（已在本機對老師 Excel 驗證）或 `inferred`（依課程情境推算，【待確認 T33】的決定）；畫面依此顯示「依課程情境推算」標記。驗證本身只在本機執行，這個欄位只記結果 |
+| `insight`（M4a 2026-11-01 加） | 階段 10 的管理意涵：每一步一段原創說明（LocalizedText）；沒有時實驗室只顯示利害關係人卡 |
+
+故事層級另有 `chapters`（M4a 2026-11-01 加，03 第 3.2 節的五章分組）：`[{ id: "c1", title, stepIds }]`，`id` 只需在故事內唯一，每一步恰好屬於一章、順序和 `order` 一致（schema 檢查）；步驟列表頁依它分章。
 
 故事層級的來源欄位 `origin` 已由 04 第 9.1 節定義（見上方「授權標示」），本文件不另設欄位。
 

@@ -12,11 +12,11 @@ const story = officialStoryJson as Story;
 const YEAR_END_ORDER = 17;
 
 describe('正式故事 story_ywv2dy（origin 為 teacher）', () => {
-  it('符合 content-schema 的 Story schema，狀態為草稿，沒有 checkpoints，每一步都標了 verification', () => {
+  it('符合 content-schema 的 Story schema，狀態為已發布（M4a 起），沒有 checkpoints，每一步都標了 verification', () => {
     const parsed = StorySchema.safeParse(officialStoryJson);
     expect(parsed.success ? 'ok' : JSON.stringify(parsed.error.issues)).toBe('ok');
     expect(story.origin).toBe('teacher');
-    expect(story.status).toBe('draft');
+    expect(story.status).toBe('published');
     expect(story.policy).toBe('teacher@1');
     expect(story.layout).toBe('teacher@1');
     expect(story.steps).toHaveLength(18);

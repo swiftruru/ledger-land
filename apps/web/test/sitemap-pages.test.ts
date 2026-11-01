@@ -15,7 +15,7 @@ const routes = entries.map((e) => ({
   noindex: /noindex: true/.test(e),
 }));
 /** 帶參數的路由對應的動態種類（sitemap-pages.json 的 dynamic） */
-const DYNAMIC: Record<string, string> = { '/chapter/:chapterId/': 'chapter', '/terms/:termId/': 'term' };
+const DYNAMIC: Record<string, string> = { '/chapter/:chapterId/': 'chapter', '/terms/:termId/': 'term', '/lab/story/:storyId/': 'story' };
 
 describe('sitemap-pages.json', () => {
   it('router.tsx 讀得出路由、noindex 與萬用路由', () => {

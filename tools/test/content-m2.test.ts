@@ -130,7 +130,7 @@ describe('content:build 的快照形狀（08 第 7.3 節、04 第 15.2 節）', 
     expect(acct.issues.filter((i) => i.severity === 'error')).toEqual([]);
     const lock = { contentVersion: 7, items: [{ id: 'q_tx7h2c9d', rev: 3, answerRev: 2 }] };
     const { manifest, files: out, counts } = buildSnapshot(parsed, acct.compiled, lock, { gitCommit: 'abc1234', builtAt: '2026-10-23T00:00:00Z' });
-    expect(counts).toEqual({ chapters: 3, objectives: 5, levels: 1, questions: 7, terms: counts.terms });
+    expect(counts).toEqual({ chapters: 3, objectives: 5, levels: 1, questions: 7, terms: counts.terms, stories: 1 });
     expect(manifest.contentVersion).toBe(7);
     expect(manifest.chapters[0]).toMatchObject({ id: 'ch_n3f8q1', order: 1, levelIds: ['lv_k7m2q9xd'] });
     expect(manifest.levels).toHaveLength(1);

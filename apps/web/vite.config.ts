@@ -259,9 +259,19 @@ export default defineConfig({
             // 結果頁元件（ResultView）不在第一波：由 result-lazy 和判分一起在第一次繪製後預載（level-view 的寫法曾把它一起放進第一波）。
             // level-view 群組的歷史：交給 quiz 群組的 entriesAware 會依「哪些頁面用到」拆成六個 0.3 到 2.5 KB 的 chunk，作答頁因此多發五個請求（2026-10-24 實測），
             // 所以它們一直要明確列在某個第一波的群組裡
+            // 文字標記與名詞 chip（2026-11-01，M4a）：Markup（佔位符與名詞 chip 的渲染）、terms（名詞索引與名詞卡的 context）、ratio-format（指標值的顯示）與 web-ui 的 TermChip
+            // 加上數字輸入（NumberInput；實驗室預測用的 ImpactPicker 依賴它）自成一個 chunk。NumberInput 依賴的 i18n 作答輸入正規化（input.ts）留在 session：
+            // 每一頁都預先載入 session（route-preload.json 的 always），input.ts 搬過來會讓 session 依賴這個 chunk，首頁也得多載 markup 與 prose（PR 63 第二輪 CI 的 preload.spec 抓到）；
+            // 代價是實驗室第一波仍載 session（約 6 KB），但不再載作答題型的 chunk。它們原本在 quiz-view 裡，實驗室的每一頁為了故事文字裡的名詞 chip 要在第一波多載整個作答題型的 chunk（約 17 KB gzip：
+            // LevelSession、題型元件、計時器等實驗室用不到的東西）；CI 執行器對第 7 步的 LCP 量到 3205ms（本機 2420）。作答頁第一波多一個小請求，本機 Lighthouse 要重量
+            {
+              name: 'markup',
+              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/]quiz[\\/](Markup|terms|ratio-format)\.tsx?|packages[\\/]web-ui[\\/]src[\\/]components[\\/](TermChip|NumberInput)\.tsx)$/,
+              priority: 2,
+            },
             {
               name: 'quiz-view',
-              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/](quiz[\\/](LevelSession|QuestionView|feedback-lazy|Markup|terms|categories|useAsync|layout-lazy|ratio-lazy|lazy-data|ratio-format|scoring-lazy|result-lazy|level-favourites|level-timer|TimerDisplay|useScrollAnchor|level-notes)\.tsx?)|packages[\\/]web-ui[\\/]src[\\/]components[\\/](QuestionCard|NumberInput)\.tsx)$/,
+              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/](quiz[\\/](LevelSession|QuestionView|feedback-lazy|categories|useAsync|layout-lazy|ratio-lazy|lazy-data|scoring-lazy|result-lazy|level-favourites|level-timer|TimerDisplay|useScrollAnchor|level-notes)\.tsx?)|packages[\\/]web-ui[\\/]src[\\/]components[\\/]QuestionCard\.tsx)$/,
               priority: 2,
             },
             // 只有作答頁（關卡、錯題本）才需要的模組：quiz 判分、core、content-schema 的題目 schema、web-ui 的題目元件與 features/quiz。

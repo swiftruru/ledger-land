@@ -87,7 +87,7 @@ async function ratioLevel(request: APIRequestContext): Promise<{ levelId: string
   return null;
 }
 
-test('INP：CPU 降速 4 倍，作答頁、地圖與圖鑑的互動都在 200ms 內', async ({ page, request }) => {
+test('INP：CPU 降速 4 倍，作答頁、地圖、圖鑑與實驗室的互動都在 200ms 內', async ({ page, request }) => {
   const ratio = await ratioLevel(request);
   await observe(page);
   const cdp = await page.context().newCDPSession(page);
@@ -168,6 +168,33 @@ test('INP：CPU 降速 4 倍，作答頁、地圖與圖鑑的互動都在 200ms 
   await page.keyboard.type('現金');
   await expect(page).toHaveURL(/q=/);
   await log('圖鑑：搜尋輸入');
+
+  // 報表實驗室（M4a，10 第 11.1 節：第 7 筆在 mid-tier 節流下的互動）：記下預測、下一步（科目變動）、下一步（天平）、自由實驗套用金額
+  await page.goto('/lab/story/story_ywv2dy/st_98tppx/');
+  await waitForApp(page);
+  await page.getByTestId('lab-next').click();
+  const radios = page.getByTestId('lab-predict').getByRole('radio', { name: /^增加$/ });
+  const n = await radios.count();
+  for (let i = 0; i < n; i++) await radios.nth(i).check();
+  await settle();
+  await page.getByTestId('lab-predict-submit').click();
+  await page.getByTestId('lab-skip').waitFor();
+  await log('實驗室：記下預測');
+  await page.getByTestId('lab-next').click();
+  await page.getByTestId('lab-effects').waitFor();
+  await log('實驗室：下一步（科目變動）');
+  await page.getByTestId('lab-next').click();
+  await page.getByTestId('lab-scale-verdict').waitFor();
+  await log('實驗室：下一步（天平）');
+  await page.goto('/lab/sandbox/');
+  await waitForApp(page);
+  const step6 = page.locator('[data-step="st_g4h3hx"]');
+  await step6.getByRole('textbox').waitFor();
+  await settle();
+  await step6.getByRole('textbox').fill('1600000');
+  await step6.getByTestId('lab-sandbox-apply').click();
+  await page.getByTestId('lab-affected').waitFor();
+  await log('實驗室：自由實驗套用金額');
 
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
   const firstInput = await page.evaluate(() => (window as unknown as { __firstInput: boolean }).__firstInput);

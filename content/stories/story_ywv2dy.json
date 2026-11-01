@@ -2,232 +2,1245 @@
   "id": "story_ywv2dy",
   "rev": 1,
   "revKind": "text",
-  "status": "draft",
-  "authorNotes": "授權：故事情境與金額經陳彥宏老師授權使用，不在 CC BY-SA 授權內；敘述文字為網站原創。公司名稱「初陽貿易」與 First Light Trading 為暫定（D9：正式名稱在 M4a 開工前由規劃者提案、使用者確認）。分組標題：第 1 到 5 筆原標題「公司建立」照用；第 6 到 7 筆原標題「成本會計」暫改為「現金買賣」，第 8 到 10 筆原標題「財務會計」暫改為「賒購賒銷與借款」，依 14 的決定處理，老師可回饋（T29）；第 11 到 12 筆「還款與收款作業」與第 13 到 18 筆「經營費用（包含人事費用）」照用。分組不是 schema 欄位，寫在各組第一步的敘述裡自然帶到。推定事項：第 5 筆的付款方式原文沒寫，推定付現（T30）；第 8 筆借款原文沒寫期限，依第 15 筆償還短期借款推定為短期（T30）；第 12 筆原文寫收回應付帳款，疑似誤植，網站改寫為收回應收帳款，依 14 的決定處理，老師可回饋（T08）；第 3 筆的電腦設備依課程做法歸入機器設備（W02）；第 2 筆事務用品全額費用化（W01）。第 1 到 3 步已於 2026-10-23 對老師 Excel 驗證通過（excel_verified），第 4 到 18 步為推論（inferred）。chapterLinks 與 stakeholders 待 M4a 補。",
-  "title": { "zh-TW": "初陽貿易的第一年", "en": "First Light Trading, year one" },
+  "status": "published",
+  "authorNotes": "授權：故事情境與金額經陳彥宏老師授權使用，不在 CC BY-SA 授權內；敘述文字為網站原創。公司名稱「綠芽商行」與 Green Bud Trading 為正式名稱（D9，使用者 2026-11-01 決定）。分組標題：第 1 到 5 筆原標題「公司建立」照用；第 6 到 7 筆原標題「成本會計」暫改為「現金買賣」，第 8 到 10 筆原標題「財務會計」暫改為「賒購賒銷與借款」，依 14 的決定處理，老師可回饋（T29）；第 11 到 12 筆「還款與收款作業」與第 13 到 18 筆「經營費用（包含人事費用）」照用。分組不是 schema 欄位，寫在各組第一步的敘述裡自然帶到。推定事項：第 5 筆的付款方式原文沒寫，推定付現（T30）；第 8 筆借款原文沒寫期限，依第 15 筆償還短期借款推定為短期（T30）；第 12 筆原文寫收回應付帳款，疑似誤植，網站改寫為收回應收帳款，依 14 的決定處理，老師可回饋（T08）；第 3 筆的電腦設備依課程做法歸入機器設備（W02）；第 2 筆事務用品全額費用化（W01）。第 1 到 3 步已於 2026-10-23 對老師 Excel 驗證通過（excel_verified），第 4 到 18 步為推論（inferred）。M4a（2026-11-01）補上 chapters（五章的分組，03 第 3.2 節）、每一步的 predictTargets（畫面固定的現金與五層利益之外再加的目標）、insight（階段 10 的管理意涵）、重點步驟的 stakeholders（第 1、7、8、10、15、17、18 步）與 chapterLinks；敘述、意涵與利害關係人卡都是網站原創。",
+  "title": {
+    "zh-TW": "綠芽商行的第一年",
+    "en": "Green Bud Trading, year one"
+  },
   "origin": "teacher",
-  "company": { "name": { "zh-TW": "初陽貿易", "en": "First Light Trading" } },
-  "ledger": { "currency": "TWD", "scale": 0 },
+  "company": {
+    "name": {
+      "zh-TW": "綠芽商行",
+      "en": "Green Bud Trading"
+    }
+  },
+  "ledger": {
+    "currency": "TWD",
+    "scale": 0
+  },
   "policy": "teacher@1",
   "layout": "teacher@1",
+  "chapters": [
+    {
+      "id": "c1",
+      "title": {
+        "zh-TW": "開業準備",
+        "en": "Getting set up"
+      },
+      "stepIds": [
+        "st_9htcrg",
+        "st_wwj5e5",
+        "st_v77z53",
+        "st_84jzxr",
+        "st_yj3yex"
+      ]
+    },
+    {
+      "id": "c2",
+      "title": {
+        "zh-TW": "第一筆生意",
+        "en": "The first sale"
+      },
+      "stepIds": [
+        "st_g4h3hx",
+        "st_98tppx"
+      ]
+    },
+    {
+      "id": "c3",
+      "title": {
+        "zh-TW": "借錢與賒帳",
+        "en": "Borrowing and credit"
+      },
+      "stepIds": [
+        "st_skx6ss",
+        "st_p6m0q7",
+        "st_aw2j4t",
+        "st_yksbqh",
+        "st_q5rssq"
+      ]
+    },
+    {
+      "id": "c4",
+      "title": {
+        "zh-TW": "營運支出與還款",
+        "en": "Running costs and repayment"
+      },
+      "stepIds": [
+        "st_qvewz8",
+        "st_vf8115",
+        "st_a13q1h"
+      ]
+    },
+    {
+      "id": "c5",
+      "title": {
+        "zh-TW": "期末調整",
+        "en": "Year-end adjustments"
+      },
+      "stepIds": [
+        "st_21tzes",
+        "st_j6185k",
+        "st_v3bgwb"
+      ]
+    }
+  ],
   "steps": [
     {
       "id": "st_9htcrg",
       "order": 1,
-      "title": { "zh-TW": "成立公司，股東出資", "en": "Founding the company with share capital" },
-      "narrative": {
-        "zh-TW": "公司建立的第一步：創辦人拿出自己的存款，投入 {{money:e1.amount}} 成立初陽貿易，這筆錢成為公司的股本。從這一刻起公司有了自己的帳，第一筆資產就是存進銀行的現金。",
-        "en": "Setting up the company starts here: the founder draws {{money:e1.amount}} from personal savings to found First Light Trading, and that money becomes the company’s share capital. From this moment the company keeps its own books, and its first asset is the cash in the bank."
+      "title": {
+        "zh-TW": "成立公司，股東出資",
+        "en": "Founding the company with share capital"
       },
-      "events": [{ "id": "e1", "template": "tpl.issue_shares_cash", "params": { "amount": 3000000 } }],
-      "termRefs": ["tm_c4sh8k2p", "tm_5e3py55a", "tm_4n517fc3"],
+      "narrative": {
+        "zh-TW": "公司建立的第一步：創辦人拿出自己的存款，投入 {{money:e1.amount}} 成立綠芽商行，這筆錢成為公司的股本。從這一刻起公司有了自己的帳，第一筆資產就是存進銀行的現金。",
+        "en": "Setting up the company starts here: the founder draws {{money:e1.amount}} from personal savings to found Green Bud Trading, and that money becomes the company’s share capital. From this moment the company keeps its own books, and its first asset is the cash in the bank."
+      },
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.issue_shares_cash",
+          "params": {
+            "amount": 3000000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_c4sh8k2p",
+        "tm_5e3py55a",
+        "tm_4n517fc3"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_c5f8w2",
+          "level": "lv_h2zx7srx"
+        },
+        {
+          "chapter": "ch_78q8hr",
+          "level": "lv_65v1tajr"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_share_capital",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "股本是股東交給公司的本錢，不是公司賺來的。帳上此刻只有一筆現金和一筆股本，兩邊相等，這就是會計恆等式的起點。",
+        "en": "Share capital is money the shareholders have entrusted to the company, not money the company has earned. Right now the books hold one cash balance and one share capital balance, and the two are equal: that is where the accounting equation begins."
+      },
+      "stakeholders": [
+        {
+          "role": "shareholder",
+          "positive": {
+            "zh-TW": "出資額就是股東最多可能賠掉的金額：公司日後欠的錢，不會追到股東自己的存款。",
+            "en": "The amount invested is the most a shareholder can lose: whatever the company owes later, creditors cannot reach the shareholder’s own savings."
+          },
+          "negative": {
+            "zh-TW": "股本沒有利息、也沒有到期日，錢進了公司就要靠公司賺錢才拿得回來。",
+            "en": "Share capital earns no interest and has no maturity date; once the money is in the company, it only comes back if the company makes a profit."
+          },
+          "advice": {
+            "zh-TW": "出資前先想清楚公司打算怎麼用這筆錢，以及多久可能看到利潤。",
+            "en": "Before investing, be clear about how the company intends to use the money and how soon a profit might appear."
+          }
+        }
+      ],
       "verification": "excel_verified"
     },
     {
       "id": "st_wwj5e5",
       "order": 2,
-      "title": { "zh-TW": "購買辦公事務用品", "en": "Buying office supplies" },
+      "title": {
+        "zh-TW": "購買辦公事務用品",
+        "en": "Buying office supplies"
+      },
       "narrative": {
         "zh-TW": "辦公室總要有筆、紙和基本用品，公司用現金買了 {{money:e1.amount}} 的事務用品。這些東西很快就會用完，所以整筆當成費用，不記成資產。",
         "en": "An office needs pens, paper and the basics, so the company pays {{money:e1.amount}} in cash for office supplies. They will be used up quickly, so the whole amount is treated as an expense rather than an asset."
       },
-      "events": [{ "id": "e1", "template": "tpl.buy_office_supplies_cash", "params": { "amount": 50000 } }],
-      "termRefs": ["tm_24scevxv", "tm_c4sh8k2p", "tm_rp85wtm7"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.buy_office_supplies_cash",
+          "params": {
+            "amount": 50000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_24scevxv",
+        "tm_c4sh8k2p",
+        "tm_rp85wtm7"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_s0525x",
+          "level": "lv_enjpm9th"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "錢花出去了，資產卻沒有多一項：事務用品很快就會用完，所以整筆記成費用。公司還沒有任何收入，費用一出現，本期淨利就是負的。",
+        "en": "Cash has gone out, yet no asset has been added: office supplies are used up quickly, so the whole amount is an expense. The company has no revenue yet, so the first expense turns the profit for the period negative."
+      },
       "verification": "excel_verified"
     },
     {
       "id": "st_v77z53",
       "order": 3,
-      "title": { "zh-TW": "購入電腦設備", "en": "Buying computer equipment" },
+      "title": {
+        "zh-TW": "購入電腦設備",
+        "en": "Buying computer equipment"
+      },
       "narrative": {
         "zh-TW": "接著用現金購入一組電腦設備，付了 {{money:e1.amount}}。這組設備會用上好幾年，所以記成資產；依課程的做法，電腦設備歸入機器設備這個科目。",
         "en": "Next the company buys a set of computer equipment for {{money:e1.amount}} in cash. The equipment will serve for several years, so it is recorded as an asset; following the course’s classification, computer equipment sits under machinery and equipment."
       },
-      "events": [{ "id": "e1", "template": "tpl.buy_equipment_cash", "params": { "amount": 500000 } }],
-      "termRefs": ["tm_gt8g4afe", "tm_c4sh8k2p", "tm_xen3p30x"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.buy_equipment_cash",
+          "params": {
+            "amount": 500000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_gt8g4afe",
+        "tm_c4sh8k2p",
+        "tm_xen3p30x"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_78q8hr",
+          "level": "lv_d03p1z66"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_machinery_net",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "同樣是付現金，電腦設備卻記成資產，因為它會用好幾年。現金變少、設備變多，資產總額不變，損益表也沒有動；成本要等每年提列折舊時才慢慢變成費用。",
+        "en": "Cash goes out here too, but the computer equipment becomes an asset because it will serve the company for years. Cash falls, equipment rises, total assets are unchanged and the income statement does not move. The cost only becomes an expense gradually, through depreciation each year."
+      },
       "verification": "excel_verified"
     },
     {
       "id": "st_84jzxr",
       "order": 4,
-      "title": { "zh-TW": "網頁製作外包", "en": "Outsourcing the website" },
+      "title": {
+        "zh-TW": "網頁製作外包",
+        "en": "Outsourcing the website"
+      },
       "narrative": {
         "zh-TW": "公司需要一個網站，但沒有自己的工程師，於是把網頁製作外包出去，以現金支付外包費 {{money:e1.amount}}。網站上線後，就能開始對外做生意。",
         "en": "The company needs a website but has no developers of its own, so the work is outsourced and the fee of {{money:e1.amount}} is paid in cash. Once the site is live, the company can start trading."
       },
-      "events": [{ "id": "e1", "template": "tpl.pay_outsourcing_cash", "params": { "amount": 200000 } }],
-      "termRefs": ["tm_r3nvm8jy", "tm_c4sh8k2p"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.pay_outsourcing_cash",
+          "params": {
+            "amount": 200000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_r3nvm8jy",
+        "tm_c4sh8k2p"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_s0525x",
+          "level": "lv_enjpm9th"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "網站做好了，但它不像設備那樣有明確的使用年限與可靠的價值，課程把外包費直接列為當期費用。判斷「資產還是費用」的關鍵是未來能不能帶來效益，而且能不能衡量。",
+        "en": "The website is built, but unlike equipment it has no clear useful life or dependable value, so the course treats the outsourcing fee as an expense of the period. The test for asset or expense is whether the spending brings future benefit, and whether that benefit can be measured."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_yj3yex",
       "order": 5,
-      "title": { "zh-TW": "支付公司設立費", "en": "Paying the start-up costs" },
+      "title": {
+        "zh-TW": "支付公司設立費",
+        "en": "Paying the start-up costs"
+      },
       "narrative": {
         "zh-TW": "登記、公證與各種設立手續的費用合計 {{money:e1.amount}}，這裡視為以現金付清。這筆設立費先記成遞延資產，之後分年攤銷；公司建立的階段到此告一段落。",
         "en": "Registration, notarisation and the other formalities of setting up cost {{money:e1.amount}} in total, treated here as paid in cash. The start-up costs are first recorded as a deferred asset to be amortised over the coming years, and with that the set-up phase is complete."
       },
-      "events": [{ "id": "e1", "template": "tpl.pay_org_costs", "params": { "amount": 300000 }, "pendingRefs": ["T04", "T30"] }],
-      "termRefs": ["tm_d9f3g7cs", "tm_c4sh8k2p", "tm_hz08w4k5", "tm_xen3p30x"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.pay_org_costs",
+          "params": {
+            "amount": 300000
+          },
+          "pendingRefs": [
+            "T04",
+            "T30"
+          ]
+        }
+      ],
+      "termRefs": [
+        "tm_d9f3g7cs",
+        "tm_c4sh8k2p",
+        "tm_hz08w4k5",
+        "tm_xen3p30x"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_78q8hr",
+          "level": "lv_d03p1z66"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_deferred_org_costs",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "設立費先掛在資產，是因為這筆錢讓公司得以存在，效益會延續好幾年。但它不能變現，銀行看資產負債表時通常會把這類遞延資產先扣掉。",
+        "en": "Start-up costs sit in assets for now because they let the company exist, and that benefit lasts for years. They cannot be turned into cash, however, so a bank reading the balance sheet will usually strip this kind of deferred asset out first."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_g4h3hx",
       "order": 6,
-      "title": { "zh-TW": "現金進貨", "en": "Buying goods for cash" },
+      "title": {
+        "zh-TW": "現金進貨",
+        "en": "Buying goods for cash"
+      },
       "narrative": {
         "zh-TW": "營業正式開始，先從現金買賣談起。公司用現金向供應商買進第一批要銷售的商品，進貨成本 {{money:e1.amount}}；這批貨在賣出之前都算存貨。",
         "en": "Trading begins, starting with cash deals. The company pays {{money:e1.amount}} in cash to a supplier for its first batch of goods for resale; until they are sold, the goods count as inventory."
       },
-      "events": [{ "id": "e1", "template": "tpl.purchase_inventory_cash", "params": { "amount": 1500000 } }],
-      "termRefs": ["tm_n7v3k8pq", "tm_c4sh8k2p"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.purchase_inventory_cash",
+          "params": {
+            "amount": 1500000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_n7v3k8pq",
+        "tm_c4sh8k2p"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_s0525x",
+          "level": "lv_14xjcbk8"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_inventory",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "進貨不是費用，而是把現金換成存貨，資產的形式變了、總額沒變。存貨要等賣出去那一刻才變成營業成本，這是權責發生制最重要的配合原則。",
+        "en": "Buying goods is not an expense: cash has been exchanged for inventory, so assets change form but not total. Inventory only becomes cost of sales at the moment it is sold. This is the matching principle at the heart of accrual accounting."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_98tppx",
       "order": 7,
-      "title": { "zh-TW": "現金賣出全部商品", "en": "Selling all the goods for cash" },
+      "title": {
+        "zh-TW": "現金賣出全部商品",
+        "en": "Selling all the goods for cash"
+      },
       "narrative": {
         "zh-TW": "商品很快就全部賣出，客戶當場付現，公司收到 {{money:e1.price}} 的現金。帳上要同時記兩件事：收入進來了，而成本 {{money:e1.costOfAllInventory}} 的存貨也離開了公司，兩者的差額 {{money:e1.grossProfit}} 就是這批貨的毛利。",
         "en": "The goods sell out quickly and the customers pay on the spot, so the company receives {{money:e1.price}} in cash. Two things are recorded at once: revenue comes in, and inventory costing {{money:e1.costOfAllInventory}} leaves the company; the difference of {{money:e1.grossProfit}} is the gross profit on the batch."
       },
-      "events": [{ "id": "e1", "template": "tpl.sell_all_inventory_cash", "params": { "price": 3000000 } }],
-      "termRefs": ["tm_v3n8q2ye", "tm_g5c2m8tw", "tm_n7v3k8pq", "tm_g8p4w1rz"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.sell_all_inventory_cash",
+          "params": {
+            "price": 3000000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_v3n8q2ye",
+        "tm_g5c2m8tw",
+        "tm_n7v3k8pq",
+        "tm_g8p4w1rz"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_s0525x",
+          "level": "lv_14xjcbk8"
+        },
+        {
+          "chapter": "ch_67350j",
+          "level": "lv_jq2z0cpt"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_inventory",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_retained_earnings",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "這是公司第一次有收入，也第一次由虧轉盈。收進來的現金有一部分只是把先前買貨付出去的錢收回來，真正多賺的是毛利那一段。",
+        "en": "This is the first revenue the company has earned, and the first time it has moved from a loss to a profit. Part of the cash received merely recovers the money paid for the goods earlier; the real gain is the gross profit."
+      },
+      "stakeholders": [
+        {
+          "role": "bank",
+          "positive": {
+            "zh-TW": "第一次由虧轉盈，而且收到的是現金，償債能力的基礎變好了。",
+            "en": "The company has turned a profit for the first time, and it was paid in cash, so its capacity to repay is on firmer ground."
+          },
+          "negative": {
+            "zh-TW": "一口氣賣光全部存貨，不代表每個月都能賣這麼多。",
+            "en": "Selling all the inventory at once does not mean the company can sell this much every month."
+          },
+          "advice": {
+            "zh-TW": "申請貸款時附上接下來幾個月的進貨與銷售計畫，而不是只拿這一筆的成績。",
+            "en": "When applying for a loan, include a purchasing and sales plan for the coming months rather than this one result alone."
+          }
+        },
+        {
+          "role": "shareholder",
+          "positive": {
+            "zh-TW": "本期淨利轉正，股東的本錢開始增值。",
+            "en": "Profit for the period has turned positive, so the shareholders’ capital has begun to grow."
+          },
+          "negative": {
+            "zh-TW": "毛利看起來不錯，但前面的費用已經吃掉一部分，剩下的利潤比毛利少得多。",
+            "en": "The gross profit looks healthy, but earlier expenses have already eaten into it, and what remains is far smaller."
+          },
+          "advice": {
+            "zh-TW": "關心毛利率是否能維持，而不只看這一筆賺了多少。",
+            "en": "Watch whether the gross margin can be sustained, not just how much this one sale earned."
+          }
+        }
+      ],
       "verification": "inferred"
     },
     {
       "id": "st_skx6ss",
       "order": 8,
-      "title": { "zh-TW": "借入經營資金", "en": "Borrowing working capital" },
+      "title": {
+        "zh-TW": "借入經營資金",
+        "en": "Borrowing working capital"
+      },
       "narrative": {
         "zh-TW": "銷售成績不錯，公司決定擴大規模；這一組交易談的是賒購賒銷與借款。公司先向銀行借入 {{money:e1.amount}} 的經營資金，這裡視為一年內要償還的短期借款。",
         "en": "Sales are going well and the company decides to scale up; this group of transactions covers buying and selling on credit, and borrowing. First it borrows {{money:e1.amount}} of working capital from the bank, treated here as a short-term loan to be repaid within a year."
       },
-      "events": [{ "id": "e1", "template": "tpl.borrow_short_term", "params": { "amount": 5000000 }, "pendingRefs": ["T30"] }],
-      "termRefs": ["tm_c4sh8k2p", "tm_s5b8r3hd", "tm_f9a4c6md"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.borrow_short_term",
+          "params": {
+            "amount": 5000000
+          },
+          "pendingRefs": [
+            "T30"
+          ]
+        }
+      ],
+      "termRefs": [
+        "tm_c4sh8k2p",
+        "tm_s5b8r3hd",
+        "tm_f9a4c6md"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_jkhbh3",
+          "level": "lv_g51z9e9b"
+        },
+        {
+          "chapter": "ch_8g6pzz",
+          "level": "lv_ssqpqpdm"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_short_term_borrowings",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_liabilities",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "借款讓現金一口氣變多，但負債也同時出現，股東權益一毛都沒有增加。看到現金變多就以為公司變有錢，是讀報表最常見的誤會。",
+        "en": "The loan lifts cash sharply, but a liability appears at the same time and equity does not grow by a single dollar. Mistaking more cash for a richer company is one of the most common errors in reading statements."
+      },
+      "stakeholders": [
+        {
+          "role": "bank",
+          "positive": {
+            "zh-TW": "公司有營運紀錄、也有賣得出去的商品，貸款的用途明確。",
+            "en": "The company has a trading record and goods that sell, and the purpose of the loan is clear."
+          },
+          "negative": {
+            "zh-TW": "借款金額比公司現有的資產總額還大，一旦銷售不如預期，還款會很吃力。",
+            "en": "The loan is larger than the company’s total assets today; if sales fall short, repayment will be a strain."
+          },
+          "advice": {
+            "zh-TW": "分批撥款並約定還款時程，讓借款跟著進貨的節奏走。",
+            "en": "Release the loan in stages with an agreed repayment schedule, so borrowing follows the rhythm of purchasing."
+          }
+        },
+        {
+          "role": "management",
+          "positive": {
+            "zh-TW": "有了營運資金，可以一次進更多貨、談到更好的價格。",
+            "en": "With working capital in hand, the company can buy in larger quantities and negotiate better prices."
+          },
+          "negative": {
+            "zh-TW": "利息從借款那天開始計算，貨還沒賣出去，成本就已經在累積。",
+            "en": "Interest starts accruing the day the loan is drawn, so costs are mounting before any goods are sold."
+          },
+          "advice": {
+            "zh-TW": "借來的錢要用在能很快變回現金的地方，不要拿去買長期資產。",
+            "en": "Use borrowed money where it will turn back into cash quickly, not to buy long-term assets."
+          }
+        }
+      ],
       "verification": "inferred"
     },
     {
       "id": "st_p6m0q7",
       "order": 9,
-      "title": { "zh-TW": "賒購商品", "en": "Buying goods on credit" },
+      "title": {
+        "zh-TW": "賒購商品",
+        "en": "Buying goods on credit"
+      },
       "narrative": {
         "zh-TW": "這次進貨的量大得多，供應商同意先出貨、之後再收款，公司以賒購方式買進 {{money:e1.amount}} 的商品。貨到了，錢還沒付，帳上多了一筆應付帳款。",
         "en": "This order is far larger, and the supplier agrees to deliver first and be paid later, so the company buys {{money:e1.amount}} of goods on credit. The goods have arrived but nothing has been paid yet, so the books now show a trade payable."
       },
-      "events": [{ "id": "e1", "template": "tpl.purchase_inventory_credit", "params": { "amount": 7500000 } }],
-      "termRefs": ["tm_n7v3k8pq", "tm_a3p9y6kc"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.purchase_inventory_credit",
+          "params": {
+            "amount": 7500000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_n7v3k8pq",
+        "tm_a3p9y6kc"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_jkhbh3",
+          "level": "lv_qrdbwqe4"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_inventory",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_accounts_payable",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "賒購讓公司不必先付錢就能拿到貨，存貨和應付帳款一起增加。供應商等於暫時借錢給公司，這是營運資金最便宜的來源，前提是到期要付得出來。",
+        "en": "Buying on credit lets the company take delivery before paying, so inventory and trade payables rise together. The supplier is in effect lending the company money for a while, the cheapest source of working capital, provided the bill can be paid when it falls due."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_aw2j4t",
       "order": 10,
-      "title": { "zh-TW": "賒銷全部商品", "en": "Selling all the goods on credit" },
+      "title": {
+        "zh-TW": "賒銷全部商品",
+        "en": "Selling all the goods on credit"
+      },
       "narrative": {
-        "zh-TW": "公司也把同樣的條件給客戶：整批商品以 {{money:e1.price}} 賒銷出去，客戶之後再付款。收入現在就可以認列，成本 {{money:e1.costOfAllInventory}} 的存貨轉成銷貨成本，毛利是 {{money:e1.grossProfit}}；不過手上的現金一塊錢也沒增加，增加的是應收帳款。",
+        "zh-TW": "公司也把同樣的條件給客戶：整批商品以 {{money:e1.price}} 賒銷出去，客戶之後再付款。收入現在就可以認列，成本 {{money:e1.costOfAllInventory}} 的存貨轉成營業成本，毛利是 {{money:e1.grossProfit}}；不過手上的現金一塊錢也沒增加，增加的是應收帳款。",
         "en": "The company offers its customers the same terms: the whole batch is sold on credit for {{money:e1.price}}, to be paid later. Revenue is recognised now, inventory costing {{money:e1.costOfAllInventory}} becomes cost of sales, and the gross profit is {{money:e1.grossProfit}}; yet not a single dollar of cash has come in, only a trade receivable."
       },
-      "events": [{ "id": "e1", "template": "tpl.sell_all_inventory_credit", "params": { "price": 15000000 } }],
-      "termRefs": ["tm_r7x2c9fa", "tm_v3n8q2ye", "tm_g5c2m8tw", "tm_n7v3k8pq"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.sell_all_inventory_credit",
+          "params": {
+            "price": 15000000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_r7x2c9fa",
+        "tm_v3n8q2ye",
+        "tm_g5c2m8tw",
+        "tm_n7v3k8pq"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_jkhbh3",
+          "level": "lv_qrdbwqe4"
+        },
+        {
+          "chapter": "ch_ft415v",
+          "level": "lv_c0hxq2zv"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_accounts_receivable",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_inventory",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "收入在交貨時就認列，現金卻還沒進來，所以損益表上利潤大增，資產負債表上多的是應收帳款。損益表上的利潤和銀行裡的現金，從這一步起各走各的。",
+        "en": "Revenue is recognised when the goods are delivered, even though no cash has arrived, so profit jumps on the income statement while the balance sheet gains trade receivables. From this step on, the profit on the income statement and the cash in the bank each go their own way."
+      },
+      "stakeholders": [
+        {
+          "role": "finance_lead",
+          "positive": {
+            "zh-TW": "營收與利潤都大幅成長，公司的規模上了一個台階。",
+            "en": "Revenue and profit have both grown sharply, and the company has stepped up in scale."
+          },
+          "negative": {
+            "zh-TW": "利潤全部掛在應收帳款上，現金一毛都沒有進來，銀行借款的利息卻照付。",
+            "en": "All the profit sits in receivables and not a dollar of cash has come in, while interest on the bank loan keeps being paid."
+          },
+          "advice": {
+            "zh-TW": "訂好收款期限並追蹤逾期，必要時提供早付折扣。",
+            "en": "Set payment terms, track overdue accounts and consider an early-payment discount if needed."
+          }
+        },
+        {
+          "role": "shareholder",
+          "positive": {
+            "zh-TW": "一批貨賺到的毛利是前一次的好幾倍，生意顯然做得起來。",
+            "en": "The gross profit on this batch is several times the last one, so the business clearly works."
+          },
+          "negative": {
+            "zh-TW": "帳上的利潤能不能變成現金，要看客戶付不付錢，風險還沒有解除。",
+            "en": "Whether this paper profit becomes cash depends on the customers paying, so the risk is not yet over."
+          },
+          "advice": {
+            "zh-TW": "除了損益表，也要看現金流量表，確認利潤有沒有變成現金。",
+            "en": "Read the cash flow statement alongside the income statement to confirm that profit is turning into cash."
+          }
+        }
+      ],
       "verification": "inferred"
     },
     {
       "id": "st_yksbqh",
       "order": 11,
-      "title": { "zh-TW": "付清應付帳款", "en": "Paying the supplier in full" },
+      "title": {
+        "zh-TW": "付清應付帳款",
+        "en": "Paying the supplier in full"
+      },
       "narrative": {
         "zh-TW": "接下來是還款與收款作業。供應商的付款期限到了，公司把欠的貨款 {{money:e1.amount}} 一次付清，應付帳款歸零，現金也減少同樣的數目。",
         "en": "Now for settling debts and collecting what is owed. The supplier’s payment date arrives and the company pays the full {{money:e1.amount}} it owes; trade payables fall to zero and cash goes down by the same amount."
       },
-      "events": [{ "id": "e1", "template": "tpl.pay_all_payables", "params": {} }],
-      "termRefs": ["tm_a3p9y6kc", "tm_c4sh8k2p"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.pay_all_payables",
+          "params": {}
+        }
+      ],
+      "termRefs": [
+        "tm_a3p9y6kc",
+        "tm_c4sh8k2p"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_jkhbh3",
+          "level": "lv_qrdbwqe4"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_accounts_payable",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_liabilities",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "付清貨款讓現金和應付帳款同時減少，損益表完全不動。費用早在賣出存貨時就認列了，現在只是把欠的錢結清。",
+        "en": "Settling the supplier reduces cash and trade payables by the same amount, and the income statement does not move at all. The cost was recognised when the inventory was sold; this step simply clears the debt."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_q5rssq",
       "order": 12,
-      "title": { "zh-TW": "收回部分應收帳款", "en": "Collecting part of the receivables" },
+      "title": {
+        "zh-TW": "收回部分應收帳款",
+        "en": "Collecting part of the receivables"
+      },
       "narrative": {
         "zh-TW": "客戶匯來了一部分貨款，公司收到 {{money:e1.amount}} 的現金，剩下的之後再收。應收帳款減少、現金增加，這一步不會產生新的收入，因為收入在賒銷時就已經認列了。",
-        "en": "The customer transfers part of what it owes and the company collects {{money:e1.amount}} in cash, with the remainder to follow. Receivables fall and cash rises, but no new revenue arises here: it was already recognised when the goods were sold on credit."
+        "en": "The customers transfer part of what they owe and the company collects {{money:e1.amount}} in cash, with the remainder to follow. Receivables fall and cash rises, but no new revenue arises here: it was already recognised when the goods were sold on credit."
       },
-      "events": [{ "id": "e1", "template": "tpl.collect_receivables", "params": { "amount": 10000000 }, "pendingRefs": ["T08"] }],
-      "termRefs": ["tm_c4sh8k2p", "tm_r7x2c9fa"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.collect_receivables",
+          "params": {
+            "amount": 10000000
+          },
+          "pendingRefs": [
+            "T08"
+          ]
+        }
+      ],
+      "termRefs": [
+        "tm_c4sh8k2p",
+        "tm_r7x2c9fa"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_jkhbh3",
+          "level": "lv_fd4g23xt"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_accounts_receivable",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "收回應收帳款不會產生新的收入，只是把資產從應收帳款換成現金。現金流量表會看到營業活動的現金改善，損益表卻一點變化都沒有。",
+        "en": "Collecting trade receivables creates no new revenue; it only converts one asset, receivables, into another, cash. The cash flow statement shows operating cash improving while the income statement stays exactly where it was."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_qvewz8",
       "order": 13,
-      "title": { "zh-TW": "支付董監事酬勞", "en": "Paying the directors" },
+      "title": {
+        "zh-TW": "支付董監事酬勞",
+        "en": "Paying the directors"
+      },
       "narrative": {
         "zh-TW": "最後一組是經營費用，人事費用也算在內。公司依章程以現金支付董監事酬勞 {{money:e1.amount}}，這是經營公司必要的人事支出，當期就認列為費用。",
-        "en": "The final group covers operating expenses, including the cost of people. The company pays its directors and supervisors {{money:e1.amount}} in cash as the articles provide; it is a necessary staffing cost of running the business and is expensed in the current period."
+        "en": "The final group covers operating expenses, including the cost of people. The company pays its directors and supervisors {{money:e1.amount}} in cash as the articles of association provide; it is a necessary staffing cost of running the business and is expensed in the current period."
       },
-      "events": [{ "id": "e1", "template": "tpl.pay_directors_remuneration_cash", "params": { "amount": 500000 } }],
-      "termRefs": ["tm_q5srzxb2", "tm_c4sh8k2p"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.pay_directors_remuneration_cash",
+          "params": {
+            "amount": 500000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_q5srzxb2",
+        "tm_c4sh8k2p"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_s0525x",
+          "level": "lv_enjpm9th"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_retained_earnings",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "董監事酬勞是經營公司的人事成本，直接減少本期淨利。它和股利不同：股利是把賺到的錢分給股東，酬勞則是公司支付給治理者的費用。",
+        "en": "Directors’ remuneration is a staffing cost of running the company and reduces profit directly. It differs from a dividend: a dividend distributes earnings to shareholders, whereas remuneration is an expense the company pays to those who govern it."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_vf8115",
       "order": 14,
-      "title": { "zh-TW": "付清商品寄送費", "en": "Paying the delivery costs" },
+      "title": {
+        "zh-TW": "付清商品寄送費",
+        "en": "Paying the delivery costs"
+      },
       "narrative": {
         "zh-TW": "賣出去的商品都要包裝和寄送，這一年的寄送費用累積下來一次付清，共 {{money:e1.amount}}。這類支出和銷售直接相關，屬於營業費用。",
         "en": "Every item sold has to be packed and shipped, and the year’s delivery costs are settled in one payment of {{money:e1.amount}}. Spending like this goes hand in hand with selling and belongs to operating expenses."
       },
-      "events": [{ "id": "e1", "template": "tpl.pay_packing_freight_cash", "params": { "amount": 1000000 } }],
-      "termRefs": ["tm_dxr5anv4", "tm_c4sh8k2p"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.pay_packing_freight_cash",
+          "params": {
+            "amount": 1000000
+          }
+        }
+      ],
+      "termRefs": [
+        "tm_dxr5anv4",
+        "tm_c4sh8k2p"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_s0525x",
+          "level": "lv_enjpm9th"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_retained_earnings",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "寄送費是為了把貨送到客戶手上，屬於銷售費用，不計入商品成本。費用歸類的差別不改變淨利，卻會改變毛利，看毛利率時要留意這一點。",
+        "en": "Delivery costs are incurred to get goods to customers, so they are selling expenses rather than part of the cost of goods. Where an expense is classified does not change profit, but it does change gross profit, which matters when reading the gross margin."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_a13q1h",
       "order": 15,
-      "title": { "zh-TW": "償還借款並付利息", "en": "Repaying the loan with interest" },
+      "title": {
+        "zh-TW": "償還借款並付利息",
+        "en": "Repaying the loan with interest"
+      },
       "narrative": {
         "zh-TW": "借款到期，公司把本金 {{money:e1.principal}} 全數還給銀行，並支付這段期間的利息 {{money:e1.interest}}，合計付出 {{money:e1.totalPaid}}。還本金只是負債減少，利息才是這筆借款真正的成本。",
         "en": "The loan falls due and the company repays the principal of {{money:e1.principal}} in full, together with {{money:e1.interest}} of interest for the period, paying {{money:e1.totalPaid}} altogether. Repaying the principal merely reduces a liability; the interest is the real cost of borrowing."
       },
-      "events": [{ "id": "e1", "template": "tpl.repay_all_short_term_loans_with_interest", "params": { "interest": 500000 }, "pendingRefs": ["T11"] }],
-      "termRefs": ["tm_s5b8r3hd", "tm_k6t2e9wr", "tm_f9a4c6md", "tm_p2a7c5vk"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.repay_all_short_term_loans_with_interest",
+          "params": {
+            "interest": 500000
+          },
+          "pendingRefs": [
+            "T11"
+          ]
+        }
+      ],
+      "termRefs": [
+        "tm_s5b8r3hd",
+        "tm_k6t2e9wr",
+        "tm_f9a4c6md",
+        "tm_p2a7c5vk"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_jkhbh3",
+          "level": "lv_0dvm2fte"
+        },
+        {
+          "chapter": "ch_bee78g",
+          "level": "lv_kvr537aw"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_short_term_borrowings",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_liabilities",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "還本金只是把借來的錢還回去，負債減少、現金減少，不經過損益表；利息才是借錢的代價，列為費用。現金流量表也把兩者分開：本金走籌資活動，利息走營業活動。",
+        "en": "Repaying the principal just returns borrowed money: liabilities and cash fall, and the income statement is untouched. The interest is the price of borrowing and is an expense. The cash flow statement separates the two as well, with the principal under financing and the interest under operating activities."
+      },
+      "stakeholders": [
+        {
+          "role": "bank",
+          "positive": {
+            "zh-TW": "本息如期清償，公司建立了良好的信用紀錄。",
+            "en": "Principal and interest were repaid on time, giving the company a sound credit record."
+          },
+          "negative": {
+            "zh-TW": "還款後現金明顯變少，下一次要借時，銀行會重新看公司的現金狀況。",
+            "en": "Cash is noticeably lower after repayment, and the bank will look at the cash position afresh before lending again."
+          },
+          "advice": {
+            "zh-TW": "維持往來紀錄，日後需要資金時可以談到更好的條件。",
+            "en": "Keep the relationship active; better terms will be available when funds are next needed."
+          }
+        },
+        {
+          "role": "management",
+          "positive": {
+            "zh-TW": "負債清零，公司又回到完全由股東資金支撐的狀態。",
+            "en": "With the debt cleared, the company is again financed entirely by shareholders’ funds."
+          },
+          "negative": {
+            "zh-TW": "利息是這一年真實發生的成本，借款期間賺到的毛利要扣掉它才算數。",
+            "en": "The interest is a real cost of the year; the gross profit earned while the loan was outstanding only counts after deducting it."
+          },
+          "advice": {
+            "zh-TW": "評估借款時，把利息和借款期間能多賺的毛利放在一起比較。",
+            "en": "When weighing a loan, compare the interest against the extra gross profit the borrowing makes possible."
+          }
+        }
+      ],
       "verification": "inferred"
     },
     {
       "id": "st_21tzes",
       "order": 16,
-      "title": { "zh-TW": "年底盤點存貨", "en": "Year-end stocktake" },
+      "title": {
+        "zh-TW": "年底盤點存貨",
+        "en": "Year-end stocktake"
+      },
       "narrative": {
         "zh-TW": "年底盤點倉庫時，發現實際的存貨比帳上多，盤點後的存貨金額是 {{money:e1.countedAmount}}。多出來的 {{money:e1.overage}} 要補進帳裡，把存貨調整成實際的數字。",
         "en": "At the year-end stocktake the warehouse holds more goods than the books show, and inventory after the count stands at {{money:e1.countedAmount}}. The surplus of {{money:e1.overage}} is added to the books so that inventory matches the actual figure."
       },
-      "events": [{ "id": "e1", "template": "tpl.inventory_count", "params": { "countedAmount": 1000000 }, "pendingRefs": ["T06"] }],
-      "termRefs": ["tm_n7v3k8pq", "tm_g5c2m8tw", "tm_6nmfxa10", "tm_kqwv1rjs"],
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.inventory_count",
+          "params": {
+            "countedAmount": 1000000
+          },
+          "pendingRefs": [
+            "T06"
+          ]
+        }
+      ],
+      "termRefs": [
+        "tm_n7v3k8pq",
+        "tm_g5c2m8tw",
+        "tm_6nmfxa10",
+        "tm_kqwv1rjs"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_a0s9tk",
+          "level": "lv_svhghrzy"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_inventory",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "盤點讓帳上存貨回到實際數量。多出來的存貨增加資產，也讓這一年的成本變低、利潤變高；盤點多出來的貨怎麼入帳，交易卡上另外有說明。",
+        "en": "The stocktake brings book inventory back in line with what is actually on the shelves. The surplus adds to assets and lowers this year’s cost of sales, so profit rises; how a stocktake surplus is recorded is explained on the transaction card."
+      },
       "verification": "inferred"
     },
     {
       "id": "st_j6185k",
       "order": 17,
-      "title": { "zh-TW": "年底調整：折舊與攤銷", "en": "Year-end adjustments: depreciation and amortisation" },
+      "title": {
+        "zh-TW": "年底調整：折舊與攤銷",
+        "en": "Year-end adjustments: depreciation and amortisation"
+      },
       "narrative": {
         "zh-TW": "年底結帳前有兩件調整要做。電腦設備預計使用 {{number:e1.usefulLifeYears}} 年，公司用直線法提列這一年的折舊 {{money:e1.amount}}；當初記成遞延資產的設立費也分 {{number:e2.years}} 年攤銷，今年攤掉 {{money:e2.amount}}。這兩筆都是沒有現金流出的費用。",
         "en": "Two adjustments are needed before the year is closed. The computer equipment is expected to last {{number:e1.usefulLifeYears}} years, so the company records this year’s straight-line depreciation of {{money:e1.amount}}; the start-up costs recorded earlier as a deferred asset are amortised over {{number:e2.years}} years, with {{money:e2.amount}} written off this year. Neither expense involves any cash leaving the company."
       },
       "events": [
-        { "id": "e1", "template": "tpl.depreciation_straight_line", "params": { "usefulLifeYears": 5 } },
-        { "id": "e2", "template": "tpl.amortise_org_costs", "params": { "years": 5 }, "pendingRefs": ["T04", "T05", "T12"] }
+        {
+          "id": "e1",
+          "template": "tpl.depreciation_straight_line",
+          "params": {
+            "usefulLifeYears": 5
+          }
+        },
+        {
+          "id": "e2",
+          "template": "tpl.amortise_org_costs",
+          "params": {
+            "years": 5
+          },
+          "pendingRefs": [
+            "T04",
+            "T05",
+            "T12"
+          ]
+        }
       ],
-      "termRefs": ["tm_d4p7x2mv", "tm_a8d5c1pz", "tm_gt8g4afe", "tm_a2m7z4tf", "tm_d9f3g7cs"],
+      "termRefs": [
+        "tm_d4p7x2mv",
+        "tm_a8d5c1pz",
+        "tm_gt8g4afe",
+        "tm_a2m7z4tf",
+        "tm_d9f3g7cs"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_jkhbh3",
+          "level": "lv_0dvm2fte"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_machinery_net",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_deferred_org_costs",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "折舊與攤銷沒有任何現金流出，卻實實在在減少本期淨利。它們把當初一次付掉的成本分攤到使用的年限裡，所以現金流量表要再把它們加回來。",
+        "en": "Depreciation and amortisation involve no cash leaving the company, yet they genuinely reduce profit. They spread costs paid in a lump sum earlier across the years of use, which is why the cash flow statement adds them back."
+      },
+      "stakeholders": [
+        {
+          "role": "finance_lead",
+          "positive": {
+            "zh-TW": "折舊與攤銷讓資產的帳面價值逐年反映實際的消耗，報表更貼近真實。",
+            "en": "Depreciation and amortisation make the carrying amounts reflect how assets are actually being used up, so the statements are more faithful."
+          },
+          "negative": {
+            "zh-TW": "這兩筆費用讓淨利變小，但完全不影響現金，用淨利判斷公司的現金狀況會失真。",
+            "en": "These two expenses reduce profit but leave cash untouched, so judging the cash position from profit alone would mislead."
+          },
+          "advice": {
+            "zh-TW": "看公司的賺錢能力時，把折舊與攤銷加回去，另外算一次「不含這兩筆的利潤」。",
+            "en": "When assessing earning power, add depreciation and amortisation back and work out the profit without those two items as well."
+          }
+        },
+        {
+          "role": "shareholder",
+          "positive": {
+            "zh-TW": "設備和設立費的成本分攤到好幾年，沒有在第一年就全部壓在淨利上。",
+            "en": "The equipment and the start-up costs are spread over several years instead of weighing entirely on the first year’s profit."
+          },
+          "negative": {
+            "zh-TW": "帳面價值不等於市價，設備真的要賣時未必拿得到剩下的金額。",
+            "en": "Carrying amount is not market value; if the equipment were sold, the remaining amount might not be recovered."
+          },
+          "advice": {
+            "zh-TW": "留意公司選的使用年限是否合理，年限拉長會讓每年的費用看起來變小。",
+            "en": "Check that the useful life chosen is reasonable; stretching it makes each year’s expense look smaller."
+          }
+        }
+      ],
       "verification": "inferred"
     },
     {
       "id": "st_v3bgwb",
       "order": 18,
-      "title": { "zh-TW": "繳納所得稅", "en": "Paying income tax" },
-      "narrative": {
-        "zh-TW": "一年下來公司有獲利，就要繳所得稅。公司以現金繳納 {{money:e1.amount}} 的所得稅，這是初陽貿易第一年的最後一筆交易，接下來就可以編製財務報表了。",
-        "en": "The company has made a profit over the year, so income tax is due. It pays {{money:e1.amount}} of income tax in cash, the last transaction of First Light Trading’s first year; the financial statements can now be prepared."
+      "title": {
+        "zh-TW": "繳納所得稅",
+        "en": "Paying income tax"
       },
-      "events": [{ "id": "e1", "template": "tpl.pay_income_tax_cash", "params": { "amount": 3000000 }, "pendingRefs": ["T10"] }],
-      "termRefs": ["tm_3qfqnrmm", "tm_c4sh8k2p", "tm_kgv20zg0"],
+      "narrative": {
+        "zh-TW": "一年下來公司有獲利，就要繳所得稅。公司以現金繳納 {{money:e1.amount}} 的所得稅，這是綠芽商行第一年的最後一筆交易，接下來就可以編製財務報表了。",
+        "en": "The company has made a profit over the year, so income tax is due. It pays {{money:e1.amount}} of income tax in cash, the last transaction of Green Bud Trading’s first year; the financial statements can now be prepared."
+      },
+      "events": [
+        {
+          "id": "e1",
+          "template": "tpl.pay_income_tax_cash",
+          "params": {
+            "amount": 3000000
+          },
+          "pendingRefs": [
+            "T10"
+          ]
+        }
+      ],
+      "termRefs": [
+        "tm_3qfqnrmm",
+        "tm_c4sh8k2p",
+        "tm_kgv20zg0"
+      ],
+      "chapterLinks": [
+        {
+          "chapter": "ch_s0525x",
+          "level": "lv_cy9yzrq2"
+        },
+        {
+          "chapter": "ch_67350j",
+          "level": "lv_a94zmqx8"
+        }
+      ],
+      "predictTargets": [
+        {
+          "id": "t1",
+          "kind": "line",
+          "line": "bs_retained_earnings",
+          "measure": "direction"
+        },
+        {
+          "id": "t2",
+          "kind": "line",
+          "line": "bs_total_assets",
+          "measure": "direction"
+        }
+      ],
+      "insight": {
+        "zh-TW": "所得稅是稅前淨利與本期淨利之間唯一的差距。繳完稅剩下的才是公司真正留住的利潤，也就是未分配盈餘增加的金額。",
+        "en": "Income tax is the only difference between profit before tax and profit for the period. What remains after tax is the profit the company truly keeps, which is exactly the amount by which retained earnings grow."
+      },
+      "stakeholders": [
+        {
+          "role": "shareholder",
+          "positive": {
+            "zh-TW": "繳完稅後仍有可觀的淨利，全部留在公司成為未分配盈餘。",
+            "en": "A substantial profit remains after tax, and all of it stays in the company as retained earnings."
+          },
+          "negative": {
+            "zh-TW": "這一年沒有配發股利，股東的回報目前只存在帳面上。",
+            "en": "No dividend was paid this year, so the shareholders’ return exists only on paper for now."
+          },
+          "advice": {
+            "zh-TW": "把未分配盈餘和現金餘額一起看，才知道公司有沒有能力配發股利。",
+            "en": "Read retained earnings together with the cash balance to judge whether the company can afford a dividend."
+          }
+        },
+        {
+          "role": "management",
+          "positive": {
+            "zh-TW": "第一年就有獲利並且繳稅，公司的營運模式已經得到驗證。",
+            "en": "Profitable and paying tax in its first year, the company has proved its business model."
+          },
+          "negative": {
+            "zh-TW": "期末現金只剩下不多，第二年的進貨與費用都要靠它撐住。",
+            "en": "Only a modest cash balance is left at year end, and next year’s purchases and expenses all depend on it."
+          },
+          "advice": {
+            "zh-TW": "第二年開始前先做現金預算，決定要不要再向銀行借一筆營運資金。",
+            "en": "Prepare a cash budget before the second year begins and decide whether another working-capital loan is needed."
+          }
+        }
+      ],
       "verification": "inferred"
     }
   ]

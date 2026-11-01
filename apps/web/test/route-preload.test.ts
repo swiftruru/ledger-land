@@ -8,9 +8,12 @@ import table from '../src/shell/route-preload.json' with { type: 'json' };
 const root = fileURLToPath(new URL('..', import.meta.url));
 const router = readFileSync(`${root}src/app/router.tsx`, 'utf8');
 const lazyPages = [...router.matchAll(/import\('\.\.\/pages\/([A-Za-z]+)\.tsx'\)/g)].map((m) => `src/pages/${m[1]}.tsx`);
-// lazyPage 的第三個參數是 'pages' 的頁面：字串在第二層 catalog（lingui.config.ts 的 PAGE_CATALOG_SOURCES）
-const pagesCatalogPages = [...router.matchAll(/import\('\.\.\/pages\/([A-Za-z]+)\.tsx'\)(?:,\s*[^,()]+(?:\([^)]*\))?)?,\s*'pages'\)/g)].map(
-  (m) => `src/pages/${m[1]}.tsx`,
+// lazyPage 的第三個參數是層名稱（'pages' 或 'lab'）的頁面：字串在第二層或第三層 catalog（lingui.config.ts）
+const layerOfPage = new Map(
+  [...router.matchAll(/import\('\.\.\/pages\/([A-Za-z]+)\.tsx'\)(?:,\s*[^,()]+(?:\([^)]*\))?)?,\s*'(pages|lab)'\)/g)].map((m) => [
+    `src/pages/${m[1]}.tsx`,
+    m[2],
+  ]),
 );
 const routes = table.routes as { pattern: string; module: string; content: string[]; catalog?: string }[];
 const match = (path: string) => routes.find((r) => new RegExp(r.pattern).test(path))?.module;
@@ -28,29 +31,35 @@ describe('route-preload.json', () => {
     expect(match('/terms/tm_r4w8n2qe/')).toBe('src/pages/Term.tsx');
     expect(match('/chapter/ch_c5f8w2/')).toBe('src/pages/Chapter.tsx');
     expect(match('/me/badges/')).toBe('src/pages/Badges.tsx');
-    expect(match('/lab/')).toBe('src/pages/Placeholder.tsx');
+    expect(match('/lab/')).toBe('src/pages/Lab.tsx');
+    expect(match('/lab/story/story_ywv2dy/')).toBe('src/pages/LabStory.tsx');
+    expect(match('/lab/story/story_ywv2dy/st_98tppx/')).toBe('src/pages/LabStep.tsx');
+    expect(match('/lab/ratios/')).toBe('src/pages/LabRatios.tsx');
     expect(match('/')).toBeUndefined();
     expect(match('/me/')).toBe('src/pages/Me.tsx');
     expect(match('/level/lv_h2zx7srx/extra/')).toBeUndefined();
   });
 
-  it('catalog 為 pages 的路由和 router.tsx 裡 lazyPage 第三個參數是 pages 的頁面一致；pagesCatalogs 兩個語言都有', () => {
-    expect(pagesCatalogPages.length).toBeGreaterThan(5);
+  it('路由的 catalog 層和 router.tsx 裡 lazyPage 第三個參數一致；catalogLayers 每一層兩個語言都有', () => {
+    expect(layerOfPage.size).toBeGreaterThan(5);
     expect(
       routes
-        .filter((r) => r.catalog === 'pages')
-        .map((r) => r.module)
+        .filter((r) => r.catalog !== undefined)
+        .map((r) => [r.module, r.catalog])
         .sort(),
-    ).toEqual([...pagesCatalogPages].sort());
-    expect(routes.map((r) => r.catalog).filter((c) => c !== undefined && c !== 'pages')).toEqual([]);
-    expect(Object.keys((table as { pagesCatalogs: Record<string, string> }).pagesCatalogs).sort()).toEqual(['en', 'zh-TW']);
+    ).toEqual([...layerOfPage.entries()].sort());
+    const layers = (table as { catalogLayers: Record<string, Record<string, string>> }).catalogLayers;
+    expect(Object.keys(layers).sort()).toEqual(['lab', 'pages']);
+    for (const l of Object.values(layers)) expect(Object.keys(l).sort()).toEqual(['en', 'zh-TW']);
   });
 
-  it('內容種類只用 preload-table.mjs 認得的五種；需要 ID 的種類（level、termDetail）所在的 pattern 有捕捉群組', () => {
-    const kinds = new Set(['chapterIndex', 'termIndex', 'tombstones', 'level', 'termDetail']);
+  it('內容種類只用 preload-table.mjs 認得的六種；需要 ID 的種類（level、termDetail、story）所在的 pattern 的第一個捕捉群組是那個 ID', () => {
+    const kinds = new Set(['chapterIndex', 'termIndex', 'tombstones', 'level', 'termDetail', 'story']);
     expect(routes.flatMap((r) => r.content).filter((c) => !kinds.has(c))).toEqual([]);
     // 捕捉群組的數量：在 pattern 後面接一個空的分支，空字串一定比對得到，結果陣列長度減一就是群組數
-    const withId = routes.filter((r) => r.content.includes('level') || r.content.includes('termDetail'));
-    expect(withId.map((r) => new RegExp(`${r.pattern}|`).exec('')!.length - 1)).toEqual(withId.map(() => 1));
+    const withId = routes.filter((r) => r.content.includes('level') || r.content.includes('termDetail') || r.content.includes('story'));
+    expect(withId.map((r) => new RegExp(`${r.pattern}|`).exec('')!.length - 1)).toEqual(
+      withId.map((r) => (r.content.includes('story') && r.pattern.includes('([^/]+)/([^/]+)') ? 2 : 1)),
+    );
   });
 });
