@@ -254,6 +254,12 @@ msgstr "之後再說"
 msgid "play.scan.deniedHint"
 msgstr "之後想用相機掃描，可以在系統設定裡找到這個 App（或 Safari）的相機權限，改成允許後再回來。"
 
+#. 加入之後的提醒
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.after"
+msgstr "之後都從主畫面的圖示開啟。Safari 分頁和 App 的紀錄是分開的兩份，新的進度記得用「匯出到 App」帶過去。"
+
 #. 玩家卡的問候
 #. js-lingui-explicit-id
 #: src/features/me/PlayerCard.tsx
@@ -296,6 +302,12 @@ msgstr "今天的題目"
 msgid "home.review.label"
 msgstr "今日複習"
 
+#. 示意圖裡 iOS 26 的開關文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.openAsApp"
+msgstr "以 Web App 打開"
+
 #. 指標旗標說明
 #. js-lingui-explicit-id
 #: src/features/quiz/QuestionView.tsx
@@ -330,6 +342,12 @@ msgstr "你標成猜的"
 #: src/components/EphemeralNotice.tsx
 msgid "ephemeral.body"
 msgstr "你現在是在相機開啟的預覽畫面。請點右下角的指南針圖示，改用 Safari 開啟；如果已經把會計樂園加到主畫面，請改用 App 裡的「掃描課堂 QR」。"
+
+#. iOS 17、18 的說明
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.legacyNote"
+msgstr "你的 iOS 版本沒有縮小的網址列，也沒有「以 Web App 打開」的開關；加入主畫面後會直接以 App 開啟。"
 
 #. 指標計算題作答後的摘要；submitted 與 expected 已格式化、version 是指標版本名稱
 #. js-lingui-explicit-id
@@ -384,6 +402,12 @@ msgstr "倍"
 msgid "me.backup"
 msgstr "備份"
 
+#. iOS 圖解第 1 步做過之後（這個分頁已複製備份碼或存成備份檔）換成的一句
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.exported"
+msgstr "備份碼已複製，接著加入主畫面。"
+
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
@@ -406,6 +430,12 @@ msgstr "儲存空間不足"
 #: src/pages/Placeholder.tsx
 msgid "lab.placeholder.go"
 msgstr "先去闖關"
+
+#. iOS 圖解的第 1 步：先把進度帶走（2026-10-28 之前是清單外的「第 0 步」）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.export"
+msgstr "先把這裡的進度帶走：按「匯出到 App」複製備份碼（也可以存成備份檔），加入主畫面後第一次打開 App 時貼上，進度就會合併。"
 
 #. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
 #. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
@@ -478,6 +508,12 @@ msgstr "再試一次"
 msgid "error.generic.title"
 msgstr "出了一點問題"
 
+#. 示意圖裡 Safari「分享」按鈕的文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.share"
+msgstr "分享"
+
 #. 名詞圖鑑分組的群組名稱
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -532,6 +568,18 @@ msgstr "前往闖關地圖"
 msgid "settings.timer.announce"
 msgstr "剩 1 分鐘與時間到時提醒"
 
+#. 示意圖裡確認對話框的「加入」按鈕
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.add"
+msgstr "加入"
+
+#. 示意圖裡「加入主畫面」那一列的文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.addToHome"
+msgstr "加入主畫面"
+
 #. 地圖頁的單行提示條：iOS Safari 分頁的常駐提示（引導加到主畫面）
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
@@ -548,6 +596,7 @@ msgstr "加到主畫面：顯示提示"
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 #: src/components/SafariTabNotice.tsx
+#: src/features/install/InstallGuide.tsx
 msgid "export.toApp"
 msgstr "匯出到 App"
 
@@ -796,6 +845,12 @@ msgstr "在第 {chapterNo} 章會遇到"
 msgid "term.unlock.title"
 msgstr "在第 {chapterNo} 章第 {levelNo} 關遇到"
 
+#. Chromium 沒有安裝事件時的第二步：瀏覽器的確認視窗
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.confirm"
+msgstr "在跳出的確認視窗按「安裝」。"
+
 #. 名詞頁解鎖任務卡的標題：讀不到章節索引、不知道是第幾章第幾關時
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
@@ -878,9 +933,16 @@ msgstr "學習目標"
 msgid "play.list.chapterInfoTrail"
 msgstr "學習目標與徽章"
 
+#. 示意圖裡 Chromium 選單的「安裝」
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.install"
+msgstr "安裝"
+
 #. Chromium 的安裝按鈕
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
+#: src/features/install/InstallGuide.tsx
 msgid "install.button"
 msgstr "安裝"
 
@@ -907,6 +969,12 @@ msgstr "完成本章可獲得「{badgeName}」"
 #: src/components/InstallPrompt.tsx
 msgid "install.guide.fullPage"
 msgstr "完整教學頁"
+
+#. Top 或 Bottom 分頁列的白話說法；要短，內嵌時和另一個選項排成一列
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.bar"
+msgstr "完整的工具列"
 
 #. 實驗室頁（Tab bar 頂層頁）的頁首標題
 #. js-lingui-explicit-id
@@ -1105,6 +1173,12 @@ msgstr "延伸第 {no} 章"
 msgid "terms.group.extChapterName"
 msgstr "延伸第 {no} 章：{title}"
 
+#. 往下找到加入主畫面
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.add"
+msgstr "往下找到「加入主畫面」。"
+
 #. 掃描前的說明卡：預告主畫面 App 每次啟動都可能重新詢問相機權限（WebKit 的已知行為）
 #. js-lingui-explicit-id
 #: src/features/quest-map-overlays/ScanOverlay.tsx
@@ -1137,6 +1211,12 @@ msgstr "徽章"
 msgid "me.stat.badges"
 msgstr "徽章 {earned}／{badgeTotal} 枚"
 
+#. Chromium 安裝說明最後的確認按鈕（英文畫面上用短字）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.done"
+msgstr "我已安裝"
+
 #. 「我的」頁面標題
 #. js-lingui-explicit-id
 #: src/pages/Me.tsx
@@ -1149,11 +1229,23 @@ msgstr "我的"
 msgid "me.back.short"
 msgstr "我的"
 
+#. 讓使用者選 Safari 分頁列版面的標籤
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.label"
+msgstr "我的 Safari 長這樣："
+
 #. 玩家卡（「我的」頁最上面那張卡）的可讀名稱
 #. js-lingui-explicit-id
 #: src/features/me/PlayerCard.tsx
 msgid "me.player.label"
 msgstr "我的進度"
+
+#. Chromium 沒有安裝事件時的說明
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.menu"
+msgstr "打開右上角的選單，找「安裝」或「加入主畫面」。"
 
 #. 名詞圖鑑搜尋沒有結果時的標題；shownQuery 是使用者輸入的搜尋字
 #. js-lingui-explicit-id
@@ -1213,6 +1305,12 @@ msgstr "投資活動"
 #: src/features/glossary/useCategoryLabel.ts
 msgid "terms.category.ratio"
 msgstr "指標"
+
+#. Chromium 有安裝事件時的說明（一步，下面就是「安裝」按鈕）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.bip"
+msgstr "按「安裝」，在跳出的視窗再按一次「安裝」。"
 
 #. 首頁捷徑清單的標題
 #. js-lingui-explicit-id
@@ -1418,11 +1516,23 @@ msgstr "昨天備份過"
 msgid "home.siteName"
 msgstr "會計樂園"
 
+#. 示意圖裡的 App 名稱（短名）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.appName"
+msgstr "會計樂園"
+
 #. 分錄題答錯時的摘要；count 是要修正的行數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
 msgid "quiz.journal.summary.wrong"
 msgstr "有 {count} 行要修正。"
+
+#. 確認對話框：iOS 17、18 沒有「以 Web App 打開」開關，所以寫成「有…就開啟」；要短：375 的步驟說明一行約 10 字、1280 的步驟方塊約 12 字，都排成兩行
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.confirm"
+msgstr "有「以 Web App 打開」就開啟，點「加入」。"
 
 #. 更新提示的標題
 #. js-lingui-explicit-id
@@ -1787,6 +1897,12 @@ msgstr "網站已在其他分頁更新，重新整理後才能繼續儲存進度
 msgid "error.updated.title"
 msgstr "網站已更新"
 
+#. Compact 分頁列的白話說法（底部只剩一條縮小的網址列）；要短，內嵌時和另一個選項排成一列
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.compact"
+msgstr "縮小的網址列"
+
 #. 章節主卡的主按鈕：這一章做到一半，前往下一個還沒完成的關卡；actionCode 是關卡編號
 #. js-lingui-explicit-id
 #: src/features/chapter/ChapterHero.tsx
@@ -1827,6 +1943,18 @@ msgstr "自己決定金額與科目，看看怎麼記帳。"
 #: src/components/TimerSetting.tsx
 msgid "settings.timer.announceDesc"
 msgstr "螢幕閱讀器在剩 1 分鐘與時間到時各唸一次提醒。關閉後倒數照常顯示，只是不唸出來。"
+
+#. Chromium 安裝之後的說明：桌面或主畫面的圖示；進度和瀏覽器共用
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.after"
+msgstr "裝好之後從桌面或主畫面的圖示開啟。進度和這個瀏覽器是同一份，不用搬。"
+
+#. 示意圖裡備份頁「複製備份碼」按鈕的文字；要短，96px 的圖裡按鈕約 10 個英文字母寬
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.copyCode"
+msgstr "複製備份碼"
 
 #. 複製這一關網址的按鈕
 #. js-lingui-explicit-id
@@ -1880,6 +2008,12 @@ msgstr "計時"
 #: src/features/quiz/ResultView.tsx
 msgid "level.result.timeNote"
 msgstr "計時不影響星星。"
+
+#. 按過「我已安裝」之後的回應
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.doneMsg"
+msgstr "記住了，不會再跳出安裝建議。"
 
 #. 地圖頁的單行提示條：備份提醒
 #. js-lingui-explicit-id
@@ -2109,6 +2243,12 @@ msgstr "這個 App"
 #: src/pages/Term.tsx
 msgid "term.error.title"
 msgstr "這個名詞讀不到"
+
+#. 沒有安裝按鈕的瀏覽器（Firefox、電腦版 Safari）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.generic"
+msgstr "這個瀏覽器沒有安裝按鈕：可以先加入書籤；在 iPhone 用 Safari、在 Android 用 Chrome 開啟這個網址，就能加到主畫面。"
 
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
@@ -2456,3 +2596,27 @@ msgstr "題目已更新"
 #: src/features/quest-map-overlays/LevelQr.tsx
 msgid "map.qr.show"
 msgstr "顯示 QR"
+
+#. 縮小網址列第二步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact.2"
+msgstr "點「分享」。"
+
+#. Top／Bottom 分頁列第一步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.bar.1"
+msgstr "點工具列上的「分享」按鈕。"
+
+#. iOS 27 的縮小網址列第一步：網址列左邊三條線的選單按鈕
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact27.1"
+msgstr "點網址列左邊的選單按鈕（三條線）。"
+
+#. iOS 26 的縮小網址列第一步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact.1"
+msgstr "點網址列旁的「⋯」（更多）。"

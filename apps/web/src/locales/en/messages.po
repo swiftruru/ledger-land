@@ -254,6 +254,12 @@ msgstr "Not now"
 msgid "play.scan.deniedHint"
 msgstr "To scan with the camera later, find this app (or Safari) in your system settings, allow the camera, then come back."
 
+#. 加入之後的提醒
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.after"
+msgstr "From now on, open it from the Home Screen icon. The Safari tab and the app keep separate records, so bring any new progress across with ‘Export to app’."
+
 #. 玩家卡的問候
 #. js-lingui-explicit-id
 #: src/features/me/PlayerCard.tsx
@@ -296,6 +302,12 @@ msgstr "Today’s questions"
 msgid "home.review.label"
 msgstr "Today’s review"
 
+#. 示意圖裡 iOS 26 的開關文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.openAsApp"
+msgstr "Open as Web App"
+
 #. 指標旗標說明
 #. js-lingui-explicit-id
 #: src/features/quiz/QuestionView.tsx
@@ -330,6 +342,12 @@ msgstr "You marked it as a guess"
 #: src/components/EphemeralNotice.tsx
 msgid "ephemeral.body"
 msgstr "You are in the preview that the Camera opened. Tap the compass icon at the bottom right to open this page in Safari. If you have added LedgerLand to your Home Screen, use ‘Scan class QR’ in the app instead."
+
+#. iOS 17、18 的說明
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.legacyNote"
+msgstr "Your iOS version has no compact address bar and no ‘Open as Web App’ switch; after you add it to the Home Screen it opens as an app straight away."
 
 #. 指標計算題作答後的摘要；submitted 與 expected 已格式化、version 是指標版本名稱
 #. js-lingui-explicit-id
@@ -384,6 +402,12 @@ msgstr "times"
 msgid "me.backup"
 msgstr "Backup"
 
+#. iOS 圖解第 1 步做過之後（這個分頁已複製備份碼或存成備份檔）換成的一句
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.exported"
+msgstr "Backup code copied. Next, add to Home Screen."
+
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
@@ -406,6 +430,12 @@ msgstr "Storage space is low"
 #: src/pages/Placeholder.tsx
 msgid "lab.placeholder.go"
 msgstr "Go on a quest first"
+
+#. iOS 圖解的第 1 步：先把進度帶走（2026-10-28 之前是清單外的「第 0 步」）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.export"
+msgstr "First, take your progress with you: tap ‘Export to app’ to copy a backup code (you can save a backup file too). Paste it the first time you open the app from the Home Screen and the records merge."
 
 #. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
 #. 地圖載入失敗或還沒有關卡時，到名詞圖鑑的按鈕
@@ -478,6 +508,12 @@ msgstr "Try again"
 msgid "error.generic.title"
 msgstr "Something went wrong"
 
+#. 示意圖裡 Safari「分享」按鈕的文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.share"
+msgstr "Share"
+
 #. 名詞圖鑑分組的群組名稱
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -532,6 +568,18 @@ msgstr "Go to the quest map"
 msgid "settings.timer.announce"
 msgstr "Remind me at 1 minute left and when time is up"
 
+#. 示意圖裡確認對話框的「加入」按鈕
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.add"
+msgstr "Add"
+
+#. 示意圖裡「加入主畫面」那一列的文字
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.addToHome"
+msgstr "Add to Home Screen"
+
 #. 地圖頁的單行提示條：iOS Safari 分頁的常駐提示（引導加到主畫面）
 #. js-lingui-explicit-id
 #: src/components/SafariTabNotice.tsx
@@ -548,6 +596,7 @@ msgstr "Home Screen: show tip"
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
 #: src/components/SafariTabNotice.tsx
+#: src/features/install/InstallGuide.tsx
 msgid "export.toApp"
 msgstr "Export to app"
 
@@ -796,6 +845,12 @@ msgstr "You will meet it in chapter {chapterNo}"
 msgid "term.unlock.title"
 msgstr "You’ll meet this in chapter {chapterNo}, level {levelNo}"
 
+#. Chromium 沒有安裝事件時的第二步：瀏覽器的確認視窗
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.confirm"
+msgstr "Confirm with ‘Install’."
+
 #. 名詞頁解鎖任務卡的標題：讀不到章節索引、不知道是第幾章第幾關時
 #. js-lingui-explicit-id
 #: src/pages/Term.tsx
@@ -878,9 +933,16 @@ msgstr "Learning goals"
 msgid "play.list.chapterInfoTrail"
 msgstr "Learning goals and badge"
 
+#. 示意圖裡 Chromium 選單的「安裝」
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.install"
+msgstr "Install"
+
 #. Chromium 的安裝按鈕
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
+#: src/features/install/InstallGuide.tsx
 msgid "install.button"
 msgstr "Install"
 
@@ -907,6 +969,12 @@ msgstr "Finish this chapter to earn ‘{badgeName}’"
 #: src/components/InstallPrompt.tsx
 msgid "install.guide.fullPage"
 msgstr "Full guide"
+
+#. Top 或 Bottom 分頁列的白話說法；要短，內嵌時和另一個選項排成一列
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.bar"
+msgstr "Full toolbar"
 
 #. 實驗室頁（Tab bar 頂層頁）的頁首標題
 #. js-lingui-explicit-id
@@ -1105,6 +1173,12 @@ msgstr "Extension chapter {no}"
 msgid "terms.group.extChapterName"
 msgstr "Extension chapter {no}: {title}"
 
+#. 往下找到加入主畫面
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.add"
+msgstr "Scroll down to ‘Add to Home Screen’."
+
 #. 掃描前的說明卡：預告主畫面 App 每次啟動都可能重新詢問相機權限（WebKit 的已知行為）
 #. js-lingui-explicit-id
 #: src/features/quest-map-overlays/ScanOverlay.tsx
@@ -1137,6 +1211,12 @@ msgstr "Badges"
 msgid "me.stat.badges"
 msgstr "{earned} of {badgeTotal} badges"
 
+#. Chromium 安裝說明最後的確認按鈕（英文畫面上用短字）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.done"
+msgstr "I’ve installed it"
+
 #. 「我的」頁面標題
 #. js-lingui-explicit-id
 #: src/pages/Me.tsx
@@ -1149,11 +1229,23 @@ msgstr "Me"
 msgid "me.back.short"
 msgstr "Me"
 
+#. 讓使用者選 Safari 分頁列版面的標籤
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.label"
+msgstr "My Safari looks like this:"
+
 #. 玩家卡（「我的」頁最上面那張卡）的可讀名稱
 #. js-lingui-explicit-id
 #: src/features/me/PlayerCard.tsx
 msgid "me.player.label"
 msgstr "My progress"
+
+#. Chromium 沒有安裝事件時的說明
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.menu"
+msgstr "Open the browser menu in the top right corner and look for ‘Install’ or ‘Add to Home screen’."
 
 #. 名詞圖鑑搜尋沒有結果時的標題；shownQuery 是使用者輸入的搜尋字
 #. js-lingui-explicit-id
@@ -1213,6 +1305,12 @@ msgstr "Investing activities"
 #: src/features/glossary/useCategoryLabel.ts
 msgid "terms.category.ratio"
 msgstr "Ratio"
+
+#. Chromium 有安裝事件時的說明（一步，下面就是「安裝」按鈕）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.bip"
+msgstr "Press ‘Install’, then confirm."
 
 #. 首頁捷徑清單的標題
 #. js-lingui-explicit-id
@@ -1418,11 +1516,23 @@ msgstr "Backed up yesterday"
 msgid "home.siteName"
 msgstr "LedgerLand"
 
+#. 示意圖裡的 App 名稱（短名）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.appName"
+msgstr "LedgerLand"
+
 #. 分錄題答錯時的摘要；count 是要修正的行數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
 msgid "quiz.journal.summary.wrong"
 msgstr "Lines to correct: {count}."
+
+#. 確認對話框：iOS 17、18 沒有「以 Web App 打開」開關，所以寫成「有…就開啟」；要短：375 的步驟說明一行約 10 字、1280 的步驟方塊約 12 字，都排成兩行
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.confirm"
+msgstr "If you see ‘Open as Web App’, make sure it is on, then tap ‘Add’."
 
 #. 更新提示的標題
 #. js-lingui-explicit-id
@@ -1787,6 +1897,12 @@ msgstr "The site was updated in another tab. Reload to keep saving your progress
 msgid "error.updated.title"
 msgstr "The site has been updated"
 
+#. Compact 分頁列的白話說法（底部只剩一條縮小的網址列）；要短，內嵌時和另一個選項排成一列
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.layout.compact"
+msgstr "Compact bar"
+
 #. 章節主卡的主按鈕：這一章做到一半，前往下一個還沒完成的關卡；actionCode 是關卡編號
 #. js-lingui-explicit-id
 #: src/features/chapter/ChapterHero.tsx
@@ -1827,6 +1943,18 @@ msgstr "Choose the amount and accounts yourself and see how it is recorded."
 #: src/components/TimerSetting.tsx
 msgid "settings.timer.announceDesc"
 msgstr "Screen readers read a reminder once at 1 minute left and once when time is up. When this is off, the countdown still shows but is not read out."
+
+#. Chromium 安裝之後的說明：桌面或主畫面的圖示；進度和瀏覽器共用
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.after"
+msgstr "Then open it from its icon. Your progress comes with it."
+
+#. 示意圖裡備份頁「複製備份碼」按鈕的文字；要短，96px 的圖裡按鈕約 10 個英文字母寬
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.label.copyCode"
+msgstr "Copy code"
 
 #. 複製這一關網址的按鈕
 #. js-lingui-explicit-id
@@ -1880,6 +2008,12 @@ msgstr "Timer"
 #: src/features/quiz/ResultView.tsx
 msgid "level.result.timeNote"
 msgstr "The timer doesn’t affect your stars."
+
+#. 按過「我已安裝」之後的回應
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.chromium.doneMsg"
+msgstr "Got it. We won’t ask again."
 
 #. 地圖頁的單行提示條：備份提醒
 #. js-lingui-explicit-id
@@ -2109,6 +2243,12 @@ msgstr "this app"
 #: src/pages/Term.tsx
 msgid "term.error.title"
 msgstr "This term could not be loaded"
+
+#. 沒有安裝按鈕的瀏覽器（Firefox、電腦版 Safari）
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.generic"
+msgstr "This browser has no install button: bookmark the page for now; open this address in Safari on iPhone or in Chrome on Android to add it to the Home Screen."
 
 #. js-lingui-explicit-id
 #: src/components/EphemeralNotice.tsx
@@ -2456,3 +2596,27 @@ msgstr "Question updated"
 #: src/features/quest-map-overlays/LevelQr.tsx
 msgid "map.qr.show"
 msgstr "Show QR"
+
+#. 縮小網址列第二步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact.2"
+msgstr "Tap ‘Share’."
+
+#. Top／Bottom 分頁列第一步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.bar.1"
+msgstr "Tap the ‘Share’ button on the toolbar."
+
+#. iOS 27 的縮小網址列第一步：網址列左邊三條線的選單按鈕
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact27.1"
+msgstr "Tap the menu button (three lines) on the left of the address bar."
+
+#. iOS 26 的縮小網址列第一步
+#. js-lingui-explicit-id
+#: src/features/install/InstallGuide.tsx
+msgid "install.guide.compact.1"
+msgstr "Tap ‘⋯’ (More) next to the address bar."

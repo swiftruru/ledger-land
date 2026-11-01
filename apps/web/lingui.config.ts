@@ -7,7 +7,9 @@ import { BASE_LOCALE, LOCALES } from '@ledgerland/i18n';
  * 第二層 catalog 的來源（14 第 5.2 節）：這些檔案裡的字串只進 pages.po，由路由在載入頁面 chunk 時一起載入（src/app/router.tsx 的 lazyPage 第三個參數）。
  * 住在第二層的是「不在任何 Tab 第一屏、也不在作答路徑上」的頁面：說明頁（關於、隱私、關於系統設計、幕後、安裝教學）、我的底下的子頁（設定、徽章、備份）
  * 與 debug 頁，連同只有這些頁面用到的 features 與 components。首頁、闖關地圖、章節頁、作答頁、錯題本、名詞圖鑑、名詞頁、「我的」與實驗室入口留在第一層。
- * 元件被第一層的頁面用到時（TimerSetting 也在作答頁、InstallPrompt 是首頁的橫幅、LangSwitch 在作答頁）就不能搬，否則第一層的頁面會缺字。
+ * 元件被第一層的頁面用到時（TimerSetting 也在作答頁、InstallPrompt 是首頁的橫幅、LangSwitch 在作答頁）就不能搬，否則第一層的頁面會缺字；
+ * features/install 也一樣：安裝圖解（InstallGuide）會在首頁的安裝橫幅裡展開（InstallPrompt 延遲載入它），所以它的字串留在第一層，只有 /install/ 頁面本身的字串在第二層
+ * （2026-11-01 PR 62 的 CI 抓到：搬過去以後首頁橫幅展開的圖解顯示的是訊息 ID）。
  * 2026-11-01（M4a 開工前）從只有幕後頁擴成這一批；M4a 的實驗室字串另開第三層（lab.po），不進這裡。
  */
 const PAGE_CATALOG_SOURCES = [
@@ -22,7 +24,6 @@ const PAGE_CATALOG_SOURCES = [
   '<rootDir>/src/pages/Settings.tsx',
   '<rootDir>/src/features/badges',
   '<rootDir>/src/features/credits',
-  '<rootDir>/src/features/install',
   '<rootDir>/src/components/AppearanceSetting.tsx',
   '<rootDir>/src/components/ProtectProgress.tsx',
 ];

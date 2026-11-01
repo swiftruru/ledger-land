@@ -190,22 +190,10 @@ msgstr "home screen app"
 msgid "badges.group.main"
 msgstr "Main chapters"
 
-#. 加入之後的提醒
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.after"
-msgstr "From now on, open it from the Home Screen icon. The Safari tab and the app keep separate records, so bring any new progress across with ‘Export to app’."
-
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.preview.applySettings"
 msgstr "Also apply the language and timer settings"
-
-#. 示意圖裡 iOS 26 的開關文字
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.label.openAsApp"
-msgstr "Open as Web App"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -237,12 +225,6 @@ msgstr "The author, the teacher and the tech behind the site"
 #: src/pages/Credits.tsx
 msgid "eggs.hint.mascot"
 msgstr "Rin is standing next to the paragraph about me. Say hello."
-
-#. iOS 17、18 的說明
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.legacyNote"
-msgstr "Your iOS version has no compact address bar and no ‘Open as Web App’ switch; after you add it to the Home Screen it opens as an app straight away."
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -308,12 +290,6 @@ msgstr "Backup code"
 msgid "backup.error.codeTooLong"
 msgstr "The backup code is too long; please use a backup file instead."
 
-#. iOS 圖解第 1 步做過之後（這個分頁已複製備份碼或存成備份檔）換成的一句
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.exported"
-msgstr "Backup code copied. Next, add to Home Screen."
-
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.code.copied"
@@ -328,12 +304,6 @@ msgstr "The backup code is longer than expected; please make sure no other text 
 #: src/pages/Debug.tsx
 msgid "debug.storage"
 msgstr "Storage"
-
-#. iOS 圖解的第 1 步：先把進度帶走（2026-10-28 之前是清單外的「第 0 步」）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.export"
-msgstr "First, take your progress with you: tap ‘Export to app’ to copy a backup code (you can save a backup file too). Paste it the first time you open the app from the Home Screen and the records merge."
 
 #. 引導卡第一步
 #. js-lingui-explicit-id
@@ -380,29 +350,11 @@ msgstr "Why it is public"
 msgid "privacy.updatedOn"
 msgstr "Last updated: {updated}"
 
-#. 示意圖裡 Safari「分享」按鈕的文字
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.label.share"
-msgstr "Share"
-
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.quiz.role"
 msgstr "Scoring: how each question type counts as correct and how many stars it earns, all in one place."
-
-#. 示意圖裡確認對話框的「加入」按鈕
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.label.add"
-msgstr "Add"
-
-#. 示意圖裡「加入主畫面」那一列的文字
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.label.addToHome"
-msgstr "Add to Home Screen"
 
 #. 06 第 4.5 節：只能寫「降低機率」
 #. js-lingui-explicit-id
@@ -419,11 +371,6 @@ msgstr "Import"
 #: src/pages/Backup.tsx
 msgid "backup.export.title"
 msgstr "Export"
-
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "export.toApp"
-msgstr "Export to app"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -528,12 +475,6 @@ msgstr "Clear this site’s data in your browser settings; progress, settings an
 msgid "backup.status.trigger.button"
 msgstr "requested from Settings"
 
-#. Chromium 沒有安裝事件時的第二步：瀏覽器的確認視窗
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.chromium.confirm"
-msgstr "Confirm with ‘Install’."
-
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.teacher.order"
@@ -599,17 +540,6 @@ msgstr "Save as backup file"
 msgid "backup.status.records"
 msgstr "Learning records"
 
-#. 示意圖裡 Chromium 選單的「安裝」
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.label.install"
-msgstr "Install"
-
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.button"
-msgstr "Install"
-
 #. 安裝教學頁的標題
 #. js-lingui-explicit-id
 #: src/pages/Install.tsx
@@ -645,12 +575,6 @@ msgstr "Completed"
 #: src/pages/Backup.tsx
 msgid "backup.status.trigger.level"
 msgstr "asked after the first level"
-
-#. Top 或 Bottom 分頁列的白話說法；要短，內嵌時和另一個選項排成一列
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.layout.bar"
-msgstr "Full toolbar"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -803,12 +727,6 @@ msgstr "Easter eggs {foundText}/{totalText}"
 msgid "eggs.hints.title"
 msgstr "Where are the easter eggs? A few hints"
 
-#. 往下找到加入主畫面
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.add"
-msgstr "Scroll down to ‘Add to Home Screen’."
-
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.unsaid.2"
@@ -841,12 +759,6 @@ msgstr "I do not want to take sides; I only want to put the differences where th
 msgid "design.layout.2"
 msgstr "What I have done is put the two side by side: the statements are shown in the course layout, with a mark beside the items that do not exist in the current International Financial Reporting Standards, and you can open each one to see what is done today. In the lab you can also switch the whole set over to the standards version and see, for the same transactions, where the numbers differ under the two sets of rules."
 
-#. Chromium 安裝說明最後的確認按鈕（英文畫面上用短字）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.chromium.done"
-msgstr "I’ve installed it"
-
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.play.2"
@@ -868,12 +780,6 @@ msgstr "I am Yu-Ru Pan (潘昱如). I like turning what I learn into something I
 msgid "me.back.short"
 msgstr "Me"
 
-#. 讓使用者選 Safari 分頁列版面的標籤
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.layout.label"
-msgstr "My Safari looks like this:"
-
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.statements.2"
@@ -894,12 +800,6 @@ msgstr "Phone first, and it works offline"
 #: src/pages/Backup.tsx
 msgid "backup.toApp.step2"
 msgstr "Open LedgerLand from your home screen."
-
-#. Chromium 沒有安裝事件時的說明
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.chromium.menu"
-msgstr "Open the browser menu in the top right corner and look for ‘Install’ or ‘Add to Home screen’."
 
 #. 彩蛋提示清單：這一個已經找到
 #. js-lingui-explicit-id
@@ -947,12 +847,6 @@ msgstr "Quality checks"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.refract"
 msgstr "Refraction"
-
-#. Chromium 有安裝事件時的說明（一步，下面就是「安裝」按鈕）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.chromium.bip"
-msgstr "Press ‘Install’, then confirm."
 
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
@@ -1087,22 +981,10 @@ msgstr "I learnt accounting from Dr Yen-Hung Chen (陳彥宏). In class the teac
 msgid "stack.node.core.role"
 msgstr "The accounting core: posting, the three statements, ratios, the five-step check. Amounts are always whole numbers, so there is never a one-dollar difference."
 
-#. 示意圖裡的 App 名稱（短名）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.label.appName"
-msgstr "LedgerLand"
-
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.why.1"
 msgstr "Halfway through the accounting course, I noticed that what stayed with me was not which account goes where, but the way the teacher told the story of one small company from beginning to end: money comes in to set it up, a computer is bought, a batch of goods arrives, it is sold, the company borrows, then pays it back. The three statements grew slowly out of these small things."
-
-#. 確認對話框：iOS 17、18 沒有「以 Web App 打開」開關，所以寫成「有…就開啟」；要短：375 的步驟說明一行約 10 字、1280 的步驟方塊約 12 字，都排成兩行
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.confirm"
-msgstr "If you see ‘Open as Web App’, make sure it is on, then tap ‘Add’."
 
 #. 備份頁關卡膠囊下面的短標籤（數字是拿到星星的關卡數，不是星星總數）
 #. js-lingui-explicit-id
@@ -1486,12 +1368,6 @@ msgstr "The questions, explanations and term cards on this site are my own work.
 msgid "stack.node.icons.role"
 msgstr "Line icons. They are written straight into the page at build time, with no extra request and no icon font."
 
-#. Compact 分頁列的白話說法（底部只剩一條縮小的網址列）；要短，內嵌時和另一個選項排成一列
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.layout.compact"
-msgstr "Compact bar"
-
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.unsaid.title"
@@ -1531,22 +1407,10 @@ msgstr "Berry"
 msgid "stack.node.lightningcss.role"
 msgstr "Handles the CSS: minifies it and adds the prefixes older iOS versions need."
 
-#. Chromium 安裝之後的說明：桌面或主畫面的圖示；進度和瀏覽器共用
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.chromium.after"
-msgstr "Then open it from its icon. Your progress comes with it."
-
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.env"
 msgstr "Device and environment"
-
-#. 示意圖裡備份頁「複製備份碼」按鈕的文字；要短，96px 的圖裡按鈕約 10 個英文字母寬
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.label.copyCode"
-msgstr "Copy code"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1575,12 +1439,6 @@ msgstr "Replace: everything except preferences such as language and timer, favou
 #: src/pages/Backup.tsx
 msgid "backup.preview.replaceButton"
 msgstr "Replace current progress"
-
-#. 按過「我已安裝」之後的回應
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.chromium.doneMsg"
-msgstr "Got it. We won’t ask again."
 
 #. js-lingui-explicit-id
 #: src/pages/Settings.tsx
@@ -1715,12 +1573,6 @@ msgstr "This browser does not support backup codes. Please use a backup file ins
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.state.unsupported"
 msgstr "This browser does not support this setting; please export a backup regularly."
-
-#. 沒有安裝按鈕的瀏覽器（Firefox、電腦版 Safari）
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.generic"
-msgstr "This browser has no install button: bookmark the page for now; open this address in Safari on iPhone or in Chrome on Android to add it to the Home Screen."
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1961,32 +1813,8 @@ msgstr "Colours"
 msgid "stack.node.tokens.role"
 msgstr "The single source of colours, type sizes, spacing, radii and motion, turned into CSS variables at build time. One light theme, and three dark flavours: night sky, berry and red wine."
 
-#. 縮小網址列第二步
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.compact.2"
-msgstr "Tap ‘Share’."
-
 #. 還沒選方塊時面板裡的提示
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.hint"
 msgstr "Tap a block to see what it does."
-
-#. Top／Bottom 分頁列第一步
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.bar.1"
-msgstr "Tap the ‘Share’ button on the toolbar."
-
-#. iOS 27 的縮小網址列第一步：網址列左邊三條線的選單按鈕
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.compact27.1"
-msgstr "Tap the menu button (three lines) on the left of the address bar."
-
-#. iOS 26 的縮小網址列第一步
-#. js-lingui-explicit-id
-#: src/features/install/InstallGuide.tsx
-msgid "install.guide.compact.1"
-msgstr "Tap ‘⋯’ (More) next to the address bar."
