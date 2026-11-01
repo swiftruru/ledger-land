@@ -219,14 +219,6 @@ export default defineConfig({
               test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/](quiz[\\/](placeholders|term-fields)|glossary[\\/]note-kinds)\.ts|packages[\\/]content-schema[\\/]src[\\/]ids\.ts)$/,
               priority: 2,
             },
-            // 文字標記與名詞 chip（2026-11-01，M4a）：Markup（佔位符與名詞 chip 的渲染）、terms（名詞索引與名詞卡的 context）、ratio-format（指標值的顯示）與 web-ui 的 TermChip
-            // 加上數字輸入（NumberInput 與它依賴的 i18n 作答輸入正規化 input.ts；實驗室預測用的 ImpactPicker 依賴它）自成一個 chunk，宣告在 session 之前（群組會連依賴一起抓，input.ts 才不會被 session 先拿走）。它們原本在 quiz-view 與 session 裡，實驗室的每一頁為了故事文字裡的名詞 chip 要在第一波多載整個作答題型的 chunk（約 17 KB gzip：
-            // LevelSession、題型元件、計時器等實驗室用不到的東西）；CI 執行器對第 7 步的 LCP 量到 3205ms（本機 2420）。作答頁第一波多一個小請求，本機 Lighthouse 要重量
-            {
-              name: 'markup',
-              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/]quiz[\\/](Markup|terms|ratio-format)\.tsx?|packages[\\/](web-ui[\\/]src[\\/]components[\\/](TermChip|NumberInput)\.tsx|i18n[\\/]src[\\/]input\.ts))$/,
-              priority: 2,
-            },
             // 作答工作階段：@ledgerland/progress 的 session 純函式、model 的常數與 ID 函式（generateAttemptId）、時間工具、apps/web 的 store 與暫存區、idb，
             // 作答頁第一次繪製就要，所以在 progress 群組之前宣告，
             // 否則 progress 群組會把它們和儲存 runtime、zod 併成一個 chunk，runtime 回到關鍵路徑（2026-10-24 收回 LCP 門檻時實測）。
@@ -237,7 +229,7 @@ export default defineConfig({
             // 代價是設定頁（計時設定）與「我的」的收藏區也會載入工作階段的 store 與 idb（約 4.6 KB）。只有關卡頁用的小模組（計時器、捲動錨點、結果頁的載入器等）改放 quiz-view
             {
               name: 'session',
-              test: /[\\/](packages[\\/](progress[\\/]src[\\/](session|model|util|time)|quiz[\\/]src[\\/]normalise)\.ts|apps[\\/]web[\\/]src[\\/](store[\\/]quiz\.ts|features[\\/]quiz[\\/](session-cache|favourites|timer|answers|ratio-units)\.ts)|node_modules[\\/](\.pnpm[\\/][^\\/]+[\\/]node_modules[\\/])?idb[\\/])/,
+              test: /[\\/](packages[\\/](progress[\\/]src[\\/](session|model|util|time)|i18n[\\/]src[\\/]input|quiz[\\/]src[\\/]normalise)\.ts|apps[\\/]web[\\/]src[\\/](store[\\/]quiz\.ts|features[\\/]quiz[\\/](session-cache|favourites|timer|answers|ratio-units)\.ts)|node_modules[\\/](\.pnpm[\\/][^\\/]+[\\/]node_modules[\\/])?idb[\\/])/,
               priority: 2,
             },
             // 進度 runtime：@ledgerland/progress 其餘模組（store、merge、migrations、backup、schemas）與 lib/progress 的 IndexedDB 實作；只由 getProgressStore 動態載入，
@@ -267,6 +259,16 @@ export default defineConfig({
             // 結果頁元件（ResultView）不在第一波：由 result-lazy 和判分一起在第一次繪製後預載（level-view 的寫法曾把它一起放進第一波）。
             // level-view 群組的歷史：交給 quiz 群組的 entriesAware 會依「哪些頁面用到」拆成六個 0.3 到 2.5 KB 的 chunk，作答頁因此多發五個請求（2026-10-24 實測），
             // 所以它們一直要明確列在某個第一波的群組裡
+            // 文字標記與名詞 chip（2026-11-01，M4a）：Markup（佔位符與名詞 chip 的渲染）、terms（名詞索引與名詞卡的 context）、ratio-format（指標值的顯示）與 web-ui 的 TermChip
+            // 加上數字輸入（NumberInput；實驗室預測用的 ImpactPicker 依賴它）自成一個 chunk。NumberInput 依賴的 i18n 作答輸入正規化（input.ts）留在 session：
+            // 每一頁都預先載入 session（route-preload.json 的 always），input.ts 搬過來會讓 session 依賴這個 chunk，首頁也得多載 markup 與 prose（PR 63 第二輪 CI 的 preload.spec 抓到）；
+            // 代價是實驗室第一波仍載 session（約 6 KB），但不再載作答題型的 chunk。它們原本在 quiz-view 裡，實驗室的每一頁為了故事文字裡的名詞 chip 要在第一波多載整個作答題型的 chunk（約 17 KB gzip：
+            // LevelSession、題型元件、計時器等實驗室用不到的東西）；CI 執行器對第 7 步的 LCP 量到 3205ms（本機 2420）。作答頁第一波多一個小請求，本機 Lighthouse 要重量
+            {
+              name: 'markup',
+              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/]quiz[\\/](Markup|terms|ratio-format)\.tsx?|packages[\\/]web-ui[\\/]src[\\/]components[\\/](TermChip|NumberInput)\.tsx)$/,
+              priority: 2,
+            },
             {
               name: 'quiz-view',
               test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/](quiz[\\/](LevelSession|QuestionView|feedback-lazy|categories|useAsync|layout-lazy|ratio-lazy|lazy-data|scoring-lazy|result-lazy|level-favourites|level-timer|TimerDisplay|useScrollAnchor|level-notes)\.tsx?)|packages[\\/]web-ui[\\/]src[\\/]components[\\/]QuestionCard\.tsx)$/,

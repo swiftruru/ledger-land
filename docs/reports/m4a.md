@@ -35,7 +35,7 @@
 | 2 純鍵盤 | 通過：階段列的「下一步」保持焦點、方向鍵左右切換階段（焦點在輸入框時不切）、跳階段選單、預測面板是原生 radio、分錄層是 details；`link-style.spec.ts` 第 8 項從頁首 Tab 走完實驗室各頁 |
 | 3 VoiceOver 與 TalkBack | 未做：需要實機，清單在第 7 節 |
 | 4 減少動態 | 通過：`reduced-motion.spec.ts` 以 `reducedMotion: 'reduce'` 走第 7 步 10 個階段並逐階段截圖（CI artifact），天平沒有 `is-animated`、沒有任何 `ll-lab` 的動畫或轉場；階段 3 與 5 另外斷言沒有 `.ll-lab-animate`、金額不滾動、變動列的 animationName 是 none |
-| 5 效能 | Lighthouse（本機 3 次中位數，行動版）：實驗室第 7 步 LCP 2414ms、效能 0.96、無障礙 1、TBT 9ms、CLS 0.01（加進 `urls.json` 的固定網址，門檻 2700ms）；首頁 2136ms。第一次量到 2725ms，把核心包裝與故事快照加進殼層依路徑預先載入的表後降到 2414ms。PR 63 的 CI 第一次量到 3205ms、效能 0.87（其他八個網址和本機一樣）：文字標記、名詞 context 與數字輸入從作答題型的 chunk 拆成 markup chunk（步驟頁第一波 179 降到 159 KB gzip），lab-step 暫放寬到 3300ms、效能 0.85，收回條件在 14 的 V24。INP（CPU 降速 4 倍）：記下預測、下一步、天平、自由實驗套用金額都在門檻內（數字在 CI 的 annotations）。體積：`/en/` 首次載入 JS 144.9 KB、入口 CSS 29.8 KB、全部 CSS 42.8 KB（預算 44）、precache 3757 KB（預算調到 4000）、index.html 12.8 KB |
+| 5 效能 | Lighthouse（本機 3 次中位數，行動版）：實驗室第 7 步 LCP 2414ms、效能 0.96、無障礙 1、TBT 9ms、CLS 0.01（加進 `urls.json` 的固定網址，門檻 2700ms）；首頁 2136ms。第一次量到 2725ms，把核心包裝與故事快照加進殼層依路徑預先載入的表後降到 2414ms。PR 63 的 CI 第一次量到 3205ms、效能 0.87（其他八個網址和本機一樣）：文字標記、名詞 context 與數字輸入從作答題型的 chunk 拆成 markup chunk（步驟頁第一波 179 降到 164 KB gzip），lab-step 暫放寬到 3300ms、效能 0.85，收回條件在 14 的 V24。INP（CPU 降速 4 倍）：記下預測、下一步、天平、自由實驗套用金額都在門檻內（數字在 CI 的 annotations）。體積：`/en/` 首次載入 JS 144.9 KB、入口 CSS 29.8 KB、全部 CSS 42.8 KB（預算 44）、precache 3757 KB（預算調到 4000）、index.html 12.8 KB |
 | 6 實機 | 未做：需要維護者的裝置（第 7 節） |
 | 7 對比 | 沿用 M3 的 tokens；變動列的底色是 `accent-tint`，文字顏色不變；燈號與方向的顏色都另有圖示與文字 |
 | 8 雙語 | 通過：第三層 172 則、第一層新增 19 則都有英文，`lingui-missing` 0 缺字；E2E 的英文案例走過步驟頁與預測；英式拼字與英式引號經文案審查 |
@@ -72,7 +72,7 @@
 ## 8. 新發現
 
 - 第 12 步收回應收帳款的可輸入範圍是 9,050,000 到 15,000,000：最大是賒銷的金額，最小是後面的董監事酬勞、運費、還本付息與所得稅要有現金可付。核心的二分搜尋把這個下限算出來了，自由實驗的訊息把它顯示成「最少」。
-- CI 執行器對第 7 步量到 LCP 3205ms（本機 2420）而其他八個網址和本機相同：這一頁第一波的 JS 與資料最多，CI 的主執行緒本來就慢約 2.5 倍，Lighthouse 的模擬再乘 4 倍，只有這一頁被放大。實驗室為了故事文字裡的名詞 chip 靜態引入 `features/quiz/Markup.tsx` 與 `terms.tsx`，而它們在 quiz-view 群組裡，整個作答題型的 chunk（約 17 KB gzip）與工作階段（約 6 KB）就跟著進第一波；拆成 markup 群組並宣告在 session 之前後，實驗室不再載這兩個 chunk（14 第 5.2 節、V24）。
+- CI 執行器對第 7 步量到 LCP 3205ms（本機 2420）而其他八個網址和本機相同：這一頁第一波的 JS 與資料最多，CI 的主執行緒本來就慢約 2.5 倍，Lighthouse 的模擬再乘 4 倍，只有這一頁被放大。實驗室為了故事文字裡的名詞 chip 靜態引入 `features/quiz/Markup.tsx` 與 `terms.tsx`，而它們在 quiz-view 群組裡，整個作答題型的 chunk（約 15 KB gzip）就跟著進第一波；拆成 markup 群組後實驗室不再載它（工作階段的 chunk 約 6 KB 仍在：數字輸入依賴的作答輸入正規化留在 session，搬過來會讓每一頁都預先載入的 session 連 markup 一起拉進首頁）（14 第 5.2 節、V24）。
 - 第一次量第 7 步的 LCP 是 2725ms：頁面 chunk 到了才動態載入核心、再讀故事快照，多兩層往返。殼層依路徑預先載入的表加「路由的 preload 模組」與「story 內容種類」之後 2414ms。
 - `vitest` 的 `valid-expect` 與 `no-conditional-expect` 規則對逐步、逐列比對的迴圈不友善；`lab-core.test.ts` 和 M1 的 `story-official.property.test.ts` 一樣在檔頭停用這兩條並寫明理由。
 
