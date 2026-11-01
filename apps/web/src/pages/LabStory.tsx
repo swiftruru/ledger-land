@@ -1,5 +1,5 @@
-// 故事步驟列表 /lab/story/<storyId>/（02 第 1.1 節、03 第 3.1、3.2、4.4 節）：五章分組，每一步有「開始」與「單獨練習」兩個入口；
-// 走完的、目前走到的與練習過的用標記；每章結尾列本章的相關關卡（步驟資料的 chapterLinks 依章彙整、去重，有 level 連到關卡、沒有連到章節頁）。
+// 故事步驟列表 /lab/story/<storyId>/（02 第 1.1 節、03 第 3.1、3.2、4.4 節）：五章分組，每一步有「示範」與「練習」兩個入口（03 第 3.1 節的兩種模式）；
+// 看過示範的、練習過的（加猜對幾個）與目前走到的用標記；每章結尾列本章的相關關卡（步驟資料的 chapterLinks 依章彙整、去重，有 level 連到關卡、沒有連到章節頁）。
 // 字串在第三層 catalog（lab.po）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
@@ -8,6 +8,7 @@ import { formatNumber, localePath } from '@ledgerland/i18n';
 import { Badge, Button, CheckCircleIcon, ErrorState, NavList, NavRow, PlayIcon, TopBar } from '@ledgerland/web-ui';
 import { MapIcon } from '@ledgerland/web-ui/map';
 import { predictTotals } from '../features/lab/progress.ts';
+import { useModeNames } from '../features/lab/StageBar.tsx';
 import { useLabStory } from '../features/lab/useLab.ts';
 import { useLabBack } from '../features/lab/useLabBack.ts';
 import { loadChapterIndex, type ChapterSummary, type StorySnapshot } from '../lib/content.ts';
@@ -31,6 +32,7 @@ export default function LabStory() {
   const { t } = useLingui();
   const back = useLabBack();
   const lab = useLabStory(storyId, locale);
+  const modes = useModeNames();
   const [chapterIndex, setChapterIndex] = useState<ChapterSummary[] | null>(null);
   useEffect(() => {
     let alive = true;
@@ -66,6 +68,7 @@ export default function LabStory() {
   const { story, progress } = lab;
   const done = new Set(progress.progress.done);
   const practised = new Set(progress.progress.practised);
+  const scores = progress.progress.predictScores;
   const current = progress.state?.stepId;
   const totals = predictTotals(progress.progress);
   const chapterTitle = (id: string) => chapterIndex?.find((c) => c.id === id)?.title ?? id;
@@ -112,12 +115,23 @@ export default function LabStory() {
                         {s.title}
                       </span>
                       <span className="ll-lab-step__badges">
-                        {isDone && (
+                        {isDone && !practised.has(s.id) && (
+                          <Badge kind="info">
+                            <Trans id="lab.story.seen" comment="步驟狀態：走過示範、還沒練習">
+                              看過示範
+                            </Trans>
+                          </Badge>
+                        )}
+                        {practised.has(s.id) && (
                           <Badge kind="success">
                             <CheckCircleIcon />{' '}
-                            <Trans id="lab.story.done" comment="步驟狀態">
-                              走完了
-                            </Trans>
+                            {scores[s.id]
+                              ? t({
+                                  id: 'lab.story.practisedScore',
+                                  message: `練習過，猜對 ${formatNumber(scores[s.id]!.right, locale)}／${formatNumber(scores[s.id]!.total, locale)}`,
+                                  comment: '步驟狀態：練習過加這一步的預測成績；數字已格式化',
+                                })
+                              : t({ id: 'lab.story.practised', message: '練習過', comment: '步驟狀態' })}
                           </Badge>
                         )}
                         {isCurrent && !isDone && (
@@ -127,21 +141,14 @@ export default function LabStory() {
                             </Trans>
                           </Badge>
                         )}
-                        {practised.has(s.id) && (
-                          <Badge kind="info">
-                            <Trans id="lab.story.practised" comment="步驟狀態">
-                              練習過
-                            </Trans>
-                          </Badge>
-                        )}
                       </span>
                     </span>
                     <span className="ll-lab-step__actions">
-                      <Button size="sm" variant="primary" icon={<PlayIcon />} href={href(`/lab/story/${story.id}/${s.id}/`)} data-testid="lab-step-start">
-                        {t({ id: 'lab.story.start', message: '開始', comment: '步驟列的按鈕' })}
+                      <Button size="sm" variant="quiet" href={href(`/lab/story/${story.id}/${s.id}/?mode=demo`)} data-testid="lab-step-demo">
+                        {modes.demo}
                       </Button>
-                      <Button size="sm" variant="quiet" href={href(`/lab/story/${story.id}/${s.id}/?mode=practice`)} data-testid="lab-step-practice">
-                        {t({ id: 'lab.story.practice', message: '單獨練習', comment: '步驟列的按鈕' })}
+                      <Button size="sm" variant="primary" icon={<PlayIcon />} href={href(`/lab/story/${story.id}/${s.id}/`)} data-testid="lab-step-practice">
+                        {modes.practice}
                       </Button>
                     </span>
                   </li>

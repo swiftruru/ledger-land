@@ -6,9 +6,9 @@ import type { LabState } from '@ledgerland/progress';
 import type { PredictScore, PredictionRecord } from './predict.ts';
 
 export interface StoryProgress {
-  /** 走完的步驟（依走完的先後） */
+  /** 走完的步驟（示範或練習，依走完的先後） */
   readonly done: readonly string[];
-  /** 單獨練習過的步驟 */
+  /** 用練習模式走完的步驟（有預測） */
   readonly practised: readonly string[];
   /** 每一步最後一次的預測 */
   readonly predictions: Readonly<Record<string, PredictionRecord>>;

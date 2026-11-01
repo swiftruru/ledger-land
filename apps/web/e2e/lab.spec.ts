@@ -1,5 +1,5 @@
-// 報表實驗室（M4a，03 第 3 節、10 第 11.1 節）：首頁、故事步驟列表、步驟頁的 10 個階段（預測閘門、揭曉、報表、燈號、指標、完成與進度）、
-// 單獨練習不動故事進度、回看才有的跳到最後、方向鍵、自由實驗（擋下與可輸入範圍、連動清單、插入與本筆無影響、重設）、勾稽練習（三格、提示三層、完成卡）、
+// 報表實驗室（M4a，03 第 3 節、10 第 11.1 節）：首頁、故事步驟列表、步驟頁練習模式的 10 個階段（預測閘門、揭曉、報表、燈號、指標、完成與進度）、
+// 練過才有的跳到最後、示範模式（9 個階段、沒有預測、隨時跳到最後、進度只往前、選單換模式）、方向鍵、自由實驗（擋下與可輸入範圍、連動清單、插入與本筆無影響、重設）、勾稽練習（三格、提示三層、完成卡）、
 // 指標實驗室（分組、版本切換、N/A 的建議）、英文介面。等待一律用 expect 的自動重試。
 import { expect, test, type Page, type Route } from '@playwright/test';
 import { waitForApp } from './helpers.ts';
@@ -63,19 +63,21 @@ test.describe('實驗室首頁與故事步驟列表', () => {
     await expect(page.getByTestId('lab-continue')).toHaveText('Start the story');
   });
 
-  test('故事步驟列表：五章、18 步、每步有開始與單獨練習、章末相關關卡', async ({ page }) => {
+  test('故事步驟列表：五章、18 步、每步有示範與練習、章末相關關卡', async ({ page }) => {
     await page.goto(`/lab/story/${STORY}/`);
     await waitForApp(page);
     await expect(page.getByTestId('lab-chapter')).toHaveCount(5);
     await expect(page.getByTestId('lab-step-row')).toHaveCount(18);
-    await expect(page.getByTestId('lab-step-start').first()).toHaveAttribute('href', `/lab/story/${STORY}/st_9htcrg/`);
-    await expect(page.getByTestId('lab-step-practice').first()).toHaveAttribute('href', `/lab/story/${STORY}/st_9htcrg/?mode=practice`);
+    await expect(page.getByTestId('lab-step-demo').first()).toHaveAttribute('href', `/lab/story/${STORY}/st_9htcrg/?mode=demo`);
+    await expect(page.getByTestId('lab-step-demo').first()).toHaveText('示範');
+    await expect(page.getByTestId('lab-step-practice').first()).toHaveAttribute('href', `/lab/story/${STORY}/st_9htcrg/`);
+    await expect(page.getByTestId('lab-step-practice').first()).toHaveText('練習');
     await expect(page.getByRole('heading', { name: '相關關卡' }).first()).toBeVisible();
   });
 });
 
 test.describe('故事步驟頁', () => {
-  test('第 7 步從頭走到尾：預測閘門、揭曉、三表、燈號、指標、意涵與利害關係人、完成後進度寫入', async ({ page }) => {
+  test('練習：第 7 步從頭走到尾，預測閘門、揭曉、三表、燈號、指標、意涵與利害關係人、完成後進度寫入', async ({ page }) => {
     await page.goto(`/lab/story/${STORY}/${STEP7}/`);
     await waitForApp(page);
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／10：交易卡');
@@ -84,7 +86,7 @@ test.describe('故事步驟頁', () => {
     await expect(page.getByTestId('lab-card-terms').getByRole('button')).toHaveCount(4);
     await page.getByTestId('lab-next').click();
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
-    // 預測沒完成不能前進；第一次走這一步沒有「跳到最後一個階段」（預測完也沒有，要一階段一階段看）
+    // 預測沒完成不能前進；第一次練這一步沒有「跳到最後一個階段」（預測完也沒有，要一階段一階段看）
     await expect(page.getByTestId('lab-next')).toBeDisabled();
     await expect(page.getByTestId('lab-skip')).toHaveCount(0);
     await predictAllUp(page);
@@ -144,14 +146,16 @@ test.describe('故事步驟頁', () => {
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
     await expect(page.getByTestId('lab-stakeholders').locator('li')).toHaveCount(2);
     await page.getByTestId('lab-next').click();
-    await expect(page.getByTestId('lab-finished')).toBeVisible();
+    const card = page.getByTestId('lab-finished');
+    await expect(card).toContainText('這一步走完了');
     await expect(page.getByTestId('lab-finish-score')).toHaveText('這一步的預測猜對 7／8；整個故事到目前 7／8（1 步）');
     await expect(page.getByTestId('lab-next-step')).toHaveAttribute('href', `/lab/story/${STORY}/st_skx6ss/`);
+    await expect(card.getByRole('button', { name: '再練一次' })).toBeVisible();
     await expect.poll(() => readLabState(page)).toEqual([expect.objectContaining({ storyId: STORY, stepId: STEP7 })]);
-    // 故事列表標記走完
+    // 故事列表標記練習過與這一步的成績
     await page.goto(`/lab/story/${STORY}/`);
     await waitForApp(page);
-    await expect(page.locator(`[data-step="${STEP7}"]`)).toContainText('走完了');
+    await expect(page.locator(`[data-step="${STEP7}"]`)).toContainText('練習過，猜對 7／8');
     await page.goto('/lab/');
     await waitForApp(page);
     await expect(page.getByTestId('lab-continue')).toHaveText('繼續第 8 步');
@@ -194,7 +198,7 @@ test.describe('故事步驟頁', () => {
     await page.goto(`/lab/story/${STORY}/`);
     await waitForApp(page);
     await expect(page.getByTestId('lab-story-score')).toHaveText('預測成績：1 步猜對 7／8');
-    // 回看走完過的步驟：階段選單最後多一項「跳到最後一個階段」，按了直接到階段 10
+    // 練過的步驟再回來：階段選單多一項「跳到最後一個階段」，按了直接到階段 10
     await page.goto(`/lab/story/${STORY}/${STEP7}/`);
     await waitForApp(page);
     await page.getByRole('button', { name: '階段 1／10：交易卡' }).click();
@@ -202,32 +206,61 @@ test.describe('故事步驟頁', () => {
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
   });
 
-  test('單獨練習：前情摘要、預測必填、完成卡三個按鈕、不動故事進度；沒有跳到最後、方向鍵', async ({ page }) => {
-    await page.goto(`/lab/story/${STORY}/${STEP7}/?mode=practice`);
+  test('示範：沒有預測的 9 個階段、隨時跳到最後、完成卡；進度只往前；階段選單換成練習', async ({ page }) => {
+    await page.goto(`/lab/story/${STORY}/${STEP7}/?mode=demo`);
     await waitForApp(page);
-    await expect(page.getByTestId('lab-practice-flag')).toBeVisible();
+    await expect(page.getByTestId('lab-demo-flag')).toBeVisible();
     await expect(page.getByTestId('lab-recap')).toContainText('到上一步為止');
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／9：交易卡');
     await page.keyboard.press('ArrowRight');
-    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
-    await page.keyboard.press('ArrowRight');
-    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
-    await predictAllUp(page);
-    // 單獨練習沒有「跳到最後一個階段」；用階段選單跳到階段 10
-    await page.getByRole('button', { name: '階段 2／10：預測' }).click();
-    await expect(page.getByTestId('lab-skip')).toHaveCount(0);
-    await page.getByRole('menuitem', { name: '10. 管理意涵' }).click();
-    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／9：科目變動');
+    await expect(page.getByTestId('lab-effects').locator('li')).toHaveCount(4);
+    // 沒有預測就沒有揭曉與對錯
+    await expect(page.getByTestId('lab-reveal')).toHaveCount(0);
+    await expect(page.getByTestId('lab-cash-verdict')).toHaveCount(0);
+    // 示範隨時可以跳到最後
+    await page.getByRole('button', { name: '階段 2／9：科目變動' }).click();
+    await page.getByTestId('lab-skip').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 9／9：管理意涵');
     await page.keyboard.press('ArrowLeft');
-    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 9／10：指標變化');
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 8／9：指標變化');
     await page.getByTestId('lab-next').click();
     await page.getByTestId('lab-next').click();
     const card = page.getByTestId('lab-finished');
-    await expect(card).toContainText('練習完成');
-    await expect(page.getByTestId('lab-finish-score')).toContainText('這一步的預測猜對');
-    await expect(card.getByRole('button', { name: '再練一次' })).toBeVisible();
+    await expect(card).toContainText('這一步看完了');
+    await expect(page.getByTestId('lab-finish-score')).toHaveCount(0);
+    await expect(page.getByTestId('lab-next-step')).toHaveAttribute('href', `/lab/story/${STORY}/st_skx6ss/?mode=demo`);
     await expect(card.getByRole('link', { name: '回到故事地圖' })).toHaveAttribute('href', `/lab/story/${STORY}/`);
-    await expect(card.getByRole('button', { name: '從這一步接著走故事' })).toBeVisible();
-    expect(await readLabState(page)).toEqual([]);
+    await expect(page.getByTestId('lab-practise-now')).toHaveAttribute('href', `/lab/story/${STORY}/${STEP7}/`);
+    // 示範也算走完：進度移到第 7 步；故事頁標記看過示範
+    await expect.poll(() => readLabState(page)).toEqual([expect.objectContaining({ storyId: STORY, stepId: STEP7 })]);
+    await page.goto(`/lab/story/${STORY}/`);
+    await waitForApp(page);
+    await expect(page.locator(`[data-step="${STEP7}"]`)).toContainText('看過示範');
+    // 進度只往前：再示範第 6 步，進度留在第 7 步
+    await page.goto(`/lab/story/${STORY}/${STEP6}/?mode=demo`);
+    await waitForApp(page);
+    await page.getByRole('button', { name: '階段 1／9：交易卡' }).click();
+    await page.getByTestId('lab-skip').click();
+    // 核心載好才切到最後一個階段，先等它
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 9／9：管理意涵');
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-finished')).toBeVisible();
+    await expect.poll(() => readLabState(page)).toEqual([expect.objectContaining({ storyId: STORY, stepId: STEP7 })]);
+    // 階段選單換成練習：回到交易卡、10 個階段、預測必填
+    await page.getByRole('button', { name: '階段 9／9：管理意涵' }).click();
+    await page.getByTestId('lab-switch-mode').click();
+    await expect(page).toHaveURL(new RegExp(`/lab/story/${STORY}/${STEP6}/$`));
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／10：交易卡');
+    await expect(page.getByTestId('lab-demo-flag')).toHaveCount(0);
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
+    await expect(page.getByTestId('lab-next')).toBeDisabled();
+    // 再換回示範：帶著 ?mode=demo、9 個階段
+    await page.getByRole('button', { name: '階段 2／10：預測' }).click();
+    await page.getByTestId('lab-switch-mode').click();
+    await expect(page).toHaveURL(/\?mode=demo$/);
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／9：交易卡');
   });
 
   test('英文介面：階段標題與預測面板', async ({ page }) => {

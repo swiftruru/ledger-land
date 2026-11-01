@@ -324,18 +324,6 @@ msgstr "Short-term bank loan"
 msgid "lab.predict.wrong"
 msgstr "Different from your prediction"
 
-#. 步驟列的按鈕
-#. js-lingui-explicit-id
-#: src/pages/LabStory.tsx
-msgid "lab.story.practice"
-msgstr "Practise alone"
-
-#. 單獨練習的標示
-#. js-lingui-explicit-id
-#: src/pages/LabStep.tsx
-msgid "lab.step.practiceMode"
-msgstr "Practising alone: the story’s progress does not change"
-
 #. 勾稽燈號清單的名稱
 #. js-lingui-explicit-id
 #: src/features/lab/CheckLights.tsx
@@ -494,12 +482,6 @@ msgstr "We suggest finishing the earlier steps first, but you can start here."
 msgid "lab.reconcile.order"
 msgstr "Suggested order: fill in the income statement result first, then the cash flow statement, then the balance sheet. One wrong cell can turn several lights red, so fix the most upstream cell first."
 
-#. 完成卡按鈕
-#. js-lingui-explicit-id
-#: src/pages/LabStep.tsx
-msgid "lab.finish.continueFromHere"
-msgstr "Continue the story from here"
-
 #. 階段名稱
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
@@ -529,6 +511,12 @@ msgstr "Ratio version"
 #: src/features/lab/StageBar.tsx
 msgid "lab.stage.ratios"
 msgstr "Ratio changes"
+
+#. 示範完成卡的按鈕：同一步改用練習模式
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.practiseNow"
+msgstr "Walk it again in practice mode"
 
 #. 階段 3 播報的開頭；兩個數字已格式化
 #. js-lingui-explicit-id
@@ -569,6 +557,12 @@ msgstr "Income statement"
 #: src/pages/LabStep.tsx
 msgid "lab.toast.terms"
 msgstr "Added to the glossary: {0} terms"
+
+#. 階段選單最後一項：換成另一種模式（示範或練習），模式名稱已代入
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.switchMode"
+msgstr "Switch to {other}"
 
 #. 故事頁讀取中的標題
 #. js-lingui-explicit-id
@@ -800,6 +794,24 @@ msgstr "Show the entries and T-accounts"
 msgid "lab.sandbox.show"
 msgstr "Show statements"
 
+#. 步驟狀態：走過示範、還沒練習
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.seen"
+msgstr "Watched the demo"
+
+#. 模式名稱：沒有預測、可以隨時跳階段
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.mode.demo"
+msgstr "Demo"
+
+#. 示範模式的標示（練習是預設，不標）
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.demoMode"
+msgstr "Demo: no prediction, jump to any stage at any time"
+
 #. 分錄表格的欄名
 #. js-lingui-explicit-id
 #: src/features/lab/EffectsList.tsx
@@ -907,17 +919,25 @@ msgstr "Activity"
 msgid "lab.reconcile.next"
 msgstr "Practise the next step"
 
-#. 完成卡標題
+#. 模式名稱：有預測與揭曉
 #. js-lingui-explicit-id
-#: src/pages/LabStep.tsx
-msgid "lab.finish.practice"
-msgstr "Practice complete"
+#: src/features/lab/StageBar.tsx
+msgid "lab.mode.practice"
+msgstr "Practice"
 
 #. 步驟狀態
 #. js-lingui-explicit-id
 #: src/pages/LabStory.tsx
 msgid "lab.story.practised"
 msgstr "Practised"
+
+#. 步驟狀態：練習過加這一步的預測成績；數字已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(scores[s.id]!.right, locale)
+#. placeholder {1}: formatNumber(scores[s.id]!.total, locale)
+#: src/pages/LabStory.tsx
+msgid "lab.story.practisedScore"
+msgstr "Practised, {0} of {1} right"
 
 #. 期末存貨的加註（T07）
 #. js-lingui-explicit-id
@@ -1035,13 +1055,7 @@ msgstr "Total assets {0}, now {1}; liabilities {2}; equity {3}. {4}."
 msgid "lab.stage.balance"
 msgstr "Balance sheet"
 
-#. 步驟狀態
-#. js-lingui-explicit-id
-#: src/pages/LabStory.tsx
-msgid "lab.story.done"
-msgstr "Done"
-
-#. 階段選單最後一項：回看走完過的步驟時，直接切到最後一個階段
+#. 階段選單：直接切到最後一個階段（示範隨時有；練習只在練過的步驟再回來時有）
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
 msgid "lab.stage.skip"
@@ -1082,7 +1096,13 @@ msgstr "This step’s precondition is not met"
 msgid "lab.finish.score"
 msgstr "Predictions this step: {0} of {1} right; whole story so far {2} of {3} ({4} steps)"
 
-#. 完成卡標題
+#. 完成卡標題（示範）
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.demo"
+msgstr "You have watched this step"
+
+#. 完成卡標題（練習）
 #. js-lingui-explicit-id
 #: src/pages/LabStep.tsx
 msgid "lab.finish.story"
@@ -1173,12 +1193,6 @@ msgstr "Amount"
 msgid "lab.role.bank"
 msgstr "Bank"
 
-#. 步驟列的按鈕
-#. js-lingui-explicit-id
-#: src/pages/LabStory.tsx
-msgid "lab.story.start"
-msgstr "Start"
-
 #. 建議的按鈕
 #. js-lingui-explicit-id
 #: src/pages/LabRatios.tsx
@@ -1188,12 +1202,13 @@ msgstr "Open the sandbox"
 #. 階段進度文字；數字與名稱已代入
 #. js-lingui-explicit-id
 #. placeholder {0}: stage + 1
-#. placeholder {1}: names[STAGES[stage]!]
-#. placeholder {1}: names[stageId]
+#. placeholder {1}: stages.length
+#. placeholder {2}: names[stageId]
+#. placeholder {2}: names[stages[stage]!]
 #: src/features/lab/StageBar.tsx
 #: src/pages/LabStep.tsx
 msgid "lab.stage.progress"
-msgstr "Stage {0} of {STAGE_COUNT}: {1}"
+msgstr "Stage {0} of {1}: {2}"
 
 #. 提示按鈕
 #. js-lingui-explicit-id
