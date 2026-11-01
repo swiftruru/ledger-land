@@ -5,8 +5,8 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
-import { formatMoney, localePath } from '@ledgerland/i18n';
-import { Button, Card, ErrorState, HintBar, Segmented, Toast, ToastRegion, TopBar } from '@ledgerland/web-ui';
+import { formatMoney, formatNumber, localePath } from '@ledgerland/i18n';
+import { Button, Card, CheckCircleIcon, ErrorState, HintBar, Segmented, Toast, ToastRegion, TopBar, XCircleIcon } from '@ledgerland/web-ui';
 import { labPrefersReducedMotion } from '../features/lab/motion.ts';
 import { BalanceScale } from '../features/lab/BalanceScale.tsx';
 import { CheckLights, ProfitLevels } from '../features/lab/CheckLights.tsx';
@@ -15,6 +15,7 @@ import type { LabRun, LabStep as LabStepModel } from '../features/lab/lab-core.t
 import type { LabCore } from '../features/lab/lazy-core.ts';
 import { joinList, lineAt, useChangeText, useLabLabels } from '../features/lab/labels.ts';
 import { PredictPanel } from '../features/lab/PredictPanel.tsx';
+import { PredictReveal, type RevealItem } from '../features/lab/PredictReveal.tsx';
 import {
   isPredictionComplete,
   isPredictionCorrect,
@@ -25,7 +26,7 @@ import {
   type PredictTarget,
   type PredictionRecord,
 } from '../features/lab/predict.ts';
-import { completeStep, moveStoryTo, savePrediction, type StoryProgress } from '../features/lab/progress.ts';
+import { completeStep, moveStoryTo, predictTotals, savePrediction, type StoryProgress } from '../features/lab/progress.ts';
 import { RatioList } from '../features/lab/RatioList.tsx';
 import { ratioChanges, ratioPoint } from '../features/lab/ratio-changes.ts';
 import { STAGES, STAGE_COUNT, canGoTo, canSkipToEnd, statementForStage, type StageGate } from '../features/lab/stages.ts';
@@ -232,10 +233,52 @@ function StepSession({ core, story, spec, step, run, progress, onProgress }: Ses
   };
   const labelOfTarget = (tg: PredictTarget) =>
     tg.kind === 'line' ? lineLabel(tg.line) : tg.kind === 'account' ? accountLabel(tg.account) : ratioLabel(tg.ratioRef.split('@')[0]!);
+  const scoreOf = (rec: PredictionRecord) => ({
+    right: targets.filter((tg) => {
+      const a = answerOf(tg);
+      return isPredictionCorrect(rec[tg.id], a.answer, a.nearly, a.exact);
+    }).length,
+    total: targets.length,
+  });
   const submitPrediction = () => {
     setSubmitted(true);
-    void savePrediction(story.id, spec.id, record);
+    void savePrediction(story.id, spec.id, record, scoreOf(record));
   };
+  // 揭曉卡（階段 3 的最上面）：每個目標你猜的、實際的、對錯與前後數字；五層利益都不變時加一句原因
+  const moneyRange = (b: number, a: number) => `${formatMoney(b, locale)} → ${formatMoney(a, locale)}`;
+  const detailOf = (tg: PredictTarget): string | undefined => {
+    if (tg.kind === 'line') return moneyRange(lineAt(step.before, tg.line), lineAt(step.after, tg.line));
+    if (tg.kind === 'account') {
+      const sign = chart.byId.get(tg.account)?.normalSide === 'credit' ? -1 : 1;
+      return moneyRange(sign * (step.posted.balancesBefore[tg.account] ?? 0), sign * (step.posted.balancesAfter[tg.account] ?? 0));
+    }
+    return undefined;
+  };
+  const revealItems: RevealItem[] = submitted
+    ? targets.map((tg) => {
+        const a = answerOf(tg);
+        const v = verdictOf(tg);
+        const item: RevealItem = {
+          id: tg.id,
+          label: labelOfTarget(tg),
+          kind: tg.kind,
+          chosen: record[tg.id],
+          answer: a.answer,
+          correct: v?.correct ?? false,
+          nearly: v?.nearly ?? false,
+        };
+        const detail = detailOf(tg);
+        return detail === undefined ? item : { ...item, detail };
+      })
+    : [];
+  const revealScore = submitted ? scoreOf(record) : null;
+  const levelTargets = targets.filter((tg): tg is PredictTarget & { kind: 'line' } => tg.kind === 'line' && tg.line.startsWith('is_'));
+  const revealNote =
+    submitted && levelTargets.length > 0 && levelTargets.every((tg) => answerOf(tg).answer === 'unchanged')
+      ? t({ id: 'lab.reveal.noteLevels', message: '這筆交易不經過損益表，所以五層利益都不變。', comment: '揭曉卡的原因句：收入與費用都沒動' })
+      : undefined;
+  // 完成卡的預測成績：這一步加整個故事（含這一步，進度快照可能還是舊的）
+  const storyTotals = predictTotals({ predictScores: revealScore ? { ...progress.predictScores, [spec.id]: revealScore } : progress.predictScores });
 
   const summary = changeSummary(step.before, step.after, lineLabel, locale);
   const ratios = useMemo(() => ratioChanges(core, 'excel', step.ratiosBefore, step.ratiosAfter), [core, step]);
@@ -259,10 +302,18 @@ function StepSession({ core, story, spec, step, run, progress, onProgress }: Ses
           ? t({ id: 'lab.live.predicted', message: '已記下你的預測。', comment: '記下預測後的播報' })
           : t({ id: 'lab.live.predict', message: '替每個目標選一個方向。', comment: '階段 2 的播報' });
       case 'effects':
-        return step.posted.effects
-          .filter((e) => e.direction !== 'unchanged')
-          .map((e) => `${accountLabel(e.account)}${change(e.delta)}`)
-          .join(locale === 'en' ? '. ' : '。');
+        return [
+          ...(revealScore
+            ? [
+                t({
+                  id: 'lab.live.reveal',
+                  message: `揭曉：${formatNumber(revealScore.total, locale)} 個猜對 ${formatNumber(revealScore.right, locale)} 個`,
+                  comment: '階段 3 播報的開頭；兩個數字已格式化',
+                }),
+              ]
+            : []),
+          ...step.posted.effects.filter((e) => e.direction !== 'unchanged').map((e) => `${accountLabel(e.account)}${change(e.delta)}`),
+        ].join(locale === 'en' ? '. ' : '。');
       case 'equation':
         return '';
       case 'income':
@@ -388,6 +439,9 @@ function StepSession({ core, story, spec, step, run, progress, onProgress }: Ses
             submittedNote={t({ id: 'lab.live.predicted', message: '已記下你的預測。' })}
           />
         )}
+        {stageId === 'effects' && revealScore && (
+          <PredictReveal items={revealItems} right={revealScore.right} total={revealScore.total} locale={locale} note={revealNote} />
+        )}
         {stageId === 'effects' && (
           <EffectsList
             step={step}
@@ -451,6 +505,9 @@ function StepSession({ core, story, spec, step, run, progress, onProgress }: Ses
                     const v = verdictOf(tg);
                     return (
                       <li key={tg.id} className={`ll-lab-verdict is-${v?.correct ? 'right' : 'wrong'}`}>
+                        <span className="ll-lab-verdict__icon" aria-hidden="true">
+                          {v?.correct ? <CheckCircleIcon /> : <XCircleIcon />}
+                        </span>
                         {lineLabel(tg.line)}：
                         {v?.correct ? t({ id: 'lab.predict.right', message: '你的預測正確' }) : t({ id: 'lab.predict.wrong', message: '和你的預測不同' })}
                       </li>
@@ -505,6 +562,15 @@ function StepSession({ core, story, spec, step, run, progress, onProgress }: Ses
                     ? t({ id: 'lab.finish.practice', message: '練習完成', comment: '完成卡標題' })
                     : t({ id: 'lab.finish.story', message: '這一步走完了', comment: '完成卡標題' })}
                 </h3>
+                {revealScore && (
+                  <p className="ll-lab-finished__score" data-testid="lab-finish-score">
+                    {t({
+                      id: 'lab.finish.score',
+                      message: `這一步的預測猜對 ${formatNumber(revealScore.right, locale)}／${formatNumber(revealScore.total, locale)}；整個故事到目前 ${formatNumber(storyTotals.right, locale)}／${formatNumber(storyTotals.total, locale)}（${formatNumber(storyTotals.steps, locale)} 步）`,
+                      comment: '完成卡的預測成績；數字都已格式化',
+                    })}
+                  </p>
+                )}
                 <div className="ll-lab-finished__actions">
                   {practice ? (
                     <>

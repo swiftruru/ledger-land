@@ -384,6 +384,76 @@
   background: var(--ll-warning-tint);
   color: var(--ll-warning-ink);
 }
+/* 預測揭曉卡（階段 3 的最上面）與對錯 chip 的圖示：圖示加文字加顏色 */
+.ll-lab-reveal-card {
+  margin: 0 0 var(--ll-space-3);
+  padding: var(--ll-space-3);
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-surface);
+  box-shadow: var(--ll-card-ring);
+}
+.ll-lab-reveal-card__title {
+  margin: 0 0 var(--ll-space-2);
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+  font-weight: 700;
+}
+.ll-lab-reveal-card__note {
+  margin: 0 0 var(--ll-space-2);
+  color: var(--ll-text-2);
+}
+.ll-lab-reveal-card__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--ll-space-2);
+}
+.ll-lab-reveal-card__item {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: var(--ll-space-2);
+  align-items: start;
+}
+.ll-lab-reveal-card__icon svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+.ll-lab-reveal-card__item.is-right .ll-lab-reveal-card__icon {
+  color: var(--ll-success-ink);
+}
+.ll-lab-reveal-card__item.is-wrong .ll-lab-reveal-card__icon {
+  color: var(--ll-warning-ink);
+}
+.ll-lab-reveal-card__label {
+  font-weight: 700;
+}
+.ll-lab-reveal-card__text {
+  display: block;
+}
+.ll-lab-reveal-card__detail {
+  display: block;
+  color: var(--ll-text-3);
+  font-family: var(--ll-font-num);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-lab-verdict__icon {
+  display: inline-block;
+  margin-right: 4px;
+  vertical-align: -3px;
+}
+.ll-lab-verdict__icon svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+.ll-lab-finished__score,
+.ll-lab-story__score {
+  margin: var(--ll-space-1) 0 0;
+  color: var(--ll-text-2);
+}
 .ll-lab-reveal {
   margin: var(--ll-space-2) 0;
   padding: 0;
