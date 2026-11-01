@@ -26,7 +26,7 @@
   }
   root.lang = /^\/en(\/|$)/i.test(path) ? 'en' : 'zh-TW';
 
-  // 依路徑預先載入（06 第 8.2 節、14 第 5.2 節）：這一頁的頁面 chunk（含靜態 import）、目前語言的訊息 catalog（子頁再加第二層的 pages.po）與第一次繪製要讀的內容快照，
+  // 依路徑預先載入（06 第 8.2 節、14 第 5.2 節）：這一頁的頁面 chunk（含靜態 import）、目前語言的訊息 catalog（子頁再加第二層或第三層的 pages.po、lab.po）與第一次繪製要讀的內容快照，
   // 和殼層入口 chunk 同時開始下載，不必等入口執行完、路由解析完才一層一層發請求。表格由 tools/postbuild.mjs 在建置後填入
   // （tools/lib/preload-table.mjs，路由表在 src/shell/route-preload.json）；開發模式與沒有表格時是 null，什麼都不做。
   // 內容快照用 as=fetch 加 crossorigin，和 lib/content.ts 的 fetch() 同一組 mode 與 credentials 才會被重用。
@@ -62,8 +62,8 @@
         var hit = new RegExp(route[0]).exec(rel);
         if (!hit) continue;
         addAssets(route[1]);
-        // 第二層 catalog（pages.po）：只有說明頁等子頁要（route-preload.json 的 catalog 為 pages），目前語言那一份
-        if (route[3]) addAssets((PRELOAD.p && PRELOAD.p[lang]) || []);
+        // 額外的 catalog 層（pages.po、lab.po）：只有子頁要（route-preload.json 的 catalog 是層名稱），目前語言那一份
+        if (route[3]) addAssets((PRELOAD.p && PRELOAD.p[route[3]] && PRELOAD.p[route[3]][lang]) || []);
         var id = hit[1];
         for (var k = 0; k < route[2].length; k++) {
           var kind = route[2][k];
@@ -74,6 +74,7 @@
           else if (kind === 'level' && id && cm.lv[id] && cm.ch[cm.lv[id]])
             // 關卡在所屬章節的章節包裡（lv 是關卡 ID 對章節 ID，ch 是章節 ID 對各語言的雜湊）
             addLink('/content/' + lang + '/' + cm.lv[id] + '.' + cm.ch[cm.lv[id]][langIndex] + '.json', 'json');
+          else if (kind === 'story' && id && cm.st && cm.st[id] && cm.st[id][langIndex]) addLink('/' + cm.st[id][langIndex], 'json');
           else if (kind === 'termDetail' && id)
             for (var t = 0; t < cm.l.length; t++) {
               // 名詞分桶：ID 最後一個字元的字元碼除以 8 的餘數，和 lib/content.ts 的 termDetailBucket 一致

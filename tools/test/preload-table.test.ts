@@ -21,6 +21,10 @@ const viteManifest = {
   'src/pages/About.tsx': { file: 'assets/About-LLLL.js', isDynamicEntry: true, imports: ['_common-CCCC.js'] },
   'src/locales/zh-TW/pages.po': { file: 'assets/pages-MMMM.js', isDynamicEntry: true },
   'src/locales/en/pages.po': { file: 'assets/pages-NNNN.js', isDynamicEntry: true },
+  'src/locales/zh-TW/lab.po': { file: 'assets/lab-OOOO.js', isDynamicEntry: true },
+  'src/locales/en/lab.po': { file: 'assets/lab-PPPP.js', isDynamicEntry: true },
+  'src/features/lab/lab-core.ts': { file: 'assets/lab-core-QQQQ.js', isDynamicEntry: true, imports: ['_quiz-RRRR.js'] },
+  '_quiz-RRRR.js': { file: 'assets/quiz-RRRR.js' },
 };
 const contentManifest = {
   locales: { 'zh-TW': { status: 'complete' }, en: { status: 'complete' } },
@@ -31,13 +35,17 @@ const contentManifest = {
   chapters: [{ id: 'ch_c5f8w2', files: { 'zh-TW': 'content/zh-TW/ch_c5f8w2.7825d1.json', en: 'content/en/ch_c5f8w2.fc75c6.json' } }],
   levels: [{ id: 'lv_h2zx7srx', chapterId: 'ch_c5f8w2', files: { 'zh-TW': 'content/zh-TW/ch_c5f8w2.7825d1.json', en: 'content/en/ch_c5f8w2.fc75c6.json' } }],
   termDetails: { 'zh-TW': { '5': 'content/zh-TW/terms-5.c8fd7d.json' }, en: { '5': 'content/en/terms-5.e5755a.json' } },
+  stories: [{ id: 'story_ywv2dy', files: { 'zh-TW': 'content/zh-TW/story_ywv2dy.5b3a76.json', en: 'content/en/story_ywv2dy.8a8f88.json' } }],
 };
 const routes = [
   { pattern: '^/level/([^/]+)/$', module: 'src/pages/Level.tsx', content: ['level', 'termIndex'] },
   { pattern: '^/play/$', module: 'src/pages/Play.tsx', content: ['chapterIndex'] },
 ];
 const catalogs = { 'zh-TW': 'src/i18n/catalog-zh-TW.ts', en: 'src/i18n/catalog-en.ts' };
-const pagesCatalogs = { 'zh-TW': 'src/locales/zh-TW/pages.po', en: 'src/locales/en/pages.po' };
+const catalogLayers = {
+  pages: { 'zh-TW': 'src/locales/zh-TW/pages.po', en: 'src/locales/en/pages.po' },
+  lab: { 'zh-TW': 'src/locales/zh-TW/lab.po', en: 'src/locales/en/lab.po' },
+};
 const chunkModules = {
   'assets/progress-KKKK.js': ['src/lib/progress/runtime.ts', 'src/lib/progress/indexeddb-store.ts'],
   'assets/session-DDDD.js': ['src/store/quiz.ts'],
@@ -68,23 +76,26 @@ describe('buildPreloadTable', () => {
     ]);
   });
 
-  it('第二層 catalog（pages.po）：只有 catalog 為 pages 的路由標 1，p 依語言列 chunk；沒有路由要它時 p 是空的、表裡沒列也不丟錯', () => {
+  it('額外的 catalog 層（pages.po、lab.po）：路由的第四個元素是層名稱或 0，p 依層與語言列 chunk；沒有路由要的層可以不列，要的層少了語言就丟錯', () => {
     const about = { pattern: '^/about/$', module: 'src/pages/About.tsx', content: [], catalog: 'pages' };
-    const t = build({ routes: [...routes, about], pagesCatalogs });
+    const lab = { pattern: '^/lab/ratios/$', module: 'src/pages/About.tsx', content: [], catalog: 'lab' };
+    const t = build({ routes: [...routes, about, lab], catalogLayers });
     const names = (list: number[]) => list.map((i) => t.a[i]);
     expect(t.r.map((r) => [r[0], r[3]])).toEqual([
       ['^/level/([^/]+)/$', 0],
       ['^/play/$', 0],
-      ['^/about/$', 1],
+      ['^/about/$', 'pages'],
+      ['^/lab/ratios/$', 'lab'],
     ]);
-    expect(names(t.p['zh-TW']!)).toEqual(['pages-MMMM.js']);
-    expect(names(t.p.en!)).toEqual(['pages-NNNN.js']);
+    expect(names(t.p['pages']!['zh-TW']!)).toEqual(['pages-MMMM.js']);
+    expect(names(t.p['pages']!.en!)).toEqual(['pages-NNNN.js']);
+    expect(names(t.p['lab']!.en!)).toEqual(['lab-PPPP.js']);
     expect(names(t.r[2]![1])).toEqual(['About-LLLL.js', 'common-CCCC.js']);
     const none = build();
-    expect(none.p).toEqual({ 'zh-TW': [], en: [] });
+    expect(none.p).toEqual({});
     expect(none.r.map((r) => r[3])).toEqual([0, 0]);
-    expect(() => build({ routes: [about], pagesCatalogs: { 'zh-TW': pagesCatalogs['zh-TW'] } })).toThrow(/pagesCatalogs 沒有 en/);
-    expect(() => build({ routes: [{ ...about, catalog: 'lab' }], pagesCatalogs })).toThrow(/不認得的 catalog lab/);
+    expect(() => build({ routes: [about], catalogLayers: { pages: { 'zh-TW': catalogLayers.pages['zh-TW'] } } })).toThrow(/catalogLayers\.pages 沒有 en/);
+    expect(() => build({ routes: [lab], catalogLayers: { pages: catalogLayers.pages } })).toThrow(/catalogLayers 沒有 lab/);
   });
 
   it('內容只存路徑或雜湊：章節包與名詞分桶依語言列雜湊、關卡只記所屬章節，索引與墓碑是完整路徑', () => {
@@ -96,11 +107,20 @@ describe('buildPreloadTable', () => {
     expect(m.ch).toEqual({ ch_c5f8w2: ['7825d1', 'fc75c6'] });
     expect(m.lv).toEqual({ lv_h2zx7srx: 'ch_c5f8w2' });
     expect(m.td).toEqual({ 'zh-TW': { '5': 'c8fd7d' }, en: { '5': 'e5755a' } });
+    expect(m.st).toEqual({ story_ywv2dy: ['content/zh-TW/story_ywv2dy.5b3a76.json', 'content/en/story_ywv2dy.8a8f88.json'] });
+  });
+
+  it('路由的 preload：頁面 chunk 之外再加列出的模組與它們的閉包（實驗室的核心）；story 是認得的內容種類', () => {
+    const t = build({
+      routes: [{ pattern: '^/lab/story/([^/]+)/$', module: 'src/pages/About.tsx', content: ['story'], preload: ['src/features/lab/lab-core.ts'] }],
+    });
+    expect(t.r[0]![1].map((i: number) => t.a[i])).toEqual(['About-LLLL.js', 'common-CCCC.js', 'lab-core-QQQQ.js', 'quiz-RRRR.js']);
+    expect(t.r[0]![2]).toEqual(['story']);
   });
 
   it('找不到模組、不認得的內容種類、不合法的 pattern、檔名格式不符、少了 catalog 都丟錯（建置失敗）', () => {
     expect(() => build({ routes: [{ pattern: '^/x/$', module: 'src/pages/Nope.tsx', content: [] }] })).toThrow(/找不到 src\/pages\/Nope\.tsx/);
-    expect(() => build({ routes: [{ pattern: '^/x/$', module: 'src/pages/Play.tsx', content: ['story'] }] })).toThrow(/不認得的內容種類 story/);
+    expect(() => build({ routes: [{ pattern: '^/x/$', module: 'src/pages/Play.tsx', content: ['nope'] }] })).toThrow(/不認得的內容種類 nope/);
     expect(() => build({ routes: [{ pattern: '^/x/(', module: 'src/pages/Play.tsx', content: [] }] })).toThrow(/不是合法的正規表示式/);
     expect(() => build({ catalogs: { 'zh-TW': 'src/i18n/catalog-zh-TW.ts' } })).toThrow(/catalogs 沒有 en/);
     const renamed = {

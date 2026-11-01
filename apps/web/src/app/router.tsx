@@ -2,7 +2,7 @@ import { createBrowserRouter, type RouteObject } from 'react-router';
 import type { Locale } from '@ledgerland/i18n';
 import { site } from '../../site.config.ts';
 import { loadChapterIndex, loadLevel, loadTermDetail, loadTermIndex } from '../lib/content.ts';
-import { loadPagesCatalog } from '../i18n/pages-catalog.ts';
+import { loadLayerCatalog, type CatalogLayer } from '../i18n/layer-catalogs.ts';
 import { RouteError } from '../components/RouteError.tsx';
 import { Home } from '../pages/Home.tsx';
 import { NotFound } from '../pages/NotFound.tsx';
@@ -19,12 +19,12 @@ export interface RouteHandle {
 
 // 同一個函式產生中文（/）與英文（/en）兩組子路由，頁面元件共用（05 第 7.4 節第 2 點、09 第 3.2 節）；每條路由都有 ErrorBoundary（06 第 9.1 節）
 function buildRoutes(locale: Locale): RouteObject[] {
-  // catalog 為 'pages' 的頁面（說明頁、我的底下的子頁、debug，lingui.config.ts 的 PAGE_CATALOG_SOURCES）：字串在第二層 catalog，
+  // catalog 為 'pages'（說明頁、我的底下的子頁、debug）或 'lab'（報表實驗室的子頁）的頁面：字串在第二層或第三層 catalog（lingui.config.ts），
   // 和頁面 chunk 一起載入（兩個請求並行，殼層依路徑也會預先載入），載好才交出元件，頁面第一次繪製就有字；載入失敗時照樣交出元件，
   // 缺的字串退回 zh-TW 或訊息 ID（14 第 5.2 節）
-  const lazyPage = (load: () => Promise<{ default: React.ComponentType }>, prefetch?: () => void, catalog?: 'pages') => async () => {
+  const lazyPage = (load: () => Promise<{ default: React.ComponentType }>, prefetch?: () => void, catalog?: CatalogLayer) => async () => {
     prefetch?.();
-    const [mod] = await Promise.all([load(), catalog === 'pages' ? loadPagesCatalog(locale).catch(() => {}) : undefined]);
+    const [mod] = await Promise.all([load(), catalog === undefined ? undefined : loadLayerCatalog(catalog, locale).catch(() => {})]);
     return { Component: mod.default };
   };
   // 作答頁與名詞列表在載入頁面 chunk 的同時就開始讀目前語言的名詞索引（失敗由頁面自己處理，這裡只吞掉）；
@@ -63,8 +63,30 @@ function buildRoutes(locale: Locale): RouteObject[] {
       loader: prefetchLevel,
       handle: { blocksUpdatePrompt: true, noindex: true } satisfies RouteHandle,
     },
-    // 實驗室的占位頁與「我的」和其他 Tab 頁一樣 lazy，入口 chunk 只留首頁（第 3 輪 handoff：/en/ 入口的首次載入 JS 超過 150 KB）；直接開時由殼層預先載入頁面 chunk
-    { path: 'lab', lazy: lazyPage(() => import('../pages/Placeholder.tsx')), handle: { kind: 'lab' } },
+    // 實驗室（M4a）：首頁和「我的」等 Tab 頁一樣 lazy，入口 chunk 只留首頁；子頁的字串在第三層 catalog（lab）。故事步驟頁、自由實驗與勾稽練習不收錄（02 第 1.1 節）；
+    // 步驟頁與自由實驗作答中不顯示更新提示（06 第 3.3 節）
+    { path: 'lab', lazy: lazyPage(() => import('../pages/Lab.tsx')) },
+    {
+      path: 'lab/story/:storyId',
+      lazy: lazyPage(() => import('../pages/LabStory.tsx'), prefetchChapterIndex, 'lab'),
+      handle: { layout: 'wide' } satisfies RouteHandle,
+    },
+    {
+      path: 'lab/story/:storyId/:stepId',
+      lazy: lazyPage(() => import('../pages/LabStep.tsx'), prefetchTermIndex, 'lab'),
+      handle: { blocksUpdatePrompt: true, noindex: true, layout: 'wide' } satisfies RouteHandle,
+    },
+    {
+      path: 'lab/sandbox',
+      lazy: lazyPage(() => import('../pages/LabSandbox.tsx'), prefetchTermIndex, 'lab'),
+      handle: { blocksUpdatePrompt: true, noindex: true, layout: 'wide' } satisfies RouteHandle,
+    },
+    {
+      path: 'lab/reconcile',
+      lazy: lazyPage(() => import('../pages/LabReconcile.tsx'), prefetchTermIndex, 'lab'),
+      handle: { noindex: true, layout: 'wide' } satisfies RouteHandle,
+    },
+    { path: 'lab/ratios', lazy: lazyPage(() => import('../pages/LabRatios.tsx'), prefetchTermIndex, 'lab'), handle: { layout: 'wide' } satisfies RouteHandle },
     { path: 'review', lazy: lazyPage(() => import('../pages/Review.tsx')), handle: { noindex: true } satisfies RouteHandle },
     // 名詞列表依章節分組，組名與「在第幾關會遇到」的關卡名來自章節索引（useGlossaryIndex），和名詞索引一起先讀
     {

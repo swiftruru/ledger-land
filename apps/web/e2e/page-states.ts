@@ -37,6 +37,9 @@ const LEVEL_Q1_WRONG = 'o_60qb';
 /** 結果頁用的關卡：5 題都是單選或是非（點第一個選項就能一路作答到結果頁） */
 const RESULT_LEVEL = 'lv_hk19p9x3';
 const CHAPTER = 'ch_c5f8w2';
+/** 正式故事與第 7 步（以現金賣出全部存貨） */
+const STORY = 'story_ywv2dy';
+const STORY_STEP = 'st_98tppx';
 const EXT_CHAPTER = 'ch_155y47';
 const TERM = 'tm_r4w8n2qe';
 /** 收藏用的取捨題（第 3 關，glossary.spec.ts 的 JUDGMENT_QUESTION） */
@@ -558,7 +561,23 @@ export const CASES: readonly PageCase[] = [
   { group: '其他子頁', name: '診斷資訊', path: '/debug/' },
 
   // 頂層與錯誤
-  { group: '頂層與錯誤', name: '實驗室', path: '/lab/' },
+  // 報表實驗室（M4a）：首頁、故事步驟列表、步驟頁的交易卡、自由實驗、勾稽練習、指標實驗室
+  { group: '實驗室', name: '首頁', path: '/lab/', prepare: (page) => visible(page, 'lab-hero') },
+  { group: '實驗室', name: '故事步驟', path: `/lab/story/${STORY}/`, tablet: true, prepare: (page) => visible(page, 'lab-step-row') },
+  { group: '實驗室', name: '步驟頁交易卡', path: `/lab/story/${STORY}/${STORY_STEP}/`, tablet: true, prepare: (page) => visible(page, 'lab-card') },
+  {
+    group: '實驗室',
+    name: '步驟頁預測',
+    path: `/lab/story/${STORY}/${STORY_STEP}/`,
+    prepare: async (page) => {
+      await visible(page, 'lab-card');
+      await page.getByTestId('lab-next').click();
+      await visible(page, 'lab-predict');
+    },
+  },
+  { group: '實驗室', name: '自由實驗', path: '/lab/sandbox/', tablet: true, prepare: (page) => visible(page, 'lab-sandbox-step') },
+  { group: '實驗室', name: '勾稽練習', path: '/lab/reconcile/', tablet: true, prepare: (page) => visible(page, 'lab-light-2') },
+  { group: '實驗室', name: '指標實驗室', path: '/lab/ratios/', tablet: true, prepare: (page) => visible(page, 'lab-ratios-context') },
   { group: '頂層與錯誤', name: '找不到頁面', path: '/no-such-page/', prepare: (page) => visible(page, 'not-found') },
   { group: '頂層與錯誤', name: '路由錯誤', path: '/privacy/', route: abort('**/assets/Privacy-*.js'), prepare: (page) => visible(page, 'route-error') },
 

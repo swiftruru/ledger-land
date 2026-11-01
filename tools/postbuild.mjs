@@ -38,7 +38,7 @@ if (html.includes(PRELOAD_PLACEHOLDER)) {
         contentManifest,
         routes: routeTable.routes,
         catalogs: routeTable.catalogs,
-        pagesCatalogs: routeTable.pagesCatalogs ?? {},
+        catalogLayers: routeTable.catalogLayers ?? {},
         always: routeTable.always ?? [],
         chunkModules: existsSync(join(dist, '.vite', 'chunk-modules.json')) ? JSON.parse(readFileSync(join(dist, '.vite', 'chunk-modules.json'), 'utf8')) : {},
         locales: Object.keys(contentManifest.locales),

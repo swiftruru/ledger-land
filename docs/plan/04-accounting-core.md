@@ -980,6 +980,7 @@ interface Story {
   opening?: Record<string, Money>;        // 期初餘額，預設全部為 0（故事累計模型，W06）
   policy: 'teacher@1';
   layout: 'teacher@1';
+  chapters?: { id: string; title: LocalizedText; stepIds: string[] }[];  // 五章的分組（03 第 3.2 節；M4a 2026-11-01 加）：有時每一步恰好屬於一章、順序和 order 一致，validator 檢查
   steps: StoryStep[];
 }
 
@@ -992,7 +993,7 @@ interface StoryStep {
   termRefs: string[];
   chapterLinks?: { chapter: string; level?: string }[];  // 步驟末連到的闖關區章節（ch_）；level 選填，指定該章的關卡（lv_）
   checkpoints?: Checkpoint[];    // 黃金測試用：只用在 repo 內自編數字的測試故事；正式故事（origin 為 teacher）不填，CI 只跑性質測試（D2，第 18 節）
-  // 08 第 3.9 節建議的其他步驟欄位（predictTargets、stakeholders、verification）照 08，核心不讀
+  // 08 第 3.9 節建議的其他步驟欄位（predictTargets、stakeholders、verification、insight）照 08，核心不讀
 }
 
 interface StoryEvent {

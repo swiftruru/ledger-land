@@ -25,7 +25,52 @@ export interface ContentManifest {
   /** 名詞的完整內容：語系 → 分桶（'0' 到 '7'，見 termDetailBucket）→ 檔案路徑；只列有名詞的桶 */
   termDetails: Record<string, Record<string, string>>;
   tombstones: string;
+  /** 故事（M4a，schemaVersion 3 的 2026-11-01 起）：已發布的故事，每個語系一檔（tools/lib/content-snapshot.mjs）；stepIds 依步驟順序，給路由與 QR 判斷步驟屬於哪個故事 */
+  stories?: StoryManifestEntry[];
 }
+
+export interface StoryManifestEntry {
+  id: string;
+  rev: number;
+  stepIds: string[];
+  files: Record<string, string>;
+}
+
+/** 故事快照（content-schema 的 Story 依語系攤平 LocalizedText 之後的樣子，authorNotes 已去掉） */
+export interface StorySnapshot {
+  id: string;
+  rev: number;
+  status: string;
+  title: string;
+  origin: 'teacher' | 'original';
+  company: { name: string };
+  ledger: { currency: 'TWD'; scale: 0 };
+  opening?: Record<string, number>;
+  policy: string;
+  layout: string;
+  chapters?: { id: string; title: string; stepIds: string[] }[];
+  steps: StoryStepSnapshot[];
+}
+
+export interface StoryStepSnapshot {
+  id: string;
+  order: number;
+  title: string;
+  narrative: string;
+  events: { id: string; template: string; params: Record<string, number>; pendingRefs?: string[] }[];
+  termRefs: string[];
+  chapterLinks?: { chapter: string; level?: string }[];
+  predictTargets?: StoryPredictTarget[];
+  insight?: string;
+  stakeholders?: { role: string; positive: string; negative: string; advice: string }[];
+  verification?: 'excel_verified' | 'inferred';
+}
+
+export type StoryPredictTarget =
+  | { id: string; kind: 'line'; line: string; measure: 'direction' | 'delta' | 'value' }
+  | { id: string; kind: 'account'; account: string; measure: 'direction' | 'delta' | 'value' }
+  | { id: string; kind: 'ratio'; ratioRef: string; measure: 'direction' | 'delta' | 'value' | 'status' }
+  | { id: string; kind: 'check'; step: 2 | 3 | 4 | 5; measure: 'value' };
 
 export interface LevelManifestEntry {
   id: string;
@@ -304,6 +349,21 @@ export async function loadLevel(levelId: string, locale: Locale): Promise<LevelS
   return found;
 }
 
+/** 故事快照（實驗室）：manifest 的 stories 裡找不到就是 missing（草稿或下架的故事不在正式快照裡） */
+export async function loadStory(storyId: string, locale: Locale): Promise<StorySnapshot> {
+  const m = await loadManifest();
+  const entry = (m.stories ?? []).find((s) => s.id === storyId);
+  const path = entry?.files[locale];
+  if (!entry || !path) throw new ContentLoadError(`沒有故事 ${storyId} 的 ${locale} 快照`, 'missing');
+  return cached<StorySnapshot>(path);
+}
+
+/** 步驟屬於哪個故事（manifest 的 stepIds）；找不到是 undefined */
+export async function findStoryOfStep(stepId: string): Promise<StoryManifestEntry | undefined> {
+  const m = await loadManifest();
+  return (m.stories ?? []).find((s) => s.stepIds.includes(stepId));
+}
+
 /** 章節本身（章節包的 chapter）：章節加該章的學習目標與關卡摘要 */
 export async function loadChapter(chapterId: string, locale: Locale): Promise<ChapterSnapshot> {
   const m = await loadManifest();
@@ -357,7 +417,9 @@ export async function resolveId(id: string, locale: Locale = 'zh-TW'): Promise<R
             ? (m.levels ?? []).some((l) => l.id === id)
             : kind === 'question'
               ? (m.levels ?? []).some((l) => l.questionIds.includes(id))
-              : false;
+              : kind === 'story'
+                ? (m.stories ?? []).some((s) => s.id === id)
+                : false;
     if (active) return { status: 'active', kind };
     if (kind === 'term') {
       const terms = await loadTermIndex(locale);
@@ -391,7 +453,7 @@ function kindOfId(id: string): Tombstone['kind'] | undefined {
       return 'level';
     case 'q':
       return 'question';
-    case 'st':
+    case 'story':
       return 'story';
     default:
       return undefined;

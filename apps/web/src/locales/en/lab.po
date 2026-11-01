@@ -1,0 +1,1160 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-11-01 11:00+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#. 提示按鈕的可讀名稱
+#. js-lingui-explicit-id
+#. placeholder {0}: lineLabel(id)
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.hintFor"
+msgstr "Hint for {0}"
+
+#. 指標預測的選項
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.ratio.unchanged"
+msgstr "＝ No change"
+
+#. 指標預測的選項
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.ratio.up"
+msgstr "▲ Up"
+
+#. 金額變動的文字；amount 是已格式化的金額
+#. js-lingui-explicit-id
+#: src/features/lab/labels.ts
+msgid "lab.change.up"
+msgstr "▲ up {amount}"
+
+#. 指標預測的選項
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.ratio.down"
+msgstr "▼ Down"
+
+#. 金額變動的文字；amount 是已格式化的金額
+#. js-lingui-explicit-id
+#: src/features/lab/labels.ts
+msgid "lab.change.down"
+msgstr "▼ down {amount}"
+
+#. 指標版本
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.version.slides01"
+msgstr "Slides 0-1"
+
+#. 指標版本
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.version.slides02"
+msgstr "Slides 0-2"
+
+#. 指標版本
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.version.slides03"
+msgstr "Slides 0-3"
+
+#. 指標版本
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.version.excel"
+msgstr "Excel version"
+
+#. 勾稽練習的導言
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.intro"
+msgstr "There are no formula links between the three statements: fill in the figures the check points need yourself, and the lights will tell you straight away whether they match. Enter closing inventory as a positive number."
+
+#. 階段操作列的按鈕
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.prev"
+msgstr "Back"
+
+#. 步驟卡的按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.moveUp"
+msgstr "Move up"
+
+#. 階段操作列的按鈕
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.next"
+msgstr "Next"
+
+#. 完成卡按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.next"
+msgstr "Next step"
+
+#. 步驟卡的按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.moveDown"
+msgstr "Move down"
+
+#. 指標狀態的警示
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.notMeaningful"
+msgstr "Not meaningful"
+
+#. 本筆變動檢視裡沒有變動的列
+#. js-lingui-explicit-id
+#: src/features/lab/StatementTable.tsx
+msgid "lab.table.same"
+msgstr "No change"
+
+#. 金額沒有變動
+#. js-lingui-explicit-id
+#: src/features/lab/labels.ts
+msgid "lab.change.same"
+msgstr "no change"
+
+#. 三欄表頭
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+#: src/features/lab/StatementTable.tsx
+msgid "lab.table.before"
+msgstr "Before"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.card"
+msgstr "Transaction card"
+
+#. 三欄表頭
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+#: src/features/lab/StatementTable.tsx
+msgid "lab.table.after"
+msgstr "After"
+
+#. 指標預測的選項
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.ratio.staysNa"
+msgstr "Still N/A"
+
+#. 返回膠囊的說明
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.fromQuestion"
+msgstr "You came to this step from a question."
+
+#. 預測揭曉
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+#: src/features/lab/RatioList.tsx
+#: src/pages/LabStep.tsx
+msgid "lab.predict.right"
+msgstr "Your prediction was right"
+
+#. 第 4 到 18 步的小標記（T33）
+#. js-lingui-explicit-id
+#: src/features/lab/TransactionCard.tsx
+msgid "lab.card.inferred"
+msgstr "Inferred from the course scenario"
+
+#. 分錄表格的欄名
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.debit"
+msgstr "Debit"
+
+#. T 字帳的結餘落在借方（課本寫借餘）；數字已格式化
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.closingDebit"
+msgstr "Debit balance {closingAmount}"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.solvency"
+msgstr "Solvency"
+
+#. 燈號紅時的提示；數字已代入
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.upstream"
+msgstr "Fix the cells used by step {firstFailed} first"
+
+#. 天平的結論
+#. js-lingui-explicit-id
+#: src/features/lab/BalanceScale.tsx
+msgid "lab.scale.unbalanced"
+msgstr "The two sides are not equal"
+
+#. 天平的結論
+#. js-lingui-explicit-id
+#: src/features/lab/BalanceScale.tsx
+msgid "lab.scale.balanced"
+msgstr "The two sides are equal"
+
+#. 沒有變動的指標的展開區標題；括號裡是數量
+#. js-lingui-explicit-id
+#. placeholder {0}: rest.length
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.others"
+msgstr "Other ratios ({0})"
+
+#. 完成卡按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.again"
+msgstr "Practise again"
+
+#. 報表區標題
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.result"
+msgstr "Statements after the last step"
+
+#. 指標無法計算的原因
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.reason.denominatorZero"
+msgstr "The denominator is 0, so it cannot be calculated"
+
+#. 分錄表格的標題；eventId 是事件代號
+#. js-lingui-explicit-id
+#. placeholder {0}: entry.eventId
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.entry"
+msgstr "Journal entry {0}"
+
+#. 步驟卡的按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.removeShort"
+msgstr "Remove"
+
+#. 步驟卡的按鈕；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: i + 1
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.remove"
+msgstr "Remove step {0}"
+
+#. 前情摘要；parts 是「現金 508,000、存貨 120,000」這類字串（分隔符依語系）
+#. js-lingui-explicit-id
+#. placeholder {0}: joinList(parts, locale)
+#: src/features/lab/TransactionCard.tsx
+msgid "lab.card.recap"
+msgstr "Up to the previous step: {0}"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.checks"
+msgstr "Check lights"
+
+#. 頁面標題
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.title"
+msgstr "Reconciliation practice"
+
+#. 口徑標示
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.policy"
+msgstr "Reconciliation practice uses the course basis"
+
+#. 利害關係人卡的欄位
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.stakeholder.negative"
+msgstr "The downside"
+
+#. 口徑標示的名稱
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.policyLabel"
+msgstr "Basis"
+
+#. 表格的篩選
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.tables.onlyChanged"
+msgstr "Only rows that changed"
+
+#. 建議插入的範本
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.ratio.suggest.borrow"
+msgstr "Short-term bank loan"
+
+#. 預測揭曉
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+#: src/features/lab/RatioList.tsx
+#: src/pages/LabStep.tsx
+msgid "lab.predict.wrong"
+msgstr "Different from your prediction"
+
+#. 步驟列的按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.practice"
+msgstr "Practise alone"
+
+#. 單獨練習的標示
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.practiceMode"
+msgstr "Practising alone: the story’s progress does not change"
+
+#. 勾稽燈號清單的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.label"
+msgstr "The four check lights"
+
+#. 完成卡標題
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.done"
+msgstr "All four check points match"
+
+#. 階段 8 的播報
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.live.checksPass"
+msgstr "All four check points match."
+
+#. 實驗室子頁頂部返回鍵的可讀名稱
+#. js-lingui-explicit-id
+#: src/features/lab/useLabBack.ts
+msgid "lab.back"
+msgstr "Back to the lab"
+
+#. 完成卡按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+#: src/pages/LabStep.tsx
+msgid "lab.finish.map"
+msgstr "Back to the story map"
+
+#. 步驟頁返回鍵的可讀名稱
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.back"
+msgstr "Back to the story steps"
+
+#. 從題目開啟實驗室時的返回膠囊
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.backToQuestion"
+msgstr "Back to the question"
+
+#. 連動清單的標題
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.affected"
+msgstr "These later steps changed because of your edit"
+
+#. 範本清單的展開標題
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.insertAfter"
+msgstr "Insert after this step"
+
+#. 指標不具意義的原因
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.reason.negativeBase"
+msgstr "The base is negative or zero, so the result is not meaningful"
+
+#. 分錄層的說明（03 第 3.3 節）
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.note"
+msgstr "‘Purchases’ and ‘Closing inventories’ on the statement are not accounts in the entry: they are rows derived from the inventory ledger."
+
+#. 改金額的按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.apply"
+msgstr "Apply"
+
+#. 指標不具意義的原因
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.reason.chainedNotMeaningful"
+msgstr "A ratio it relies on is not meaningful"
+
+#. 指標無法計算的原因
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.reason.chainedNa"
+msgstr "A ratio it relies on is N/A"
+
+#. 指標無法計算的原因
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.reason.chainedNaOrZero"
+msgstr "A ratio it relies on is N/A or 0"
+
+#. 最後一個階段的主按鈕
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.finish"
+msgstr "Finish this step"
+
+#. 實驗室子頁頂部返回鍵上的短字
+#. js-lingui-explicit-id
+#: src/features/lab/useLabBack.ts
+msgid "lab.back.short"
+msgstr "Lab"
+
+#. 指標無法計算的原因
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.reason.missingInput"
+msgstr "An input it needs is missing"
+
+#. 勾稽步驟⑤的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.step5"
+msgstr "Left equals right"
+
+#. 燈號狀態：兩邊差額；數字已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatMoney(Math.abs(c.diff), locale)
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.fail"
+msgstr "Off by {0}"
+
+#. 記下預測後的播報
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.live.predicted"
+msgstr "Your prediction has been recorded."
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.market"
+msgstr "Market ratios"
+
+#. 預測揭曉：四捨五入後前後相同
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.predict.nearly"
+msgstr "Almost unchanged (the change is smaller than the displayed precision)"
+
+#. 利害關係人卡的欄位
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.stakeholder.advice"
+msgstr "Advice"
+
+#. 從中間「開始」時的一次性提示（03 第 3.1 節）
+#. js-lingui-explicit-id
+#: src/features/lab/TransactionCard.tsx
+msgid "lab.card.suggestEarlier"
+msgstr "We suggest finishing the earlier steps first, but you can start here."
+
+#. 建議的填表順序（T14）
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.order"
+msgstr "Suggested order: fill in the income statement result first, then the cash flow statement, then the balance sheet. One wrong cell can turn several lights red, so fix the most upstream cell first."
+
+#. 完成卡按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.continueFromHere"
+msgstr "Continue the story from here"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.equation"
+msgstr "Accounting equation"
+
+#. N/A 的指標卡的建議
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.ratio.suggest"
+msgstr "Want to make it calculable? Try it in the sandbox."
+
+#. 頁面標題
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.ratios.title"
+msgstr "Ratio lab"
+
+#. 版本切換的名稱
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.ratios.version"
+msgstr "Ratio version"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.ratios"
+msgstr "Ratio changes"
+
+#. 預測面板的導言
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.intro"
+msgstr "Before the reveal, have a guess: how will this transaction change the figures below?"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.incomeStructure"
+msgstr "Income structure ratios"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+#: src/pages/LabReconcile.tsx
+msgid "lab.stage.income"
+msgstr "Income statement"
+
+#. 走完一步時解鎖名詞的提示；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: res.unlockedTerms.length
+#: src/pages/LabStep.tsx
+msgid "lab.toast.terms"
+msgstr "Added to the glossary: {0} terms"
+
+#. 故事頁讀取中的標題
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+#: src/pages/LabStory.tsx
+msgid "lab.story.title"
+msgstr "Story"
+
+#. 步驟頁返回鍵的短字
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.back.short"
+msgstr "Story"
+
+#. 選步驟的下拉選單名稱
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.pick"
+msgstr "After which step of the story"
+
+#. 預測面板的主按鈕（已記過一次）
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.update"
+msgstr "Update prediction"
+
+#. 階段 2 的播報
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.live.predict"
+msgstr "Choose a direction for each target."
+
+#. 天平區塊的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/BalanceScale.tsx
+msgid "lab.scale.label"
+msgstr "The accounting equation"
+
+#. 階段 8 的播報
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.live.checksFail"
+msgstr "A check point does not match."
+
+#. 勾稽步驟③的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.step3"
+msgstr "Closing cash"
+
+#. 勾稽步驟④左邊那個數字的名稱（W05）
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.reExpected"
+msgstr "Increase in retained earnings (profit for the period)"
+
+#. 勾稽步驟④的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.step4"
+msgstr "Profit for the period and retained earnings"
+
+#. 整步所有金額都是 0
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+#: src/pages/LabSandbox.tsx
+msgid "lab.effects.none"
+msgstr "No effect from this step"
+
+#. 三欄表頭與本筆變動檢視的欄名
+#. js-lingui-explicit-id
+#: src/features/lab/StatementTable.tsx
+msgid "lab.table.change"
+msgstr "Change"
+
+#. 檢視切換
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.tables.transaction"
+msgstr "This transaction"
+
+#. 本筆變動摘要列的開頭
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.tables.summary"
+msgstr "This transaction: "
+
+#. 指標版本
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.version.dupont"
+msgstr "DuPont"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.dupont"
+msgstr "DuPont breakdown"
+
+#. 杜邦樹的標題
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.ratios.dupont"
+msgstr "DuPont breakdown"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.leverage"
+msgstr "Leverage"
+
+#. 累計與本筆變動的切換名稱
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.tables.view"
+msgstr "View"
+
+#. 利害關係人卡的欄位
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.stakeholder.positive"
+msgstr "The upside"
+
+#. 燈號標題；步驟編號為主，字母是顯示別名（T13）
+#. js-lingui-explicit-id
+#. placeholder {0}: CIRCLED[c.step]
+#. placeholder {1}: c.alias
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.title"
+msgstr "Step {0} (check point {1})"
+
+#. 五層利益清單的標題
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.step1"
+msgstr "Step ①: the five profit levels"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.profitability"
+msgstr "Profitability"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.cashFlow"
+msgstr "Cash flow"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+#: src/pages/LabReconcile.tsx
+msgid "lab.stage.cashflow"
+msgstr "Cash flow statement"
+
+#. 步驟狀態
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.current"
+msgstr "You are here"
+
+#. 指標實驗室的帳本說明；公司與數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: lab.story.company.name
+#. placeholder {1}: spec.order
+#: src/pages/LabRatios.tsx
+msgid "lab.ratios.context"
+msgstr "Current books: {0}, after step {1}"
+
+#. 快照裡沒有故事時
+#. 快照裡沒有故事時
+#. 快照裡沒有故事時
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+#: src/pages/LabReconcile.tsx
+#: src/pages/LabSandbox.tsx
+msgid "lab.none.title"
+msgstr "No story has been published yet"
+
+#. 整份重播失敗（例如插入的步驟不滿足前置條件）；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: edited.steps.findIndex((s) => s.id === replay.error.at.stepId) + 1
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.replayFailed"
+msgstr "Your edits stop step {0} from being posted; change it back or remove that step"
+
+#. 階段操作列的按鈕
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.skip"
+msgstr "Skip to results"
+
+#. 燈號狀態：兩邊相符
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.pass"
+msgstr "Matches, difference 0"
+
+#. 章末相關關卡清單的標題
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.related"
+msgstr "Related levels"
+
+#. 第一層提示：哪一張表
+#. js-lingui-explicit-id
+#. placeholder {0}: names[st]
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.hint1"
+msgstr "Look at the {0}"
+
+#. 第二層提示：哪一列
+#. js-lingui-explicit-id
+#. placeholder {0}: lineLabel(id)
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.hint2"
+msgstr "Look at the ‘{0}’ row"
+
+#. 階段 3 下方展開區的標題（預設收合，D1）
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.toggle"
+msgstr "Show the entries and T-accounts"
+
+#. 步驟卡的按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.show"
+msgstr "Show statements"
+
+#. 分錄表格的欄名
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.account"
+msgstr "Account"
+
+#. 階段 3 區塊的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.effects.label"
+msgstr "Account changes"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.effects"
+msgstr "Account changes"
+
+#. 勾稽步驟②的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.step2"
+msgstr "Profit before tax"
+
+#. 步驟編號（螢幕閱讀器）
+#. js-lingui-explicit-id
+#. placeholder {0}: s.order
+#: src/pages/LabReconcile.tsx
+#: src/pages/LabStory.tsx
+msgid "lab.story.stepN"
+msgstr "Step {0}"
+
+#. 連動清單的項目；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: a.step.order
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.affectedStep"
+msgstr "Step {0}"
+
+#. 階段 1 的播報；數字與標題已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: spec.order
+#. placeholder {1}: spec.title
+#: src/pages/LabStep.tsx
+msgid "lab.live.card"
+msgstr "Step {0}, {1}."
+
+#. 步驟頁的標題；數字與標題已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: spec.order
+#. placeholder {1}: spec.title
+#: src/pages/LabStep.tsx
+msgid "lab.step.title"
+msgstr "Step {0}: {1}"
+
+#. 報表區標題；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: edited.steps.findIndex((s) => s.id === focused.id) + 1
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.resultAt"
+msgstr "Statements after step {0}"
+
+#. 故事的章標題；數字與章名已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: ci + 1
+#. placeholder {1}: c.title
+#: src/pages/LabStory.tsx
+msgid "lab.story.chapter"
+msgstr "Chapter {0}: {1}"
+
+#. 第三層提示：答案；數字已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatMoney(lineAt(step.after, id), locale)
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.hint3"
+msgstr "The answer is {0}"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.insight"
+msgstr "What it means"
+
+#. 利害關係人
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.role.management"
+msgstr "Management"
+
+#. 檢視切換
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.tables.cumulative"
+msgstr "Cumulative"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.activity"
+msgstr "Activity"
+
+#. 完成卡按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.next"
+msgstr "Practise the next step"
+
+#. 完成卡標題
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.practice"
+msgstr "Practice complete"
+
+#. 步驟狀態
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.practised"
+msgstr "Practised"
+
+#. 期末存貨的加註（T07）
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.excelNote"
+msgstr "In the teacher’s Excel, closing inventory is entered as a negative number; the site takes a positive number and deducts it in the subtotal."
+
+#. 利害關係人
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.role.shareholder"
+msgstr "Shareholder"
+
+#. 頁面標題
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.title"
+msgstr "Sandbox"
+
+#. 預測面板的主按鈕
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.submit"
+msgstr "Record prediction"
+
+#. 金額格式不對；上限已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(999_999_999_999, locale)
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.invalid"
+msgstr "Enter a whole number from 0 to {0}"
+
+#. 實驗室離線時的錯誤標題
+#. 實驗室離線時的錯誤標題
+#. 實驗室離線時的錯誤標題
+#. 實驗室離線時的錯誤標題
+#. 實驗室離線時的錯誤標題
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+#: src/pages/LabReconcile.tsx
+#: src/pages/LabSandbox.tsx
+#: src/pages/LabStep.tsx
+#: src/pages/LabStory.tsx
+msgid "lab.error.title"
+msgstr "The lab story could not be loaded"
+
+#. 指標預測的選項
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.ratio.becomesComputable"
+msgstr "Becomes calculable"
+
+#. 指標前後狀態的說明
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.becameComputable"
+msgstr "Now calculable"
+
+#. 指標預測的選項
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.ratio.becomesNa"
+msgstr "Becomes N/A"
+
+#. 指標前後狀態的說明
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.becameNa"
+msgstr "Now N/A"
+
+#. 利害關係人
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.role.financeLead"
+msgstr "Finance lead"
+
+#. 分錄表格的欄名
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.credit"
+msgstr "Credit"
+
+#. T 字帳的結餘落在貸方（課本寫貸餘）；數字已格式化
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.closingCredit"
+msgstr "Credit balance {closingAmount}"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.financialStructure"
+msgstr "Financial structure"
+
+#. 恆等式天平的播報；change 是「▲ 增加 n」這類字串，verdict 是「兩邊相等」或「兩邊不相等」
+#. js-lingui-explicit-id
+#. placeholder {0}: change(assets.d)
+#. placeholder {1}: formatMoney(assets.a, locale)
+#. placeholder {2}: change(liab.d)
+#. placeholder {3}: change(equity.d)
+#: src/features/lab/BalanceScale.tsx
+msgid "lab.scale.summary"
+msgstr "Total assets {0}, now {1}; liabilities {2}; equity {3}. {4}."
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+#: src/pages/LabReconcile.tsx
+msgid "lab.stage.balance"
+msgstr "Balance sheet"
+
+#. 步驟狀態
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.done"
+msgstr "Done"
+
+#. 帶 (+)(-) 的累計列在本筆變動檢視的加註（T12）
+#. js-lingui-explicit-id
+#: src/features/lab/StatementTable.tsx
+msgid "lab.table.cumulativeNote"
+msgstr "This row is a cumulative figure, so the change shows on the original row"
+
+#. 被擋下時的可輸入範圍；數字已格式化
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.range"
+msgstr "You can enter up to {0} for this step, and at least {1}"
+
+#. 這一步沒有任何指標變動
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.ratio.noneChanged"
+msgstr "No ratio changed in this step."
+
+#. 範本前置條件不成立
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.precondition"
+msgstr "This step’s precondition is not met"
+
+#. 完成卡標題
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.story"
+msgstr "This step is done"
+
+#. 自由實驗的導言
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.intro"
+msgstr "This is a copy of the story: change any step’s amount or insert a step from a template, and the three statements and ratios recalculate at once. The story itself is not changed."
+
+#. 違反餘額規則而且算不出範圍
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.blocked"
+msgstr "This change would make {0} negative, so it was blocked"
+
+#. 違反餘額規則、算不出範圍也不知道科目
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.blockedSome"
+msgstr "This change would make an account negative, so it was blocked"
+
+#. 上游改小讓下游違反餘額規則；數字已格式化
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.rangeDownstream"
+msgstr "This change would push step {0} negative; this cell can take {1} to {2}"
+
+#. 上游改小讓下游某個科目違反餘額規則；數字已格式化
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.rangeDownstreamAccount"
+msgstr "This change would make {1} negative at step {0}; this cell can take {2} to {3}"
+
+#. 進階模式的開關
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.advanced"
+msgstr "Advanced mode (more cells to fill)"
+
+#. 小螢幕切換三表的分段控制名稱
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.tables.pick"
+msgstr "Choose a statement"
+
+#. 摘要列放不下時；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: summary.more
+#: src/pages/LabStep.tsx
+msgid "lab.tables.more"
+msgstr "{0} more rows changed"
+
+#. 燈號狀態：格子還沒填
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.empty"
+msgstr "Not filled yet"
+
+#. 指標類別
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.cat.department"
+msgstr "Department ratios"
+
+#. 按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.reset"
+msgstr "Reset to the story amounts"
+
+#. 累計檢視的欄名
+#. js-lingui-explicit-id
+#: src/features/lab/StatementTable.tsx
+msgid "lab.table.amount"
+msgstr "Amount"
+
+#. 利害關係人
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.role.bank"
+msgstr "Bank"
+
+#. 步驟列的按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.start"
+msgstr "Start"
+
+#. 建議的按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabRatios.tsx
+msgid "lab.ratio.suggest.open"
+msgstr "Open the sandbox"
+
+#. 階段進度文字；數字與名稱已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: stage + 1
+#. placeholder {1}: names[STAGES[stage]!]
+#. placeholder {1}: names[stageId]
+#: src/features/lab/StageBar.tsx
+#: src/pages/LabStep.tsx
+msgid "lab.stage.progress"
+msgstr "Stage {0} of {STAGE_COUNT}: {1}"
+
+#. 提示按鈕
+#. js-lingui-explicit-id
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.hint"
+msgstr "Need a hint"
+
+#. 報表表格第一欄的表頭
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+#: src/features/lab/StatementTable.tsx
+msgid "lab.table.lineHeader"
+msgstr "Item"
+
+#. 階段名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.predict"
+msgstr "Prediction"
+
+#. T 字帳的結餘是零，不分借貸；數字已格式化
+#. js-lingui-explicit-id
+#: src/features/lab/EffectsList.tsx
+msgid "lab.journal.closing"
+msgstr "Balance {closingAmount}"

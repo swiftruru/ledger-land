@@ -49,6 +49,8 @@ const targets = [
   join(ROOT, 'apps/web/src/locales/en/messages.po'),
   join(ROOT, 'apps/web/src/locales/zh-TW/pages.po'),
   join(ROOT, 'apps/web/src/locales/en/pages.po'),
+  join(ROOT, 'apps/web/src/locales/zh-TW/lab.po'),
+  join(ROOT, 'apps/web/src/locales/en/lab.po'),
   join(ROOT, 'packages/web-ui/src/locales/zh-TW/messages.po'),
   join(ROOT, 'packages/web-ui/src/locales/en/messages.po'),
   ...walk(join(ROOT, 'apps/web/src'), { ext: ['.tsx', '.ts'] }),

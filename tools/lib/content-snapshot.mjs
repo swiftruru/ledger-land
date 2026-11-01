@@ -165,6 +165,8 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
   const levels = selectItems(parsed.levels, includeDrafts).filter((l) => chapterIds.has(l.chapterId));
   const questions = selectItems(parsed.questions, includeDrafts);
   const questionById = new Map(questions.map((q) => [q.id, q]));
+  // 故事（M4a，2026-11-01 起進快照）：每個故事每個語系一檔，authorNotes 不進去；章末與題目的 labRef 只連到快照裡有的故事（quest-map 的 publishedStories）
+  const stories = selectItems(parsed.stories, includeDrafts);
   const levelById = new Map(levels.map((l) => [l.id, l]));
   const tombstones = [
     ...parsed.terms.map((x) => ({ kind: 'term', ...x.data })),
@@ -308,7 +310,12 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
       );
     })(),
     templates: {},
-    stories: [],
+    stories: stories.map((s) => ({
+      id: s.id,
+      rev: s.rev,
+      stepIds: s.steps.map((st) => st.id),
+      files: perLocale(s.id, (locale) => localize(strip(s), locale)),
+    })),
     tombstones: (() => {
       const text = JSON.stringify(tombstones);
       const file = `tombstones.${hash(text)}.json`;
@@ -319,6 +326,13 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
   return {
     manifest,
     files,
-    counts: { chapters: chapters.length, objectives: objectives.length, levels: levels.length, questions: questions.length, terms: terms.length },
+    counts: {
+      chapters: chapters.length,
+      objectives: objectives.length,
+      levels: levels.length,
+      questions: questions.length,
+      terms: terms.length,
+      stories: stories.length,
+    },
   };
 }

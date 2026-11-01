@@ -1,5 +1,5 @@
 {
-  "$comment": "列入 sitemap 的頁面（02 第 1.1 節的「收錄」欄、05 第 9.3 節）：tools/postbuild.mjs 在正式建置時依這張表、content-manifest 與名詞索引產生 dist/sitemap.xml（tools/lib/sitemap.mjs）。static 是固定路徑（不含語系前綴，產生器替每個語系各出一筆並互列 hreflang）；dynamic 是依內容展開的種類：chapter 是 /chapter/<章節 ID>/、term 是 /terms/<名詞 ID>/。這裡列的每一條都要和 src/app/router.tsx 一致：是一條沒有 noindex 的路由，而且沒有 noindex 的路由都要在這裡（apps/web/test/sitemap-pages.test.ts 檢查）。M4a 加實驗室的故事步驟列表（/lab/story/<故事 ID>/）與指標實驗室（/lab/ratios/）時在這裡加。",
-  "static": ["/", "/play/", "/lab/", "/terms/", "/install/", "/privacy/", "/about/", "/design/", "/credits/"],
-  "dynamic": ["chapter", "term"]
+  "$comment": "列入 sitemap 的頁面（02 第 1.1 節的「收錄」欄、05 第 9.3 節）：tools/postbuild.mjs 在正式建置時依這張表、content-manifest 與名詞索引產生 dist/sitemap.xml（tools/lib/sitemap.mjs）。static 是固定路徑（不含語系前綴，產生器替每個語系各出一筆並互列 hreflang）；dynamic 是依內容展開的種類：chapter 是 /chapter/<章節 ID>/、term 是 /terms/<名詞 ID>/。這裡列的每一條都要和 src/app/router.tsx 一致：是一條沒有 noindex 的路由，而且沒有 noindex 的路由都要在這裡（apps/web/test/sitemap-pages.test.ts 檢查）。story 是 /lab/story/<故事 ID>/（M4a 起）。",
+  "static": ["/", "/play/", "/lab/", "/terms/", "/install/", "/privacy/", "/about/", "/design/", "/credits/", "/lab/ratios/"],
+  "dynamic": ["chapter", "term", "story"]
 }

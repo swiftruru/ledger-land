@@ -1454,8 +1454,9 @@ describe('章末的相關實驗室步驟（03 第 4.4 節）：只連到已發�
     expect(fx2.chapterEndLinks).toHaveLength(1);
     expect(availableEndLinks(d, fx2)).toEqual([]);
   });
-  it('故事步驟的路由還不存在（LAB_STEP_ROUTE_READY 為 false）時，就算故事已發布也不顯示（站規 2.2.6 的 404 防護）', () => {
-    expect(availableEndLinks(indexData([ch], new Map(), new Set(['story_pub'])), ch)).toEqual([]);
+  it('故事步驟的路由不存在（routeReady 為 false）時，就算故事已發布也不顯示（站規 2.2.6 的 404 防護）；M4a 起旗標是 true', () => {
+    expect(availableEndLinks(indexData([ch], new Map(), new Set(['story_pub'])), ch, false)).toEqual([]);
+    expect(availableEndLinks(indexData([ch], new Map(), new Set(['story_pub'])), ch)).toHaveLength(1);
   });
 });
 

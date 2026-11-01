@@ -2,9 +2,9 @@
 // 純函式，不讀檔：輸入 Vite 的 .vite/manifest.json、內容的 content-manifest.json 與 apps/web/src/shell/route-preload.json，
 // 輸出 boot 腳本（apps/web/src/shell/boot.js 的 preload 區塊）讀的精簡表格：
 //   a：資產檔名（/assets/ 底下）；c：各語言的訊息 catalog（route-preload.json 的 catalogs 指的模組與它的靜態 import）在 a 的索引；
-//   p：各語言的第二層 catalog（pagesCatalogs，pages.po 的 chunk）在 a 的索引，只在 r 第四個元素為 1 的路由預先載入（路由表的 catalog 為 pages）；
-//   r：[pattern, a 的索引, 內容種類, 要不要第二層 catalog]；m：內容快照的路徑或雜湊（ci 章節索引、ti 名詞索引、tb 墓碑、ch 章節 ID 對各語言的章節包雜湊、lv 關卡 ID 對所屬章節 ID、
-//   td 各語言的名詞分桶對雜湊）。關卡在所屬章節的章節包裡（schemaVersion 3，08 第 7.3 節），作答頁預先載入的是那一章的章節包。
+//   p：各層（pages、lab）各語言的額外 catalog（catalogLayers，pages.po 與 lab.po 的 chunk）在 a 的索引，只在 r 第四個元素是該層名稱的路由預先載入；
+//   r：[pattern, a 的索引, 內容種類, 額外 catalog 的層名稱或 0]；m：內容快照的路徑或雜湊（ci 章節索引、ti 名詞索引、tb 墓碑、ch 章節 ID 對各語言的章節包雜湊、lv 關卡 ID 對所屬章節 ID、
+//   td 各語言的名詞分桶對雜湊、st 故事 ID 對各語言的故事快照路徑）。路由的 preload 列出頁面 chunk 以外也要預先載入的模組（例如實驗室的核心包裝 lab-core.ts，頁面一掛載就動態載入它）。關卡在所屬章節的章節包裡（schemaVersion 3，08 第 7.3 節），作答頁預先載入的是那一章的章節包。
 // 章節包與名詞分桶只存雜湊，路徑由 boot 腳本依固定格式組回；格式不符（例如日後改了檔名規則）或關卡的檔不是所屬章節的章節包時直接丟錯，建置失敗，不會默默預先載入錯的檔案。
 
 /** Vite manifest 裡某個模組的 chunk 與靜態 import（遞迴，不含殼層入口 chunk）；css 一併收集 */
@@ -24,14 +24,14 @@ const assetName = (file) => {
 };
 
 /**
- * @param {{ viteManifest: Record<string, any>; contentManifest: Record<string, any>; routes: { pattern: string; module: string; content: string[]; catalog?: string }[]; catalogs: Record<string, string>; pagesCatalogs?: Record<string, string>; locales: string[]; always?: string[]; chunkModules?: Record<string, string[]> }} input
+ * @param {{ viteManifest: Record<string, any>; contentManifest: Record<string, any>; routes: { pattern: string; module: string; content: string[]; catalog?: string; preload?: string[] }[]; catalogs: Record<string, string>; catalogLayers?: Record<string, Record<string, string>>; locales: string[]; always?: string[]; chunkModules?: Record<string, string[]> }} input
  */
 export function buildPreloadTable({
   viteManifest,
   contentManifest,
   routes,
   catalogs: catalogModules,
-  pagesCatalogs = {},
+  catalogLayers = {},
   locales,
   always = [],
   chunkModules = {},
@@ -67,21 +67,24 @@ export function buildPreloadTable({
       return [loc, filesOf([key])];
     }),
   );
-  // 第二層 catalog（pages.po，14 第 5.2 節）：有路由要它時每個語言都要找得到，沒有路由要它時可以省略整張表
-  const needsPages = routes.some((route) => route.catalog === 'pages');
+  // 額外的 catalog 層（pages.po、lab.po，14 第 5.2 節）：有路由要某一層時，那一層每個語言都要找得到；沒有路由要的層可以省略
+  const neededLayers = new Set(routes.map((route) => route.catalog).filter((c) => c !== undefined));
+  for (const layer of neededLayers) if (catalogLayers[layer] === undefined) throw new Error(`preload：route-preload.json 的 catalogLayers 沒有 ${layer}`);
   const p = Object.fromEntries(
-    locales.map((loc) => {
-      const key = pagesCatalogs[loc];
-      if (key === undefined) {
-        if (needsPages) throw new Error(`preload：route-preload.json 的 pagesCatalogs 沒有 ${loc}`);
-        return [loc, []];
-      }
-      return [loc, filesOf([key])];
-    }),
+    Object.entries(catalogLayers).map(([layer, modules]) => [
+      layer,
+      Object.fromEntries(
+        locales.map((loc) => {
+          const key = modules[loc];
+          if (key === undefined) throw new Error(`preload：route-preload.json 的 catalogLayers.${layer} 沒有 ${loc}`);
+          return [loc, filesOf([key])];
+        }),
+      ),
+    ]),
   );
   // 每一頁都要的 chunk（進度 runtime）：w，和 catalog 一樣不分路由
   const w = filesOf(always.map(keyOfModule));
-  const kinds = new Set(['chapterIndex', 'termIndex', 'tombstones', 'level', 'termDetail']);
+  const kinds = new Set(['chapterIndex', 'termIndex', 'tombstones', 'level', 'termDetail', 'story']);
   const r = routes.map((route) => {
     // 不合法的 pattern 在建置時就失敗，不要等到使用者的瀏覽器才在 boot 腳本裡丟錯
     try {
@@ -90,8 +93,7 @@ export function buildPreloadTable({
       throw new Error(`preload：pattern 不是合法的正規表示式：${route.pattern}`);
     }
     for (const c of route.content) if (!kinds.has(c)) throw new Error(`preload：不認得的內容種類 ${c}（${route.pattern}）`);
-    if (route.catalog !== undefined && route.catalog !== 'pages') throw new Error(`preload：不認得的 catalog ${route.catalog}（${route.pattern}）`);
-    return [route.pattern, filesOf([route.module]), route.content, route.catalog === 'pages' ? 1 : 0];
+    return [route.pattern, filesOf([route.module, ...(route.preload ?? []).map(keyOfModule)]), route.content, route.catalog ?? 0];
   });
 
   const m = contentManifest;
@@ -128,13 +130,15 @@ export function buildPreloadTable({
       ),
     ]),
   );
+  // 故事快照（M4a）：故事 ID 對各語言的完整路徑（每個故事只有一檔，不像章節包有固定格式，直接存路徑）
+  const st = Object.fromEntries((m.stories ?? []).map((s) => [s.id, locales.map((loc) => required(s.files?.[loc], `stories.${s.id}.${loc}`))]));
   return {
     a: assets,
     c: catalogs,
     p,
     w,
     r,
-    m: { l: locales, ci: perLocale('chapterIndex'), ti: perLocale('termIndex'), tb: required(m.tombstones, 'tombstones'), ch, lv, td },
+    m: { l: locales, ci: perLocale('chapterIndex'), ti: perLocale('termIndex'), tb: required(m.tombstones, 'tombstones'), ch, lv, td, st },
   };
 }
 
