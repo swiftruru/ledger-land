@@ -397,8 +397,13 @@ test.describe('闖關地圖', () => {
     await openMap(page, `${MAP}&ll-fixture-progress=ch1new&from=lv_fx010004`);
     // 跨章播放約 2 秒：在 900ms 內點目前關卡（下一章第一關），再用 Escape 關掉面板
     await page.waitForTimeout(300);
-    await page.locator('[data-level-id="lv_fx020001"] button').click();
-    await expect(page.getByTestId('level-sheet')).toBeVisible();
+    // 用鍵盤啟動目前關卡的按鈕，不用滑鼠點：播放中 sticky 區塊的星星數在跳，區塊一變高地圖就重新定位（onStickyResize 的 scrollToLevel），
+    // 滑鼠點擊的命中檢查和真正送出之間頁面可能剛好跳了一格，按鈕就沒收到 click（main 的 Firefox 在慢的執行器上重現過：點了但面板沒開，
+    // 2026-11-01 的 ci #211）。Enter 走的是同一個 selectLevel，要驗的「播放中打開面板」不變
+    const current = page.locator('[data-level-id="lv_fx020001"] button');
+    await current.focus();
+    await page.keyboard.press('Enter');
+    await expect(page.getByTestId('level-sheet')).toBeVisible({ timeout: 10_000 });
     await page.keyboard.press('Escape');
     await expect(page).not.toHaveURL(/from=/, { timeout: 10_000 });
     const marker = page.getByTestId('map-marker');
