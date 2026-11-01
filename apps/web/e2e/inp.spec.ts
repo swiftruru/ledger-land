@@ -173,6 +173,8 @@ test('INP：CPU 降速 4 倍，作答頁、地圖、圖鑑與實驗室的互動�
   await page.goto('/lab/story/story_ywv2dy/st_98tppx/');
   await waitForApp(page);
   await page.getByTestId('lab-next').click();
+  // 階段 2 的畫面元件在掀開之後才載（V24）：面板出現了才數選項
+  await page.getByTestId('lab-predict').waitFor();
   const radios = page.getByTestId('lab-predict').getByRole('radio', { name: /^增加$/ });
   const n = await radios.count();
   for (let i = 0; i < n; i++) await radios.nth(i).check();
