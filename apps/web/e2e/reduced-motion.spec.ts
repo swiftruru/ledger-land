@@ -352,6 +352,8 @@ test('減少動態：實驗室第 7 步從頭走到尾沒有動畫，天平直�
   await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／10：交易卡');
   await page.screenshot({ path: 'test-results/reduced-motion-lab-1.png', fullPage: true });
   await page.getByTestId('lab-next').click();
+  // 階段 2 的畫面元件在掀開之後才載（V24）：面板出現了才數選項
+  await expect(page.getByTestId('lab-predict')).toBeVisible();
   const radios = page.getByTestId('lab-predict').getByRole('radio', { name: /^增加$/ });
   const n = await radios.count();
   for (let i = 0; i < n; i++) await radios.nth(i).check();

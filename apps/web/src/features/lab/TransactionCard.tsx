@@ -17,16 +17,19 @@ export interface TransactionCardProps {
   /** 交易前某一列的金額（前情摘要用） */
   before: (lineId: string) => number;
   layout: Parameters<typeof useLabLabels>[0];
+  /** 名詞索引載入前 chip 用的名稱（快照的 firstPaint.terms） */
+  termLabels?: Readonly<Record<string, string>>;
   /** 前情摘要（單獨練習或從中間開始） */
   recap: boolean;
   /** 從中間「開始」時的一次性提示 */
   suggestEarlier: boolean;
 }
 
-function TermChipRow({ ids }: { ids: readonly string[] }) {
+function TermChipRow({ ids, termLabels }: { ids: readonly string[]; termLabels?: Readonly<Record<string, string>> }) {
   const { labelOf, openTerm } = useTerms();
   const refs = useRef(new Map<string, HTMLButtonElement | null>());
-  const known = ids.filter((id) => labelOf(id) !== undefined);
+  const nameOf = (id: string) => labelOf(id) ?? termLabels?.[id];
+  const known = ids.filter((id) => nameOf(id) !== undefined);
   if (known.length === 0) return null;
   return (
     <ul className="ll-lab-card__terms" data-testid="lab-card-terms">
@@ -36,7 +39,7 @@ function TermChipRow({ ids }: { ids: readonly string[] }) {
             ref={(el: HTMLButtonElement | null) => {
               refs.current.set(id, el);
             }}
-            label={labelOf(id) ?? id}
+            label={nameOf(id) ?? id}
             onClick={() => openTerm(id, { current: refs.current.get(id) ?? null })}
           />
         </li>
@@ -63,7 +66,7 @@ export function Recap({ before, layout }: { before: (lineId: string) => number; 
   );
 }
 
-export function TransactionCard({ spec, values, before, layout, recap, suggestEarlier }: TransactionCardProps) {
+export function TransactionCard({ spec, values, before, layout, termLabels, recap, suggestEarlier }: TransactionCardProps) {
   const { t } = useLingui();
   const notes = [...new Set(spec.events.flatMap((e) => e.pendingRefs ?? []))];
   return (
@@ -87,7 +90,7 @@ export function TransactionCard({ spec, values, before, layout, recap, suggestEa
         )}
         {notes.length > 0 && <NoteTag kind="design_note" subject={notes.join(', ')} />}
       </div>
-      <TermChipRow ids={spec.termRefs} />
+      <TermChipRow ids={spec.termRefs} termLabels={termLabels} />
     </article>
   );
 }

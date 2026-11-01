@@ -326,7 +326,20 @@ export default defineConfig({
             // 「我的」頁才不會為了那一列載整個實驗室的 chunk（實測抓進來時「我的」第一波多約 16 KB、4 個請求）
             // 試過把實驗室六個頁面（pages/Lab*.tsx）也併進來（步驟頁第一波 15 個請求變 14 個，但 lab-ui 從 10 KB 變 20 KB）：本機 Lighthouse 的模擬數字不變，
             // 頁面模組併進群組後 Vite manifest 沒有它們的鍵、預先載入表要另外找，所以不採用（2026-11-01 實測）
-            { name: 'lab-ui', test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](?!(lab-core|summary)\.ts$)/, priority: 1 },
+            // 階段 2 到 10 的畫面元件（stage-views.tsx 與它 re-export 的檔）也不抓：它們由 lazy-stages.ts 在畫面掀開之後才載（下面的 lab-stages 群組），
+            // 抓進 lab-ui 就回到第一波（約 7 KB gzip，連帶 web-ui 的 Segmented 與 ImpactPicker 那個 chunk）
+            {
+              name: 'lab-ui',
+              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](?!(lab-core|summary|stage-views|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling)\.tsx?$)/,
+              priority: 1,
+            },
+            // 步驟頁階段 2 到 10 的畫面元件：lazy-stages.ts 動態載入的進入點 stage-views.tsx 加它 re-export 的元件（只有這些階段用到的 RollingMoney 與 rolling 也在）。
+            // 要在 lab-ui 之後宣告：列名、預測的純函式、階段規則等第一波就要的模組先被 lab-ui 拿走，這裡才不會連依賴把它們抓走
+            {
+              name: 'lab-stages',
+              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](stage-views|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling)\.tsx?$/,
+              priority: 1,
+            },
             { name: 'shared', minShareCount: 2, entriesAware: true, entriesAwareMergeThreshold: 4096, priority: 1 },
           ],
         },

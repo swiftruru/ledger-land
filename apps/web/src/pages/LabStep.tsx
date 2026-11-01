@@ -1,23 +1,22 @@
 // 故事步驟頁 /lab/story/<storyId>/<stepId>/（02 第 1.1 節、03 第 3.3 到 3.6、3.11、3.12 節）：一步 10 個階段，由「下一步」推進；
 // 單獨練習（?mode=practice）沿用故事在該步之前的狀態（核心從第一步重播，03 第 3.1 節），不改變故事進度。
-// 整頁等故事快照、進度與名詞索引齊了才出現；核心的重播模組與內建資料（約 42 KB gzip）不在第一波（06 第 8.2 節、14 的 V24）：
+// 整頁等故事快照與進度齊了才出現；核心的重播模組與內建資料（約 42 KB gzip）和名詞索引（約 10 KB）都不在第一波（06 第 8.2 節、14 的 V24）：
+// 階段 1 的列名與名詞 chip 用快照裡的名稱（firstPaint.lines、firstPaint.terms，建置時已換成名詞的名稱），名詞索引在掀開之後才讀；
 // 交易卡、恆等式與預測面板先用快照裡建置時由同一份核心算好的數字與列名（firstPaint）畫，核心在畫面掀開之後才載入（afterFirstPaint），
-// 載好以後每個數字都來自 lab-core.ts 的結果；階段 3 起要核心，核心還沒到時「下一步」先記著，載好就切過去。每個階段一句 aria-live 摘要；
+// 載好以後每個數字都來自 lab-core.ts 的結果；階段 2 到 10 的畫面元件（stage-views.tsx）也在掀開之後才載，階段 3 起另外要核心，
+// 還沒到時「下一步」先記著，載好就切過去。每個階段一句 aria-live 摘要；
 // 減少動態效果時天平與數字直接是結束狀態（motion.ts）。字串在第三層 catalog（lab.po）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { formatMoney, formatNumber, localePath } from '@ledgerland/i18n';
-import { Button, Card, CheckCircleIcon, ErrorState, HintBar, Segmented, Toast, ToastRegion, TopBar, XCircleIcon } from '@ledgerland/web-ui';
+import { Button, Card, CheckCircleIcon, ErrorState, HintBar, Toast, ToastRegion, TopBar, XCircleIcon } from '@ledgerland/web-ui';
 import { labPrefersReducedMotion } from '../features/lab/motion.ts';
-import { BalanceScale } from '../features/lab/BalanceScale.tsx';
-import { CheckLights, ProfitLevels } from '../features/lab/CheckLights.tsx';
-import { EffectsList } from '../features/lab/EffectsList.tsx';
 import type { LabRun, LabStep as LabStepModel } from '../features/lab/lab-core.ts';
 import type { LabCore } from '../features/lab/lazy-core.ts';
+import { loadStageViews, stageViewsNow, type StageViews } from '../features/lab/lazy-stages.ts';
 import { firstPaintLayout, joinList, lineAt, useChangeText, useLabLabels, type LayoutLike } from '../features/lab/labels.ts';
-import { PredictPanel } from '../features/lab/PredictPanel.tsx';
-import { PredictReveal, type RevealItem } from '../features/lab/PredictReveal.tsx';
+import type { RevealItem } from '../features/lab/PredictReveal.tsx';
 import {
   isPredictionComplete,
   isPredictionCorrect,
@@ -29,11 +28,10 @@ import {
   type PredictionRecord,
 } from '../features/lab/predict.ts';
 import { completeStep, moveStoryTo, predictTotals, savePrediction, type StoryProgress } from '../features/lab/progress.ts';
-import { RatioList } from '../features/lab/RatioList.tsx';
 import { ratioChanges, ratioPoint } from '../features/lab/ratio-changes.ts';
 import { PREDICT_STAGE, STAGES, STAGE_COUNT, canGoTo, canSkipToEnd, statementForStage, type StageGate } from '../features/lab/stages.ts';
 import { StageBar, useStageNames } from '../features/lab/StageBar.tsx';
-import { StatementTable, changeSummary, type StatementView } from '../features/lab/StatementTable.tsx';
+import type { StatementView } from '../features/lab/StatementTable.tsx';
 import { TransactionCard } from '../features/lab/TransactionCard.tsx';
 import { useLabStepLoad } from '../features/lab/useLab.ts';
 import { useExpanded } from '../features/me/useExpanded.ts';
@@ -70,7 +68,7 @@ export default function LabStep() {
   useEffect(() => {
     if (needCoreFirst) loadCore();
   }, [needCoreFirst, loadCore]);
-  // 畫面掀開（第一次繪製真的送出）之後才載核心：Lighthouse 把 LCP 之前開始的請求都算進 LCP（06 第 8.2 節）
+  // 畫面掀開（第一次繪製真的送出）之後才載核心：Lighthouse 把 LCP 之前開始的請求都算進 LCP（06 第 8.2 節）；階段 2 到 10 的畫面元件由 StepSession 同樣在掀開之後載
   useEffect(() => (revealed ? afterFirstPaint(loadCore) : undefined), [revealed, loadCore]);
   usePageReady(lab.kind !== 'loading' && (!needCoreFirst || lab.core !== null || lab.coreError !== undefined));
   const core = lab.core;
@@ -91,7 +89,7 @@ export default function LabStep() {
   const step = run && stepId ? run.stepById(stepId) : undefined;
   if (run && !step) return <NotFound />;
   return (
-    <TermsProvider locale={locale}>
+    <TermsProvider locale={locale} deferIndex={!needCoreFirst}>
       <StepSession
         key={`${story.id}:${stepId}`}
         core={core}
@@ -131,8 +129,9 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const practice = params.get('mode') === 'practice';
   const from = params.get('from');
   const { ready: termsReady } = useTerms();
-  // 版面：核心的版面，或核心載入前由快照的 firstPaint.lines 做成（只有恆等式、前情摘要與預測目標的列）
-  const layout: LayoutLike = useMemo(() => run?.ctx.layout ?? firstPaintLayout(story.firstPaint?.lines ?? {}), [run, story]);
+  const revealed = useRevealed();
+  // 版面：核心與名詞索引都到了才用核心的版面；之前由快照的 firstPaint.lines 做成（只有恆等式、前情摘要與預測目標的列，名稱已是名詞的名稱）
+  const layout: LayoutLike = useMemo(() => (run && termsReady ? run.ctx.layout : firstPaintLayout(story.firstPaint?.lines ?? {})), [run, termsReady, story]);
   const { lineLabel, accountLabel, ratioLabel } = useLabLabels(layout);
   const change = useChangeText();
   const names = useStageNames();
@@ -165,8 +164,26 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const gate: StageGate = useMemo(() => ({ predictRequired, predictDone }), [predictRequired, predictDone]);
 
   const [stage, setStage] = useState(0);
-  // 階段 3 起要核心：核心還沒到時先記著要去的階段，載好就切過去（go）
+  // 階段 2 起要畫面元件（stage-views.tsx）、階段 3 起還要核心：還沒到時先記著要去的階段，載好就切過去（go）
   const [pendingStage, setPendingStage] = useState<number | null>(null);
+  const [views, setViews] = useState<StageViews | null>(() => stageViewsNow());
+  const [viewsError, setViewsError] = useState<unknown>(undefined);
+  const loadViews = useCallback(() => {
+    const now = stageViewsNow();
+    if (now !== null) {
+      setViews(now);
+      return;
+    }
+    loadStageViews().then(
+      (m) => {
+        setViews(m);
+        setViewsError(undefined);
+      },
+      (e: unknown) => setViewsError(e),
+    );
+  }, []);
+  // 畫面掀開之後預載階段 2 到 10 的畫面元件（和核心、名詞索引一樣不排在 LCP 前面）；失敗不顯示，使用者要往階段 2 走時才顯示錯誤與重試
+  useEffect(() => (revealed && views === null ? afterFirstPaint(loadViews) : undefined), [revealed, views, loadViews]);
   const [manualTab, setManualTab] = useState(false);
   const [tab, setTab] = useState<StatementCode>('is');
   const [view, setView] = useState<StatementView>('cumulative');
@@ -234,18 +251,22 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const go = useCallback(
     (to: number) => {
       if (!canGoTo(stage, to, gate)) return;
-      if (to > PREDICT_STAGE && !hasCore) {
+      // 階段 2 起要畫面元件與名詞索引（科目與指標的名稱）、階段 3 起還要核心
+      const needViews = to >= PREDICT_STAGE && (views === null || !termsReady);
+      const needCore = to > PREDICT_STAGE && !hasCore;
+      if (needViews || needCore) {
         setPendingStage(to);
-        onLoadCore();
+        if (views === null) loadViews();
+        if (needCore) onLoadCore();
         return;
       }
       enter(to);
     },
-    [stage, gate, hasCore, onLoadCore, enter],
+    [stage, gate, hasCore, views, termsReady, onLoadCore, loadViews, enter],
   );
   useEffect(() => {
-    if (pendingStage !== null && hasCore) enter(pendingStage);
-  }, [pendingStage, hasCore, enter]);
+    if (pendingStage !== null && views !== null && termsReady && (pendingStage <= PREDICT_STAGE || hasCore)) enter(pendingStage);
+  }, [pendingStage, views, termsReady, hasCore, enter]);
   // 方向鍵左右切換階段（焦點不在輸入框時，03 第 3.11 節）
   useEffect(() => {
     const onKey = (e: globalThis.KeyboardEvent) => {
@@ -354,7 +375,7 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   // 完成卡的預測成績：這一步加整個故事（含這一步，進度快照可能還是舊的）
   const storyTotals = predictTotals({ predictScores: revealScore ? { ...progress.predictScores, [spec.id]: revealScore } : progress.predictScores });
 
-  const summary = step ? changeSummary(step.before, step.after, lineLabel, locale) : null;
+  const summary = step && views ? views.changeSummary(step.before, step.after, lineLabel, locale) : null;
   const ratios = useMemo(() => (core && step ? ratioChanges(core, 'excel', step.ratiosBefore, step.ratiosAfter) : []), [core, step]);
   const ratioVerdicts = Object.fromEntries(
     targets
@@ -434,8 +455,8 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
     { value: 'cf', label: names.cashflow },
     { value: 'bs', label: names.balance },
   ];
-  const table = (s: LabStepModel, code: StatementCode, v: StatementView) => (
-    <StatementTable
+  const table = (V: StageViews, s: LabStepModel, code: StatementCode, v: StatementView) => (
+    <V.StatementTable
       key={code}
       caption={tabs.find((x) => x.value === code)!.label}
       statement={STATEMENT_KEY[code]}
@@ -453,7 +474,6 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const designNotes = [...new Set(spec.events.flatMap((e) => e.pendingRefs ?? []))];
   const title = t({ id: 'lab.step.title', message: `第 ${spec.order} 步：${spec.title}`, comment: '步驟頁的標題；數字與標題已代入' });
   const prevDone = prevStepId === undefined || progress.done.includes(prevStepId);
-  usePageReady(termsReady);
 
   return (
     <div
@@ -462,6 +482,8 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
       data-stage={stageId}
       data-mode={practice ? 'practice' : 'story'}
       data-core={hasCore ? 'ready' : 'pending'}
+      data-views={views ? 'ready' : 'pending'}
+      data-terms={termsReady ? 'ready' : 'pending'}
     >
       <TopBar
         title={title}
@@ -498,10 +520,13 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
         {liveText}
       </p>
       <section className={`ll-lab-session__content${reduced ? '' : ' ll-lab-animate'}`} aria-labelledby="ll-lab-stage-heading">
-        {pendingStage !== null && coreError !== undefined && (
+        {pendingStage !== null && (coreError !== undefined || viewsError !== undefined) && (
           <ErrorState
-            title={t({ id: 'lab.step.coreError', message: '讀不到報表的計算模組', comment: '核心模組載入失敗（離線）時的錯誤標題；重試會再載一次' })}
-            onRetry={onLoadCore}
+            title={t({ id: 'lab.step.coreError', message: '讀不到後面的階段', comment: '核心或階段畫面的模組載入失敗（離線）時的錯誤標題；重試會再載一次' })}
+            onRetry={() => {
+              if (viewsError !== undefined) loadViews();
+              if (coreError !== undefined) onLoadCore();
+            }}
           />
         )}
         {stageId === 'card' && (
@@ -510,12 +535,13 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
             values={values}
             before={before}
             layout={layout}
+            termLabels={firstPaint?.terms}
             recap={practice || (!alreadyDone && index > 0 && !prevDone)}
             suggestEarlier={!practice && !from && index > 0 && !prevDone}
           />
         )}
-        {stageId === 'predict' && (
-          <PredictPanel
+        {views && stageId === 'predict' && (
+          <views.PredictPanel
             targets={targets}
             labelOf={labelOfTarget}
             record={record}
@@ -525,11 +551,11 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
             submittedNote={t({ id: 'lab.live.predicted', message: '已記下你的預測。' })}
           />
         )}
-        {step && chart && stageId === 'effects' && revealScore && (
-          <PredictReveal items={revealItems} right={revealScore.right} total={revealScore.total} locale={locale} note={revealNote} />
+        {views && step && chart && stageId === 'effects' && revealScore && (
+          <views.PredictReveal items={revealItems} right={revealScore.right} total={revealScore.total} locale={locale} note={revealNote} />
         )}
-        {step && chart && stageId === 'effects' && (
-          <EffectsList
+        {views && step && chart && stageId === 'effects' && (
+          <views.EffectsList
             step={step}
             chart={chart}
             layout={layout}
@@ -540,12 +566,12 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
             animate={!reduced}
           />
         )}
-        {step && stageId === 'equation' && <BalanceScale before={step.before} after={step.after} layout={layout} animate={!reduced} />}
-        {step && summary && (stageId === 'income' || stageId === 'cashflow' || stageId === 'balance') && (
+        {views && step && stageId === 'equation' && <views.BalanceScale before={step.before} after={step.after} layout={layout} animate={!reduced} />}
+        {views && step && summary && (stageId === 'income' || stageId === 'cashflow' || stageId === 'balance') && (
           <div className="ll-lab-tables" data-expanded={expanded ? 'true' : 'false'}>
             <div className="ll-lab-tables__controls">
               {!expanded && (
-                <Segmented
+                <views.Segmented
                   value={tab}
                   options={tabs}
                   onChange={(v) => {
@@ -557,7 +583,7 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
                 />
               )}
               {!wide && (
-                <Segmented
+                <views.Segmented
                   value={view === 'columns' ? 'cumulative' : view}
                   options={[
                     { value: 'cumulative', label: t({ id: 'lab.tables.cumulative', message: '累計', comment: '檢視切換' }) },
@@ -600,14 +626,14 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
               </ul>
             )}
             <div className="ll-lab-tables__grid">
-              {expanded ? (['is', 'cf', 'bs'] as const).map((c) => table(step, c, wide ? 'columns' : view)) : table(step, tab, view)}
+              {expanded ? (['is', 'cf', 'bs'] as const).map((c) => table(views, step, c, wide ? 'columns' : view)) : table(views, step, tab, view)}
             </div>
           </div>
         )}
-        {step && stageId === 'checks' && (
+        {views && step && stageId === 'checks' && (
           <div className="ll-lab-checks">
-            <ProfitLevels before={step.before} after={step.after} layout={layout} />
-            <CheckLights
+            <views.ProfitLevels before={step.before} after={step.after} layout={layout} />
+            <views.CheckLights
               fiveStep={step.fiveStep}
               layout={layout}
               selected={selectedLight}
@@ -618,7 +644,7 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
             />
           </div>
         )}
-        {step && stageId === 'ratios' && <RatioList items={ratios} layout={layout} splitUnchanged verdicts={ratioVerdicts} />}
+        {views && step && stageId === 'ratios' && <views.RatioList items={ratios} layout={layout} splitUnchanged verdicts={ratioVerdicts} />}
         {step && stageId === 'insight' && (
           <div className="ll-lab-insight">
             {spec.insight && <MarkupParagraphs text={spec.insight} className="ll-lab-insight__text" />}

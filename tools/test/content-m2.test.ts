@@ -175,13 +175,25 @@ describe('content:build 的快照形狀（08 第 7.3 節、04 第 15.2 節）', 
     expect(typeof zh.firstPaint.lines.bs_total_assets.label).toBe('string');
     expect(zh.firstPaint.lines.bs_total_assets.label).not.toBe(en.firstPaint.lines.bs_total_assets.label);
     expect(zh.firstPaint.lines.bs_total_assets.termRef).toMatch(/^tm_/);
-    expect(zh.steps[0].firstPaint).toEqual({
+    expect(zh.steps[0].firstPaint).toMatchObject({
       values: { 'e1.amount': 2400000 },
       before: { bs_cash: 0, bs_inventory: 0, bs_retained_earnings: 0 },
       after: { bs_total_assets: 2400000, bs_total_liabilities: 0, bs_total_equity: 2400000 },
     });
     expect(zh.steps[1].firstPaint.before.bs_cash).toBe(2400000);
-    expect(en.steps[0].firstPaint).toEqual(zh.steps[0].firstPaint);
+    // 列名：有 termRef 且名詞在快照裡時是名詞的名稱；每一步另帶 termRefs 的名詞名稱（只列快照裡有的）
+    const labelOf = (id: string) => (parsed.terms.find((t) => t.data.id === id)?.data as { label?: Record<string, string> } | undefined)?.label?.['zh-TW'];
+    const linesWithTerm = Object.values(zh.firstPaint.lines as Record<string, { label: string; termRef?: string }>).filter(
+      (l) => l.termRef !== undefined && labelOf(l.termRef) !== undefined,
+    );
+    expect(linesWithTerm.map((l) => l.label)).toEqual(linesWithTerm.map((l) => labelOf(l.termRef!)));
+    const steps = zh.steps as { termRefs: string[]; firstPaint: { terms: Record<string, string> } }[];
+    expect(steps.map((st) => st.firstPaint.terms)).toEqual(
+      steps.map((st) => Object.fromEntries(st.termRefs.filter((id) => labelOf(id) !== undefined).map((id) => [id, labelOf(id)]))),
+    );
+    const { terms: _zhTerms, ...zhNumbers } = zh.steps[0].firstPaint;
+    const { terms: _enTerms, ...enNumbers } = en.steps[0].firstPaint;
+    expect(enNumbers).toEqual(zhNumbers);
     expect(JSON.stringify(zh)).not.toContain('authorNotes');
   });
 

@@ -138,7 +138,8 @@ function loadTermSheet(): Promise<TermSheetComponent> {
   return sheetPromise;
 }
 
-export function TermsProvider({ locale, children }: { locale: Locale; children: ReactNode }) {
+/** deferIndex：目前語系的索引也等第一次繪製送出後才讀（實驗室步驟頁：階段 1 的列名與 chip 用快照裡的名稱畫，索引不排在 LCP 前面，V24） */
+export function TermsProvider({ locale, deferIndex = false, children }: { locale: Locale; deferIndex?: boolean; children: ReactNode }) {
   const other: Locale = locale === 'en' ? 'zh-TW' : 'en';
   // 目前語系的索引載好就能畫題目；另一個語系只給名詞卡的次要名稱，第一次繪製送出後再讀，不排在 LCP 前面（06 第 8.2 節）
   // 目前語系的索引：locale 不同代表還沒讀到這個語系的（list 當作 null）；failed 時 list 是 []，題目照樣畫，chip 退回名詞 ID
@@ -166,8 +167,12 @@ export function TermsProvider({ locale, children }: { locale: Locale; children: 
     );
   }, [locale]);
   useEffect(() => {
-    loadIndex();
-  }, [loadIndex]);
+    if (!deferIndex) {
+      loadIndex();
+      return;
+    }
+    return afterFirstPaint(loadIndex);
+  }, [loadIndex, deferIndex]);
   // 索引讀不到時，恢復連線就再讀一次（content.ts 的快取在失敗時已經刪掉，會重新 fetch），chip 換回名詞名稱
   useEffect(() => {
     if (!indexFailed) return;

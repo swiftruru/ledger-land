@@ -55,7 +55,7 @@ export interface StorySnapshot {
 }
 
 export interface StoryFirstPaint {
-  /** 列 ID 對版面裡的名稱（目前語系）與 termRef（有名詞時學習端優先用名詞的名稱，和核心的版面一樣） */
+  /** 列 ID 對名稱（目前語系；有 termRef 且名詞在快照裡時就是名詞的名稱，和名詞索引載入後 lineLabelOf 給的一樣）與 termRef */
   lines: Record<string, { label: string; termRef?: string }>;
 }
 
@@ -67,6 +67,8 @@ export interface StepFirstPaint {
   before: Record<string, number>;
   /** 交易後的恆等式三列 */
   after: Record<string, number>;
+  /** 這一步 termRefs 的名詞名稱（目前語系）：名詞索引載入前交易卡的 chip 用 */
+  terms?: Record<string, string>;
 }
 
 export interface StoryStepSnapshot {

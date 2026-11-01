@@ -956,12 +956,6 @@ msgstr "記下預測"
 msgid "lab.sandbox.invalid"
 msgstr "請輸入 0 到 {0} 的整數"
 
-#. 核心模組載入失敗（離線）時的錯誤標題；重試會再載一次
-#. js-lingui-explicit-id
-#: src/pages/LabStep.tsx
-msgid "lab.step.coreError"
-msgstr "讀不到報表的計算模組"
-
 #. 實驗室離線時的錯誤標題
 #. 實驗室離線時的錯誤標題
 #. 實驗室離線時的錯誤標題
@@ -975,6 +969,12 @@ msgstr "讀不到報表的計算模組"
 #: src/pages/LabStory.tsx
 msgid "lab.error.title"
 msgstr "讀不到實驗室的故事"
+
+#. 核心或階段畫面的模組載入失敗（離線）時的錯誤標題；重試會再載一次
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.coreError"
+msgstr "讀不到後面的階段"
 
 #. 指標預測的選項
 #. js-lingui-explicit-id

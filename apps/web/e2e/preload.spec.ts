@@ -137,25 +137,41 @@ test.describe('依路徑預先載入與兩層名詞快照', () => {
     expect(links.some((l) => l.rel === 'modulepreload' && /^\/assets\/lab-ui-[^/]+\.js$/.test(l.href))).toBe(true);
     expect(links.some((l) => l.rel === 'modulepreload' && /^\/assets\/lab-[^/]+\.js$/.test(l.href))).toBe(true);
     expect(links.some((l) => l.rel === 'preload' && /^\/content\/zh-TW\/story_ywv2dy\.[0-9a-f]{6}\.json$/.test(l.href))).toBe(true);
-    expect(links.some((l) => l.rel === 'preload' && /^\/content\/zh-TW\/term-index\.[0-9a-f]{6}\.json$/.test(l.href))).toBe(true);
-    // 核心的重播模組與內建資料不預先載入
-    expect(links.filter((l) => /\/assets\/(lab-core|core-data)-/.test(l.href))).toEqual([]);
-    // 交易卡、恆等式用快照的數字先畫出來
+    // 核心的重播模組與內建資料、階段 2 到 10 的畫面元件與名詞索引都不預先載入
+    expect(links.filter((l) => /\/assets\/(lab-core|core-data|lab-stages)-/.test(l.href))).toEqual([]);
+    expect(links.filter((l) => l.rel === 'preload' && /\/term-index\./.test(l.href))).toEqual([]);
+    // 交易卡、恆等式用快照的數字與名稱先畫出來（名詞 chip 也是）
     await expect(page.getByTestId('lab-equation')).toContainText('NT$4,250,000');
     await expect(page.getByTestId('lab-card')).toContainText('3,000,000');
+    await expect(page.getByTestId('lab-card-terms').getByRole('button')).toHaveCount(4);
     // 核心在畫面掀開之後自己載（不必按任何東西），而且是掀開之後才開始抓
     await expect(page.getByTestId('lab-session')).toHaveAttribute('data-core', 'ready', { timeout: 10_000 });
-    const timing = await page.evaluate(() => ({
-      revealedAt: (window as unknown as { __llRevealedAt?: number }).__llRevealedAt ?? null,
-      coreStart:
+    await expect(page.getByTestId('lab-session')).toHaveAttribute('data-views', 'ready');
+    await expect(page.getByTestId('lab-session')).toHaveAttribute('data-terms', 'ready');
+    const timing = await page.evaluate(() => {
+      const start = (re: RegExp) =>
         performance
           .getEntriesByType('resource')
-          .filter((e) => /\/assets\/lab-core-[^/]+\.js$/.test(e.name))
-          .map((e) => e.startTime)[0] ?? null,
-    }));
+          .filter((e) => re.test(e.name))
+          .map((e) => e.startTime)[0] ?? null;
+      return {
+        revealedAt: (window as unknown as { __llRevealedAt?: number }).__llRevealedAt ?? null,
+        coreStart: start(/\/assets\/lab-core-[^/]+\.js$/),
+        viewsStart: start(/\/assets\/lab-stages-[^/]+\.js$/),
+        termsStart: start(/\/content\/zh-TW\/term-index\.[0-9a-f]{6}\.json$/),
+      };
+    });
     expect(timing.revealedAt).not.toBeNull();
-    expect(timing.coreStart).not.toBeNull();
-    expect(timing.coreStart!, '核心的請求要在布幕掀開之後才開始').toBeGreaterThan(timing.revealedAt!);
+    for (const [name, at] of [
+      ['核心', timing.coreStart],
+      ['階段畫面', timing.viewsStart],
+      ['名詞索引', timing.termsStart],
+    ] as const) {
+      expect(at, `${name}的請求要有`).not.toBeNull();
+      expect(at!, `${name}的請求要在布幕掀開之後才開始`).toBeGreaterThan(timing.revealedAt!);
+    }
+    // 名詞索引到了以後列名不變（快照裡的名稱就是名詞的名稱）
+    await expect(page.getByTestId('lab-equation')).toHaveText('資產總計 NT$4,250,000 ＝ 負債總額 NT$0 ＋ 股東權益總額 NT$4,250,000');
     await csp();
   });
 

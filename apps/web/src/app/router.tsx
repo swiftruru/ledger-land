@@ -71,9 +71,10 @@ function buildRoutes(locale: Locale): RouteObject[] {
       lazy: lazyPage(() => import('../pages/LabStory.tsx'), prefetchChapterIndex, 'lab'),
       handle: { layout: 'wide' } satisfies RouteHandle,
     },
+    // 步驟頁不預讀名詞索引（V24，2026-11-01）：階段 1 的列名與名詞 chip 用故事快照裡的名稱，索引由 TermsProvider 在畫面掀開之後才讀，預讀會把它排進 LCP 前面
     {
       path: 'lab/story/:storyId/:stepId',
-      lazy: lazyPage(() => import('../pages/LabStep.tsx'), prefetchTermIndex, 'lab'),
+      lazy: lazyPage(() => import('../pages/LabStep.tsx'), undefined, 'lab'),
       handle: { blocksUpdatePrompt: true, noindex: true, layout: 'wide' } satisfies RouteHandle,
     },
     {

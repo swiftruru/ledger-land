@@ -77,15 +77,24 @@ export function localize(value, locale) {
   return value;
 }
 const strip = ({ authorNotes: _a, ...rest }) => rest;
-/** 故事與每一步加上第一次繪製要的數字與列名（storyFirstPaint 的結果；重播失敗時不加，學習端退回等核心） */
-const withFirstPaint = (story, firstPaint) =>
-  firstPaint === null
-    ? story
-    : {
-        ...story,
-        firstPaint: { lines: firstPaint.lines },
-        steps: story.steps.map((st) => (firstPaint.steps[st.id] === undefined ? st : { ...st, firstPaint: firstPaint.steps[st.id] })),
-      };
+/** 故事與每一步加上第一次繪製要的數字與列名（storyFirstPaint 的結果；重播失敗時不加，學習端退回等核心）。
+ *  列名有 termRef 且名詞在快照裡時改用名詞的名稱（學習端的 lineLabelOf 名詞優先，核心載入前後文字才一樣）；
+ *  每一步另帶 terms（termRefs 的名詞名稱），交易卡的名詞 chip 在名詞索引載入前就能畫（名詞索引不在步驟頁的第一波，V24） */
+const withFirstPaint = (story, firstPaint, termById) => {
+  if (firstPaint === null) return story;
+  const lines = Object.fromEntries(
+    Object.entries(firstPaint.lines).map(([id, line]) => {
+      const term = line.termRef ? termById.get(line.termRef) : undefined;
+      return [id, term === undefined ? line : { ...line, label: term.label }];
+    }),
+  );
+  const termsOf = (st) => Object.fromEntries((st.termRefs ?? []).filter((id) => termById.has(id)).map((id) => [id, termById.get(id).label]));
+  return {
+    ...story,
+    firstPaint: { lines },
+    steps: story.steps.map((st) => (firstPaint.steps[st.id] === undefined ? st : { ...st, firstPaint: { ...firstPaint.steps[st.id], terms: termsOf(st) } })),
+  };
+};
 const hash = (text) => createHash('sha256').update(text).digest('hex').slice(0, 6);
 /** 正式快照只收已發布的項目；含草稿模式（LL_INCLUDE_DRAFTS=1，只給本機開發與 E2E）另收 draft，已下架的仍只以墓碑出現 */
 const selectItems = (list, includeDrafts) =>
@@ -171,6 +180,7 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
   let ctx = null;
   const coreContext = () => (ctx ??= meta.coreContext ?? createCoreContext());
   const terms = selectItems(parsed.terms, includeDrafts);
+  const termById = new Map(terms.map((t) => [t.id, t]));
   const chapters = selectItems(parsed.chapters, includeDrafts).sort((a, b) => a.order - b.order);
   const objectives = selectItems(parsed.objectives, includeDrafts);
   // 關卡只收所屬章節也進快照的（core-4）：草稿章節裡先標成已發布的關卡不提早公開；這是最後一道防線，驗證端也應以 ref.publishedClosure 擋下
@@ -327,7 +337,7 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
       id: s.id,
       rev: s.rev,
       stepIds: s.steps.map((st) => st.id),
-      files: perLocale(s.id, (locale) => localize(withFirstPaint(strip(s), storyFirstPaint(s, coreContext())), locale)),
+      files: perLocale(s.id, (locale) => localize(withFirstPaint(strip(s), storyFirstPaint(s, coreContext()), termById), locale)),
     })),
     tombstones: (() => {
       const text = JSON.stringify(tombstones);
