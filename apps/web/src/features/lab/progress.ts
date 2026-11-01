@@ -1,79 +1,12 @@
 // 實驗室的進度（06 第 4.2 節、03 第 3.1 節）：故事走到哪一步存 ProgressStore 的 labState；走完與練習過的步驟、每一步的預測、勾稽練習的結果
 // 存 settings（鍵 lab:<storyId>，一份 JSON；只在本機、不計分）；完成一步時把 termRefs 的名詞收進圖鑑（addUnlock，和作答一樣，03 第 2.10 節）；
-// 自由實驗存 labSandbox。寫不進去（儲存壞掉）時不丟錯，畫面照常。
-import type { LabSandbox, LabState } from '@ledgerland/progress';
+// 自由實驗存 labSandbox。寫不進去（儲存壞掉）時不丟錯，畫面照常。進度的形狀與讀取在 progress-shape.ts（common chunk），這裡只有寫入。
+import type { LabSandbox } from '@ledgerland/progress';
 import { getProgressStore, nowIso } from '../../lib/progress/index.ts';
 import type { PredictScore, PredictionRecord } from './predict.ts';
+import { readStoryProgress, settingKey, type StoryProgress } from './progress-shape.ts';
 
-export interface StoryProgress {
-  /** 走完的步驟（依走完的先後） */
-  readonly done: readonly string[];
-  /** 單獨練習過的步驟 */
-  readonly practised: readonly string[];
-  /** 每一步最後一次的預測 */
-  readonly predictions: Readonly<Record<string, PredictionRecord>>;
-  /** 每一步最後一次預測的成績（猜對幾個、總共幾個） */
-  readonly predictScores: Readonly<Record<string, PredictScore>>;
-  /** 勾稽練習：每一步做完了沒、有沒有看過答案 */
-  readonly reconciled: Readonly<Record<string, { readonly done: boolean; readonly sawAnswer: readonly string[] }>>;
-}
-
-export const EMPTY_PROGRESS: StoryProgress = { done: [], practised: [], predictions: {}, predictScores: {}, reconciled: {} };
-
-const settingKey = (storyId: string) => `lab:${storyId}`;
-
-function scoresOf(v: unknown): StoryProgress['predictScores'] {
-  if (typeof v !== 'object' || v === null) return {};
-  const out: Record<string, PredictScore> = {};
-  for (const [k, s] of Object.entries(v as Record<string, unknown>)) {
-    if (typeof s !== 'object' || s === null) continue;
-    const { right, total } = s as Partial<Record<'right' | 'total', unknown>>;
-    if (typeof right === 'number' && typeof total === 'number' && Number.isInteger(right) && Number.isInteger(total) && total >= right && right >= 0)
-      out[k] = { right, total };
-  }
-  return out;
-}
-
-/** 整個故事的預測成績：有記過預測的步數、猜對幾個、總共幾個 */
-export function predictTotals(progress: Pick<StoryProgress, 'predictScores'>): { steps: number; right: number; total: number } {
-  let right = 0;
-  let total = 0;
-  const scores = Object.values(progress.predictScores);
-  for (const s of scores) {
-    right += s.right;
-    total += s.total;
-  }
-  return { steps: scores.length, right, total };
-}
-
-function normalise(v: unknown): StoryProgress {
-  if (typeof v !== 'object' || v === null) return EMPTY_PROGRESS;
-  const o = v as Partial<Record<keyof StoryProgress, unknown>>;
-  const strings = (x: unknown): string[] => (Array.isArray(x) ? x.filter((s): s is string => typeof s === 'string') : []);
-  return {
-    done: strings(o.done),
-    practised: strings(o.practised),
-    predictions: typeof o.predictions === 'object' && o.predictions !== null ? (o.predictions as StoryProgress['predictions']) : {},
-    predictScores: scoresOf(o.predictScores),
-    reconciled: typeof o.reconciled === 'object' && o.reconciled !== null ? (o.reconciled as StoryProgress['reconciled']) : {},
-  };
-}
-
-export interface LabProgressSnapshot {
-  readonly state: LabState | undefined;
-  readonly progress: StoryProgress;
-}
-
-/** 讀一個故事的進度；讀不到（儲存壞掉）就當作沒有 */
-export async function readStoryProgress(storyId: string): Promise<LabProgressSnapshot> {
-  try {
-    const s = await getProgressStore();
-    const [state, setting] = await Promise.all([s.getLabState(storyId), s.getSetting(settingKey(storyId))]);
-    return { state, progress: normalise(setting?.value) };
-  } catch {
-    return { state: undefined, progress: EMPTY_PROGRESS };
-  }
-}
+export { EMPTY_PROGRESS, predictTotals, readStoryProgress, type LabProgressSnapshot, type StoryProgress } from './progress-shape.ts';
 
 async function writeProgress(storyId: string, next: StoryProgress): Promise<void> {
   try {
@@ -84,13 +17,28 @@ async function writeProgress(storyId: string, next: StoryProgress): Promise<void
   }
 }
 
+// 同一個故事的進度更新（讀、改、寫）排隊依序做：核心晚到時預測成績的儲存可能和「走完一步」只差幾百毫秒（V24），
+// 兩邊各自讀舊值再寫會互相蓋掉（E2E 抓到）。失敗的那一筆不影響後面的
+const queues = new Map<string, Promise<unknown>>();
+function enqueue<T>(storyId: string, task: () => Promise<T>): Promise<T> {
+  const prev = queues.get(storyId) ?? Promise.resolve();
+  const next = prev.then(task, task);
+  queues.set(
+    storyId,
+    next.catch(() => undefined),
+  );
+  return next;
+}
+
 /** 記下一步的預測（每次預測都存，揭曉用） */
-export async function savePrediction(storyId: string, stepId: string, record: PredictionRecord, score?: PredictScore): Promise<void> {
-  const { progress } = await readStoryProgress(storyId);
-  await writeProgress(storyId, {
-    ...progress,
-    predictions: { ...progress.predictions, [stepId]: record },
-    predictScores: score ? { ...progress.predictScores, [stepId]: score } : progress.predictScores,
+export function savePrediction(storyId: string, stepId: string, record: PredictionRecord, score?: PredictScore): Promise<void> {
+  return enqueue(storyId, async () => {
+    const { progress } = await readStoryProgress(storyId);
+    await writeProgress(storyId, {
+      ...progress,
+      predictions: { ...progress.predictions, [stepId]: record },
+      predictScores: score ? { ...progress.predictScores, [stepId]: score } : progress.predictScores,
+    });
   });
 }
 
@@ -98,7 +46,16 @@ export async function savePrediction(storyId: string, stepId: string, record: Pr
  * 走完一步：故事模式更新 labState（目前走到的步驟）與 done；單獨練習只記 practised、不動 labState（03 第 3.1 節）。
  * termRefs 的名詞收進圖鑑。回傳這次新收進的名詞。
  */
-export async function completeStep(input: {
+export function completeStep(input: {
+  storyId: string;
+  stepId: string;
+  termRefs: readonly string[];
+  mode: 'story' | 'practice';
+}): Promise<{ unlockedTerms: string[] }> {
+  return enqueue(input.storyId, () => completeStepNow(input));
+}
+
+async function completeStepNow(input: {
   storyId: string;
   stepId: string;
   termRefs: readonly string[];
@@ -138,9 +95,11 @@ export async function moveStoryTo(storyId: string, stepId: string): Promise<void
   }
 }
 
-export async function saveReconcile(storyId: string, stepId: string, result: { done: boolean; sawAnswer: readonly string[] }): Promise<void> {
-  const { progress } = await readStoryProgress(storyId);
-  await writeProgress(storyId, { ...progress, reconciled: { ...progress.reconciled, [stepId]: result } });
+export function saveReconcile(storyId: string, stepId: string, result: { done: boolean; sawAnswer: readonly string[] }): Promise<void> {
+  return enqueue(storyId, async () => {
+    const { progress } = await readStoryProgress(storyId);
+    await writeProgress(storyId, { ...progress, reconciled: { ...progress.reconciled, [stepId]: result } });
+  });
 }
 
 export async function readSandbox(id: string): Promise<LabSandbox | undefined> {

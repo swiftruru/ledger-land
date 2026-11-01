@@ -50,6 +50,25 @@ export interface StorySnapshot {
   layout: string;
   chapters?: { id: string; title: string; stepIds: string[] }[];
   steps: StoryStepSnapshot[];
+  /** 步驟頁第一次繪製要的列名（tools/lib/content-rules.mjs 的 storyFirstPaint，V24）：核心載入前畫恆等式、前情摘要與預測目標用 */
+  firstPaint?: StoryFirstPaint;
+}
+
+export interface StoryFirstPaint {
+  /** 列 ID 對名稱（目前語系；有 termRef 且名詞在快照裡時就是名詞的名稱，和名詞索引載入後 lineLabelOf 給的一樣）與 termRef */
+  lines: Record<string, { label: string; termRef?: string }>;
+}
+
+/** 一步第一次繪製要的數字（建置時由同一份核心算出；核心載入後畫面改用核心的結果） */
+export interface StepFirstPaint {
+  /** 佔位符的值：事件參數與推導值 */
+  values: Record<string, number>;
+  /** 交易前的前情摘要三列 */
+  before: Record<string, number>;
+  /** 交易後的恆等式三列 */
+  after: Record<string, number>;
+  /** 這一步 termRefs 的名詞名稱（目前語系）：名詞索引載入前交易卡的 chip 用 */
+  terms?: Record<string, string>;
 }
 
 export interface StoryStepSnapshot {
@@ -64,6 +83,7 @@ export interface StoryStepSnapshot {
   insight?: string;
   stakeholders?: { role: string; positive: string; negative: string; advice: string }[];
   verification?: 'excel_verified' | 'inferred';
+  firstPaint?: StepFirstPaint;
 }
 
 export type StoryPredictTarget =

@@ -522,6 +522,9 @@ test.describe('完成後再進同一關（quiz-1）', () => {
     await expect(page).toHaveURL(/\/en\/play\//);
     // 網址先變、畫面後換（startTransition）：等結果頁真的卸載再返回，不然返回會中斷換頁，結果頁根本沒離開
     await expect(page.getByTestId('result-title')).toHaveCount(0);
+    // 地圖播完走路之後才用 replace 移除 ?from（Play.tsx）：慢的執行器上這一步可能在返回之後才發生，把返回後的那一筆歷史換成 /en/play/，
+    // 所以等 ?from 真的拿掉（網址只剩 /en/play/）再返回（PR 67 第三輪 CI 抓到）
+    await expect(page).toHaveURL(/\/en\/play\/$/, { timeout: 20_000 });
     await page.goBack();
     await expect(page).toHaveURL(new RegExp(`/en/level/${LEVEL_UNSCORED}/$`));
     await expect(page.getByText('Question 1 of 4')).toBeVisible();

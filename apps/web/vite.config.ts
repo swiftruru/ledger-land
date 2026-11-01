@@ -190,6 +190,9 @@ export default defineConfig({
             // 名詞列表與名詞頁因此多載約 1.5 KB 用不到的元件，換作答頁少 5 個請求、地圖少 6 個）。首頁不載它（殼層入口不 import）
             // 2026-10-25（M3 整合）另外放進來：頁首的 TopBar 與 BackButton（章節頁、名詞頁、子頁都用）、卡片 Card、展開列 Disclosure 與減少動態的判斷（motion.ts，各自不到 1 KB，
             // 單獨成 chunk 時名詞圖鑑、地圖、章節頁第一波各多一個請求）、名詞類別的顯示名稱（useCategoryLabel，名詞圖鑑、名詞頁與作答頁的名詞卡共用）。
+            // tokens 的斷點常數（scale.ts，「我的」頁的 useExpanded 與實驗室的 useWide 都用）、useExpanded 本身與實驗室進度的形狀與讀取（lab/progress-shape.ts，「我的」頁的實驗室一列用）
+            // 也放這裡（2026-11-01，V24）：不放的話前者會被後面的 lab-ui 群組連依賴抓走，「我的」頁為了一個常數要載整個實驗室的 chunk；後兩者落在 shared 時各是一個 0.3 到 1.2 KB 的小 chunk，
+            // 步驟頁第一波多兩個請求，而 shared 的 4 KB 合併門檻又可能把它們併回 lab-ui。common 因此從 2.2 KB 變成約 3.3 KB，仍在一次往返送得完的範圍內。
             // 不放的話它們被 quiz-view 群組連依賴一起抓走，名詞圖鑑、名詞頁與章節頁為了一個小函式要在第一波多載 quiz-view、level-view 與 session（約 30 KB gzip）。
             // 2026-10-25 本機 Lighthouse（3 次中位數）：這一段與下面 overlay、glossary、award、地圖 CSS 的調整合起來，名詞圖鑑 2761 到 2459ms、名詞頁 2872 到 2419ms、
             // 地圖 2901 到 2451ms、章節頁 2873 到 2423ms，回到 2500ms 門檻內。
@@ -199,7 +202,7 @@ export default defineConfig({
             // 同時 6 個請求時每條連線一次往返只送約 4.3 KB（含約 0.9 KB 的回應標頭），common 目前約 3.4 KB gzip，再大就多一次往返
             {
               name: 'common',
-              test: /[\\/](packages[\\/](i18n[\\/]src[\\/]format\.ts|web-ui[\\/]src[\\/]components[\\/](icons|NoteTag|Skeleton|Toast|States|Stars|Badge|TopBar|BackButton|Disclosure|motion|Card)\.tsx?)|apps[\\/]web[\\/]src[\\/](features[\\/]glossary[\\/]useCategoryLabel|lib[\\/]level-exit)\.ts)$/,
+              test: /[\\/](packages[\\/](i18n[\\/]src[\\/]format\.ts|tokens[\\/]src[\\/](index|scale)\.ts|web-ui[\\/]src[\\/]components[\\/](icons|NoteTag|Skeleton|Toast|States|Stars|Badge|TopBar|BackButton|Disclosure|motion|Card)\.tsx?)|apps[\\/]web[\\/]src[\\/](features[\\/]glossary[\\/]useCategoryLabel|features[\\/]me[\\/]useExpanded|features[\\/]lab[\\/]progress-shape|lib[\\/]level-exit)\.ts)$/,
               priority: 3,
             },
             { name: 'zod', test: /[\\/]node_modules[\\/](\.pnpm[\\/][^\\/]+[\\/]node_modules[\\/])?zod[\\/]/, priority: 2 },
@@ -315,6 +318,28 @@ export default defineConfig({
             },
             // 其餘懶載入頁面共用的模組（空狀態、圖示、安裝說明、徽章、圖鑑索引等）：entriesAware 依「哪些頁面用到」分組，作答頁只載空狀態與 Toast，
             // 不會為了安裝說明與徽章連地圖的 chunk 一起載；小於 4 KB 的子群組併進鄰近的子群組，請求數不會失控（06 第 8.2 節）
+            // 實驗室六頁共用的模組（features/lab：列名、預測、進度、階段、報表表格、燈號、指標清單等）合成一個 chunk（2026-11-01，V24）：
+            // 交給 shared 的 entriesAware 會依「哪幾頁用到」切成四、五個 0.4 到 2.4 KB 的小 chunk，步驟頁第一波 19 個請求，本機 Lighthouse 的模擬下比作答頁多兩層往返。
+            // lab-core.ts 不抓：它是 lazy-core.ts 動態載入的進入點（整個核心），抓進來就回到第一波。要在 markup、quiz-view、quiz 之後宣告，
+            // 文字標記、名詞 context 與 web-ui 的題目元件才不會被這裡連依賴一起抓走
+            // 「我的」頁的實驗室摘要（summary.ts）不抓：只有「我的」頁用它，留在 Me 的 chunk；它只 import 進度的形狀（progress-shape.ts，在 common），
+            // 「我的」頁才不會為了那一列載整個實驗室的 chunk（實測抓進來時「我的」第一波多約 16 KB、4 個請求）
+            // 試過把實驗室六個頁面（pages/Lab*.tsx）也併進來（步驟頁第一波 15 個請求變 14 個，但 lab-ui 從 10 KB 變 20 KB）：本機 Lighthouse 的模擬數字不變，
+            // 頁面模組併進群組後 Vite manifest 沒有它們的鍵、預先載入表要另外找，所以不採用（2026-11-01 實測）
+            // 階段 2 到 10 的畫面元件（stage-views.tsx 與它 re-export 的檔）也不抓：它們由 lazy-stages.ts 在畫面掀開之後才載（下面的 lab-stages 群組），
+            // 抓進 lab-ui 就回到第一波（約 7 KB gzip，連帶 web-ui 的 Segmented 與 ImpactPicker 那個 chunk）
+            {
+              name: 'lab-ui',
+              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](?!(lab-core|summary|stage-views|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling)\.tsx?$)/,
+              priority: 1,
+            },
+            // 步驟頁階段 2 到 10 的畫面元件：lazy-stages.ts 動態載入的進入點 stage-views.tsx 加它 re-export 的元件（只有這些階段用到的 RollingMoney 與 rolling 也在）。
+            // 要在 lab-ui 之後宣告：列名、預測的純函式、階段規則等第一波就要的模組先被 lab-ui 拿走，這裡才不會連依賴把它們抓走
+            {
+              name: 'lab-stages',
+              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](stage-views|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling)\.tsx?$/,
+              priority: 1,
+            },
             { name: 'shared', minShareCount: 2, entriesAware: true, entriesAwareMergeThreshold: 4096, priority: 1 },
           ],
         },

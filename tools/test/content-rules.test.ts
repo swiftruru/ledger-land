@@ -2,7 +2,8 @@
 // 用 04 第 17 節的範例搭配核心的自編故事；不含老師的金額。
 import { describe, expect, it } from 'vitest';
 import { validateBundle } from '@ledgerland/content-schema';
-import { DEFAULT_OPEN_REFS, hasErrors, openPendingRefs, parseBundle, runAccountingChecks } from '../lib/content-rules.mjs';
+import { buildStatements, createCoreContext, replayStory } from '@ledgerland/core';
+import { DEFAULT_OPEN_REFS, FIRST_PAINT_LINES, hasErrors, openPendingRefs, parseBundle, runAccountingChecks, storyFirstPaint } from '../lib/content-rules.mjs';
 import {
   blockedTemplateEntry,
   bundleWith,
@@ -345,5 +346,54 @@ describe('hasErrors', () => {
   it('只看 error，不看 warning', () => {
     expect(hasErrors([{ rule: 'x', file: 'f', path: 'p', message: 'm', severity: 'warning' }])).toBe(false);
     expect(hasErrors([{ rule: 'x', file: 'f', path: 'p', message: 'm', severity: 'error' }])).toBe(true);
+  });
+});
+
+describe('storyFirstPaint：步驟頁第一次繪製的數字與列名（V24）', () => {
+  const ctx = createCoreContext();
+  const story = storyEntry.data as Parameters<typeof storyFirstPaint>[0];
+  const fp = storyFirstPaint(story, ctx)!;
+
+  it('列名：恆等式、前情摘要與預測固定的六列都有版面的名稱（雙語）與 termRef；數字：每一步的佔位符值、交易前的三列與交易後的三列都和核心一致', () => {
+    expect(fp).not.toBeNull();
+    const ids = [...FIRST_PAINT_LINES.equation, ...FIRST_PAINT_LINES.recap, ...FIRST_PAINT_LINES.predict];
+    expect(ids.filter((id) => fp.lines[id] === undefined)).toEqual([]);
+    expect(ids.filter((id) => typeof fp.lines[id]!.label['zh-TW'] !== 'string' || typeof fp.lines[id]!.label.en !== 'string')).toEqual([]);
+    expect(fp.lines.bs_total_assets!.termRef).toMatch(/^tm_/);
+    const run = replayStory(story, [], ctx);
+    if (!run.ok) throw new Error('重播失敗');
+    const steps = [...story.steps].sort((a, b) => a.order - b.order);
+    expect(Object.keys(fp.steps)).toEqual(steps.map((st) => st.id));
+    const first = fp.steps[steps[0]!.id]!;
+    expect(first.values['e1.amount']).toBe(2400000);
+    // 第一步交易前是期初：沒有期初的自編故事三列都是 0
+    expect(first.before).toEqual({ bs_cash: 0, bs_inventory: 0, bs_retained_earnings: 0 });
+    // 每一步交易後的恆等式三列、交易前（上一步交易後）的前情摘要三列都和直接呼叫核心的累計報表一致
+    const statementsAt = (id: string) => buildStatements(run.value, { kind: 'cumulative', to: id }, ctx.layout, ctx.policy);
+    const expectedAfter = steps.map((st) => {
+      const after = statementsAt(st.id);
+      return Object.fromEntries(FIRST_PAINT_LINES.equation.map((id) => [id, after.lines.get(id)?.value ?? 0]));
+    });
+    expect(steps.map((st) => fp.steps[st.id]!.after)).toEqual(expectedAfter);
+    const expectedBefore = steps.slice(1).map((_, i) => {
+      const before = statementsAt(steps[i]!.id);
+      return Object.fromEntries(FIRST_PAINT_LINES.recap.map((id) => [id, before.lines.get(id)?.value ?? 0]));
+    });
+    expect(steps.slice(1).map((st) => fp.steps[st.id]!.before)).toEqual(expectedBefore);
+    // 恆等式：資產總計等於負債加權益（每一步）
+    for (const st of steps) {
+      const a = fp.steps[st.id]!.after;
+      expect(a.bs_total_assets).toBe(a.bs_total_liabilities! + a.bs_total_equity!);
+    }
+  });
+
+  it('步驟另訂的方向目標的列也進列名；重播失敗回傳 null', () => {
+    const withTarget = structuredClone(story) as typeof story & { steps: { predictTargets?: unknown[] }[] };
+    withTarget.steps[0]!.predictTargets = [{ id: 'pt1', kind: 'line', line: 'bs_accounts_receivable', measure: 'direction' }];
+    expect(storyFirstPaint(withTarget, ctx)!.lines.bs_accounts_receivable).toBeDefined();
+    expect(fp.lines.bs_accounts_receivable).toBeUndefined();
+    const broken = structuredClone(story) as typeof story & { steps: { events: { template: string }[] }[] };
+    broken.steps[6]!.events[0]!.template = 'tpl.does_not_exist';
+    expect(storyFirstPaint(broken, ctx)).toBeNull();
   });
 });

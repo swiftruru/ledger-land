@@ -7,17 +7,9 @@ import { formatRatioValue } from '../quiz/ratio-format.ts';
 import type { RatioUnit } from '../quiz/ratio-units.ts';
 import type { RatioResult, Statements } from './lab-core.ts';
 import { useTerms } from '../quiz/terms.tsx';
+import { lineLabelOf, type LayoutLike, type LocalizedText } from './line-labels.ts';
 
-type LocalizedText = { readonly 'zh-TW': string; readonly en: string };
-type LayoutLike = { readonly statements: Readonly<Record<string, readonly { id: string; label: LocalizedText; termRef?: string | null }[]>> };
-
-export function lineLabelOf(layout: LayoutLike, lineId: string, locale: Locale, labelOf: (termId: string) => string | undefined): string {
-  for (const lines of Object.values(layout.statements)) {
-    const line = lines.find((l) => l.id === lineId);
-    if (line) return (line.termRef ? labelOf(line.termRef) : undefined) ?? line.label[locale] ?? line.label['zh-TW'];
-  }
-  return lineId;
-}
+export { firstPaintLayout, lineLabelOf, type LayoutLike } from './line-labels.ts';
 
 /** 畫面上的名稱：列、科目、指標 */
 export function useLabLabels(layout: LayoutLike) {
