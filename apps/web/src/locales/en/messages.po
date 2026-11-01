@@ -890,6 +890,12 @@ msgstr "Statement"
 msgid "quiz.journal.note"
 msgstr "On the statement, ‘Purchases’ and ‘Closing inventory’ are lines derived from the inventory account, not accounts in a journal entry; the entry lists accounts only."
 
+#. 「我的」學習群組實驗室列的標題
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.lab.title"
+msgstr "Statement Lab"
+
 #. 五步驟勾稽填格作答後的摘要；correctCount 是填對的格數、total 是總格數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
@@ -2146,6 +2152,22 @@ msgstr "Assets"
 #: src/features/quiz/categories.ts
 msgid "classify.ratio.financialStructure"
 msgstr "Financial structure"
+
+#. 「我的」實驗室列的說明（走過至少一步）；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: fmt(labSummary.stepsDone)
+#. placeholder {1}: fmt(labSummary.steps)
+#. placeholder {2}: fmt(labSummary.right)
+#. placeholder {3}: fmt(labSummary.total)
+#: src/pages/Me.tsx
+msgid "me.lab.progress"
+msgstr "{0} of {1} steps done, predictions {2} of {3} right"
+
+#. 「我的」實驗室列的說明（還沒走過）
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.lab.desc"
+msgstr "Follow the story step by step and watch each transaction flow into the three statements"
 
 #. 頂部工具：捲到目前關卡的按鈕
 #. js-lingui-explicit-id

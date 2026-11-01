@@ -96,6 +96,14 @@ test.describe('故事步驟頁', () => {
     await expect(effects.locator('li')).toHaveCount(4);
     await expect(effects.locator('[data-account="cash"]')).toContainText('3,000,000');
     await expect(page.getByTestId('lab-cash-verdict')).toHaveText('你的預測正確');
+    // 揭曉卡：第 7 步有 8 個目標（現金、五層利益加故事另訂的兩個），全選「增加」時只有存貨那一個錯
+    const reveal = page.getByTestId('lab-reveal');
+    await expect(reveal.getByRole('heading')).toHaveText('揭曉：8 個猜對 7 個');
+    await expect(reveal.locator('li')).toHaveCount(8);
+    await expect(reveal.locator('li[data-correct="false"]')).toHaveCount(1);
+    await expect(reveal.locator('li[data-correct="false"]')).toContainText('你猜增加，實際是減少');
+    await expect(reveal.locator('li').first()).toContainText('你猜增加，答對了');
+    await expect(reveal.locator('li').first()).toContainText('NT$450,000 → NT$3,450,000');
     // 分錄層預設收合，展開後有分錄與 T 字帳
     await expect(page.getByTestId('lab-journal-entry')).toBeHidden();
     await page.locator('.ll-lab-journal summary').click();
@@ -134,6 +142,7 @@ test.describe('故事步驟頁', () => {
     await expect(page.getByTestId('lab-stakeholders').locator('li')).toHaveCount(2);
     await page.getByTestId('lab-next').click();
     await expect(page.getByTestId('lab-finished')).toBeVisible();
+    await expect(page.getByTestId('lab-finish-score')).toHaveText('這一步的預測猜對 7／8；整個故事到目前 7／8（1 步）');
     await expect(page.getByTestId('lab-next-step')).toHaveAttribute('href', `/lab/story/${STORY}/st_skx6ss/`);
     await expect.poll(() => readLabState(page)).toEqual([expect.objectContaining({ storyId: STORY, stepId: STEP7 })]);
     // 故事列表標記走完
@@ -163,6 +172,7 @@ test.describe('故事步驟頁', () => {
     await page.getByTestId('lab-next').click();
     const card = page.getByTestId('lab-finished');
     await expect(card).toContainText('練習完成');
+    await expect(page.getByTestId('lab-finish-score')).toContainText('這一步的預測猜對');
     await expect(card.getByRole('button', { name: '再練一次' })).toBeVisible();
     await expect(card.getByRole('link', { name: '回到故事地圖' })).toHaveAttribute('href', `/lab/story/${STORY}/`);
     await expect(card.getByRole('button', { name: '從這一步接著走故事' })).toBeVisible();

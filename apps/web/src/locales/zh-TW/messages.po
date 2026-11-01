@@ -890,6 +890,12 @@ msgstr "報表"
 msgid "quiz.journal.note"
 msgstr "報表上的「本期進貨」「期末存貨」是由存貨帳推導出來的列，不是分錄裡的科目；分錄只寫科目。"
 
+#. 「我的」學習群組實驗室列的標題
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.lab.title"
+msgstr "報表實驗室"
+
 #. 五步驟勾稽填格作答後的摘要；correctCount 是填對的格數、total 是總格數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
@@ -2146,6 +2152,22 @@ msgstr "資產"
 #: src/features/quiz/categories.ts
 msgid "classify.ratio.financialStructure"
 msgstr "資產結構"
+
+#. 「我的」實驗室列的說明（走過至少一步）；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: fmt(labSummary.stepsDone)
+#. placeholder {1}: fmt(labSummary.steps)
+#. placeholder {2}: fmt(labSummary.right)
+#. placeholder {3}: fmt(labSummary.total)
+#: src/pages/Me.tsx
+msgid "me.lab.progress"
+msgstr "走完 {0}／{1} 步，預測猜對 {2}／{3}"
+
+#. 「我的」實驗室列的說明（還沒走過）
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.lab.desc"
+msgstr "跟著故事一步一步看交易怎麼流進三表"
 
 #. 頂部工具：捲到目前關卡的按鈕
 #. js-lingui-explicit-id

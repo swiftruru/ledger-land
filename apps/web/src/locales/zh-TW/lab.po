@@ -154,6 +154,24 @@ msgstr "仍無法計算"
 msgid "lab.step.fromQuestion"
 msgstr "你從一道題目來到這一步。"
 
+#. 揭曉卡的一列；chosen 與 answer 是選項文字
+#. js-lingui-explicit-id
+#: src/features/lab/PredictReveal.tsx
+msgid "lab.reveal.wrong"
+msgstr "你猜{chosen}，實際是{answer}"
+
+#. 揭曉卡：指標四捨五入後前後相同；chosen 是選項文字
+#. js-lingui-explicit-id
+#: src/features/lab/PredictReveal.tsx
+msgid "lab.reveal.nearly"
+msgstr "你猜{chosen}，幾乎不變（變動小於顯示位數），算對"
+
+#. 揭曉卡的一列；chosen 是選項文字
+#. js-lingui-explicit-id
+#: src/features/lab/PredictReveal.tsx
+msgid "lab.reveal.right"
+msgstr "你猜{chosen}，答對了"
+
 #. 預測揭曉
 #. js-lingui-explicit-id
 #: src/features/lab/EffectsList.tsx
@@ -512,6 +530,20 @@ msgstr "指標版本"
 msgid "lab.stage.ratios"
 msgstr "指標變化"
 
+#. 階段 3 播報的開頭；兩個數字已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(revealScore.total, locale)
+#. placeholder {1}: formatNumber(revealScore.right, locale)
+#: src/pages/LabStep.tsx
+msgid "lab.live.reveal"
+msgstr "揭曉：{0} 個猜對 {1} 個"
+
+#. 揭曉卡的標題；兩個數字已格式化
+#. js-lingui-explicit-id
+#: src/features/lab/PredictReveal.tsx
+msgid "lab.reveal.title"
+msgstr "揭曉：{totalText} 個猜對 {rightText} 個"
+
 #. 預測面板的導言
 #. js-lingui-explicit-id
 #: src/features/lab/PredictPanel.tsx
@@ -673,6 +705,12 @@ msgstr "步驟{0}（勾稽點 {1}）"
 #: src/features/lab/CheckLights.tsx
 msgid "lab.check.step1"
 msgstr "步驟①：五層利益"
+
+#. 揭曉卡：這個目標沒有猜
+#. js-lingui-explicit-id
+#: src/features/lab/PredictReveal.tsx
+msgid "lab.reveal.none"
+msgstr "沒有選"
 
 #. 指標類別
 #. js-lingui-explicit-id
@@ -1027,6 +1065,17 @@ msgstr "這一步沒有指標變動。"
 msgid "lab.sandbox.precondition"
 msgstr "這一步的前置條件不成立"
 
+#. 完成卡的預測成績；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(revealScore.right, locale)
+#. placeholder {1}: formatNumber(revealScore.total, locale)
+#. placeholder {2}: formatNumber(storyTotals.right, locale)
+#. placeholder {3}: formatNumber(storyTotals.total, locale)
+#. placeholder {4}: formatNumber(storyTotals.steps, locale)
+#: src/pages/LabStep.tsx
+msgid "lab.finish.score"
+msgstr "這一步的預測猜對 {0}／{1}；整個故事到目前 {2}／{3}（{4} 步）"
+
 #. 完成卡標題
 #. js-lingui-explicit-id
 #: src/pages/LabStep.tsx
@@ -1062,6 +1111,12 @@ msgstr "這樣改會讓第 {order} 步出現負數；這一格可以輸入 {min}
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.rangeDownstreamAccount"
 msgstr "這樣改會讓第 {order} 步的{account}變成負數；這一格可以輸入 {min} 到 {max}"
+
+#. 揭曉卡的原因句：收入與費用都沒動
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.reveal.noteLevels"
+msgstr "這筆交易不經過損益表，所以五層利益都不變。"
 
 #. 進階模式的開關
 #. js-lingui-explicit-id
@@ -1152,6 +1207,15 @@ msgstr "項目"
 #: src/features/lab/StageBar.tsx
 msgid "lab.stage.predict"
 msgstr "預測"
+
+#. 故事頁公司名稱下面的預測成績；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(totals.steps, locale)
+#. placeholder {1}: formatNumber(totals.right, locale)
+#. placeholder {2}: formatNumber(totals.total, locale)
+#: src/pages/LabStory.tsx
+msgid "lab.story.score"
+msgstr "預測成績：{0} 步猜對 {1}／{2}"
 
 #. T 字帳的結餘是零，不分借貸；數字已格式化
 #. js-lingui-explicit-id

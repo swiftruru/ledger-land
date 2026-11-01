@@ -15,6 +15,7 @@ import {
   CompassIcon,
   DeviceIcon,
   ExportIcon,
+  FlaskIcon,
   GearIcon,
   HeartIcon,
   InfoIcon,
@@ -32,6 +33,7 @@ import { PlayerCard } from '../features/me/PlayerCard.tsx';
 import { daysSinceLocal } from '../features/me/days.ts';
 import { useExpanded } from '../features/me/useExpanded.ts';
 import { EMPTY_STATS, usePlayerStats } from '../features/me/usePlayerStats.ts';
+import { useLabSummary } from '../features/lab/summary.ts';
 import { useDueCount } from '../features/quiz/useDueCount.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -67,11 +69,12 @@ export default function Me() {
   const [favCount, setFavCount] = useState<number | null>(null);
   const due = useDueCount();
   const badgeRow = useBadgeRow();
+  const labSummary = useLabSummary();
   const wide = useExpanded();
   const fmt = (n: number) => formatNumber(n, locale);
   const href = (p: string) => localePath(locale, p);
   // 這一頁第一次繪製要的資料：統計（含徽章與圖鑑數）、收藏（模組與清單）、今日複習數、徽章橫排的模組；取不到也會回報 true
-  usePageReady(stats !== null && favCount !== null && due !== null && badgeRow !== undefined);
+  usePageReady(stats !== null && favCount !== null && due !== null && badgeRow !== undefined && labSummary !== undefined);
   // 讀到之前整頁看不見：用空統計排版面，數字不會以「…」出現在畫面上
   const shown = stats ?? EMPTY_STATS;
 
@@ -209,6 +212,21 @@ export default function Me() {
               trailing={due !== null && due > 0 ? <Badge kind="danger">{fmt(due)}</Badge> : undefined}
               href={href('/review/')}
               data-testid="me-review-row"
+            />
+            <NavRow
+              icon={<FlaskIcon />}
+              title={t({ id: 'me.lab.title', message: '報表實驗室', comment: '「我的」學習群組實驗室列的標題' })}
+              description={
+                labSummary && labSummary.stepsDone > 0
+                  ? t({
+                      id: 'me.lab.progress',
+                      message: `走完 ${fmt(labSummary.stepsDone)}／${fmt(labSummary.steps)} 步，預測猜對 ${fmt(labSummary.right)}／${fmt(labSummary.total)}`,
+                      comment: '「我的」實驗室列的說明（走過至少一步）；數字都已格式化',
+                    })
+                  : t({ id: 'me.lab.desc', message: '跟著故事一步一步看交易怎麼流進三表', comment: '「我的」實驗室列的說明（還沒走過）' })
+              }
+              href={href(labSummary ? `/lab/story/${labSummary.storyId}/` : '/lab/')}
+              data-testid="me-lab-row"
             />
           </NavList>
           <NavList title={t({ id: 'me.group.device', message: '這台裝置', comment: '「我的」選單列的群組標題' })}>

@@ -69,6 +69,12 @@ export function isPredictionCorrect(chosen: PredictChoice | undefined, answer: P
 
 export type PredictionRecord = Readonly<Record<string, PredictChoice>>;
 
+/** 一步的預測成績：猜對幾個、總共幾個（記下預測時算好存進進度，故事頁與「我的」不必重播核心） */
+export interface PredictScore {
+  readonly right: number;
+  readonly total: number;
+}
+
 export function isPredictionComplete(targets: readonly PredictTarget[], record: PredictionRecord | undefined): boolean {
   return targets.every((t) => record?.[t.id] !== undefined);
 }

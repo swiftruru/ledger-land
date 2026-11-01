@@ -3,7 +3,7 @@
 // 分錄旁加一句：教材版面的「本期進貨」「期末存貨」不是分錄裡的科目，而是由存貨帳推導出來的列。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { formatMoney } from '@ledgerland/i18n';
-import { Disclosure, NoteTag } from '@ledgerland/web-ui';
+import { CheckCircleIcon, Disclosure, NoteTag, XCircleIcon } from '@ledgerland/web-ui';
 import { Markup } from '../quiz/Markup.tsx';
 import type { LabStep } from './lab-core.ts';
 import { useLabLabels } from './labels.ts';
@@ -66,6 +66,9 @@ export function EffectsList({ step, chart, layout, journalOpen, onJournalToggle,
                 </span>
                 {verdict && (
                   <span className={`ll-lab-verdict is-${verdict.correct ? 'right' : 'wrong'}`} data-testid="lab-cash-verdict">
+                    <span className="ll-lab-verdict__icon" aria-hidden="true">
+                      {verdict.correct ? <CheckCircleIcon /> : <XCircleIcon />}
+                    </span>
                     {verdict.correct
                       ? t({ id: 'lab.predict.right', message: '你的預測正確', comment: '預測揭曉' })
                       : t({ id: 'lab.predict.wrong', message: '和你的預測不同', comment: '預測揭曉' })}

@@ -61,3 +61,11 @@ describe('方向', () => {
     expect(isPredictionComplete(t, rest)).toBe(false);
   });
 });
+
+describe('predictTotals', () => {
+  it('把每一步的成績加總，steps 是有記過預測的步數', async () => {
+    const { predictTotals } = await import('../src/features/lab/progress.ts');
+    expect(predictTotals({ predictScores: {} })).toEqual({ steps: 0, right: 0, total: 0 });
+    expect(predictTotals({ predictScores: { a: { right: 4, total: 6 }, b: { right: 6, total: 6 } } })).toEqual({ steps: 2, right: 10, total: 12 });
+  });
+});

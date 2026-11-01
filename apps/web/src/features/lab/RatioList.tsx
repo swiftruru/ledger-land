@@ -1,7 +1,7 @@
 // 指標卡（03 第 3.3 節階段 9、第 3.10 節）：每張卡顯示名稱、版本的公式（分子 ÷ 分母，線以版面名稱顯示）、代入的分子分母、前 → 後與狀態、原因說明。
 // 階段 9 先列狀態或數值有變的指標，其餘收在「其他指標」；指標實驗室列全部並依六大類分組。數字全部來自核心的 RatioResult。
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Disclosure, NoteTag, WarningIcon } from '@ledgerland/web-ui';
+import { CheckCircleIcon, Disclosure, NoteTag, WarningIcon, XCircleIcon } from '@ledgerland/web-ui';
 import type { ReactNode } from 'react';
 import type { RatioResult } from './lab-core.ts';
 import { formatRatio, useLabLabels } from './labels.ts';
@@ -117,6 +117,9 @@ export function RatioCard({ item, layout, verdict = null, suggestion, versionLab
       {spec.flags.includes('single_period_approx') || after.flags.includes('single_period_approx') ? <NoteTag kind="single_period" /> : null}
       {verdict && (
         <p className={`ll-lab-verdict is-${verdict.correct ? 'right' : 'wrong'}`}>
+          <span className="ll-lab-verdict__icon" aria-hidden="true">
+            {verdict.correct ? <CheckCircleIcon /> : <XCircleIcon />}
+          </span>
           {verdict.nearly
             ? t({ id: 'lab.predict.nearly', message: '幾乎不變（變動小於顯示位數）', comment: '預測揭曉：四捨五入後前後相同' })
             : verdict.correct

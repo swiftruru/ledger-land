@@ -4,9 +4,10 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
-import { localePath } from '@ledgerland/i18n';
+import { formatNumber, localePath } from '@ledgerland/i18n';
 import { Badge, Button, CheckCircleIcon, ErrorState, NavList, NavRow, PlayIcon, TopBar } from '@ledgerland/web-ui';
 import { MapIcon } from '@ledgerland/web-ui/map';
+import { predictTotals } from '../features/lab/progress.ts';
 import { useLabStory } from '../features/lab/useLab.ts';
 import { useLabBack } from '../features/lab/useLabBack.ts';
 import { loadChapterIndex, type ChapterSummary, type StorySnapshot } from '../lib/content.ts';
@@ -66,6 +67,7 @@ export default function LabStory() {
   const done = new Set(progress.progress.done);
   const practised = new Set(progress.progress.practised);
   const current = progress.state?.stepId;
+  const totals = predictTotals(progress.progress);
   const chapterTitle = (id: string) => chapterIndex?.find((c) => c.id === id)?.title ?? id;
   const levelTitle = (chapterId: string, levelId: string) =>
     chapterIndex?.find((c) => c.id === chapterId)?.levels?.find((l) => l.id === levelId)?.title ?? levelId;
@@ -73,6 +75,15 @@ export default function LabStory() {
     <>
       {top}
       <p className="ll-lab-story__company">{story.company.name}</p>
+      {totals.steps > 0 && (
+        <p className="ll-lab-story__score" data-testid="lab-story-score">
+          {t({
+            id: 'lab.story.score',
+            message: `預測成績：${formatNumber(totals.steps, locale)} 步猜對 ${formatNumber(totals.right, locale)}／${formatNumber(totals.total, locale)}`,
+            comment: '故事頁公司名稱下面的預測成績；數字都已格式化',
+          })}
+        </p>
+      )}
       {chapters.map((c, ci) => {
         const links = new Map<string, { chapter: string; level?: string }>();
         for (const s of c.steps) for (const l of s.chapterLinks ?? []) links.set(`${l.chapter}:${l.level ?? ''}`, l);
