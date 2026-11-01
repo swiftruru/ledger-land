@@ -180,7 +180,7 @@ test('INP：CPU 降速 4 倍，作答頁、地圖、圖鑑與實驗室的互動�
   for (let i = 0; i < n; i++) await radios.nth(i).check();
   await settle();
   await page.getByTestId('lab-predict-submit').click();
-  await page.getByTestId('lab-skip').waitFor();
+  await expect(page.getByTestId('lab-next')).toBeEnabled();
   await log('實驗室：記下預測');
   await page.getByTestId('lab-next').click();
   await page.getByTestId('lab-effects').waitFor();

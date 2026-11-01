@@ -1,4 +1,5 @@
-// 階段操作列（03 第 3.11 節）：固定在畫面底部（Tab bar 上方）、避開安全區域；「上一步、下一步」，預測完成後有「直接看結果」；
+// 階段操作列（03 第 3.11 節）：固定在畫面底部（Tab bar 上方）、避開安全區域；「上一步、下一步」與階段選單；回看走完過的步驟時選單最後多一項「跳到最後一個階段」
+// （2026-11-01 維護者回饋：原本放在操作列上的「直接看結果」像主要動作，第一次走的人會按下去，整步被跳過；現在第一次走與單獨練習都沒有這個捷徑）；
 // 進度文字「階段 5／10：損益表」；換階段時焦點留在「下一步」上，方便連續按 Enter；方向鍵左右切換階段（焦點不在輸入框時）由父層處理。
 import { useLingui } from '@lingui/react/macro';
 import { Button, CaretLeftIcon, CaretRightIcon, IconButton, MenuButton, MenuItem, PlayIcon } from '@ledgerland/web-ui';
@@ -73,20 +74,18 @@ export function StageBar({ stage, canPrev, canNext, canSkip, isLast, canJumpTo, 
             id="ll-lab-prev"
           />
         </span>
-        <MenuButton label={progress} variant="quiet" align="start" className="ll-lab-stagebar__jump">
+        <MenuButton label={progress} variant="quiet" align="start" side="up" className="ll-lab-stagebar__jump">
           {STAGES.map((id, i) => (
             <MenuItem key={id} onClick={() => jump(i)} disabled={!canJumpTo(i)}>
               {i + 1}. {names[id]}
             </MenuItem>
           ))}
+          {canSkip && (
+            <MenuItem icon={<PlayIcon />} onClick={skip} data-testid="lab-skip">
+              {t({ id: 'lab.stage.skip', message: '跳到最後一個階段', comment: '階段選單最後一項：回看走完過的步驟時，直接切到最後一個階段' })}
+            </MenuItem>
+          )}
         </MenuButton>
-        {canSkip && (
-          <span className="ll-lab-stagebar__item">
-            <Button variant="quiet" size="md" icon={<PlayIcon />} onClick={skip} data-testid="lab-skip">
-              {t({ id: 'lab.stage.skip', message: '直接看結果', comment: '階段操作列的按鈕' })}
-            </Button>
-          </span>
-        )}
         <span className="ll-lab-stagebar__item is-next">
           <Button variant="primary" size="md" iconEnd={<CaretRightIcon />} onClick={onNext} disabled={!canNext} data-testid="lab-next">
             {isLast

@@ -28,6 +28,8 @@ export interface MenuButtonProps {
   variant?: 'chrome' | 'quiet';
   /** 面板對齊按鈕的哪一邊，預設 end（右緣對齊） */
   align?: 'start' | 'end';
+  /** 面板開在按鈕下方（預設）或上方：貼在畫面底部的操作列（實驗室的階段列）要往上開，不然面板跑出畫面 */
+  side?: 'down' | 'up';
   /** 只放 MenuItem */
   children: ReactNode;
   onOpenChange?: (open: boolean) => void;
@@ -47,6 +49,7 @@ export function MenuButton({
   icon,
   variant = 'chrome',
   align = 'end',
+  side = 'down',
   children,
   onOpenChange,
   defaultOpen = false,
@@ -149,7 +152,13 @@ export function MenuButton({
       />
       {open && (
         <MenuContext.Provider value={{ close }}>
-          <div ref={menu} id={menuId} className={`ll-menu__panel ll-menu__panel--${align}`} role="menu" aria-labelledby={buttonId}>
+          <div
+            ref={menu}
+            id={menuId}
+            className={`ll-menu__panel ll-menu__panel--${align}${side === 'up' ? ' ll-menu__panel--up' : ''}`}
+            role="menu"
+            aria-labelledby={buttonId}
+          >
             {children}
           </div>
         </MenuContext.Provider>

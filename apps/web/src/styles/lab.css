@@ -940,10 +940,10 @@
 .ll-lab-stagebar__item.is-next {
   margin-left: auto;
 }
+/* 階段選單的外框不能 overflow: hidden（按鈕的名稱是 aria-label，沒有東西要裁）：選單面板是它的絕對定位子元素，裁了就整個看不到（2026-11-01 發現，選單從 M4a 起在手機上一直被裁掉） */
 .ll-lab-stagebar__jump {
   flex: 1 1 auto;
   min-width: 0;
-  overflow: hidden;
 }
 @media (min-width: 1024px) {
   .ll-lab-stagebar {

@@ -762,12 +762,6 @@ msgstr "目前沒有已發布的故事"
 msgid "lab.sandbox.replayFailed"
 msgstr "目前的修改讓第 {0} 步無法過帳，請改回或刪除那一步"
 
-#. 階段操作列的按鈕
-#. js-lingui-explicit-id
-#: src/features/lab/StageBar.tsx
-msgid "lab.stage.skip"
-msgstr "直接看結果"
-
 #. 燈號狀態：兩邊相符
 #. js-lingui-explicit-id
 #: src/features/lab/CheckLights.tsx
@@ -1046,6 +1040,12 @@ msgstr "資產負債表"
 #: src/pages/LabStory.tsx
 msgid "lab.story.done"
 msgstr "走完了"
+
+#. 階段選單最後一項：回看走完過的步驟時，直接切到最後一個階段
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.skip"
+msgstr "跳到最後一個階段"
 
 #. 帶 (+)(-) 的累計列在本筆變動檢視的加註（T12）
 #. js-lingui-explicit-id

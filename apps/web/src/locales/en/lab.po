@@ -762,12 +762,6 @@ msgstr "No story has been published yet"
 msgid "lab.sandbox.replayFailed"
 msgstr "Your edits stop step {0} from being posted; change it back or remove that step"
 
-#. 階段操作列的按鈕
-#. js-lingui-explicit-id
-#: src/features/lab/StageBar.tsx
-msgid "lab.stage.skip"
-msgstr "Skip to results"
-
 #. 燈號狀態：兩邊相符
 #. js-lingui-explicit-id
 #: src/features/lab/CheckLights.tsx
@@ -1046,6 +1040,12 @@ msgstr "Balance sheet"
 #: src/pages/LabStory.tsx
 msgid "lab.story.done"
 msgstr "Done"
+
+#. 階段選單最後一項：回看走完過的步驟時，直接切到最後一個階段
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.skip"
+msgstr "Skip to the last stage"
 
 #. 帶 (+)(-) 的累計列在本筆變動檢視的加註（T12）
 #. js-lingui-explicit-id
