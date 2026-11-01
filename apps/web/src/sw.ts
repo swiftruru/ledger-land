@@ -62,10 +62,10 @@ cleanupOutdatedCaches();
 // precache 的路由（precacheAndRoute 的後半：directoryIndex、cleanURLs 與忽略 utm 參數都用 Workbox 的預設）
 registerRoute(new PrecacheRoute(controller));
 // 離線導覽 fallback：中文與 /en/ 開頭的路徑都回同一份殼層 index.html；/assets/ 與 /content/ 找不到檔案時不回殼層，
-// Cloudflare 保留的 /cdn-cgi/、sw.js 本身與 stub 端點一律走網路（06 第 3.1 節）
+// Cloudflare 保留的 /cdn-cgi/、sw.js 本身、stub 端點、sitemap.xml 與 robots.txt（給搜尋引擎的檔案，在瀏覽器打開也要看到原檔）一律走網路（06 第 3.1 節）
 registerRoute(
   new NavigationRoute(controller.createHandlerBoundToURL('index.html'), {
-    denylist: [/^\/assets\//, /^\/content\//, /^\/sw\.js$/, /^\/cdn-cgi\//, /^\/__ll/],
+    denylist: [/^\/assets\//, /^\/content\//, /^\/sw\.js$/, /^\/cdn-cgi\//, /^\/__ll/, /^\/sitemap\.xml$/, /^\/robots\.txt$/],
   }),
 );
 // prompt 模式：只有頁面按下更新提示、workbox-window 送來 SKIP_WAITING 才切換（06 第 3.3 節）

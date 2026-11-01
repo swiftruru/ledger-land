@@ -8,7 +8,11 @@ import table from '../src/shell/route-preload.json' with { type: 'json' };
 const root = fileURLToPath(new URL('..', import.meta.url));
 const router = readFileSync(`${root}src/app/router.tsx`, 'utf8');
 const lazyPages = [...router.matchAll(/import\('\.\.\/pages\/([A-Za-z]+)\.tsx'\)/g)].map((m) => `src/pages/${m[1]}.tsx`);
-const routes = table.routes as { pattern: string; module: string; content: string[] }[];
+// lazyPage 的第三個參數是 'pages' 的頁面：字串在第二層 catalog（lingui.config.ts 的 PAGE_CATALOG_SOURCES）
+const pagesCatalogPages = [...router.matchAll(/import\('\.\.\/pages\/([A-Za-z]+)\.tsx'\)(?:,\s*[^,()]+(?:\([^)]*\))?)?,\s*'pages'\)/g)].map(
+  (m) => `src/pages/${m[1]}.tsx`,
+);
+const routes = table.routes as { pattern: string; module: string; content: string[]; catalog?: string }[];
 const match = (path: string) => routes.find((r) => new RegExp(r.pattern).test(path))?.module;
 
 describe('route-preload.json', () => {
@@ -28,6 +32,18 @@ describe('route-preload.json', () => {
     expect(match('/')).toBeUndefined();
     expect(match('/me/')).toBe('src/pages/Me.tsx');
     expect(match('/level/lv_h2zx7srx/extra/')).toBeUndefined();
+  });
+
+  it('catalog 為 pages 的路由和 router.tsx 裡 lazyPage 第三個參數是 pages 的頁面一致；pagesCatalogs 兩個語言都有', () => {
+    expect(pagesCatalogPages.length).toBeGreaterThan(5);
+    expect(
+      routes
+        .filter((r) => r.catalog === 'pages')
+        .map((r) => r.module)
+        .sort(),
+    ).toEqual([...pagesCatalogPages].sort());
+    expect(routes.map((r) => r.catalog).filter((c) => c !== undefined && c !== 'pages')).toEqual([]);
+    expect(Object.keys((table as { pagesCatalogs: Record<string, string> }).pagesCatalogs).sort()).toEqual(['en', 'zh-TW']);
   });
 
   it('內容種類只用 preload-table.mjs 認得的五種；需要 ID 的種類（level、termDetail）所在的 pattern 有捕捉群組', () => {

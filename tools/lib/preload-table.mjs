@@ -2,7 +2,8 @@
 // 純函式，不讀檔：輸入 Vite 的 .vite/manifest.json、內容的 content-manifest.json 與 apps/web/src/shell/route-preload.json，
 // 輸出 boot 腳本（apps/web/src/shell/boot.js 的 preload 區塊）讀的精簡表格：
 //   a：資產檔名（/assets/ 底下）；c：各語言的訊息 catalog（route-preload.json 的 catalogs 指的模組與它的靜態 import）在 a 的索引；
-//   r：[pattern, a 的索引, 內容種類]；m：內容快照的路徑或雜湊（ci 章節索引、ti 名詞索引、tb 墓碑、ch 章節 ID 對各語言的章節包雜湊、lv 關卡 ID 對所屬章節 ID、
+//   p：各語言的第二層 catalog（pagesCatalogs，pages.po 的 chunk）在 a 的索引，只在 r 第四個元素為 1 的路由預先載入（路由表的 catalog 為 pages）；
+//   r：[pattern, a 的索引, 內容種類, 要不要第二層 catalog]；m：內容快照的路徑或雜湊（ci 章節索引、ti 名詞索引、tb 墓碑、ch 章節 ID 對各語言的章節包雜湊、lv 關卡 ID 對所屬章節 ID、
 //   td 各語言的名詞分桶對雜湊）。關卡在所屬章節的章節包裡（schemaVersion 3，08 第 7.3 節），作答頁預先載入的是那一章的章節包。
 // 章節包與名詞分桶只存雜湊，路徑由 boot 腳本依固定格式組回；格式不符（例如日後改了檔名規則）或關卡的檔不是所屬章節的章節包時直接丟錯，建置失敗，不會默默預先載入錯的檔案。
 
@@ -23,9 +24,18 @@ const assetName = (file) => {
 };
 
 /**
- * @param {{ viteManifest: Record<string, any>; contentManifest: Record<string, any>; routes: { pattern: string; module: string; content: string[] }[]; catalogs: Record<string, string>; locales: string[]; always?: string[]; chunkModules?: Record<string, string[]> }} input
+ * @param {{ viteManifest: Record<string, any>; contentManifest: Record<string, any>; routes: { pattern: string; module: string; content: string[]; catalog?: string }[]; catalogs: Record<string, string>; pagesCatalogs?: Record<string, string>; locales: string[]; always?: string[]; chunkModules?: Record<string, string[]> }} input
  */
-export function buildPreloadTable({ viteManifest, contentManifest, routes, catalogs: catalogModules, locales, always = [], chunkModules = {} }) {
+export function buildPreloadTable({
+  viteManifest,
+  contentManifest,
+  routes,
+  catalogs: catalogModules,
+  pagesCatalogs = {},
+  locales,
+  always = [],
+  chunkModules = {},
+}) {
   // always 列的是原始碼模組（例如 src/lib/progress/runtime.ts）；它被 codeSplitting.groups 併進沒有原始碼鍵的 chunk，所以先用 chunk-modules.json
   // 找出含它的 chunk 檔名，再對回 manifest 的鍵（manifest 以 file 欄位對應）
   const keyOfModule = (mod) => {
@@ -57,6 +67,18 @@ export function buildPreloadTable({ viteManifest, contentManifest, routes, catal
       return [loc, filesOf([key])];
     }),
   );
+  // 第二層 catalog（pages.po，14 第 5.2 節）：有路由要它時每個語言都要找得到，沒有路由要它時可以省略整張表
+  const needsPages = routes.some((route) => route.catalog === 'pages');
+  const p = Object.fromEntries(
+    locales.map((loc) => {
+      const key = pagesCatalogs[loc];
+      if (key === undefined) {
+        if (needsPages) throw new Error(`preload：route-preload.json 的 pagesCatalogs 沒有 ${loc}`);
+        return [loc, []];
+      }
+      return [loc, filesOf([key])];
+    }),
+  );
   // 每一頁都要的 chunk（進度 runtime）：w，和 catalog 一樣不分路由
   const w = filesOf(always.map(keyOfModule));
   const kinds = new Set(['chapterIndex', 'termIndex', 'tombstones', 'level', 'termDetail']);
@@ -68,7 +90,8 @@ export function buildPreloadTable({ viteManifest, contentManifest, routes, catal
       throw new Error(`preload：pattern 不是合法的正規表示式：${route.pattern}`);
     }
     for (const c of route.content) if (!kinds.has(c)) throw new Error(`preload：不認得的內容種類 ${c}（${route.pattern}）`);
-    return [route.pattern, filesOf([route.module]), route.content];
+    if (route.catalog !== undefined && route.catalog !== 'pages') throw new Error(`preload：不認得的 catalog ${route.catalog}（${route.pattern}）`);
+    return [route.pattern, filesOf([route.module]), route.content, route.catalog === 'pages' ? 1 : 0];
   });
 
   const m = contentManifest;
@@ -108,6 +131,7 @@ export function buildPreloadTable({ viteManifest, contentManifest, routes, catal
   return {
     a: assets,
     c: catalogs,
+    p,
     w,
     r,
     m: { l: locales, ci: perLocale('chapterIndex'), ti: perLocale('termIndex'), tb: required(m.tombstones, 'tombstones'), ch, lv, td },

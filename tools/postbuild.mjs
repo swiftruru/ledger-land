@@ -2,6 +2,7 @@
 // 1. 計算 dist/index.html 兩段 inline 腳本與一段 inline style 的 sha256，填入 dist/_headers（含 D7 統計網域）；不得殘留角括號
 // 2. index.html 不得有 style 屬性；必須含 #root、完整的 #ll-tabbar（五個連結）與緊接在後的殼層在地化腳本；沒有 404.html
 // 3. sw.js 存在而且只有一份；manifest 可解析、id 固定為 site config 的值、圖示檔都存在；precache 不含統計腳本
+// 3b. sitemap.xml 與 robots.txt（05 第 9.3 節）：正式建置（LL_DEPLOY_TARGET=production）才產生 sitemap 並讓 robots 指向它；預覽與本機的 robots 全部禁止
 // 4. 建置後的 CSS：每個 backdrop-filter 都有 -webkit-backdrop-filter，且不含 var()
 // 5. 站內連結（index.html 與 JS 裡的 href="/..."）都帶結尾斜線（只檢查殼層）
 // 6. wrangler.jsonc 的 not_found_handling 與 assets.directory
@@ -11,6 +12,8 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { PRELOAD_PLACEHOLDER, buildPreloadTable, injectPreload } from './lib/preload-table.mjs';
+import { LOCALES } from '@ledgerland/i18n';
+import { buildRobots, buildSitemap, sitemapPages } from './lib/sitemap.mjs';
 
 const app = resolve(process.cwd());
 const dist = join(app, 'dist');
@@ -35,6 +38,7 @@ if (html.includes(PRELOAD_PLACEHOLDER)) {
         contentManifest,
         routes: routeTable.routes,
         catalogs: routeTable.catalogs,
+        pagesCatalogs: routeTable.pagesCatalogs ?? {},
         always: routeTable.always ?? [],
         chunkModules: existsSync(join(dist, '.vite', 'chunk-modules.json')) ? JSON.parse(readFileSync(join(dist, '.vite', 'chunk-modules.json'), 'utf8')) : {},
         locales: Object.keys(contentManifest.locales),
@@ -127,6 +131,34 @@ if (manifest.id !== site.manifestId) fail(`manifest 的 id 是 ${manifest.id}，
 if (manifest.start_url !== site.base || manifest.scope !== site.base) fail('manifest 的 start_url 或 scope 與 site config 不一致');
 for (const icon of manifest.icons) if (!existsSync(join(dist, icon.src))) fail(`manifest 的圖示不存在：${icon.src}`);
 
+// sitemap.xml 與 robots.txt（05 第 9.3 節、02 第 1.3 節）：頁面清單在 src/shell/sitemap-pages.json，章節與名詞依 content-manifest 展開；
+// origin 取 site config 的 productionOrigin（不在產生器裡寫死）。預覽與本機沒有 sitemap（殼層另有 noindex），robots 全部禁止
+const isProduction = process.env.LL_DEPLOY_TARGET === 'production';
+let sitemapUrls = 0;
+try {
+  const sitemapTable = JSON.parse(readFileSync(join(app, 'src', 'shell', 'sitemap-pages.json'), 'utf8'));
+  const contentManifest = JSON.parse(readFileSync(join(dist, 'content', 'content-manifest.json'), 'utf8'));
+  const termIndexPath = contentManifest.termIndex?.['zh-TW'];
+  if (typeof termIndexPath !== 'string') fail('content-manifest 沒有 zh-TW 的 termIndex，無法列出名詞頁');
+  const termIndex = JSON.parse(readFileSync(join(dist, termIndexPath), 'utf8'));
+  if (!Array.isArray(termIndex)) fail('名詞索引不是陣列，無法列出名詞頁');
+  const pages = sitemapPages({ table: sitemapTable, contentManifest, termIndex });
+  const sitemapPath = join(dist, 'sitemap.xml');
+  if (isProduction) {
+    const xml = buildSitemap({ origin: site.productionOrigin, locales: LOCALES, pages });
+    writeFileSync(sitemapPath, xml);
+    sitemapUrls = (xml.match(/<loc>/g) ?? []).length;
+    if (sitemapUrls !== pages.length * LOCALES.length) fail(`sitemap.xml 的 <url> 數量 ${sitemapUrls} 不等於頁面 ${pages.length} 乘語系 ${LOCALES.length}`);
+    if (html.includes('<meta name="robots" content="noindex">')) fail('正式建置的殼層不該有 noindex');
+  } else {
+    rmSync(sitemapPath, { force: true });
+    if (!html.includes('<meta name="robots" content="noindex">')) fail('非正式建置的殼層要有 noindex（05 第 9.3 節）');
+  }
+  writeFileSync(join(dist, 'robots.txt'), buildRobots({ origin: site.productionOrigin, production: isProduction }));
+} catch (e) {
+  fail(`sitemap：${e instanceof Error ? e.message : String(e)}`);
+}
+
 // CSS 前綴
 const cssFiles = readdirSync(join(dist, 'assets')).filter((f) => f.endsWith('.css'));
 let backdropRules = 0;
@@ -160,6 +192,7 @@ const report = {
   swFiles,
   manifestId: manifest.id,
   preload: preloadSummary,
+  sitemap: isProduction ? { urls: sitemapUrls } : null,
 };
 writeFileSync(join(dist, 'build-report.json'), JSON.stringify(report, null, 2));
 console.log('postbuild:', JSON.stringify(report));

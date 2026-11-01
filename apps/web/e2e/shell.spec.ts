@@ -58,6 +58,16 @@ test.describe('殼層與深層連結（10 M0b 完成標準）', () => {
     await expect(page.locator('meta[name="robots"][data-ll]')).toHaveAttribute('content', 'noindex');
   });
 
+  test('非正式建置：robots.txt 是原檔而且全部禁止，沒有 sitemap.xml（05 第 9.3 節；正式站的 sitemap 由部署後的煙霧測試檢查）', async ({ request }) => {
+    const robots = await request.get('/robots.txt');
+    expect(robots.status()).toBe(200);
+    expect(robots.headers()['content-type']).toContain('text/plain');
+    expect(await robots.text()).toBe('User-agent: *\nDisallow: /\n');
+    // 沒有這個檔時 SPA fallback 回殼層，不是 XML
+    const sitemap = await request.get('/sitemap.xml');
+    expect(await sitemap.text()).not.toContain('<urlset');
+  });
+
   test('sw.js 與 manifest 存在，manifest 的 id 固定', async ({ request }) => {
     const sw = await request.get('/sw.js');
     expect(sw.status()).toBe(200);
