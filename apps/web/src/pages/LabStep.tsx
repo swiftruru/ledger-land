@@ -30,7 +30,7 @@ import {
 } from '../features/lab/predict.ts';
 import { completeStep, predictTotals, savePrediction, type StoryProgress } from '../features/lab/progress.ts';
 import { ratioChanges, ratioPoint } from '../features/lab/ratio-changes.ts';
-import { canGoTo, canSkipToEnd, stagesOf, statementForStage, type LabMode, type StageGate } from '../features/lab/stages.ts';
+import { canGoTo, canJumpTo, canSkipToEnd, stagesOf, statementForStage, type LabMode, type StageGate } from '../features/lab/stages.ts';
 import { StageBar, useStageNames } from '../features/lab/StageBar.tsx';
 import type { StatementView } from '../features/lab/StatementTable.tsx';
 import { TransactionCard } from '../features/lab/TransactionCard.tsx';
@@ -181,6 +181,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
   const [stage, setStage] = useState(0);
   // 階段 2 起要畫面元件（stage-views.tsx）、階段 3 起還要核心：還沒到時先記著要去的階段，載好就切過去（go）
   const [pendingStage, setPendingStage] = useState<number | null>(null);
+  // 這次走到最遠的階段：第一次練時階段選單只能跳回這裡以前（stages.ts 的 canJumpTo）
+  const [reached, setReached] = useState(0);
   const [views, setViews] = useState<StageViews | null>(() => stageViewsNow());
   const [viewsError, setViewsError] = useState<unknown>(undefined);
   const loadViews = useCallback(() => {
@@ -260,6 +262,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
   const enter = useCallback((to: number) => {
     setPendingStage(null);
     setStage(to);
+    setReached((r) => Math.max(r, to));
     setSelectedLight(null);
     setHighlight(new Set());
   }, []);
@@ -555,7 +558,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
             layout={layout}
             termLabels={firstPaint?.terms}
             recap={!alreadyDone && index > 0 && !prevDone}
-            suggestEarlier={!from && index > 0 && !prevDone}
+            suggestEarlier={!demo && !from && index > 0 && !prevDone}
           />
         )}
         {views && stageId === 'predict' && (
@@ -718,6 +721,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
                       onClick={() => {
                         setFinished(null);
                         setStage(0);
+                        setReached(0);
                         setSubmitted(false);
                         setRecord({});
                       }}
@@ -738,7 +742,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
         canNext={isLast ? !finished : canGoTo(stage, stage + 1, gate)}
         canSkip={canSkipToEnd(stage, gate)}
         isLast={isLast}
-        canJumpTo={(s) => canGoTo(stage, s, gate)}
+        canJumpTo={(s) => canJumpTo(stage, s, gate, reached)}
         onPrev={() => go(stage - 1)}
         onNext={onNext}
         onSkip={() => go(stages.length - 1)}
