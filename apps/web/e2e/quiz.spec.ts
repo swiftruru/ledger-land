@@ -394,104 +394,111 @@ test.describe('作答流程（純鍵盤）', () => {
     await expect(page.getByRole('radio', { name: /資產：都是店裡擁有/ })).toBeDisabled();
   });
 
-  test('答錯的題進錯題本；今天到期時 /review/ 可以複習；題目答案改版顯示「題目已更新」', async ({ page }) => {
-    const errors = pageErrors(page);
-    await clearProgress(page);
-    await page.goto(`/level/${LEVEL_1}/`);
-    await waitForApp(page);
-    // 答錯第 1 題
-    await pick(page.getByRole('radio', { name: /負債：買這些東西都花了錢/ }));
-    await submitByKeyboard(page);
-    await expect(feedbackTitle(page)).toHaveText('再想想');
-    await expect(page.getByText('已放進錯題本')).toBeVisible();
-    await expect(page.getByText('正確答案，你沒有選')).toBeVisible();
-    // 回饋是先顯示的，寫進錯題本的交易可能還在進行；等那一筆真的在資料庫裡再跳頁，不然導航會中斷交易，下面改到期日時就找不到它
-    await waitForProgressDb(page, ['reviewQueue']);
-    await expect
-      .poll(
-        () =>
-          page.evaluate(
-            () =>
-              new Promise<boolean>((resolve) => {
-                const req = indexedDB.open('ledgerland');
-                req.onerror = () => resolve(false);
-                req.onsuccess = () => {
-                  const db = req.result;
-                  const get = db.transaction('reviewQueue').objectStore('reviewQueue').get('q_g1ze90s7');
-                  get.onsuccess = () => {
-                    db.close();
-                    resolve(get.result !== undefined);
+  test.describe('錯題本', () => {
+    // 這段用 page.route 把章節包裡這一題改成答案改版；page.route 攔不到 Service Worker 處理的請求，第三次整頁導覽前 SW 裝好接管的話，
+    // 章節包就從 precache 回應、題目沒有改版、「題目已更新」不會出現（2026-11-02 main 16a2d9c 的 CI 兩次都這樣）。原本靠「SW 還沒裝好」才通過，
+    // 和 content-placeholders、quiz-types、timer-favourites 一樣直接擋掉 SW；這裡不測 SW
+    test.use({ serviceWorkers: 'block' });
+
+    test('答錯的題進錯題本；今天到期時 /review/ 可以複習；題目答案改版顯示「題目已更新」', async ({ page }) => {
+      const errors = pageErrors(page);
+      await clearProgress(page);
+      await page.goto(`/level/${LEVEL_1}/`);
+      await waitForApp(page);
+      // 答錯第 1 題
+      await pick(page.getByRole('radio', { name: /負債：買這些東西都花了錢/ }));
+      await submitByKeyboard(page);
+      await expect(feedbackTitle(page)).toHaveText('再想想');
+      await expect(page.getByText('已放進錯題本')).toBeVisible();
+      await expect(page.getByText('正確答案，你沒有選')).toBeVisible();
+      // 回饋是先顯示的，寫進錯題本的交易可能還在進行；等那一筆真的在資料庫裡再跳頁，不然導航會中斷交易，下面改到期日時就找不到它
+      await waitForProgressDb(page, ['reviewQueue']);
+      await expect
+        .poll(
+          () =>
+            page.evaluate(
+              () =>
+                new Promise<boolean>((resolve) => {
+                  const req = indexedDB.open('ledgerland');
+                  req.onerror = () => resolve(false);
+                  req.onsuccess = () => {
+                    const db = req.result;
+                    const get = db.transaction('reviewQueue').objectStore('reviewQueue').get('q_g1ze90s7');
+                    get.onsuccess = () => {
+                      db.close();
+                      resolve(get.result !== undefined);
+                    };
+                    get.onerror = () => {
+                      db.close();
+                      resolve(false);
+                    };
                   };
-                  get.onerror = () => {
-                    db.close();
-                    resolve(false);
-                  };
-                };
-              }),
-          ),
-        { timeout: 10_000 },
-      )
-      .toBe(true);
-    // 錯題本：盒子 1 明天才到期，今天是空的
-    await page.goto('/review/');
-    await waitForApp(page);
-    await expect(page.getByRole('heading', { name: '今天沒有要複習的題目' })).toBeVisible();
-    // 把到期日改成今天，並把紀錄的 rev 壓成 0；快照把這題改成 rev 2 的答案改版，複習頁要顯示「題目已更新」
-    await waitForProgressDb(page, ['reviewQueue']);
-    await page.evaluate(async () => {
-      const today = (() => {
-        const d = new Date();
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-      })();
-      const db = await new Promise<IDBDatabase>((resolve, reject) => {
-        const req = indexedDB.open('ledgerland');
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
+                }),
+            ),
+          { timeout: 10_000 },
+        )
+        .toBe(true);
+      // 錯題本：盒子 1 明天才到期，今天是空的
+      await page.goto('/review/');
+      await waitForApp(page);
+      await expect(page.getByRole('heading', { name: '今天沒有要複習的題目' })).toBeVisible();
+      // 把到期日改成今天，並把紀錄的 rev 壓成 0；快照把這題改成 rev 2 的答案改版，複習頁要顯示「題目已更新」
+      await waitForProgressDb(page, ['reviewQueue']);
+      await page.evaluate(async () => {
+        const today = (() => {
+          const d = new Date();
+          return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        })();
+        const db = await new Promise<IDBDatabase>((resolve, reject) => {
+          const req = indexedDB.open('ledgerland');
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+        await new Promise<void>((resolve, reject) => {
+          const tx = db.transaction('reviewQueue', 'readwrite');
+          const store = tx.objectStore('reviewQueue');
+          const get = store.get('q_g1ze90s7');
+          get.onsuccess = () => {
+            const entry = get.result as Record<string, unknown> | undefined;
+            if (entry === undefined) {
+              reject(new Error('reviewQueue 裡沒有 q_g1ze90s7'));
+              return;
+            }
+            store.put({ ...entry, dueAt: today });
+          };
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+          tx.onabort = () => reject(tx.error ?? new Error('transaction aborted'));
+        });
+        db.close();
       });
-      await new Promise<void>((resolve, reject) => {
-        const tx = db.transaction('reviewQueue', 'readwrite');
-        const store = tx.objectStore('reviewQueue');
-        const get = store.get('q_g1ze90s7');
-        get.onsuccess = () => {
-          const entry = get.result as Record<string, unknown> | undefined;
-          if (entry === undefined) {
-            reject(new Error('reviewQueue 裡沒有 q_g1ze90s7'));
-            return;
-          }
-          store.put({ ...entry, dueAt: today });
-        };
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
-        tx.onabort = () => reject(tx.error ?? new Error('transaction aborted'));
+      // 關卡在所屬章節的章節包裡（schemaVersion 3）：改章節包裡 lv_h2zx7srx 那一關的題目
+      await page.route(/\/content\/zh-TW\/ch_[0-9a-z]+\.[0-9a-f]+\.json$/, async (route) => {
+        const res = await route.fetch();
+        const json = (await res.json()) as { levels: { level: { id: string }; questions: { id: string; rev: number; revKind: string }[] }[] };
+        const target = json.levels.find((l) => l.level.id === 'lv_h2zx7srx');
+        for (const q of target?.questions ?? []) if (q.id === 'q_g1ze90s7') Object.assign(q, { rev: q.rev + 1, revKind: 'answer' });
+        await route.fulfill({ response: res, json });
       });
-      db.close();
+      await page.goto('/review/');
+      await waitForApp(page);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('錯題本');
+      // 入口卡（站規 2.5）：今天要複習 1 題，資訊列標出「題目已更新」；按「開始複習」才進複習中（頁首換成「錯題複習」）
+      await expect(page.getByRole('heading', { name: '今天要複習 1 題' })).toBeVisible();
+      await expect(page.getByText('題目已更新')).toBeVisible();
+      await page.getByRole('button', { name: '開始複習' }).click();
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('錯題複習');
+      await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+      await questionReady(page, 1, 1);
+      await pick(page.getByRole('radio', { name: /資產：都是店裡擁有/ }));
+      await submitByKeyboard(page);
+      await expect(feedbackTitle(page)).toHaveText(/答對了/);
+      await expect(page.getByText(/現在在盒子 2/)).toBeVisible();
+      await nextByKeyboard(page);
+      await expect(page.getByRole('heading', { name: '今天的錯題都複習完了' })).toBeVisible();
+      await expect(page.getByText(/^答對 1 題，共 1 題。/)).toBeVisible();
+      expect(errors).toEqual([]);
     });
-    // 關卡在所屬章節的章節包裡（schemaVersion 3）：改章節包裡 lv_h2zx7srx 那一關的題目
-    await page.route(/\/content\/zh-TW\/ch_[0-9a-z]+\.[0-9a-f]+\.json$/, async (route) => {
-      const res = await route.fetch();
-      const json = (await res.json()) as { levels: { level: { id: string }; questions: { id: string; rev: number; revKind: string }[] }[] };
-      const target = json.levels.find((l) => l.level.id === 'lv_h2zx7srx');
-      for (const q of target?.questions ?? []) if (q.id === 'q_g1ze90s7') Object.assign(q, { rev: q.rev + 1, revKind: 'answer' });
-      await route.fulfill({ response: res, json });
-    });
-    await page.goto('/review/');
-    await waitForApp(page);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('錯題本');
-    // 入口卡（站規 2.5）：今天要複習 1 題，資訊列標出「題目已更新」；按「開始複習」才進複習中（頁首換成「錯題複習」）
-    await expect(page.getByRole('heading', { name: '今天要複習 1 題' })).toBeVisible();
-    await expect(page.getByText('題目已更新')).toBeVisible();
-    await page.getByRole('button', { name: '開始複習' }).click();
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('錯題複習');
-    await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
-    await questionReady(page, 1, 1);
-    await pick(page.getByRole('radio', { name: /資產：都是店裡擁有/ }));
-    await submitByKeyboard(page);
-    await expect(feedbackTitle(page)).toHaveText(/答對了/);
-    await expect(page.getByText(/現在在盒子 2/)).toBeVisible();
-    await nextByKeyboard(page);
-    await expect(page.getByRole('heading', { name: '今天的錯題都複習完了' })).toBeVisible();
-    await expect(page.getByText(/^答對 1 題，共 1 題。/)).toBeVisible();
-    expect(errors).toEqual([]);
   });
 });
 
