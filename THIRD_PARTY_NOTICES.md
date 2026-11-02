@@ -28,11 +28,11 @@
 | @jridgewell/resolve-uri | 3.1.2 | MIT | https://github.com/jridgewell/resolve-uri#readme |
 | @jridgewell/sourcemap-codec | 1.6.0 | MIT | https://github.com/jridgewell/sourcemaps/tree/main/packages/sourcemap-codec |
 | @jridgewell/trace-mapping | 0.3.31 | MIT | https://github.com/jridgewell/sourcemaps/tree/main/packages/trace-mapping |
-| @lingui/babel-plugin-lingui-macro | 6.9.1 | MIT | https://lingui.dev |
-| @lingui/conf | 6.9.1 | MIT | https://lingui.dev |
-| @lingui/core | 6.9.1 | MIT | https://lingui.dev |
-| @lingui/message-utils | 6.9.1 | MIT | https://lingui.dev |
-| @lingui/react | 6.9.1 | MIT | https://lingui.dev |
+| @lingui/babel-plugin-lingui-macro | 6.10.0 | MIT | https://lingui.dev |
+| @lingui/conf | 6.10.0 | MIT | https://lingui.dev |
+| @lingui/core | 6.10.0 | MIT | https://lingui.dev |
+| @lingui/message-utils | 6.10.0 | MIT | https://lingui.dev |
+| @lingui/react | 6.10.0 | MIT | https://lingui.dev |
 | @messageformat/date-skeleton | 1.1.0 | MIT | http://messageformat.github.io/messageformat/api/date-skeleton/ |
 | @messageformat/parser | 5.1.1 | MIT | http://messageformat.github.io/messageformat/api/parser/ |
 | @remix-run/route-pattern | 0.22.1 | MIT | https://github.com/remix-run/remix/tree/main/packages/route-pattern#readme |
@@ -78,8 +78,8 @@
 | normalize-path | 3.0.0 | MIT | https://github.com/jonschlinkert/normalize-path |
 | picocolors | 1.1.1 | ISC | https://github.com/alexeyraspopov/picocolors#readme |
 | pretty-format | 29.7.0 | MIT | https://github.com/jestjs/jest#readme |
-| react | 19.3.0 | MIT | https://react.dev/ |
-| react-dom | 19.3.0 | MIT | https://react.dev/ |
+| react | 19.3.1 | MIT | https://react.dev/ |
+| react-dom | 19.3.1 | MIT | https://react.dev/ |
 | react-is | 18.3.1 | MIT | https://reactjs.org/ |
 | react-router | 8.4.0 | MIT | https://github.com/remix-run/react-router#readme |
 | scheduler | 0.28.0 | MIT | https://react.dev/ |
@@ -96,7 +96,7 @@
 | workbox-strategies | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | workbox-window | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | yallist | 3.1.1 | ISC | https://github.com/isaacs/yallist#readme |
-| zod | 4.6.6 | MIT | https://zod.dev |
+| zod | 4.6.7 | MIT | https://zod.dev |
 | zustand | 5.0.15 | MIT | https://github.com/pmndrs/zustand |
 
 ## 不經套件管理的項目
