@@ -161,7 +161,11 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const [submitted, setSubmitted] = useState(() => savedPrediction !== undefined && !practice && alreadyDone);
   const targets = useMemo(() => predictTargetsOf(spec.predictTargets), [spec.predictTargets]);
   const predictDone = submitted && isPredictionComplete(targets, record);
-  const gate: StageGate = useMemo(() => ({ predictRequired, predictDone }), [predictRequired, predictDone]);
+  // 回看走完過的步驟（故事模式）才有「跳到最後一個階段」（stages.ts）
+  const gate: StageGate = useMemo(
+    () => ({ predictRequired, predictDone, revisit: !practice && alreadyDone }),
+    [predictRequired, predictDone, practice, alreadyDone],
+  );
 
   const [stage, setStage] = useState(0);
   // 階段 2 起要畫面元件（stage-views.tsx）、階段 3 起還要核心：還沒到時先記著要去的階段，載好就切過去（go）

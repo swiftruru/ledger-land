@@ -543,6 +543,11 @@ html[data-motion='reduced'] .ll-disclosure__chev {
 .ll-menu__panel--start {
   inset-inline-start: 0;
 }
+/* 往上開（side="up"）：貼在畫面底部的操作列用，面板的底緣對齊按鈕上方 */
+.ll-menu__panel--up {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + var(--ll-space-2));
+}
 .ll-menuitem {
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);

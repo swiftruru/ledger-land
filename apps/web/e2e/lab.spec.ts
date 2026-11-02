@@ -1,5 +1,5 @@
 // 報表實驗室（M4a，03 第 3 節、10 第 11.1 節）：首頁、故事步驟列表、步驟頁的 10 個階段（預測閘門、揭曉、報表、燈號、指標、完成與進度）、
-// 單獨練習不動故事進度、直接看結果、方向鍵、自由實驗（擋下與可輸入範圍、連動清單、插入與本筆無影響、重設）、勾稽練習（三格、提示三層、完成卡）、
+// 單獨練習不動故事進度、回看才有的跳到最後、方向鍵、自由實驗（擋下與可輸入範圍、連動清單、插入與本筆無影響、重設）、勾稽練習（三格、提示三層、完成卡）、
 // 指標實驗室（分組、版本切換、N/A 的建議）、英文介面。等待一律用 expect 的自動重試。
 import { expect, test, type Page, type Route } from '@playwright/test';
 import { waitForApp } from './helpers.ts';
@@ -84,12 +84,15 @@ test.describe('故事步驟頁', () => {
     await expect(page.getByTestId('lab-card-terms').getByRole('button')).toHaveCount(4);
     await page.getByTestId('lab-next').click();
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
-    // 預測沒完成不能前進，也沒有「直接看結果」
+    // 預測沒完成不能前進；第一次走這一步沒有「跳到最後一個階段」（預測完也沒有，要一階段一階段看）
     await expect(page.getByTestId('lab-next')).toBeDisabled();
     await expect(page.getByTestId('lab-skip')).toHaveCount(0);
     await predictAllUp(page);
     await expect(page.getByTestId('lab-next')).toBeEnabled();
-    await expect(page.getByTestId('lab-skip')).toBeVisible();
+    await page.getByRole('button', { name: '階段 2／10：預測' }).click();
+    await expect(page.getByRole('menuitem', { name: '10. 管理意涵' })).toBeVisible();
+    await expect(page.getByTestId('lab-skip')).toHaveCount(0);
+    await page.keyboard.press('Escape');
     await page.getByTestId('lab-next').click();
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 3／10：科目變動');
     const effects = page.getByTestId('lab-effects');
@@ -182,17 +185,24 @@ test.describe('故事步驟頁', () => {
     await expect(page.getByTestId('lab-reveal').getByRole('heading')).toHaveText('揭曉：8 個猜對 7 個');
     // 核心載好以後恆等式的數字沒有變（快照的數字就是同一份核心算的）
     await expect(page.getByTestId('lab-equation')).toContainText('NT$4,250,000');
-    // 成績在核心載好之後才算、照常存進進度：走完這一步後故事頁顯示預測成績
-    await page.getByTestId('lab-skip').click();
+    // 成績在核心載好之後才算、照常存進進度：用階段選單跳到最後、走完這一步後故事頁顯示預測成績
+    await page.getByRole('button', { name: '階段 3／10：科目變動' }).click();
+    await page.getByRole('menuitem', { name: '10. 管理意涵' }).click();
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
     await page.getByTestId('lab-next').click();
     await expect(page.getByTestId('lab-finish-score')).toHaveText('這一步的預測猜對 7／8；整個故事到目前 7／8（1 步）');
     await page.goto(`/lab/story/${STORY}/`);
     await waitForApp(page);
     await expect(page.getByTestId('lab-story-score')).toHaveText('預測成績：1 步猜對 7／8');
+    // 回看走完過的步驟：階段選單最後多一項「跳到最後一個階段」，按了直接到階段 10
+    await page.goto(`/lab/story/${STORY}/${STEP7}/`);
+    await waitForApp(page);
+    await page.getByRole('button', { name: '階段 1／10：交易卡' }).click();
+    await page.getByTestId('lab-skip').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
   });
 
-  test('單獨練習：前情摘要、預測必填、完成卡三個按鈕、不動故事進度；直接看結果與方向鍵', async ({ page }) => {
+  test('單獨練習：前情摘要、預測必填、完成卡三個按鈕、不動故事進度；沒有跳到最後、方向鍵', async ({ page }) => {
     await page.goto(`/lab/story/${STORY}/${STEP7}/?mode=practice`);
     await waitForApp(page);
     await expect(page.getByTestId('lab-practice-flag')).toBeVisible();
@@ -202,7 +212,10 @@ test.describe('故事步驟頁', () => {
     await page.keyboard.press('ArrowRight');
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／10：預測');
     await predictAllUp(page);
-    await page.getByTestId('lab-skip').click();
+    // 單獨練習沒有「跳到最後一個階段」；用階段選單跳到階段 10
+    await page.getByRole('button', { name: '階段 2／10：預測' }).click();
+    await expect(page.getByTestId('lab-skip')).toHaveCount(0);
+    await page.getByRole('menuitem', { name: '10. 管理意涵' }).click();
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
     await page.keyboard.press('ArrowLeft');
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 9／10：指標變化');

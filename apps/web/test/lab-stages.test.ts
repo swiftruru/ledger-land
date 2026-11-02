@@ -1,4 +1,4 @@
-// 實驗室的階段機（features/lab/stages.ts，03 第 3.3、3.11 節）：往回永遠可以；第一次走或單獨練習時預測沒完成不能越過階段 2；直接看結果要過得了關卡
+// 實驗室的階段機（features/lab/stages.ts，03 第 3.3、3.11 節）：往回永遠可以；第一次走或單獨練習時預測沒完成不能越過階段 2；跳到最後一個階段只給回看走完過的步驟
 import { describe, expect, it } from 'vitest';
 import { PREDICT_STAGE, STAGE_COUNT, STAGES, canGoTo, canSkipToEnd, nextStage, prevStage, statementForStage } from '../src/features/lab/stages.ts';
 
@@ -29,9 +29,13 @@ describe('stages', () => {
     expect(canGoTo(1, 0, locked)).toBe(true);
     expect(nextStage(1, locked)).toBeNull();
     expect(nextStage(1, passed)).toBe(2);
+    // 第一次走（預測過了也一樣）與單獨練習都沒有跳到最後的捷徑；回看走完過的步驟才有，最後一個階段沒有
     expect(canSkipToEnd(1, locked)).toBe(false);
-    expect(canSkipToEnd(1, passed)).toBe(true);
-    expect(canSkipToEnd(9, passed)).toBe(false);
+    expect(canSkipToEnd(1, passed)).toBe(false);
+    expect(canSkipToEnd(0, open)).toBe(false);
+    expect(canSkipToEnd(0, { ...open, revisit: true })).toBe(true);
+    expect(canSkipToEnd(5, { ...open, revisit: true })).toBe(true);
+    expect(canSkipToEnd(9, { ...open, revisit: true })).toBe(false);
   });
 
   it('階段 5 到 7 自動切到對應的表', () => {
