@@ -1,6 +1,6 @@
 // 故事每一步的階段與前進規則（03 第 3.1、3.3、3.11 節）：純函式，沒有 DOM。
 // 兩種模式（2026-11-02 維護者）：練習 10 個階段含預測；示範 9 個階段沒有預測、沒有關卡，隨時可以跳到任何階段，給老師投影與先看一遍用。
-// 練習只由「下一步」推進；「上一步」只切換畫面；第一次練這一步時預測沒完成不能越過階段 2。
+// 練習只由「下一步」推進；「上一步」只切換畫面；第一次練這一步時預測沒完成不能越過階段 2，階段選單也只能跳回走過的階段（canJumpTo）。
 // 「跳到最後一個階段」在示範永遠有；練習只給練過的步驟再回來時用，而且放在階段選單裡，不在操作列上（維護者 2026-11-01：
 // 「直接看結果」放在「下一步」旁邊像是主要動作，第一次走的人會按下去然後整步被跳過）。
 export const STAGES = ['card', 'predict', 'effects', 'equation', 'income', 'cashflow', 'balance', 'checks', 'ratios', 'insight'] as const;
@@ -49,6 +49,14 @@ export function canSkipToEnd(from: number, gate: StageGate): boolean {
   if (from >= last) return false;
   if (gate.mode === 'demo') return true;
   return gate.revisit === true && canGoTo(from, last, gate);
+}
+
+/** 階段選單能不能直接跳到 to（03 第 3.1 節）：示範與練過的步驟照 canGoTo；第一次練只能跳回這次走過的階段（reached 是走到最遠的階段），
+ * 往前只能靠「下一步」一階段一階段看（2026-11-02 維護者：記下預測後選單仍能往前跳，和「第一次練要逐階段看」矛盾） */
+export function canJumpTo(from: number, to: number, gate: StageGate, reached: number): boolean {
+  if (!canGoTo(from, to, gate)) return false;
+  if (gate.mode === 'practice' && gate.revisit !== true) return to <= reached;
+  return true;
 }
 
 /** 階段「損益表、現金流量表、資產負債表」進入時自動切到對應的表（02 第 3.4 節）；其他階段不切 */

@@ -101,7 +101,10 @@ test.describe('故事步驟頁', () => {
     await predictAllUp(page);
     await expect(page.getByTestId('lab-next')).toBeEnabled();
     await page.getByRole('button', { name: '階段 2／10：預測' }).click();
-    await expect(page.getByRole('menuitem', { name: '10. 管理意涵' })).toBeVisible();
+    // 第一次練：階段選單只能跳回走過的階段，前面的階段都停用（2026-11-02）
+    await expect(page.getByRole('menuitem', { name: '1. 交易卡' })).toBeEnabled();
+    await expect(page.getByRole('menuitem', { name: '3. 科目變動' })).toBeDisabled();
+    await expect(page.getByRole('menuitem', { name: '10. 管理意涵' })).toBeDisabled();
     await expect(page.getByTestId('lab-skip')).toHaveCount(0);
     await page.keyboard.press('Escape');
     await page.getByTestId('lab-next').click();
@@ -200,9 +203,11 @@ test.describe('故事步驟頁', () => {
     await expect(page.getByTestId('lab-reveal').getByRole('heading')).toHaveText('揭曉：8 個猜對 7 個');
     // 核心載好以後恆等式的數字沒有變（快照的數字就是同一份核心算的）
     await expect(page.getByTestId('lab-equation')).toContainText('NT$4,250,000');
-    // 成績在核心載好之後才算、照常存進進度：用階段選單跳到最後、走完這一步後故事頁顯示預測成績
-    await page.getByRole('button', { name: '階段 3／10：科目變動' }).click();
-    await page.getByRole('menuitem', { name: '10. 管理意涵' }).click();
+    // 成績在核心載好之後才算、照常存進進度：第一次練只能用「下一步」一階段一階段走到最後，走完這一步後故事頁顯示預測成績
+    for (let i = 3; i < 10; i++) {
+      await page.getByTestId('lab-next').click();
+      await expect(page.getByTestId('lab-stagebar')).toHaveAttribute('data-stage', String(i));
+    }
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 10／10：管理意涵');
     await page.getByTestId('lab-next').click();
     await expect(page.getByTestId('lab-finish-score')).toHaveText('這一步的預測猜對 7／8；整個故事到目前 7／8（1 步）');
@@ -221,7 +226,9 @@ test.describe('故事步驟頁', () => {
     await page.goto(`/lab/story/${STORY}/${STEP7}/?mode=demo`);
     await waitForApp(page);
     await expect(page.getByTestId('lab-demo-flag')).toBeVisible();
+    // 從中間開始：示範有前情摘要，但沒有「建議先走完前面的步驟」的提示（投影時不該看到）
     await expect(page.getByTestId('lab-recap')).toContainText('到上一步為止');
+    await expect(page.locator('.ll-lab-card__suggest')).toHaveCount(0);
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／9：交易卡');
     await page.keyboard.press('ArrowRight');
     await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 2／9：科目變動');
