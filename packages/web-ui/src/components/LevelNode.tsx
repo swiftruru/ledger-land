@@ -1,4 +1,5 @@
-// 關卡節點（17 第 3.1 節、圖規第 4.1、4.2 節、站規 0.4 的 A1）：<ol> 裡的 <li><button>，可讀名稱含章、關、名稱、星星與狀態；目前關卡 aria-current="step"。
+// 關卡節點（17 第 3.1 節、圖規第 4.1、4.2 節、站規 0.4 的 A1）：<ol> 裡的 <li><button>，可讀名稱以看得見的編號開頭（不計分關卡再接看得見的狀態字），
+// 之後才是章、關、名稱、星星與狀態（WCAG 2.5.3 名稱含標籤：用語音操作的人念出看得見的字就能點；axe-core 4.14 起的 label-content-name-mismatch 會查）；目前關卡 aria-current="step"。
 // <li> 是 64 × 64，圓盤 56px 置中（上緣 4、下緣 60），立體底邊畫在 60 到 64 之間（和按鈕同一組 --ll-btn-depth），按下時圓盤沉 4px、底邊歸零。
 // 星星籤（60 × 22，圓心下方 36 到 58）是按鈕的子元素：點它等於點節點。延伸章是圓角六邊形，編號寫成 E1-1。
 // 不計分關卡（unscored）沒有星等：星星籤改成「已讀完」或「尚未讀」。位置由頁面以 style 指定（幾何在 apps/web 的 layout.ts），這裡只畫節點本身。
@@ -54,6 +55,8 @@ export function useLevelNumber() {
 export function useLevelNodeName() {
   const { t } = useLingui();
   const readLabels = useReadLabels();
+  const number = useLevelNumber();
+  const sep = t({ id: 'map.node.sep', message: '，', comment: '節點可讀名稱各段之間的分隔；中文是全形逗號，英文是半形逗號加空格' });
   return (p: Pick<LevelNodeProps, 'chapterNo' | 'levelNo' | 'title' | 'stars' | 'status' | 'extension' | 'unscored' | 'read'>): string => {
     const c = p.chapterNo;
     const l = p.levelNo;
@@ -64,12 +67,14 @@ export function useLevelNodeName() {
     const n = p.stars;
     const max = 3;
     const starText = n > 0 ? t({ id: 'stars.label', message: `${max} 顆星中的 ${n} 顆`, comment: '星星的可讀名稱；n 是得到的顆數、max 是滿星數' }) : '';
-    const parts = [head.trim()];
+    // 看得見的字先念：編號，不計分關卡再接星星籤上的狀態字（兩者在畫面上相鄰，名稱裡也要相鄰），然後才是章、關、名稱與其他狀態
+    const parts = [number(c, l, p.extension)];
     if (p.unscored) parts.push((p.read ?? p.status === 'done') ? readLabels.read : readLabels.unread);
-    else if (starText) parts.push(starText);
+    parts.push(head.trim());
+    if (!p.unscored && starText) parts.push(starText);
     if (p.status === 'current') parts.push(t({ id: 'map.node.current', message: '建議下一關', comment: '目前建議關卡的狀態字' }));
     else if (p.status === 'todo' && !p.unscored) parts.push(t({ id: 'map.node.todo', message: '尚未挑戰', comment: '尚未挑戰關卡的狀態字' }));
-    return parts.join('，');
+    return parts.join(sep);
   };
 }
 
@@ -115,6 +120,7 @@ export function LevelNode({
           </span>
           <span className="ll-node__no ll-num">{number(chapterNo, levelNo, extension)}</span>
         </span>
+        {/* 編號與星星籤之間留一個空白文字節點（HTML 原本就會有的換行）：兩段看得見的字才是兩個詞，可讀名稱比對時不會黏成一個；兩個 span 都是絕對定位，空白不佔版面 */}{' '}
         <span className={`ll-node__stars${unscored ? ' ll-node__stars--text' : ''}`} aria-hidden="true" data-stars={unscored ? undefined : stars}>
           {unscored ? (
             <span className={`ll-node__read${isRead ? ' is-read' : ''}`}>{isRead ? readLabels.read : readLabels.unread}</span>
