@@ -13,6 +13,7 @@ import {
   NavList,
   NavRow,
   PageHeader,
+  PlayIcon,
   ProcessIcon,
   ProgressBar,
   RatioIcon,
@@ -104,18 +105,31 @@ export default function Lab() {
               <Plural id="lab.home.progress" value={doneCount} other={`已走完 ${doneCount}／${total} 步`} comment="故事進度；數字已代入" />
             </span>
           </div>
+          {/* 兩種走法都在首頁就看得到（維護者 2026-11-02：只有「繼續第 N 步」的話，順著主按鈕走的人永遠不知道有示範）：練習是主按鈕，示範是次要，看全部步驟退成安靜按鈕 */}
           <div className="ll-lab-hero__actions">
             {nextStep && (
-              <Button variant="primary" size="md" href={href(`/lab/story/${story.id}/${nextStep.id}/`)} data-testid="lab-continue">
-                {currentIndex >= 0
-                  ? t({ id: 'lab.home.continue', message: `繼續第 ${nextStep.order} 步`, comment: '故事卡主按鈕；數字已代入' })
-                  : t({ id: 'lab.home.start', message: '開始故事', comment: '故事卡主按鈕（還沒走過）' })}
-              </Button>
+              <>
+                <Button variant="primary" size="md" icon={<PlayIcon />} href={href(`/lab/story/${story.id}/${nextStep.id}/`)} data-testid="lab-continue">
+                  {currentIndex >= 0
+                    ? t({ id: 'lab.home.practise', message: `練習第 ${nextStep.order} 步`, comment: '故事卡主按鈕：用練習模式走下一步；數字已代入' })
+                    : t({ id: 'lab.home.startPractice', message: '開始練習', comment: '故事卡主按鈕（還沒走過）：用練習模式走第一步' })}
+                </Button>
+                <Button size="md" href={href(`/lab/story/${story.id}/${nextStep.id}/`) + '?mode=demo'} data-testid="lab-demo">
+                  {currentIndex >= 0
+                    ? t({ id: 'lab.home.demo', message: `示範第 ${nextStep.order} 步`, comment: '故事卡次要按鈕：用示範模式看下一步；數字已代入' })
+                    : t({ id: 'lab.home.startDemo', message: '先看示範', comment: '故事卡次要按鈕（還沒走過）：用示範模式看第一步' })}
+                </Button>
+              </>
             )}
-            <Button size="md" href={storyHref} data-testid="lab-story-link">
-              {t({ id: 'lab.home.steps', message: '看全部步驟', comment: '故事卡的次要按鈕' })}
+            <Button size="md" variant="quiet" href={storyHref} data-testid="lab-story-link">
+              {t({ id: 'lab.home.steps', message: '看全部步驟', comment: '故事卡的安靜按鈕' })}
             </Button>
           </div>
+          <p className="ll-lab-hero__modes" data-testid="lab-modes-note">
+            <Trans id="lab.home.modesNote" comment="故事卡按鈕下方的一行說明：示範與練習的差別">
+              示範沒有預測、可以隨時跳階段，適合投影或先看一遍；練習會先讓你預測再揭曉。
+            </Trans>
+          </p>
           {story.origin === 'teacher' && (
             <p className="ll-lab-hero__licence">
               <Trans id="lab.home.licence" comment="故事開頭的授權標示（D6）">
@@ -131,7 +145,7 @@ export default function Lab() {
           title={t({ id: 'lab.mode.story', message: '故事', comment: '實驗室入口' })}
           description={t({
             id: 'lab.mode.story.desc',
-            message: `依序走過 ${total} 筆交易，每一步都可以單獨練習。`,
+            message: `依序走過 ${total} 筆交易，每一步都有示範與練習兩種走法。`,
             comment: '實驗室入口的說明；total 是故事的步數',
           })}
           href={storyHref}

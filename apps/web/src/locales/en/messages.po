@@ -395,7 +395,7 @@ msgstr "By name"
 #. js-lingui-explicit-id
 #: src/pages/Lab.tsx
 msgid "lab.mode.story.desc"
-msgstr "Walk through the {total} transactions in order; every step can also be practised on its own."
+msgstr "Walk through the {total} transactions in order; every step has a demo and a practice walk."
 
 #. 名詞圖鑑分組選項
 #. js-lingui-explicit-id
@@ -457,6 +457,12 @@ msgstr "First, take your progress with you: tap ‘Export to app’ to copy a ba
 #: src/pages/Play.tsx
 msgid "play.toTerms"
 msgstr "See the glossary first"
+
+#. 故事卡次要按鈕（還沒走過）：用示範模式看第一步
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.startDemo"
+msgstr "Watch the demo first"
 
 #. 依名稱排序、不分組時的標題
 #. js-lingui-explicit-id
@@ -1760,7 +1766,7 @@ msgstr "Related terms"
 msgid "chapter.endLinks"
 msgstr "Related Lab steps"
 
-#. 故事卡的次要按鈕
+#. 故事卡的安靜按鈕
 #. js-lingui-explicit-id
 #: src/pages/Lab.tsx
 msgid "lab.home.steps"
@@ -1801,6 +1807,19 @@ msgstr "Got it"
 #: src/pages/Review.tsx
 msgid "quiz.submit.classify"
 msgstr "Confirm classification"
+
+#. 故事卡按鈕下方的一行說明：示範與練習的差別
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.modesNote"
+msgstr "The demo has no prediction and lets you jump to any stage, good for projecting or a first look; practice asks you to predict before the reveal."
+
+#. 故事卡次要按鈕：用示範模式看下一步；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: nextStep.order
+#: src/pages/Lab.tsx
+msgid "lab.home.demo"
+msgstr "Demo step {0}"
 
 #. 名詞類別：會計科目
 #. js-lingui-explicit-id
@@ -1926,6 +1945,13 @@ msgstr "The site was updated in another tab. Reload to keep saving your progress
 msgid "error.updated.title"
 msgstr "The site has been updated"
 
+#. 故事卡主按鈕：用練習模式走下一步；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: nextStep.order
+#: src/pages/Lab.tsx
+msgid "lab.home.practise"
+msgstr "Practise step {0}"
+
 #. Compact 分頁列的白話說法（底部只剩一條縮小的網址列）；要短，內嵌時和另一個選項排成一列
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
@@ -1943,13 +1969,6 @@ msgstr "Continue {actionCode}"
 #: src/pages/Home.tsx
 msgid "home.continue.code"
 msgstr "Continue {nextCode}"
-
-#. 故事卡主按鈕；數字已代入
-#. js-lingui-explicit-id
-#. placeholder {0}: nextStep.order
-#: src/pages/Lab.tsx
-msgid "lab.home.continue"
-msgstr "Continue with step {0}"
 
 #. 錯題本入口：今天的複習做到一半時的按鈕
 #. js-lingui-explicit-id
@@ -2534,11 +2553,11 @@ msgstr "Start {actionCode}"
 msgid "play.scan.start"
 msgstr "Start scanning"
 
-#. 故事卡主按鈕（還沒走過）
+#. 故事卡主按鈕（還沒走過）：用練習模式走第一步
 #. js-lingui-explicit-id
 #: src/pages/Lab.tsx
-msgid "lab.home.start"
-msgstr "Start the story"
+msgid "lab.home.startPractice"
+msgstr "Start practising"
 
 #. 錯題本入口的主要按鈕
 #. js-lingui-explicit-id
