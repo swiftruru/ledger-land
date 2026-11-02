@@ -7,6 +7,12 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
 
+#. 節點可讀名稱各段之間的分隔；中文是全形逗號，英文是半形逗號加空格
+#. js-lingui-explicit-id
+#: ../../packages/web-ui/src/components/LevelNode.tsx
+msgid "map.node.sep"
+msgstr ", "
+
 #. 已放入的卡片按鈕可讀名稱的尾句
 #. js-lingui-explicit-id
 #: ../../packages/web-ui/src/components/ClassifyBoard.tsx

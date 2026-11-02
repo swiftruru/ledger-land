@@ -85,9 +85,9 @@ test.describe('闖關地圖', () => {
     const current = page.locator('[aria-current="step"]');
     await expect(current).toHaveCount(1);
     // 關卡名稱來自各章快照，CI 的 Firefox 曾超過預設的 5 秒才載到
-    await expect(current).toHaveAttribute('aria-label', /第 1 章第 3 關 股東權益.*建議下一關/, { timeout: 15_000 });
+    await expect(current).toHaveAttribute('aria-label', /^1-3，第 1 章第 3 關 股東權益.*建議下一關/, { timeout: 15_000 });
     await expect.poll(() => inViewport(page, '[aria-current="step"]'), { timeout: 15_000 }).toBe(true);
-    await expect(page.locator('.ll-node__btn').first()).toHaveAttribute('aria-label', /第 1 章第 1 關 認識資產，3 顆星中的 3 顆/);
+    await expect(page.locator('.ll-node__btn').first()).toHaveAttribute('aria-label', /^1-1，第 1 章第 1 關 認識資產，3 顆星中的 3 顆$/);
     await expect(page.getByTestId('map-marker')).toHaveCSS('visibility', 'visible');
     const transform = await page.getByTestId('map-marker').evaluate((el) => (el as unknown as HTMLElement).style.transform);
     expect(transform).toMatch(/translate\(\d+px, -\d+px\)/);
@@ -228,10 +228,10 @@ test.describe('闖關地圖', () => {
     await expect(extSection.locator('.qm-ch__banner')).toContainText('延伸第 1 章');
     await expect(extSection.locator('.ll-node--ext')).toHaveCount(4);
     await expect(extSection.locator('.ll-node__no').first()).toHaveText('E1-1');
-    // 不計分關卡：沒有星等，可讀名稱與星星籤是「尚未讀」；章末沒有實驗室按鈕（故事步驟的路由還不存在）
+    // 不計分關卡：沒有星等，星星籤是「尚未讀」，可讀名稱以看得見的編號與狀態字開頭；章末沒有實驗室按鈕（故事步驟的路由還不存在）
     const unscored = extSection.locator('[data-level-id="lv_fx0e0004"]');
     await extSection.scrollIntoViewIfNeeded();
-    await expect(unscored.locator('button')).toHaveAttribute('aria-label', /^延伸第 1 章第 4 關 四種觀點，尚未讀$/, { timeout: 15_000 });
+    await expect(unscored.locator('button')).toHaveAttribute('aria-label', /^E1-4，尚未讀，延伸第 1 章第 4 關 四種觀點$/, { timeout: 15_000 });
     await expect(unscored.locator('.ll-node__read')).toHaveText('尚未讀');
     await expect(unscored.locator('.ll-node__stars svg')).toHaveCount(0);
     await expect(page.getByTestId('chapter-end-lab')).toHaveCount(0);
@@ -305,7 +305,11 @@ test.describe('闖關地圖', () => {
     // 最後一章：拱心石換成終點旗
     await expect(page.locator('[data-chapter-id="ch_fx00e1"] .ll-chend__flag')).toHaveCount(1);
     // 不計分關卡在全部完成時是「已讀完」，徽章判定跳過它；它也是最後一次挑戰的關卡，所以是目前關卡（17 第 5.1 節）
-    await expect(page.locator('[data-level-id="lv_fx0e0004"] button')).toHaveAttribute('aria-label', /四種觀點，已讀完，建議下一關$/, { timeout: 15_000 });
+    await expect(page.locator('[data-level-id="lv_fx0e0004"] button')).toHaveAttribute(
+      'aria-label',
+      /^E1-4，已讀完，延伸第 1 章第 4 關 四種觀點，建議下一關$/,
+      { timeout: 15_000 },
+    );
     await expect(page.locator('[data-level-id="lv_fx0e0004"] .ll-node__read')).toHaveText('已讀完');
     // 精通不另外計數：3 章 3 枚
     await expect(page.getByRole('link', { name: '徽章 3 個，看我的徽章' })).toHaveCount(1);
@@ -477,12 +481,12 @@ test.describe('闖關地圖', () => {
       await page.keyboard.press('Tab');
     }
     expect(visited[0]).toBe('一家小店的帳');
-    expect(visited[1]).toMatch(/^第 1 章第 1 關/);
+    expect(visited[1]).toMatch(/^1-1，第 1 章第 1 關/);
     expect(visited[5]).toBe('三張報表');
     expect(visited[11]).toBe('借貸與分錄');
-    expect(visited[12]).toMatch(/^延伸第 1 章第 1 關/);
-    expect(visited[14]).toMatch(/^延伸第 1 章第 3 關/);
-    expect(visited[15]).toMatch(/^延伸第 1 章第 4 關.*尚未讀/);
+    expect(visited[12]).toMatch(/^E1-1，延伸第 1 章第 1 關/);
+    expect(visited[14]).toMatch(/^E1-3，延伸第 1 章第 3 關/);
+    expect(visited[15]).toMatch(/^E1-4，尚未讀，延伸第 1 章第 4 關/);
     // 焦點可見：六邊形節點聚焦時 outline 在圓盤上
     await page.locator('[data-chapter-id="ch_fx00e1"] .ll-node__btn').last().focus();
     const outline = await page

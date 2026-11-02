@@ -46,10 +46,10 @@ describe('LevelNode', () => {
     );
     const buttons = screen.getByRole('button').all();
     expect(buttons).toHaveLength(3);
-    await expect.element(buttons[0]!).toHaveAttribute('aria-label', '第 3 章第 2 關 收入與營業成本，3 顆星中的 2 顆');
-    await expect.element(buttons[1]!).toHaveAttribute('aria-label', '第 3 章第 3 關 毛利，建議下一關');
+    await expect.element(buttons[0]!).toHaveAttribute('aria-label', '3-2，第 3 章第 2 關 收入與營業成本，3 顆星中的 2 顆');
+    await expect.element(buttons[1]!).toHaveAttribute('aria-label', '3-3，第 3 章第 3 關 毛利，建議下一關');
     await expect.element(buttons[1]!).toHaveAttribute('aria-current', 'step');
-    await expect.element(buttons[2]!).toHaveAttribute('aria-label', '延伸第 1 章第 1 關，尚未挑戰');
+    await expect.element(buttons[2]!).toHaveAttribute('aria-label', 'E1-1，延伸第 1 章第 1 關，尚未挑戰');
     expect(document.querySelector('.ll-node--ext')).not.toBeNull();
     const disc = document.querySelector<HTMLElement>('.ll-node__disc')!;
     expect(disc.getBoundingClientRect().width).toBe(56);
@@ -472,9 +472,9 @@ describe('章節徽章、章末區、角色、數字滾動（M3）', () => {
       ),
     );
     const nodes = page.getByRole('button').all();
-    await expect.element(nodes[0]!).toHaveAttribute('aria-label', '延伸第 3 章第 1 關 四種觀點，尚未讀');
-    await expect.element(nodes[1]!).toHaveAttribute('aria-label', '延伸第 3 章第 2 關 誰在看報表，已讀完');
-    await expect.element(nodes[2]!).toHaveAttribute('aria-label', '延伸第 3 章第 3 關 最後一關，已讀完，建議下一關');
+    await expect.element(nodes[0]!).toHaveAttribute('aria-label', 'E3-1，尚未讀，延伸第 3 章第 1 關 四種觀點');
+    await expect.element(nodes[1]!).toHaveAttribute('aria-label', 'E3-2，已讀完，延伸第 3 章第 2 關 誰在看報表');
+    await expect.element(nodes[2]!).toHaveAttribute('aria-label', 'E3-3，已讀完，延伸第 3 章第 3 關 最後一關，建議下一關');
     expect(document.querySelectorAll('.ll-node .ll-stars')).toHaveLength(0);
     expect([...document.querySelectorAll('.ll-node__read')].map((e) => e.textContent)).toEqual(['尚未讀', '已讀完', '已讀完']);
     expect([...document.querySelectorAll('.ll-levelcard__read')].map((e) => e.textContent)).toEqual(['尚未讀', '已讀完', '已讀完']);
