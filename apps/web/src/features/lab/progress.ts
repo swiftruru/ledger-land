@@ -1,9 +1,10 @@
-// 實驗室的進度（06 第 4.2 節、03 第 3.1 節）：故事走到哪一步存 ProgressStore 的 labState；走完與練習過的步驟、每一步的預測、勾稽練習的結果
+// 實驗室的進度（06 第 4.2 節、03 第 3.1 節）：故事走到哪一步存 ProgressStore 的 labState（只往前不往後）；走完與練過的步驟、每一步的預測、勾稽練習的結果
 // 存 settings（鍵 lab:<storyId>，一份 JSON；只在本機、不計分）；完成一步時把 termRefs 的名詞收進圖鑑（addUnlock，和作答一樣，03 第 2.10 節）；
 // 自由實驗存 labSandbox。寫不進去（儲存壞掉）時不丟錯，畫面照常。進度的形狀與讀取在 progress-shape.ts（common chunk），這裡只有寫入。
 import type { LabSandbox } from '@ledgerland/progress';
 import { getProgressStore, nowIso } from '../../lib/progress/index.ts';
 import type { PredictScore, PredictionRecord } from './predict.ts';
+import type { LabMode } from './stages.ts';
 import { readStoryProgress, settingKey, type StoryProgress } from './progress-shape.ts';
 
 export { EMPTY_PROGRESS, predictTotals, readStoryProgress, type LabProgressSnapshot, type StoryProgress } from './progress-shape.ts';
@@ -43,14 +44,16 @@ export function savePrediction(storyId: string, stepId: string, record: Predicti
 }
 
 /**
- * 走完一步：故事模式更新 labState（目前走到的步驟）與 done；單獨練習只記 practised、不動 labState（03 第 3.1 節）。
+ * 走完一步（示範或練習都算走完；練習另外記 practised，03 第 3.1 節）。故事進度 labState 只往前不往後：
+ * 這一步在目前所在的步驟之後（或還沒有進度）才移過去，回頭看或練前面的步驟不動它；order 是故事步驟 ID 的順序。
  * termRefs 的名詞收進圖鑑。回傳這次新收進的名詞。
  */
 export function completeStep(input: {
   storyId: string;
   stepId: string;
   termRefs: readonly string[];
-  mode: 'story' | 'practice';
+  mode: LabMode;
+  order: readonly string[];
 }): Promise<{ unlockedTerms: string[] }> {
   return enqueue(input.storyId, () => completeStepNow(input));
 }
@@ -59,20 +62,22 @@ async function completeStepNow(input: {
   storyId: string;
   stepId: string;
   termRefs: readonly string[];
-  mode: 'story' | 'practice';
+  mode: LabMode;
+  order: readonly string[];
 }): Promise<{ unlockedTerms: string[] }> {
   const now = nowIso();
-  const { progress } = await readStoryProgress(input.storyId);
-  const next: StoryProgress =
-    input.mode === 'story'
-      ? { ...progress, done: progress.done.includes(input.stepId) ? progress.done : [...progress.done, input.stepId] }
-      : { ...progress, practised: progress.practised.includes(input.stepId) ? progress.practised : [...progress.practised, input.stepId] };
+  const { state, progress } = await readStoryProgress(input.storyId);
+  const done = progress.done.includes(input.stepId) ? progress.done : [...progress.done, input.stepId];
+  const practised = input.mode === 'practice' && !progress.practised.includes(input.stepId) ? [...progress.practised, input.stepId] : progress.practised;
+  const next: StoryProgress = { ...progress, done, practised };
+  const currentIndex = state ? input.order.indexOf(state.stepId) : -1;
+  const advance = currentIndex < 0 || input.order.indexOf(input.stepId) >= currentIndex;
   const unlockedTerms: string[] = [];
   try {
     const s = await getProgressStore();
     const has = await Promise.all(input.termRefs.map((id) => s.hasUnlock(`term:${id}`)));
     const writes: Promise<void>[] = [s.setSetting(settingKey(input.storyId), next as unknown as Parameters<typeof s.setSetting>[1], now)];
-    if (input.mode === 'story') writes.push(s.putLabState({ storyId: input.storyId, stepId: input.stepId, updatedAt: now }));
+    if (advance) writes.push(s.putLabState({ storyId: input.storyId, stepId: input.stepId, updatedAt: now }));
     input.termRefs.forEach((id, i) => {
       if (has[i]) return;
       unlockedTerms.push(id);
@@ -83,16 +88,6 @@ async function completeStepNow(input: {
     /* 寫不進去不影響畫面 */
   }
   return { unlockedTerms };
-}
-
-/** 「從這一步接著走故事」：把故事進度移到這一步（單獨練習完成卡的第三個按鈕） */
-export async function moveStoryTo(storyId: string, stepId: string): Promise<void> {
-  try {
-    const s = await getProgressStore();
-    await s.putLabState({ storyId, stepId, updatedAt: nowIso() });
-  } catch {
-    /* 寫不進去不影響畫面 */
-  }
 }
 
 export function saveReconcile(storyId: string, stepId: string, result: { done: boolean; sawAnswer: readonly string[] }): Promise<void> {

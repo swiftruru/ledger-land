@@ -324,18 +324,6 @@ msgstr "向銀行短期借款"
 msgid "lab.predict.wrong"
 msgstr "和你的預測不同"
 
-#. 步驟列的按鈕
-#. js-lingui-explicit-id
-#: src/pages/LabStory.tsx
-msgid "lab.story.practice"
-msgstr "單獨練習"
-
-#. 單獨練習的標示
-#. js-lingui-explicit-id
-#: src/pages/LabStep.tsx
-msgid "lab.step.practiceMode"
-msgstr "單獨練習：不改變故事進度"
-
 #. 勾稽燈號清單的名稱
 #. js-lingui-explicit-id
 #: src/features/lab/CheckLights.tsx
@@ -494,12 +482,6 @@ msgstr "建議先走完前面的步驟，也可以直接開始。"
 msgid "lab.reconcile.order"
 msgstr "建議順序：先填損益表的結果，再填現金流量表，最後填資產負債表；一格填錯會讓多個燈號變紅，先修正最上游的格子。"
 
-#. 完成卡按鈕
-#. js-lingui-explicit-id
-#: src/pages/LabStep.tsx
-msgid "lab.finish.continueFromHere"
-msgstr "從這一步接著走故事"
-
 #. 階段名稱
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
@@ -529,6 +511,12 @@ msgstr "指標版本"
 #: src/features/lab/StageBar.tsx
 msgid "lab.stage.ratios"
 msgstr "指標變化"
+
+#. 示範完成卡的按鈕：同一步改用練習模式
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.practiseNow"
+msgstr "換成練習再走一次"
 
 #. 階段 3 播報的開頭；兩個數字已格式化
 #. js-lingui-explicit-id
@@ -569,6 +557,12 @@ msgstr "損益表"
 #: src/pages/LabStep.tsx
 msgid "lab.toast.terms"
 msgstr "收進名詞圖鑑：{0} 個名詞"
+
+#. 階段選單最後一項：換成另一種模式（示範或練習），模式名稱已代入
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.stage.switchMode"
+msgstr "改用{other}"
 
 #. 故事頁讀取中的標題
 #. js-lingui-explicit-id
@@ -800,6 +794,24 @@ msgstr "看分錄與 T 字帳"
 msgid "lab.sandbox.show"
 msgstr "看報表"
 
+#. 步驟狀態：走過示範、還沒練習
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.seen"
+msgstr "看過示範"
+
+#. 模式名稱：沒有預測、可以隨時跳階段
+#. js-lingui-explicit-id
+#: src/features/lab/StageBar.tsx
+msgid "lab.mode.demo"
+msgstr "示範"
+
+#. 示範模式的標示（練習是預設，不標）
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.step.demoMode"
+msgstr "示範：沒有預測，可以隨時跳到任何階段"
+
 #. 分錄表格的欄名
 #. js-lingui-explicit-id
 #: src/features/lab/EffectsList.tsx
@@ -907,17 +919,25 @@ msgstr "經營能力"
 msgid "lab.reconcile.next"
 msgstr "練下一步"
 
-#. 完成卡標題
+#. 模式名稱：有預測與揭曉
 #. js-lingui-explicit-id
-#: src/pages/LabStep.tsx
-msgid "lab.finish.practice"
-msgstr "練習完成"
+#: src/features/lab/StageBar.tsx
+msgid "lab.mode.practice"
+msgstr "練習"
 
 #. 步驟狀態
 #. js-lingui-explicit-id
 #: src/pages/LabStory.tsx
 msgid "lab.story.practised"
 msgstr "練習過"
+
+#. 步驟狀態：練習過加這一步的預測成績；數字已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(scores[s.id]!.right, locale)
+#. placeholder {1}: formatNumber(scores[s.id]!.total, locale)
+#: src/pages/LabStory.tsx
+msgid "lab.story.practisedScore"
+msgstr "練習過，猜對 {0}／{1}"
 
 #. 期末存貨的加註（T07）
 #. js-lingui-explicit-id
@@ -1035,13 +1055,7 @@ msgstr "資產總計{0}，變為 {1}；負債{2}；股東權益{3}。{verdict}�
 msgid "lab.stage.balance"
 msgstr "資產負債表"
 
-#. 步驟狀態
-#. js-lingui-explicit-id
-#: src/pages/LabStory.tsx
-msgid "lab.story.done"
-msgstr "走完了"
-
-#. 階段選單最後一項：回看走完過的步驟時，直接切到最後一個階段
+#. 階段選單：直接切到最後一個階段（示範隨時有；練習只在練過的步驟再回來時有）
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
 msgid "lab.stage.skip"
@@ -1082,7 +1096,13 @@ msgstr "這一步的前置條件不成立"
 msgid "lab.finish.score"
 msgstr "這一步的預測猜對 {0}／{1}；整個故事到目前 {2}／{3}（{4} 步）"
 
-#. 完成卡標題
+#. 完成卡標題（示範）
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.finish.demo"
+msgstr "這一步看完了"
+
+#. 完成卡標題（練習）
 #. js-lingui-explicit-id
 #: src/pages/LabStep.tsx
 msgid "lab.finish.story"
@@ -1173,12 +1193,6 @@ msgstr "金額"
 msgid "lab.role.bank"
 msgstr "銀行"
 
-#. 步驟列的按鈕
-#. js-lingui-explicit-id
-#: src/pages/LabStory.tsx
-msgid "lab.story.start"
-msgstr "開始"
-
 #. 建議的按鈕
 #. js-lingui-explicit-id
 #: src/pages/LabRatios.tsx
@@ -1188,12 +1202,13 @@ msgstr "開啟自由實驗"
 #. 階段進度文字；數字與名稱已代入
 #. js-lingui-explicit-id
 #. placeholder {0}: stage + 1
-#. placeholder {1}: names[STAGES[stage]!]
-#. placeholder {1}: names[stageId]
+#. placeholder {1}: stages.length
+#. placeholder {2}: names[stageId]
+#. placeholder {2}: names[stages[stage]!]
 #: src/features/lab/StageBar.tsx
 #: src/pages/LabStep.tsx
 msgid "lab.stage.progress"
-msgstr "階段 {0}／{STAGE_COUNT}：{1}"
+msgstr "階段 {0}／{1}：{2}"
 
 #. 提示按鈕
 #. js-lingui-explicit-id

@@ -1,5 +1,6 @@
-// 故事步驟頁 /lab/story/<storyId>/<stepId>/（02 第 1.1 節、03 第 3.3 到 3.6、3.11、3.12 節）：一步 10 個階段，由「下一步」推進；
-// 單獨練習（?mode=practice）沿用故事在該步之前的狀態（核心從第一步重播，03 第 3.1 節），不改變故事進度。
+// 故事步驟頁 /lab/story/<storyId>/<stepId>/（02 第 1.1 節、03 第 3.1、3.3 到 3.6、3.11、3.12 節）：由「下一步」推進。
+// 兩種模式（03 第 3.1 節）：練習（預設，10 個階段含預測與揭曉，第一次練要逐階段看）與示範（?mode=demo，9 個階段沒有預測，隨時可跳階段）；
+// 兩種走完都記成走完、故事進度只往前；階段選單可以互換模式（回到交易卡）。
 // 整頁等故事快照與進度齊了才出現；核心的重播模組與內建資料（約 42 KB gzip）和名詞索引（約 10 KB）都不在第一波（06 第 8.2 節、14 的 V24）：
 // 階段 1 的列名與名詞 chip 用快照裡的名稱（firstPaint.lines、firstPaint.terms，建置時已換成名詞的名稱），名詞索引在掀開之後才讀；
 // 交易卡、恆等式與預測面板先用快照裡建置時由同一份核心算好的數字與列名（firstPaint）畫，核心在畫面掀開之後才載入（afterFirstPaint），
@@ -8,7 +9,7 @@
 // 減少動態效果時天平與數字直接是結束狀態（motion.ts）。字串在第三層 catalog（lab.po）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { formatMoney, formatNumber, localePath } from '@ledgerland/i18n';
 import { Button, Card, CheckCircleIcon, ErrorState, HintBar, Toast, ToastRegion, TopBar, XCircleIcon } from '@ledgerland/web-ui';
 import { labPrefersReducedMotion } from '../features/lab/motion.ts';
@@ -27,9 +28,9 @@ import {
   type PredictTarget,
   type PredictionRecord,
 } from '../features/lab/predict.ts';
-import { completeStep, moveStoryTo, predictTotals, savePrediction, type StoryProgress } from '../features/lab/progress.ts';
+import { completeStep, predictTotals, savePrediction, type StoryProgress } from '../features/lab/progress.ts';
 import { ratioChanges, ratioPoint } from '../features/lab/ratio-changes.ts';
-import { PREDICT_STAGE, STAGES, STAGE_COUNT, canGoTo, canSkipToEnd, statementForStage, type StageGate } from '../features/lab/stages.ts';
+import { canGoTo, canSkipToEnd, stagesOf, statementForStage, type LabMode, type StageGate } from '../features/lab/stages.ts';
 import { StageBar, useStageNames } from '../features/lab/StageBar.tsx';
 import type { StatementView } from '../features/lab/StatementTable.tsx';
 import { TransactionCard } from '../features/lab/TransactionCard.tsx';
@@ -54,6 +55,8 @@ const EQUATION_LINES = ['bs_total_assets', 'bs_total_liabilities', 'bs_total_equ
 
 export default function LabStep() {
   const { storyId, stepId } = useParams();
+  const [params] = useSearchParams();
+  const mode: LabMode = params.get('mode') === 'demo' ? 'demo' : 'practice';
   const locale = useLocale();
   const lab = useLabStepLoad(storyId, locale);
   const { t } = useLingui();
@@ -91,7 +94,8 @@ export default function LabStep() {
   return (
     <TermsProvider locale={locale} deferIndex={!needCoreFirst}>
       <StepSession
-        key={`${story.id}:${stepId}`}
+        key={`${story.id}:${stepId}:${mode}`}
+        mode={mode}
         core={core}
         coreError={lab.coreError}
         onLoadCore={loadCore}
@@ -107,6 +111,7 @@ export default function LabStep() {
 }
 
 interface SessionProps {
+  mode: LabMode;
   /** 核心（還沒載好是 null，這時 run 與 step 也是 null） */
   core: LabCore | null;
   coreError: unknown;
@@ -121,12 +126,12 @@ interface SessionProps {
 
 type Answer = { answer: PredictChoice; nearly: boolean; exact?: 'up' | 'down' | 'unchanged' };
 
-function StepSession({ core, coreError, onLoadCore, story, spec, step, run, progress, onProgress }: SessionProps) {
+function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run, progress, onProgress }: SessionProps) {
   const { t } = useLingui();
   const locale = useLocale();
-  const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const practice = params.get('mode') === 'practice';
+  const [params, setParams] = useSearchParams();
+  const demo = mode === 'demo';
+  const stages = stagesOf(mode);
   const from = params.get('from');
   const { ready: termsReady } = useTerms();
   const revealed = useRevealed();
@@ -141,6 +146,15 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const reduced = labPrefersReducedMotion();
   const href = (p: string) => localePath(locale, p);
   const storyHref = href(`/lab/story/${story.id}/`);
+  // 同一個故事其他步驟的連結帶著目前的模式（示範時老師不用每一步重選）
+  const stepHref = (id: string) => href(`/lab/story/${story.id}/${id}/`) + (demo ? '?mode=demo' : '');
+  // 換成另一種模式：只改查詢字串，外層的 key 含模式，整段重新開始（回到交易卡）
+  const switchMode = () => {
+    const next = new URLSearchParams(params);
+    if (demo) next.delete('mode');
+    else next.set('mode', 'demo');
+    setParams(next);
+  };
   // 步驟的順序：快照的 steps 依 order（和核心 orderedSteps 一樣），前一步與下一步由此而來，不必等核心
   const ordered = useMemo(() => [...story.steps].sort((a, b) => a.order - b.order), [story]);
   const index = ordered.findIndex((s) => s.id === spec.id);
@@ -153,19 +167,16 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const after = (lineId: string): number => (step ? lineAt(step.after, lineId) : (firstPaint?.after[lineId] ?? 0));
   const hasCore = step !== null && run !== null;
 
-  // 進度：故事模式第一次走這一步、或單獨練習，預測要先完成（03 第 3.3 節）
+  // 進度：練習模式第一次練這一步，預測要先完成（03 第 3.3 節）；練過的再回來，預測可略過、有跳到最後的捷徑；示範沒有預測
   const alreadyDone = progress.done.includes(spec.id);
-  const predictRequired = practice || !alreadyDone;
+  const practised = progress.practised.includes(spec.id);
+  const predictRequired = !demo && !practised;
   const savedPrediction = progress.predictions[spec.id];
   const [record, setRecord] = useState<PredictionRecord>(() => savedPrediction ?? {});
-  const [submitted, setSubmitted] = useState(() => savedPrediction !== undefined && !practice && alreadyDone);
+  const [submitted, setSubmitted] = useState(() => !demo && savedPrediction !== undefined && practised);
   const targets = useMemo(() => predictTargetsOf(spec.predictTargets), [spec.predictTargets]);
   const predictDone = submitted && isPredictionComplete(targets, record);
-  // 回看走完過的步驟（故事模式）才有「跳到最後一個階段」（stages.ts）
-  const gate: StageGate = useMemo(
-    () => ({ predictRequired, predictDone, revisit: !practice && alreadyDone }),
-    [predictRequired, predictDone, practice, alreadyDone],
-  );
+  const gate: StageGate = useMemo(() => ({ mode, predictRequired, predictDone, revisit: practised }), [mode, predictRequired, predictDone, practised]);
 
   const [stage, setStage] = useState(0);
   // 階段 2 起要畫面元件（stage-views.tsx）、階段 3 起還要核心：還沒到時先記著要去的階段，載好就切過去（go）
@@ -242,9 +253,9 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
 
   // 階段 5 到 7 進入時自動切表（手動切過就不再自動）
   useEffect(() => {
-    const auto = statementForStage(stage);
+    const auto = statementForStage(stage, mode);
     if (auto !== null && !manualTab) setTab(auto);
-  }, [stage, manualTab]);
+  }, [stage, mode, manualTab]);
 
   const enter = useCallback((to: number) => {
     setPendingStage(null);
@@ -255,9 +266,10 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const go = useCallback(
     (to: number) => {
       if (!canGoTo(stage, to, gate)) return;
-      // 階段 2 起要畫面元件與名詞索引（科目與指標的名稱）、階段 3 起還要核心
-      const needViews = to >= PREDICT_STAGE && (views === null || !termsReady);
-      const needCore = to > PREDICT_STAGE && !hasCore;
+      // 交易卡之後的階段要畫面元件與名詞索引（科目與指標的名稱）、預測之後的階段還要核心
+      const id = stages[to]!;
+      const needViews = id !== 'card' && (views === null || !termsReady);
+      const needCore = id !== 'card' && id !== 'predict' && !hasCore;
       if (needViews || needCore) {
         setPendingStage(to);
         if (views === null) loadViews();
@@ -266,11 +278,13 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
       }
       enter(to);
     },
-    [stage, gate, hasCore, views, termsReady, onLoadCore, loadViews, enter],
+    [stage, stages, gate, hasCore, views, termsReady, onLoadCore, loadViews, enter],
   );
   useEffect(() => {
-    if (pendingStage !== null && views !== null && termsReady && (pendingStage <= PREDICT_STAGE || hasCore)) enter(pendingStage);
-  }, [pendingStage, views, termsReady, hasCore, enter]);
+    if (pendingStage === null || views === null || !termsReady) return;
+    const id = stages[pendingStage]!;
+    if (id === 'card' || id === 'predict' || hasCore) enter(pendingStage);
+  }, [pendingStage, stages, views, termsReady, hasCore, enter]);
   // 方向鍵左右切換階段（焦點不在輸入框時，03 第 3.11 節）
   useEffect(() => {
     const onKey = (e: globalThis.KeyboardEvent) => {
@@ -389,9 +403,9 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
   const cashTarget = targets.find((tg) => tg.kind === 'line' && tg.line === 'bs_cash');
   const cashVerdict = cashTarget && submitted ? { chosen: record[cashTarget.id] ?? '', correct: verdictOf(cashTarget)?.correct ?? false } : null;
 
-  // 每個階段一句播報（03 第 3.11 節）；階段 1 與 2 不用核心，其他階段沒有核心就不會進得去
+  // 每個階段一句播報（03 第 3.11 節）；交易卡與預測不用核心，其他階段沒有核心就不會進得去
   const liveText = (() => {
-    const id = STAGES[stage]!;
+    const id = stages[stage]!;
     if (id === 'card') return t({ id: 'lab.live.card', message: `第 ${spec.order} 步，${spec.title}。`, comment: '階段 1 的播報；數字與標題已代入' });
     if (id === 'predict')
       return submitted
@@ -442,13 +456,13 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
 
   const finish = async () => {
     if (finished) return;
-    const res = await completeStep({ storyId: story.id, stepId: spec.id, termRefs: spec.termRefs, mode: practice ? 'practice' : 'story' });
+    const res = await completeStep({ storyId: story.id, stepId: spec.id, termRefs: spec.termRefs, mode, order: ordered.map((s) => s.id) });
     setFinished(res);
     onProgress();
     if (res.unlockedTerms.length > 0)
       setToast(t({ id: 'lab.toast.terms', message: `收進名詞圖鑑：${res.unlockedTerms.length} 個名詞`, comment: '走完一步時解鎖名詞的提示；數字已代入' }));
   };
-  const isLast = stage === STAGE_COUNT - 1;
+  const isLast = stage === stages.length - 1;
   const onNext = () => {
     if (isLast) void finish();
     else go(stage + 1);
@@ -474,7 +488,7 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
       id={`ll-lab-table-${code}`}
     />
   );
-  const stageId = STAGES[stage]!;
+  const stageId = stages[stage]!;
   const designNotes = [...new Set(spec.events.flatMap((e) => e.pendingRefs ?? []))];
   const title = t({ id: 'lab.step.title', message: `第 ${spec.order} 步：${spec.title}`, comment: '步驟頁的標題；數字與標題已代入' });
   const prevDone = prevStepId === undefined || progress.done.includes(prevStepId);
@@ -484,7 +498,7 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
       className="ll-lab-session"
       data-testid="lab-session"
       data-stage={stageId}
-      data-mode={practice ? 'practice' : 'story'}
+      data-mode={mode}
       data-core={hasCore ? 'ready' : 'pending'}
       data-views={views ? 'ready' : 'pending'}
       data-terms={termsReady ? 'ready' : 'pending'}
@@ -504,10 +518,10 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
           {t({ id: 'lab.step.fromQuestion', message: '你從一道題目來到這一步。', comment: '返回膠囊的說明' })}
         </HintBar>
       )}
-      {practice && (
-        <p className="ll-lab-session__mode" data-testid="lab-practice-flag">
-          <Trans id="lab.step.practiceMode" comment="單獨練習的標示">
-            單獨練習：不改變故事進度
+      {demo && (
+        <p className="ll-lab-session__mode" data-testid="lab-demo-flag">
+          <Trans id="lab.step.demoMode" comment="示範模式的標示（練習是預設，不標）">
+            示範：沒有預測，可以隨時跳到任何階段
           </Trans>
         </p>
       )}
@@ -518,7 +532,7 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
         </p>
       </div>
       <h2 id="ll-lab-stage-heading" className="ll-lab-session__stage" data-testid="lab-stage-title">
-        {t({ id: 'lab.stage.progress', message: `階段 ${stage + 1}／${STAGE_COUNT}：${names[stageId]}` })}
+        {t({ id: 'lab.stage.progress', message: `階段 ${stage + 1}／${stages.length}：${names[stageId]}` })}
       </h2>
       <p ref={liveRef} className="ll-sr-only" aria-live="polite" data-testid="lab-live">
         {liveText}
@@ -540,8 +554,8 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
             before={before}
             layout={layout}
             termLabels={firstPaint?.terms}
-            recap={practice || (!alreadyDone && index > 0 && !prevDone)}
-            suggestEarlier={!practice && !from && index > 0 && !prevDone}
+            recap={!alreadyDone && index > 0 && !prevDone}
+            suggestEarlier={!from && index > 0 && !prevDone}
           />
         )}
         {views && stageId === 'predict' && (
@@ -672,9 +686,9 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
             {finished && (
               <Card as="section" className="ll-lab-finished" data-testid="lab-finished">
                 <h3>
-                  {practice
-                    ? t({ id: 'lab.finish.practice', message: '練習完成', comment: '完成卡標題' })
-                    : t({ id: 'lab.finish.story', message: '這一步走完了', comment: '完成卡標題' })}
+                  {demo
+                    ? t({ id: 'lab.finish.demo', message: '這一步看完了', comment: '完成卡標題（示範）' })
+                    : t({ id: 'lab.finish.story', message: '這一步走完了', comment: '完成卡標題（練習）' })}
                 </h3>
                 {revealScore && (
                   <p className="ll-lab-finished__score" data-testid="lab-finish-score">
@@ -686,43 +700,30 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
                   </p>
                 )}
                 <div className="ll-lab-finished__actions">
-                  {practice ? (
-                    <>
-                      <Button
-                        size="md"
-                        onClick={() => {
-                          setFinished(null);
-                          setStage(0);
-                          setSubmitted(false);
-                          setRecord({});
-                        }}
-                      >
-                        {t({ id: 'lab.finish.again', message: '再練一次', comment: '完成卡按鈕' })}
-                      </Button>
-                      <Button size="md" href={storyHref}>
-                        {t({ id: 'lab.finish.map', message: '回到故事地圖', comment: '完成卡按鈕' })}
-                      </Button>
-                      <Button
-                        size="md"
-                        variant="primary"
-                        onClick={() =>
-                          void moveStoryTo(story.id, spec.id).then(() => navigate(nextStepId ? href(`/lab/story/${story.id}/${nextStepId}/`) : storyHref))
-                        }
-                      >
-                        {t({ id: 'lab.finish.continueFromHere', message: '從這一步接著走故事', comment: '完成卡按鈕' })}
-                      </Button>
-                    </>
+                  {nextStepId && (
+                    <Button size="md" variant="primary" href={stepHref(nextStepId)} data-testid="lab-next-step">
+                      {t({ id: 'lab.finish.next', message: '下一步', comment: '完成卡按鈕' })}
+                    </Button>
+                  )}
+                  <Button size="md" href={storyHref}>
+                    {t({ id: 'lab.finish.map', message: '回到故事地圖', comment: '完成卡按鈕' })}
+                  </Button>
+                  {demo ? (
+                    <Button size="md" href={href(`/lab/story/${story.id}/${spec.id}/`)} data-testid="lab-practise-now">
+                      {t({ id: 'lab.finish.practiseNow', message: '換成練習再走一次', comment: '示範完成卡的按鈕：同一步改用練習模式' })}
+                    </Button>
                   ) : (
-                    <>
-                      {nextStepId && (
-                        <Button size="md" variant="primary" href={href(`/lab/story/${story.id}/${nextStepId}/`)} data-testid="lab-next-step">
-                          {t({ id: 'lab.finish.next', message: '下一步', comment: '完成卡按鈕' })}
-                        </Button>
-                      )}
-                      <Button size="md" href={storyHref}>
-                        {t({ id: 'lab.finish.map', message: '回到故事地圖' })}
-                      </Button>
-                    </>
+                    <Button
+                      size="md"
+                      onClick={() => {
+                        setFinished(null);
+                        setStage(0);
+                        setSubmitted(false);
+                        setRecord({});
+                      }}
+                    >
+                      {t({ id: 'lab.finish.again', message: '再練一次', comment: '完成卡按鈕' })}
+                    </Button>
                   )}
                 </div>
               </Card>
@@ -731,6 +732,7 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
         )}
       </section>
       <StageBar
+        mode={mode}
         stage={stage}
         canPrev={stage > 0}
         canNext={isLast ? !finished : canGoTo(stage, stage + 1, gate)}
@@ -739,8 +741,9 @@ function StepSession({ core, coreError, onLoadCore, story, spec, step, run, prog
         canJumpTo={(s) => canGoTo(stage, s, gate)}
         onPrev={() => go(stage - 1)}
         onNext={onNext}
-        onSkip={() => go(STAGE_COUNT - 1)}
+        onSkip={() => go(stages.length - 1)}
         onJump={go}
+        onSwitchMode={switchMode}
       />
       <ToastRegion className="ll-float-toasts" data-testid="lab-toasts">
         {toast && (
