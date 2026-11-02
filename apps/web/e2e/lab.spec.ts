@@ -5,6 +5,7 @@ import { expect, test, type Page, type Route } from '@playwright/test';
 import { waitForApp } from './helpers.ts';
 
 const STORY = 'story_ywv2dy';
+const STEP1 = 'st_9htcrg';
 const STEP7 = 'st_98tppx';
 const STEP6 = 'st_g4h3hx';
 const STEP12 = 'st_q5rssq';
@@ -54,13 +55,21 @@ test.describe('實驗室首頁與故事步驟列表', () => {
     const hero = page.getByTestId('lab-hero');
     await expect(hero).toContainText('綠芽商行');
     await expect(hero).toContainText('經陳彥宏老師授權使用');
-    await expect(page.getByTestId('lab-continue')).toHaveText('開始故事');
+    // 故事卡在首頁就給兩種走法（2026-11-02）：練習是主按鈕、示範是次要，下方一行說明
+    await expect(page.getByTestId('lab-continue')).toHaveText('開始練習');
+    await expect(page.getByTestId('lab-continue')).toHaveAttribute('href', `/lab/story/${STORY}/${STEP1}/`);
+    await expect(page.getByTestId('lab-demo')).toHaveText('先看示範');
+    await expect(page.getByTestId('lab-demo')).toHaveAttribute('href', `/lab/story/${STORY}/${STEP1}/?mode=demo`);
+    await expect(page.getByTestId('lab-modes-note')).toContainText('示範沒有預測');
+    await expect(page.getByTestId('lab-story-link')).toHaveText('看全部步驟');
+    await expect(page.getByRole('link', { name: /^故事/ })).toContainText('每一步都有示範與練習兩種走法');
     await expect(page.getByRole('link', { name: /自由實驗/ })).toHaveAttribute('href', '/lab/sandbox/');
     await expect(page.getByRole('link', { name: /指標實驗室/ })).toHaveAttribute('href', '/lab/ratios/');
     await page.goto('/en/lab/');
     await waitForApp(page);
     await expect(page.getByTestId('lab-hero')).toContainText('Green Bud Trading');
-    await expect(page.getByTestId('lab-continue')).toHaveText('Start the story');
+    await expect(page.getByTestId('lab-continue')).toHaveText('Start practising');
+    await expect(page.getByTestId('lab-demo')).toHaveText('Watch the demo first');
   });
 
   test('故事步驟列表：五章、18 步、每步有示範與練習、章末相關關卡', async ({ page }) => {
@@ -158,7 +167,9 @@ test.describe('故事步驟頁', () => {
     await expect(page.locator(`[data-step="${STEP7}"]`)).toContainText('練習過，猜對 7／8');
     await page.goto('/lab/');
     await waitForApp(page);
-    await expect(page.getByTestId('lab-continue')).toHaveText('繼續第 8 步');
+    await expect(page.getByTestId('lab-continue')).toHaveText('練習第 8 步');
+    await expect(page.getByTestId('lab-demo')).toHaveText('示範第 8 步');
+    await expect(page.getByTestId('lab-demo')).toHaveAttribute('href', /\?mode=demo$/);
   });
 
   test('核心晚到：交易卡與預測先用快照的數字出現，「下一步」等核心載好才切到階段 3，成績照常存（V24）', async ({ page }) => {

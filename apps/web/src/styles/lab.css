@@ -42,6 +42,13 @@
   gap: var(--ll-space-2);
   margin-top: var(--ll-space-3);
 }
+/* 示範與練習的一行說明：緊接在按鈕下方，和授權標示同一種小字但用 text-2（是要讀的說明，不是註腳） */
+.ll-lab-hero__modes {
+  margin: var(--ll-space-2) 0 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
 .ll-lab-hero__licence,
 .ll-lab-home__hint {
   margin: var(--ll-space-3) 0 0;

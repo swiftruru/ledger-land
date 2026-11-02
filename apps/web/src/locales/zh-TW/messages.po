@@ -395,7 +395,7 @@ msgstr "依名稱"
 #. js-lingui-explicit-id
 #: src/pages/Lab.tsx
 msgid "lab.mode.story.desc"
-msgstr "依序走過 {total} 筆交易，每一步都可以單獨練習。"
+msgstr "依序走過 {total} 筆交易，每一步都有示範與練習兩種走法。"
 
 #. 名詞圖鑑分組選項
 #. js-lingui-explicit-id
@@ -457,6 +457,12 @@ msgstr "先把這裡的進度帶走：按「匯出到 App」複製備份碼（�
 #: src/pages/Play.tsx
 msgid "play.toTerms"
 msgstr "先看名詞圖鑑"
+
+#. 故事卡次要按鈕（還沒走過）：用示範模式看第一步
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.startDemo"
+msgstr "先看示範"
 
 #. 依名稱排序、不分組時的標題
 #. js-lingui-explicit-id
@@ -1760,7 +1766,7 @@ msgstr "相關名詞"
 msgid "chapter.endLinks"
 msgstr "相關實驗室步驟"
 
-#. 故事卡的次要按鈕
+#. 故事卡的安靜按鈕
 #. js-lingui-explicit-id
 #: src/pages/Lab.tsx
 msgid "lab.home.steps"
@@ -1801,6 +1807,19 @@ msgstr "知道了"
 #: src/pages/Review.tsx
 msgid "quiz.submit.classify"
 msgstr "確認分類"
+
+#. 故事卡按鈕下方的一行說明：示範與練習的差別
+#. js-lingui-explicit-id
+#: src/pages/Lab.tsx
+msgid "lab.home.modesNote"
+msgstr "示範沒有預測、可以隨時跳階段，適合投影或先看一遍；練習會先讓你預測再揭曉。"
+
+#. 故事卡次要按鈕：用示範模式看下一步；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: nextStep.order
+#: src/pages/Lab.tsx
+msgid "lab.home.demo"
+msgstr "示範第 {0} 步"
 
 #. 名詞類別：會計科目
 #. js-lingui-explicit-id
@@ -1926,6 +1945,13 @@ msgstr "網站已在其他分頁更新，重新整理後才能繼續儲存進度
 msgid "error.updated.title"
 msgstr "網站已更新"
 
+#. 故事卡主按鈕：用練習模式走下一步；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: nextStep.order
+#: src/pages/Lab.tsx
+msgid "lab.home.practise"
+msgstr "練習第 {0} 步"
+
 #. Compact 分頁列的白話說法（底部只剩一條縮小的網址列）；要短，內嵌時和另一個選項排成一列
 #. js-lingui-explicit-id
 #: src/features/install/InstallGuide.tsx
@@ -1943,13 +1969,6 @@ msgstr "繼續 {actionCode}"
 #: src/pages/Home.tsx
 msgid "home.continue.code"
 msgstr "繼續 {nextCode}"
-
-#. 故事卡主按鈕；數字已代入
-#. js-lingui-explicit-id
-#. placeholder {0}: nextStep.order
-#: src/pages/Lab.tsx
-msgid "lab.home.continue"
-msgstr "繼續第 {0} 步"
 
 #. 錯題本入口：今天的複習做到一半時的按鈕
 #. js-lingui-explicit-id
@@ -2534,11 +2553,11 @@ msgstr "開始 {actionCode}"
 msgid "play.scan.start"
 msgstr "開始掃描"
 
-#. 故事卡主按鈕（還沒走過）
+#. 故事卡主按鈕（還沒走過）：用練習模式走第一步
 #. js-lingui-explicit-id
 #: src/pages/Lab.tsx
-msgid "lab.home.start"
-msgstr "開始故事"
+msgid "lab.home.startPractice"
+msgstr "開始練習"
 
 #. 錯題本入口的主要按鈕
 #. js-lingui-explicit-id
