@@ -20,7 +20,7 @@ import { createHash } from 'node:crypto';
 import { createCoreContext, defaultAccounts } from '@ledgerland/core';
 import { storyFirstPaint } from './content-rules.mjs';
 import { LOCALES } from '@ledgerland/i18n';
-import { isUnscoredLevel } from './content-schema-bridge.mjs';
+import { isUnscoredLevel, splitHandout } from './content-schema-bridge.mjs';
 
 export const SNAPSHOT_SCHEMA_VERSION = 3;
 
@@ -154,11 +154,61 @@ function questionSnapshot(q, compiled, answerRev) {
 }
 
 /**
+ * 講義題庫的 manifest 項目與檔案（只有中文）：收錄的題依講義分檔（去掉 status 與 exclusion），審核用的題（不收的與請老師確認的）另一檔
+ * @param {{ decks: any; bank: any }} handout 驗證過的 decks.json 與 midterm.json
+ * @param {(locale: string, name: string, data: unknown) => string} write
+ */
+function handoutEntry(handout, write) {
+  const { decks, bank } = handout;
+  const { included, review } = splitHandout(decks, bank);
+  /** @param {any} q */
+  const strip = (q) => {
+    const { status: _s, exclusion: _e, ...rest } = q;
+    return rest;
+  };
+  /** @type {any[]} */
+  const sorted = [...decks.decks].sort((a, b) => a.order - b.order);
+  const deckEntries = sorted.map((d) => {
+    const questions = included.filter((q) => q.deck === d.id);
+    return {
+      id: d.id,
+      order: d.order,
+      code: d.code,
+      title: d.title,
+      questionCount: questions.length,
+      sections: d.sections.map((/** @type {any} */ s) => ({
+        id: s.id,
+        title: s.title,
+        questionIds: questions.filter((q) => q.section === s.id).map((q) => q.id),
+      })),
+      file: write('zh-TW', `handout_${d.id}`, { id: d.id, bank: bank.id, rev: bank.rev, questions: questions.map(strip) }),
+    };
+  });
+  return {
+    id: bank.id,
+    title: bank.title,
+    rev: bank.rev,
+    questionCount: included.length,
+    decks: deckEntries,
+    review: {
+      excluded: review.filter((q) => q.status === 'excluded').length,
+      check: review.filter((q) => q.status === 'included').length,
+      file: write('zh-TW', 'handout_review', {
+        bank: bank.id,
+        rev: bank.rev,
+        decks: sorted.map((d) => ({ id: d.id, code: d.code, title: d.title })),
+        questions: review,
+      }),
+    },
+  };
+}
+
+/**
  * @param {import('./content-rules.mjs').ParsedBundle} parsed Zod 通過的內容（validateBundle 應已無錯誤）
  * @param {Map<string, import('./content-rules.mjs').CompiledQuestion>} compiled runAccountingChecks 的結果
  * @param {{ contentVersion?: number; items?: { id: string; answerRev?: number; rev: number }[] }} lock published.lock.json
- * @param {{ gitCommit?: string; builtAt?: string; includeDrafts?: boolean; accounts?: readonly { id: string; element: string }[]; coreContext?: import('@ledgerland/core').CoreContext }} [meta] includeDrafts：快照連草稿一起收（manifest 標 includesDrafts），
- *   只給本機開發與 E2E；CI 與部署不設。accounts：查名詞要素用的科目表，預設是核心內建的科目表（測試可以換）
+ * @param {{ gitCommit?: string; builtAt?: string; includeDrafts?: boolean; accounts?: readonly { id: string; element: string }[]; coreContext?: import('@ledgerland/core').CoreContext; handout?: { decks: any; bank: any } | null }} [meta] includeDrafts：快照連草稿一起收（manifest 標 includesDrafts），
+ *   只給本機開發與 E2E；CI 與部署不設。accounts：查名詞要素用的科目表，預設是核心內建的科目表（測試可以換）。handout：驗證過的講義題庫（decks.json 與 midterm.json），沒有就不出講義檔
  */
 export function buildSnapshot(parsed, compiled, lock, meta = {}) {
   const includeDrafts = meta.includeDrafts === true;
@@ -262,8 +312,13 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
     }),
   );
 
+  // 講義題庫（08 的講義題庫一節，2026-11-04）：老師授權的非原創區，只有中文，一份講義一檔（苦練區只抓要練的那幾份）加一檔審核用的題（老師審核頁）。
+  // 這些檔不進 precache（apps/web/vite.config.ts 的 globIgnores），由 Service Worker 的執行期路由快取（06 第 3.2 節）。manifest.handouts 是小索引：
+  // 講義、各段與題目 ID 清單，苦練首頁只靠它畫進度，不必載題庫
+  const handouts = meta.handout ? [handoutEntry(meta.handout, write)] : undefined;
   const manifest = {
     schemaVersion: SNAPSHOT_SCHEMA_VERSION,
+    ...(handouts === undefined ? {} : { handouts }),
     contentVersion: lock.contentVersion ?? 1,
     builtAt: meta.builtAt ?? new Date().toISOString(),
     gitCommit: meta.gitCommit ?? 'unknown',

@@ -17,6 +17,8 @@ export const ID_RULES = {
   option: { prefix: 'o_', length: 4 },
   item: { prefix: 'it_', length: 4 },
   misconception: { prefix: 'mc_', length: 4 },
+  /** 講義題庫的題目（老師授權的非原創區，08 的講義題庫一節；ID 由 tools/handout-extract.mjs 在第一次抽到時產生，記在 content/handout/ids.json，之後不變） */
+  handoutQuestion: { prefix: 'hq_', length: 8 },
 } as const;
 export type IdKind = keyof typeof ID_RULES;
 

@@ -28,6 +28,24 @@
       "content": ["termIndex"]
     },
     {
+      "pattern": "^/exam/$",
+      "module": "src/pages/Exam.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
+      "pattern": "^/exam/teacher/$",
+      "module": "src/pages/ExamTeacher.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
+      "pattern": "^/exam/([^/]+)/$",
+      "module": "src/pages/ExamRun.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
       "pattern": "^/terms/$",
       "module": "src/pages/Terms.tsx",
       "content": ["termIndex", "chapterIndex"]

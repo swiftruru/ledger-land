@@ -39,7 +39,8 @@ const US_SPELLING = [/\bcolor\b/i, /\borganization\b/i, /\banalyze\b/i, /\bcente
 /** 英式拼字只檢查介面字串的 en catalog 與 content 的 en 欄位；程式碼裡的 color 等屬性名不算 */
 const targets = [
   ...walk(join(ROOT, 'docs'), { ext: ['.md'] }).filter((f) => !/01-materials|13-material-questions|15-ai-workflow/.test(f)),
-  ...walk(join(ROOT, 'content'), { ext: ['.json', '.md'] }),
+  // 講義題庫 content/handout/（14 第 5.2 節，2026-11-04）：老師授權的講義原文逐字保留，不套站規的用語與破折號；那個資料夾的 README 與設定檔仍照站規
+  ...walk(join(ROOT, 'content'), { ext: ['.json', '.md'] }).filter((f) => !/\/content\/handout\/(midterm|ids)\.json$/.test(f)),
   ...walk(join(ROOT, 'packages/core/data'), { ext: ['.json'] }),
   join(ROOT, 'README.md'),
   join(ROOT, 'CONTRIBUTING.md'),

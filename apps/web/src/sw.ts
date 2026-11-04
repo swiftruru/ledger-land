@@ -11,7 +11,9 @@
 // Workbox 7.4.1 沒有提供並行的選項（PrecacheController.install 寫死逐項）；升版時看它有沒有加，有的話這段可以拿掉。
 import { cleanupOutdatedCaches, PrecacheController, PrecacheRoute } from 'workbox-precaching';
 import type { PrecacheEntry } from 'workbox-precaching';
+import { ExpirationPlugin } from 'workbox-expiration';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
+import { CacheFirst } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope & { __WB_MANIFEST: Array<PrecacheEntry | string> };
 
@@ -61,6 +63,12 @@ self.addEventListener('activate', (event) => {
 cleanupOutdatedCaches();
 // precache 的路由（precacheAndRoute 的後半：directoryIndex、cleanURLs 與忽略 utm 參數都用 Workbox 的預設）
 registerRoute(new PrecacheRoute(controller));
+// 講義題庫（M4c，06 第 3.2 節的「選讀的大型內容包」）：一份講義一檔加審核用的一檔，合計約 0.5 MB，不進 precache（vite.config.ts 的 globIgnores）；
+// 第一次讀到才快取、之後直接從快取回（檔名帶內容雜湊，永不過期），舊雜湊的檔靠 maxEntries 淘汰。看過一次苦練區之後離線也能練
+registerRoute(
+  ({ url, sameOrigin }) => sameOrigin && /^\/content\/[^/]+\/handout_[^/]+\.json$/.test(url.pathname),
+  new CacheFirst({ cacheName: 'll-handout', plugins: [new ExpirationPlugin({ maxEntries: 8 })] }),
+);
 // 離線導覽 fallback：中文與 /en/ 開頭的路徑都回同一份殼層 index.html；/assets/ 與 /content/ 找不到檔案時不回殼層，
 // Cloudflare 保留的 /cdn-cgi/、sw.js 本身、stub 端點、sitemap.xml 與 robots.txt（給搜尋引擎的檔案，在瀏覽器打開也要看到原檔）一律走網路（06 第 3.1 節）
 registerRoute(

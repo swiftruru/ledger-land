@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { validateBundle } from '@ledgerland/content-schema';
 import { loadContentFiles } from './lib/content-files.mjs';
 import { allEntityIds, checkLock, currentLockItems, normaliseLock } from './lib/content-lock.mjs';
+import { loadHandout } from './lib/handout-files.mjs';
 import { hasErrors, parseBundle, runAccountingChecks } from './lib/content-rules.mjs';
 import { runTextChecks } from './lib/content-text.mjs';
 import { ROOT, fail, readJson } from './lib/fs.mjs';
@@ -42,15 +43,20 @@ if (schemaIssues.length === 0 && !hasErrors(acct.issues) && !hasErrors(text)) {
   }
 }
 
+// 講義題庫（08 的講義題庫一節）：獨立的三個檔案，只做形狀與交叉檢查，不進 lock 與原創性檢查
+const handout = loadHandout();
+for (const i of handout.issues) fail(`content:check：${i.file} ${i.path}：${i.rule ? `${i.rule}：` : ''}${i.message}`);
+const handoutSummary = handout.handout ? `、講義題庫 ${handout.handout.bank.questions.length} 題` : '';
+
 const elapsed = ((performance.now() - started) / 1000).toFixed(1);
 if (process.exitCode) {
   console.error(
-    `content:check：失敗（結構 ${schemaIssues.length}、文字與結構 ${text.filter((i) => i.severity === 'error').length}、會計與答案 ${acct.issues.filter((i) => i.severity === 'error').length}、lock ${lockIssues} 個錯誤；${elapsed} 秒）`,
+    `content:check：失敗（結構 ${schemaIssues.length}、文字與結構 ${text.filter((i) => i.severity === 'error').length}、會計與答案 ${acct.issues.filter((i) => i.severity === 'error').length}、lock ${lockIssues}、講義題庫 ${handout.issues.length} 個錯誤；${elapsed} 秒）`,
   );
 } else {
   console.log(
     `content:check：${bundle.terms.length} 個名詞、${bundle.chapters.length} 個章節、${parsed.objectives.length} 個學習目標、${bundle.levels.length} 個關卡、` +
       `${acct.stats.templates} 個範本（${acct.stats.combos} 組參數，前置條件不成立跳過 ${acct.stats.skipped} 組）、` +
-      `${acct.stats.storiesReplayed} 個故事、${bundle.questions.length} 個題目通過，lock 一致${warnings > 0 ? `，${warnings} 個警告` : ''}（${elapsed} 秒）`,
+      `${acct.stats.storiesReplayed} 個故事、${bundle.questions.length} 個題目${handoutSummary}通過，lock 一致${warnings > 0 ? `，${warnings} 個警告` : ''}（${elapsed} 秒）`,
   );
 }

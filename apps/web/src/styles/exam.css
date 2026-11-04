@@ -1,0 +1,187 @@
+/* 期中考苦練（M4c）：苦練首頁、練習頁、老師審核頁的版面；只用 tokens，不改設計系統的 class（07）。三個頁面各自匯入（懶載入，不在入口 CSS）。
+   題目卡、選項與回饋面板的外觀都是 web-ui 的（02-quiz-choice、04-quiz-types、15-quiz-session），這裡只加講義特有的東西：情境引述、字母、解析標籤、審核卡。
+   全部 CSS 的預算只剩零頭（perf/urls.json 的 allCssGzipKb），共同的字級與顏色寫成一組選擇器。 */
+
+/* ---- 共同：小標（footnote 600）、說明（body-sm text-2）、卡片標題（title-3）、動作列 ---- */
+.ll-exam-scenario__label,
+.ll-exam-deck__code,
+.ll-exam-summary__subtitle,
+.ll-exam-tq__reason-title {
+  margin: 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 600;
+}
+.ll-exam-intro,
+.ll-exam-hero__licence,
+.ll-exam-hero__count,
+.ll-exam-deck__count,
+.ll-exam-hero__note,
+.ll-exam-run__hint,
+.ll-exam-resume,
+.ll-exam-review-q__scenario,
+.ll-exam-review-q__explain,
+.ll-exam-teacher__stats,
+.ll-exam-tq__source,
+.ll-exam-tq__scenario,
+.ll-exam-tq__explain {
+  color: var(--ll-text-2);
+}
+.ll-exam-hero__count,
+.ll-exam-deck__count,
+.ll-exam-hero__note,
+.ll-exam-run__hint,
+.ll-exam-resume,
+.ll-exam-review-q__scenario,
+.ll-exam-review-q__explain,
+.ll-exam-tq__source {
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-exam-deck__title,
+.ll-exam-summary__score,
+.ll-exam-tq__title {
+  margin: var(--ll-space-1) 0 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+}
+.ll-exam-hero__title,
+.ll-exam-summary__title {
+  margin: 0;
+  font-size: var(--ll-type-title-2-size);
+  line-height: var(--ll-type-title-2-line);
+}
+.ll-exam-hero,
+.ll-exam-deck,
+.ll-exam-summary,
+.ll-exam-teacher__list {
+  margin: var(--ll-space-4) 0 0;
+}
+.ll-exam-hero,
+.ll-exam-deck,
+.ll-exam-summary,
+.ll-exam-tq {
+  padding: var(--ll-space-4);
+}
+.ll-exam-hero__progress,
+.ll-exam-deck__progress,
+.ll-exam-hero__actions,
+.ll-exam-deck__actions,
+.ll-exam-summary__actions,
+.ll-exam-resume,
+.ll-exam-tq__source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+}
+.ll-exam-hero__progress,
+.ll-exam-deck__progress,
+.ll-exam-hero__actions,
+.ll-exam-deck__actions,
+.ll-exam-summary__actions,
+.ll-exam-resume,
+.ll-exam-hero__switch,
+.ll-exam-deck__sections,
+.ll-exam-teacher__stats,
+.ll-exam-teacher__filter,
+.ll-exam-tq__scenario,
+.ll-exam-tq__options,
+.ll-exam-tq__answer,
+.ll-exam-tq__reason,
+.ll-exam-intro {
+  margin-top: var(--ll-space-3);
+}
+.ll-exam-hero__progress,
+.ll-exam-deck__progress {
+  flex-wrap: nowrap;
+  gap: var(--ll-space-3);
+}
+.ll-exam-hero__progress > :first-child,
+.ll-exam-deck__progress > :first-child {
+  flex: 1 1 auto;
+}
+.ll-exam-hero__count,
+.ll-exam-deck__count {
+  white-space: nowrap;
+}
+.ll-exam-hero__note,
+.ll-exam-hero__licence,
+.ll-exam-run__hint,
+.ll-exam-review-q__answer,
+.ll-exam-tq__reason > p,
+.ll-handout-text > p,
+.ll-exam-teacher__stats,
+.ll-exam-tq__answer {
+  margin: var(--ll-space-2) 0 0;
+}
+.ll-handout-text > p:first-child,
+.ll-exam-tq__reason > p:first-child,
+.ll-exam-review-q__answer {
+  margin-top: 0;
+}
+/* 題目卡：情境是引述、問題是選項群組的 legend；講義順序時選項前有字母 */
+.ll-exam-scenario {
+  margin: 0 0 var(--ll-space-3);
+  padding: var(--ll-space-2) var(--ll-space-3);
+  border-inline-start: 3px solid var(--ll-border-strong);
+  background: var(--ll-surface-2);
+}
+.ll-exam-letter {
+  margin-inline-end: 0.35em;
+  font-weight: 700;
+}
+.ll-exam-letter-tag,
+.ll-exam-explain__tag {
+  margin: var(--ll-space-1) 0;
+}
+/* 總結卡與審核卡 */
+.ll-exam-summary__score,
+.ll-exam-review-q__question,
+.ll-exam-tq__question,
+.ll-exam-tq__answer,
+.ll-exam-tq__letter {
+  font-weight: 700;
+}
+.ll-exam-summary__subtitle {
+  margin: var(--ll-space-4) 0 var(--ll-space-2);
+}
+.ll-exam-review-q,
+.ll-exam-teacher__list,
+.ll-exam-tq__options {
+  display: grid;
+  gap: var(--ll-space-2);
+}
+.ll-exam-teacher__list,
+.ll-exam-tq__options {
+  padding: 0;
+  list-style: none;
+}
+.ll-exam-teacher__list {
+  gap: var(--ll-space-4);
+}
+.ll-exam-tq__question {
+  margin-top: var(--ll-space-2);
+}
+.ll-exam-tq__option {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--ll-space-2);
+  padding: var(--ll-space-2) var(--ll-space-3);
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius-md);
+}
+.ll-exam-tq__option.is-correct {
+  border-color: var(--ll-success-ink);
+  background: var(--ll-success-tint);
+}
+.ll-exam-tq__mark {
+  display: inline-flex;
+  color: var(--ll-success-ink);
+}
+.ll-exam-tq__reason {
+  padding: var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-warning-tint);
+}

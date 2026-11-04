@@ -465,7 +465,7 @@ registerRoute(new NavigationRoute(controller.createHandlerBoundToURL('index.html
 self.addEventListener('message', (event) => { if (event.data?.type === 'SKIP_WAITING') void self.skipWaiting(); });
 ```
 
-`sw.ts` 只處理 precache 與導覽 fallback，沒有 `runtimeCaching`（3.2 的安裝教學插圖等同源靜態檔若要以 CacheFirst 快取，在 `sw.ts` 用 `registerRoute` 加，規則一律限定同源路徑，不寫萬用比對）；其餘請求，包括 D7 的統計腳本與它送出的請求，直接走網路，離線時失敗就略過，不會被快取。
+`sw.ts` 處理 precache 與導覽 fallback，執行期路由只有講義題庫一條（M4c，2026-11-04）：同源的 `content/<locale>/handout_*.json` 用 `registerRoute` 加 CacheFirst，cacheName `ll-handout`，`ExpirationPlugin` 的 `maxEntries` 8（3.2）。3.2 的安裝教學插圖等其他同源靜態檔若要以 CacheFirst 快取，同樣在 `sw.ts` 用 `registerRoute` 加，規則一律限定同源路徑，不寫萬用比對；其餘請求，包括 D7 的統計腳本與它送出的請求，直接走網路，離線時失敗就略過，不會被快取。
 
 來源：https://vite-pwa-org.netlify.app/guide/service-worker-strategies-and-behaviors.html 、https://raw.githubusercontent.com/GoogleChrome/workbox/v7/packages/workbox-build/src/templates/sw-template.ts 、https://registry.npmjs.org/vite-plugin-pwa （查證日期 2026-10-20）
 
@@ -479,7 +479,8 @@ self.addEventListener('message', (event) => { if (event.data?.type === 'SKIP_WAI
 | QR 解碼器（D10(a)） | precache，動態載入 | 打包成獨立 chunk，只在打開掃描畫面時才 `import()`，不計入首次載入 JS；放進 precache，離線也能掃描站內 QR；體積計入 precache 預算（4.9） |
 | 安裝教學插圖 | runtime CacheFirst | 第一次瀏覽安裝教學頁後快取（與 02 的頁面總表一致）；多數學生只看一次，不必占第一次安裝的流量。若全部是小型 SVG 且在預算內，可以改成 precache |
 | 字型 | 無 | 使用系統字型，不下載字型檔（見 07 第 3 節） |
-| 選讀的大型內容包（日後若有） | runtime CacheFirst | 檔名帶 hash，不會過期；設定頁提供「下載離線內容」 |
+| 選讀的大型內容包（日後若有） | runtime CacheFirst | 檔名帶 hash，不會過期；設定頁提供「下載離線內容」。第一個住戶是下一列的講義題庫 |
+| 講義題庫 `content/<locale>/handout_*.json`（M4c，2026-11-04） | runtime CacheFirst，不進 precache | 一份講義一檔（`handout_d1`、`handout_d2`、`handout_d3`）加審核用的一檔（`handout_review`），合計約 0.5 MB，只有 zh-TW；`apps/web/vite.config.ts` 的 `globIgnores` 把它們排除在 precache 外，第一次安裝不受影響。`sw.ts` 的 `registerRoute` 只比對同源的這個路徑樣式，cacheName `ll-handout`，`ExpirationPlugin` 的 `maxEntries` 8（四個檔加換版後留下的舊檔，超過就淘汰最舊的）；檔名帶 hash，所以不會拿到舊版，換版時 manifest（在 precache）指向新檔名。看過一次後可離線，不是每個學生都會用，所以不占第一次安裝的時間（08 的「講義題庫」一節） |
 | 第三方資源 | 只有 D7 的統計 | 統計腳本與它送出的請求都不 precache、不進 runtime 快取，離線時直接略過（8.3）；除此之外不使用任何第三方資源，CSP 只為統計服務加上必要的網域（見 09） |
 
 規則：
@@ -681,6 +682,8 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 | `errors` | 自動遞增 | `at`、`route`、`message`、`stack`（截斷）、`appVersion`、`contentVersion` | 無 | 環狀保留最近 50 筆（第 9 節） |
 | `snapshots` | 自動遞增 | `fromVersion`、`createdAt`、`payload` | 無 | 需要轉換資料格式的 migration 先把舊資料存一份，保留到下一個 schema 版本 |
 
+**講義題庫的紀錄另開資料庫 `ledgerland-exam`**（M4c，2026-11-04；08 的「講義題庫」一節）：三個 object store：`attempts`（每次作答：題目 `id`、`rev`、`answerRev`、選的字母、對錯、時間，只增不改）、`questionState`（每題的累計狀態：答過幾次、最後一次的結果、`answerRev` 變了之前的對錯不再採計）、`runs`（每一輪練習：講義、選項順序的設定、開始與結束時間、答對題數）。和 `ledgerland` 是兩個資料庫、各自的版本號與 migration，互不引用；不進備份檔與備份碼（4.6）；同一個 origin，所以 `persist()` 與清除規則（4.5）一樣適用。
+
 **`attempts.answer` 的格式（依題型）**：欄位與題型代號依 04 第 16.2 節；正式型別以 `packages/content-schema` 的 Zod schema 為準，M2 與作答元件一起定案。
 
 | 題型 | `answer` 的形狀 | 範例 |
@@ -871,6 +874,7 @@ export async function maybePersist(trigger: PersistTrigger) {
 ```
 
 - 檔名：`ledgerland-backup-YYYYMMDD.json`。
+- 範圍：只含 `ledgerland` 資料庫；講義題庫的 `ledgerland-exam`（4.2）不進備份檔與備份碼（M4c，2026-11-04），換裝置時苦練的紀錄從頭開始。
 - **文字備份碼**（介面上稱「備份碼」）：`LL1:` 前綴加上壓縮後的 base64url 字串，內容與備份檔相同，`checksum` 用來發現貼錯或截斷。已決定（2026-10-23）：壓縮用瀏覽器內建 CompressionStream 的 `deflate-raw`（iOS 16.4 起支援，涵蓋 D8 的 iOS 17），`LL1:` 後接 base64url，上限 8000 字元；格式與上限定義在 `packages/progress`，壓縮與 SHA-256 由 `apps/web` 注入。超過上限時畫面建議改用備份檔（實機轉移見【待實測 V21】）。原本的寫法（壓縮方式與上限在 M2 依實際大小訂定）保留作為紀錄。
 - 匯出畫面兩個按鈕並列：「存成備份檔」（分享表單或下載）與「複製備份碼」（`navigator.clipboard.writeText`，需由使用者點按觸發）；匯入畫面同樣有「選擇備份檔」與「貼上備份碼」。
 - `errors` 預設為空陣列，只有使用者在匯出畫面勾選「附上錯誤紀錄」時才填入。

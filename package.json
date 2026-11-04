@@ -42,6 +42,7 @@
     "content:coverage": "node tools/content-coverage.mjs",
     "content:lock": "node tools/content-lock.mjs",
     "content:build": "node tools/content-build.mjs",
+    "handout:extract": "node tools/handout-extract.mjs",
     "content:i18n-report": "node tools/content-i18n-report.mjs",
     "docs:examples": "node tools/docs-examples.mjs",
     "i18n:extract": "pnpm --filter @ledgerland/web run i18n:extract",
