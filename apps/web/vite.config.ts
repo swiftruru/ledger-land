@@ -79,7 +79,7 @@ function shell(): Plugin {
 }
 
 // SVG 圖示直接寫成 data: URI（M3 收尾 QA，2026-10-26）：瀏覽器在 load 之後才抓 favicon，本機 Lighthouse 的模擬（HTTP/1.1、6 條連線）把它算進每一頁 LCP 前的請求；
-// 寫進 HTML 就少一個請求（占位圖時約 0.6 KB；2026-10-28 換成小綠綠的描圖版後約 5.4 KB、gzip 2.2 KB，06 第 2.2 節）。來源仍是 public/favicon.svg（檔案照常部署、進 precache）；CSP 的 img-src 本來就允許 data:。favicon.ico（48、32、16）保留給不支援 SVG 圖示的瀏覽器
+// 寫進 HTML 就少一個請求（占位圖時約 0.6 KB；2026-10-28 換成小綠綠的描圖版後約 5.4 KB、gzip 2.2 KB；2026-11-05 換成手畫的鈴金幣約 1.0 KB、gzip 0.4 KB，06 第 2.2 節）。來源仍是 public/favicon.svg（檔案照常部署、進 precache）；CSP 的 img-src 本來就允許 data:。favicon.ico（48、32、16）保留給不支援 SVG 圖示的瀏覽器
 function buildFaviconLink(): string {
   const svg = readFileSync(`${root}public/favicon.svg`, 'utf8')
     .trim()

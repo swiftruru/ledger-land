@@ -1016,7 +1016,7 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 - **授權**：在 About 頁與 THIRD_PARTY_NOTICES 列出 Phosphor（以及日後加入的其他圖示集）的著作權與 MIT 授權聲明；MIT 與 ISC 都要求保留著作權與許可聲明。
 - **不使用 SF Symbols**：依 Apple 開發者論壇引用的授權條款（2023 年摘錄），SF Symbols 只能用於為 Apple 作業系統上的軟體建立介面，而 LedgerLand 是會在 Android、Windows 瀏覽器上執行的開源網站，超出授權範圍；HIG 也禁止把 SF Symbols 或與它容易混淆的圖像用於 App 圖示、logo 或商標。現行版本的授權原文這次沒有直接讀到，但結論不受影響。也不描摹與 SF Symbols 相似的圖形。
 - **不使用 Apple 的圖片與介面素材**，包括 iOS 實機截圖（安裝教學改用原創示意圖，見 06 第 2.6 節）。
-- App 圖示與 logo 為原創設計，不直接拿圖示庫的圖形當 logo。2026-10-28 起 App 圖示以維護者的原創角色「小綠綠」抱著帳本為主視覺（06 第 2.2 節）；啟動畫面的剪紙插圖與小 logo（紅帳簿加一撮金髮）也是維護者的原創素材，描成 SVG 內嵌在殼層。
+- App 圖示與 logo 為原創設計，不直接拿圖示庫的圖形當 logo。2026-10-28 起 App 圖示以維護者的原創角色「小綠綠」抱著帳本為主視覺（06 第 2.2 節）；啟動畫面的剪紙插圖與小 logo（紅帳簿加一撮金髮）也是維護者的原創素材，描成 SVG 內嵌在殼層。瀏覽器分頁的 favicon 從 2026-11-05 起是原創吉祥物鈴的金幣簡化版（17 第 3.6 節、06 第 2.2 節）。
 - 啟動畫面的「LedgerLand」字樣：用 jf open 粉圓（justfont，OFL 1.1）在產圖時把字母轉成字形外框（`apps/web/brand/wordmark.py`），repo 只有輪廓 SVG，字型檔放在不進 git 的 `references/fonts/`、不隨網站散布；OFL 允許把字形嵌進文件，仍在 THIRD_PARTY_NOTICES 列出以示來源。「LedgerLand 會計樂園」的名稱與標誌另外保留，不隨開源授權授出（D6，見 11）；M8 前查詢名稱是否與既有商標衝突（D9）。
 - 不自行託管 SF Pro 或其他 Apple 字型（第 3 節）。
 
