@@ -480,7 +480,7 @@ self.addEventListener('message', (event) => { if (event.data?.type === 'SKIP_WAI
 | 安裝教學插圖 | runtime CacheFirst | 第一次瀏覽安裝教學頁後快取（與 02 的頁面總表一致）；多數學生只看一次，不必占第一次安裝的流量。若全部是小型 SVG 且在預算內，可以改成 precache |
 | 字型 | 無 | 使用系統字型，不下載字型檔（見 07 第 3 節） |
 | 選讀的大型內容包（日後若有） | runtime CacheFirst | 檔名帶 hash，不會過期；設定頁提供「下載離線內容」。第一個住戶是下一列的講義題庫 |
-| 講義題庫 `content/<locale>/handout_*.json`（M4c，2026-11-04） | runtime CacheFirst，不進 precache | 一份講義一檔（`handout_d1`、`handout_d2`、`handout_d3`）加審核用的一檔（`handout_review`），合計約 0.5 MB，只有 zh-TW；`apps/web/vite.config.ts` 的 `globIgnores` 把它們排除在 precache 外，第一次安裝不受影響。`sw.ts` 的 `registerRoute` 只比對同源的這個路徑樣式，cacheName `ll-handout`，`ExpirationPlugin` 的 `maxEntries` 8（四個檔加換版後留下的舊檔，超過就淘汰最舊的）；檔名帶 hash，所以不會拿到舊版，換版時 manifest（在 precache）指向新檔名。看過一次後可離線，不是每個學生都會用，所以不占第一次安裝的時間（08 的「講義題庫」一節） |
+| 講義題庫 `content/<locale>/handout_*.json`（M4c，2026-11-04） | runtime CacheFirst，不進 precache | 一份講義一檔（`handout_d1`、`handout_d2`、`handout_d3`）加審核用的一檔（`handout_review`），合計約 0.5 MB，只有 zh-TW；`apps/web/vite.config.ts` 的 `globIgnores` 把它們排除在 precache 外，第一次安裝不受影響。`sw.ts` 的 `registerRoute` 只比對同源的這個路徑樣式，cacheName `ll-handout`，`ExpirationPlugin` 的 `maxEntries` 8（四個檔加換版後留下的舊檔，超過就淘汰最舊的）；檔名帶 hash，所以不會拿到舊版，換版時 manifest（在 precache）指向新檔名。不是每個學生都會用，所以不占第一次安裝的時間（08 的「講義題庫」一節）。離線保險（2026-11-05）：苦練首頁只讀 manifest 的小索引，講義檔原本要等第一次練那一份才進快取，學生只練過 0-1 就斷網會開不了 0-2；所以首頁畫好後在閒置時把三份講義檔的網址用 `PREFETCH_HANDOUT` 訊息送給 Service Worker（`features/exam/prefetch.ts`），SW 只收同源且符合講義檔路徑樣式的網址，用同一個 CacheFirst 策略抓進 `ll-handout`，抓不到就略過。不走頁面自己的 fetch，因為 prompt 模式第一次安裝不接管頁面，那些請求不經過 SW；離線或開了省流量（`navigator.connection.saveData`）不送。審核檔只有老師會開，不預抓。E2E：`exam.spec.ts` 的離線案例 |
 | 第三方資源 | 只有 D7 的統計 | 統計腳本與它送出的請求都不 precache、不進 runtime 快取，離線時直接略過（8.3）；除此之外不使用任何第三方資源，CSP 只為統計服務加上必要的網域（見 09） |
 
 規則：
