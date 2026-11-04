@@ -12,6 +12,7 @@ import { Suspense, lazy, useEffect, useState, type MouseEvent } from 'react';
 import { formatNumber, localePath } from '@ledgerland/i18n';
 import {
   Badge,
+  BookIcon,
   CompassIcon,
   DeviceIcon,
   ExportIcon,
@@ -212,6 +213,13 @@ export default function Me() {
               trailing={due !== null && due > 0 ? <Badge kind="danger">{fmt(due)}</Badge> : undefined}
               href={href('/review/')}
               data-testid="me-review-row"
+            />
+            <NavRow
+              icon={<BookIcon />}
+              title={t({ id: 'exam.title', message: '期中考苦練', comment: '苦練區首頁的標題；入口與 Tab 的 also 都用這個名稱' })}
+              description={t({ id: 'me.exam.desc', message: '陳老師講義的練習題，題目與答案照講義', comment: '「我的」學習群組苦練列的說明' })}
+              href={href('/exam/')}
+              data-testid="me-exam-row"
             />
             <NavRow
               icon={<FlaskIcon />}

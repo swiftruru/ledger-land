@@ -1,0 +1,98 @@
+{
+  "$comment": "講義題庫的設定（08 的講義題庫一節）：三份講義的檔名、各段的投影片範圍（1 起算、依播放順序）、人工排除與請老師確認的題。題目本身由 pnpm handout:extract 從 references/handouts/ 的 pptx 抽成 midterm.json，不要手改 midterm.json。exclusions 的 reason：conflicting_answer（兩份講義答案不同，不收）、explanation_issue（解析有錯字或和公式不合，不收）、check（照收，但請老師確認）；note 是老師審核頁會顯示的文字。",
+  "title": "期中考講義題庫",
+  "decks": [
+    {
+      "id": "d1",
+      "order": 1,
+      "code": "0-1",
+      "title": "從財務報表角度了解如何透過會計流程了解一家公司",
+      "file": "財務報表-0-1-從財務報表角度了解如何透過會計流程了解一家公司.pptx",
+      "sections": [
+        { "id": "d1s1", "title": "從報表看一家公司", "slides": [4, 10] },
+        { "id": "d1s2", "title": "該打開哪一張報表", "slides": [16, 25] },
+        { "id": "d1s3", "title": "損益表", "slides": [39, 74] },
+        { "id": "d1s4", "title": "資產負債表", "slides": [81, 128] },
+        { "id": "d1s5", "title": "現金流量表", "slides": [135, 152] }
+      ]
+    },
+    {
+      "id": "d2",
+      "order": 2,
+      "code": "0-2",
+      "title": "財務報表×企業績效指標",
+      "file": "財務報表-0-2-財務報表×企業績效指標_附練習題.pptx",
+      "sections": [
+        { "id": "d2s1", "title": "經營取捨：杜邦、股價與部門指標", "slides": [9, 35] },
+        { "id": "d2s2", "title": "營收與獲利", "slides": [36, 45] },
+        { "id": "d2s3", "title": "資產與股東權益", "slides": [46, 55] },
+        { "id": "d2s4", "title": "ROE 與 ROA", "slides": [56, 65] },
+        { "id": "d2s5", "title": "純益率、資產週轉率與權益倍數", "slides": [66, 80] },
+        { "id": "d2s6", "title": "人力、研發、資本支出與行銷", "slides": [81, 100] },
+        { "id": "d2s7", "title": "本益比", "slides": [101, 105] }
+      ]
+    },
+    {
+      "id": "d3",
+      "order": 3,
+      "code": "0-3",
+      "title": "六大財務分析指標",
+      "file": "財務報表-0-3-六大財務分析指標_附練習題.pptx",
+      "sections": [
+        { "id": "d3s1", "title": "經營取捨：六大類指標怎麼用", "slides": [8, 64] },
+        { "id": "d3s2", "title": "財務結構", "slides": [65, 74] },
+        { "id": "d3s3", "title": "償債能力", "slides": [75, 89] },
+        { "id": "d3s4", "title": "經營能力：應收與收現", "slides": [90, 99] },
+        { "id": "d3s5", "title": "經營能力：應付與存貨", "slides": [100, 114] },
+        { "id": "d3s6", "title": "經營能力：設備與總資產週轉", "slides": [115, 124] },
+        { "id": "d3s7", "title": "獲利能力：ROA 與實收資本比率", "slides": [125, 139] },
+        { "id": "d3s8", "title": "獲利能力：權益報酬率、每股盈餘與純益率", "slides": [140, 154] },
+        { "id": "d3s9", "title": "現金流量", "slides": [155, 169] },
+        { "id": "d3s10", "title": "槓桿度", "slides": [170, 179] }
+      ]
+    }
+  ],
+  "exclusions": [
+    { "deck": "d1", "slide": 71, "reason": "explanation_issue", "note": "情境是營收成長 20%、毛利率從 35% 降到 28%，依這組數字算 1.2 乘 28% 等於 33.6%，毛利額其實比原本的 35% 低；有一個干擾選項主張毛利額仍然增加，解析用別的理由排除它，沒有算毛利額。我先不收，請老師看要不要補一句先算毛利額。" },
+    { "deck": "d1", "slide": 18, "reason": "check", "note": "解析說現金流量表是唯一直接呈現現金餘額的報表，但資產負債表的現金及約當現金也是期末餘額（講義的勾稽步驟③就是要兩者一致）。題目照收，請老師看解析這一句要不要調整。" },
+    { "deck": "d1", "slide": 115, "reason": "check", "note": "標題問財務結構是靠股東還是靠借錢，題目內容比較的卻是股本與未分配盈餘（都是股東權益裡面的組成）。題目照收，請老師看標題是不是原本屬於另一頁。" },
+    { "deck": "d1", "slide": 143, "reason": "check", "note": "選項把「處分核心資產」列成投資活動大額現金流出的可能原因，但處分資產是投資活動的現金流入。題目照收，請老師看這個選項的說法。" },
+    { "deck": "d1", "slide": 151, "reason": "check", "note": "和第 143 張一樣，選項把處分核心資產當成現金流出的原因。題目照收，請老師看。" },
+    { "deck": "d2", "slide": 11, "reason": "explanation_issue", "note": "解答標 B，但解析前半段的論述偏向 A，中間有一句不完整，最後一句才說明選 B 的理由（多借 50 萬元每年只多賺 4 萬元，約 13 年才還得完）。看起來像改了答案但解析沒改完，我先不收。" },
+    { "deck": "d2", "slide": 17, "reason": "check", "note": "全部 328 題裡只有這一題標「B/C 都對」。苦練區把它當成「不只一個合理答案，選到任何一個都算對」。請老師確認原意是兩個答案都對，還是其中一個才是正解。" },
+    { "deck": "d2", "slide": 35, "reason": "check", "note": "情境寫「這個月花 5 萬元做廣告，上個月加碼到 8 萬元」，時間順序看起來顛倒了。題目照收，請老師看要不要改成上個月 5 萬元、這個月 8 萬元。" },
+    { "deck": "d2", "slide": 38, "reason": "explanation_issue", "note": "解析裡資產的代號 A 被寫成 C（正解字母本身是對的）。我先不收，請老師更新講義時順手改。" },
+    { "deck": "d2", "slide": 43, "reason": "explanation_issue", "note": "解析裡資產的代號 A 被寫成 B、ROA 被寫成 ROB（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 44, "reason": "explanation_issue", "note": "解析裡資產的代號 A 被寫成 C（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 48, "reason": "conflicting_answer", "note": "「總資產中有多少比例靠借款撐起來」這個問法，這份講義的正解是權益倍數，0-3 的第 65 到 69 張同一個問法正解是負債比率。直接回答這個問句的是負債比率（負債除以資產），權益倍數是 1 除以（1 減負債比率），相關但不相同。兩邊都先不收，請老師決定以哪一個為準。", "related": [{ "deck": "d3", "slide": 65 }, { "deck": "d3", "slide": 66 }] },
+    { "deck": "d2", "slide": 53, "reason": "conflicting_answer", "note": "問法和第 48 張一樣（靠借款撐起多少資產），正解是權益倍數，和 0-3 的負債比率不同；另外題幹問拿資產搭配哪一個項目，選項卻都以股東權益為主詞，解析裡資產的代號也寫成 C。先不收，請老師決定。", "related": [{ "deck": "d3", "slide": 65 }] },
+    { "deck": "d2", "slide": 62, "reason": "explanation_issue", "note": "解析裡 ROA 被寫成 ROC（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 63, "reason": "explanation_issue", "note": "解析裡 ROA 被寫成 ROB（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 64, "reason": "explanation_issue", "note": "解析裡 ROA 被寫成 ROB（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 65, "reason": "explanation_issue", "note": "解析裡 ROA 被寫成 ROC（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 76, "reason": "conflicting_answer", "note": "問法和第 48 張一樣（總資產中有多少比例靠借款撐起來），這份講義的正解是權益倍數，0-3 的第 65 到 69 張正解是負債比率。先不收，請老師決定以哪一個為準。", "related": [{ "deck": "d3", "slide": 65 }, { "deck": "d3", "slide": 67 }] },
+    { "deck": "d2", "slide": 86, "reason": "explanation_issue", "note": "解析裡 CE 被寫成 BE（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 92, "reason": "explanation_issue", "note": "解析裡 CE 被寫成 BE（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 95, "reason": "explanation_issue", "note": "解析裡 CE 被寫成 BE（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 96, "reason": "explanation_issue", "note": "解析裡 CE 被寫成 AE（正解字母本身是對的）。我先不收。" },
+    { "deck": "d2", "slide": 98, "reason": "check", "note": "標題的「已現」看起來漏了一個字（已出現）。題目照收，請老師看。" },
+    { "deck": "d2", "slide": 33, "reason": "check", "note": "正解是先算同業的 CE turnover 來比較，但 CE turnover（營收除以資本支出）正好是 CE intensity 的倒數，換指標不會多出新的資訊。題目照收，請老師看原意是不是比較多期的趨勢。" },
+    { "deck": "d3", "slide": 14, "reason": "check", "note": "情境說公司靠處分閒置土地增加現金，暗示可能墊高現金流量比率；但處分土地的價款屬於投資活動，不會進營業活動淨現金流量（第 13 張也說業外處分不算進比率）。題目照收，請老師看。" },
+    { "deck": "d3", "slide": 18, "reason": "check", "note": "情境的現金再投資比率在講義自己定的 8% 到 10% 健康區間上緣，正解卻說降到約 6% 仍在合理區間內，和區間不一致。題目照收，請老師看要不要改成「略低於區間但可以接受」。" },
+    { "deck": "d3", "slide": 48, "reason": "explanation_issue", "note": "合併淨利 180 萬元、歸屬母公司淨利 148 萬元、歸屬母公司權益報酬率 24.7%，分母約 600 萬元；用合併淨利換算應該是 30%，解析寫 29%。我先不收，請老師看是筆誤還是分母另有非控制權益。" },
+    { "deck": "d3", "slide": 60, "reason": "check", "note": "第 77、82 張強調要拆解流動資產，這一題的正解卻是不拆解。題目照收，請老師看取捨的立場。" },
+    { "deck": "d3", "slide": 64, "reason": "check", "note": "第 63 張說利息保障倍數無法反映未來獲利，這一題的正解卻是直接核准新事業貸款。題目照收，請老師看取捨的立場。" },
+    { "deck": "d3", "slide": 65, "reason": "conflicting_answer", "note": "「總資產中有多少比例靠借款撐起來」這個問法，這份講義的正解是負債比率，0-2 的第 48、53、76 張正解是權益倍數。兩邊都先不收，請老師決定以哪一個為準。", "related": [{ "deck": "d2", "slide": 48 }, { "deck": "d2", "slide": 53 }, { "deck": "d2", "slide": 76 }] },
+    { "deck": "d3", "slide": 66, "reason": "conflicting_answer", "note": "問法和第 65 張一樣，正解是負債比率，和 0-2 的權益倍數不同；另外情境把 300 萬元車貸算進名下資產總值，車貸是負債。先不收，請老師決定。", "related": [{ "deck": "d2", "slide": 48 }] },
+    { "deck": "d3", "slide": 67, "reason": "conflicting_answer", "note": "問法和第 65 張一樣，正解是負債比率，和 0-2 的權益倍數不同。先不收，請老師決定。", "related": [{ "deck": "d2", "slide": 76 }] },
+    { "deck": "d3", "slide": 68, "reason": "conflicting_answer", "note": "問法和第 65 張一樣，正解是負債比率，和 0-2 的權益倍數不同。先不收，請老師決定。", "related": [{ "deck": "d2", "slide": 48 }] },
+    { "deck": "d3", "slide": 69, "reason": "conflicting_answer", "note": "問法和第 65 張一樣，正解是負債比率，和 0-2 的權益倍數不同。先不收，請老師決定。", "related": [{ "deck": "d2", "slide": 48 }] },
+    { "deck": "d3", "slide": 124, "reason": "check", "note": "情境裡的「高速公路電廠公司」看起來多了字；解析把電廠總資產週轉率低的原因寫成設備昂貴、營收成長慢，週轉率低主要是資產基數相對營收大。題目照收，請老師看。" },
+    { "deck": "d3", "slide": 150, "reason": "explanation_issue", "note": "題目問每賣 100 元留下多少純利（純益率），解析卻說是獲利穩定度的第一印象；純益率是單期的利潤率，不直接衡量穩定度。我先不收。" },
+    { "deck": "d3", "slide": 158, "reason": "explanation_issue", "note": "解析說現金流量比率用的是損益表與現金流量表上的營業活動現金流量，但營業活動現金流量只在現金流量表，分母的流動負債來自資產負債表，和講義第 11、12 張的公式不合。我先不收。" },
+    { "deck": "d3", "slide": 160, "reason": "explanation_issue", "note": "解析描述現金流量允當比率時只提資本支出與存貨增加，沒有提現金股利，和講義第 12 張的公式不合。我先不收。" },
+    { "deck": "d3", "slide": 161, "reason": "explanation_issue", "note": "和第 160 張一樣，允當比率的解析漏了現金股利。我先不收。" },
+    { "deck": "d3", "slide": 162, "reason": "explanation_issue", "note": "和第 160 張一樣，允當比率的解析漏了現金股利。我先不收。" },
+    { "deck": "d3", "slide": 165, "reason": "explanation_issue", "note": "解析描述現金再投資比率的方向和講義第 12 張的公式（扣除股利後的本業現金除以再投資的資產）不同。我先不收。" }
+  ]
+}

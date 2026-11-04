@@ -14,7 +14,7 @@ export interface TabDef {
 
 export const TABS: TabDef[] = [
   { id: 'home', path: '', also: [], label: { 'zh-TW': '首頁', en: 'Home' }, icon: 'house' },
-  { id: 'play', path: 'play/', also: ['level/', 'chapter/', 'review/'], label: { 'zh-TW': '闖關', en: 'Quest' }, icon: 'map-trifold' },
+  { id: 'play', path: 'play/', also: ['level/', 'chapter/', 'review/', 'exam/'], label: { 'zh-TW': '闖關', en: 'Quest' }, icon: 'map-trifold' },
   { id: 'lab', path: 'lab/', also: [], label: { 'zh-TW': '實驗室', en: 'Lab' }, icon: 'flask' },
   { id: 'terms', path: 'terms/', also: [], label: { 'zh-TW': '圖鑑', en: 'Terms' }, icon: 'cards' },
   {

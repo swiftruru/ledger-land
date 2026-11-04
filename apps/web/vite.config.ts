@@ -391,6 +391,8 @@ export default defineConfig({
       injectManifest: {
         globPatterns: ['**/*.{html,js,css,woff2,svg,png,json}'],
         globIgnores: [
+          // 講義題庫（M4c，06 第 3.2 節）：一份講義一檔、合計約 0.45 MB，不進 precache；sw.ts 的執行期 CacheFirst 路由在第一次讀到時才快取
+          'content/**/handout_*.json',
           'splash/**',
           'icons/pwa-*.png',
           'icons/maskable-*.png',

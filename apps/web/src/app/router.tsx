@@ -89,6 +89,18 @@ function buildRoutes(locale: Locale): RouteObject[] {
     },
     { path: 'lab/ratios', lazy: lazyPage(() => import('../pages/LabRatios.tsx'), prefetchTermIndex, 'lab'), handle: { layout: 'wide' } satisfies RouteHandle },
     { path: 'review', lazy: lazyPage(() => import('../pages/Review.tsx')), handle: { noindex: true } satisfies RouteHandle },
+    // 期中考苦練（M4c）：三頁都在第二層 catalog；練習頁與老師審核頁 noindex，審核頁不進 sitemap、站上沒有連結（只給老師固定連結）
+    { path: 'exam', lazy: lazyPage(() => import('../pages/Exam.tsx'), undefined, 'pages'), handle: { layout: 'wide' } satisfies RouteHandle },
+    {
+      path: 'exam/teacher',
+      lazy: lazyPage(() => import('../pages/ExamTeacher.tsx'), undefined, 'pages'),
+      handle: { noindex: true, layout: 'wide' } satisfies RouteHandle,
+    },
+    {
+      path: 'exam/:setId',
+      lazy: lazyPage(() => import('../pages/ExamRun.tsx'), undefined, 'pages'),
+      handle: { noindex: true, blocksUpdatePrompt: true } satisfies RouteHandle,
+    },
     // 名詞列表依章節分組，組名與「在第幾關會遇到」的關卡名來自章節索引（useGlossaryIndex），和名詞索引一起先讀
     {
       path: 'terms',

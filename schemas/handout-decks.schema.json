@@ -1,0 +1,163 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$comment": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decks": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/__schema0"
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deck": {
+            "type": "string",
+            "pattern": "^d[1-9]\\d*$"
+          },
+          "slide": {
+            "$ref": "#/definitions/__schema2"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "conflicting_answer",
+              "explanation_issue",
+              "check"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "related": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "deck": {
+                  "type": "string",
+                  "pattern": "^d[1-9]\\d*$"
+                },
+                "slide": {
+                  "$ref": "#/definitions/__schema2"
+                }
+              },
+              "required": [
+                "deck",
+                "slide"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "deck",
+          "slide",
+          "reason",
+          "note"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "title",
+    "decks",
+    "exclusions"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "__schema0": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^d[1-9]\\d*$"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "file": {
+          "type": "string",
+          "pattern": "\\.pptx$"
+        },
+        "sections": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/__schema1"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "order",
+        "code",
+        "title",
+        "file",
+        "sections"
+      ],
+      "additionalProperties": false
+    },
+    "__schema1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^d[1-9]\\d*s[1-9]\\d*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slides": {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/__schema2"
+            },
+            {
+              "$ref": "#/definitions/__schema2"
+            }
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "slides"
+      ],
+      "additionalProperties": false
+    },
+    "__schema2": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    }
+  }
+}

@@ -9,6 +9,7 @@ import { dirname, join } from 'node:path';
 import { validateBundle } from '@ledgerland/content-schema';
 import { loadContentFiles } from './lib/content-files.mjs';
 import { hasErrors, parseBundle, runAccountingChecks } from './lib/content-rules.mjs';
+import { loadHandout } from './lib/handout-files.mjs';
 import { buildSnapshot } from './lib/content-snapshot.mjs';
 import { ROOT, fail, readJson } from './lib/fs.mjs';
 
@@ -35,7 +36,13 @@ try {
   /* 還沒有 commit */
 }
 const includeDrafts = process.env.LL_INCLUDE_DRAFTS === '1';
-const { manifest, files, counts } = buildSnapshot(parsed, acct.compiled, lock, { gitCommit, includeDrafts });
+// 講義題庫（08 的講義題庫一節）：獨立的檔案與檢查，有錯就不產快照
+const handout = loadHandout();
+if (handout.issues.length) {
+  for (const i of handout.issues) fail(`content:build：${i.file} ${i.path}：${i.rule ? `${i.rule}：` : ''}${i.message}`);
+  process.exit(1);
+}
+const { manifest, files, counts } = buildSnapshot(parsed, acct.compiled, lock, { gitCommit, includeDrafts, handout: handout.handout });
 
 rmSync(outRoot, { recursive: true, force: true });
 for (const [rel, text] of files) {
@@ -46,5 +53,6 @@ for (const [rel, text] of files) {
 writeFileSync(join(outRoot, 'content-manifest.json'), JSON.stringify(manifest, null, 2));
 if (includeDrafts) console.log('content:build：LL_INCLUDE_DRAFTS=1，快照含草稿（只給本機開發與 E2E；manifest 標 includesDrafts）');
 console.log(
-  `content:build：contentVersion ${manifest.contentVersion}，${counts.chapters} 章、${counts.objectives} 個學習目標、${counts.levels} 個關卡、${counts.questions} 個題目、${counts.terms} 個名詞，輸出到 apps/web/public/content/`,
+  `content:build：contentVersion ${manifest.contentVersion}，${counts.chapters} 章、${counts.objectives} 個學習目標、${counts.levels} 個關卡、${counts.questions} 個題目、${counts.terms} 個名詞` +
+    `${manifest.handouts ? `、講義題庫 ${manifest.handouts[0].questionCount} 題（審核 ${manifest.handouts[0].review.excluded + manifest.handouts[0].review.check} 題）` : ''}，輸出到 apps/web/public/content/`,
 );

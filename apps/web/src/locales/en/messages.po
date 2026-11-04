@@ -1569,6 +1569,14 @@ msgstr "A new version is available"
 msgid "chapter.note.examScope"
 msgstr "Check your teacher’s announcement for the exact midterm scope."
 
+#. 苦練區首頁的標題；入口與 Tab 的 also 都用這個名稱
+#. 苦練區首頁的標題；入口與 Tab 的 also 都用這個名稱
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+#: src/pages/Me.tsx
+msgid "exam.title"
+msgstr "Midterm drill"
+
 #. 名詞卡的狀態（給螢幕閱讀器）：還沒收進圖鑑；只是收藏狀態，內容照樣能讀
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -2630,6 +2638,18 @@ msgstr "About and licences"
 #: src/components/InstallPrompt.tsx
 msgid "install.laterA11y"
 msgstr "Close the install suggestion for now"
+
+#. 首頁苦練入口卡的說明
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.exam.desc"
+msgstr "Practice questions from the teacher’s handouts, word for word"
+
+#. 「我的」學習群組苦練列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.exam.desc"
+msgstr "Practice questions from the teacher’s handouts, word for word"
 
 #. 「我的」連到隱私說明
 #. js-lingui-explicit-id

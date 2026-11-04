@@ -29,6 +29,9 @@ const PAGES = [
   '/credits/',
   '/debug/',
   '/lab/',
+  '/exam/',
+  '/exam/d1s1/',
+  '/exam/teacher/',
 ];
 const STATES: readonly PageCase[] = [
   caseByName('首頁', '匯入提示卡'),
@@ -51,6 +54,7 @@ const STATES: readonly PageCase[] = [
   caseByName('頂層與錯誤', '路由錯誤'),
   caseByName('橫幅', 'Safari 分頁展開'),
   caseByName('橫幅', '內建瀏覽器展開'),
+  caseByName('苦練', '確認答案後'),
 ];
 const THEMES = ['light', 'dark'] as const;
 

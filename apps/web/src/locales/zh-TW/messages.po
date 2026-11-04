@@ -1569,6 +1569,14 @@ msgstr "有新版本可以使用"
 msgid "chapter.note.examScope"
 msgstr "期中考範圍以老師公告為準。"
 
+#. 苦練區首頁的標題；入口與 Tab 的 also 都用這個名稱
+#. 苦練區首頁的標題；入口與 Tab 的 also 都用這個名稱
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+#: src/pages/Me.tsx
+msgid "exam.title"
+msgstr "期中考苦練"
+
 #. 名詞卡的狀態（給螢幕閱讀器）：還沒收進圖鑑；只是收藏狀態，內容照樣能讀
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -2630,6 +2638,18 @@ msgstr "關於與授權"
 #: src/components/InstallPrompt.tsx
 msgid "install.laterA11y"
 msgstr "關閉安裝建議，之後再說"
+
+#. 首頁苦練入口卡的說明
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.exam.desc"
+msgstr "陳老師講義的練習題，題目與答案照講義"
+
+#. 「我的」學習群組苦練列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.exam.desc"
+msgstr "陳老師講義的練習題，題目與答案照講義"
 
 #. 「我的」連到隱私說明
 #. js-lingui-explicit-id

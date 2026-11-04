@@ -61,7 +61,7 @@
 | escalade | 3.2.0 | MIT | https://github.com/lukeed/escalade#readme |
 | gensync | 1.0.0-beta.2 | MIT | https://github.com/loganfsmyth/gensync |
 | has-flag | 4.0.0 | MIT | https://github.com/sindresorhus/has-flag#readme |
-| idb | 8.0.4 | ISC | https://github.com/jakearchibald/idb#readme |
+| idb | 7.1.1, 8.0.4 | ISC | https://github.com/jakearchibald/idb#readme |
 | jest-get-type | 29.6.3 | MIT | https://github.com/jestjs/jest#readme |
 | jest-validate | 29.7.0 | MIT | https://github.com/jestjs/jest#readme |
 | jiti | 2.7.0 | MIT | https://github.com/unjs/jiti#readme |
@@ -91,6 +91,7 @@
 | use-sync-external-store | 1.7.0 | MIT | https://github.com/react/react#readme |
 | web-vitals | 6.2.3 | Apache-2.0 | https://github.com/GoogleChrome/web-vitals#readme |
 | workbox-core | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
+| workbox-expiration | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | workbox-precaching | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | workbox-routing | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |
 | workbox-strategies | 7.4.1 | MIT | https://github.com/GoogleChrome/workbox |

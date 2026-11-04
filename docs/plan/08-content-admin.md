@@ -49,6 +49,7 @@ D 系列與本文件有關的項目已在 2026-10-20 全部決定，內容併入
 1. **教材是地圖，不是素材庫**。老師教材告訴我們「要教哪些觀念、學生常卡在哪裡」，網站的題目、情境、數字、干擾選項與解說全部重新撰寫。
    - **故事例外**：已決定（D2，2026-10-20）報表實驗室的故事照老師的情境與金額（我轉達老師已同意）。故事的敘述文字、交易卡、預測題與利害關係人卡仍用網站自己的話撰寫；第 12 筆等疑似誤植依 13 的建議處理，並在該步驟加註說明。故事的情境與金額不在內容的 CC BY-SA 4.0 授權範圍內，畫面與授權說明標示「經陳彥宏老師授權使用」（D6，見 3.9 節）。故事沒有涵蓋的交易（延伸章、自由實驗等）需要情境時，另外建立原創情境。
    - **以故事狀態出題**：題目的 `scenario.opening` 用 `{ storyRef, afterStep }` 從故事某一步之後的狀態出題時，畫面會帶出故事的金額，這是允許的；其他題目的情境與數字一律自編。
+   - **講義題庫例外**（2026-11-04，老師同意）：期中考三份講義的練習題原文放在 `content/handout/`，是老師授權的非原創區，不套用本節的原創政策，也不經過原創內容的管線；規則見「講義題庫（老師授權的非原創區）」一節。原創政策對其他所有內容不變。
 2. **用詞例外**。科目名稱、指標名稱與公式依教材（我的原則是「用詞跟著教材走」），這些屬於專業術語，不在原創性要求的範圍內；術語的現行用語與 IFRS 英文放在術語表（見 [12 術語表](12-glossary.md)）。
 3. **題數依觀念估算**。不以教材題數一對一轉寫，而是依觀念覆蓋表（1.2 節）估算每個學習目標需要幾題原創題。
 4. **答案會隨真正懸而未決的事項改變的觀念，先不出計分題**。已決定（2026-10-23）：T 系列（例如存貨盤盈的入帳方式【待確認 T06】、遞延資產與攤銷【待確認 T04】【待確認 T05】）已全部由我依專業判斷決定並寫在 14，題目照決定出題並正常計分，解說可以連到 14 的「設計說明」；老師回饋後只改資料。機制保留：日後若出現真正懸而未決、會改變正解的事項，在題目層級的 `pendingRefs` 列出編號，這一題就標記為「答案可能因懸而未決的事項而改變、暫不計分」（3.6 節）；目前沒有這種題目。只牽涉名稱或用詞的事項（例如現金流量表中利息相關列的名稱【待確認 T11】），照決定顯示，名詞卡加註即可。判斷方式見 5.4 節的 `acct.pendingBlocked`。分錄題另有一道關卡：交易範本的 `entryQuestionBlockedBy` 列出編號時，不得用它出分錄題（3.8 節；目前沒有範本使用）；`pendingRefs` 與 `entryQuestionBlockedBy` 兩者並存、用途不同。
@@ -1650,12 +1651,137 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 1. **發布等於產生靜態快照**。學習端只讀快照；後台停機、被暫停或被攻擊，都不影響學生學習與離線使用。
 2. **學習端永遠不登入**。不使用匿名登入，也不在學習端載入任何驗證 SDK 或登入元件；後台的 Access、JWT 驗證與 D1 存取都只在後台 origin。
-3. **已發布的題目與答案必然公開**。快照是靜態 JSON，任何人都能下載，而且已發布內容會匯出到公開 repo（D3）；不可以把需要保密的考題放進已發布內容（見 [11 風險](11-risks-license.md)）。
+3. **已發布的題目與答案必然公開**。快照是靜態 JSON，任何人都能下載，而且已發布內容會匯出到公開 repo（D3）；不可以把需要保密的考題放進已發布內容（見 [11 風險](11-risks-license.md)）。講義題庫（`content/handout/`）的練習題原文公開在網站上是老師同意的（2026-11-04），這些題和老師自己的考題是否重疊由老師掌握；見「講義題庫（老師授權的非原創區）」一節。
 4. **後台一律放在獨立的 origin**。學習端的 Service Worker 不會攔截後台；後台的權限不會因學習端的任何問題外洩。
 5. **只有一份 schema**。CI、匯入工具、後台表單與 Worker 的伺服器端驗證都使用 `packages/content-schema`；錯誤一律以「位置、訊息、建議修正」回報。
 6. **秘密只放在伺服器端的 secrets**（Worker secrets、GitHub Actions secrets），不使用 `VITE_` 前綴。
 7. **權限檢查在伺服器端**：Worker 驗證 Access 的 JWT，再查 D1 的角色表，預設拒絕，不靠隱藏按鈕；管理者一律使用強驗證（兩步驟驗證，11.6.3）。
 8. **後台的帳號與草稿不進公開 repo**。編輯者的 email、角色表、稽核紀錄與草稿只在 D1；匯出到 git 的只有已發布與已下架的內容。
+
+---
+
+## 講義題庫（老師授權的非原創區）
+
+本節是第 1 節原創政策的第二個例外（第一個是故事情境與金額，D2）。2026-11-04 老師同意把期中考三份講義的練習題原文放到網站的「期中考苦練」區（[14 待確認](14-open-questions.md) 的 T34 補記與第 5.2 節；里程碑是 [10 里程碑](10-milestones.md) 的 M4c）。做法是維護者的決定，不開新的 D 編號。這一區和原創內容分開放、分開檢查、分開快取、分開記錄，原創規則對其他內容一個字都不變。
+
+### 來源與授權
+
+- **來源**：`references/handouts/` 的三份 pptx（財務報表 0-1 會計流程、0-2 企業績效指標、0-3 六大財務分析指標），共 328 題三選一。pptx 永遠只在 `references/`，不 commit、不散布；repo 裡只有抽出來的題目 JSON。
+- **授權**：題幹、選項、解答、解析逐字照講義，是老師的著作，不在內容的 CC BY-SA 4.0 內；畫面、README 與關於頁標示「經陳彥宏老師授權使用」，別人重用前要另外取得老師同意（[11 風險](11-risks-license.md) 第 4.1、4.5 節）。
+- **不改字**：不套第 1.3 節的改寫標準、第 5.7 節的文字風格與 `check:tw`（講義用到站規不用的字時照原文）；不加站規的佔位符，金額與百分比就是講義上的字。第 1.4 節「內容資料不記錄教材出處或頁碼」的規則也不適用：`slide` 就是給老師審核頁對照講義用的。
+
+### 抽題工具 `tools/handout-extract.mjs`
+
+- **只在本機跑**：`pnpm handout:extract`（即 `node tools/handout-extract.mjs [--src <資料夾>] [--dry-run]`），預設讀 `references/handouts/`，可用 `--src` 指到別的資料夾。讀 pptx（OOXML 就是 zip，`tools/lib/zip-read.mjs` 只讀不寫；投影片 XML 的解析在 `tools/lib/handout-pptx.mjs`），依 `decks.json` 各段的投影片範圍找出每一張練習題，解析題幹、選項、答案與解析，寫成 `midterm.json`；第一次抽到的投影片配一個新 ID 並寫回 `ids.json`。
+- **工具是唯一的寫入者**：不手改 `midterm.json` 與 `ids.json`；講義改版、老師回饋或排除規則改變時改 `decks.json` 再重抽，所以 diff 就是講義的差異。
+
+### 資料檔 `content/handout/`
+
+三個檔的形狀與交叉檢查定義在 `packages/content-schema`（`handout.ts`，前綴 `hq_` 登錄在 `ids.ts`），對應的 JSON Schema 由 `schemas:build` 產生：`schemas/handout.schema.json`（`midterm.json`）與 `schemas/handout-decks.schema.json`（`decks.json`）。
+
+| 檔 | 放什麼 | 誰改 |
+| --- | --- | --- |
+| `decks.json` | 三份講義：`id`（`d1`、`d2`、`d3`）、`order`、`code`（`0-1` 等）、`title`、`file`（pptx 檔名，只用來在本機找檔）、`sections`（各段的 `id`、`title` 與投影片範圍 `slides: [起, 迄]`，1 起算、依播放順序）；`exclusions` 是人工排除與請老師確認的題（`deck`、`slide`、`reason`、`note`，見下面的規則） | 我手改 |
+| `ids.json` | 投影片到題目 ID 的對照表：鍵是 `<deck>:<slide>`（例如 `d1:16`），值是 `hq_` 加 8 碼 Crockford Base32 小寫的 ID（第 4.1 節的規則）。ID 一旦指定永不改變：投影片換順序、改字、換段都不換 ID，學生的紀錄才對得上 | 工具 |
+| `midterm.json` | `{ "id": "midterm", "rev", "title", "questions": [] }`，每一題的欄位見下表 | 工具 |
+
+每一題的欄位：
+
+| 欄位 | 意義 |
+| --- | --- |
+| `id` | `hq_` ID，來自 `ids.json` |
+| `rev`、`revKind` | 文字改版：題幹、選項或解析的字有變時 `rev` 加一，`revKind` 沿用第 4.2 節的種類 |
+| `answerRev` | 答案改版：正解的字母變時加一（`rev` 也加一）；苦練區用它判斷之前答對的那一版答案是否已經變了 |
+| `deck`、`section`、`slide` | 所屬講義、段落與投影片編號（1 起算）。`slide` 是老師審核頁對照講義用的，學生頁不顯示 |
+| `topic` | 投影片標題「練習題：」後面的短語 |
+| `scenario`、`question` | 情境與題幹，照原文 |
+| `options[]` | `{ letter, text }` 固定三個，`letter` 是講義上的 A、B、C，順序照講義；打亂只在畫面上做，不改資料 |
+| `answer` | 正解字母的陣列；三選一通常只有一個，講義標兩個答案的題有兩個（當成任一正確） |
+| `explanation` | 老師的解析原文 |
+| `status` | `included` 或 `excluded` |
+| `exclusion` | 選填 `{ reason, note, related }`，由 `decks.json` 的 `exclusions` 與去重結果寫入；`status` 為 `excluded` 時一定有，`reason` 為 `check` 時 `status` 仍是 `included` |
+
+```jsonc
+// midterm.json 的一題（示意：原文以括號代替；真實檔案逐字照講義）
+{
+  "id": "hq_pxb09xhf",
+  "rev": 1,
+  "revKind": "text",
+  "answerRev": 1,
+  "deck": "d1",
+  "section": "d1s1",
+  "slide": 4,
+  "topic": "方法與產出",
+  "scenario": "（情境原文）",
+  "question": "（題幹原文）",
+  "options": [
+    { "letter": "A", "text": "（選項原文）" },
+    { "letter": "B", "text": "（選項原文）" },
+    { "letter": "C", "text": "（選項原文）" }
+  ],
+  "answer": ["C"],
+  "explanation": "（解析原文）",
+  "status": "included"
+}
+```
+
+### 改版規則
+
+- **文字變**（題幹、選項、解析的任何字）：`rev` 加一，`revKind` 記種類。
+- **答案變**（`answer` 的字母變）：`answerRev` 加一，`rev` 也加一。
+- **投影片換順序或換段**：ID 與 `rev` 都不變，只改 `deck`、`section`、`slide`。
+- 學生的紀錄記 `id`、`rev` 與 `answerRev`（[06 PWA](06-pwa-responsive.md) 第 4.2 節的 `ledgerland-exam`）；`rev` 不同時只標「題目已更新」，`answerRev` 不同時之前的對錯不再採計。
+
+### 去重與排除
+
+- **去重**：同一題在兩份講義都出現時只留一題；另一題在 `decks.json` 的 `exclusions` 列出，`related` 指向留下的那一題。
+- **三種 `reason`**：
+  - `conflicting_answer`：兩份講義同一個問法答案不同。不收，審核頁列出兩邊的答案，`related` 指向另一份講義的對應題。
+  - `explanation_issue`：解析有錯字，或和講義自己的公式不合。不收，`note` 寫出哪裡不合。
+  - `check`：答案有爭議，但不是錯字或公式問題。照收（`status` 仍是 `included`），審核頁列「請老師確認」。
+- `note` 是審核頁顯示給老師的文字，用我的口吻寫清楚哪裡有疑問、我先怎麼處理；`related` 是相關題的 ID。老師回饋後只改 `decks.json` 再重抽，不手改題目。
+
+```jsonc
+// decks.json 的 exclusions 一筆（note 的內容是示意）
+{ "deck": "d1", "slide": 71, "reason": "explanation_issue", "note": "（寫給老師看的說明：哪一句和公式不合、我先不收）" }
+```
+
+### 建置輸出
+
+- `pnpm content:build` 讀 `content/handout/`（`tools/lib/handout-files.mjs`，和 `loadContentFiles` 分開；資料夾不存在時略過，還沒抽題的 repo 也能建置），驗過形狀後寫成四個帶 hash 的檔：`content/zh-TW/handout_d1.<hash>.json`、`handout_d2`、`handout_d3`（各講義 `included` 的題，去掉 `status` 與 `exclusion`）與 `handout_review.<hash>.json`（`excluded` 的題與 `check` 的題，連同 `exclusion`，給老師審核頁）。只有 zh-TW 一個語系，英文站讀同一批檔。
+- `content-manifest.json` 加 `handouts` 小索引：講義、各段與題目 ID 清單、題數與檔案路徑，加審核檔的題數與路徑；苦練首頁只靠它畫進度，不必載題庫。manifest 本身在 precache 裡，題庫檔不在（`apps/web/vite.config.ts` 的 `globIgnores`），由 Service Worker 的執行期路由快取（[06 PWA](06-pwa-responsive.md) 第 3.1、3.2 節）。
+
+```jsonc
+// content-manifest.json 的 handouts（小索引；路徑與數字是示意）
+"handouts": [
+  {
+    "id": "midterm",
+    "title": "期中考講義題庫",
+    "rev": 1,
+    "questionCount": 290,
+    "decks": [
+      {
+        "id": "d1",
+        "order": 1,
+        "code": "0-1",
+        "title": "從財務報表角度了解如何透過會計流程了解一家公司",
+        "questionCount": 96,
+        "sections": [{ "id": "d1s1", "title": "從報表看一家公司", "questionIds": ["hq_pxb09xhf", "hq_s0xrmynk"] }],
+        "file": "content/zh-TW/handout_d1.3f9a1c.json"
+      }
+    ],
+    "review": { "excluded": 20, "check": 18, "file": "content/zh-TW/handout_review.9b2e44.json" }
+  }
+]
+```
+
+### 和原創管線的分工（檢查腳本的例外）
+
+- 不經過 `loadContentFiles`、`validateBundle`、`published.lock.json`、`content:coverage` 與第 1.5 節的原創性檢查；`content:check` 的 5.1 到 5.7 都不掃 `content/handout/`。形狀與交叉檢查（ID 對得上、段落範圍不重疊、`exclusions` 指到存在的投影片）由 `packages/content-schema` 的 `validateHandout` 在建置時做，錯誤格式和 `validateBundle` 相同（檔案、JSON 路徑、訊息）。
+- `check:tw` 不掃 `midterm.json` 與 `ids.json`（講義原文逐字保留）；`decks.json` 的 `note` 與這個資料夾的說明文字仍照站規。
+- 第 1.4 節與第 5.7 節的頁碼規則不適用：`slide` 是審核頁要用的。
+- `docs:examples` 只驗 ```json 區塊並依 ID 前綴找 schema，所以本節的範例一律用 ```jsonc。
+- 不進 precache、紀錄另開資料庫 `ledgerland-exam` 且不進備份：見 06 第 3.2、4.2、4.6 節；頁面見 [02 網站架構](02-site-architecture.md) 第 1.1 節。
 
 ---
 
@@ -1705,7 +1831,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 ## 14. 本文件引用的編號
 
 - 使用者決定（2026-10-20 全部已決定）：D1、D2、D3、D4、D5、D6、D9、D10(b)、D10(d)、D10(e)、D10(f)、D10(g)、D11、D12、D13
-- 向老師確認：T04、T05、T06、T09、T11、T32、T33、T34（部分回覆：老師已同意網站使用故事情境與金額）、T37
+- 向老師確認：T04、T05、T06、T09、T11、T32、T33、T34（部分回覆：老師已同意網站使用故事情境與金額；2026-11-04 補記：同意收錄期中考講義的練習題原文）、T37
 - 待實測：V10、V16
 
 ## 15. 建議新增的待確認

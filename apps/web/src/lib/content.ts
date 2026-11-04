@@ -27,6 +27,67 @@ export interface ContentManifest {
   tombstones: string;
   /** 故事（M4a，schemaVersion 3 的 2026-11-01 起）：已發布的故事，每個語系一檔（tools/lib/content-snapshot.mjs）；stepIds 依步驟順序，給路由與 QR 判斷步驟屬於哪個故事 */
   stories?: StoryManifestEntry[];
+  /** 講義題庫（M4c，2026-11-04；08 的講義題庫一節）：老師授權的講義練習題，只有中文；一份講義一檔、審核用的題另一檔，都不進 precache（SW 執行期快取） */
+  handouts?: HandoutManifestEntry[];
+}
+
+export interface HandoutManifestEntry {
+  id: string;
+  title: string;
+  rev: number;
+  /** 收錄（可以練）的題數 */
+  questionCount: number;
+  decks: HandoutDeckEntry[];
+  /** 老師審核頁：不收的題（excluded）與照收但請老師確認的題（check）在同一檔 */
+  review: { excluded: number; check: number; file: string };
+}
+
+export interface HandoutDeckEntry {
+  id: string;
+  order: number;
+  /** 講義在教材裡的編號，例如 0-1 */
+  code: string;
+  title: string;
+  questionCount: number;
+  sections: { id: string; title: string; questionIds: string[] }[];
+  /** 這份講義收錄的題（HandoutDeckFile），路徑不含語系以外的前綴，和 files 一樣是 content/zh-TW/… */
+  file: string;
+}
+
+export interface HandoutQuestionSnapshot {
+  id: string;
+  rev: number;
+  revKind: 'text' | 'answer';
+  answerRev: number;
+  deck: string;
+  section: string;
+  slide: number;
+  topic: string;
+  scenario: string;
+  question: string;
+  options: { letter: 'A' | 'B' | 'C'; text: string }[];
+  /** 正解的字母；兩個以上就是任一正確（B/C 都對那一題） */
+  answer: ('A' | 'B' | 'C')[];
+  explanation: string;
+}
+
+export interface HandoutDeckFile {
+  id: string;
+  bank: string;
+  rev: number;
+  questions: HandoutQuestionSnapshot[];
+}
+
+export interface HandoutReviewQuestion extends HandoutQuestionSnapshot {
+  status: 'included' | 'excluded';
+  exclusion: { reason: 'conflicting_answer' | 'explanation_issue' | 'check'; note?: string; related: string[] };
+}
+
+export interface HandoutReviewFile {
+  bank: string;
+  rev: number;
+  decks: { id: string; code: string; title: string }[];
+  questions: HandoutReviewQuestion[];
 }
 
 export interface StoryManifestEntry {
@@ -354,6 +415,27 @@ function cached<T>(path: string): Promise<T> {
     p.catch(() => cache.delete(path));
   }
   return p;
+}
+
+/** 講義題庫（M4c）：manifest.handouts 的第一份（目前只有期中考一份）；沒有講義題庫的快照回 undefined */
+export async function loadHandoutIndex(): Promise<HandoutManifestEntry | undefined> {
+  const m = await loadManifest();
+  return m.handouts?.[0];
+}
+
+/** 一份講義收錄的題（只有中文，英文站也讀同一檔）；講義不存在丟 missing */
+export async function loadHandoutDeck(deckId: string): Promise<HandoutDeckFile> {
+  const index = await loadHandoutIndex();
+  const deck = index?.decks.find((d) => d.id === deckId);
+  if (!deck) throw new ContentLoadError(`沒有講義 ${deckId} 的題庫`, 'missing');
+  return cached<HandoutDeckFile>(deck.file);
+}
+
+/** 老師審核頁的題（不收的與請老師確認的，含原因） */
+export async function loadHandoutReview(): Promise<HandoutReviewFile> {
+  const index = await loadHandoutIndex();
+  if (!index) throw new ContentLoadError('沒有講義題庫', 'missing');
+  return cached<HandoutReviewFile>(index.review.file);
 }
 
 /** 關卡：讀 manifest.levels 指的章節包，再依 level.id 取出 { level, questions }（題目依 questionIds 順序並帶 compiled）；

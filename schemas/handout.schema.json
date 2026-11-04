@@ -1,0 +1,181 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "midterm"
+    },
+    "rev": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^hq_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+          },
+          "rev": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "revKind": {
+            "type": "string",
+            "enum": [
+              "text",
+              "answer"
+            ]
+          },
+          "answerRev": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "deck": {
+            "type": "string",
+            "pattern": "^d[1-9]\\d*$"
+          },
+          "section": {
+            "type": "string",
+            "pattern": "^d[1-9]\\d*s[1-9]\\d*$"
+          },
+          "slide": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "topic": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scenario": {
+            "type": "string",
+            "minLength": 1
+          },
+          "question": {
+            "type": "string",
+            "minLength": 1
+          },
+          "options": {
+            "minItems": 3,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/__schema0"
+            }
+          },
+          "answer": {
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/__schema1"
+            }
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "included",
+              "excluded"
+            ]
+          },
+          "exclusion": {
+            "type": "object",
+            "properties": {
+              "reason": {
+                "type": "string",
+                "enum": [
+                  "conflicting_answer",
+                  "explanation_issue",
+                  "check"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              },
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^hq_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+                }
+              }
+            },
+            "required": [
+              "reason",
+              "related"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "rev",
+          "revKind",
+          "answerRev",
+          "deck",
+          "section",
+          "slide",
+          "topic",
+          "scenario",
+          "question",
+          "options",
+          "answer",
+          "explanation",
+          "status"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "id",
+    "rev",
+    "title",
+    "questions"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "__schema0": {
+      "type": "object",
+      "properties": {
+        "letter": {
+          "$ref": "#/definitions/__schema1"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "letter",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "__schema1": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ]
+    }
+  }
+}

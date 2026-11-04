@@ -46,7 +46,8 @@ pnpm --filter @ledgerland/web dev
 | `content/stories/` 中來自老師的故事情境與金額（M1 起）                    | 老師授權使用的素材         | 經陳彥宏老師授權使用，不在 CC 授權範圍內；重用前要另外取得老師同意      |
 | `docs/`                                                                   | 規劃與技術文件             | 與教學內容相同（CC BY-SA 4.0）                                          |
 | 第三方套件與圖示                                                          | React、Lingui、Phosphor 等 | 各自原本的授權，列在 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) |
-| 老師的教材                                                                | 投影片、Excel、題目、解答  | 不收錄、不散布，本站的授權不涵蓋                                        |
+| 老師的教材                                                                | 投影片、Excel 與其他教材   | 不收錄、不散布，本站的授權不涵蓋                                        |
+| 講義題庫 `content/handout/`                                               | 期中考三份講義的練習題原文 | 經陳彥宏老師授權使用，不在 CC BY-SA 內；重用前要另外取得老師同意        |
 
 重用原創內容時的署名格式（標題、作者、來源、授權）：
 

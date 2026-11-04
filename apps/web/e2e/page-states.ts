@@ -410,6 +410,22 @@ export const CASES: readonly PageCase[] = [
   },
 
   // 錯題本
+  // 期中考苦練（M4c）：首頁、練習中、確認答案後、老師審核頁；題目是講義原文（只有中文）
+  { group: '苦練', name: '首頁', path: '/exam/', tablet: true, prepare: (page) => visible(page, 'exam-hero') },
+  { group: '苦練', name: '練習中', path: '/exam/d1s1/', prepare: (page) => expect(question(page)).toBeVisible() },
+  {
+    group: '苦練',
+    name: '確認答案後',
+    path: '/exam/d1s1/',
+    prepare: async (page) => {
+      await question(page).getByRole('radio').first().check();
+      await question(page)
+        .getByRole('button', { name: /確認答案|Check answer/ })
+        .click();
+      await expect(page.locator('.ll-feedback__title')).toBeVisible();
+    },
+  },
+  { group: '苦練', name: '老師審核', path: '/exam/teacher/', tablet: true, prepare: (page) => visible(page, 'exam-teacher-card') },
   { group: '錯題本', name: '空', path: '/review/', prepare: (page) => expect(page.locator('.ll-review-empty')).toBeVisible() },
   {
     group: '錯題本',

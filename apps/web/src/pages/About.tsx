@@ -89,7 +89,9 @@ export default function About() {
             <Trans id="about.license.name">「LedgerLand 會計樂園」的名稱與標誌另外保留，不隨開源授權授出。</Trans>
           </li>
           <li>
-            <Trans id="about.license.materials">本站的授權不涵蓋老師的教材（投影片、Excel、題目、解答）；網站不收錄、不散布這些教材。</Trans>
+            <Trans id="about.license.materials">
+              本站的授權不涵蓋老師的教材；網站不收錄、不散布老師的投影片與 Excel。期中考苦練區的練習題是陳彥宏老師講義的原文，經老師同意收錄，不在 CC BY-SA 內。
+            </Trans>
           </li>
         </ul>
         <h2>

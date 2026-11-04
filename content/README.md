@@ -14,6 +14,7 @@ M0b 只有少量原創的名詞與章節範例資料；題目、交易範本與�
 | `questions/<chapterId>/` | 一題，放在所屬章節的資料夾（路徑不是身分，搬章節時 ID 不變） | `<questionId>.json` | `schemas/question.schema.json` |
 | `terms/` | 一個名詞 | `<termId>.json` | `schemas/term.schema.json` |
 | `stories/` | 一個故事（含全部步驟） | `<storyId>.json` | `schemas/story.schema.json` |
+| `handout/` | 講義題庫（老師授權的非原創區，M4c）：`decks.json` 是三份講義、章節範圍與人工排除，`ids.json` 是投影片到 `hq_` ID 的對照表，`midterm.json` 是題目本身；三個檔都由 `pnpm handout:extract` 產生或維護，不走下面的指令 | 固定三個檔名 | `schemas/handout.schema.json`（`midterm.json`）與 `schemas/handout-decks.schema.json`（`decks.json`）；`ids.json` 的形狀在同一個 Zod 模組（`packages/content-schema` 的 `handout.ts`） |
 
 指令（在 repo 根目錄；先 `source tools/env.sh`）：
 
@@ -37,6 +38,7 @@ M0b 只有少量原創的名詞與章節範例資料；題目、交易範本與�
 
 - 這裡的原創教學內容（題目、名詞卡與術語說明、故事的敘述文字、交易範本的文字）依「創用 CC 姓名標示 相同方式分享 4.0 國際」授權（CC BY-SA 4.0），全文在 [`../LICENSES/CC-BY-SA-4.0.txt`](../LICENSES/CC-BY-SA-4.0.txt)。
 - 故事資料中來自老師的故事情境與金額（M1 起加入 `stories/`）不在 CC 授權範圍內，標示「經陳彥宏老師授權使用」；別人重用前要另外取得老師同意。
+- `handout/` 的講義題庫（期中考三份講義的練習題原文，2026-11-04 起）同樣不在 CC 授權範圍內，標示「經陳彥宏老師授權使用」；別人重用前要另外取得老師同意。
 - 「LedgerLand 會計樂園」的名稱與標誌不隨開源授權授出，見根目錄的 `NOTICE`。
 - 重用原創內容時的署名格式（標題、作者、來源、授權）：
 
@@ -47,3 +49,5 @@ M0b 只有少量原創的名詞與章節範例資料；題目、交易範本與�
 ## 原創政策
 
 內容一律原創撰寫，不抄錄老師的教材或任何教科書；內容資料不記錄教材出處或頁碼；科目名稱跟著教材用語。不確定的事標【待確認】並使用 `docs/plan/14-open-questions.md` 的編號。
+
+**例外：`handout/` 講義題庫（2026-11-04，老師同意）**。期中考三份講義的練習題原文（題幹、選項、解答、解析）逐字收錄，不是原創內容，所以不套用上面的原創政策，也不經過 `content:new`、`content:check`、lock、覆蓋表與原創性檢查；它有自己的格式與規則（`docs/plan/08-content-admin.md` 的「講義題庫」一節），由 `pnpm handout:extract` 從本機的 `references/handouts/` 重抽，不要手改 `midterm.json` 與 `ids.json`。這些題目不在 CC BY-SA 內，標示「經陳彥宏老師授權使用」；投影片本身仍只在 `references/`，不收錄、不散布。原創政策對 `handout/` 以外的所有內容不變。

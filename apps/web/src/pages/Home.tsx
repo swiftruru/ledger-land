@@ -10,6 +10,7 @@ import { formatNumber, localePath } from '@ledgerland/i18n';
 import {
   Badge,
   BookmarkIcon,
+  BookIcon,
   Button,
   CardsIcon,
   GearIcon,
@@ -194,6 +195,15 @@ export function Home() {
           <ImportPromptCard {...importPrompt} />
         </div>
         <div className="ll-home__side">
+          {/* 期中考苦練（M4c）：靜態的入口卡，不讀資料庫、不影響首頁的第一次繪製 */}
+          <NavCard
+            as="div"
+            href={localePath(locale, '/exam/')}
+            icon={<BookIcon />}
+            title={t({ id: 'exam.title', message: '期中考苦練', comment: '苦練區首頁的標題；入口與 Tab 的 also 都用這個名稱' })}
+            description={t({ id: 'home.exam.desc', message: '陳老師講義的練習題，題目與答案照講義', comment: '首頁苦練入口卡的說明' })}
+            data-testid="home-exam"
+          />
           <NavCard
             as="div"
             href={playHref}
