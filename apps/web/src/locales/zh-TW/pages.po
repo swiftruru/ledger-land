@@ -7,6 +7,13 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: zh-TW\n"
 
+#. 模擬考成績卡：接在用時後面；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(sum.unanswered)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.unanswered"
+msgstr "，{0} 題沒作答（算答錯，不進紀錄）"
+
 #. 版本號按鈕給螢幕閱讀器唸的後綴（彩蛋）
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -18,6 +25,13 @@ msgstr "，按一下看版本號的祕密"
 #: src/pages/Backup.tsx
 msgid "backup.status.persistDetail"
 msgstr "（{triggerLabel}，{persistDate}）"
+
+#. 模擬考每題時間的選項；s 是已格式化的秒數
+#. js-lingui-explicit-id
+#. placeholder {0}: n(s)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.secondsOption"
+msgstr "{0} 秒"
 
 #. 段的說明（還沒練）；total 已格式化
 #. js-lingui-explicit-id
@@ -67,6 +81,18 @@ msgstr "{earnedDate} 取得"
 #: src/pages/Backup.tsx
 msgid "backup.stat.levels"
 msgstr "{levels} 個有星星的關卡"
+
+#. 模擬考的時間長度；m、s 是已格式化的分與秒
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.clock"
+msgstr "{m} 分 {s} 秒"
+
+#. 模擬考不到一分鐘的時間長度；s 是已格式化的秒數
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.clockSeconds"
+msgstr "{s} 秒"
 
 #. usageKb 是已格式化的 KB 數字
 #. js-lingui-explicit-id
@@ -154,10 +180,28 @@ msgstr "swift.moe"
 msgid "credits.links.github.desc"
 msgstr "swiftruru，原始碼也在這裡"
 
+#. 模擬考範圍：全部講義
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.scope.all"
+msgstr "三份講義"
+
+#. 模擬考：回上一題（可以改選）
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.prev"
+msgstr "上一題"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.status.lastExport"
 msgstr "上次匯出"
+
+#. 模擬考：到下一題（不判分，可以沒選就跳過）
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.next"
+msgstr "下一題"
 
 #. 技術棧那一節的引言
 #. js-lingui-explicit-id
@@ -185,6 +229,12 @@ msgstr "不用帳號、不用伺服器：進度存在你自己的裝置裡，誰
 #: src/pages/Privacy.tsx
 msgid "privacy.not.body"
 msgstr "不登入、不收集姓名或學號、不寫入 cookie、不把作答資料送出裝置；除了下面的流量統計腳本，不載入任何第三方腳本、字型或圖片。"
+
+#. 模擬考每題時間的選項：不計時
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.untimed"
+msgstr "不限時"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -217,6 +267,12 @@ msgstr "主線章節"
 #: src/pages/Backup.tsx
 msgid "backup.preview.applySettings"
 msgstr "也套用語言與計時設定"
+
+#. 模擬考：交卷按鈕
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.submit"
+msgstr "交卷"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -387,6 +443,7 @@ msgstr "全站只有一套可以點的東西：按鈕、連結、選單列長得
 #. 題數選項：全部題目
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
+#: src/pages/ExamMock.tsx
 msgid "exam.random.all"
 msgstr "全部"
 
@@ -400,7 +457,9 @@ msgstr "全部 {0}"
 #. 背題瀏覽頁的講義篩選：全部；count 已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(index.questionCount)
+#. placeholder {0}: n(sum.total)
 #: src/pages/ExamBrowse.tsx
+#: src/pages/ExamMock.tsx
 msgid "exam.browse.deck.all"
 msgstr "全部 {0}"
 
@@ -444,6 +503,21 @@ msgstr "兩種語言"
 msgid "design.open.title"
 msgstr "公開的理由"
 
+#. 模擬考設定的小結；total 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(total)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.plan.untimed"
+msgstr "共 {0} 題，不限時。"
+
+#. 模擬考設定的小結；total 已格式化，time 是整場的時間長度
+#. js-lingui-explicit-id
+#. placeholder {0}: n(total)
+#. placeholder {1}: clock(total * settings.seconds)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.plan.timed"
+msgstr "共 {0} 題，限時 {1}，時間到自動交卷。"
+
 #. 總結卡按鈕：同一組重來
 #. js-lingui-explicit-id
 #: src/pages/ExamRun.tsx
@@ -452,10 +526,18 @@ msgstr "再練一次"
 
 #. 總結卡按鈕；count 已格式化
 #. js-lingui-explicit-id
+#. placeholder {0}: n(wrongAnswered)
 #. placeholder {0}: n(wrongHere.length)
+#: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.summary.retryWrong"
 msgstr "再練錯的（{0} 題）"
+
+#. 模擬考成績卡的按鈕：用同樣的設定再抽一場
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.again"
+msgstr "再考一次"
 
 #. updated 是已依語言格式化的日期
 #. js-lingui-explicit-id
@@ -474,6 +556,19 @@ msgstr "列印"
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.quiz.role"
 msgstr "判分：每一種題型怎麼算對、算幾顆星，都在這裡。"
+
+#. 模擬考的倒數；time 是時間長度
+#. js-lingui-explicit-id
+#. placeholder {0}: clock(remaining)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.remaining"
+msgstr "剩 {0}"
+
+#. 模擬考：剩一分鐘內時給螢幕閱讀器的提醒（只播一次）
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.oneMinute"
+msgstr "剩不到 1 分鐘"
 
 #. 06 第 4.5 節：只能寫「降低機率」
 #. js-lingui-explicit-id
@@ -608,6 +703,7 @@ msgstr "回到我的"
 #. js-lingui-explicit-id
 #: src/pages/ExamBrowse.tsx
 #: src/pages/ExamList.tsx
+#: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.run.back"
@@ -615,6 +711,7 @@ msgstr "回到期中考苦練"
 
 #. 練習頁的按鈕
 #. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.run.home"
 msgstr "回到苦練首頁"
@@ -798,6 +895,14 @@ msgstr "尚未取得保留許可。"
 msgid "backup.export.shared"
 msgstr "已交給分享表單。"
 
+#. 模擬考作答中的進度；數字已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(answered)
+#. placeholder {1}: n(run.questionIds.length)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.answered"
+msgstr "已作答 {0}／{1} 題"
+
 #. 「我的」徽章卡與徽章頁摘要卡的取得數；earned、total 已格式化；<0> 包住的「2／14 枚」整塊不斷行（320 加 200% 時「已取得／2／14 枚」）
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
@@ -926,6 +1031,12 @@ msgstr "後來覺得這樣太細了，也太打擾。只要做法符合一般公
 #: src/pages/Design.tsx
 msgid "design.statements.title"
 msgstr "從報表倒著看"
+
+#. 模擬考設定畫面開頭的說明
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.intro"
+msgstr "從講義題庫隨機抽題。作答中不顯示對錯，交卷後一次看成績與每一題的解析；作答會算進錯過的題與熟練。"
 
 #. 備份頁徽章膠囊下面的短標籤
 #. js-lingui-explicit-id
@@ -1099,11 +1210,23 @@ msgstr "授權、原始碼與版本"
 msgid "exam.run.resumed"
 msgstr "接續上次，從第 {0} 題開始。"
 
+#. 模擬考：回來時接續上次沒交卷的一場
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.resumed"
+msgstr "接續上次的模擬考；限時的場次時間照走。"
+
 #. 安裝教學頁：沒有安裝功能的瀏覽器（Firefox、電腦版 Safari）的卡片標題
 #. js-lingui-explicit-id
 #: src/pages/Install.tsx
 msgid "install.card.generic"
 msgstr "換個瀏覽器安裝"
+
+#. 模擬考成績卡的按鈕：回到設定畫面（這一場的成績不再保留）
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.resetup"
+msgstr "換設定"
 
 #. 面板裡「搭配」清單的小標
 #. js-lingui-explicit-id
@@ -1121,6 +1244,12 @@ msgstr "搭配"
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.stats"
 msgstr "收錄 {0} 題；不收 {1} 題（答案不同 {2}、解析有誤 {3}）；請老師確認 {4} 題。"
+
+#. 模擬考：丟掉這一場，回到設定畫面
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.abandon"
+msgstr "放棄重來"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -1176,6 +1305,12 @@ msgstr "數字格式"
 #: src/pages/Credits.tsx
 msgid "eggs.hint.version"
 msgstr "方塊板下面那一串版本號，按按看。"
+
+#. 模擬考：限時到了自動交卷的提示
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.expired"
+msgstr "時間到，已自動交卷。"
 
 #. 關於頁最後一組選單列的標題
 #. js-lingui-explicit-id
@@ -1285,6 +1420,19 @@ msgstr "本頁目錄"
 msgid "backup.error.format"
 msgstr "格式不是 LedgerLand 備份。"
 
+#. 模擬考頁的標題；苦練首頁的入口也用這個名稱
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.title"
+msgstr "模擬考"
+
+#. 模擬考成績卡的標題
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.result"
+msgstr "模擬考成績"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.error.incomplete"
@@ -1326,17 +1474,35 @@ msgstr "每一關都有 8 碼的關卡代號，在闖關地圖點開關卡介紹
 msgid "badges.rules"
 msgstr "每一章一枚徽章：章內每關至少一星就「完成」，每關三星就是同一枚徽章的「精通」外觀。"
 
+#. 模擬考交卷確認：全部作答
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.confirm.done"
+msgstr "每一題都作答了。交卷後不能再改，會顯示成績與每一題的解析。"
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.lighthouse.role"
 msgstr "每次改動都量一次速度與體積，超過預算就不准合併。"
 
+#. 模擬考設定：每一題給幾秒（整場的時間是題數乘上它）
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.seconds"
+msgstr "每題時間"
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.router.role"
 msgstr "決定網址對到哪一頁，每一頁的程式只在需要時才載入。"
+
+#. 模擬考逐題清單的標籤
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.item.blank"
+msgstr "沒作答"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -1508,6 +1674,13 @@ msgstr "用 Safari 加入主畫面"
 msgid "stack.node.playwright.role"
 msgstr "用三種瀏覽器真的把網站點一遍，順便跑無障礙檢查。"
 
+#. 模擬考成績卡：用了多久；time 是時間長度
+#. js-lingui-explicit-id
+#. placeholder {0}: clock(used)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.used"
+msgstr "用時 {0}"
+
 #. 安裝教學頁：Chrome、Edge 等瀏覽器的教學卡片標題
 #. js-lingui-explicit-id
 #: src/pages/Install.tsx
@@ -1609,6 +1782,12 @@ msgstr "第 {chapterNo} 章"
 msgid "badges.eyebrow.chapter"
 msgstr "第 {chapterNo} 章：{title}"
 
+#. 模擬考逐題清單的標籤
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.item.correct"
+msgstr "答對"
+
 #. 總結卡的成績；數字已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(sum.correct)
@@ -1616,6 +1795,21 @@ msgstr "第 {chapterNo} 章：{title}"
 #: src/pages/ExamRun.tsx
 msgid "exam.summary.score"
 msgstr "答對 {0}／{1} 題"
+
+#. 模擬考的成績；數字與百分比都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(sum.correct)
+#. placeholder {1}: n(sum.total)
+#. placeholder {2}: formatPercent(sum.total === 0 ? 0 : sum.correct / sum.total, locale, { digits: 0 })
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.score"
+msgstr "答對 {0}／{1} 題（{2}）"
+
+#. 模擬考逐題清單的標籤
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.item.wrong"
+msgstr "答錯"
 
 #. 清單頁每題右邊的標籤：累計答錯幾次；count 已格式化
 #. js-lingui-explicit-id
@@ -1637,11 +1831,24 @@ msgstr "答錯的 {0}"
 msgid "exam.summary.wrongList"
 msgstr "答錯的題"
 
+#. 模擬考成績卡的篩選；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(sum.wrongIds.length)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.filter.wrong"
+msgstr "答錯與沒作答 {0}"
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.pnpm.role"
 msgstr "管套件。只用發布滿兩週的版本，每一條例外都要留紀錄。"
+
+#. 模擬考設定：要考哪些講義
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.scope"
+msgstr "範圍"
 
 #. 徽章格的狀態：精通
 #. js-lingui-explicit-id
@@ -1793,10 +2000,17 @@ msgstr "自動"
 msgid "stack.node.web-ui.role"
 msgstr "自家的設計系統：按鈕、選單列、面板、徽章全站只有這一套，所以每個可以點的東西長得都一樣。"
 
+#. 苦練首頁入口的說明：模擬考
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.more.mock"
+msgstr "自己選範圍、題數與每題時間；作答中不顯示對錯，交卷後一次看成績與解析。"
+
 #. 練習頁頁首返回按鈕上的短字（必須是「回到期中考苦練」的一部分）
 #. js-lingui-explicit-id
 #: src/pages/ExamBrowse.tsx
 #: src/pages/ExamList.tsx
+#: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.run.back.short"
@@ -1829,6 +2043,12 @@ msgstr "複製備份碼"
 msgid "debug.copy"
 msgstr "複製全部結果"
 
+#. 模擬考交卷確認面板的標題
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.confirm.title"
+msgstr "要交卷嗎？"
+
 #. 背題瀏覽頁工具列：講義篩選的可讀名稱
 #. js-lingui-explicit-id
 #: src/pages/ExamBrowse.tsx
@@ -1840,6 +2060,12 @@ msgstr "要看哪一份講義"
 #: src/pages/ExamList.tsx
 msgid "exam.list.filter"
 msgstr "要看哪一組"
+
+#. 模擬考成績卡：逐題清單的篩選
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.filter"
+msgstr "要看哪些題"
 
 #. 覆蓋現有進度的確認面板標題
 #. js-lingui-explicit-id
@@ -1922,6 +2148,7 @@ msgstr "課程的版面，現行的準則"
 #: src/pages/Exam.tsx
 #: src/pages/ExamBrowse.tsx
 #: src/pages/ExamList.tsx
+#: src/pages/ExamMock.tsx
 msgid "exam.deck.code"
 msgstr "講義 {0}"
 
@@ -1999,6 +2226,12 @@ msgstr "跟鈴打個招呼"
 #: src/components/AppearanceSetting.tsx
 msgid "settings.theme.system"
 msgstr "跟隨系統"
+
+#. 模擬考設定卡的標題
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.setup"
+msgstr "這一場怎麼考"
 
 #. 審核頁開頭給老師的說明
 #. js-lingui-explicit-id
@@ -2191,6 +2424,13 @@ msgstr "還不熟的 {0}"
 msgid "exam.set.unsure"
 msgstr "還不熟的題"
 
+#. 模擬考交卷確認；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(blank)
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.confirm.blank"
+msgstr "還有 {0} 題沒作答，交卷後算答錯。交卷後不能再改。"
+
 #. 彩蛋提示清單：這一個還沒找到
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -2239,6 +2479,7 @@ msgstr "那時候我想，如果可以把這個過程做成一個可以動手玩
 #: src/pages/Exam.tsx
 #: src/pages/ExamBrowse.tsx
 #: src/pages/ExamList.tsx
+#: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.error.desc"
@@ -2283,6 +2524,12 @@ msgstr "錯過的題"
 #: src/pages/ExamList.tsx
 msgid "exam.list.title"
 msgstr "錯過與還不熟的題"
+
+#. 模擬考設定畫面的主按鈕
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.start"
+msgstr "開始模擬考"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2411,10 +2658,17 @@ msgstr "題庫更新了，有 {0} 題要重新作答。"
 #: src/pages/Exam.tsx
 #: src/pages/ExamBrowse.tsx
 #: src/pages/ExamList.tsx
+#: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.error.title"
 msgstr "題庫載入不到"
+
+#. 模擬考設定：抽幾題
+#. js-lingui-explicit-id
+#: src/pages/ExamMock.tsx
+msgid "exam.mock.count"
+msgstr "題數"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx

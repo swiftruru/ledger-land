@@ -28,6 +28,7 @@ const PAGE_CATALOG_SOURCES = [
   '<rootDir>/src/pages/ExamTeacher.tsx',
   '<rootDir>/src/pages/ExamList.tsx',
   '<rootDir>/src/pages/ExamBrowse.tsx',
+  '<rootDir>/src/pages/ExamMock.tsx',
   '<rootDir>/src/features/exam',
   '<rootDir>/src/features/badges',
   '<rootDir>/src/features/credits',

@@ -682,7 +682,7 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 | `errors` | 自動遞增 | `at`、`route`、`message`、`stack`（截斷）、`appVersion`、`contentVersion` | 無 | 環狀保留最近 50 筆（第 9 節） |
 | `snapshots` | 自動遞增 | `fromVersion`、`createdAt`、`payload` | 無 | 需要轉換資料格式的 migration 先把舊資料存一份，保留到下一個 schema 版本 |
 
-**講義題庫的紀錄另開資料庫 `ledgerland-exam`**（M4c，2026-11-04；08 的「講義題庫」一節）：三個 object store：`attempts`（每次作答：題目 `id`、`rev`、`answerRev`、選的字母、對錯、時間，只增不改）、`questionState`（每題的累計狀態：答過幾次、最後一次的結果、`answerRev` 變了之前的對錯不再採計；第二批（2026-11-05）加 `streak`（連續答對幾次，答錯歸零；連對 2 次算熟練）與 `lastChosen`（最近一次選的字母，錯題清單用），第一批存的紀錄沒有 `streak`，讀出來時補成「最近答對 1、答錯 0」，資料庫版本不升）、`runs`（每一輪練習：講義、選項順序的設定、開始與結束時間、答對題數）。和 `ledgerland` 是兩個資料庫、各自的版本號與 migration，互不引用；不進備份檔與備份碼（4.6）；同一個 origin，所以 `persist()` 與清除規則（4.5）一樣適用。
+**講義題庫的紀錄另開資料庫 `ledgerland-exam`**（M4c，2026-11-04；08 的「講義題庫」一節）：三個 object store：`attempts`（每次作答：題目 `id`、`rev`、`answerRev`、選的字母、對錯、時間，只增不改）、`questionState`（每題的累計狀態：答過幾次、最後一次的結果、`answerRev` 變了之前的對錯不再採計；第二批（2026-11-05）加 `streak`（連續答對幾次，答錯歸零；連對 2 次算熟練）與 `lastChosen`（最近一次選的字母，錯題清單用），第一批存的紀錄沒有 `streak`，讀出來時補成「最近答對 1、答錯 0」，資料庫版本不升）、`runs`（每一輪練習：講義、選項順序的設定、開始與結束時間、答對題數；模擬考是鍵為 `mock` 的一輪，多 `mode`、`secondsPerQuestion`、`deadlineAt` 與開始時的設定，一次只留一場，成績留到下一場開始為止）。和 `ledgerland` 是兩個資料庫、各自的版本號與 migration，互不引用；不進備份檔與備份碼（4.6）；同一個 origin，所以 `persist()` 與清除規則（4.5）一樣適用。
 
 **`attempts.answer` 的格式（依題型）**：欄位與題型代號依 04 第 16.2 節；正式型別以 `packages/content-schema` 的 Zod schema 為準，M2 與作答元件一起定案。
 

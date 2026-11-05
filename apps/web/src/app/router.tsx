@@ -96,7 +96,12 @@ function buildRoutes(locale: Locale): RouteObject[] {
       lazy: lazyPage(() => import('../pages/ExamTeacher.tsx'), undefined, 'pages'),
       handle: { noindex: true, layout: 'wide' } satisfies RouteHandle,
     },
-    // 第二批（2026-11-05）：錯題與不熟的清單、背題瀏覽；都是講義原文，noindex；要排在 exam/:setId 前面（list、browse 不是題組）
+    // 第二批（2026-11-05）：模擬考、錯題與不熟的清單、背題瀏覽；都是講義原文，noindex；要排在 exam/:setId 前面（mock、list、browse 不是題組）
+    {
+      path: 'exam/mock',
+      lazy: lazyPage(() => import('../pages/ExamMock.tsx'), undefined, 'pages'),
+      handle: { noindex: true, blocksUpdatePrompt: true } satisfies RouteHandle,
+    },
     { path: 'exam/list', lazy: lazyPage(() => import('../pages/ExamList.tsx'), undefined, 'pages'), handle: { noindex: true } satisfies RouteHandle },
     {
       path: 'exam/browse',

@@ -40,6 +40,12 @@
       "catalog": "pages"
     },
     {
+      "pattern": "^/exam/mock/$",
+      "module": "src/pages/ExamMock.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
       "pattern": "^/exam/list/$",
       "module": "src/pages/ExamList.tsx",
       "content": [],

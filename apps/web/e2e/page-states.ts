@@ -428,6 +428,34 @@ export const CASES: readonly PageCase[] = [
   { group: '苦練', name: '老師審核', path: '/exam/teacher/', tablet: true, prepare: (page) => visible(page, 'exam-teacher-card') },
   // 第二批（2026-11-05）：背題瀏覽只看第一份講義（整份 300 題掃起來太久）、錯題與不熟的清單（新使用者是空狀態）
   { group: '苦練', name: '背題瀏覽', path: '/exam/browse/?deck=d1', tablet: true, prepare: (page) => visible(page, 'exam-browse-tools') },
+  // 模擬考（第二批的第二次交付）：設定、作答中（限時的倒數每秒在變，所以選不限時）、交卷後的成績
+  { group: '苦練', name: '模擬考設定', path: '/exam/mock/', prepare: (page) => visible(page, 'exam-mock-setup') },
+  {
+    group: '苦練',
+    name: '模擬考中',
+    path: '/exam/mock/',
+    prepare: async (page) => {
+      await page.getByRole('radio', { name: /^不限時$|^Untimed$/ }).click();
+      await page.getByTestId('exam-mock-start').click();
+      await expect(question(page)).toBeVisible();
+    },
+  },
+  {
+    group: '苦練',
+    name: '模擬考成績',
+    path: '/exam/mock/',
+    prepare: async (page) => {
+      await page.getByRole('radio', { name: /^不限時$|^Untimed$/ }).click();
+      await page.getByTestId('exam-mock-start').click();
+      await question(page).getByRole('radio').first().check();
+      await page.getByTestId('exam-mock-submit').click();
+      await page
+        .getByTestId('exam-mock-confirm')
+        .getByRole('button', { name: /^交卷$|^Hand in$/ })
+        .click();
+      await visible(page, 'exam-mock-result');
+    },
+  },
   { group: '苦練', name: '錯題清單', path: '/exam/list/', prepare: (page) => expect(page.getByRole('radio', { name: /^答錯的|^Got wrong/ })).toBeVisible() },
   { group: '錯題本', name: '空', path: '/review/', prepare: (page) => expect(page.locator('.ll-review-empty')).toBeVisible() },
   {
