@@ -1,14 +1,16 @@
-// 期中考苦練的練習頁（M4c，02 第 1.1 節）：/exam/<setId>/，?order=random 隨機（全部題目時抽 20 題）。只抓這個題組要的講義檔；
+// 期中考苦練的練習頁（M4c，02 第 1.1 節）：/exam/<setId>/，?order=random 隨機，&n=20|30|50|all 抽幾題（預設 20；第二批）。只抓這個題組要的講義檔；
 // 有進行中的一輪就沿用（features/exam/run.ts 的 restoreRun：題庫改版的題作廢重答），沒有就開新的一輪；每一次確認都寫進 ledgerland-exam。
-// 題目卡是 features/exam/HandoutQuestionCard.tsx；練完是總結卡（答對幾題、答錯的題可展開看解析、再練錯的、再練一次）。
+// 隨機的一輪題數和網址要的不一樣（換了 n）就開新的一輪。題組除了全部、講義、段，還有 wrong（最近答錯的）與 unsure（練過但還沒連對兩次的）。
+// 題目卡是 features/exam/HandoutQuestionCard.tsx；練完是總結卡（答對幾題、答錯的題可展開看題目與解析、再練錯的、再練一次）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { formatNumber, localePath } from '@ledgerland/i18n';
-import { BookIcon, Button, Card, Disclosure, ErrorState, HouseIcon, PlayIcon, RetryIcon, TopBar } from '@ledgerland/web-ui';
+import { BookIcon, Button, Card, Disclosure, ErrorState, HouseIcon, PlayIcon, RetryIcon, TextLink, TopBar } from '@ledgerland/web-ui';
 import { getExamDb, nextState, type QuestionState } from '../features/exam/db.ts';
 import { HandoutQuestionCard } from '../features/exam/HandoutQuestionCard.tsx';
-import { HandoutText } from '../features/exam/HandoutText.tsx';
+import { HandoutQuestionReadout } from '../features/exam/HandoutQuestionReadout.tsx';
+import { DEFAULT_RANDOM_COUNT, limitOf, parseCount } from '../features/exam/options.ts';
 import { readExamShuffle } from '../features/exam/prefs.ts';
 import {
   answerOf,
@@ -24,13 +26,11 @@ import {
   type ExamRun,
 } from '../features/exam/run.ts';
 import { isSetId, resolveSet, type ExamSet } from '../features/exam/sets.ts';
-import { wrongIdsOf } from '../features/exam/stats.ts';
+import { picksOf } from '../features/exam/stats.ts';
 import { loadHandoutDeck, loadHandoutIndex, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
 import '../styles/exam.css';
-
-const RANDOM_LIMIT = 20;
 
 type State =
   | { kind: 'loading' }
@@ -45,6 +45,7 @@ export default function ExamRun() {
   const { setId = '' } = useParams();
   const [search] = useSearchParams();
   const order: ExamOrder = search.get('order') === 'random' ? 'random' : 'handout';
+  const count = parseCount(search.get('n'), DEFAULT_RANDOM_COUNT);
   const key = `${setId}:${order}`;
   const href = (p: string) => localePath(locale, p);
   const [state, setState] = useState<State>({ kind: 'loading' });
@@ -62,14 +63,17 @@ export default function ExamRun() {
       const list = await db.allStates().catch(() => [] as QuestionState[]);
       const map = new Map(list.map((s) => [s.questionId, s]));
       if (alive) setStates(map);
-      const set = resolveSet(index, setId, wrongIdsOf(map));
+      const set = resolveSet(index, setId, picksOf(map));
       if (!set) return { kind: 'notfound' } as State;
       if (set.questionIds.length === 0) return { kind: 'empty', set } as State;
       const decks = await Promise.all(set.deckIds.map((d) => loadHandoutDeck(d)));
       const all = new Map(decks.flatMap((d) => d.questions).map((q) => [q.id, q] as const));
       const wanted = set.questionIds.filter((id) => all.has(id));
       const questions = new Map(wanted.map((id) => [id, all.get(id)!] as const));
-      const existing = await db.getRun(key).catch(() => undefined);
+      const limit = limitOf(count, wanted.length);
+      const stored = await db.getRun(key).catch(() => undefined);
+      // 隨機的一輪：題數和這次要的不一樣（換了 n、或題組變大變小）就不沿用
+      const existing = stored && order === 'random' && stored.questionIds.length !== limit ? undefined : stored;
       const restored = existing ? restoreRun(existing, questions) : null;
       if (restored) {
         if (restored.revised.length > 0 || restored.run !== existing) await db.putRun(restored.run).catch(() => {});
@@ -88,7 +92,7 @@ export default function ExamRun() {
         questions: wanted.map((id) => questions.get(id)!),
         order,
         bankRev: index.rev,
-        ...(order === 'random' ? { limit: RANDOM_LIMIT } : {}),
+        ...(order === 'random' ? { limit } : {}),
       });
       await db.putRun(run).catch(() => {});
       return { kind: 'ok', set, bankRev: index.rev, questions, run, resumed: false, revised: 0 } as State;
@@ -100,7 +104,7 @@ export default function ExamRun() {
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
+  }, [key, count]);
   usePageReady(state.kind !== 'loading');
 
   const update = useCallback(
@@ -115,14 +119,20 @@ export default function ExamRun() {
     [db],
   );
 
-  const setTitle = (set: ExamSet) =>
-    set.kind === 'all'
-      ? t({ id: 'exam.set.all', message: '全部題目', comment: '練習頁的標題：全部題目' })
-      : set.kind === 'wrong'
-        ? t({ id: 'exam.set.wrong', message: '錯過的題', comment: '練習頁的標題：只練錯過的' })
-        : set.kind === 'deck'
-          ? t({ id: 'exam.set.deck', message: `講義 ${set.deck!.code}`, comment: '練習頁的標題：一份講義；code 是講義編號' })
-          : (set.title ?? '');
+  const setTitle = (set: ExamSet): string => {
+    switch (set.kind) {
+      case 'all':
+        return t({ id: 'exam.set.all', message: '全部題目', comment: '練習頁的標題：全部題目' });
+      case 'wrong':
+        return t({ id: 'exam.set.wrong', message: '錯過的題', comment: '練習頁的標題：只練錯過的' });
+      case 'unsure':
+        return t({ id: 'exam.set.unsure', message: '還不熟的題', comment: '練習頁的標題：只練不熟的（練過但還沒連對兩次）' });
+      case 'deck':
+        return t({ id: 'exam.set.deck', message: `講義 ${set.deck!.code}`, comment: '練習頁的標題：一份講義；code 是講義編號' });
+      default:
+        return set.title ?? '';
+    }
+  };
   const topBar = (title: string) => (
     <TopBar
       title={<span lang={state.kind === 'ok' && state.set.kind === 'section' ? 'zh-TW' : undefined}>{title}</span>}
@@ -159,8 +169,20 @@ export default function ExamRun() {
         {topBar(setTitle(state.set))}
         <ErrorState
           pose="clasp"
-          title={t({ id: 'exam.run.emptyWrong', message: '還沒有錯過的題', comment: '練習頁：「只練錯過的」但這台裝置沒有答錯的紀錄' })}
-          description={t({ id: 'exam.run.emptyWrong.desc', message: '先練幾題，答錯的題會集中到這裡。', comment: '練習頁空狀態的說明' })}
+          title={
+            state.set.kind === 'unsure'
+              ? t({ id: 'exam.run.emptyUnsure', message: '還沒有不熟的題', comment: '練習頁：「只練不熟的」但這台裝置沒有練過而未熟練的題' })
+              : t({ id: 'exam.run.emptyWrong', message: '還沒有錯過的題', comment: '練習頁：「只練錯過的」但這台裝置沒有答錯的紀錄' })
+          }
+          description={
+            state.set.kind === 'unsure'
+              ? t({
+                  id: 'exam.run.emptyUnsure.desc',
+                  message: '練過的題連續答對兩次就算熟練；還沒熟練的會集中到這裡。',
+                  comment: '練習頁空狀態的說明（不熟的題）',
+                })
+              : t({ id: 'exam.run.emptyWrong.desc', message: '先練幾題，答錯的題會集中到這裡。', comment: '練習頁空狀態的說明' })
+          }
           action={
             <Button variant="primary" icon={<PlayIcon />} href={href('/exam/all/')}>
               {t({ id: 'exam.start.order', message: '依講義順序練' })}
@@ -178,7 +200,7 @@ export default function ExamRun() {
       questions: set.questionIds.filter((id) => questions.has(id)).map((id) => questions.get(id)!),
       order,
       bankRev: state.bankRev,
-      ...(order === 'random' ? { limit: RANDOM_LIMIT } : {}),
+      ...(order === 'random' ? { limit: limitOf(count, questions.size) } : {}),
     });
     setFreshConfirm(null);
     setState({ ...state, run: fresh, resumed: false, revised: 0 });
@@ -216,27 +238,16 @@ export default function ExamRun() {
           {wrongHere.length > 0 && (
             <div className="ll-exam-summary__wrong">
               <h3 className="ll-exam-summary__subtitle">{t({ id: 'exam.summary.wrongList', message: '答錯的題', comment: '總結卡：答錯清單的小標' })}</h3>
-              {wrongHere.map((q) => {
-                const letters = q.answer.join('、');
-                return (
-                  <Disclosure key={q.id} summary={<span lang="zh-TW">{q.topic}</span>} variant="plain">
-                    <div className="ll-exam-review-q">
-                      <HandoutText text={q.scenario} className="ll-exam-review-q__scenario" />
-                      <HandoutText text={q.question} className="ll-exam-review-q__question" />
-                      <p className="ll-exam-review-q__answer">
-                        {t({ id: 'exam.feedback.answer', message: `正確答案：${letters}` })}{' '}
-                        <span lang="zh-TW">
-                          {q.options
-                            .filter((o) => q.answer.includes(o.letter))
-                            .map((o) => o.text)
-                            .join('；')}
-                        </span>
-                      </p>
-                      <HandoutText text={q.explanation} className="ll-exam-review-q__explain" />
-                    </div>
-                  </Disclosure>
-                );
-              })}
+              {wrongHere.map((q) => (
+                <Disclosure key={q.id} summary={<span lang="zh-TW">{q.topic}</span>} variant="plain">
+                  <HandoutQuestionReadout q={q} heading={false} chosen={answerOf(run, q.id).chosen} />
+                </Disclosure>
+              ))}
+              <p className="ll-exam-run__hint">
+                <TextLink href={href('/exam/list/')}>
+                  {t({ id: 'exam.summary.toList', message: '看全部錯過與還不熟的題', comment: '總結卡：連到錯題與不熟的清單頁' })}
+                </TextLink>
+              </p>
             </div>
           )}
         </Card>
@@ -253,7 +264,7 @@ export default function ExamRun() {
     if (!a.checked) return;
     const at = new Date().toISOString();
     const prev = states.get(qid);
-    const ns = nextState(prev, qid, q.answerRev, a.correct === true, at);
+    const ns = nextState(prev, qid, q.answerRev, a.correct === true, at, a.chosen!);
     setStates((m) => new Map(m).set(qid, ns));
     void db.putState(ns).catch(() => {});
     void db

@@ -1,11 +1,11 @@
 // 老師審核頁（M4c，02 第 1.1 節）：/exam/teacher/，不列導覽、不進 sitemap、noindex，只給老師固定連結。列出沒收進苦練區的題（兩份講義答案不同、
-// 解析有錯字或和公式不合）與照收但想請老師確認的題，每題一張卡：講義與頁次、主題、情境與問題、三個選項（正解打勾）、解答、解析原文、原因。
+// 解析有錯字或和公式不合）與照收但想請老師確認的題，每題一張卡：講義與頁次、主題、情境與問題、三個選項（正解打勾）、解答、解析原文（HandoutQuestionReadout）、原因。
 // 資料只讀 handout_review 那一檔（content.ts 的 loadHandoutReview），不載整份題庫。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { formatNumber, localePath } from '@ledgerland/i18n';
-import { Badge, Card, CheckCircleIcon, ErrorState, Segmented, TextLink, TopBar } from '@ledgerland/web-ui';
-import { HandoutText } from '../features/exam/HandoutText.tsx';
+import { Badge, Card, ErrorState, Segmented, TextLink, TopBar } from '@ledgerland/web-ui';
+import { HandoutQuestionReadout } from '../features/exam/HandoutQuestionReadout.tsx';
 import { loadHandoutIndex, loadHandoutReview, type HandoutManifestEntry, type HandoutReviewFile, type HandoutReviewQuestion } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -107,64 +107,46 @@ export default function ExamTeacher() {
         <ul className="ll-exam-teacher__list" data-testid="exam-teacher-list">
           {shown.map((q) => (
             <li key={q.id} id={q.id} className="ll-exam-teacher__item">
-              <Card as="article" className="ll-exam-tq" aria-labelledby={`${q.id}-title`} data-testid="exam-teacher-card">
-                <p className="ll-exam-tq__source">
-                  <Badge kind={q.exclusion.reason === 'check' ? 'warning' : 'danger'}>{reasonLabel[q.exclusion.reason]}</Badge>
-                  <span className="ll-num">{slideRef(q)}</span>
-                </p>
-                <h2 id={`${q.id}-title`} className="ll-exam-tq__title" lang="zh-TW">
-                  {q.topic}
-                </h2>
-                <HandoutText text={q.scenario} className="ll-exam-tq__scenario" />
-                <HandoutText text={q.question} className="ll-exam-tq__question" />
-                <ol className="ll-exam-tq__options" lang="zh-TW">
-                  {q.options.map((o) => {
-                    const correct = q.answer.includes(o.letter);
-                    return (
-                      <li key={o.letter} className={`ll-exam-tq__option${correct ? ' is-correct' : ''}`}>
-                        <span className="ll-exam-tq__letter">{o.letter}.</span>
-                        <span className="ll-exam-tq__text">{o.text}</span>
-                        {correct && (
-                          <span className="ll-exam-tq__mark">
-                            <CheckCircleIcon size={18} />
-                            <span className="ll-sr-only">
-                              {t({ id: 'exam.teacher.correct', message: '正解', comment: '審核頁：講義標的正解（螢幕閱讀器）' })}
+              <Card as="article" className="ll-exam-q-card" aria-labelledby={`${q.id}-title`} data-testid="exam-teacher-card">
+                <HandoutQuestionReadout
+                  q={q}
+                  heading="h2"
+                  headingId={`${q.id}-title`}
+                  explainTag={false}
+                  source={
+                    <>
+                      <Badge kind={q.exclusion.reason === 'check' ? 'warning' : 'danger'}>{reasonLabel[q.exclusion.reason]}</Badge>
+                      <span className="ll-num">{slideRef(q)}</span>
+                    </>
+                  }
+                  answerLine={t({ id: 'exam.teacher.answer', message: `講義的解答：${q.answer.join('／')}`, comment: '審核頁：講義標的解答字母' })}
+                >
+                  <div className="ll-exam-q__reason">
+                    <p className="ll-exam-q__reason-title">{t({ id: 'exam.teacher.note', message: '我的說明', comment: '審核頁原因框的小標' })}</p>
+                    <p>{q.exclusion.note}</p>
+                    {q.exclusion.related.length > 0 && (
+                      <p className="ll-exam-q__related">
+                        {t({ id: 'exam.teacher.related', message: '相關的題：', comment: '審核頁原因框：答案不同的另一題的連結前綴' })}
+                        {q.exclusion.related.map((id, i) => {
+                          const r = byId.get(id);
+                          if (!r) return null;
+                          return (
+                            <span key={id}>
+                              {i > 0 && '、'}
+                              <TextLink href={`#${id}`}>
+                                {t({
+                                  id: 'exam.teacher.relatedLink',
+                                  message: `${slideRef(r)}（解答 ${r.answer.join('／')}）`,
+                                  comment: '審核頁相關題的連結文字',
+                                })}
+                              </TextLink>
                             </span>
-                          </span>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ol>
-                <p className="ll-exam-tq__answer ll-num">
-                  {t({ id: 'exam.teacher.answer', message: `講義的解答：${q.answer.join('／')}`, comment: '審核頁：講義標的解答字母' })}
-                </p>
-                <HandoutText text={q.explanation} className="ll-exam-tq__explain" />
-                <div className="ll-exam-tq__reason">
-                  <p className="ll-exam-tq__reason-title">{t({ id: 'exam.teacher.note', message: '我的說明', comment: '審核頁原因框的小標' })}</p>
-                  <p>{q.exclusion.note}</p>
-                  {q.exclusion.related.length > 0 && (
-                    <p className="ll-exam-tq__related">
-                      {t({ id: 'exam.teacher.related', message: '相關的題：', comment: '審核頁原因框：答案不同的另一題的連結前綴' })}
-                      {q.exclusion.related.map((id, i) => {
-                        const r = byId.get(id);
-                        if (!r) return null;
-                        return (
-                          <span key={id}>
-                            {i > 0 && '、'}
-                            <TextLink href={`#${id}`}>
-                              {t({
-                                id: 'exam.teacher.relatedLink',
-                                message: `${slideRef(r)}（解答 ${r.answer.join('／')}）`,
-                                comment: '審核頁相關題的連結文字',
-                              })}
-                            </TextLink>
-                          </span>
-                        );
-                      })}
-                    </p>
-                  )}
-                </div>
+                          );
+                        })}
+                      </p>
+                    )}
+                  </div>
+                </HandoutQuestionReadout>
               </Card>
             </li>
           ))}

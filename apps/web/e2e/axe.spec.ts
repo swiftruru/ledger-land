@@ -32,6 +32,8 @@ const PAGES = [
   '/exam/',
   '/exam/d1s1/',
   '/exam/teacher/',
+  '/exam/list/',
+  '/exam/browse/?deck=d1',
 ];
 const STATES: readonly PageCase[] = [
   caseByName('首頁', '匯入提示卡'),

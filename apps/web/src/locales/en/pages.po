@@ -21,8 +21,10 @@ msgstr "({triggerLabel}, {persistDate})"
 
 #. 段的說明（還沒練）；total 已格式化
 #. js-lingui-explicit-id
+#. placeholder {0}: n(s.questionIds.length)
 #. placeholder {0}: n(ss.total)
 #: src/pages/Exam.tsx
+#: src/pages/ExamBrowse.tsx
 msgid "exam.section.untouched"
 msgstr "{0} questions"
 
@@ -76,6 +78,12 @@ msgstr "{usageKb} KB"
 #: src/pages/About.tsx
 msgid "about.license.name"
 msgstr "The name and logo of LedgerLand 會計樂園 are reserved and not covered by the open source licences."
+
+#. 錯題與不熟的清單頁開頭的說明
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.intro"
+msgstr "‘Got wrong’ lists the questions you answered wrongly last time; ‘not yet solid’ lists the ones you have practised but not yet answered correctly twice in a row. Only this device’s record is used."
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -258,9 +266,22 @@ msgstr "Source: {sourceLabel}, {sourceDate}"
 msgid "exam.teacher.filter"
 msgstr "Filter by reason"
 
+#. 苦練首頁入口的說明：背題瀏覽
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.more.browse"
+msgstr "Every question by handout, with the answers and explanations. You can cover the answers, or print the page."
+
+#. 背題瀏覽頁開頭的說明
+#. js-lingui-explicit-id
+#: src/pages/ExamBrowse.tsx
+msgid "exam.browse.intro"
+msgstr "Every included question by handout and section; the questions, options, answers and explanations are exactly as in the handouts. Cover the answers if you want to think first."
+
 #. 主按鈕：全部題目依講義順序
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
+#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.start.order"
 msgstr "Practise in handout order"
@@ -335,6 +356,7 @@ msgstr "Storage"
 
 #. 練習頁空狀態的說明
 #. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.run.emptyWrong.desc"
 msgstr "Practise a few questions first; the ones you get wrong collect here."
@@ -362,11 +384,24 @@ msgstr "Content and progress"
 msgid "credits.values.oneKit"
 msgstr "One set of tappable things across the whole site: buttons, links and list rows all look the same, so you can tell at a glance what you can press."
 
+#. 題數選項：全部題目
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.random.all"
+msgstr "All"
+
 #. 篩選：全部；count 已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(review.questions.length)
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.filter.all"
+msgstr "All {0}"
+
+#. 背題瀏覽頁的講義篩選：全部；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(index.questionCount)
+#: src/pages/ExamBrowse.tsx
+msgid "exam.browse.deck.all"
 msgstr "All {0}"
 
 #. 彩蛋找齊之後的說明
@@ -380,6 +415,12 @@ msgstr "All found. The special badge is on the badges page."
 #: src/pages/ExamRun.tsx
 msgid "exam.summary.perfect"
 msgstr "All correct"
+
+#. 次要按鈕：全部題目打亂順序練一輪
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.start.randomAll"
+msgstr "All questions, shuffled"
 
 #. 練習頁的標題：全部題目
 #. js-lingui-explicit-id
@@ -421,6 +462,12 @@ msgstr "Practise the wrong ones again ({0})"
 #: src/pages/Privacy.tsx
 msgid "privacy.updatedOn"
 msgstr "Last updated: {updated}"
+
+#. 背題瀏覽頁工具列的按鈕：列印目前顯示的題目
+#. js-lingui-explicit-id
+#: src/pages/ExamBrowse.tsx
+msgid "exam.browse.print"
+msgstr "Print"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -487,6 +534,19 @@ msgstr "Camera permission is requested only when you tap ‘Start scanning’ in
 msgid "backup.export.includeErrorsDesc"
 msgstr "Only used for reporting problems."
 
+#. 按鈕：只練練過但還沒連對兩次的題；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(unsureCount)
+#: src/pages/Exam.tsx
+msgid "exam.start.unsure"
+msgstr "Only the ones not yet solid ({0})"
+
+#. 按鈕（停用）：還沒有練過而未熟練的題
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.start.unsureNone"
+msgstr "Only the ones not yet solid (none yet)"
+
 #. 按鈕：只練這台裝置上一次答錯的題；count 已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(wrongCount)
@@ -546,6 +606,8 @@ msgstr "Back to Me"
 
 #. 練習頁頁首返回按鈕的可讀名稱
 #. js-lingui-explicit-id
+#: src/pages/ExamBrowse.tsx
+#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.run.back"
@@ -883,6 +945,12 @@ msgstr "Badges"
 msgid "exam.scenario"
 msgstr "Scenario"
 
+#. 苦練首頁入口的說明：錯題與不熟的清單
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.more.list"
+msgstr "Take your time over the questions you got wrong or have not yet answered correctly twice in a row, with your last choice and the explanation."
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.layout.3"
@@ -919,6 +987,12 @@ msgstr "Me"
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.note"
 msgstr "My note"
+
+#. 苦練區唯讀的題目：標在我上次選的選項後面
+#. js-lingui-explicit-id
+#: src/features/exam/HandoutQuestionReadout.tsx
+msgid "exam.q.mine"
+msgstr "My choice"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1127,6 +1201,12 @@ msgstr "More"
 msgid "settings.more"
 msgstr "More"
 
+#. 苦練首頁：主卡下面的入口清單標題
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.more.title"
+msgstr "More ways to practise"
+
 #. 設計堅持那一節最後一句；<0> 是連到「關於系統設計」的連結
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -1222,15 +1302,16 @@ msgid "stack.node.zod.role"
 msgstr "Checks that data has the right shape: content is validated at build time, and backups again on import."
 
 #. 苦練區回饋的正解行；letters 是講義的字母（可能是「B、C」）
+#. 苦練區回饋的正解行；letters 是講義的字母（可能是「B、C」）
 #. js-lingui-explicit-id
 #: src/features/exam/HandoutQuestionCard.tsx
-#: src/pages/ExamRun.tsx
+#: src/features/exam/HandoutQuestionReadout.tsx
 msgid "exam.feedback.answer"
 msgstr "Correct answer: {letters}"
 
 #. 審核頁：講義標的正解（螢幕閱讀器）
 #. js-lingui-explicit-id
-#: src/pages/ExamTeacher.tsx
+#: src/features/exam/HandoutQuestionReadout.tsx
 msgid "exam.teacher.correct"
 msgstr "correct answer"
 
@@ -1474,11 +1555,23 @@ msgstr "Camera"
 msgid "exam.teacher.related"
 msgstr "Related question: "
 
+#. 總結卡：連到錯題與不熟的清單頁
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.toList"
+msgstr "See every question I got wrong or have not yet got solid"
+
 #. 被拒後的下一步：連到安裝教學
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.install"
 msgstr "See the install guide"
+
+#. 背題瀏覽頁：答案遮住時，只掀開這一題
+#. js-lingui-explicit-id
+#: src/pages/ExamBrowse.tsx
+msgid "exam.browse.reveal"
+msgstr "Show answer"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -1495,6 +1588,14 @@ msgstr "The code and the original content are both public. Partly because I thin
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.lint.role"
 msgstr "Formatting and style checks for the code, right down to ‘no bare hyperlinks’ and Taiwanese wording."
+
+#. 唯讀題目的來源：講義的頁次（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(q.slide)
+#: src/pages/ExamBrowse.tsx
+#: src/pages/ExamList.tsx
+msgid "exam.q.slide"
+msgstr "Slide {0}"
 
 #. 徽章所屬的章（讀不到章節名）；chapterNo 是已格式化的章序號
 #. js-lingui-explicit-id
@@ -1515,6 +1616,20 @@ msgstr "Chapter {chapterNo}: {title}"
 #: src/pages/ExamRun.tsx
 msgid "exam.summary.score"
 msgstr "{0} of {1} correct"
+
+#. 清單頁每題右邊的標籤：累計答錯幾次；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(s.wrong)
+#: src/pages/ExamList.tsx
+msgid "exam.list.wrongTimes"
+msgstr "Wrong {0} times"
+
+#. 清單頁篩選：最近答錯的題；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(count.wrong)
+#: src/pages/ExamList.tsx
+msgid "exam.list.filter.wrong"
+msgstr "Got wrong {0}"
 
 #. 總結卡：答錯清單的小標
 #. js-lingui-explicit-id
@@ -1590,19 +1705,18 @@ msgstr "Round finished"
 msgid "exam.note.device"
 msgstr "Your practice record stays on this device and is not part of backups."
 
+#. 清單頁的按鈕：把目前這一組拿去練；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(count[filter])
+#: src/pages/ExamList.tsx
+msgid "exam.list.practise"
+msgstr "Practise these ({0})"
+
 #. 講義卡的按鈕
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
 msgid "exam.deck.practise"
 msgstr "Practise this handout"
-
-#. 講義卡的進度；數字已格式化
-#. js-lingui-explicit-id
-#. placeholder {0}: n(ds.practised)
-#. placeholder {1}: n(ds.total)
-#: src/pages/Exam.tsx
-msgid "exam.deck.count"
-msgstr "Practised {0} of {1}"
 
 #. 段的說明；數字已格式化
 #. js-lingui-explicit-id
@@ -1612,14 +1726,31 @@ msgstr "Practised {0} of {1}"
 msgid "exam.section.count"
 msgstr "Practised {0} of {1}"
 
-#. 主卡進度；數字都已格式化
+#. 講義卡的進度；熟練是連續答對兩次的題數；數字已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(ds.practised)
+#. placeholder {1}: n(ds.total)
+#. placeholder {2}: n(ds.mastered)
+#: src/pages/Exam.tsx
+msgid "exam.deck.count"
+msgstr "Practised {0} of {1}, {2} solid"
+
+#. 主卡進度；熟練是連續答對兩次的題數；數字都已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(stats.practised)
 #. placeholder {1}: n(stats.total)
-#. placeholder {2}: formatPercent(stats.accuracy, locale)
+#. placeholder {2}: n(stats.mastered)
+#. placeholder {3}: formatPercent(stats.accuracy, locale)
 #: src/pages/Exam.tsx
 msgid "exam.hero.progress"
-msgstr "Practised {0} of {1}, {2} correct"
+msgstr "Practised {0} of {1}, {2} solid, {3} correct"
+
+#. 練習頁空狀態的說明（不熟的題）
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+#: src/pages/ExamRun.tsx
+msgid "exam.run.emptyUnsure.desc"
+msgstr "A question counts as solid once you answer it correctly twice in a row; the ones not there yet collect here."
 
 #. 主按鈕：有做到一半的一輪時；n 是題號（已格式化）
 #. js-lingui-explicit-id
@@ -1643,6 +1774,13 @@ msgstr "The teacher starts from the statements and then goes back to the transac
 msgid "privacy.contact.title"
 msgstr "Contact"
 
+#. 背題瀏覽頁的標題
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+#: src/pages/ExamBrowse.tsx
+msgid "exam.browse.title"
+msgstr "Browse the questions"
+
 #. 玻璃效果的選項：自動（英文用短字 Auto）
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
@@ -1657,6 +1795,8 @@ msgstr "Our own design system: buttons, list rows, panels and badges come from t
 
 #. 練習頁頁首返回按鈕上的短字（必須是「回到期中考苦練」的一部分）
 #. js-lingui-explicit-id
+#: src/pages/ExamBrowse.tsx
+#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.run.back.short"
@@ -1689,6 +1829,18 @@ msgstr "Copy backup code"
 msgid "debug.copy"
 msgstr "Copy everything"
 
+#. 背題瀏覽頁工具列：講義篩選的可讀名稱
+#. js-lingui-explicit-id
+#: src/pages/ExamBrowse.tsx
+msgid "exam.browse.deck"
+msgstr "Which handout to show"
+
+#. 清單頁篩選列的可讀名稱
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.filter"
+msgstr "Which group to show"
+
 #. 覆蓋現有進度的確認面板標題
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1708,8 +1860,10 @@ msgid "backup.preview.replaceButton"
 msgstr "Replace current progress"
 
 #. 苦練區回饋：解析是老師講義的原文
+#. 苦練區回饋：解析是老師講義的原文
 #. js-lingui-explicit-id
 #: src/features/exam/HandoutQuestionCard.tsx
+#: src/features/exam/HandoutQuestionReadout.tsx
 msgid "exam.feedback.fromHandout"
 msgstr "Explanation from the handout"
 
@@ -1764,7 +1918,10 @@ msgstr "The course’s layout, the current standards"
 #. 講義卡的小標；code 是講義編號，例如 0-1
 #. js-lingui-explicit-id
 #. placeholder {0}: d.code
+#. placeholder {0}: deck.code
 #: src/pages/Exam.tsx
+#: src/pages/ExamBrowse.tsx
+#: src/pages/ExamList.tsx
 msgid "exam.deck.code"
 msgstr "Handout {0}"
 
@@ -2004,10 +2161,35 @@ msgstr "The progress data model: stars, the review list, collected terms, badges
 msgid "backup.preview.advancedOptions"
 msgstr "Advanced options"
 
+#. 背題瀏覽頁工具列的開關
+#. js-lingui-explicit-id
+#: src/pages/ExamBrowse.tsx
+msgid "exam.browse.hide"
+msgstr "Cover answers and explanations"
+
+#. 背題瀏覽頁：把這一題的答案再遮起來
+#. js-lingui-explicit-id
+#: src/pages/ExamBrowse.tsx
+msgid "exam.browse.cover"
+msgstr "Cover again"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.import.file"
 msgstr "Choose backup file"
+
+#. 清單頁篩選：練過但還沒熟練的題；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(count.unsure)
+#: src/pages/ExamList.tsx
+msgid "exam.list.filter.unsure"
+msgstr "Not yet solid {0}"
+
+#. 練習頁的標題：只練不熟的（練過但還沒連對兩次）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.set.unsure"
+msgstr "Questions not yet solid"
 
 #. 彩蛋提示清單：這一個還沒找到
 #. js-lingui-explicit-id
@@ -2027,8 +2209,16 @@ msgstr "No backup"
 msgid "backup.toApp.install"
 msgstr "Not added to the home screen yet? See the install guide"
 
+#. 練習頁：「只練不熟的」但這台裝置沒有練過而未熟練的題
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+#: src/pages/ExamRun.tsx
+msgid "exam.run.emptyUnsure"
+msgstr "Nothing left to firm up"
+
 #. 練習頁：「只練錯過的」但這台裝置沒有答錯的紀錄
 #. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.run.emptyWrong"
 msgstr "Nothing wrong yet"
@@ -2047,6 +2237,8 @@ msgstr "I thought then that if this process could be turned into something you c
 #. 苦練區載入失敗的說明
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
+#: src/pages/ExamBrowse.tsx
+#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.error.desc"
@@ -2084,6 +2276,13 @@ msgstr "Error records (last 50)"
 #: src/pages/ExamRun.tsx
 msgid "exam.set.wrong"
 msgstr "Questions I got wrong"
+
+#. 錯題與不熟的清單頁的標題
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+#: src/pages/ExamList.tsx
+msgid "exam.list.title"
+msgstr "Wrong and not yet solid"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2137,11 +2336,18 @@ msgstr "Include the error log"
 msgid "settings.glass.reduced"
 msgstr "Solid"
 
-#. 次要按鈕：全部題目裡隨機抽 20 題
+#. 次要按鈕：全部題目裡隨機抽幾題；count 已格式化
 #. js-lingui-explicit-id
+#. placeholder {0}: n(randomCount)
 #: src/pages/Exam.tsx
 msgid "exam.start.random"
-msgstr "Random 20 questions"
+msgstr "{0} at random"
+
+#. 苦練首頁：隨機練習題數選擇的標籤
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.random.label"
+msgstr "How many at random"
 
 #. 「我的」連到隱私說明
 #. js-lingui-explicit-id
@@ -2203,6 +2409,8 @@ msgstr "The question bank was updated; {0} questions need to be answered again."
 #. 苦練區：manifest 讀不到時的標題
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
+#: src/pages/ExamBrowse.tsx
+#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.error.title"
@@ -2216,6 +2424,7 @@ msgstr "The questions are my own"
 #. 授權標示（D6、2026-11-04 老師同意）
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
+#: src/pages/ExamBrowse.tsx
 msgid "exam.licence"
 msgstr "Questions used with the permission of Mr Yen-Hung Chen."
 

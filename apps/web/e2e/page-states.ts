@@ -426,6 +426,9 @@ export const CASES: readonly PageCase[] = [
     },
   },
   { group: '苦練', name: '老師審核', path: '/exam/teacher/', tablet: true, prepare: (page) => visible(page, 'exam-teacher-card') },
+  // 第二批（2026-11-05）：背題瀏覽只看第一份講義（整份 300 題掃起來太久）、錯題與不熟的清單（新使用者是空狀態）
+  { group: '苦練', name: '背題瀏覽', path: '/exam/browse/?deck=d1', tablet: true, prepare: (page) => visible(page, 'exam-browse-tools') },
+  { group: '苦練', name: '錯題清單', path: '/exam/list/', prepare: (page) => expect(page.getByRole('radio', { name: /^答錯的|^Got wrong/ })).toBeVisible() },
   { group: '錯題本', name: '空', path: '/review/', prepare: (page) => expect(page.locator('.ll-review-empty')).toBeVisible() },
   {
     group: '錯題本',
