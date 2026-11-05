@@ -1,6 +1,7 @@
 // Lighthouse 13 CLI（06 第 8.2 節、09 第 10.2 節）：對重現 Workers 行為的本機伺服器（apps/web 的 wrangler dev）跑固定網址，
 // 每個網址 runs 次取中位數，以 metric 做 assertion；記錄 benchmarkIndex。統計腳本照正式方式載入但指向 stub 端點（?ll-analytics=stub）。
-// 用法：node tools/perf.mjs [--base http://127.0.0.1:8787] [--runs 5] [--out .local-reports/perf] [--only home,terms] [--observed]
+// 用法：node tools/perf.mjs [--base http://127.0.0.1:8787] [--runs 5] [--out .local-reports/perf] [--only home,terms] [--shard 2/3] [--observed]
+// --shard i/n：只量第 i 組網址（CI 把網址分給 n 個同時跑的工作，分法在 lib/perf-shard.mjs）；門檻逐網址、依那一台執行器的 benchmarkIndex 校正，分開量不影響判定。
 // --observed（每週對正式網址用，06 第 8.2 節）：LCP 以實測值（網路不節流、CPU 仍降速）比 assertionsObserved 的門檻，模擬值與效能分數只記錄當趨勢。
 // 真實邊緣上每個請求有伺服器延遲、zone 又可能注入統計腳本，Lighthouse 的模擬會逐層放大（2026-10-27：正式站模擬 LCP 3.5 到 4.2 秒、實測 0.3 到 1.6 秒）；
 // 比較建置好壞用本機伺服器的模擬值（PR 與 main），正式站用實測值看使用者真的等多久。
@@ -8,6 +9,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, fail } from './lib/fs.mjs';
+import { shardUrls } from './lib/perf-shard.mjs';
 import { performanceMinOf, tbtFactorOf } from './lib/perf-thresholds.mjs';
 
 const args = Object.fromEntries(
@@ -20,6 +22,17 @@ const args = Object.fromEntries(
 const app = join(ROOT, 'apps/web');
 const cfg = JSON.parse(readFileSync(join(app, 'perf/urls.json'), 'utf8'));
 const runs = Number(args.runs ?? cfg.lighthouse.runs ?? 5);
+// 先決定要量哪些網址（格式不對就在起伺服器之前結束）
+let urls = cfg.urls;
+if (args.shard) {
+  try {
+    urls = shardUrls(cfg.urls, args.shard);
+  } catch (error) {
+    console.error(`perf：${error.message}`);
+    process.exit(1);
+  }
+  console.log(`perf：第 ${args.shard} 組，量 ${urls.map((u) => u.name).join('、') || '（沒有網址）'}`);
+}
 const outDir = join(ROOT, args.out ?? '.local-reports/perf');
 mkdirSync(outDir, { recursive: true });
 let base = args.base;
@@ -62,7 +75,7 @@ const summary = [];
 try {
   // --only home,terms：只量這幾個名稱（本機找效能回歸用；CI 不帶）
   const only = args.only ? new Set(String(args.only).split(',')) : null;
-  for (const u of cfg.urls) {
+  for (const u of urls) {
     if (only && !only.has(u.name)) continue;
     const url = `${base}${u.path}?ll-analytics=${cfg.analytics.mode}`;
     const results = [];

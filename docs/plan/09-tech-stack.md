@@ -871,6 +871,8 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 
 分成幾個同時跑的工作（2026-11-05）：`e2e` 是一個矩陣，每一項各用一台執行器。main 上四項：chromium-1、chromium-2（`desktop-chromium` 加 `reduced-motion`，用 Playwright 的 `--shard` 各跑一半；INP 在 chromium-1 量）、firefox（`desktop-firefox`）、webkit（`iphone-webkit`）；PR 只有 chromium 的兩項（跑的內容和拆開前相同）。`fail-fast` 關掉，一項失敗時其他的照樣跑完，看得出是只有一種瀏覽器壞還是都壞。切法依實測：拆開前四種設定在同一台執行器依序跑 29.3 分鐘（main 460e838，2 個 worker），其中桌面 Chromium 約 17.5 分鐘、WebKit 約 7.6、Firefox 約 3.0、減少動態約 0.5（很多案例在 Firefox 與 WebKit 是略過的），只依瀏覽器分會卡在 Chromium，所以它再切兩半；拆開後 ci 取最慢的那一項。實測（main 067e69b，2026-11-05，含安裝）：chromium-1 9 分 7 秒、chromium-2 10 分 32 秒、webkit 9 分 37 秒、firefox 4 分 2 秒，Lighthouse 5 次 11 分 7 秒；整個 ci 從觸發到結束 12 分 48 秒（拆開前約 31 到 33 分鐘），現在最慢的是 Lighthouse。PR 上 chromium 兩項各約 11 分鐘，同樣的內容沒切時 21 分鐘。矩陣裡每一項都成功，`e2e` 整體的結果才是成功，所以 `e2e-lighthouse` 的條件不用改；測試報告每一項各傳一份（`e2e-report-chromium-1` 等）。firefox 與 webkit 只在 main 跑，它們變慢在 PR 看不出來，加 E2E 案例後要看 main 上四個工作各自的實際耗時；E2E 的工作超過 Lighthouse 很多時再切細（例如 chromium 切三份）。
 
+再切細（2026-11-06）：上面那一版每個工作約有 55 秒的準備（拉容器、安裝、下載建置），其餘是測試：main d65148b 上 chromium-2 488 秒、webkit 494 秒、firefox 139 秒，Lighthouse 九個網址依序量 564 秒，是最慢的工作。現在 chromium 切四份（chromium-1 到 4）、webkit 切兩份（webkit-1、webkit-2）、firefox 一份；`lighthouse` 也變成矩陣，九個網址分三組同時量（`tools/perf.mjs` 的 `--shard i/n`，依 `urls.json` 的順序輪流分，新增網址不必改 CI；`tools/lib/perf-shard.mjs`）。Lighthouse 的門檻逐網址判定、依那一台執行器的 benchmarkIndex 校正，每個網址的 5 次仍在同一台執行器量完才取中位數，所以分組不影響判定；報告每組各傳一份（`perf-report-1` 等）。main 上同時跑的工作是 E2E 七個、Lighthouse 三個，PR 上是四個與三個；`e2e-lighthouse` 的條件不用改（兩個矩陣都要全部成功）。預期每個工作 5 分鐘上下、整個 ci 約 6 到 7 分鐘，實際數字合併後補上。代價是執行器的總用量變多（每多一個工作多約 1 分鐘的準備），公開 repo 不計費；再切下去每個工作的準備時間就比測試還長，不划算。
+
 | 工作 | 指令或內容 | 通過條件 |
 | --- | --- | --- |
 | install | `pnpm install --frozen-lockfile` | 成功；lockfile 中 `typescript` 為 6.0.3 |
