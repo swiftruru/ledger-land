@@ -179,6 +179,7 @@ pnpm --filter @ledgerland/web dev
   <a href="LICENSE"><img src="docs/readme/badges/zh-code.svg" height="26" alt="程式碼：MIT" /></a>
   <a href="LICENSES/CC-BY-SA-4.0.txt"><img src="docs/readme/badges/zh-content.svg" height="26" alt="內容：CC BY-SA 4.0" /></a>
   <img src="docs/readme/badges/zh-love.svg" height="26" alt="用心手作：在台灣" />
+  <a href="https://swift.moe"><img src="docs/readme/badges/zh-author.svg" height="26" alt="作者：如如的個人網站 swift.moe" /></a>
 </p>
 
 願你讀懂的每一張報表，都像走過的一段路。

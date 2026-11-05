@@ -65,6 +65,7 @@ const BADGES = [
   ['playwright', 'sparkle', 'blonde', ['Playwright', 'E2E'], ['Playwright', 'E2E']],
   ['workers', 'sparkle', 'blonde', ['Cloudflare', 'Workers'], ['Cloudflare', 'Workers']],
   ['love', 'heart', 'ledger', ['用心手作', '在台灣'], ['Made with care', 'in Taiwan']],
+  ['author', 'sprout', 'mint', ['作者', '如如 · swift.moe'], ['Author', 'Yu-Ru Pan · swift.moe']],
 ];
 
 mkdirSync(OUT, { recursive: true });
