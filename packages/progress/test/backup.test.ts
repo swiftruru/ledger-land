@@ -75,7 +75,7 @@ describe('備份檔', () => {
     const backup = await buildBackup(populatedSnapshot(), info, sha256);
     expect(await validateBackup('{not json', validateOpts)).toMatchObject({ ok: false, error: { code: 'backup.parse' } });
     expect(await validateBackup({ ...backup, format: 'other' }, validateOpts)).toMatchObject({ ok: false, error: { code: 'backup.format' } });
-    expect(await validateBackup({ ...backup, formatVersion: 2 }, validateOpts)).toMatchObject({ ok: false, error: { code: 'backup.format_version' } });
+    expect(await validateBackup({ ...backup, formatVersion: 3 }, validateOpts)).toMatchObject({ ok: false, error: { code: 'backup.format_version' } });
     expect(await validateBackup({ ...backup, exportedAt: T3 }, validateOpts)).toMatchObject({ ok: false, error: { code: 'backup.checksum' } });
     expect(await validateBackup({ ...backup, checksum: 'sha256-' + 'A'.repeat(43) }, validateOpts)).toMatchObject({
       ok: false,
@@ -227,5 +227,64 @@ describe('非有限的數字不讓匯出失敗（core-3 的安全網）', () => 
     const text = serialiseBackup(backup);
     const v = await validateBackup(text, validateOpts);
     expect(v.ok).toBe(true);
+  });
+});
+
+describe('延伸資料（formatVersion 2，2026-11-05）', () => {
+  const extensions = { exam: { v: 1, questionState: [{ questionId: 'hq_aaaaaaa1', seen: 2, streak: 1 }] } };
+
+  it('沒有延伸資料（或是空物件）的備份仍是 formatVersion 1，檔案裡沒有 extensions 這個鍵', async () => {
+    const plain = await buildBackup(populatedSnapshot(), info, sha256);
+    const empty = await buildBackup(populatedSnapshot(), { ...info, extensions: {} }, sha256);
+    expect(plain.formatVersion).toBe(1);
+    expect('extensions' in plain).toBe(false);
+    expect(serialiseBackup(empty)).toBe(serialiseBackup(plain));
+    const validated = await validateBackup(serialiseBackup(plain), validateOpts);
+    expect(validated.ok && validated.value.extensions).toEqual({});
+  });
+
+  it('帶延伸資料：formatVersion 2，round-trip 後原樣拿回來；進度的部分和沒帶的時候一樣', async () => {
+    const backup = await buildBackup(populatedSnapshot(), { ...info, extensions }, sha256);
+    expect(backup.formatVersion).toBe(2);
+    const validated = await validateBackup(serialiseBackup(backup), validateOpts);
+    if (!validated.ok) throw new Error(validated.error.code);
+    expect(validated.value.extensions).toEqual(extensions);
+    const plain = await validateBackup(serialiseBackup(await buildBackup(populatedSnapshot(), info, sha256)), validateOpts);
+    expect(plain.ok && plain.value.data).toEqual(validated.value.data);
+    expect(plain.ok && plain.value.preview).toEqual(validated.value.preview);
+  });
+
+  it('延伸資料算進 checksum：改過就驗不過；裡面的 NaN 寫成 null', async () => {
+    const backup = await buildBackup(populatedSnapshot(), { ...info, extensions }, sha256);
+    const tampered = { ...backup, extensions: { exam: { v: 1, questionState: [] } } };
+    expect(await validateBackup(tampered, validateOpts)).toMatchObject({ ok: false, error: { code: 'backup.checksum' } });
+    const odd = await buildBackup(populatedSnapshot(), { ...info, extensions: { exam: { n: Number.NaN } } }, sha256);
+    expect(odd.extensions).toEqual({ exam: { n: null } });
+    expect((await validateBackup(serialiseBackup(odd), validateOpts)).ok).toBe(true);
+  });
+
+  it('版本和 extensions 對不上就拒絕：1 帶了、或 2 沒帶', async () => {
+    const plain = await buildBackup(populatedSnapshot(), info, sha256);
+    const v1WithExt = { ...plain, extensions };
+    const withSum = async (b: object) => ({ ...b, checksum: await computeChecksum(b as never, sha256) });
+    expect(await validateBackup(await withSum(v1WithExt), validateOpts)).toMatchObject({
+      ok: false,
+      error: { code: 'backup.invalid', field: 'extensions' },
+    });
+    const { checksum: _c, ...rest } = plain;
+    expect(await validateBackup(await withSum({ ...rest, formatVersion: 2 }), validateOpts)).toMatchObject({
+      ok: false,
+      error: { code: 'backup.invalid', field: 'extensions' },
+    });
+  });
+
+  it('備份碼也帶得走延伸資料', async () => {
+    const backup = await buildBackup(populatedSnapshot(), { ...info, extensions }, sha256);
+    const encoded = await encodeBackupCode(backup, deflate);
+    if (!encoded.ok) throw new Error(encoded.error.code);
+    const decoded = await decodeBackupCode(encoded.value.code, inflate);
+    if (!decoded.ok) throw new Error(decoded.error.code);
+    const validated = await validateBackup(decoded.value, validateOpts);
+    expect(validated.ok && validated.value.extensions).toEqual(extensions);
   });
 });

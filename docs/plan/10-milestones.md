@@ -607,7 +607,7 @@ D10(c) 決定做完整公式樹與來源分錄，M4 的介面工作量因此最�
 3. 建置輸出：`content/zh-TW/handout_d1|d2|d3.<hash>.json` 與 `handout_review.<hash>.json`，manifest 加 `handouts` 小索引；題庫檔不進 precache，Service Worker 執行期 CacheFirst（cacheName `ll-handout`）。
 4. 三頁：苦練首頁 `/exam/`（講義與各段的進度，列入 sitemap，歸「闖關」Tab，返回到 `/play/`）、練習 `/exam/<setId>/`（一輪練習，noindex，`?order=random` 打亂選項，返回到 `/exam/`）、老師審核頁 `/exam/teacher/`（沒收錄的題與原因、請老師確認的題；noindex、不進 sitemap、站上沒有連結，只給老師固定連結）。
 5. 作答：選項順序預設和講義一樣、可切成打亂；答完顯示解答與老師的解析原文；題目只有中文，英文站加 `lang="zh-TW"`。
-6. 紀錄：獨立的 IndexedDB 資料庫 `ledgerland-exam`（`attempts`、`questionState`、`runs`），不進備份檔與備份碼。
+6. 紀錄：獨立的 IndexedDB 資料庫 `ledgerland-exam`（`attempts`、`questionState`、`runs`）；原本不進備份檔與備份碼，2026-11-05 改成每題的累計跟著備份走（06 第 4.6 節）。
 7. 授權與文字：題目標示「經陳彥宏老師授權使用」、不在 CC BY-SA 內；README、`content/README.md`、CONTRIBUTING、11 與 PLAN 的授權與原創段落加例外。
 
 **不做什麼**：不碰錯題本、星星、徽章與名詞解鎖（苦練的紀錄不進這些系統）；不做帳號與密碼（老師審核頁只靠固定連結，不設登入）；不改原創內容的規則與管線；不收投影片本身、Excel 與其他教材；M4b 的公式樹與 IFRS 切換、M5 的跨模組導覽。
@@ -620,7 +620,7 @@ D10(c) 決定做完整公式樹與來源分錄，M4 的介面工作量因此最�
 - [x] 選項順序預設和講義一樣；打亂選項（首頁的開關）後判對判錯仍正確（有測試）。（`exam.spec.ts` 的打亂選項案例：對錯照畫面上那個選項的講義字母判，不照位置；`?order=random` 是隨機出題，不是打亂選項）
 - [x] 重複題只出現一次；`conflicting_answer` 與 `explanation_issue` 的題不出現在練習頁、出現在審核頁並寫出原因；`check` 的題兩邊都有（有測試）。（`tools/test/handout.test.ts`、`packages/content-schema/test/handout.test.ts`、`exam.spec.ts` 的審核頁案例）
 - [x] 題庫檔不在 precache 清單；開過苦練首頁後三份講義離線都能開（E2E；2026-11-05 加的離線保險，06 第 3.2 節）。
-- [ ] `ledgerland-exam` 的紀錄不出現在備份檔與備份碼；清掉它不影響闖關的進度（有測試）。（2026-11-05：備份只讀 `packages/progress` 的進度快照，碰不到這個資料庫；但沒有專門的測試，所以不勾）
+- [x] ~~`ledgerland-exam` 的紀錄不出現在備份檔與備份碼~~；清掉它不影響闖關的進度（有測試）。（2026-11-05 改了決定：苦練每題的累計跟著備份走，放在備份的 `extensions.exam`，沒用過苦練的備份和以前完全一樣；`packages/progress/test/backup.test.ts`、`apps/web/test/exam-backup.test.ts` 與 `exam.spec.ts` 的備份往返案例）
 - [x] `/exam/` 在 sitemap；`/exam/<setId>/` 與 `/exam/teacher/` 有 `noindex`，審核頁不在 sitemap、站上沒有連到它的連結。（`exam.spec.ts`、`sitemap-pages.test.ts`；2026-11-05 看過正式站的 sitemap）
 - [x] 原創內容的 `content:check`、lock、coverage 與原創性檢查的結果和 M4c 之前完全相同（不掃 `content/handout/`）；`check:tw` 掃 `decks.json` 與說明文字，不掃 `midterm.json` 與 `ids.json`。（CI 的 verify 工作；lock 沒有變動）
 - [x] 英文站上題目的容器有 `lang="zh-TW"`；苦練區各頁的介面字串中英都有。（`exam.spec.ts` 的英文站案例、`i18n:check`）

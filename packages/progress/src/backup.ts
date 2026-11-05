@@ -1,4 +1,7 @@
-// 備份檔與文字備份碼（06 第 4.6 節）。formatVersion 1；checksum 是「去掉 checksum 欄位後的 canonical JSON」的 SHA-256，寫成 sha256-<base64url>。
+// 備份檔與文字備份碼（06 第 4.6 節）。checksum 是「去掉 checksum 欄位後的 canonical JSON」的 SHA-256，寫成 sha256-<base64url>。
+// formatVersion 1 是只有學習進度的備份；2（2026-11-05）多一個選用的 extensions：進度資料庫以外、由 App 的其他功能自己管的資料
+// （目前只有期中考苦練的紀錄，鍵是功能的名稱，值是那個功能自己定義、自己驗證的 JSON）。本套件只負責把它原樣帶著走、算進 checksum，不解讀內容。
+// 沒有 extensions 的備份仍寫成 1，和以前的檔案逐位元組相同，還沒更新的 App 也讀得進去。
 // SHA-256 與壓縮都由呼叫端注入（apps/web 用 WebCrypto 與 CompressionStream 的 deflate-raw），本套件維持純 TypeScript。
 import { z } from 'zod';
 import { migrateSnapshot, type MigrationRegistry } from './migrations.ts';
@@ -24,6 +27,8 @@ import { base64urlDecode, base64urlEncode, canonicalJson, compareCodeUnits, fini
 
 export const BACKUP_FORMAT = 'ledgerland-backup';
 export const BACKUP_FORMAT_VERSION = 1;
+/** 帶 extensions 的備份 */
+export const BACKUP_FORMAT_VERSION_EXTENDED = 2;
 /** 檔案大小上限暫定 5 MB（06 第 4.6 節第 4 步） */
 export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
 /** 文字備份碼的長度上限（暫定，M2 依實際大小調整）；超過時建議改用備份檔 */
@@ -44,10 +49,14 @@ export const BackupData = z
   .strict();
 export type BackupData = z.infer<typeof BackupData>;
 
+/** 延伸資料：鍵是功能的名稱（例如 exam），值由那個功能自己定義 */
+export const BackupExtensions = z.record(z.string().min(1), JsonValue);
+export type BackupExtensions = z.infer<typeof BackupExtensions>;
+
 export const BackupFile = z
   .object({
     format: z.literal(BACKUP_FORMAT),
-    formatVersion: z.literal(BACKUP_FORMAT_VERSION),
+    formatVersion: z.union([z.literal(BACKUP_FORMAT_VERSION), z.literal(BACKUP_FORMAT_VERSION_EXTENDED)]),
     dbSchemaVersion: z.number().int().min(1),
     app: z.object({ version: z.string(), contentVersion: z.number().int().min(0) }).strict(),
     origin: z.string(),
@@ -56,9 +65,18 @@ export const BackupFile = z
     exportedAt: IsoDateTime,
     data: BackupData,
     errors: z.array(ErrorRecord),
+    extensions: BackupExtensions.optional(),
     checksum: z.string().regex(/^sha256-[A-Za-z0-9_-]{43}$/),
   })
-  .strict();
+  .strict()
+  // 版本和 extensions 要對得上：1 沒有、2 一定有而且不是空的（同一份資料只有一種寫法，checksum 才固定）
+  .superRefine((b, ctx) => {
+    const count = b.extensions === undefined ? 0 : Object.keys(b.extensions).length;
+    if (b.formatVersion === BACKUP_FORMAT_VERSION && b.extensions !== undefined)
+      ctx.addIssue({ code: 'custom', path: ['extensions'], message: 'formatVersion 1 的備份沒有 extensions' });
+    if (b.formatVersion === BACKUP_FORMAT_VERSION_EXTENDED && count === 0)
+      ctx.addIssue({ code: 'custom', path: ['extensions'], message: 'formatVersion 2 的備份要有 extensions' });
+  });
 export type BackupFile = z.infer<typeof BackupFile>;
 
 /** SHA-256：輸入文字（UTF-8），回傳 32 個位元組；可同步或非同步 */
@@ -73,6 +91,8 @@ export interface BackupInfo {
   readonly exportedAt: string;
   /** 使用者勾選「附上錯誤紀錄」時為 true；預設不附 */
   readonly includeErrors?: boolean;
+  /** 進度資料庫以外要一起帶走的資料（鍵是功能名稱）；沒有或是空的就寫成 formatVersion 1 */
+  readonly extensions?: Readonly<Record<string, JsonValue>>;
 }
 
 /** 去掉 checksum 後的 canonical JSON，是 checksum 的輸入 */
@@ -106,9 +126,10 @@ export function backupToProgressData(backup: Pick<BackupFile, 'data' | 'exported
 
 /** 由快照建立備份檔（06 第 4.6 節的形狀）。作答答案與設定值裡的 NaN、Infinity 寫成 null（finiteJson），舊資料裡有壞掉的數字也能匯出 */
 export async function buildBackup(snapshot: ProgressSnapshot, info: BackupInfo, sha256: Sha256): Promise<BackupFile> {
+  const extensions = info.extensions !== undefined && Object.keys(info.extensions).length > 0 ? finiteJson({ ...info.extensions }) : undefined;
   const body: Omit<BackupFile, 'checksum'> = {
     format: BACKUP_FORMAT,
-    formatVersion: BACKUP_FORMAT_VERSION,
+    formatVersion: extensions === undefined ? BACKUP_FORMAT_VERSION : BACKUP_FORMAT_VERSION_EXTENDED,
     dbSchemaVersion: snapshot.meta.dbSchemaVersion,
     app: { version: info.app.version, contentVersion: info.app.contentVersion },
     origin: info.origin,
@@ -125,6 +146,7 @@ export async function buildBackup(snapshot: ProgressSnapshot, info: BackupInfo, 
       settings: settingsToRecord(snapshot.settings.map((s) => ({ ...s, value: finiteJson(s.value) }))),
     },
     errors: info.includeErrors === true ? snapshot.errors : [],
+    ...(extensions === undefined ? {} : { extensions }),
   };
   return { ...body, checksum: await computeChecksum(body, sha256) };
 }
@@ -157,6 +179,8 @@ export interface ValidatedBackup {
   readonly backup: BackupFile;
   readonly data: ProgressData;
   readonly preview: BackupPreview;
+  /** 備份帶的延伸資料（沒有就是空物件）；內容由各功能自己驗證 */
+  readonly extensions: Readonly<Record<string, JsonValue>>;
   /** 備份比 App 舊、已在記憶體中升級時，記錄原本的版本 */
   readonly migratedFrom?: number;
 }
@@ -185,7 +209,7 @@ function previewOf(data: ProgressData): BackupPreview {
 const Envelope = z.object({ format: z.unknown(), formatVersion: z.unknown(), dbSchemaVersion: z.unknown(), checksum: z.unknown() }).loose();
 
 /**
- * 匯入驗證（06 第 4.6 節，依序）：1 format 與 formatVersion；2 checksum；3 dbSchemaVersion 比 App 新就拒絕、比 App 舊就在記憶體中跑 migration；
+ * 匯入驗證（06 第 4.6 節，依序）：1 format 與 formatVersion（1 或 2）；2 checksum；3 dbSchemaVersion 比 App 新就拒絕、比 App 舊就在記憶體中跑 migration；
  * 4 Zod 驗證全部欄位與大小上限；回傳備份、可合併的資料與預覽摘要（第 5 步由畫面顯示；第 6 步的純文字顯示由畫面負責）。
  * raw 可以是 JSON 文字或已解析的物件；文字時先 JSON.parse（失敗回 backup.parse）。
  */
@@ -205,7 +229,8 @@ export async function validateBackup(raw: unknown, options: ValidateOptions): Pr
   if (!env.success) return err(progressError('backup.format'));
   const e = env.data;
   if (e.format !== BACKUP_FORMAT) return err(progressError('backup.format'));
-  if (e.formatVersion !== BACKUP_FORMAT_VERSION) return err(progressError('backup.format_version', { formatVersion: String(e.formatVersion) }));
+  if (e.formatVersion !== BACKUP_FORMAT_VERSION && e.formatVersion !== BACKUP_FORMAT_VERSION_EXTENDED)
+    return err(progressError('backup.format_version', { formatVersion: String(e.formatVersion) }));
   if (typeof e.checksum !== 'string') return err(progressError('backup.checksum'));
   const expected = await computeChecksum(e as unknown as BackupFile, options.sha256);
   if (expected !== e.checksum) return err(progressError('backup.checksum'));
@@ -241,7 +266,7 @@ export async function validateBackup(raw: unknown, options: ValidateOptions): Pr
   if (byteLength !== undefined && byteLength > maxBytes) return err(progressError('backup.too_large', { bytes: byteLength, max: maxBytes }));
   const backup = result.data;
   const data = backupToProgressData(backup);
-  const out: ValidatedBackup = { backup, data, preview: previewOf(data) };
+  const out: ValidatedBackup = { backup, data, preview: previewOf(data), extensions: backup.extensions ?? {} };
   return ok(migratedFrom === undefined ? out : { ...out, migratedFrom });
 }
 

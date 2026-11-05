@@ -1781,7 +1781,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 - `check:tw` 不掃 `midterm.json` 與 `ids.json`（講義原文逐字保留）；`decks.json` 的 `note` 與這個資料夾的說明文字仍照站規。
 - 第 1.4 節與第 5.7 節的頁碼規則不適用：`slide` 是審核頁要用的。
 - `docs:examples` 只驗 ```json 區塊並依 ID 前綴找 schema，所以本節的範例一律用 ```jsonc。
-- 不進 precache、紀錄另開資料庫 `ledgerland-exam` 且不進備份：見 06 第 3.2、4.2、4.6 節；頁面見 [02 網站架構](02-site-architecture.md) 第 1.1 節。
+- 不進 precache、紀錄另開資料庫 `ledgerland-exam`（每題的累計跟著備份走，2026-11-05）：見 06 第 3.2、4.2、4.6 節；頁面見 [02 網站架構](02-site-architecture.md) 第 1.1 節。
 
 ---
 

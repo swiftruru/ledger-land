@@ -2,6 +2,7 @@
 // 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、離線保險（開過首頁後講義檔都在快取）、英文站的介面英文而題目中文。
 // 第二批（2026-11-05）：隨機抽幾題、熟練與「只練不熟的」、錯題與不熟的清單、背題瀏覽（講義篩選、遮住答案、列印樣式）。
 // 模擬考（第二批的第二次交付）：設定與記住上次的選擇、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄、接續與限時自動交卷。
+// 苦練的紀錄跟著備份走（2026-11-05）：練過的題匯出備份碼、清掉資料、匯入後回來，再匯入一次不重複計算。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 import { waitForApp, waitForSw } from './helpers.ts';
@@ -565,6 +566,8 @@ test.describe('期中考苦練', () => {
     await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 1／30 題');
     await card(page).getByRole('button', { name: '下一題' }).click();
     await expect(card(page)).toContainText('第 2 題，共 30 題');
+    // 這一輪是非同步寫進 IndexedDB 的：等「走到第 2 題」落地才整頁導航，不和寫入競速
+    await expect.poll(async () => (await mockRun(page))?.index).toBe(1);
     // 離開再回來：接續同一場，停在第 2 題
     await page.goto('/exam/');
     await waitForApp(page);
@@ -594,6 +597,65 @@ test.describe('期中考苦練', () => {
     await page.getByTestId('exam-mock-abandon').click();
     await expect(page.getByTestId('exam-mock-setup')).toBeVisible();
     await expect.poll(() => mockRun(page)).toBeNull();
+  });
+
+  test('苦練的紀錄跟著備份走：練兩題、匯出備份碼、清掉資料、匯入後進度與錯過的題都回來；再匯入一次結果一樣', async ({
+    page,
+    request,
+    context,
+    browserName,
+  }) => {
+    test.skip(browserName !== 'chromium', '剪貼簿只在 Chromium 穩定（和 backup.spec.ts 一樣）');
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    const idx = await index(request);
+    const d1 = idx.decks.find((d) => d.id === 'd1')!;
+    const qs = await deckQuestions(request, d1);
+    const ids = d1.sections[0]!.questionIds;
+    await clearAll(page);
+    await page.goto(`/exam/${d1.sections[0]!.id}/`);
+    await waitForApp(page);
+    await answerOne(page, qs.get(ids[0]!)!, false);
+    await next(page).click();
+    await answerOne(page, qs.get(ids[1]!)!, true);
+    // 匯出：備份碼帶著苦練的紀錄（兩題而已，放得下）
+    await page.goto('/me/backup/');
+    await waitForApp(page);
+    await page.getByRole('button', { name: '複製備份碼' }).click();
+    await expect(page.getByTestId('export-message')).toContainText('已複製');
+    await expect(page.getByTestId('export-message')).not.toContainText('放不下');
+    const code = await page.getByTestId('backup-code').inputValue();
+    // 清掉這台裝置的資料（進度與苦練兩個資料庫），模擬換裝置
+    await clearAll(page);
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-progress')).toHaveText('還沒開始練');
+    const importOnce = async () => {
+      await page.goto('/me/backup/?import=code');
+      await waitForApp(page);
+      await page.getByTestId('paste-code').fill(code);
+      await page.getByRole('button', { name: '檢查備份碼' }).click();
+      await expect(page.getByTestId('import-preview-exam')).toHaveText(/另外帶著期中考苦練\s2\s題的練習紀錄。/);
+      await page.getByTestId('import-confirm').click();
+      await expect(page.getByTestId('import-message')).toContainText('已合併');
+    };
+    const expectRestored = async () => {
+      await page.goto('/exam/');
+      await waitForApp(page);
+      await expect(page.getByTestId('exam-progress')).toContainText(`練過 2／${idx.questionCount} 題`);
+      await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
+      await expect(page.getByTestId('exam-start-unsure')).toContainText('只練不熟的（2 題）');
+    };
+    await importOnce();
+    await expectRestored();
+    // 錯題清單也認得：答錯的那一題標著上次選的選項
+    await page.goto('/exam/list/');
+    await waitForApp(page);
+    await page.getByTestId('exam-list-deck-d1').locator('summary').first().click();
+    await expect(page.getByTestId('exam-list-deck-d1').locator('.ll-exam-q__option.is-wrong')).toContainText('我選的');
+    // 同一份備份再匯入一次：次數不會加倍
+    await importOnce();
+    await expectRestored();
+    expect(await seenOf(page, ids[0]!)).toBe(1);
   });
 
   test('離線保險：開過苦練首頁後，Service Worker 把三份講義檔抓進快取，沒練過的講義離線也能開', async ({ page, request, context, browserName }) => {
