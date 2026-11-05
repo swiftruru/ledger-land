@@ -134,8 +134,10 @@ jobs:
       npm_config_cache: /tmp/ll-npm-cache
       pnpm_config_state_dir: /tmp/ll-pnpm-state
       XDG_CONFIG_HOME: /tmp/ll-xdg-config
-    # 執行器卡住時不等預設的 6 小時；數字約是正常耗時的三倍
-    timeout-minutes: 40
+    # 執行器卡住時不等預設的 6 小時。2026-11-05 從 40 改成 60：main 上這個工作依序跑三種瀏覽器的 E2E（約 30 分鐘）、INP 與 Lighthouse 5 次（約 10 分鐘），
+    # 6a87afe 那次整個工作 39.6 分鐘，之後期中考苦練多了幾個 E2E 案例，連兩次（28aa751、8e1860a）測試全過卻在 Lighthouse 階段撞到 40 分鐘被取消，
+    # deploy 因此被略過。PR 只跑 Chromium 與減少動態（約 10 分鐘），看不出來；加 E2E 案例之後要看 main 這個工作還剩多少餘裕
+    timeout-minutes: 60
     needs: build
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
