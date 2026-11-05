@@ -1,6 +1,9 @@
 # 部署（09 第 10.1、7.4 節）：ci 在 main 上全部通過後，在 apps/web 目錄執行 wrangler deploy，整批部署到 Cloudflare Workers；
 # concurrency 確保同時只有一個部署；部署後執行煙霧測試。只需要 repo secrets 的 CLOUDFLARE_API_TOKEN 與 CLOUDFLARE_ACCOUNT_ID。
 # 自訂網域 ledgerland.swift.moe 由 apps/web/wrangler.jsonc 的 routes 綁定（第一次正式部署時由使用者決定）。
+# 要不要部署看「上一次成功的 deploy 到這個 commit 之間」有沒有動到網站，不是只看最新一個 commit（2026-11-05）：
+# 28aa751 與 8e1860a 的 ci 超時被取消、deploy 被略過，接著只改 ci.yml 的 5646d3f 通過了，只看 HEAD~1 就判定不用部署，兩個 commit 的網站改動沒有上線。
+# workflow_dispatch 是手動部署 main 最新的 commit（不看變動範圍），給這種漏掉的情況與緊急重新部署用。
 name: deploy
 
 on:
@@ -8,9 +11,12 @@ on:
     workflows: [ci]
     branches: [main]
     types: [completed]
+  workflow_dispatch:
 
 permissions:
   contents: read
+  # 查上一次成功的 deploy 是哪個 commit（gh run list）
+  actions: read
 
 concurrency:
   group: deploy-production
@@ -24,7 +30,8 @@ env:
 
 jobs:
   deploy:
-    if: github.event.workflow_run.conclusion == 'success'
+    # 手動部署只在 main 上；自動的要 ci 全部通過
+    if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     # 執行器卡住時不等預設的 6 小時（2026-10-24 apt 那一步曾卡 40 分鐘）；數字約是正常耗時的三倍
     timeout-minutes: 20
@@ -33,16 +40,40 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 2
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          # 要和上一次成功部署的 commit 比對，所以抓完整的歷史
+          fetch-depth: 0
       - name: 只在 apps/web 或它的建置輸入有變動時部署（09 第 10.1 節）
         id: changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
-          if git diff --quiet HEAD~1 HEAD -- apps/web packages content schemas tools pnpm-lock.yaml package.json pnpm-workspace.yaml 2>/dev/null; then
-            echo "deploy=false" >> "$GITHUB_OUTPUT"
-          else
+          if [ "$MANUAL" = "true" ]; then
+            echo "手動部署：不看變動範圍"
             echo "deploy=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+          # 基準是上一次成功的 deploy 所在的 commit（這一次還在跑，不會被列出來）。成功的 deploy 代表「到那個 commit 為止的網站改動都上線了」：
+          # 有改動時是真的部署過，沒有改動時是相對它自己的基準不必部署。ci 被取消或失敗的 commit 不會有成功的 deploy，它們的改動就留到下一次一起算。
+          base=$(gh run list --workflow deploy.yml --branch main --status success --limit 1 --json headSha --jq '.[0].headSha // empty' || true)
+          paths="apps/web packages content schemas tools pnpm-lock.yaml package.json pnpm-workspace.yaml"
+          if [ -z "$base" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            echo "找不到上一次成功的 deploy（基準：${base:-無}），照常部署"
+            deploy=true
+          elif git merge-base --is-ancestor HEAD "$base"; then
+            echo "這個 commit 不比上一次部署的 ${base} 新，不部署"
+            deploy=false
+          elif git diff --quiet "$base" HEAD -- $paths; then
+            echo "${base} 之後沒有動到網站，不部署"
+            deploy=false
+          else
+            echo "${base} 之後動到網站："
+            git diff --stat "$base" HEAD -- $paths | tail -1
+            deploy=true
+          fi
+          echo "deploy=$deploy" >> "$GITHUB_OUTPUT"
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
         if: steps.changed.outputs.deploy == 'true'
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
