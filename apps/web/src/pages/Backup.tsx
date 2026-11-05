@@ -23,6 +23,7 @@ import {
   type BackupFile,
   type BackupMode,
   type BackupReminderState,
+  type JsonValue,
   type ProgressErrorCode,
   type ValidatedBackup,
 } from '@ledgerland/progress';
@@ -45,6 +46,8 @@ import {
   TrashIcon,
 } from '@ledgerland/web-ui';
 import { CopyIcon, MedalIcon } from '@ledgerland/web-ui/map';
+import { EXAM_BACKUP_KEY, exportExamBackup, importExamBackup, parseExamBackup } from '../features/exam/backup.ts';
+import { getExamDb } from '../features/exam/db.ts';
 import { readBackupStats, type BackupStats } from '../features/me/progress-reads.ts';
 import { environmentKind } from '../lib/env.ts';
 import { appVersion, getContentVersion, nowIso, todayLocal } from '../lib/progress/app-info.ts';
@@ -67,12 +70,22 @@ async function reconcileBadges(locale: 'zh-TW' | 'en'): Promise<void> {
   await import('../features/badges/award.ts').then(({ awardChapterBadges }) => awardChapterBadges(locale)).catch(() => undefined);
 }
 
-async function buildCurrentBackup(includeErrors: boolean): Promise<BackupFile> {
+/** 目前的進度做成備份；withExam 時連期中考苦練的紀錄一起帶（extensions.exam，features/exam/backup.ts；一題都沒練過就不帶）。
+ *  苦練的資料庫讀不到不擋匯出：照樣匯出學習進度 */
+async function buildCurrentBackup(includeErrors: boolean, withExam = true): Promise<BackupFile> {
   const store = await getProgressStore();
   const snapshot = await store.exportAll();
+  const exam = withExam ? await exportExamBackup(getExamDb()).catch(() => null) : null;
   return buildBackup(
     snapshot,
-    { app: { version: appVersion(), contentVersion: getContentVersion() }, origin: location.origin, mode: backupMode(), exportedAt: nowIso(), includeErrors },
+    {
+      app: { version: appVersion(), contentVersion: getContentVersion() },
+      origin: location.origin,
+      mode: backupMode(),
+      exportedAt: nowIso(),
+      includeErrors,
+      ...(exam === null ? {} : { extensions: { [EXAM_BACKUP_KEY]: exam as unknown as JsonValue } }),
+    },
     sha256,
   );
 }
@@ -258,8 +271,15 @@ export default function Backup() {
     setBusy('code');
     setExportNotice(null);
     try {
-      const backup = await buildCurrentBackup(includeErrors);
-      const encoded = await encodeBackupCode(backup, deflateRaw);
+      let backup = await buildCurrentBackup(includeErrors);
+      let encoded = await encodeBackupCode(backup, deflateRaw);
+      // 備份碼有長度上限：帶著苦練的紀錄放不下時，改做一份不含苦練的，並在訊息裡說清楚（備份檔沒有這個限制）
+      let examLeftOut = false;
+      if (!encoded.ok && encoded.error.code === 'backup.code_too_long' && backup.extensions !== undefined) {
+        backup = await buildCurrentBackup(includeErrors, false);
+        encoded = await encodeBackupCode(backup, deflateRaw);
+        examLeftOut = encoded.ok;
+      }
       if (!encoded.ok) {
         setCode(null);
         setExportNotice({ kind: 'error', text: errorText(encoded.error.code) });
@@ -276,11 +296,18 @@ export default function Backup() {
       await markExported();
       markExportedToApp();
       await refresh();
+      const copyText = copied
+        ? t({ id: 'backup.code.copied', message: '備份碼已複製，貼到另一台裝置或 App 的「貼上備份碼」就能匯入。' })
+        : t({ id: 'backup.code.copyFailed', message: '無法自動複製，請自己選取下方的備份碼。' });
       setExportNotice({
         kind: 'ok',
-        text: copied
-          ? t({ id: 'backup.code.copied', message: '備份碼已複製，貼到另一台裝置或 App 的「貼上備份碼」就能匯入。' })
-          : t({ id: 'backup.code.copyFailed', message: '無法自動複製，請自己選取下方的備份碼。' }),
+        text: examLeftOut
+          ? `${copyText}${t({
+              id: 'backup.code.examLeftOut',
+              message: '期中考苦練的紀錄太多，備份碼放不下，這一份沒有包含；要一起帶走請改用備份檔。',
+              comment: '備份碼的長度上限放不下期中考苦練的紀錄時，接在「備份碼已複製」後面的說明',
+            })}`
+          : copyText,
       });
     } catch {
       setExportNotice({ kind: 'error', text: exportFailed() });
@@ -343,6 +370,9 @@ export default function Backup() {
       importedAt: nowIso(),
       source: { deviceId: b.deviceId, origin: b.origin, mode: b.mode, exportedAt: b.exportedAt },
     });
+    // 期中考苦練的紀錄（備份有帶才動；沒帶的備份不碰這台裝置的苦練紀錄，覆蓋時也一樣）
+    const exam = parseExamBackup(validated.extensions[EXAM_BACKUP_KEY]);
+    if (exam !== null && exam.length > 0) await importExamBackup(getExamDb(), exam, mode);
     setValidated(null);
     setPasted('');
     setImportNotice({
@@ -402,6 +432,8 @@ export default function Backup() {
   const previewLevels = fmt(validated?.preview.levels ?? 0);
   const previewBadges = fmt(validated?.preview.badges ?? 0);
   const previewFavourites = fmt(validated?.preview.favourites ?? 0);
+  const previewExamCount = validated ? (parseExamBackup(validated.extensions[EXAM_BACKUP_KEY])?.length ?? 0) : 0;
+  const previewExam = fmt(previewExamCount);
   const triggerLabel =
     stats?.persistResult === null || stats?.persistResult === undefined
       ? null
@@ -791,6 +823,13 @@ export default function Backup() {
               將匯入 {previewAttempts} 筆作答紀錄、{previewLevels} 個關卡的星星、{previewBadges} 個徽章、{previewFavourites} 題收藏
             </Trans>
           </p>
+          {previewExamCount > 0 && (
+            <p className="ll-backup__note" data-testid="import-preview-exam">
+              <Trans id="backup.preview.exam" comment="備份預覽：備份裡帶著期中考苦練的紀錄；previewExam 是已格式化的題數，和量詞之間是不換行空白">
+                另外帶著期中考苦練 {previewExam} 題的練習紀錄。
+              </Trans>
+            </p>
+          )}
           {validated.migratedFrom !== undefined && (
             <p className="ll-backup__note">
               <Trans id="backup.preview.migrated">這份備份來自較舊的版本，已先轉成目前的格式。</Trans>

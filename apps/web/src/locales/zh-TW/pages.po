@@ -612,6 +612,12 @@ msgstr "取得特別徽章"
 msgid "backup.preview.cancel"
 msgstr "取消"
 
+#. 備份預覽：備份裡帶著期中考苦練的紀錄；previewExam 是已格式化的題數，和量詞之間是不換行空白
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.preview.exam"
+msgstr "另外帶著期中考苦練 {previewExam} 題的練習紀錄。"
+
 #. 苦練首頁的一句說明
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -1374,6 +1380,12 @@ msgstr "服務：Cloudflare Web Analytics。不用 cookie、不含作答資料�
 msgid "exam.title"
 msgstr "期中考苦練"
 
+#. 備份碼的長度上限放不下期中考苦練的紀錄時，接在「備份碼已複製」後面的說明
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.code.examLeftOut"
+msgstr "期中考苦練的紀錄太多，備份碼放不下，這一份沒有包含；要一起帶走請改用備份檔。"
+
 #. 徽章格的狀態：還沒取得
 #. 徽章格的狀態：還沒取得
 #. js-lingui-explicit-id
@@ -1899,7 +1911,7 @@ msgstr "練完這一輪"
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
 msgid "exam.note.device"
-msgstr "練習紀錄只存在這台裝置，不在備份檔裡。"
+msgstr "練習紀錄存在這台裝置上，匯出備份時會一起帶走。"
 
 #. 清單頁的按鈕：把目前這一組拿去練；count 已格式化
 #. js-lingui-explicit-id

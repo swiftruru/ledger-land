@@ -682,7 +682,7 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 | `errors` | 自動遞增 | `at`、`route`、`message`、`stack`（截斷）、`appVersion`、`contentVersion` | 無 | 環狀保留最近 50 筆（第 9 節） |
 | `snapshots` | 自動遞增 | `fromVersion`、`createdAt`、`payload` | 無 | 需要轉換資料格式的 migration 先把舊資料存一份，保留到下一個 schema 版本 |
 
-**講義題庫的紀錄另開資料庫 `ledgerland-exam`**（M4c，2026-11-04；08 的「講義題庫」一節）：三個 object store：`attempts`（每次作答：題目 `id`、`rev`、`answerRev`、選的字母、對錯、時間，只增不改）、`questionState`（每題的累計狀態：答過幾次、最後一次的結果、`answerRev` 變了之前的對錯不再採計；第二批（2026-11-05）加 `streak`（連續答對幾次，答錯歸零；連對 2 次算熟練）與 `lastChosen`（最近一次選的字母，錯題清單用），第一批存的紀錄沒有 `streak`，讀出來時補成「最近答對 1、答錯 0」，資料庫版本不升）、`runs`（每一輪練習：講義、選項順序的設定、開始與結束時間、答對題數；模擬考是鍵為 `mock` 的一輪，多 `mode`、`secondsPerQuestion`、`deadlineAt` 與開始時的設定，一次只留一場，成績留到下一場開始為止）。和 `ledgerland` 是兩個資料庫、各自的版本號與 migration，互不引用；不進備份檔與備份碼（4.6）；同一個 origin，所以 `persist()` 與清除規則（4.5）一樣適用。
+**講義題庫的紀錄另開資料庫 `ledgerland-exam`**（M4c，2026-11-04；08 的「講義題庫」一節）：三個 object store：`attempts`（每次作答：題目 `id`、`rev`、`answerRev`、選的字母、對錯、時間，只增不改）、`questionState`（每題的累計狀態：答過幾次、最後一次的結果、`answerRev` 變了之前的對錯不再採計；第二批（2026-11-05）加 `streak`（連續答對幾次，答錯歸零；連對 2 次算熟練）與 `lastChosen`（最近一次選的字母，錯題清單用），第一批存的紀錄沒有 `streak`，讀出來時補成「最近答對 1、答錯 0」，資料庫版本不升）、`runs`（每一輪練習：講義、選項順序的設定、開始與結束時間、答對題數；模擬考是鍵為 `mock` 的一輪，多 `mode`、`secondsPerQuestion`、`deadlineAt` 與開始時的設定，一次只留一場，成績留到下一場開始為止）。和 `ledgerland` 是兩個資料庫、各自的版本號與 migration，互不引用；每題的累計跟著備份走，明細與做到一半的一輪不帶（4.6，2026-11-05 改；原本整個資料庫都不進備份）；同一個 origin，所以 `persist()` 與清除規則（4.5）一樣適用。
 
 **`attempts.answer` 的格式（依題型）**：欄位與題型代號依 04 第 16.2 節；正式型別以 `packages/content-schema` 的 Zod schema 為準，M2 與作答元件一起定案。
 
@@ -874,7 +874,10 @@ export async function maybePersist(trigger: PersistTrigger) {
 ```
 
 - 檔名：`ledgerland-backup-YYYYMMDD.json`。
-- 範圍：只含 `ledgerland` 資料庫；講義題庫的 `ledgerland-exam`（4.2）不進備份檔與備份碼（M4c，2026-11-04），換裝置時苦練的紀錄從頭開始。
+- 範圍：`ledgerland` 資料庫的學習進度，加上期中考苦練每題的累計（2026-11-05，維護者的決定；原本 2026-11-04 訂的是苦練的紀錄不進備份，換裝置從頭開始）。
+- **延伸資料與 `formatVersion` 2**（2026-11-05）：備份檔多一個選用的 `extensions`，放進度資料庫以外、由其他功能自己管的資料；鍵是功能的名稱，值由那個功能自己定義與驗證，`packages/progress` 只負責原樣帶著走並算進 `checksum`（它不認識苦練的資料庫，也不該認識）。有 `extensions` 的備份是 `formatVersion` 2，沒有的仍是 1、和以前的檔案逐位元組相同，所以沒用過苦練的人做出來的備份，還沒更新的 App 也讀得進去；版本和 `extensions` 對不上（1 帶了、2 沒帶或是空的）就拒絕。匯入時兩種版本都收。
+- **苦練的紀錄 `extensions.exam`**（`apps/web/src/features/exam/backup.ts`）：只帶 `questionState`（每題練過幾次、對幾次、連對幾次、最近一次對不對與時間、最近選的字母），它是「練過幾題、錯過的題、熟練」的來源；不帶每一次作答的明細（`attempts`，只增不減，只用來數筆數）與做到一半的一輪（`runs`）。寫成每題一列的陣列、不寫欄位名稱，時間到秒：300 題都練過時約 5400 個字，用物件寫會超過備份碼 8000 字的上限。合併規則：同一題以最近練的那一次為準（`lastAt` 較晚的整筆留下，一樣晚留練得多的），答案改版過（`answerRev` 不同）留版本新的；兩台裝置的次數不相加，因為相加的話同一份備份匯入兩次就會重複計算。覆蓋時先清掉這台裝置的苦練紀錄再寫入；備份沒有帶苦練的紀錄時（包括 `formatVersion` 1 的舊備份），不論合併或覆蓋都不動這台裝置的苦練紀錄。內容讀不懂（版本比較新、格式不對）就當作沒有，不擋進度的匯入。
+- **備份碼放不下時**：帶著苦練的紀錄超過 8000 字，就改做一份不含苦練的備份碼，並在訊息裡說這一份沒有包含、要一起帶走請用備份檔；備份檔沒有長度的問題。預覽卡在備份有帶時多一行「另外帶著期中考苦練 N 題的練習紀錄」。
 - **文字備份碼**（介面上稱「備份碼」）：`LL1:` 前綴加上壓縮後的 base64url 字串，內容與備份檔相同，`checksum` 用來發現貼錯或截斷。已決定（2026-10-23）：壓縮用瀏覽器內建 CompressionStream 的 `deflate-raw`（iOS 16.4 起支援，涵蓋 D8 的 iOS 17），`LL1:` 後接 base64url，上限 8000 字元；格式與上限定義在 `packages/progress`，壓縮與 SHA-256 由 `apps/web` 注入。超過上限時畫面建議改用備份檔（實機轉移見【待實測 V21】）。原本的寫法（壓縮方式與上限在 M2 依實際大小訂定）保留作為紀錄。
 - 匯出畫面兩個按鈕並列：「存成備份檔」（分享表單或下載）與「複製備份碼」（`navigator.clipboard.writeText`，需由使用者點按觸發）；匯入畫面同樣有「選擇備份檔」與「貼上備份碼」。
 - `errors` 預設為空陣列，只有使用者在匯出畫面勾選「附上錯誤紀錄」時才填入。

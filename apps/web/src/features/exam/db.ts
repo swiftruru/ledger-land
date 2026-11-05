@@ -1,4 +1,5 @@
-// 期中考苦練的紀錄（M4c，06 第 4.2 節）：自己一個 IndexedDB 資料庫 ledgerland-exam，和學習進度的 ledgerland 分開，不進備份、不碰錯題本與星星。
+// 期中考苦練的紀錄（M4c，06 第 4.2 節）：自己一個 IndexedDB 資料庫 ledgerland-exam，和學習進度的 ledgerland 分開，不碰錯題本與星星。
+// 每題的累計（questionState）會跟著備份走（2026-11-05，features/exam/backup.ts；06 第 4.6 節）；作答明細與做到一半的一輪留在這台裝置。
 // 三個 store：attempts（每一次確認答案）、questionState（每題的累計：看過幾次、對幾次、最近一次對不對）、runs（進行中或剛完成的一輪，鍵是題組 ID）。
 // 開不了（私密瀏覽、配額）時退到記憶體，和 features/quiz/session-cache.ts 同一套做法。
 import { openDB, type IDBPDatabase } from 'idb';
@@ -44,6 +45,8 @@ export interface ExamDb {
   deleteRun(key: string): Promise<void>;
   allStates(): Promise<QuestionState[]>;
   putState(state: QuestionState): Promise<void>;
+  /** 匯入備份用：一次寫入多題的累計；clearFirst 時先清掉原有的（「覆蓋現有進度」） */
+  writeStates(states: readonly QuestionState[], clearFirst: boolean): Promise<void>;
   addAttempt(attempt: ExamAttempt): Promise<void>;
   countAttempts(): Promise<number>;
 }
@@ -67,6 +70,10 @@ export function memoryExamDb(): ExamDb {
     },
     async putState(state) {
       states.set(state.questionId, state);
+    },
+    async writeStates(list, clearFirst) {
+      if (clearFirst) states.clear();
+      for (const state of list) states.set(state.questionId, state);
     },
     async addAttempt(a) {
       attempts.push(a);
@@ -105,6 +112,13 @@ export function indexedDbExamDb(name: string = EXAM_DB): ExamDb {
     },
     async putState(state) {
       await (await db()).put(STORES.states, state);
+    },
+    async writeStates(list, clearFirst) {
+      // 同一個交易：清掉與寫入要嘛都成功、要嘛都不動
+      const tx = (await db()).transaction(STORES.states, 'readwrite');
+      if (clearFirst) await tx.store.clear();
+      for (const state of list) await tx.store.put(state);
+      await tx.done;
     },
     async addAttempt(a) {
       await (await db()).put(STORES.attempts, a);
@@ -161,6 +175,11 @@ export function getExamDb(): ExamDb {
       guard(
         () => idb.putState(s),
         () => memory.putState(s),
+      ),
+    writeStates: (list, clearFirst) =>
+      guard(
+        () => idb.writeStates(list, clearFirst),
+        () => memory.writeStates(list, clearFirst),
       ),
     addAttempt: (a) =>
       guard(

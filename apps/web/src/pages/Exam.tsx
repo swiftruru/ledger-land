@@ -1,7 +1,7 @@
 // 期中考苦練首頁（M4c，02 第 1.1 節）：只收陳老師三份講義的練習題，題目與答案照講義。只讀 manifest.handouts 的小索引與這台裝置的紀錄（features/exam/db.ts），
 // 不載題庫本身，但畫好後會請 Service Worker 把三份講義檔抓進快取（features/exam/prefetch.ts）。整體進度（練過、熟練、答對率）、入口（依講義順序、隨機抽 N 題、只練錯過的、只練不熟的）、
 // 選項順序的開關、「更多練法」（模擬考、背題瀏覽、錯題與不熟的清單；M4c 第二批）、三份講義各一張卡與各段的入口。熟練 = 連續答對兩次（features/exam/stats.ts）。
-// 紀錄只在這台裝置、不在備份裡（06 第 4.6 節）；英文站的介面是英文，題目仍是中文。
+// 紀錄存在這台裝置，每題的累計會跟著備份走（06 第 4.6 節；features/exam/backup.ts）；英文站的介面是英文，題目仍是中文。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { formatNumber, formatPercent, localePath } from '@ledgerland/i18n';
@@ -203,7 +203,7 @@ export default function Exam() {
         />
         <p className="ll-exam-hero__note">
           <Trans id="exam.note.device" comment="主卡下方的說明：紀錄只在這台裝置">
-            練習紀錄只存在這台裝置，不在備份檔裡。
+            練習紀錄存在這台裝置上，匯出備份時會一起帶走。
           </Trans>
           {locale !== 'zh-TW' && (
             <>

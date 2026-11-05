@@ -612,6 +612,12 @@ msgstr "Special badge earned"
 msgid "backup.preview.cancel"
 msgstr "Cancel"
 
+#. 備份預覽：備份裡帶著期中考苦練的紀錄；previewExam 是已格式化的題數，和量詞之間是不換行空白
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.preview.exam"
+msgstr "It also carries the practice record of {previewExam} midterm drill questions."
+
 #. 苦練首頁的一句說明
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -1374,6 +1380,12 @@ msgstr "Service: Cloudflare Web Analytics. No cookies, no answer data; enabled o
 msgid "exam.title"
 msgstr "Midterm drill"
 
+#. 備份碼的長度上限放不下期中考苦練的紀錄時，接在「備份碼已複製」後面的說明
+#. js-lingui-explicit-id
+#: src/pages/Backup.tsx
+msgid "backup.code.examLeftOut"
+msgstr " The midterm drill record is too large for a backup code, so this one does not include it; use a backup file to take it along."
+
 #. 徽章格的狀態：還沒取得
 #. 徽章格的狀態：還沒取得
 #. js-lingui-explicit-id
@@ -1899,7 +1911,7 @@ msgstr "Round finished"
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
 msgid "exam.note.device"
-msgstr "Your practice record stays on this device and is not part of backups."
+msgstr "Your practice record is kept on this device and travels with your backups."
 
 #. 清單頁的按鈕：把目前這一組拿去練；count 已格式化
 #. js-lingui-explicit-id
