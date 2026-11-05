@@ -867,7 +867,9 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 
 驗證與 E2E 兩個工作在 Playwright 的官方容器（`mcr.microsoft.com/playwright`，tag 與 `@playwright/test` 同版、以 digest 釘版，`check:actions` 比對）裡執行（2026-10-27）：WebKit、Firefox 與它們的系統套件都內建，不再用 apt 安裝（apt 曾一天四次卡到工作的時間上限）；本機用同一個映像就能重現 CI 的 Linux 瀏覽器行為。建置工作不需要瀏覽器，仍直接在執行器上跑。
 
-工作的安排（2026-11-05）：`verify`（lint 到 licenses）、`build`、`e2e`（含 axe 與減少動態）、`lighthouse` 四個工作，後兩個都接在 `build` 之後、彼此平行，同樣在 Playwright 的容器裡跑。E2E 與 Lighthouse 原本是同一個工作依序跑，main 上要約 42 分鐘（三種瀏覽器的 E2E 約 30 分鐘、Lighthouse 5 次約 10 分鐘），曾兩次撞到時限被取消、deploy 被略過；拆開後 main 的 ci 取兩者較慢的那一個，Lighthouse 也有自己的執行器，不受前面測試留下的負載影響。最後還有一個不做事的 `e2e-lighthouse`：它沿用拆開前的檢查名稱「e2e、axe、reduced motion、lighthouse」，`e2e` 與 `lighthouse` 都成功它才成功（`if: always()`，前面失敗或被略過時它照樣判失敗）。main 的保護規則指定的三個必要檢查是 `verify`、`build` 與這個名稱，所以拆工作不必改規則；之後再拆（例如三種瀏覽器分開跑）也用同樣的方式收在它底下。PR 只跑 Chromium 與減少動態，E2E 變慢在 PR 看不出來，加 E2E 案例後要看 main 上 `e2e` 的實際耗時。
+工作的安排（2026-11-05）：`verify`（lint 到 licenses）、`build`、`e2e`（含 axe 與減少動態）、`lighthouse` 四個工作，後兩個都接在 `build` 之後、彼此平行，同樣在 Playwright 的容器裡跑。E2E 與 Lighthouse 原本是同一個工作依序跑，main 上要約 42 分鐘（三種瀏覽器的 E2E 約 30 分鐘、Lighthouse 5 次約 10 分鐘），曾兩次撞到時限被取消、deploy 被略過；拆開後 main 的 ci 取兩者較慢的那一個，Lighthouse 也有自己的執行器，不受前面測試留下的負載影響。最後還有一個不做事的 `e2e-lighthouse`：它沿用拆開前的檢查名稱「e2e、axe、reduced motion、lighthouse」，`e2e` 與 `lighthouse` 都成功它才成功（`if: always()`，前面失敗或被略過時它照樣判失敗）。main 的保護規則指定的三個必要檢查是 `verify`、`build` 與這個名稱，所以拆工作不必改規則。
+
+分成幾個同時跑的工作（2026-11-05）：`e2e` 是一個矩陣，每一項各用一台執行器。main 上四項：chromium-1、chromium-2（`desktop-chromium` 加 `reduced-motion`，用 Playwright 的 `--shard` 各跑一半；INP 在 chromium-1 量）、firefox（`desktop-firefox`）、webkit（`iphone-webkit`）；PR 只有 chromium 的兩項（跑的內容和拆開前相同）。`fail-fast` 關掉，一項失敗時其他的照樣跑完，看得出是只有一種瀏覽器壞還是都壞。切法依實測：拆開前四種設定在同一台執行器依序跑 29.3 分鐘（main 460e838，2 個 worker），其中桌面 Chromium 約 17.5 分鐘、WebKit 約 7.6、Firefox 約 3.0、減少動態約 0.5（很多案例在 Firefox 與 WebKit 是略過的），只依瀏覽器分會卡在 Chromium，所以它再切兩半；拆開後 ci 取最慢的那一項。矩陣裡每一項都成功，`e2e` 整體的結果才是成功，所以 `e2e-lighthouse` 的條件不用改；測試報告每一項各傳一份（`e2e-report-chromium-1` 等）。firefox 與 webkit 只在 main 跑，它們變慢在 PR 看不出來，加 E2E 案例後要看 main 上四個工作各自的實際耗時。
 
 | 工作 | 指令或內容 | 通過條件 |
 | --- | --- | --- |
