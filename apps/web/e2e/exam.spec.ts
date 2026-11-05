@@ -231,7 +231,7 @@ test.describe('期中考苦練', () => {
     await expect(page.getByTestId('exam-resume')).toHaveCount(0);
   });
 
-  test('打亂選項：確認前沒有字母，確認後每個選項標出講義的字母', async ({ page, request }) => {
+  test('打亂選項：確認前沒有字母，判對判錯照講義的字母不照位置，確認後每個選項標出講義的字母', async ({ page, request }) => {
     const idx = await index(request);
     const d1 = idx.decks.find((d) => d.id === 'd1')!;
     const qs = await deckQuestions(request, d1);
@@ -243,9 +243,15 @@ test.describe('期中考苦練', () => {
     await page.goto(`/exam/${d1.sections[0]!.id}/`);
     await waitForApp(page);
     await expect(card(page).locator('.ll-exam-letter')).toHaveCount(0);
+    // 畫面上第一個選項是講義的哪個字母（radio 的 value）：打亂後判對判錯要照那個字母，不是照位置
+    const q = qs.get(d1.sections[0]!.questionIds[0]!)!;
+    const letter = (await radios(page).first().getAttribute('value'))!;
+    expect(q.options.map((o) => o.letter)).toContain(letter);
     await radios(page).first().check();
     await submit(page).click();
-    await expect(feedbackTitle(page)).toBeVisible();
+    await expect(feedbackTitle(page)).toHaveText(q.answer.includes(letter) ? /答對了/ : /再想想/);
+    await expect(card(page).locator('.ll-option.is-chosen .ll-exam-letter-tag')).toHaveText(`講義的 ${letter}`);
+    await expect(page.getByText(`正確答案：${q.answer.join('、')}`)).toBeVisible();
     const tags = card(page).locator('.ll-exam-letter-tag');
     await expect(tags).toHaveCount(3);
     const texts = await tags.allTextContents();
@@ -255,7 +261,6 @@ test.describe('期中考苦練', () => {
     await page.reload();
     await waitForApp(page);
     expect(await card(page).locator('.ll-option__text').allTextContents()).toEqual(before);
-    void qs;
   });
 
   test('B/C 都對那一題是任一正確：選另一個也算對，另一個標「也是合理答案」', async ({ page, request }) => {
