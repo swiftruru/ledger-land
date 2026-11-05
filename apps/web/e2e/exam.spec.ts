@@ -1,8 +1,8 @@
 // 期中考苦練（M4c，02 第 1.1 節）：首頁與「我的」的入口、苦練首頁的統計與按鈕、練一段（答對與答錯的回饋、講義順序的字母、總結卡、只練錯過的）、
-// 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、英文站的介面英文而題目中文。
+// 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、離線保險（開過首頁後講義檔都在快取）、英文站的介面英文而題目中文。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
-import { waitForApp } from './helpers.ts';
+import { waitForApp, waitForSw } from './helpers.ts';
 
 interface Deck {
   id: string;
@@ -234,6 +234,25 @@ test.describe('期中考苦練', () => {
     await page.goto('/exam/');
     await waitForApp(page);
     await expect(routeMeta).toHaveCount(0);
+  });
+
+  test('離線保險：開過苦練首頁後，Service Worker 把三份講義檔抓進快取，沒練過的講義離線也能開', async ({ page, request, context, browserName }) => {
+    test.skip(browserName !== 'chromium', 'Service Worker 的離線測試只在 Chromium 穩定；WebKit 與實機依手動清單');
+    const idx = await index(request);
+    await clearAll(page);
+    await waitForSw(page);
+    await page.goto('/exam/');
+    await waitForApp(page);
+    // 首頁畫好後在閒置時送 PREFETCH_HANDOUT，SW 用 CacheFirst 抓進 ll-handout（檔名帶 hash，key 就是講義檔的網址）
+    await expect
+      .poll(() => page.evaluate(async () => (await (await caches.open('ll-handout')).keys()).map((r) => new URL(r.url).pathname)), { timeout: 30_000 })
+      .toEqual(expect.arrayContaining(idx.decks.map((d) => `/${d.file}`)));
+    await context.setOffline(true);
+    const last = [...idx.decks].sort((a, b) => a.id.localeCompare(b.id)).at(-1)!;
+    await page.goto(`/exam/${last.id}/`);
+    await waitForApp(page);
+    await expect(card(page)).toContainText(`第 1 題，共 ${last.questionCount} 題`);
+    await context.setOffline(false);
   });
 
   test('英文站：介面是英文，題目仍是中文並標 lang；不存在的題組是錯誤狀態', async ({ page }) => {

@@ -619,7 +619,7 @@ D10(c) 決定做完整公式樹與來源分錄，M4 的介面工作量因此最�
 - [ ] 三份講義的題在苦練區都能從頭練到尾；題幹、選項、解答、解析和講義逐字相同（本機對照 `references/handouts/`）。
 - [ ] 選項順序預設和講義一樣；`?order=random` 打亂後判對判錯仍正確（有測試）。
 - [ ] 重複題只出現一次；`conflicting_answer` 與 `explanation_issue` 的題不出現在練習頁、出現在審核頁並寫出原因；`check` 的題兩邊都有（有測試）。
-- [ ] 題庫檔不在 precache 清單；看過一次後離線可以再開（E2E）。
+- [x] 題庫檔不在 precache 清單；開過苦練首頁後三份講義離線都能開（E2E；2026-11-05 加的離線保險，06 第 3.2 節）。
 - [ ] `ledgerland-exam` 的紀錄不出現在備份檔與備份碼；清掉它不影響闖關的進度（有測試）。
 - [ ] `/exam/` 在 sitemap；`/exam/<setId>/` 與 `/exam/teacher/` 有 `noindex`，審核頁不在 sitemap、站上沒有連到它的連結。
 - [ ] 原創內容的 `content:check`、lock、coverage 與原創性檢查的結果和 M4c 之前完全相同（不掃 `content/handout/`）；`check:tw` 掃 `decks.json` 與說明文字，不掃 `midterm.json` 與 `ids.json`。

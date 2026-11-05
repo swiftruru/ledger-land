@@ -1,11 +1,12 @@
 // 期中考苦練首頁（M4c，02 第 1.1 節）：只收陳老師三份講義的練習題，題目與答案照講義。只讀 manifest.handouts 的小索引與這台裝置的紀錄（features/exam/db.ts），
-// 不載題庫本身。整體進度、三顆入口（依講義順序、隨機抽 20 題、只練錯過的）、選項順序的開關、三份講義各一張卡與各段的入口。
+// 不載題庫本身，但畫好後會請 Service Worker 把三份講義檔抓進快取（features/exam/prefetch.ts）。整體進度、三顆入口（依講義順序、隨機抽 20 題、只練錯過的）、選項順序的開關、三份講義各一張卡與各段的入口。
 // 紀錄只在這台裝置、不在備份裡（06 第 4.6 節）；英文站的介面是英文，題目仍是中文。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { formatNumber, formatPercent, localePath } from '@ledgerland/i18n';
 import { BookIcon, Button, Card, Disclosure, ErrorState, NavList, NavRow, PlayIcon, ProgressBar, RetryIcon, Switch, TopBar } from '@ledgerland/web-ui';
 import { getExamDb, type QuestionState } from '../features/exam/db.ts';
+import { scheduleHandoutPrefetch } from '../features/exam/prefetch.ts';
 import { readExamShuffle, writeExamShuffle } from '../features/exam/prefs.ts';
 import type { ExamRun } from '../features/exam/run.ts';
 import { allQuestionIds } from '../features/exam/sets.ts';
@@ -48,6 +49,8 @@ export default function Exam() {
   usePageReady(state.kind !== 'loading' && states !== null && resume !== undefined);
 
   const index = state.kind === 'ok' ? state.index : null;
+  // 離線保險：頁面畫好後請 Service Worker 把三份講義檔抓進快取，沒練過的講義離線也開得了
+  useEffect(() => (index ? scheduleHandoutPrefetch(index) : undefined), [index]);
   const all = useMemo(() => (index ? allQuestionIds(index) : []), [index]);
   const stats = useMemo(() => statsOf(all, states ?? new Map()), [all, states]);
   const wrongCount = useMemo(() => (states ? [...wrongIdsOf(states)].filter((id) => all.includes(id)).length : 0), [states, all]);

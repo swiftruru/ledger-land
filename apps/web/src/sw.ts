@@ -64,11 +64,22 @@ cleanupOutdatedCaches();
 // precache 的路由（precacheAndRoute 的後半：directoryIndex、cleanURLs 與忽略 utm 參數都用 Workbox 的預設）
 registerRoute(new PrecacheRoute(controller));
 // 講義題庫（M4c，06 第 3.2 節的「選讀的大型內容包」）：一份講義一檔加審核用的一檔，合計約 0.5 MB，不進 precache（vite.config.ts 的 globIgnores）；
-// 第一次讀到才快取、之後直接從快取回（檔名帶內容雜湊，永不過期），舊雜湊的檔靠 maxEntries 淘汰。看過一次苦練區之後離線也能練
-registerRoute(
-  ({ url, sameOrigin }) => sameOrigin && /^\/content\/[^/]+\/handout_[^/]+\.json$/.test(url.pathname),
-  new CacheFirst({ cacheName: 'll-handout', plugins: [new ExpirationPlugin({ maxEntries: 8 })] }),
-);
+// 第一次讀到才快取、之後直接從快取回（檔名帶內容雜湊，永不過期），舊雜湊的檔靠 maxEntries 淘汰。開過苦練首頁之後離線也能練：
+// 首頁畫好後會送 PREFETCH_HANDOUT 訊息（features/exam/prefetch.ts），這裡用同一個策略把三份講義檔抓進快取
+const HANDOUT_PATH = /^\/content\/[^/]+\/handout_[^/]+\.json$/;
+const handoutStrategy = new CacheFirst({ cacheName: 'll-handout', plugins: [new ExpirationPlugin({ maxEntries: 8 })] });
+registerRoute(({ url, sameOrigin }) => sameOrigin && HANDOUT_PATH.test(url.pathname), handoutStrategy);
+
+/** 頁面請 SW 預抓講義檔：只收同源、路徑符合講義檔樣式的網址（訊息來自頁面，不照單全收）；已在快取的直接命中，抓不到（離線）就略過，不讓訊息處理失敗 */
+function prefetchHandout(event: ExtendableMessageEvent, urls: unknown): void {
+  if (!Array.isArray(urls)) return;
+  const requests = urls
+    .filter((u): u is string => typeof u === 'string')
+    .map((u) => new URL(u, location.href))
+    .filter((u) => u.origin === location.origin && HANDOUT_PATH.test(u.pathname))
+    .map((u) => new Request(u.href));
+  event.waitUntil(Promise.all(requests.map((request) => Promise.all(handoutStrategy.handleAll({ request, event })).catch(() => undefined))));
+}
 // 離線導覽 fallback：中文與 /en/ 開頭的路徑都回同一份殼層 index.html；/assets/ 與 /content/ 找不到檔案時不回殼層，
 // Cloudflare 保留的 /cdn-cgi/、sw.js 本身、stub 端點、sitemap.xml 與 robots.txt（給搜尋引擎的檔案，在瀏覽器打開也要看到原檔）一律走網路（06 第 3.1 節）
 registerRoute(
@@ -76,7 +87,9 @@ registerRoute(
     denylist: [/^\/assets\//, /^\/content\//, /^\/sw\.js$/, /^\/cdn-cgi\//, /^\/__ll/, /^\/sitemap\.xml$/, /^\/robots\.txt$/],
   }),
 );
-// prompt 模式：只有頁面按下更新提示、workbox-window 送來 SKIP_WAITING 才切換（06 第 3.3 節）
+// prompt 模式：只有頁面按下更新提示、workbox-window 送來 SKIP_WAITING 才切換（06 第 3.3 節）；PREFETCH_HANDOUT 是苦練首頁的預抓
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') void self.skipWaiting();
+  if (!event.data) return;
+  if (event.data.type === 'SKIP_WAITING') void self.skipWaiting();
+  else if (event.data.type === 'PREFETCH_HANDOUT') prefetchHandout(event, event.data.urls);
 });
