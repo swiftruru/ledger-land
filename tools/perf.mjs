@@ -8,6 +8,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, fail } from './lib/fs.mjs';
+import { performanceMinOf, tbtFactorOf } from './lib/perf-thresholds.mjs';
 
 const args = Object.fromEntries(
   process.argv
@@ -121,6 +122,9 @@ try {
     // 個別網址可以覆寫門檻（urls.json 的 urls[].assertions，M2 的地圖與作答頁 LCP 暫放寬到 3000ms，見 14 第 5 節）
     const a = { ...cfg.assertions, ...(u.assertions ?? {}) };
     const observedMode = args.observed === 'true';
+    // TBT 的門檻與效能分數的下限依執行器速度校正（06 第 8.1 節；算法與依據在 lib/perf-thresholds.mjs）：benchmarkIndex 低於參考值時才放寬
+    const ref = cfg.lighthouse.benchmarkRef ?? null;
+    const tbtFactor = tbtFactorOf(ref, m.benchmarkIndex);
     if (m.accessibility < a['categories.accessibility'].min) fail(`perf：${u.name} 無障礙 ${m.accessibility} 低於 ${a['categories.accessibility'].min}`);
     if (observedMode) {
       const ao = cfg.assertionsObserved ?? {};
@@ -130,14 +134,13 @@ try {
         fail(`perf：${u.name} 實測 LCP ${m.observedLcpMs}ms 超過 ${maxObserved}ms（模擬 ${m.lcpMs}ms、效能 ${m.performance} 只記錄）`);
       else console.log(`perf：${u.name} 實測 LCP ${m.observedLcpMs}ms（門檻 ${maxObserved}ms；模擬 ${m.lcpMs}ms、效能 ${m.performance} 只記錄）`);
     } else {
-      if (m.performance < a['categories.performance'].min) fail(`perf：${u.name} 效能 ${m.performance} 低於 ${a['categories.performance'].min}`);
+      const perfMin = performanceMinOf(a['categories.performance'].min, cfg.lighthouse.performanceSlack ?? 0, tbtFactor);
+      const perfNote =
+        perfMin < a['categories.performance'].min ? `（下限 ${a['categories.performance'].min} 依 benchmarkIndex ${m.benchmarkIndex} 校正為 ${perfMin}）` : '';
+      if (m.performance < perfMin) fail(`perf：${u.name} 效能 ${m.performance} 低於 ${perfMin}${perfNote}`);
+      else if (perfNote && m.performance < a['categories.performance'].min) console.log(`perf：${u.name} 效能 ${m.performance}${perfNote}`);
       if (m.lcpMs > a['largest-contentful-paint'].maxMs) fail(`perf：${u.name} LCP ${m.lcpMs}ms 超過 ${a['largest-contentful-paint'].maxMs}ms`);
     }
-    // TBT 的門檻依執行器速度校正（06 第 8.2 節）：Lighthouse 的 benchmarkIndex 低於參考值（維護者的 Mac 約 3000）時，門檻乘上 (參考 / 實測)²，
-    // 最多 2 倍。TBT 是長任務超過 50ms 的部分加總，執行器慢 1.2 倍、長任務就超過 2 倍（2026-10-26 GitHub 執行器 benchmarkIndex 2430 時
-    // 名詞圖鑑 211 到 243ms、同一份建置在 4119 時 104ms），所以用平方；benchmarkIndex 在參考值以上時門檻不放寬
-    const ref = cfg.lighthouse.benchmarkRef ?? null;
-    const tbtFactor = ref === null || !(m.benchmarkIndex > 0) ? 1 : Math.min(2, Math.max(1, (ref / m.benchmarkIndex) ** 2));
     const tbtMax = Math.round(a['total-blocking-time'].maxMs * tbtFactor);
     if (m.tbtMs > tbtMax)
       fail(
