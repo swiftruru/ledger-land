@@ -1,6 +1,7 @@
 # CI（09 第 10.2 節）。所有 action 以完整 commit SHA 釘版（版本註解在後）；permissions 只讀；checkout 不保留憑證。
 # 工作：install、lint、typecheck、test、content、i18n、build（含建置後檢查與體積預算）、e2e（含 axe 與減少動態）、lighthouse、hygiene、licenses。
-# E2E 與 Lighthouse 是兩個平行的工作（2026-11-05 拆開），最後由 e2e-lighthouse 把兩邊的結果收成一個檢查：main 的保護規則指定了那個檢查的名稱。
+# E2E 與 Lighthouse 是平行的工作（2026-11-05 拆開），E2E 再分成幾個平行的工作（PR 兩個、main 四個）；最後由 e2e-lighthouse 把全部的結果收成一個檢查：
+# main 的保護規則指定了那個檢查的名稱。
 name: ci
 
 on:
@@ -120,9 +121,19 @@ jobs:
           retention-days: 7
 
   e2e:
-    # 2026-11-05 起不含 Lighthouse（另一個工作平行跑）；「e2e、axe、reduced motion、lighthouse」這個名稱留給最下面的 e2e-lighthouse
-    name: e2e、axe、reduced motion
+    # 2026-11-05 起不含 Lighthouse（另一個工作平行跑）；「e2e、axe、reduced motion、lighthouse」這個名稱留給最下面的 e2e-lighthouse。
+    # 同一天再分成幾個同時跑的工作，各自一台執行器：chromium-1、chromium-2（桌面 Chromium 加減少動態，用 Playwright 的 --shard 切成兩半）、
+    # firefox、webkit。切法依實測（main 460e838 那次，2 個 worker）：四種設定依序跑 29.3 分鐘，其中桌面 Chromium 約 17.5 分鐘、
+    # WebKit 約 7.6、Firefox 約 3.0、減少動態約 0.5（很多案例在 Firefox 與 WebKit 是略過的），只依瀏覽器分會卡在 Chromium，所以它再切兩半。
+    # 整個 ci 的時間變成最慢的那一個工作；哪一種瀏覽器壞了也一眼看得出來。
+    # PR 仍然只跑 Chromium（2026-10-23：縮短 PR 的等待時間），矩陣在 PR 只有 chromium 的兩項
+    name: e2e、axe、reduced motion（${{ matrix.shard }}）
     runs-on: ubuntu-latest
+    strategy:
+      # 一個工作失敗不取消其他的：要看得到是只有一種瀏覽器壞還是都壞
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(github.event_name == 'pull_request' && '["chromium-1","chromium-2"]' || '["chromium-1","chromium-2","firefox","webkit"]') }}
     # 在 Playwright 的官方容器裡跑（2026-10-27）：WebKit 與三個瀏覽器的系統套件都內建，不再跑 apt（apt 卡住一天四次撞到工作的時間上限，
     # 紀錄只留下 The operation was canceled）；本機用同一個映像就能重現 CI 的 Linux 瀏覽器行為。映像以 digest 釘版，tag 的版本要和
     # @playwright/test 相同（check:actions 比對）；瀏覽器在映像的 /ms-playwright，這兩個工作用它取代 repo 內的快取路徑
@@ -136,11 +147,12 @@ jobs:
       npm_config_cache: /tmp/ll-npm-cache
       pnpm_config_state_dir: /tmp/ll-pnpm-state
       XDG_CONFIG_HOME: /tmp/ll-xdg-config
-    # 執行器卡住時不等預設的 6 小時。main 上三種瀏覽器的 E2E 約 30 分鐘、INP 約半分鐘；PR 只跑 Chromium 與減少動態（約 10 分鐘），
-    # 所以 E2E 變慢在 PR 看不出來，加 E2E 案例之後要看 main 這個工作還剩多少餘裕。
-    # 經過（2026-11-05）：這個工作原本還接著跑 Lighthouse 5 次（約 10 分鐘），6a87afe 那次整個工作 39.6 分鐘、時限 40；期中考苦練多了幾個 E2E 案例後，
-    # 28aa751、8e1860a 兩次測試全過卻在 Lighthouse 階段被取消，deploy 被略過。先把時限放寬到 60，再把 Lighthouse 拆成平行的工作
-    timeout-minutes: 50
+    # 執行器卡住時不等預設的 6 小時。每個工作預期十分鐘上下（含安裝）；firefox 與 webkit 只在 main 跑，
+    # 所以它們變慢在 PR 看不出來，加 E2E 案例之後要看 main 上四個工作各跑多久。
+    # 經過（2026-11-05）：原本一個工作依序跑三種瀏覽器的 E2E、INP 與 Lighthouse 5 次，6a87afe 那次 39.6 分鐘、時限 40；期中考苦練多了幾個 E2E 案例後，
+    # 28aa751、8e1860a 兩次測試全過卻在 Lighthouse 階段被取消，deploy 被略過。先把時限放寬到 60，再把 Lighthouse 拆成平行的工作（整個 ci 約 31 分鐘），
+    # 最後分成幾個同時跑的工作
+    timeout-minutes: 30
     needs: build
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -163,16 +175,28 @@ jobs:
         with:
           name: web-dist
           path: apps/web/dist
-      # PR 只跑 Chromium（desktop-chromium 與 reduced-motion）與 3 次 Lighthouse，push 到 main 才跑三個瀏覽器與 5 次（2026-10-23，縮短 PR 的等待時間）；
-      # 三個瀏覽器都在容器裡，不用安裝
-      - name: E2E（對 apps/web 的 wrangler dev，重現 Workers 的 SPA fallback 與 _headers；PR 只跑 Chromium 專案；INP 另外跑）
-        run: pnpm e2e --grep-invert "INP：" ${{ github.event_name == 'pull_request' && '--project desktop-chromium --project reduced-motion' || '' }}
+      # 每個工作跑自己的 Playwright 專案（playwright.config.ts）：chromium 是 desktop-chromium 加 reduced-motion（它用 Chromium、只有一支 spec），
+      # 兩個工作各跑一半（--shard，Playwright 依案例平均分）；firefox 是 desktop-firefox，webkit 是 iphone-webkit。三個瀏覽器都在容器裡，不用安裝
+      - name: E2E（對 apps/web 的 wrangler dev，重現 Workers 的 SPA fallback 與 _headers；INP 另外跑）
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          case "$SHARD" in
+            chromium-1) set -- --project desktop-chromium --project reduced-motion --shard 1/2 ;;
+            chromium-2) set -- --project desktop-chromium --project reduced-motion --shard 2/2 ;;
+            firefox) set -- --project desktop-firefox ;;
+            webkit) set -- --project iphone-webkit ;;
+            *) echo "不認得的工作：$SHARD"; exit 1 ;;
+          esac
+          pnpm e2e --grep-invert "INP：" "$@"
       - name: INP（單獨一個 worker，不和其他測試搶 CPU；門檻依執行器基準校正，見 inp.spec.ts）
+        if: matrix.shard == 'chromium-1'
         run: pnpm e2e apps/web/e2e/inp.spec.ts --project desktop-chromium --workers 1
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
-          name: e2e-report
+          # 每個工作各傳一份（artifact 的名稱不能重複）
+          name: e2e-report-${{ matrix.shard }}
           path: |
             playwright-report
             test-results
@@ -226,9 +250,9 @@ jobs:
           retention-days: 7
 
   e2e-lighthouse:
-    # main 的保護規則要求一個叫「e2e、axe、reduced motion、lighthouse」的檢查通過。拆成兩個工作之後由這個工作沿用那個名稱，
-    # 兩個都成功它才成功，所以不必改 repo 的規則，名稱也還是照字面的意思。if: always() 讓前面失敗或被略過時它照樣跑、照樣判失敗，
-    # 不會因為「被略過」而讓必要的檢查懸著
+    # main 的保護規則要求一個叫「e2e、axe、reduced motion、lighthouse」的檢查通過。拆開之後由這個工作沿用那個名稱，
+    # e2e（矩陣裡每一個工作都成功，needs.e2e.result 才是 success）與 lighthouse 都成功它才成功，所以不必改 repo 的規則，
+    # 名稱也還是照字面的意思。if: always() 讓前面失敗或被略過時它照樣跑、照樣判失敗，不會因為「被略過」而讓必要的檢查懸著
     name: e2e、axe、reduced motion、lighthouse
     runs-on: ubuntu-latest
     needs: [e2e, lighthouse]
