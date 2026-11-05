@@ -678,11 +678,6 @@ msgstr "各段分開練"
 msgid "backup.preview.confirmMerge"
 msgstr "合併匯入"
 
-#. js-lingui-explicit-id
-#: src/pages/Design.tsx
-msgid "design.questions.2"
-msgstr "唯一直接沿用的是故事裡那家公司的情境和金額，因為它和課堂上用的是同一組數字，對照起來最方便。這部分經過老師同意，也在授權說明裡寫清楚了。"
-
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -1109,11 +1104,6 @@ msgstr "我選的"
 #: src/pages/Design.tsx
 msgid "design.statements.2"
 msgstr "所以這裡的主線也是這樣。借貸和分錄沒有消失，只是放在後面一點的地方，等你想知道「數字從哪裡來」的時候再打開。"
-
-#. js-lingui-explicit-id
-#: src/pages/Design.tsx
-msgid "design.questions.1"
-msgstr "所有的題目、解說、名詞卡都是重新寫過的，不是把課本的題目換個數字。教材是地圖，不是答案本。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1718,6 +1708,11 @@ msgid "backup.replace.cancelled"
 msgstr "目前的進度沒有匯出，所以沒有覆蓋。"
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.2"
+msgstr "直接沿用老師的東西有兩處。一是故事裡那家公司的情境和金額，因為它和課堂上用的是同一組數字，對照起來最方便。二是「期中考苦練」的題庫：那是陳老師講義上的練習題，一個字都沒改，方便考前對著講義練。這兩部分都經過老師同意，也在授權說明裡寫清楚了。"
+
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.camera.title"
 msgstr "相機"
@@ -1887,12 +1882,6 @@ msgstr "網站主機 Cloudflare 的伺服器紀錄會包含 IP 位址與瀏覽�
 #: src/pages/Design.tsx
 msgid "design.source.1"
 msgstr "網站裡所有的數字，包括餘額、三張報表、財務比率、題目的答案，都是從同一組分錄算出來的。沒有任何一個數字是另外手寫上去的。"
-
-#. 老師那一節第二段：內容責任歸屬
-#. js-lingui-explicit-id
-#: src/pages/Credits.tsx
-msgid "credits.teacher.p2"
-msgstr "網站裡的題目、解說與名詞卡都是我自己寫的，寫錯是我的責任，不代表老師的觀點。故事的情境與金額經老師授權使用，細節寫在「關於與授權」。"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -2533,8 +2522,24 @@ msgstr "開始模擬考"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
+msgid "design.questions.1"
+msgstr "闖關區的題目、解說、名詞卡都是重新寫過的，不是把課本的題目換個數字。教材是地圖，不是答案本。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
 msgid "design.play.1"
 msgstr "闖關區長得像遊戲，但這裡沒有倒數計時、沒有體力、沒有要跟別人比的名次。關卡也不會鎖住你。"
+
+#. 老師那一節第二段：內容責任歸屬
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.p2"
+msgstr "闖關的題目、解說與名詞卡都是我自己寫的，寫錯是我的責任，不代表老師的觀點。故事的情境與金額，還有「期中考苦練」的講義題庫是老師的，經老師授權使用，細節寫在「關於與授權」。"
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.title"
+msgstr "闖關的題目是自己寫的"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -2669,11 +2674,6 @@ msgstr "題庫載入不到"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.count"
 msgstr "題數"
-
-#. js-lingui-explicit-id
-#: src/pages/Design.tsx
-msgid "design.questions.title"
-msgstr "題目是自己寫的"
 
 #. 授權標示（D6、2026-11-04 老師同意）
 #. js-lingui-explicit-id

@@ -181,6 +181,7 @@ The name ‘LedgerLand 會計樂園’, its marks and the app icon are reserved 
   <a href="LICENSE"><img src="docs/readme/badges/en-code.svg" height="26" alt="Code: MIT" /></a>
   <a href="LICENSES/CC-BY-SA-4.0.txt"><img src="docs/readme/badges/en-content.svg" height="26" alt="Content: CC BY-SA 4.0" /></a>
   <img src="docs/readme/badges/en-love.svg" height="26" alt="Made with care in Taiwan" />
+  <a href="https://swift.moe"><img src="docs/readme/badges/en-author.svg" height="26" alt="Author: Yu-Ru Pan, personal site swift.moe" /></a>
 </p>
 
 May every statement you learn to read feel like a road you have walked.

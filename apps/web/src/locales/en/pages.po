@@ -678,11 +678,6 @@ msgstr "Practise section by section"
 msgid "backup.preview.confirmMerge"
 msgstr "Merge and import"
 
-#. js-lingui-explicit-id
-#: src/pages/Design.tsx
-msgid "design.questions.2"
-msgstr "The only thing taken directly is the setting and the amounts of the company in the story, because they are the same figures used in class, which makes comparing easiest. This was done with the teacher’s consent and is set out in the licence notes."
-
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -1109,11 +1104,6 @@ msgstr "My choice"
 #: src/pages/Design.tsx
 msgid "design.statements.2"
 msgstr "So the main path here follows the same order. Debits, credits and journal entries have not gone away; they just sit a little further back, ready for when you want to know where the numbers come from."
-
-#. js-lingui-explicit-id
-#: src/pages/Design.tsx
-msgid "design.questions.1"
-msgstr "All the questions, explanations and term cards have been written afresh; they are not textbook questions with the numbers swapped. The course material is a map, not an answer book."
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1718,6 +1708,11 @@ msgid "backup.replace.cancelled"
 msgstr "Your current progress was not exported, so nothing was replaced."
 
 #. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.2"
+msgstr "Two things are taken directly from the teacher. One is the setting and the amounts of the company in the story, because they are the same figures used in class, which makes comparing easiest. The other is the question bank in the ‘Midterm drill’: these are the practice questions from the teacher’s handouts, not a word changed, so you can practise against the handouts before the exam. Both are used with the teacher’s consent and are set out in the licence notes."
+
+#. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.camera.title"
 msgstr "Camera"
@@ -1887,12 +1882,6 @@ msgstr "The hosting provider, Cloudflare, keeps server logs that include IP addr
 #: src/pages/Design.tsx
 msgid "design.source.1"
 msgstr "Every number on this site, including balances, the three statements, the financial ratios and the answers to questions, is calculated from the same set of journal entries. No number is written in by hand anywhere else."
-
-#. 老師那一節第二段：內容責任歸屬
-#. js-lingui-explicit-id
-#: src/pages/Credits.tsx
-msgid "credits.teacher.p2"
-msgstr "The questions, explanations and term cards on this site are my own work. Any mistakes are mine and do not reflect the teacher's views. The story's setting and figures are used with the teacher's permission; the details are under ‘About and licences’."
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -2533,8 +2522,24 @@ msgstr "Start the mock exam"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
+msgid "design.questions.1"
+msgstr "All the questions, explanations and term cards in the quest have been written afresh; they are not textbook questions with the numbers swapped. The course material is a map, not an answer book."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
 msgid "design.play.1"
 msgstr "The quest area looks like a game, but there is no countdown, no stamina, and no rank to compete for. The levels do not lock you out either."
+
+#. 老師那一節第二段：內容責任歸屬
+#. js-lingui-explicit-id
+#: src/pages/Credits.tsx
+msgid "credits.teacher.p2"
+msgstr "The questions, explanations and term cards in the quest are my own work. Any mistakes are mine and do not reflect the teacher’s views. The story’s setting and figures, and the handout question bank in the ‘Midterm drill’, are the teacher’s and are used with the teacher’s permission; the details are under ‘About and licences’."
+
+#. js-lingui-explicit-id
+#: src/pages/Design.tsx
+msgid "design.questions.title"
+msgstr "The quest questions are my own"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -2669,11 +2674,6 @@ msgstr "The question bank could not be loaded"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.count"
 msgstr "Questions"
-
-#. js-lingui-explicit-id
-#: src/pages/Design.tsx
-msgid "design.questions.title"
-msgstr "The questions are my own"
 
 #. 授權標示（D6、2026-11-04 老師同意）
 #. js-lingui-explicit-id

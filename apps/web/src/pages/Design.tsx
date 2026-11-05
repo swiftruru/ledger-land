@@ -224,15 +224,15 @@ export default function Design() {
     {
       id: 'questions',
       icon: <FileIcon />,
-      title: t({ id: 'design.questions.title', message: '題目是自己寫的' }),
+      title: t({ id: 'design.questions.title', message: '闖關的題目是自己寫的' }),
       body: (
         <>
           <p>
-            <Trans id="design.questions.1">所有的題目、解說、名詞卡都是重新寫過的，不是把課本的題目換個數字。教材是地圖，不是答案本。</Trans>
+            <Trans id="design.questions.1">闖關區的題目、解說、名詞卡都是重新寫過的，不是把課本的題目換個數字。教材是地圖，不是答案本。</Trans>
           </p>
           <p>
             <Trans id="design.questions.2">
-              唯一直接沿用的是故事裡那家公司的情境和金額，因為它和課堂上用的是同一組數字，對照起來最方便。這部分經過老師同意，也在授權說明裡寫清楚了。
+              直接沿用老師的東西有兩處。一是故事裡那家公司的情境和金額，因為它和課堂上用的是同一組數字，對照起來最方便。二是「期中考苦練」的題庫：那是陳老師講義上的練習題，一個字都沒改，方便考前對著講義練。這兩部分都經過老師同意，也在授權說明裡寫清楚了。
             </Trans>
           </p>
         </>
