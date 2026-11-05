@@ -32,6 +32,7 @@ const PAGES = [
   '/exam/',
   '/exam/d1s1/',
   '/exam/teacher/',
+  '/exam/mock/',
   '/exam/list/',
   '/exam/browse/?deck=d1',
 ];
@@ -44,6 +45,8 @@ const STATES: readonly PageCase[] = [
   caseByName('作答', '答錯'),
   caseByName('作答', '名詞小卡'),
   caseByName('作答', '結果頁'),
+  caseByName('苦練', '模擬考中'),
+  caseByName('苦練', '模擬考成績'),
   caseByName('錯題本', '有到期入口'),
   caseByName('錯題本', '複習中'),
   caseByName('錯題本', '有下架題'),

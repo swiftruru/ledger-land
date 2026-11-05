@@ -3,7 +3,7 @@
 // 選項順序（維護者 2026-11-04 的決定）：預設和講義一樣（選項前面帶 A.、B.、C.）；打亂時用 packages/quiz 的固定種子打散，確認前不顯示字母，
 // 確認後每個選項下面標「講義的 B」，老師解析裡提到的 A、B、C 才對得上。B/C 都對的那一題是任一正確（any_correct，D12）。
 import { useLingui } from '@lingui/react/macro';
-import { useMemo } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { shuffleChoiceOptions } from '@ledgerland/quiz';
 import { Badge, ChoiceGroup, FeedbackPanel, QuestionCard } from '@ledgerland/web-ui';
 import type { HandoutQuestionSnapshot } from '../../lib/content.ts';
@@ -22,9 +22,29 @@ export interface HandoutQuestionCardProps {
   onNext: () => void;
   /** 剛按下確認：回饋面板捲到畫面上緣 */
   scrollOnMount: boolean;
+  /** 模擬考（M4c 第二批）：不判分、沒有回饋，隨時可以改選；主按鈕是 submitLabel（「下一題」或「交卷」），沒選也能按（跳過）。
+   *  onCheck 是按下主按鈕、onNext 不用 */
+  mode?: 'drill' | 'mock';
+  submitLabel?: ReactNode;
+  /** 題號列右側（模擬考的倒數） */
+  meta?: ReactNode;
 }
 
-export function HandoutQuestionCard({ q, answer, shuffle, runId, index, total, onSelect, onCheck, onNext, scrollOnMount }: HandoutQuestionCardProps) {
+export function HandoutQuestionCard({
+  q,
+  answer,
+  shuffle,
+  runId,
+  index,
+  total,
+  onSelect,
+  onCheck,
+  onNext,
+  scrollOnMount,
+  mode = 'drill',
+  submitLabel,
+  meta,
+}: HandoutQuestionCardProps) {
   const { t } = useLingui();
   const options = useMemo(() => {
     if (!shuffle) return q.options;
@@ -34,6 +54,8 @@ export function HandoutQuestionCard({ q, answer, shuffle, runId, index, total, o
     );
     return order.map((o) => q.options.find((x) => x.letter === o.id)!);
   }, [q, shuffle, runId]);
+  const mock = mode === 'mock';
+  const checked = !mock && answer.checked;
   const multi = q.answer.length > 1;
   const letters = q.answer.join('、');
   return (
@@ -42,11 +64,13 @@ export function HandoutQuestionCard({ q, answer, shuffle, runId, index, total, o
       index={index}
       total={total}
       prompt={<HandoutText as="span" text={q.topic} />}
-      checked={answer.checked}
-      canSubmit={answer.chosen !== null}
+      checked={checked}
+      canSubmit={mock || answer.chosen !== null}
       onSubmit={onCheck}
+      {...(submitLabel === undefined ? {} : { submitLabel })}
+      {...(meta === undefined ? {} : { meta })}
       feedback={
-        answer.checked ? (
+        checked ? (
           <FeedbackPanel
             correct={answer.correct === true}
             {...(multi ? { multi: 'any_correct' as const } : {})}
@@ -75,7 +99,7 @@ export function HandoutQuestionCard({ q, answer, shuffle, runId, index, total, o
             name={`exam-${q.id}`}
             prompt={<HandoutText as="span" text={q.question} />}
             mode="single"
-            {...(multi ? { hint: 'any_correct' as const } : {})}
+            {...(multi && !mock ? { hint: 'any_correct' as const } : {})}
             options={options.map((o) => ({
               id: o.letter,
               text: (
@@ -101,7 +125,7 @@ export function HandoutQuestionCard({ q, answer, shuffle, runId, index, total, o
             }))}
             correctOptionIds={q.answer}
             selected={answer.chosen}
-            checked={answer.checked}
+            checked={checked}
             onSelect={onSelect}
           />
         </>

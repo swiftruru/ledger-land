@@ -255,6 +255,26 @@
   display: none;
 }
 
+/* ---- 模擬考：設定的每一組、題目卡下面的「上一題／交卷」、題號列右邊的倒數 ---- */
+.ll-exam-mock__field {
+  display: grid;
+  gap: var(--ll-space-1);
+  justify-items: start;
+  margin-top: var(--ll-space-3);
+}
+.ll-exam-mock__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ll-space-2);
+  margin: var(--ll-space-3) 0 var(--ll-space-4);
+}
+.ll-exam-mock__timer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ll-space-1);
+  font-weight: 600;
+}
+
 /* ---- 列印（背題瀏覽頁的「列印」）：只印題目，殼層、頁首的返回、工具列與按鈕不印；一題不拆頁 ---- */
 @media print {
   .ll-tabbar,

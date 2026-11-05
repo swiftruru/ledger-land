@@ -1,9 +1,12 @@
 // 期中考苦練的一輪練習（M4c，08 的講義題庫一節）：純函式的狀態機，不碰 DOM 與資料庫；存進 features/exam/db.ts 的 runs，離開再回來可以沿用。
 // 一輪 = 一個題組（setId）的題目依講義順序或隨機排好，逐題「選、確認、下一題」；每題記選了哪個字母與對錯。
 // 題庫改版（rev 或 answerRev 變了）時那幾題的作答作廢重答（和錯題本的「題目已更新」同一個想法）；題目從題庫消失時整輪重來。
+// 模擬考（mode: 'mock'，M4c 第二批）：一律隨機抽題、可以前後移動與改選、作答中不判分；交卷（submitRun）才一次判完，沒選的算錯。
+// 限時的場次有 deadlineAt（開始時間加題數乘每題秒數），時間照牆上的鐘走，離開頁面不暫停。
 import type { HandoutQuestionSnapshot } from '../../lib/content.ts';
 
 export type ExamOrder = 'handout' | 'random';
+export type ExamMode = 'drill' | 'mock';
 
 export interface RunAnswer {
   /** 選了的講義字母 */
@@ -27,6 +30,13 @@ export interface ExamRun {
   answers: Record<string, RunAnswer>;
   startedAt: string;
   finishedAt?: string;
+  /** 沒有這一欄的是練習（第一批存的紀錄） */
+  mode?: ExamMode;
+  /** 模擬考：每題幾秒（0 不限時）與到期時間（不限時沒有） */
+  secondsPerQuestion?: number;
+  deadlineAt?: string;
+  /** 模擬考開始時的設定（「再考一次」沿用）：scope|count|seconds，格式在 options.ts */
+  settings?: string;
 }
 
 export interface RunSummary {
@@ -34,6 +44,8 @@ export interface RunSummary {
   answered: number;
   correct: number;
   wrongIds: string[];
+  /** 模擬考交卷時沒選的題數（算錯，但不寫進紀錄）；練習一律 0 */
+  unanswered: number;
 }
 
 /** 兩個以上的正解就是任一正確（B/C 都對那一題） */
@@ -65,8 +77,14 @@ export function startRun(input: {
   limit?: number;
   now?: string;
   random?: () => number;
+  mode?: ExamMode;
+  /** 模擬考每題幾秒；0 或沒給是不限時 */
+  secondsPerQuestion?: number;
+  settings?: string;
 }): ExamRun {
   const random = input.random ?? Math.random;
+  const startedAt = input.now ?? new Date().toISOString();
+  const seconds = Math.max(0, input.secondsPerQuestion ?? 0);
   let ids = input.questions.map((q) => q.id);
   if (input.order === 'random') {
     ids = shuffleIds(ids, random);
@@ -81,7 +99,15 @@ export function startRun(input: {
     revs: Object.fromEntries(input.questions.map((q) => [q.id, { rev: q.rev, answerRev: q.answerRev }])),
     index: 0,
     answers: {},
-    startedAt: input.now ?? new Date().toISOString(),
+    startedAt,
+    ...(input.mode === 'mock'
+      ? {
+          mode: 'mock' as const,
+          secondsPerQuestion: seconds,
+          ...(seconds > 0 ? { deadlineAt: new Date(Date.parse(startedAt) + ids.length * seconds * 1000).toISOString() } : {}),
+          ...(input.settings === undefined ? {} : { settings: input.settings }),
+        }
+      : {}),
   };
 }
 
@@ -122,7 +148,57 @@ export function summarise(run: ExamRun): RunSummary {
     answered: answered.length,
     correct: answered.filter((id) => answerOf(run, id).correct === true).length,
     wrongIds: answered.filter((id) => answerOf(run, id).correct !== true),
+    unanswered: answered.filter((id) => answerOf(run, id).chosen === null).length,
   };
+}
+
+// ---- 模擬考 ----
+
+export const isMock = (run: ExamRun): boolean => run.mode === 'mock';
+
+/** 模擬考可以前後移動；超出範圍就夾在頭尾，交卷後不動 */
+export function gotoQuestion(run: ExamRun, index: number): ExamRun {
+  if (isFinished(run) || run.questionIds.length === 0) return run;
+  const next = Math.max(0, Math.min(run.questionIds.length - 1, index));
+  return next === run.index ? run : { ...run, index: next };
+}
+
+/** 模擬考的選擇：交卷前隨時可以改，不判分 */
+export function selectMock(run: ExamRun, id: string, chosen: string): ExamRun {
+  if (isFinished(run) || !run.questionIds.includes(id)) return run;
+  return { ...run, answers: { ...run.answers, [id]: { chosen, checked: false } } };
+}
+
+/** 模擬考已經選了幾題 */
+export const chosenCount = (run: ExamRun): number => run.questionIds.filter((id) => answerOf(run, id).chosen !== null).length;
+
+/** 交卷：每一題一次判完，沒選的算錯（chosen 留 null）；已交卷就不動 */
+export function submitRun(
+  run: ExamRun,
+  questions: ReadonlyMap<string, Pick<HandoutQuestionSnapshot, 'answer'>>,
+  now: string = new Date().toISOString(),
+): ExamRun {
+  if (isFinished(run)) return run;
+  const answers: Record<string, RunAnswer> = {};
+  for (const id of run.questionIds) {
+    const chosen = answerOf(run, id).chosen;
+    answers[id] = { chosen, checked: true, correct: isCorrectChoice(questions.get(id)?.answer ?? [], chosen) };
+  }
+  return { ...run, answers, index: run.questionIds.length, finishedAt: now };
+}
+
+/** 限時的場次還剩幾秒（無條件進位，0 是時間到）；不限時回 null */
+export function remainingSeconds(run: ExamRun, nowMs: number): number | null {
+  if (run.deadlineAt === undefined) return null;
+  return Math.max(0, Math.ceil((Date.parse(run.deadlineAt) - nowMs) / 1000));
+}
+
+export const isExpired = (run: ExamRun, nowMs: number): boolean => remainingSeconds(run, nowMs) === 0;
+
+/** 用了幾秒（開始到交卷，無條件捨去）；還沒交卷回 null */
+export function usedSeconds(run: ExamRun): number | null {
+  if (run.finishedAt === undefined) return null;
+  return Math.max(0, Math.floor((Date.parse(run.finishedAt) - Date.parse(run.startedAt)) / 1000));
 }
 
 /**
@@ -138,11 +214,13 @@ export function restoreRun(run: ExamRun, questions: ReadonlyMap<string, HandoutQ
     if (!q) return null;
     const was = run.revs[id];
     if (!was || was.rev !== q.rev || was.answerRev !== q.answerRev) {
-      if (answers[id]?.checked) revised.push(id);
+      if (answers[id]?.checked || (isMock(run) && answers[id]?.chosen != null)) revised.push(id);
       delete answers[id];
       revs[id] = { rev: q.rev, answerRev: q.answerRev };
     }
   }
+  // 模擬考交卷前沒有「確認」這一步，停在原來那一題
+  if (isMock(run)) return { run: { ...run, answers, revs, index: Math.min(run.index, run.questionIds.length - 1) }, revised };
   const firstOpen = run.questionIds.findIndex((id) => !answers[id]?.checked);
   const index = firstOpen < 0 ? run.questionIds.length : Math.min(run.index, firstOpen);
   return { run: { ...run, answers, revs, index }, revised };

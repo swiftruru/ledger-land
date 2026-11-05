@@ -1,6 +1,7 @@
 // 期中考苦練（M4c，02 第 1.1 節）：首頁與「我的」的入口、苦練首頁的統計與按鈕、練一段（答對與答錯的回饋、講義順序的字母、總結卡、只練錯過的）、
 // 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、離線保險（開過首頁後講義檔都在快取）、英文站的介面英文而題目中文。
 // 第二批（2026-11-05）：隨機抽幾題、熟練與「只練不熟的」、錯題與不熟的清單、背題瀏覽（講義篩選、遮住答案、列印樣式）。
+// 模擬考（第二批的第二次交付）：設定與記住上次的選擇、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄、接續與限時自動交卷。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 import { waitForApp, waitForSw } from './helpers.ts';
@@ -100,6 +101,46 @@ async function answerOne(page: Page, q: Question, pickCorrect: boolean): Promise
   return letter;
 }
 
+/** ledgerland-exam 裡鍵是 mock 的那一輪（模擬考）；patch 有給就把欄位寫回去（測試用來把期限撥近）。資料庫還沒建回 null */
+async function mockRun(page: Page, patch?: Record<string, unknown>): Promise<{ questionIds: string[]; deadlineAt?: string; index: number } | null> {
+  return page.evaluate(async (fields) => {
+    const dbs = await indexedDB.databases();
+    if (!dbs.some((d) => d.name === 'ledgerland-exam')) return null;
+    return new Promise((resolve) => {
+      const req = indexedDB.open('ledgerland-exam');
+      req.onerror = () => resolve(null);
+      req.onsuccess = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains('runs')) {
+          db.close();
+          return resolve(null);
+        }
+        const tx = db.transaction('runs', fields ? 'readwrite' : 'readonly');
+        const store = tx.objectStore('runs');
+        const get = store.get('mock');
+        get.onsuccess = () => {
+          const run = get.result ?? null;
+          if (run && fields) store.put({ ...run, ...fields });
+          tx.oncomplete = () => {
+            db.close();
+            resolve(run && fields ? { ...run, ...fields } : run);
+          };
+        };
+        get.onerror = () => {
+          db.close();
+          resolve(null);
+        };
+      };
+    });
+  }, patch ?? null);
+}
+
+/** 三份講義收錄的題合成一張表（模擬考跨講義抽題） */
+async function allQuestions(request: APIRequestContext, idx: Index): Promise<Map<string, Question>> {
+  const maps = await Promise.all(idx.decks.map((d) => deckQuestions(request, d)));
+  return new Map(maps.flatMap((m) => [...m]));
+}
+
 test.describe('期中考苦練', () => {
   test('首頁與「我的」的入口；苦練首頁的統計、三顆按鈕與講義卡', async ({ page, request }) => {
     const idx = await index(request);
@@ -113,6 +154,7 @@ test.describe('期中考苦練', () => {
     await expect(page.getByTestId('exam-start-random')).toHaveAttribute('href', /\/exam\/all\/\?order=random$/);
     await expect(page.getByTestId('exam-start-wrong')).toBeDisabled();
     await expect(page.getByTestId('exam-start-unsure')).toBeDisabled();
+    await expect(page.getByTestId('exam-more-mock')).toHaveAttribute('href', /\/exam\/mock\/$/);
     await expect(page.getByTestId('exam-more-browse')).toHaveAttribute('href', /\/exam\/browse\/$/);
     await expect(page.getByTestId('exam-more-list')).toHaveAttribute('href', /\/exam\/list\/$/);
     await expect(page.getByRole('switch', { name: '打亂選項順序' })).not.toBeChecked();
@@ -406,6 +448,147 @@ test.describe('期中考苦練', () => {
     await expect(page.locator('.ll-exam-print-only')).toBeVisible();
     await expect(items.first().locator('.ll-exam-q__question')).toBeVisible();
     await page.emulateMedia({ media: 'screen' });
+  });
+
+  test('模擬考：設定會記住、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄；noindex', async ({ page, request }) => {
+    const idx = await index(request);
+    const d2 = idx.decks.find((d) => d.id === 'd2')!;
+    const qs = await allQuestions(request, idx);
+    await clearAll(page);
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await page.getByTestId('exam-more-mock').click();
+    await waitForApp(page);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('模擬考');
+    await expect(page.locator('meta[name="robots"][data-ll]')).toHaveAttribute('content', 'noindex');
+    // 預設 30 題、每題 60 秒
+    await expect(page.getByTestId('exam-mock-plan')).toHaveText('共 30 題，限時 30 分 0 秒，時間到自動交卷。');
+    await page
+      .getByRole('radiogroup', { name: '範圍' })
+      .getByRole('radio', { name: `講義 ${d2.code}` })
+      .click();
+    await page.getByRole('radiogroup', { name: '題數' }).getByRole('radio', { name: '20' }).click();
+    await page.getByRole('radiogroup', { name: '每題時間' }).getByRole('radio', { name: '不限時' }).click();
+    await expect(page.getByTestId('exam-mock-plan')).toHaveText('共 20 題，不限時。');
+    await page.getByTestId('exam-mock-start').click();
+    await expect(card(page)).toContainText('第 1 題，共 20 題');
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 0／20 題');
+    await expect(page.getByTestId('exam-mock-timer')).toHaveCount(0);
+    const run = (await mockRun(page))!;
+    expect(run.questionIds).toHaveLength(20);
+    for (const id of run.questionIds) expect(d2.sections.flatMap((s) => s.questionIds)).toContain(id);
+    const q1 = qs.get(run.questionIds[0]!)!;
+    const q2 = qs.get(run.questionIds[1]!)!;
+    const indexOf = (q: Question, letter: string) => q.options.findIndex((o) => o.letter === letter);
+    const wrongOf = (q: Question) => q.options.map((o) => o.letter).find((l) => !q.answer.includes(l))!;
+    // 第 1 題先選錯的：沒有回饋，主按鈕是「下一題」
+    await radios(page)
+      .nth(indexOf(q1, wrongOf(q1)))
+      .check();
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 1／20 題');
+    await expect(feedbackTitle(page)).toHaveCount(0);
+    await card(page).getByRole('button', { name: '下一題' }).click();
+    await expect(card(page)).toContainText('第 2 題，共 20 題');
+    await radios(page)
+      .nth(indexOf(q2, wrongOf(q2)))
+      .check();
+    // 沒選也能跳過；上一題回來選擇還在，可以改選
+    await card(page).getByRole('button', { name: '下一題' }).click();
+    await card(page).getByRole('button', { name: '下一題' }).click();
+    await expect(card(page)).toContainText('第 4 題，共 20 題');
+    for (let i = 0; i < 3; i++) await page.getByTestId('exam-mock-prev').click();
+    await expect(card(page)).toContainText('第 1 題，共 20 題');
+    await expect(page.getByTestId('exam-mock-prev')).toBeDisabled();
+    await expect(radios(page).nth(indexOf(q1, wrongOf(q1)))).toBeChecked();
+    await radios(page).nth(indexOf(q1, q1.answer[0]!)).check();
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 2／20 題');
+    // 交卷：先確認，取消不交
+    await page.getByTestId('exam-mock-submit').click();
+    const sheet = page.getByTestId('exam-mock-confirm');
+    await expect(sheet).toContainText('還有 18 題沒作答');
+    await sheet.getByRole('button', { name: '取消' }).click();
+    await expect(page.getByTestId('exam-mock-result')).toHaveCount(0);
+    await page.getByTestId('exam-mock-submit').click();
+    await sheet.getByRole('button', { name: '交卷' }).click();
+    await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／20 題（5%）');
+    await expect(page.getByTestId('exam-mock-detail')).toContainText('18 題沒作答');
+    await expect(page.getByTestId('exam-mock-expired')).toHaveCount(0);
+    const items = page.getByTestId('exam-mock-items').locator('summary');
+    await expect(items).toHaveCount(20);
+    await expect(page.getByTestId('exam-mock-items').getByText('答對', { exact: true })).toHaveCount(1);
+    await expect(page.getByTestId('exam-mock-items').getByText('沒作答', { exact: true })).toHaveCount(18);
+    await page.getByRole('radio', { name: '答錯與沒作答 19' }).click();
+    await expect(items).toHaveCount(19);
+    await items.first().click();
+    const firstWrong = page.getByTestId('exam-mock-items').locator('.ll-exam-q').first();
+    await expect(firstWrong.locator('.ll-exam-q__option.is-wrong')).toContainText('我選的');
+    await expect(firstWrong.getByText('解析出自講義')).toBeVisible();
+    await expect(page.getByTestId('exam-mock-wrong')).toHaveText('再練錯的（1 題）');
+    // 重新整理成績還在；作答過的兩題進了紀錄，沒選的不算
+    await expect.poll(() => seenOf(page, q2.id)).toBe(1);
+    await page.reload();
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／20 題（5%）');
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-progress')).toContainText(`練過 2／${idx.questionCount} 題`);
+    await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
+    // 換設定：回到設定畫面，記得上次選的
+    await page.goto('/exam/mock/');
+    await waitForApp(page);
+    await page.getByTestId('exam-mock-resetup').click();
+    await expect(page.getByTestId('exam-mock-setup')).toBeVisible();
+    await expect(page.getByRole('radiogroup', { name: '題數' }).getByRole('radio', { name: '20' })).toBeChecked();
+    await expect(page.getByRole('radiogroup', { name: '每題時間' }).getByRole('radio', { name: '不限時' })).toBeChecked();
+    await expect(page.getByRole('radiogroup', { name: '範圍' }).getByRole('radio', { name: `講義 ${d2.code}` })).toBeChecked();
+  });
+
+  test('模擬考：限時的場次有倒數，離開再回來接續，時間到自動交卷；再考一次沿用設定，放棄重來回到設定', async ({ page, request }) => {
+    const idx = await index(request);
+    const qs = await allQuestions(request, idx);
+    await clearAll(page);
+    await page.goto('/exam/mock/');
+    await waitForApp(page);
+    await page.getByTestId('exam-mock-start').click();
+    await expect(card(page)).toContainText('第 1 題，共 30 題');
+    await expect(page.getByTestId('exam-mock-timer')).toHaveText(/^剩 (29|30) 分 \d+ 秒$/);
+    const run = (await mockRun(page))!;
+    const q1 = qs.get(run.questionIds[0]!)!;
+    await radios(page)
+      .nth(q1.options.findIndex((o) => o.letter === q1.answer[0]))
+      .check();
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 1／30 題');
+    await card(page).getByRole('button', { name: '下一題' }).click();
+    await expect(card(page)).toContainText('第 2 題，共 30 題');
+    // 離開再回來：接續同一場，停在第 2 題
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await page.goto('/exam/mock/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-mock-resume')).toContainText('接續上次的模擬考');
+    await expect(card(page)).toContainText('第 2 題，共 30 題');
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 1／30 題');
+    // 把期限撥到 3 秒後：倒數到 0 自動交卷，成績照已作答的算
+    await mockRun(page, { deadlineAt: new Date(Date.now() + 3000).toISOString() });
+    await page.reload();
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-mock-expired')).toHaveText('時間到，已自動交卷。', { timeout: 15_000 });
+    await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／30 題（3%）');
+    await expect(page.getByTestId('exam-mock-detail')).toContainText('29 題沒作答');
+    // 期限已過才回來：直接看到成績，不再是作答畫面
+    await page.reload();
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／30 題（3%）');
+    // 再考一次沿用 30 題、每題 60 秒
+    await page.getByTestId('exam-mock-again').click();
+    await expect(card(page)).toContainText('第 1 題，共 30 題');
+    await expect(page.getByTestId('exam-mock-timer')).toBeVisible();
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 0／30 題');
+    await page.reload();
+    await waitForApp(page);
+    await page.getByTestId('exam-mock-abandon').click();
+    await expect(page.getByTestId('exam-mock-setup')).toBeVisible();
+    await expect.poll(() => mockRun(page)).toBeNull();
   });
 
   test('離線保險：開過苦練首頁後，Service Worker 把三份講義檔抓進快取，沒練過的講義離線也能開', async ({ page, request, context, browserName }) => {
