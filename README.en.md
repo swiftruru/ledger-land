@@ -95,7 +95,7 @@ A few smaller things:
     <td align="center" width="50%"><img src="apps/web/public/favicon.svg" width="96" height="96" alt="Rin" /></td>
   </tr>
   <tr>
-    <td valign="top"><b>Little Green Girl（小綠綠, TFG for short）</b>: the girl hugging a red ledger. She lives on the app icon and the launch screen; add the site to your home screen and she is the first to greet you.</td>
+    <td valign="top"><b>Little Green Girl（小綠綠）</b>: the girl hugging a red ledger. She lives on the app icon and the launch screen; add the site to your home screen and she is the first to greet you.</td>
     <td valign="top"><b>Rin（鈴）</b>: a coin girl with a small top hat worn at an angle, named after the clear ring of a falling coin. She walks every level with you on the map and keeps watch on the browser tab.</td>
   </tr>
 </table>
