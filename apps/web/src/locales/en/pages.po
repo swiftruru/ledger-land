@@ -1250,7 +1250,7 @@ msgstr "Hosts the static files. Deep links always come back to the site itself, 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.license.story"
-msgstr "The story scenarios and amounts are used with the permission of teacher 陳彥宏 and are not covered by the CC licence; ask the teacher before reusing them."
+msgstr "The story scenarios and amounts are used with the permission of Dr Yen-Hung Chen (陳彥宏) and are not covered by the CC licence; ask the teacher before reusing them."
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1391,7 +1391,7 @@ msgstr "This site uses Cloudflare Web Analytics (provided and stored by Cloudfla
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
 msgid "about.license.materials"
-msgstr "This site’s licences do not cover the teacher’s course materials; the site does not include or distribute the teacher’s slides or spreadsheets. The practice questions in the midterm drill are the text of Mr Yen-Hung Chen’s handouts, included with his permission, and are not covered by CC BY-SA."
+msgstr "This site’s licences do not cover the teacher’s course materials; the site does not include or distribute the teacher’s slides or spreadsheets. The practice questions in the midterm drill are the text of Dr Yen-Hung Chen’s handouts, included with the teacher’s permission, and are not covered by CC BY-SA."
 
 #. 關於頁的非投資建議聲明說明
 #. js-lingui-explicit-id
@@ -2680,7 +2680,7 @@ msgstr "Questions"
 #: src/pages/Exam.tsx
 #: src/pages/ExamBrowse.tsx
 msgid "exam.licence"
-msgstr "Questions used with the permission of Mr Yen-Hung Chen."
+msgstr "Questions used with the permission of Dr Yen-Hung Chen."
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
