@@ -1,4 +1,4 @@
-# 把 favicon-source.webp 描成 public/favicon.svg（2026-10-28，06 第 2.2 節）。
+# 把 favicon-source.webp 描成 public/favicon.svg（2026-10-28，06 第 2.2 節）。2026-11-05 起 favicon 改成手畫的鈴金幣（make-favicon.mjs 只產 ICO），這個腳本與原圖留作紀錄、不再使用。
 # 做法：原圖縮到 512、每個像素對到固定的 14 色色盤，逐色取輪廓（含洞）後用 Douglas-Peucker 簡化成多邊形，
 # 座標縮到 128 的格子取整數；輪廓先膨脹 3 像素讓相鄰色塊重疊、最後畫線條色蓋住接縫。背景色不畫（透明），分頁列上只看到角色。
 # 參數 EPS 1.4、MIN_AREA 24 是 32 px 下看不出差別的最粗一檔（約 5.4 KB，gzip 2.2 KB）。
