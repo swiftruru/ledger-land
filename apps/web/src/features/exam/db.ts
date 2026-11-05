@@ -27,6 +27,15 @@ export interface QuestionState {
   wrong: number;
   lastCorrect: boolean;
   lastAt: string;
+  /** 連續答對幾次（M4c 第二批）：答錯歸零；連對 MASTERY_STREAK 次算熟練（stats.ts）。第一批存的紀錄沒有這一欄，讀出來時補（normaliseState） */
+  streak: number;
+  /** 最近一次選的講義字母（錯題清單用）；第一批的紀錄沒有 */
+  lastChosen?: string;
+}
+
+/** 第一批（2026-11-04）存的紀錄沒有 streak：最近一次答對算連對 1 次，答錯算 0；不升資料庫版本 */
+export function normaliseState(s: QuestionState): QuestionState {
+  return typeof s.streak === 'number' ? s : { ...s, streak: s.lastCorrect ? 1 : 0 };
 }
 
 export interface ExamDb {
@@ -92,7 +101,7 @@ export function indexedDbExamDb(name: string = EXAM_DB): ExamDb {
       await (await db()).delete(STORES.runs, key);
     },
     async allStates() {
-      return (await (await db()).getAll(STORES.states)) as QuestionState[];
+      return ((await (await db()).getAll(STORES.states)) as QuestionState[]).map(normaliseState);
     },
     async putState(state) {
       await (await db()).put(STORES.states, state);
@@ -172,8 +181,18 @@ export function setExamDbForTests(db: ExamDb | null): void {
 }
 
 /** 確認答案後更新累計：answerRev 變了就從頭算 */
-export function nextState(prev: QuestionState | undefined, questionId: string, answerRev: number, correct: boolean, at: string): QuestionState {
-  const base = prev && prev.answerRev === answerRev ? prev : { questionId, answerRev, seen: 0, correct: 0, wrong: 0, lastCorrect: false, lastAt: at };
+export function nextState(
+  prev: QuestionState | undefined,
+  questionId: string,
+  answerRev: number,
+  correct: boolean,
+  at: string,
+  chosen?: string,
+): QuestionState {
+  const base: QuestionState =
+    prev && prev.answerRev === answerRev
+      ? normaliseState(prev)
+      : { questionId, answerRev, seen: 0, correct: 0, wrong: 0, lastCorrect: false, lastAt: at, streak: 0 };
   return {
     ...base,
     seen: base.seen + 1,
@@ -181,5 +200,7 @@ export function nextState(prev: QuestionState | undefined, questionId: string, a
     wrong: base.wrong + (correct ? 0 : 1),
     lastCorrect: correct,
     lastAt: at,
+    streak: correct ? base.streak + 1 : 0,
+    ...(chosen === undefined ? {} : { lastChosen: chosen }),
   };
 }

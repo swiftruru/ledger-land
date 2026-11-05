@@ -15,7 +15,8 @@ import {
   summarise,
 } from '../src/features/exam/run.ts';
 import { allQuestionIds, isSetId, resolveSet } from '../src/features/exam/sets.ts';
-import { statsOf, wrongIdsOf } from '../src/features/exam/stats.ts';
+import { isMastered, MASTERY_STREAK, picksOf, statsOf, unsureIdsOf, wrongIdsOf } from '../src/features/exam/stats.ts';
+import { limitOf, parseCount } from '../src/features/exam/options.ts';
 
 const q = (id: string, answer: string[] = ['B'], rev = 1, answerRev = 1): HandoutQuestionSnapshot => ({
   id,
@@ -120,19 +121,23 @@ const index: HandoutManifestEntry = {
 };
 
 describe('sets 與 stats', () => {
-  it('題組：全部依講義順序；講義；段；錯過的只含有紀錄且最近答錯的', () => {
+  it('題組：全部依講義順序；講義；段；錯過的與不熟的只含這台裝置挑出來的題', () => {
+    const none = { wrongIds: new Set<string>(), unsureIds: new Set<string>() };
     expect(allQuestionIds(index)).toEqual(['hq_aaaaaaa1', 'hq_aaaaaaa2', 'hq_bbbbbbb1']);
-    expect(resolveSet(index, 'all', new Set())?.deckIds).toEqual(['d1', 'd2']);
-    expect(resolveSet(index, 'd2', new Set())).toMatchObject({ kind: 'deck', deckIds: ['d2'], questionIds: ['hq_bbbbbbb1'], title: '第二份' });
-    expect(resolveSet(index, 'd1s2', new Set())).toMatchObject({ kind: 'section', questionIds: ['hq_aaaaaaa2'], title: '段二' });
-    expect(resolveSet(index, 'wrong', new Set(['hq_bbbbbbb1', 'hq_zzzzzzzz']))).toMatchObject({ kind: 'wrong', deckIds: ['d2'], questionIds: ['hq_bbbbbbb1'] });
-    expect(resolveSet(index, 'd9', new Set())).toBeNull();
-    expect(isSetId('teacher')).toBe(false);
+    expect(resolveSet(index, 'all', none)?.deckIds).toEqual(['d1', 'd2']);
+    expect(resolveSet(index, 'd2', none)).toMatchObject({ kind: 'deck', deckIds: ['d2'], questionIds: ['hq_bbbbbbb1'], title: '第二份' });
+    expect(resolveSet(index, 'd1s2', none)).toMatchObject({ kind: 'section', questionIds: ['hq_aaaaaaa2'], title: '段二' });
+    const picks = { wrongIds: new Set(['hq_bbbbbbb1', 'hq_zzzzzzzz']), unsureIds: new Set(['hq_bbbbbbb1', 'hq_aaaaaaa2']) };
+    expect(resolveSet(index, 'wrong', picks)).toMatchObject({ kind: 'wrong', deckIds: ['d2'], questionIds: ['hq_bbbbbbb1'] });
+    expect(resolveSet(index, 'unsure', picks)).toMatchObject({ kind: 'unsure', deckIds: ['d1', 'd2'], questionIds: ['hq_aaaaaaa2', 'hq_bbbbbbb1'] });
+    expect(resolveSet(index, 'd9', none)).toBeNull();
+    for (const page of ['teacher', 'list', 'browse', 'mock']) expect(isSetId(page)).toBe(false);
+    expect(isSetId('unsure')).toBe(true);
     expect(isSetId('d1s10')).toBe(true);
   });
 
-  it('統計：練過的題數、答錯的題數、答對率', () => {
-    const s = (questionId: string, seen: number, correct: number, lastCorrect: boolean): QuestionState => ({
+  it('統計：練過的題數、答錯的題數、熟練的題數、答對率；不熟的是練過但還沒連對兩次的', () => {
+    const s = (questionId: string, seen: number, correct: number, lastCorrect: boolean, streak: number): QuestionState => ({
       questionId,
       answerRev: 1,
       seen,
@@ -140,13 +145,35 @@ describe('sets 與 stats', () => {
       wrong: seen - correct,
       lastCorrect,
       lastAt: '',
+      streak,
     });
     const states = new Map([
-      ['hq_aaaaaaa1', s('hq_aaaaaaa1', 2, 1, false)],
-      ['hq_aaaaaaa2', s('hq_aaaaaaa2', 1, 1, true)],
+      ['hq_aaaaaaa1', s('hq_aaaaaaa1', 2, 1, false, 0)],
+      ['hq_aaaaaaa2', s('hq_aaaaaaa2', 1, 1, true, 1)],
+      ['hq_bbbbbbb1', s('hq_bbbbbbb1', 3, 2, true, MASTERY_STREAK)],
     ]);
-    expect(statsOf(allQuestionIds(index), states)).toEqual({ total: 3, practised: 2, wrong: 1, accuracy: 2 / 3 });
-    expect(statsOf(['hq_bbbbbbb1'], states)).toEqual({ total: 1, practised: 0, wrong: 0, accuracy: null });
+    expect(statsOf(allQuestionIds(index), states)).toEqual({ total: 3, practised: 3, wrong: 1, mastered: 1, accuracy: 4 / 6 });
+    expect(statsOf(['hq_zzzzzzzz'], states)).toEqual({ total: 1, practised: 0, wrong: 0, mastered: 0, accuracy: null });
     expect([...wrongIdsOf(states)]).toEqual(['hq_aaaaaaa1']);
+    expect([...unsureIdsOf(states)]).toEqual(['hq_aaaaaaa1', 'hq_aaaaaaa2']);
+    expect(isMastered(states.get('hq_bbbbbbb1'))).toBe(true);
+    expect(isMastered(undefined)).toBe(false);
+    expect(picksOf(states)).toEqual({ wrongIds: new Set(['hq_aaaaaaa1']), unsureIds: new Set(['hq_aaaaaaa1', 'hq_aaaaaaa2']) });
+  });
+});
+
+describe('抽幾題的選項（options.ts）', () => {
+  it('parseCount：20、30、50、all 之外用預設', () => {
+    expect(parseCount('30', 20)).toBe(30);
+    expect(parseCount('all', 20)).toBe('all');
+    expect(parseCount('25', 20)).toBe(20);
+    expect(parseCount(null, 30)).toBe(30);
+    expect(parseCount('', 20)).toBe(20);
+  });
+
+  it('limitOf：all 是全部，其餘不超過題組的題數', () => {
+    expect(limitOf('all', 300)).toBe(300);
+    expect(limitOf(50, 300)).toBe(50);
+    expect(limitOf(50, 12)).toBe(12);
   });
 });

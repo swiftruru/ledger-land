@@ -1,12 +1,14 @@
-/* 期中考苦練（M4c）：苦練首頁、練習頁、老師審核頁的版面；只用 tokens，不改設計系統的 class（07）。三個頁面各自匯入（懶載入，不在入口 CSS）。
-   題目卡、選項與回饋面板的外觀都是 web-ui 的（02-quiz-choice、04-quiz-types、15-quiz-session），這裡只加講義特有的東西：情境引述、字母、解析標籤、審核卡。
-   全部 CSS 的預算只剩零頭（perf/urls.json 的 allCssGzipKb），共同的字級與顏色寫成一組選擇器。 */
+/* 期中考苦練（M4c）：苦練首頁、練習頁、背題瀏覽、錯題清單、老師審核頁的版面；只用 tokens，不改設計系統的 class（07）。各頁自己匯入（懶載入，不在入口 CSS）。
+   題目卡、選項與回饋面板的外觀都是 web-ui 的（02-quiz-choice、04-quiz-types、15-quiz-session），這裡只加講義特有的東西：情境引述、字母、解析標籤、
+   唯讀的題目（.ll-exam-q，features/exam/HandoutQuestionReadout.tsx）與列印。全部 CSS 有預算（perf/urls.json 的 allCssGzipKb），共同的字級與顏色寫成一組選擇器。 */
 
 /* ---- 共同：小標（footnote 600）、說明（body-sm text-2）、卡片標題（title-3）、動作列 ---- */
 .ll-exam-scenario__label,
 .ll-exam-deck__code,
 .ll-exam-summary__subtitle,
-.ll-exam-tq__reason-title {
+.ll-exam-hero__random-label,
+.ll-exam-browse__section,
+.ll-exam-q__reason-title {
   margin: 0;
   color: var(--ll-text-2);
   font-size: var(--ll-type-footnote-size);
@@ -20,12 +22,11 @@
 .ll-exam-hero__note,
 .ll-exam-run__hint,
 .ll-exam-resume,
-.ll-exam-review-q__scenario,
-.ll-exam-review-q__explain,
 .ll-exam-teacher__stats,
-.ll-exam-tq__source,
-.ll-exam-tq__scenario,
-.ll-exam-tq__explain {
+.ll-exam-q__source,
+.ll-exam-q__scenario,
+.ll-exam-q__explain,
+.ll-exam-q__mine {
   color: var(--ll-text-2);
 }
 .ll-exam-hero__count,
@@ -33,44 +34,50 @@
 .ll-exam-hero__note,
 .ll-exam-run__hint,
 .ll-exam-resume,
-.ll-exam-review-q__scenario,
-.ll-exam-review-q__explain,
-.ll-exam-tq__source {
+.ll-exam-q__source,
+.ll-exam-q__mine {
   font-size: var(--ll-type-body-sm-size);
   line-height: var(--ll-type-body-sm-line);
 }
 .ll-exam-deck__title,
 .ll-exam-summary__score,
-.ll-exam-tq__title {
+.ll-exam-list__deck,
+.ll-exam-q__title {
   margin: var(--ll-space-1) 0 0;
   font-size: var(--ll-type-title-3-size);
   line-height: var(--ll-type-title-3-line);
 }
 .ll-exam-hero__title,
-.ll-exam-summary__title {
+.ll-exam-summary__title,
+.ll-exam-browse__deck {
   margin: 0;
   font-size: var(--ll-type-title-2-size);
   line-height: var(--ll-type-title-2-line);
 }
 .ll-exam-hero,
 .ll-exam-deck,
+.ll-exam-more,
 .ll-exam-summary,
+.ll-exam-list__deck,
 .ll-exam-teacher__list {
   margin: var(--ll-space-4) 0 0;
 }
 .ll-exam-hero,
 .ll-exam-deck,
 .ll-exam-summary,
-.ll-exam-tq {
+.ll-exam-q-card {
   padding: var(--ll-space-4);
 }
 .ll-exam-hero__progress,
 .ll-exam-deck__progress,
 .ll-exam-hero__actions,
+.ll-exam-hero__random,
 .ll-exam-deck__actions,
 .ll-exam-summary__actions,
+.ll-exam-list__head,
+.ll-exam-browse__tools,
 .ll-exam-resume,
-.ll-exam-tq__source {
+.ll-exam-q__source {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -79,28 +86,32 @@
 .ll-exam-hero__progress,
 .ll-exam-deck__progress,
 .ll-exam-hero__actions,
+.ll-exam-hero__random,
 .ll-exam-deck__actions,
 .ll-exam-summary__actions,
+.ll-exam-list__head,
 .ll-exam-resume,
 .ll-exam-hero__switch,
 .ll-exam-deck__sections,
 .ll-exam-teacher__stats,
 .ll-exam-teacher__filter,
-.ll-exam-tq__scenario,
-.ll-exam-tq__options,
-.ll-exam-tq__answer,
-.ll-exam-tq__reason,
+.ll-exam-q__scenario,
+.ll-exam-q__options,
+.ll-exam-q__answer,
+.ll-exam-q__explain,
+.ll-exam-q__reason,
+.ll-exam-browse__reveal,
 .ll-exam-intro {
   margin-top: var(--ll-space-3);
 }
+/* 進度條至少留 8rem；右邊的文字放不下（手機上的「練過、熟練、答對率」）就換到下一行，不把進度條擠扁 */
 .ll-exam-hero__progress,
 .ll-exam-deck__progress {
-  flex-wrap: nowrap;
-  gap: var(--ll-space-3);
+  gap: var(--ll-space-1) var(--ll-space-3);
 }
 .ll-exam-hero__progress > :first-child,
 .ll-exam-deck__progress > :first-child {
-  flex: 1 1 auto;
+  flex: 1 1 8rem;
 }
 .ll-exam-hero__count,
 .ll-exam-deck__count {
@@ -109,17 +120,27 @@
 .ll-exam-hero__note,
 .ll-exam-hero__licence,
 .ll-exam-run__hint,
-.ll-exam-review-q__answer,
-.ll-exam-tq__reason > p,
+.ll-exam-q__reason > p,
 .ll-handout-text > p,
 .ll-exam-teacher__stats,
-.ll-exam-tq__answer {
-  margin: var(--ll-space-2) 0 0;
+.ll-exam-q__answer {
+  margin-bottom: 0;
+}
+.ll-exam-hero__note,
+.ll-exam-hero__licence,
+.ll-exam-run__hint,
+.ll-exam-q__reason > p,
+.ll-handout-text > p {
+  margin-top: var(--ll-space-2);
 }
 .ll-handout-text > p:first-child,
-.ll-exam-tq__reason > p:first-child,
-.ll-exam-review-q__answer {
+.ll-exam-q__reason > p:first-child {
   margin-top: 0;
+}
+/* 打亂選項的開關：寬版的主卡很寬，開關不貼右緣（離文字太遠），整列只和內容一樣寬；窄版放不下時照常換行 */
+.ll-exam-hero__switch {
+  width: fit-content;
+  max-width: 100%;
 }
 /* 題目卡：情境是引述、問題是選項群組的 legend；講義順序時選項前有字母 */
 .ll-exam-scenario {
@@ -136,35 +157,31 @@
 .ll-exam-explain__tag {
   margin: var(--ll-space-1) 0;
 }
-/* 總結卡與審核卡 */
-.ll-exam-summary__score,
-.ll-exam-review-q__question,
-.ll-exam-tq__question,
-.ll-exam-tq__answer,
-.ll-exam-tq__letter {
-  font-weight: 700;
-}
 .ll-exam-summary__subtitle {
   margin: var(--ll-space-4) 0 var(--ll-space-2);
 }
-.ll-exam-review-q,
-.ll-exam-teacher__list,
-.ll-exam-tq__options {
-  display: grid;
-  gap: var(--ll-space-2);
+
+/* ---- 唯讀的題目（背題、清單、總結卡、審核頁共用） ---- */
+.ll-exam-summary__score,
+.ll-exam-q__question,
+.ll-exam-q__answer,
+.ll-exam-q__letter {
+  font-weight: 700;
 }
 .ll-exam-teacher__list,
-.ll-exam-tq__options {
+.ll-exam-q__options {
+  display: grid;
+  gap: var(--ll-space-2);
   padding: 0;
   list-style: none;
 }
 .ll-exam-teacher__list {
   gap: var(--ll-space-4);
 }
-.ll-exam-tq__question {
+.ll-exam-q__question {
   margin-top: var(--ll-space-2);
 }
-.ll-exam-tq__option {
+.ll-exam-q__option {
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: var(--ll-space-2);
@@ -172,16 +189,89 @@
   border: 1px solid var(--ll-border);
   border-radius: var(--ll-radius-md);
 }
-.ll-exam-tq__option.is-correct {
+.ll-exam-q__option.is-correct {
   border-color: var(--ll-success-ink);
   background: var(--ll-success-tint);
 }
-.ll-exam-tq__mark {
+.ll-exam-q__option.is-wrong {
+  border-color: var(--ll-danger-ink);
+  background: var(--ll-danger-tint);
+}
+.ll-exam-q__mark {
   display: inline-flex;
   color: var(--ll-success-ink);
 }
-.ll-exam-tq__reason {
+.ll-exam-q__mark--wrong {
+  color: var(--ll-danger-ink);
+}
+.ll-exam-q__mine {
+  margin-inline-start: 0.5em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+/* 遮住答案：正解的底色、打勾、解答行與解析都藏起來（背題頁的開關與列印共用） */
+.is-answer-hidden > .ll-exam-q__answer,
+.is-answer-hidden > .ll-exam-q__explain,
+.is-answer-hidden .ll-exam-q__mark {
+  display: none;
+}
+.is-answer-hidden .ll-exam-q__option {
+  border-color: var(--ll-border);
+  background: none;
+}
+.ll-exam-q__reason {
   padding: var(--ll-space-3);
   border-radius: var(--ll-radius-md);
   background: var(--ll-warning-tint);
+}
+
+/* ---- 錯題與不熟的清單、背題瀏覽 ---- */
+.ll-exam-list__head {
+  justify-content: space-between;
+}
+.ll-exam-browse__tools {
+  position: sticky;
+  top: 0;
+  z-index: var(--ll-z-sticky);
+  justify-content: space-between;
+  margin: var(--ll-space-3) calc(-1 * var(--ll-space-2)) 0;
+  padding: var(--ll-space-2);
+  background: var(--ll-bg);
+  border-bottom: 1px solid var(--ll-border);
+}
+.ll-exam-browse__deck {
+  margin-top: var(--ll-space-6);
+}
+.ll-exam-browse__section {
+  margin-top: var(--ll-space-4);
+  padding-bottom: var(--ll-space-1);
+  border-bottom: 1px solid var(--ll-border);
+}
+.ll-exam-browse__item {
+  padding: var(--ll-space-4) 0;
+  border-bottom: 1px solid var(--ll-border);
+}
+.ll-exam-print-only {
+  display: none;
+}
+
+/* ---- 列印（背題瀏覽頁的「列印」）：只印題目，殼層、頁首的返回、工具列與按鈕不印；一題不拆頁 ---- */
+@media print {
+  .ll-tabbar,
+  .ll-skiplink,
+  .ll-topbar__bar,
+  .ll-exam-browse__tools,
+  .ll-exam-browse__reveal {
+    display: none !important;
+  }
+  .ll-exam-print-only {
+    display: block;
+  }
+  .ll-exam-browse__item,
+  .ll-exam-q__option {
+    break-inside: avoid;
+  }
+  .ll-exam-browse__section {
+    break-after: avoid;
+  }
 }

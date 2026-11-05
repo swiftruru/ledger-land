@@ -1,16 +1,34 @@
 // 期中考苦練首頁（M4c，02 第 1.1 節）：只收陳老師三份講義的練習題，題目與答案照講義。只讀 manifest.handouts 的小索引與這台裝置的紀錄（features/exam/db.ts），
-// 不載題庫本身，但畫好後會請 Service Worker 把三份講義檔抓進快取（features/exam/prefetch.ts）。整體進度、三顆入口（依講義順序、隨機抽 20 題、只練錯過的）、選項順序的開關、三份講義各一張卡與各段的入口。
+// 不載題庫本身，但畫好後會請 Service Worker 把三份講義檔抓進快取（features/exam/prefetch.ts）。整體進度（練過、熟練、答對率）、入口（依講義順序、隨機抽 N 題、只練錯過的、只練不熟的）、
+// 選項順序的開關、「更多練法」（背題瀏覽、錯題與不熟的清單；M4c 第二批）、三份講義各一張卡與各段的入口。熟練 = 連續答對兩次（features/exam/stats.ts）。
 // 紀錄只在這台裝置、不在備份裡（06 第 4.6 節）；英文站的介面是英文，題目仍是中文。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { formatNumber, formatPercent, localePath } from '@ledgerland/i18n';
-import { BookIcon, Button, Card, Disclosure, ErrorState, NavList, NavRow, PlayIcon, ProgressBar, RetryIcon, Switch, TopBar } from '@ledgerland/web-ui';
+import {
+  BookIcon,
+  BookmarkIcon,
+  Button,
+  Card,
+  CardsIcon,
+  Disclosure,
+  ErrorState,
+  NavList,
+  NavRow,
+  PlayIcon,
+  ProgressBar,
+  RetryIcon,
+  Segmented,
+  Switch,
+  TopBar,
+} from '@ledgerland/web-ui';
 import { getExamDb, type QuestionState } from '../features/exam/db.ts';
 import { scheduleHandoutPrefetch } from '../features/exam/prefetch.ts';
-import { readExamShuffle, writeExamShuffle } from '../features/exam/prefs.ts';
+import { COUNT_OPTIONS, DEFAULT_RANDOM_COUNT, type CountOption } from '../features/exam/options.ts';
+import { readExamRandomCount, readExamShuffle, writeExamRandomCount, writeExamShuffle } from '../features/exam/prefs.ts';
 import type { ExamRun } from '../features/exam/run.ts';
 import { allQuestionIds } from '../features/exam/sets.ts';
-import { statsOf, wrongIdsOf } from '../features/exam/stats.ts';
+import { statsOf, unsureIdsOf, wrongIdsOf } from '../features/exam/stats.ts';
 import { loadHandoutIndex, type HandoutManifestEntry } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -26,6 +44,7 @@ export default function Exam() {
   const [states, setStates] = useState<ReadonlyMap<string, QuestionState> | null>(null);
   const [resume, setResume] = useState<ExamRun | null | undefined>(undefined);
   const [shuffle, setShuffle] = useState(readExamShuffle);
+  const [randomCount, setRandomCount] = useState<CountOption>(readExamRandomCount);
 
   useEffect(() => {
     let alive = true;
@@ -54,6 +73,7 @@ export default function Exam() {
   const all = useMemo(() => (index ? allQuestionIds(index) : []), [index]);
   const stats = useMemo(() => statsOf(all, states ?? new Map()), [all, states]);
   const wrongCount = useMemo(() => (states ? [...wrongIdsOf(states)].filter((id) => all.includes(id)).length : 0), [states, all]);
+  const unsureCount = useMemo(() => (states ? [...unsureIdsOf(states)].filter((id) => all.includes(id)).length : 0), [states, all]);
 
   const topBar = (
     <TopBar
@@ -103,8 +123,8 @@ export default function Exam() {
               ? t({ id: 'exam.hero.untouched', message: '還沒開始練', comment: '主卡進度：這台裝置還沒練過任何一題' })
               : t({
                   id: 'exam.hero.progress',
-                  message: `練過 ${n(stats.practised)}／${n(stats.total)} 題，答對率 ${formatPercent(stats.accuracy, locale)}`,
-                  comment: '主卡進度；數字都已格式化',
+                  message: `練過 ${n(stats.practised)}／${n(stats.total)} 題，熟練 ${n(stats.mastered)} 題，答對率 ${formatPercent(stats.accuracy, locale)}`,
+                  comment: '主卡進度；熟練是連續答對兩次的題數；數字都已格式化',
                 })}
           </span>
         </div>
@@ -118,8 +138,15 @@ export default function Exam() {
                 })
               : t({ id: 'exam.start.order', message: '依講義順序練', comment: '主按鈕：全部題目依講義順序' })}
           </Button>
-          <Button size="md" icon={<RetryIcon />} href={href('/exam/all/?order=random')} data-testid="exam-start-random">
-            {t({ id: 'exam.start.random', message: '隨機抽 20 題', comment: '次要按鈕：全部題目裡隨機抽 20 題' })}
+          <Button
+            size="md"
+            icon={<RetryIcon />}
+            href={href(randomCount === DEFAULT_RANDOM_COUNT ? '/exam/all/?order=random' : `/exam/all/?order=random&n=${randomCount}`)}
+            data-testid="exam-start-random"
+          >
+            {randomCount === 'all'
+              ? t({ id: 'exam.start.randomAll', message: '全部隨機練', comment: '次要按鈕：全部題目打亂順序練一輪' })
+              : t({ id: 'exam.start.random', message: `隨機抽 ${n(randomCount)} 題`, comment: '次要按鈕：全部題目裡隨機抽幾題；count 已格式化' })}
           </Button>
           {wrongCount > 0 ? (
             <Button size="md" variant="quiet" icon={<BookIcon />} href={href('/exam/wrong/')} data-testid="exam-start-wrong">
@@ -130,6 +157,34 @@ export default function Exam() {
               {t({ id: 'exam.start.wrongNone', message: '只練錯過的（還沒有）', comment: '按鈕（停用）：還沒有答錯的題' })}
             </Button>
           )}
+          {unsureCount > 0 ? (
+            <Button size="md" variant="quiet" icon={<BookIcon />} href={href('/exam/unsure/')} data-testid="exam-start-unsure">
+              {t({ id: 'exam.start.unsure', message: `只練不熟的（${n(unsureCount)} 題）`, comment: '按鈕：只練練過但還沒連對兩次的題；count 已格式化' })}
+            </Button>
+          ) : (
+            <Button size="md" variant="quiet" icon={<BookIcon />} disabled data-testid="exam-start-unsure">
+              {t({ id: 'exam.start.unsureNone', message: '只練不熟的（還沒有）', comment: '按鈕（停用）：還沒有練過而未熟練的題' })}
+            </Button>
+          )}
+        </div>
+        <div className="ll-exam-hero__random">
+          <span id="ll-exam-random-label" className="ll-exam-hero__random-label">
+            {t({ id: 'exam.random.label', message: '隨機抽幾題', comment: '苦練首頁：隨機練習題數選擇的標籤' })}
+          </span>
+          <Segmented<string>
+            size="sm"
+            value={String(randomCount)}
+            labelledBy="ll-exam-random-label"
+            onChange={(v) => {
+              const next = COUNT_OPTIONS.find((c) => String(c) === v) ?? DEFAULT_RANDOM_COUNT;
+              setRandomCount(next);
+              writeExamRandomCount(next);
+            }}
+            options={COUNT_OPTIONS.map((c) => ({
+              value: String(c),
+              label: c === 'all' ? t({ id: 'exam.random.all', message: '全部', comment: '題數選項：全部題目' }) : <span className="ll-num">{n(c)}</span>,
+            }))}
+          />
         </div>
         <Switch
           className="ll-exam-hero__switch"
@@ -164,6 +219,30 @@ export default function Exam() {
           </Trans>
         </p>
       </Card>
+      <NavList className="ll-exam-more" title={t({ id: 'exam.more.title', message: '更多練法', comment: '苦練首頁：主卡下面的入口清單標題' })}>
+        <NavRow
+          icon={<CardsIcon />}
+          title={t({ id: 'exam.browse.title', message: '背題瀏覽' })}
+          description={t({
+            id: 'exam.more.browse',
+            message: '依講義列出全部題目、正解與解析，可以遮住答案，也可以列印。',
+            comment: '苦練首頁入口的說明：背題瀏覽',
+          })}
+          href={href('/exam/browse/')}
+          data-testid="exam-more-browse"
+        />
+        <NavRow
+          icon={<BookmarkIcon />}
+          title={t({ id: 'exam.list.title', message: '錯過與還不熟的題' })}
+          description={t({
+            id: 'exam.more.list',
+            message: '慢慢看答錯過與還沒連對兩次的題，連同你上次選的答案與解析。',
+            comment: '苦練首頁入口的說明：錯題與不熟的清單',
+          })}
+          href={href('/exam/list/')}
+          data-testid="exam-more-list"
+        />
+      </NavList>
       {decks.map((d) => {
         const ids = d.sections.flatMap((s) => s.questionIds);
         const ds = statsOf(ids, states);
@@ -178,7 +257,11 @@ export default function Exam() {
             <div className="ll-exam-deck__progress">
               <ProgressBar size="sm" value={ds.practised} max={ds.total || 1} />
               <span className="ll-exam-deck__count ll-num">
-                {t({ id: 'exam.deck.count', message: `練過 ${n(ds.practised)}／${n(ds.total)} 題`, comment: '講義卡的進度；數字已格式化' })}
+                {t({
+                  id: 'exam.deck.count',
+                  message: `練過 ${n(ds.practised)}／${n(ds.total)} 題，熟練 ${n(ds.mastered)}`,
+                  comment: '講義卡的進度；熟練是連續答對兩次的題數；數字已格式化',
+                })}
               </span>
             </div>
             <div className="ll-exam-deck__actions">

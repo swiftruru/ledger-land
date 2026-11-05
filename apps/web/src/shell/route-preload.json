@@ -40,6 +40,18 @@
       "catalog": "pages"
     },
     {
+      "pattern": "^/exam/list/$",
+      "module": "src/pages/ExamList.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
+      "pattern": "^/exam/browse/$",
+      "module": "src/pages/ExamBrowse.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
       "pattern": "^/exam/([^/]+)/$",
       "module": "src/pages/ExamRun.tsx",
       "content": [],

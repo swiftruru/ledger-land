@@ -1,5 +1,6 @@
 // 期中考苦練（M4c，02 第 1.1 節）：首頁與「我的」的入口、苦練首頁的統計與按鈕、練一段（答對與答錯的回饋、講義順序的字母、總結卡、只練錯過的）、
 // 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、離線保險（開過首頁後講義檔都在快取）、英文站的介面英文而題目中文。
+// 第二批（2026-11-05）：隨機抽幾題、熟練與「只練不熟的」、錯題與不熟的清單、背題瀏覽（講義篩選、遮住答案、列印樣式）。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 import { waitForApp, waitForSw } from './helpers.ts';
@@ -18,6 +19,7 @@ interface Index {
 }
 interface Question {
   id: string;
+  topic: string;
   options: { letter: string; text: string }[];
   answer: string[];
 }
@@ -56,14 +58,45 @@ const submit = (page: Page) => card(page).getByRole('button', { name: '確認答
 const next = (page: Page) => page.getByRole('button', { name: '下一題' });
 const feedbackTitle = (page: Page) => page.locator('.ll-feedback__title');
 
-/** 作答一題：pickCorrect 決定選正解或第一個錯的選項；回傳選了的字母 */
+/** 這一題在 ledgerland-exam 的 questionState 裡累計作答幾次（資料庫還沒建就是 0；不自己開庫，免得搶在 App 前面建出沒有 store 的空庫） */
+async function seenOf(page: Page, id: string): Promise<number> {
+  return page.evaluate(async (questionId) => {
+    const dbs = await indexedDB.databases();
+    if (!dbs.some((d) => d.name === 'ledgerland-exam')) return 0;
+    return new Promise<number>((resolve) => {
+      const req = indexedDB.open('ledgerland-exam');
+      req.onerror = () => resolve(0);
+      req.onsuccess = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains('questionState')) {
+          db.close();
+          return resolve(0);
+        }
+        const get = db.transaction('questionState', 'readonly').objectStore('questionState').get(questionId);
+        get.onsuccess = () => {
+          db.close();
+          resolve((get.result as { seen?: number } | undefined)?.seen ?? 0);
+        };
+        get.onerror = () => {
+          db.close();
+          resolve(0);
+        };
+      };
+    });
+  }, id);
+}
+
+/** 作答一題：pickCorrect 決定選正解或第一個錯的選項；回傳選了的字母。確認答案後紀錄是非同步寫進 IndexedDB 的，
+ *  等它落地才回來：測試接著整頁導航（page.goto）時才不會和寫入競速 */
 async function answerOne(page: Page, q: Question, pickCorrect: boolean): Promise<string> {
   const letter = pickCorrect ? q.answer[0]! : q.options.map((o) => o.letter).find((l) => !q.answer.includes(l))!;
+  const before = await seenOf(page, q.id);
   await radios(page)
     .nth(q.options.findIndex((o) => o.letter === letter))
     .check();
   await submit(page).click();
   await expect(feedbackTitle(page)).toHaveText(pickCorrect ? /答對了/ : /再想想/);
+  await expect.poll(() => seenOf(page, q.id)).toBe(before + 1);
   return letter;
 }
 
@@ -79,6 +112,9 @@ test.describe('期中考苦練', () => {
     await expect(page.getByTestId('exam-start-order')).toHaveAttribute('href', /\/exam\/all\/$/);
     await expect(page.getByTestId('exam-start-random')).toHaveAttribute('href', /\/exam\/all\/\?order=random$/);
     await expect(page.getByTestId('exam-start-wrong')).toBeDisabled();
+    await expect(page.getByTestId('exam-start-unsure')).toBeDisabled();
+    await expect(page.getByTestId('exam-more-browse')).toHaveAttribute('href', /\/exam\/browse\/$/);
+    await expect(page.getByTestId('exam-more-list')).toHaveAttribute('href', /\/exam\/list\/$/);
     await expect(page.getByRole('switch', { name: '打亂選項順序' })).not.toBeChecked();
     for (const d of idx.decks) await expect(page.getByTestId(`exam-deck-${d.id}`)).toContainText(`講義 ${d.code}`);
     await page.getByTestId('exam-deck-d1').locator('summary', { hasText: '各段分開練' }).click();
@@ -222,7 +258,7 @@ test.describe('期中考苦練', () => {
     await page.getByRole('radio', { name: /^兩份講義答案不同/ }).click();
     await expect(page.getByTestId('exam-teacher-card')).toHaveCount(byReason('conflicting_answer'));
     const first = page.getByTestId('exam-teacher-card').first();
-    await expect(first.locator('.ll-exam-tq__option.is-correct')).toHaveCount(1);
+    await expect(first.locator('.ll-exam-q__option.is-correct')).toHaveCount(1);
     await expect(first.getByText('我的說明')).toBeVisible();
     await expect(first.getByRole('link', { name: /解答 [ABC]/ }).first()).toHaveAttribute('href', /#hq_[0-9a-z]{8}$/);
     // 路由加的 noindex 帶 data-ll（預覽與本機的殼層另有一個全站的 noindex，正式站沒有）
@@ -234,6 +270,142 @@ test.describe('期中考苦練', () => {
     await page.goto('/exam/');
     await waitForApp(page);
     await expect(routeMeta).toHaveCount(0);
+  });
+
+  test('隨機抽幾題：首頁選題數會記住，網址帶 n；換題數就開新的一輪，全部隨機是整份題庫', async ({ page, request }) => {
+    const idx = await index(request);
+    await clearAll(page);
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-start-random')).toHaveText('隨機抽 20 題');
+    await page.getByRole('radiogroup', { name: '隨機抽幾題' }).getByRole('radio', { name: '30' }).click();
+    await expect(page.getByTestId('exam-start-random')).toHaveText('隨機抽 30 題');
+    await expect(page.getByTestId('exam-start-random')).toHaveAttribute('href', /\/exam\/all\/\?order=random&n=30$/);
+    await page.getByTestId('exam-start-random').click();
+    await waitForApp(page);
+    await expect(card(page)).toContainText('第 1 題，共 30 題');
+    // 同一個題組換成 50 題：不沿用 30 題的那一輪
+    await page.goto('/exam/all/?order=random&n=50');
+    await waitForApp(page);
+    await expect(card(page)).toContainText('第 1 題，共 50 題');
+    await expect(page.getByTestId('exam-resume')).toHaveCount(0);
+    await page.goto('/exam/all/?order=random&n=all');
+    await waitForApp(page);
+    await expect(card(page)).toContainText(`第 1 題，共 ${idx.questionCount} 題`);
+    // 不合法的 n 用預設的 20；首頁記得上次選的 30
+    await page.goto('/exam/all/?order=random&n=7');
+    await waitForApp(page);
+    await expect(card(page)).toContainText('第 1 題，共 20 題');
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-start-random')).toHaveText('隨機抽 30 題');
+    await page.getByRole('radiogroup', { name: '隨機抽幾題' }).getByRole('radio', { name: '全部' }).click();
+    await expect(page.getByTestId('exam-start-random')).toHaveText('全部隨機練');
+  });
+
+  test('熟練：答對一次還不熟，進「只練不熟的」；連對兩次算熟練', async ({ page, request }) => {
+    const idx = await index(request);
+    const d1 = idx.decks.find((d) => d.id === 'd1')!;
+    const qs = await deckQuestions(request, d1);
+    const first = qs.get(d1.sections[0]!.questionIds[0]!)!;
+    await clearAll(page);
+    await page.goto(`/exam/${d1.sections[0]!.id}/`);
+    await waitForApp(page);
+    await answerOne(page, first, true);
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-progress')).toContainText('熟練 0 題');
+    await expect(page.getByTestId('exam-start-unsure')).toContainText('只練不熟的（1 題）');
+    await expect(page.getByTestId('exam-start-wrong')).toBeDisabled();
+    await page.getByTestId('exam-start-unsure').click();
+    await waitForApp(page);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('還不熟的題');
+    await expect(card(page)).toContainText('第 1 題，共 1 題');
+    await answerOne(page, first, true);
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-progress')).toContainText('熟練 1 題');
+    await expect(page.getByTestId('exam-start-unsure')).toBeDisabled();
+    await page.goto('/exam/unsure/');
+    await waitForApp(page);
+    await expect(page.getByText('還沒有不熟的題')).toBeVisible();
+  });
+
+  test('錯題與不熟的清單：空狀態、兩組的題數、展開看我選的與解析、拿去練；noindex', async ({ page, request }) => {
+    const idx = await index(request);
+    const d1 = idx.decks.find((d) => d.id === 'd1')!;
+    const qs = await deckQuestions(request, d1);
+    const ids = d1.sections[0]!.questionIds;
+    await clearAll(page);
+    await page.goto('/exam/list/');
+    await waitForApp(page);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('錯過與還不熟的題');
+    await expect(page.getByText('還沒有錯過的題')).toBeVisible();
+    await expect(page.getByTestId('exam-list-practise')).toHaveCount(0);
+    await expect(page.locator('meta[name="robots"][data-ll]')).toHaveAttribute('content', 'noindex');
+    // 第 1 題答錯、第 2 題答對：答錯的 1 題，還不熟的 2 題
+    await page.goto(`/exam/${d1.sections[0]!.id}/`);
+    await waitForApp(page);
+    const wrongLetter = await answerOne(page, qs.get(ids[0]!)!, false);
+    await next(page).click();
+    await answerOne(page, qs.get(ids[1]!)!, true);
+    await page.goto('/exam/list/');
+    await waitForApp(page);
+    await expect(page.getByRole('radio', { name: '答錯的 1' })).toBeChecked();
+    await expect(page.getByTestId('exam-list-practise')).toHaveText('練這些（1 題）');
+    await expect(page.getByTestId('exam-list-practise')).toHaveAttribute('href', /\/exam\/wrong\/$/);
+    const deck = page.getByTestId('exam-list-deck-d1');
+    await expect(deck.locator('summary')).toHaveCount(1);
+    await expect(deck.getByText('答錯 1 次')).toBeVisible();
+    await deck.locator('summary').first().click();
+    const wrongOption = deck.locator('.ll-exam-q__option.is-wrong');
+    await expect(wrongOption).toHaveCount(1);
+    await expect(wrongOption).toContainText(`${wrongLetter}.`);
+    await expect(wrongOption).toContainText('我選的');
+    await expect(deck.locator('.ll-exam-q__option.is-correct')).toHaveCount(qs.get(ids[0]!)!.answer.length);
+    await expect(deck.getByText('解析出自講義')).toBeVisible();
+    await page.getByRole('radio', { name: '還不熟的 2' }).click();
+    await expect(page).toHaveURL(/\/exam\/list\/\?filter=unsure$/);
+    await expect(deck.locator('summary')).toHaveCount(2);
+    await expect(page.getByTestId('exam-list-practise')).toHaveAttribute('href', /\/exam\/unsure\/$/);
+  });
+
+  test('背題瀏覽：全部題目、講義篩選、遮住答案與單題掀開、偏好記住、列印時不印工具列；noindex', async ({ page, request }) => {
+    const idx = await index(request);
+    const d2 = idx.decks.find((d) => d.id === 'd2')!;
+    await clearAll(page);
+    await page.goto('/exam/browse/');
+    await waitForApp(page);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('背題瀏覽');
+    await expect(page.locator('meta[name="robots"][data-ll]')).toHaveAttribute('content', 'noindex');
+    const items = page.getByTestId('exam-browse-item');
+    await expect(items).toHaveCount(idx.questionCount);
+    const firstItem = items.first();
+    await expect(firstItem.locator('.ll-exam-q__answer')).toBeVisible();
+    await expect(firstItem.locator('.ll-exam-q__option.is-correct').first()).toBeVisible();
+    await expect(firstItem.locator('.ll-exam-q__options')).toHaveAttribute('lang', 'zh-TW');
+    await page.getByRole('radio', { name: `講義 ${d2.code}` }).click();
+    await expect(page).toHaveURL(/\/exam\/browse\/\?deck=d2$/);
+    await expect(items).toHaveCount(d2.questionCount);
+    // 遮住：解答行與解析不見，選項沒有打勾；「看答案」只掀開這一題
+    await page.getByRole('switch', { name: '遮住答案與解析' }).click();
+    await expect(firstItem.locator('.ll-exam-q__answer')).toBeHidden();
+    await expect(firstItem.locator('.ll-exam-q__explain')).toBeHidden();
+    await expect(firstItem.locator('.ll-exam-q__mark')).toBeHidden();
+    await firstItem.getByRole('button', { name: '看答案' }).click();
+    await expect(firstItem.locator('.ll-exam-q__answer')).toBeVisible();
+    await expect(items.nth(1).locator('.ll-exam-q__answer')).toBeHidden();
+    await firstItem.getByRole('button', { name: '遮回去' }).click();
+    await expect(firstItem.locator('.ll-exam-q__answer')).toBeHidden();
+    await page.reload();
+    await waitForApp(page);
+    await expect(page.getByRole('switch', { name: '遮住答案與解析' })).toBeChecked();
+    await expect(items.first().locator('.ll-exam-q__answer')).toBeHidden();
+    await page.emulateMedia({ media: 'print' });
+    await expect(page.getByTestId('exam-browse-tools')).toBeHidden();
+    await expect(page.locator('.ll-exam-print-only')).toBeVisible();
+    await expect(items.first().locator('.ll-exam-q__question')).toBeVisible();
+    await page.emulateMedia({ media: 'screen' });
   });
 
   test('離線保險：開過苦練首頁後，Service Worker 把三份講義檔抓進快取，沒練過的講義離線也能開', async ({ page, request, context, browserName }) => {
