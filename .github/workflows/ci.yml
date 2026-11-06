@@ -229,7 +229,8 @@ jobs:
       npm_config_cache: /tmp/ll-npm-cache
       pnpm_config_state_dir: /tmp/ll-pnpm-state
       XDG_CONFIG_HOME: /tmp/ll-xdg-config
-    # 每組三個網址，實測含準備：main 跑 5 次約 3 分 50 秒（main 9a8d7ca）、PR 跑 3 次約 2 分 50 秒
+    # 每組三個網址，實測含準備：main 跑 5 次約 3 分 50 秒（main 9a8d7ca）、PR 跑 3 次約 2 分 50 秒。
+    # 只有模擬 LCP 不過的網址會再量 6 次、用全部次數的中位數判定（urls.json 的 lighthouse.lcpRecheckRuns，06 第 8.2 節），一個網址約多 75 秒
     timeout-minutes: 20
     needs: build
     steps:
