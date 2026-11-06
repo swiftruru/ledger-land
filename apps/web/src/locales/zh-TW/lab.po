@@ -408,6 +408,12 @@ msgstr "它引用的指標是 N/A"
 msgid "lab.ratio.reason.chainedNaOrZero"
 msgstr "它引用的指標是 N/A 或 0"
 
+#. 選步驟面板：這一步的勾稽練習全部相符
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.done"
+msgstr "完成"
+
 #. 最後一個階段的主按鈕
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
@@ -438,6 +444,13 @@ msgstr "左右平衡"
 #: src/features/lab/CheckLights.tsx
 msgid "lab.check.fail"
 msgstr "差 {0}"
+
+#. 勾稽練習選步驟的面板副標；兩個數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: steps.length
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.progress"
+msgstr "已經練過 {done}／{0} 步"
 
 #. 記下預測後的播報
 #. js-lingui-explicit-id
@@ -570,11 +583,17 @@ msgstr "故事"
 msgid "lab.step.back.short"
 msgstr "故事"
 
-#. 選步驟的下拉選單名稱
+#. 選步驟的按鈕上方的說明
 #. js-lingui-explicit-id
-#: src/pages/LabReconcile.tsx
+#: src/features/lab/StepPicker.tsx
 msgid "lab.reconcile.pick"
 msgstr "故事的哪一步之後"
+
+#. 勾稽練習選步驟面板裡清單的可讀名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.list"
+msgstr "故事的步驟"
 
 #. 預測面板的主按鈕（已記過一次）
 #. js-lingui-explicit-id
@@ -718,6 +737,12 @@ msgstr "現金流量"
 msgid "lab.stage.cashflow"
 msgstr "現金流量表"
 
+#. 選步驟面板：現在正在練的這一步
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.current"
+msgstr "目前"
+
 #. 步驟狀態
 #. js-lingui-explicit-id
 #: src/pages/LabStory.tsx
@@ -793,6 +818,12 @@ msgstr "看報表"
 msgid "lab.story.seen"
 msgstr "看過示範"
 
+#. 選步驟面板：這一步完成了，但有格子用過第三層提示
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.peeked"
+msgstr "看過答案"
+
 #. 模式名稱：沒有預測、可以隨時跳階段
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
@@ -832,7 +863,7 @@ msgstr "稅前淨利"
 #. 步驟編號（螢幕閱讀器）
 #. js-lingui-explicit-id
 #. placeholder {0}: s.order
-#: src/pages/LabReconcile.tsx
+#: src/features/lab/StepPicker.tsx
 #: src/pages/LabStory.tsx
 msgid "lab.story.stepN"
 msgstr "第 {0} 步"
@@ -1142,6 +1173,12 @@ msgstr "這筆交易不經過損益表，所以五層利益都不變。"
 #: src/pages/LabReconcile.tsx
 msgid "lab.reconcile.advanced"
 msgstr "進階模式（開放更多格子）"
+
+#. 勾稽練習選步驟的面板標題
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.title"
+msgstr "選一步來練習"
 
 #. 小螢幕切換三表的分段控制名稱
 #. js-lingui-explicit-id
