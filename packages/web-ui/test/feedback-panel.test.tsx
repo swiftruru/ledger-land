@@ -247,3 +247,53 @@ describe('FeedbackPanel 的工具列（站規 2.4.1）', () => {
     screen.unmount();
   });
 });
+
+describe('FeedbackPanel 剛確認時的捲動（scrollOnMount）', () => {
+  // 平滑捲動途中按下去，按鈕會在按下與放開之間移位，click 不會發生；所以按下的那一刻把捲動停在原地（FeedbackPanel 的說明）。
+  // 這裡不量捲動本身（各瀏覽器的平滑捲動時間不同），只確認「按下時把可捲動的祖先定在目前的位置，而且只做一次」。
+  const panel = (scrollOnMount: boolean) => (
+    <I18nProvider i18n={i18n}>
+      <div style={{ height: 1600 }} />
+      <FeedbackPanel
+        outcome="correct"
+        summary="答對了。"
+        answer={<p>你的答案：甲</p>}
+        explanation={<p>解說內容</p>}
+        scrollOnMount={scrollOnMount}
+        onNext={() => {}}
+      />
+      <div style={{ height: 2400 }} />
+    </I18nProvider>
+  );
+
+  it('按下（pointerdown）時用 instant 把頁面定在目前的位置，只做第一次', async () => {
+    i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
+    const scroller = document.scrollingElement!;
+    const scrollTo = vi.spyOn(scroller, 'scrollTo');
+    await render(panel(true));
+    await expect.element(page.getByRole('heading', { name: /答對了/ })).toBeInTheDocument();
+    expect(scroller.scrollHeight).toBeGreaterThan(scroller.clientHeight);
+    scrollTo.mockClear();
+    document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    expect(scrollTo).toHaveBeenCalledTimes(1);
+    const arg = scrollTo.mock.calls[0]![0] as ScrollToOptions;
+    expect(arg.behavior).toBe('instant');
+    expect(typeof arg.top).toBe('number');
+    expect(typeof arg.left).toBe('number');
+    document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    expect(scrollTo).toHaveBeenCalledTimes(1);
+    scrollTo.mockRestore();
+  });
+
+  it('不是剛確認（還原暫存、切換語言重新掛載）時不捲動，也不攔按下的動作', async () => {
+    i18n.loadAndActivate({ locale: 'zh-TW', messages: await loadWebUiMessages('zh-TW') });
+    const scroller = document.scrollingElement!;
+    const scrollTo = vi.spyOn(scroller, 'scrollTo');
+    await render(panel(false));
+    await expect.element(page.getByRole('heading', { name: /答對了/ })).toBeInTheDocument();
+    scrollTo.mockClear();
+    document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    expect(scrollTo).not.toHaveBeenCalled();
+    scrollTo.mockRestore();
+  });
+});

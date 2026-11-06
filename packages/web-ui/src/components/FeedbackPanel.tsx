@@ -98,7 +98,31 @@ export function FeedbackPanel({
   // 只在掛載時做一次（之後 props 改變不再搶焦點或捲動）
   useEffect(() => {
     if (focusOnMount) ref.current?.focus(scrollOnMount ? { preventScroll: true } : undefined);
-    if (scrollOnMount) sectionRef.current?.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    if (!scrollOnMount) return;
+    const section = sectionRef.current;
+    const smooth = !prefersReducedMotion();
+    section?.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
+    if (!section || !smooth) return;
+    // 捲動途中按下去（滑鼠或手指）就讓畫面停在原地。平滑捲動大約 0.25 秒，這段時間裡「下一題」跟著往上移 40 到 140px：
+    // 按下與放開之間按鈕已經不在指標底下，瀏覽器就不發 click，題目沒有前進（2026-11-06 實測 Chromium 與 WebKit：確認後 0.2 秒內點都落空；
+    // E2E 在 Firefox 也卡過）。瀏覽器自己會在滾輪與觸控捲動時中止平滑捲動，滑鼠按下不會，所以這裡補上：把每個可捲動的祖先定在目前的位置。
+    // 改完後確認後 0.12 秒起都點得到；更早（0 到 0.06 秒）平滑捲動還沒真的開始、取消不到，但那是人手做不到的速度。
+    // 試過按住的期間每次捲動都拉回原位，沒有比較好，沒有採用。
+    const stop = () => {
+      const scrollers: Element[] = [];
+      for (let el: Element | null = section.parentElement; el; el = el.parentElement) scrollers.push(el);
+      if (document.scrollingElement) scrollers.push(document.scrollingElement);
+      for (const el of new Set(scrollers)) if (el.scrollHeight > el.clientHeight) el.scrollTo({ top: el.scrollTop, left: el.scrollLeft, behavior: 'instant' });
+      done();
+    };
+    const done = () => {
+      document.removeEventListener('pointerdown', stop, true);
+      window.clearTimeout(timer);
+    };
+    document.addEventListener('pointerdown', stop, true);
+    // 捲完就不必再聽（平滑捲動沒有可靠的結束事件可以等：Safari 沒有 scrollend），留 1.5 秒
+    const timer = window.setTimeout(done, 1500);
+    return done;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const chosen = options?.filter((o) => o.chosen) ?? [];
