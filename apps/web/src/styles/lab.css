@@ -973,7 +973,54 @@
   color: var(--ll-text-2);
 }
 .ll-lab-sandbox__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2) var(--ll-space-3);
+  min-height: var(--ll-btn-h-sm);
+  margin: var(--ll-space-3) 0;
+}
+.ll-lab-sandbox__status {
+  flex: 1 1 12em;
+  margin: 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-lab-sandbox > .ll-banner {
   margin-bottom: var(--ll-space-3);
+}
+/* 玩法說明與「步驟都拿掉了」：同一種卡片，內容靠左、一塊接一塊 */
+.ll-lab-sbguide,
+.ll-lab-sbempty {
+  display: grid;
+  justify-items: start;
+  gap: var(--ll-space-2);
+  padding: var(--ll-space-3) var(--ll-space-4);
+}
+.ll-lab-sbempty {
+  gap: var(--ll-space-3);
+  margin-bottom: var(--ll-space-3);
+}
+.ll-lab-sbguide h2,
+.ll-lab-sbempty h2 {
+  margin: 0;
+  font-size: var(--ll-type-body-size);
+  line-height: var(--ll-type-body-line);
+}
+.ll-lab-sbempty p,
+.ll-lab-sbguide__note {
+  margin: 0;
+  color: var(--ll-text-2);
+}
+.ll-lab-sbguide__list {
+  display: grid;
+  gap: var(--ll-space-1);
+  margin: 0;
+  padding-left: 1.4em;
+}
+.ll-lab-sbstep__issue {
+  margin-top: var(--ll-space-2);
 }
 .ll-lab-sandbox__steps {
   margin: 0;

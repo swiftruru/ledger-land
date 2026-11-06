@@ -7,6 +7,12 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
 
+#. 算不下去的原因：某個科目的餘額會變成負數
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.whyAccount"
+msgstr "{account} would go negative"
+
 #. 指標預測的選項
 #. js-lingui-explicit-id
 #: src/features/lab/PredictPanel.tsx
@@ -102,6 +108,12 @@ msgstr "Move down"
 #: src/features/lab/RatioList.tsx
 msgid "lab.ratio.notMeaningful"
 msgstr "Not meaningful"
+
+#. 移動被擋下；why 是一句原因
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.moveBlocked"
+msgstr "It cannot move there ({why})."
 
 #. 本筆變動檢視裡沒有變動的列
 #. js-lingui-explicit-id
@@ -267,6 +279,12 @@ msgstr "Remove step {0}"
 msgid "lab.card.recap"
 msgstr "Up to the previous step: {0}"
 
+#. 玩法說明第 2 點
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guide.insert"
+msgstr "Add or take out a step: open ‘Insert after this step’ and pick a transaction, or press ‘Remove’."
+
 #. 階段名稱
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
@@ -302,6 +320,18 @@ msgstr "Basis"
 #: src/pages/LabStep.tsx
 msgid "lab.tables.onlyChanged"
 msgstr "Only rows that changed"
+
+#. 玩法說明的標題
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guide.title"
+msgstr "How to play"
+
+#. 重播失敗但找不到是哪一步
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.broken.bodyUnknown"
+msgstr "Restore the original story to start again."
 
 #. 建議插入的範本
 #. js-lingui-explicit-id
@@ -445,6 +475,30 @@ msgstr "Left equals right"
 msgid "lab.check.fail"
 msgstr "Off by {0}"
 
+#. 刪除後的浮動提示；數字已代入
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.removed"
+msgstr "Removed step {shownOrder} ‘{name}’."
+
+#. 插入後的浮動提示
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.inserted"
+msgstr "Added ‘{name}’. You can change its amount."
+
+#. 插入後的浮動提示：預設金額會違反餘額規則，所以先放 0
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.insertedZero"
+msgstr "Added ‘{name}’ with an amount of 0: the default amount does not fit here, so enter your own."
+
+#. 套用金額後的浮動提示
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.applied"
+msgstr "Applied. The three statements and the ratios have been recalculated."
+
 #. 勾稽練習選步驟的面板副標；兩個數字已代入
 #. js-lingui-explicit-id
 #. placeholder {0}: steps.length
@@ -458,11 +512,23 @@ msgstr "{done} of {0} steps practised"
 msgid "lab.live.predicted"
 msgstr "Your prediction has been recorded."
 
+#. 還原後的浮動提示
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.resetDone"
+msgstr "Restored the original story."
+
 #. 指標類別
 #. js-lingui-explicit-id
 #: src/pages/LabRatios.tsx
 msgid "lab.cat.market"
 msgstr "Market ratios"
+
+#. 算不下去的原因：不知道是哪個科目
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.whyOther"
+msgstr "the books would not work out"
 
 #. 預測揭曉：四捨五入後前後相同
 #. js-lingui-explicit-id
@@ -487,6 +553,12 @@ msgstr "We suggest finishing the earlier steps first, but you can start here."
 #: src/pages/LabReconcile.tsx
 msgid "lab.reconcile.order"
 msgstr "Suggested order: fill in the income statement result first, then the cash flow statement, then the balance sheet. One wrong cell can turn several lights red, so fix the most upstream cell first."
+
+#. 浮動提示的動作：回到這次修改之前
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.undo"
+msgstr "Undo"
 
 #. 階段名稱
 #. js-lingui-explicit-id
@@ -564,11 +636,23 @@ msgstr "Income statement"
 msgid "lab.toast.terms"
 msgstr "Added to the glossary: {0} terms"
 
+#. 玩法說明的結尾
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guide.reset"
+msgstr "If it gets messy, press ‘Restore the original story’ to start again."
+
 #. 階段選單最後一項：換成另一種模式（示範或練習），模式名稱已代入
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
 msgid "lab.stage.switchMode"
 msgstr "Switch to {other}"
+
+#. 玩法說明第 1 點
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guide.edit"
+msgstr "Change an amount: pick a step, type a new number, then press ‘Apply’."
 
 #. 故事頁讀取中的標題
 #. js-lingui-explicit-id
@@ -712,6 +796,12 @@ msgstr "Step {0} (check point {1})"
 msgid "lab.check.step1"
 msgstr "Step ①: the five profit levels"
 
+#. 步驟全部拿掉時的標題
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.empty.title"
+msgstr "All the steps are gone"
+
 #. 揭曉卡：這個目標沒有猜
 #. js-lingui-explicit-id
 #: src/features/lab/PredictReveal.tsx
@@ -723,6 +813,12 @@ msgstr "not chosen"
 #: src/pages/LabRatios.tsx
 msgid "lab.cat.profitability"
 msgstr "Profitability"
+
+#. 還沒有任何修改
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.untouched"
+msgstr "This is exactly the same as the original story."
 
 #. 指標類別
 #. js-lingui-explicit-id
@@ -757,6 +853,12 @@ msgstr "You are here"
 msgid "lab.ratios.context"
 msgstr "Current books: {0}, after step {1}"
 
+#. 修改的數量；數字已格式化
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.changes"
+msgstr "Changes so far: {changes}."
+
 #. 快照裡沒有故事時
 #. 快照裡沒有故事時
 #. 快照裡沒有故事時
@@ -766,13 +868,6 @@ msgstr "Current books: {0}, after step {1}"
 #: src/pages/LabSandbox.tsx
 msgid "lab.none.title"
 msgstr "No story has been published yet"
-
-#. 整份重播失敗（例如插入的步驟不滿足前置條件）；數字已代入
-#. js-lingui-explicit-id
-#. placeholder {0}: edited.steps.findIndex((s) => s.id === replay.error.at.stepId) + 1
-#: src/pages/LabSandbox.tsx
-msgid "lab.sandbox.replayFailed"
-msgstr "Your edits stop step {0} from being posted; change it back or remove that step"
 
 #. 燈號狀態：兩邊相符
 #. js-lingui-explicit-id
@@ -807,10 +902,17 @@ msgid "lab.journal.toggle"
 msgstr "Show the entries and T-accounts"
 
 #. 步驟卡的按鈕
+#. 步驟卡的按鈕
 #. js-lingui-explicit-id
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.show"
 msgstr "Show statements"
+
+#. 玩法說明第 3 點
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guide.result"
+msgstr "See the result: after every change, the three statements and the ratios at the bottom of this page recalculate."
 
 #. 步驟狀態：走過示範、還沒練習
 #. js-lingui-explicit-id
@@ -905,6 +1007,12 @@ msgstr "Statements after step {0}"
 #: src/pages/LabStory.tsx
 msgid "lab.story.chapter"
 msgstr "Chapter {0}: {1}"
+
+#. 重播失敗的說明；數字已代入，括號裡是一句原因
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.broken.body"
+msgstr "Step {brokenOrder} ‘{brokenTitle}’ cannot be done ({brokenWhy}), usually because an earlier step it needs was taken out. Remove this step, or restore the original story and start again."
 
 #. 第三層提示：答案；數字已格式化
 #. js-lingui-explicit-id
@@ -1085,11 +1193,23 @@ msgstr "Balance sheet"
 msgid "lab.stage.skip"
 msgstr "Skip to the last stage"
 
+#. 按鈕：捲到頁面下方的報表區
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.jump"
+msgstr "Jump to the statements"
+
 #. 帶 (+)(-) 的累計列在本筆變動檢視的加註（T12）
 #. js-lingui-explicit-id
 #: src/features/lab/StatementTable.tsx
 msgid "lab.table.cumulativeNote"
 msgstr "This row is a cumulative figure, so the change shows on the original row"
+
+#. 刪除被擋下：後面某一步會算不下去；數字已代入，why 是一句原因
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.removeBlocked"
+msgstr "Keep this step for now: without it, step {order} ‘{title}’ cannot be done ({why}). Remove the later steps first, or change this step’s amount."
 
 #. 被擋下時的可輸入範圍；數字已格式化
 #. js-lingui-explicit-id
@@ -1132,11 +1252,17 @@ msgstr "You have watched this step"
 msgid "lab.finish.story"
 msgstr "This step is done"
 
-#. 自由實驗的導言
+#. 存下來的修改重播失敗時的橫幅標題
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.broken.title"
+msgstr "This experiment cannot be worked out right now"
+
+#. 自由實驗的導言；故事名稱與步數已代入
 #. js-lingui-explicit-id
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.intro"
-msgstr "This is a copy of the story: change any step’s amount or insert a step from a template, and the three statements and ratios recalculate at once. The story itself is not changed."
+msgstr "This is a copy of ‘{storyTitle}’, {storyCount} steps in all. Change anything you like here; the original story stays as it is."
 
 #. 違反餘額規則而且算不出範圍
 #. js-lingui-explicit-id
@@ -1168,6 +1294,12 @@ msgstr "This change would make {1} negative at step {0}; this cell can take {2} 
 msgid "lab.reveal.noteLevels"
 msgstr "This transaction never touches the income statement, so all five profit levels stay the same."
 
+#. 插入被擋下；why 是一句原因
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.insertBlocked"
+msgstr "‘{name}’ cannot be added here yet ({why}). Try another position, or make an earlier amount larger first."
+
 #. 進階模式的開關
 #. js-lingui-explicit-id
 #: src/pages/LabReconcile.tsx
@@ -1180,11 +1312,23 @@ msgstr "Advanced mode (more cells to fill)"
 msgid "lab.reconcile.sheet.title"
 msgstr "Pick a step to practise"
 
+#. 步驟全部拿掉時的說明
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.empty.body"
+msgstr "Pick a transaction as the first step, or restore the original story."
+
 #. 小螢幕切換三表的分段控制名稱
 #. js-lingui-explicit-id
 #: src/pages/LabStep.tsx
 msgid "lab.tables.pick"
 msgstr "Choose a statement"
+
+#. 按鈕：清掉所有修改，回到故事原本的步驟與金額
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.reset"
+msgstr "Restore the original story"
 
 #. 摘要列放不下時；數字已代入
 #. js-lingui-explicit-id
@@ -1204,12 +1348,6 @@ msgstr "Not filled yet"
 #: src/pages/LabRatios.tsx
 msgid "lab.cat.department"
 msgstr "Department ratios"
-
-#. 按鈕
-#. js-lingui-explicit-id
-#: src/pages/LabSandbox.tsx
-msgid "lab.sandbox.reset"
-msgstr "Reset to the story amounts"
 
 #. 累計檢視的欄名
 #. js-lingui-explicit-id
