@@ -38,6 +38,7 @@ import {
 } from '../features/exam/options.ts';
 import { readExamMockSettings, readExamShuffle, writeExamMockSettings } from '../features/exam/prefs.ts';
 import {
+  MOCK_KEY,
   answerOf,
   chosenCount,
   currentQuestionId,
@@ -60,7 +61,6 @@ import { useLocale } from '../lib/useLocale.ts';
 import '../styles/exam.css';
 
 /** runs store 的鍵：一次只有一場模擬考 */
-const MOCK_KEY = 'mock';
 /** 剩這麼多秒時用 aria-live 提醒一次（和關卡計時一樣是 1 分鐘） */
 const WARN_SECONDS = 60;
 

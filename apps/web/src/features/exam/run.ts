@@ -39,6 +39,9 @@ export interface ExamRun {
   settings?: string;
 }
 
+/** 模擬考那一輪在 runs 裡的鍵（同時只有一輪；pages/ExamMock.tsx 寫、苦練首頁讀） */
+export const MOCK_KEY = 'mock';
+
 export interface RunSummary {
   total: number;
   answered: number;

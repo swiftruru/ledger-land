@@ -1,11 +1,15 @@
 // 期中考苦練首頁（M4c，02 第 1.1 節）：只收陳老師三份講義的練習題，題目與答案照講義。只讀 manifest.handouts 的小索引與這台裝置的紀錄（features/exam/db.ts），
 // 不載題庫本身，但畫好後會請 Service Worker 把三份講義檔抓進快取（features/exam/prefetch.ts）。整體進度（練過、熟練、答對率）、入口（依講義順序、隨機抽 N 題、只練錯過的、只練不熟的）、
-// 選項順序的開關、「更多練法」（模擬考、背題瀏覽、錯題與不熟的清單；M4c 第二批）、三份講義各一張卡與各段的入口。熟練 = 連續答對兩次（features/exam/stats.ts）。
+// 選項順序的開關、三份講義各一張卡與各段的入口。熟練 = 連續答對兩次（features/exam/stats.ts）。
+// 版面（2026-11-06）：三張步驟卡，先讀題（背題瀏覽，主要按鈕直接進閱讀頁）、再自己練（作答）、最後模擬考；
+// 其中一張掛「建議」的標籤、主要按鈕用實心的（features/exam/steps.ts）。很多人還沒看過題目，所以讀題排第一。
 // 紀錄存在這台裝置，每題的累計會跟著備份走（06 第 4.6 節；features/exam/backup.ts）；英文站的介面是英文，題目仍是中文。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { formatNumber, formatPercent, localePath } from '@ledgerland/i18n';
 import {
+  ArrowRightIcon,
+  Badge,
   BookIcon,
   BookmarkIcon,
   Button,
@@ -18,6 +22,7 @@ import {
   PlayIcon,
   ProgressBar,
   RetryIcon,
+  SearchIcon,
   Segmented,
   Switch,
   TimerIcon,
@@ -28,9 +33,11 @@ import { scheduleHandoutPrefetch } from '../features/exam/prefetch.ts';
 import { COUNT_OPTIONS, DEFAULT_RANDOM_COUNT, type CountOption } from '../features/exam/options.ts';
 import { readExamBrowsePos, readExamRandomCount, readExamShuffle, writeExamRandomCount, writeExamShuffle } from '../features/exam/prefs.ts';
 import { getExamReadDb } from '../features/exam/read-db.ts';
-import type { ExamRun } from '../features/exam/run.ts';
+import { ALL_SCOPE, browseParams, lastIn, orderOf, resumeTarget, scopeOf } from '../features/exam/reading.ts';
+import { isFinished, isMock, MOCK_KEY, summarise, type ExamRun } from '../features/exam/run.ts';
 import { allQuestionIds } from '../features/exam/sets.ts';
 import { statsOf, unsureIdsOf, wrongIdsOf } from '../features/exam/stats.ts';
+import { recommendedStep, type ExamStep } from '../features/exam/steps.ts';
 import { loadHandoutIndex, type HandoutManifestEntry } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -45,8 +52,10 @@ export default function Exam() {
   const [state, setState] = useState<IndexState>({ kind: 'loading' });
   const [states, setStates] = useState<ReadonlyMap<string, QuestionState> | null>(null);
   const [resume, setResume] = useState<ExamRun | null | undefined>(undefined);
-  /** 背題瀏覽讀過的題（題目 ID）；入口那一列用 */
+  /** 背題瀏覽讀過的題（題目 ID）；第 1 步與講義卡用 */
   const [readIds, setReadIds] = useState<ReadonlySet<string> | null>(null);
+  /** 模擬考的那一輪（進行中或交過卷的）；沒有是 null */
+  const [mock, setMock] = useState<ExamRun | null | undefined>(undefined);
   const [shuffle, setShuffle] = useState(readExamShuffle);
   const [randomCount, setRandomCount] = useState<CountOption>(readExamRandomCount);
 
@@ -71,11 +80,15 @@ export default function Exam() {
       (run) => alive && setResume(run && run.finishedAt === undefined && run.index > 0 ? run : null),
       () => alive && setResume(null),
     );
+    void db.getRun(MOCK_KEY).then(
+      (run) => alive && setMock(run && isMock(run) ? run : null),
+      () => alive && setMock(null),
+    );
     return () => {
       alive = false;
     };
   }, []);
-  usePageReady(state.kind !== 'loading' && states !== null && resume !== undefined && readIds !== null);
+  usePageReady(state.kind !== 'loading' && states !== null && resume !== undefined && readIds !== null && mock !== undefined);
 
   const index = state.kind === 'ok' ? state.index : null;
   // 離線保險：頁面畫好後請 Service Worker 把三份講義檔抓進快取，沒練過的講義離線也開得了
@@ -94,7 +107,7 @@ export default function Exam() {
       backShortLabel={t({ id: 'exam.back.short', message: '地圖', comment: '苦練區頁首返回按鈕上的短字（必須是「回到闖關地圖」的一部分）' })}
     />
   );
-  if (state.kind === 'loading' || states === null || readIds === null) return topBar;
+  if (state.kind === 'loading' || states === null || readIds === null || mock === undefined) return topBar;
   if (state.kind !== 'ok') {
     return (
       <>
@@ -114,26 +127,52 @@ export default function Exam() {
   const n = (x: number) => formatNumber(x, locale);
   const bank = state.index;
   const decks = [...bank.decks].sort((a, b) => a.order - b.order);
-  // 背題瀏覽的入口：讀過就寫讀了幾題、上次讀到哪一份（這裡沒有載題庫，不比對答案版本，數字以背題瀏覽頁為準）
-  const browseReadCount = all.filter((id) => readIds.has(id)).length;
-  const browseRead = n(browseReadCount);
-  const browseTotal = n(all.length);
-  const browseLast = readExamBrowsePos().last;
-  const browseCode = decks.find((d) => d.sections.some((s) => browseLast !== null && s.questionIds.includes(browseLast)))?.code;
-  const browseNote =
-    browseReadCount === 0 && browseCode === undefined
-      ? t({
-          id: 'exam.more.browse',
-          message: '依講義列出全部題目，點進去一題一題讀；可以遮住答案，也可以列印。',
-          comment: '苦練首頁入口的說明：背題瀏覽（還沒讀過）',
-        })
-      : browseCode === undefined
-        ? t({ id: 'exam.more.browse.count', message: `已讀 ${browseRead}／${browseTotal} 題。`, comment: '苦練首頁入口的說明：背題瀏覽讀了幾題；數字已格式化' })
-        : t({
-            id: 'exam.more.browse.last',
-            message: `已讀 ${browseRead}／${browseTotal} 題，上次讀到講義 ${browseCode}。`,
-            comment: '苦練首頁入口的說明：背題瀏覽讀了幾題、上次讀到哪一份講義；數字已格式化，browseCode 是講義編號',
-          });
+  const total = all.length;
+  const totalText = n(total);
+  // 讀題的進度與「接著讀」要去哪一題（這裡沒有載題庫，不比對答案版本，數字以背題瀏覽頁為準）
+  const readCount = all.filter((id) => readIds.has(id)).length;
+  const readText = n(readCount);
+  const pos = readExamBrowsePos();
+  const lastScope = scopeOf(bank, pos.scope);
+  const inLast = resumeTarget(orderOf(bank, lastScope), lastIn(pos, lastScope), readIds);
+  // 上次的範圍都讀完了但別份還沒：改看全部
+  const readScope = inLast && inLast.kind === 'done' && lastScope !== ALL_SCOPE ? ALL_SCOPE : lastScope;
+  const readTarget = readScope === lastScope ? inLast : resumeTarget(orderOf(bank, ALL_SCOPE), pos.last, readIds);
+  const readDeck = decks.find((d) => d.sections.some((sec) => readTarget !== null && sec.questionIds.includes(readTarget.id)));
+  const readCode = readDeck?.code ?? '';
+  const browseHref = (params: Record<string, string>) => {
+    const query = new URLSearchParams(params).toString();
+    return href('/exam/browse/') + (query ? `?${query}` : '');
+  };
+  const readGoHref = readTarget && readTarget.kind !== 'done' ? browseHref(browseParams({ scope: readScope, q: readTarget.id })) : browseHref({});
+  const step = recommendedStep({ total, read: readCount, practised: stats.practised });
+  const mockDone = mock && isFinished(mock) ? summarise(mock) : null;
+  const mockCorrect = n(mockDone?.correct ?? 0);
+  const mockTotal = n(mockDone?.total ?? 0);
+
+  /** 步驟卡最上面的一列：「第 N 步」與建議的標籤 */
+  const stepHead = (which: ExamStep, no: number) => {
+    const stepNo = n(no);
+    return (
+      <p className="ll-exam-step__head">
+        <span className="ll-exam-deck__code ll-num">
+          {t({ id: 'exam.step.no', message: `第 ${stepNo} 步`, comment: '苦練首頁步驟卡的小標；stepNo 是 1 到 3' })}
+        </span>
+        {step === which && (
+          <span data-testid="exam-step-recommended">
+            <Badge kind="accent">
+              {which !== 'read'
+                ? t({ id: 'exam.step.next', message: '建議下一步', comment: '苦練首頁：建議的步驟（已經讀過或練過）' })
+                : readCount === 0
+                  ? t({ id: 'exam.step.start', message: '建議從這裡開始', comment: '苦練首頁：建議的步驟（什麼都還沒做）' })
+                  : t({ id: 'exam.step.resume', message: '建議接著讀', comment: '苦練首頁：建議的步驟（讀過一些、還沒作答）' })}
+            </Badge>
+          </span>
+        )}
+      </p>
+    );
+  };
+
   return (
     <>
       {topBar}
@@ -142,10 +181,64 @@ export default function Exam() {
           只收陳老師三份講義的練習題，題目、選項與解答都照講義；範圍以老師公告為準。
         </Trans>
       </p>
-      <Card as="section" className="ll-exam-hero" aria-labelledby="ll-exam-hero-title" data-testid="exam-hero">
-        <h2 id="ll-exam-hero-title" className="ll-exam-hero__title">
-          {t({ id: 'exam.hero.title', message: `講義 ${n(bank.questionCount)} 題`, comment: '苦練首頁主卡的標題；count 是收錄的題數（已格式化）' })}
+      <p className="ll-exam-route" data-testid="exam-route">
+        <Trans id="exam.route" comment="苦練首頁：建議的順序，對應下面三張步驟卡">
+          建議的順序：先讀題，再自己練，最後模擬考。
+        </Trans>
+      </p>
+
+      {/* 第 1 步：先讀題（背題瀏覽）。很多人還沒看過題目，這一步放最上面；主要按鈕直接進閱讀頁 */}
+      <Card as="section" className="ll-exam-hero" aria-labelledby="ll-exam-step-read" data-testid="exam-step-read">
+        {stepHead('read', 1)}
+        <h2 id="ll-exam-step-read" className="ll-exam-hero__title">
+          {t({ id: 'exam.step.read.title', message: '先讀題', comment: '苦練首頁第 1 步的標題（背題瀏覽）' })}
         </h2>
+        <p className="ll-exam-hero__note">
+          {t({
+            id: 'exam.step.read.desc',
+            message: '還沒看過題目的話從這裡開始：題目、正解與解析一起看，一次一題，不用先作答。可以用關鍵字找題，也可以遮住答案或列印。',
+            comment: '苦練首頁第 1 步的說明',
+          })}
+        </p>
+        <div className="ll-exam-hero__progress">
+          <ProgressBar size="md" value={readCount} max={total || 1} />
+          <span className="ll-exam-hero__count ll-num" data-testid="exam-read-count">
+            {readCount === 0
+              ? t({ id: 'exam.step.read.untouched', message: '還沒開始讀', comment: '苦練首頁第 1 步的進度：還沒讀過任何一題' })
+              : t({ id: 'exam.step.read.count', message: `已讀 ${readText}／${totalText} 題`, comment: '苦練首頁第 1 步的進度；數字已格式化' })}
+          </span>
+        </div>
+        <div className="ll-exam-hero__actions">
+          <Button variant={step === 'read' ? 'primary' : 'secondary'} size="md" icon={<PlayIcon />} href={readGoHref} data-testid="exam-read-go">
+            {!readTarget || readTarget.kind === 'done'
+              ? t({ id: 'exam.step.read.again', message: '再讀一次', comment: '苦練首頁第 1 步的按鈕：全部讀完了，回到題目清單' })
+              : readCount === 0
+                ? t({ id: 'exam.step.read.go', message: '從第一題開始讀', comment: '苦練首頁第 1 步的按鈕：還沒讀過' })
+                : t({
+                    id: 'exam.step.read.resume',
+                    message: `接著讀（講義 ${readCode}）`,
+                    comment: '苦練首頁第 1 步的按鈕：回到上次的進度；readCode 是講義編號',
+                  })}
+          </Button>
+          <Button size="md" icon={<SearchIcon />} href={href('/exam/browse/')} data-testid="exam-more-browse">
+            {t({ id: 'exam.step.read.list', message: '題目清單與搜尋', comment: '苦練首頁第 1 步的次要按鈕：背題瀏覽的清單' })}
+          </Button>
+        </div>
+      </Card>
+
+      {/* 第 2 步：再自己練（作答） */}
+      <Card as="section" className="ll-exam-hero" aria-labelledby="ll-exam-step-practise" data-testid="exam-step-practise">
+        {stepHead('practise', 2)}
+        <h2 id="ll-exam-step-practise" className="ll-exam-hero__title">
+          {t({ id: 'exam.step.practise.title', message: '再自己練', comment: '苦練首頁第 2 步的標題（作答練習）' })}
+        </h2>
+        <p className="ll-exam-hero__note">
+          {t({
+            id: 'exam.step.practise.desc',
+            message: '自己作答，答完馬上看對錯與解析；答錯的題會留下來，之後可以只練那些。',
+            comment: '苦練首頁第 2 步的說明',
+          })}
+        </p>
         <div className="ll-exam-hero__progress">
           <ProgressBar size="md" value={stats.practised} max={stats.total || 1} />
           <span className="ll-exam-hero__count ll-num" data-testid="exam-progress">
@@ -159,7 +252,13 @@ export default function Exam() {
           </span>
         </div>
         <div className="ll-exam-hero__actions">
-          <Button variant="primary" size="md" icon={<PlayIcon />} href={href('/exam/all/')} data-testid="exam-start-order">
+          <Button
+            variant={step === 'practise' ? 'primary' : 'secondary'}
+            size="md"
+            icon={<PlayIcon />}
+            href={href('/exam/all/')}
+            data-testid="exam-start-order"
+          >
             {resume
               ? t({
                   id: 'exam.start.resume',
@@ -230,79 +329,77 @@ export default function Exam() {
             comment: '打亂選項開關的說明',
           })}
         />
-        <p className="ll-exam-hero__note">
-          <Trans id="exam.note.device" comment="主卡下方的說明：紀錄只在這台裝置">
-            練習紀錄存在這台裝置上，匯出備份時會一起帶走。
-          </Trans>
-          {locale !== 'zh-TW' && (
-            <>
-              {' '}
-              <Trans id="exam.note.zhOnly" comment="英文站多一句：題目只有中文">
-                題庫只有中文。
-              </Trans>
-            </>
-          )}
-        </p>
-        <p className="ll-exam-hero__licence">
-          <Trans id="exam.licence" comment="授權標示（D6、2026-11-04 老師同意）">
-            題目經陳彥宏老師授權使用。
-          </Trans>
-        </p>
+        <div className="ll-exam-hero__actions">
+          <Button size="sm" variant="quiet" icon={<BookmarkIcon />} iconEnd={<ArrowRightIcon />} href={href('/exam/list/')} data-testid="exam-more-list">
+            {t({ id: 'exam.step.practise.list', message: '看答錯與還不熟的題', comment: '苦練首頁第 2 步最下面的連結：錯題與不熟的清單' })}
+          </Button>
+        </div>
       </Card>
-      <NavList className="ll-exam-more" title={t({ id: 'exam.more.title', message: '更多練法', comment: '苦練首頁：主卡下面的入口清單標題' })}>
-        <NavRow
-          icon={<TimerIcon />}
-          title={t({ id: 'exam.mock.title', message: '模擬考' })}
-          description={t({
-            id: 'exam.more.mock',
-            message: '自己選範圍、題數與每題時間；作答中不顯示對錯，交卷後一次看成績與解析。',
-            comment: '苦練首頁入口的說明：模擬考',
+
+      {/* 第 3 步：最後模擬考 */}
+      <Card as="section" className="ll-exam-hero" aria-labelledby="ll-exam-step-mock" data-testid="exam-step-mock">
+        {stepHead('mock', 3)}
+        <h2 id="ll-exam-step-mock" className="ll-exam-hero__title">
+          {t({ id: 'exam.step.mock.title', message: '最後模擬考', comment: '苦練首頁第 3 步的標題' })}
+        </h2>
+        <p className="ll-exam-hero__note">
+          {t({
+            id: 'exam.step.mock.desc',
+            message: '像考試一樣：作答中不顯示對錯，交卷後一次看成績與解析。範圍、題數與每題時間自己選。',
+            comment: '苦練首頁第 3 步的說明',
           })}
-          href={href('/exam/mock/')}
-          data-testid="exam-more-mock"
-        />
-        <NavRow
-          icon={<CardsIcon />}
-          title={t({ id: 'exam.browse.title', message: '背題瀏覽' })}
-          description={browseNote}
-          href={href('/exam/browse/')}
-          data-testid="exam-more-browse"
-        />
-        <NavRow
-          icon={<BookmarkIcon />}
-          title={t({ id: 'exam.list.title', message: '錯過與還不熟的題' })}
-          description={t({
-            id: 'exam.more.list',
-            message: '慢慢看答錯過與還沒連對兩次的題，連同你上次選的答案與解析。',
-            comment: '苦練首頁入口的說明：錯題與不熟的清單',
-          })}
-          href={href('/exam/list/')}
-          data-testid="exam-more-list"
-        />
-      </NavList>
+        </p>
+        {mockDone && (
+          <p className="ll-exam-hero__note ll-num" data-testid="exam-mock-last">
+            {t({
+              id: 'exam.step.mock.last',
+              message: `上次模擬考：答對 ${mockCorrect}／${mockTotal} 題`,
+              comment: '苦練首頁第 3 步：上一次交卷的成績；數字已格式化',
+            })}
+          </p>
+        )}
+        <div className="ll-exam-hero__actions">
+          <Button variant={step === 'mock' ? 'primary' : 'secondary'} size="md" icon={<TimerIcon />} href={href('/exam/mock/')} data-testid="exam-more-mock">
+            {mockDone
+              ? t({ id: 'exam.step.mock.result', message: '看成績，或再考一次', comment: '苦練首頁第 3 步的按鈕：上一次已經交卷' })
+              : mock
+                ? t({ id: 'exam.step.mock.resume', message: '回到進行中的模擬考', comment: '苦練首頁第 3 步的按鈕：有還沒交卷的模擬考' })
+                : t({ id: 'exam.step.mock.go', message: '開始模擬考', comment: '苦練首頁第 3 步的按鈕' })}
+          </Button>
+        </div>
+      </Card>
+
+      <h2 className="ll-exam-decks">{t({ id: 'exam.decks.title', message: '各份講義', comment: '苦練首頁：三張講義卡上面的標題' })}</h2>
       {decks.map((d) => {
         const ids = d.sections.flatMap((s) => s.questionIds);
         const ds = statsOf(ids, states);
+        const deckRead = n(ids.filter((id) => readIds.has(id)).length);
+        const deckTotal = n(ds.total);
+        const deckPractised = n(ds.practised);
+        const deckMastered = n(ds.mastered);
         return (
           <Card as="section" key={d.id} className="ll-exam-deck" aria-labelledby={`ll-exam-deck-${d.id}`} data-testid={`exam-deck-${d.id}`}>
             <p className="ll-exam-deck__code ll-num">
               {t({ id: 'exam.deck.code', message: `講義 ${d.code}`, comment: '講義卡的小標；code 是講義編號，例如 0-1' })}
             </p>
-            <h2 id={`ll-exam-deck-${d.id}`} className="ll-exam-deck__title" lang="zh-TW">
+            <h3 id={`ll-exam-deck-${d.id}`} className="ll-exam-deck__title" lang="zh-TW">
               {d.title}
-            </h2>
+            </h3>
             <div className="ll-exam-deck__progress">
               <ProgressBar size="sm" value={ds.practised} max={ds.total || 1} />
-              <span className="ll-exam-deck__count ll-num">
+              <span className="ll-exam-deck__count ll-num" data-testid={`exam-deck-count-${d.id}`}>
                 {t({
-                  id: 'exam.deck.count',
-                  message: `練過 ${n(ds.practised)}／${n(ds.total)} 題，熟練 ${n(ds.mastered)}`,
-                  comment: '講義卡的進度；熟練是連續答對兩次的題數；數字已格式化',
+                  id: 'exam.deck.counts',
+                  message: `已讀 ${deckRead}／${deckTotal} 題，練過 ${deckPractised}／${deckTotal} 題，熟練 ${deckMastered}`,
+                  comment: '講義卡的進度：背題瀏覽讀了幾題、作答練過幾題、熟練（連續答對兩次）幾題；數字已格式化',
                 })}
               </span>
             </div>
             <div className="ll-exam-deck__actions">
-              <Button size="sm" variant="primary" icon={<PlayIcon />} href={href(`/exam/${d.id}/`)}>
+              <Button size="sm" icon={<CardsIcon />} href={browseHref(browseParams({ scope: d.id }))} data-testid={`exam-deck-read-${d.id}`}>
+                {t({ id: 'exam.deck.read', message: '讀這份講義', comment: '講義卡的按鈕：到背題瀏覽並選好這一份' })}
+              </Button>
+              <Button size="sm" icon={<PlayIcon />} href={href(`/exam/${d.id}/`)}>
                 {t({ id: 'exam.deck.practise', message: '練這份講義', comment: '講義卡的按鈕' })}
               </Button>
             </div>
@@ -334,6 +431,25 @@ export default function Exam() {
           </Card>
         );
       })}
+
+      <p className="ll-exam-hero__note" data-testid="exam-notes">
+        <Trans id="exam.note.records" comment="苦練首頁頁尾的說明：兩種紀錄各自存在哪裡">
+          作答的紀錄存在這台裝置上，匯出備份時會一起帶走；已讀的紀錄目前只在這台裝置，還不會跟著備份。
+        </Trans>
+        {locale !== 'zh-TW' && (
+          <>
+            {' '}
+            <Trans id="exam.note.zhOnly" comment="英文站多一句：題目只有中文">
+              題庫只有中文。
+            </Trans>
+          </>
+        )}
+      </p>
+      <p className="ll-exam-hero__licence">
+        <Trans id="exam.licence" comment="授權標示（D6、2026-11-04 老師同意）">
+          題目經陳彥宏老師授權使用。
+        </Trans>
+      </p>
     </>
   );
 }

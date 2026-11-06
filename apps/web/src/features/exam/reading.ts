@@ -9,6 +9,26 @@ export const ALL_SCOPE = 'all';
 export type ShowFilter = 'all' | 'unread' | 'read';
 export const parseShow = (v: string | null): ShowFilter => (v === 'unread' || v === 'read' ? v : 'all');
 
+/** 背題瀏覽網址的查詢字串：範圍（全部不寫）、篩選（全部不寫）、關鍵字（空的不寫）、閱讀頁的題目（清單不寫） */
+export function browseParams({
+  scope,
+  show = 'all',
+  find = '',
+  q = null,
+}: {
+  scope: string;
+  show?: ShowFilter;
+  find?: string;
+  q?: string | null;
+}): Record<string, string> {
+  return {
+    ...(scope === ALL_SCOPE ? {} : { deck: scope }),
+    ...(show === 'all' ? {} : { show }),
+    ...(find.trim() === '' ? {} : { find }),
+    ...(q === null ? {} : { q }),
+  };
+}
+
 const sortedDecks = (index: HandoutManifestEntry) => [...index.decks].sort((a, b) => a.order - b.order);
 
 /** 網址給的範圍不是現有的講義時當作全部 */

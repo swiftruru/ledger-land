@@ -215,6 +215,12 @@ msgstr "上一題"
 msgid "backup.status.lastExport"
 msgstr "上次匯出"
 
+#. 苦練首頁第 3 步：上一次交卷的成績；數字已格式化
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.last"
+msgstr "上次模擬考：答對 {mockCorrect}／{mockTotal} 題"
+
 #. 背題瀏覽的題目列：上次停在這一題
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
@@ -310,6 +316,12 @@ msgstr "交卷"
 msgid "stack.node.zustand.role"
 msgstr "作答中的狀態放在這裡，不綁在網址上，所以切換語言或回上一頁都不會重來。"
 
+#. 苦練首頁頁尾的說明：兩種紀錄各自存在哪裡
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.note.records"
+msgstr "作答的紀錄存在這台裝置上，匯出備份時會一起帶走；已讀的紀錄目前只在這台裝置，還不會跟著備份。"
+
 #. 備份頁作答紀錄膠囊下面的短標籤
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -357,12 +369,6 @@ msgstr "例如：毛利率、存貨"
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.filter"
 msgstr "依原因篩選"
-
-#. 苦練首頁入口的說明：背題瀏覽（還沒讀過）
-#. js-lingui-explicit-id
-#: src/pages/Exam.tsx
-msgid "exam.more.browse"
-msgstr "依講義列出全部題目，點進去一題一題讀；可以遮住答案，也可以列印。"
 
 #. 背題瀏覽頁開頭的說明
 #. js-lingui-explicit-id
@@ -441,6 +447,12 @@ msgstr "備份碼已複製，貼到另一台裝置或 App 的「貼上備份碼�
 msgid "backup.import.codeLong"
 msgstr "備份碼比預期長，貼上時請確認沒有夾帶其他文字。"
 
+#. 苦練首頁第 3 步的說明
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.desc"
+msgstr "像考試一樣：作答中不顯示對錯，交卷後一次看成績與解析。範圍、題數與每題時間自己選。"
+
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.storage"
@@ -458,6 +470,12 @@ msgstr "先練幾題，答錯的題會集中到這裡。"
 #: src/pages/Backup.tsx
 msgid "backup.toApp.step1"
 msgstr "先複製備份碼。"
+
+#. 苦練首頁第 1 步的標題（背題瀏覽）
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.read.title"
+msgstr "先讀題"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -595,11 +613,29 @@ msgstr "再練錯的（{0} 題）"
 msgid "exam.mock.again"
 msgstr "再考一次"
 
+#. 苦練首頁第 2 步的標題（作答練習）
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.practise.title"
+msgstr "再自己練"
+
+#. 苦練首頁第 1 步的按鈕：全部讀完了，回到題目清單
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.read.again"
+msgstr "再讀一次"
+
 #. updated 是已依語言格式化的日期
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
 msgid "privacy.updatedOn"
 msgstr "最後更新：{updated}"
+
+#. 苦練首頁第 3 步的標題
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.title"
+msgstr "最後模擬考"
 
 #. 背題瀏覽頁工具列的按鈕：列印目前顯示的題目
 #. js-lingui-explicit-id
@@ -737,6 +773,12 @@ msgstr "可以。Service Worker 已經把這一頁存好了，離線也讀得到
 msgid "stack.node.pwa.role"
 msgstr "可以加到主畫面、離線也能開。有新版本時會問你，不會偷偷換掉。"
 
+#. 苦練首頁：三張講義卡上面的標題
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.decks.title"
+msgstr "各份講義"
+
 #. 講義卡的展開列：列出這份講義的各段
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -780,6 +822,12 @@ msgstr "回到期中考苦練"
 #: src/pages/ExamRun.tsx
 msgid "exam.run.home"
 msgstr "回到苦練首頁"
+
+#. 苦練首頁第 3 步的按鈕：有還沒交卷的模擬考
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.resume"
+msgstr "回到進行中的模擬考"
 
 #. 苦練區頁首返回按鈕的可讀名稱（苦練區在 Tab bar 的「闖關」底下）
 #. js-lingui-explicit-id
@@ -1045,17 +1093,17 @@ msgstr "已讀 {a}／{b}"
 msgid "exam.browse.count"
 msgstr "已讀 {a}／{b} 題"
 
-#. 苦練首頁入口的說明：背題瀏覽讀了幾題、上次讀到哪一份講義；數字已格式化，browseCode 是講義編號
+#. 講義卡的進度：背題瀏覽讀了幾題、作答練過幾題、熟練（連續答對兩次）幾題；數字已格式化
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
-msgid "exam.more.browse.last"
-msgstr "已讀 {browseRead}／{browseTotal} 題，上次讀到講義 {browseCode}。"
+msgid "exam.deck.counts"
+msgstr "已讀 {deckRead}／{deckTotal} 題，練過 {deckPractised}／{deckTotal} 題，熟練 {deckMastered}"
 
-#. 苦練首頁入口的說明：背題瀏覽讀了幾題；數字已格式化
+#. 苦練首頁第 1 步的進度；數字已格式化
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
-msgid "exam.more.browse.count"
-msgstr "已讀 {browseRead}／{browseTotal} 題。"
+msgid "exam.step.read.count"
+msgstr "已讀 {readText}／{totalText} 題"
 
 #. 背題瀏覽：已讀紀錄的保存範圍
 #. js-lingui-explicit-id
@@ -1137,6 +1185,30 @@ msgstr "建置"
 msgid "stack.node.node.role"
 msgstr "建置與測試在它上面跑；網站本身不需要伺服器。"
 
+#. 苦練首頁：建議的步驟（已經讀過或練過）
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.next"
+msgstr "建議下一步"
+
+#. 苦練首頁：建議的步驟（什麼都還沒做）
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.start"
+msgstr "建議從這裡開始"
+
+#. 苦練首頁：建議的步驟（讀過一些、還沒作答）
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.resume"
+msgstr "建議接著讀"
+
+#. 苦練首頁：建議的順序，對應下面三張步驟卡
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.route"
+msgstr "建議的順序：先讀題，再自己練，最後模擬考。"
+
 #. 彩蛋進度膠囊；foundText、totalText 已格式化
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -1163,6 +1235,12 @@ msgstr "從報表倒著看"
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
 msgid "exam.browse.start.go"
+msgstr "從第一題開始讀"
+
+#. 苦練首頁第 1 步的按鈕：還沒讀過
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.read.go"
 msgstr "從第一題開始讀"
 
 #. 模擬考設定畫面開頭的說明
@@ -1206,12 +1284,6 @@ msgstr "情境"
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.title"
 msgstr "想請教老師的題目"
-
-#. 苦練首頁入口的說明：錯題與不熟的清單
-#. js-lingui-explicit-id
-#: src/pages/Exam.tsx
-msgid "exam.more.list"
-msgstr "慢慢看答錯過與還沒連對兩次的題，連同你上次選的答案與解析。"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -1392,6 +1464,12 @@ msgstr "接著讀"
 msgid "exam.browse.resume.go"
 msgstr "接著讀"
 
+#. 苦練首頁第 1 步的按鈕：回到上次的進度；readCode 是講義編號
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.read.resume"
+msgstr "接著讀（講義 {readCode}）"
+
 #. 背題瀏覽的結束卡：去下一份講義的清單；nextCode 是講義編號
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseReader.tsx
@@ -1537,12 +1615,6 @@ msgstr "更多"
 msgid "settings.more"
 msgstr "更多"
 
-#. 苦練首頁：主卡下面的入口清單標題
-#. js-lingui-explicit-id
-#: src/pages/Exam.tsx
-msgid "exam.more.title"
-msgstr "更多練法"
-
 #. 設計堅持那一節最後一句；<0> 是連到「關於系統設計」的連結
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -1641,7 +1713,6 @@ msgstr "格式不是 LedgerLand 備份。"
 
 #. 模擬考頁的標題；苦練首頁的入口也用這個名稱
 #. js-lingui-explicit-id
-#: src/pages/Exam.tsx
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.title"
 msgstr "模擬考"
@@ -1990,11 +2061,23 @@ msgstr "看全部錯過與還不熟的題"
 msgid "settings.protect.install"
 msgstr "看安裝教學"
 
+#. 苦練首頁第 3 步的按鈕：上一次已經交卷
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.result"
+msgstr "看成績，或再考一次"
+
 #. 背題瀏覽頁：答案遮住時，只掀開這一題
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseReader.tsx
 msgid "exam.browse.reveal"
 msgstr "看答案"
+
+#. 苦練首頁第 2 步最下面的連結：錯題與不熟的清單
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.practise.list"
+msgstr "看答錯與還不熟的題"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -2038,6 +2121,12 @@ msgstr "第 {chapterNo} 章"
 #: src/features/badges/BadgesSection.tsx
 msgid "badges.eyebrow.chapter"
 msgstr "第 {chapterNo} 章：{title}"
+
+#. 苦練首頁步驟卡的小標；stepNo 是 1 到 3
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.no"
+msgstr "第 {stepNo} 步"
 
 #. 模擬考逐題清單的標籤
 #. js-lingui-explicit-id
@@ -2157,12 +2246,6 @@ msgstr "線條圖示。建置時直接寫進頁面，不另外發請求，也不
 msgid "exam.summary.done"
 msgstr "練完這一輪"
 
-#. 主卡下方的說明：紀錄只在這台裝置
-#. js-lingui-explicit-id
-#: src/pages/Exam.tsx
-msgid "exam.note.device"
-msgstr "練習紀錄存在這台裝置上，匯出備份時會一起帶走。"
-
 #. 清單頁的按鈕：把目前這一組拿去練；count 已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(count[filter])
@@ -2183,15 +2266,6 @@ msgstr "練這份講義"
 #: src/pages/Exam.tsx
 msgid "exam.section.count"
 msgstr "練過 {0}／{1} 題"
-
-#. 講義卡的進度；熟練是連續答對兩次的題數；數字已格式化
-#. js-lingui-explicit-id
-#. placeholder {0}: n(ds.practised)
-#. placeholder {1}: n(ds.total)
-#. placeholder {2}: n(ds.mastered)
-#: src/pages/Exam.tsx
-msgid "exam.deck.count"
-msgstr "練過 {0}／{1} 題，熟練 {2}"
 
 #. 主卡進度；熟練是連續答對兩次的題數；數字都已格式化
 #. js-lingui-explicit-id
@@ -2242,7 +2316,6 @@ msgstr "聯絡方式"
 #. 背題瀏覽頁的標題
 #. 背題瀏覽頁的標題
 #. js-lingui-explicit-id
-#: src/pages/Exam.tsx
 #: src/pages/ExamBrowse.tsx
 msgid "exam.browse.title"
 msgstr "背題瀏覽"
@@ -2259,11 +2332,11 @@ msgstr "自動"
 msgid "stack.node.web-ui.role"
 msgstr "自家的設計系統：按鈕、選單列、面板、徽章全站只有這一套，所以每個可以點的東西長得都一樣。"
 
-#. 苦練首頁入口的說明：模擬考
+#. 苦練首頁第 2 步的說明
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
-msgid "exam.more.mock"
-msgstr "自己選範圍、題數與每題時間；作答中不顯示對錯，交卷後一次看成績與解析。"
+msgid "exam.step.practise.desc"
+msgstr "自己作答，答完馬上看對錯與解析；答錯的題會留下來，之後可以只練那些。"
 
 #. 練習頁頁首返回按鈕上的短字（必須是「回到期中考苦練」的一部分）
 #. js-lingui-explicit-id
@@ -2427,13 +2500,6 @@ msgstr "講義 {0}"
 msgid "exam.teacher.slide"
 msgstr "講義 {0} 第 {1} 頁"
 
-#. 苦練首頁主卡的標題；count 是收錄的題數（已格式化）
-#. js-lingui-explicit-id
-#. placeholder {0}: n(bank.questionCount)
-#: src/pages/Exam.tsx
-msgid "exam.hero.title"
-msgstr "講義 {0} 題"
-
 #. 背題瀏覽：一份講義全部已讀
 #. 背題瀏覽：一份講義全部已讀
 #. js-lingui-explicit-id
@@ -2485,6 +2551,12 @@ msgstr "讀完了"
 #: src/features/exam/BrowseReader.tsx
 msgid "exam.browse.done"
 msgstr "讀完了，下一題"
+
+#. 講義卡的按鈕：到背題瀏覽並選好這一份
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.deck.read"
+msgstr "讀這份講義"
 
 #. 背題瀏覽：遮住答案開關的說明
 #. js-lingui-explicit-id
@@ -2763,11 +2835,23 @@ msgstr "還沒有不熟的題"
 msgid "exam.run.emptyWrong"
 msgstr "還沒有錯過的題"
 
+#. 苦練首頁第 1 步的說明
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.read.desc"
+msgstr "還沒看過題目的話從這裡開始：題目、正解與解析一起看，一次一題，不用先作答。可以用關鍵字找題，也可以遮住答案或列印。"
+
 #. 主卡進度：這台裝置還沒練過任何一題
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
 msgid "exam.hero.untouched"
 msgstr "還沒開始練"
+
+#. 苦練首頁第 1 步的進度：還沒讀過任何一題
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.read.untouched"
+msgstr "還沒開始讀"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2820,10 +2904,15 @@ msgstr "錯過的題"
 
 #. 錯題與不熟的清單頁的標題
 #. js-lingui-explicit-id
-#: src/pages/Exam.tsx
 #: src/pages/ExamList.tsx
 msgid "exam.list.title"
 msgstr "錯過與還不熟的題"
+
+#. 苦練首頁第 3 步的按鈕
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.go"
+msgstr "開始模擬考"
 
 #. 模擬考設定畫面的主按鈕
 #. js-lingui-explicit-id
@@ -2991,6 +3080,12 @@ msgstr "題庫載入不到"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.count"
 msgstr "題數"
+
+#. 苦練首頁第 1 步的次要按鈕：背題瀏覽的清單
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.read.list"
+msgstr "題目清單與搜尋"
 
 #. 授權標示（D6、2026-11-04 老師同意）
 #. js-lingui-explicit-id

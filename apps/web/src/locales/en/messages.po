@@ -464,6 +464,18 @@ msgstr "See the glossary first"
 msgid "lab.home.startDemo"
 msgstr "Watch the demo first"
 
+#. 首頁苦練入口卡的說明
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.exam.desc"
+msgstr "Read the questions, practise, then take a mock exam; word for word from the handouts"
+
+#. 「我的」學習群組苦練列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.exam.desc"
+msgstr "Read the questions, practise, then take a mock exam; word for word from the handouts"
+
 #. 依名稱排序、不分組時的標題
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -2638,18 +2650,6 @@ msgstr "About and licences"
 #: src/components/InstallPrompt.tsx
 msgid "install.laterA11y"
 msgstr "Close the install suggestion for now"
-
-#. 首頁苦練入口卡的說明
-#. js-lingui-explicit-id
-#: src/pages/Home.tsx
-msgid "home.exam.desc"
-msgstr "Practice questions from the teacher’s handouts, word for word"
-
-#. 「我的」學習群組苦練列的說明
-#. js-lingui-explicit-id
-#: src/pages/Me.tsx
-msgid "me.exam.desc"
-msgstr "Practice questions from the teacher’s handouts, word for word"
 
 #. 「我的」連到隱私說明
 #. js-lingui-explicit-id

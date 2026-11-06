@@ -45,6 +45,7 @@ const STATES: readonly PageCase[] = [
   caseByName('作答', '答錯'),
   caseByName('作答', '名詞小卡'),
   caseByName('作答', '結果頁'),
+  caseByName('苦練', '首頁（讀過）'),
   caseByName('苦練', '模擬考中'),
   caseByName('苦練', '模擬考成績'),
   caseByName('苦練', '背題搜尋'),

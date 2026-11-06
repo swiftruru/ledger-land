@@ -411,7 +411,21 @@ export const CASES: readonly PageCase[] = [
 
   // 錯題本
   // 期中考苦練（M4c）：首頁、練習中、確認答案後、老師審核頁；題目是講義原文（只有中文）
-  { group: '苦練', name: '首頁', path: '/exam/', tablet: true, prepare: (page) => visible(page, 'exam-hero') },
+  { group: '苦練', name: '首頁', path: '/exam/', tablet: true, prepare: (page) => visible(page, 'exam-step-read') },
+  // 三步的首頁（2026-11-06）：讀過一題之後，第 1 步是「接著讀」
+  {
+    group: '苦練',
+    name: '首頁（讀過）',
+    path: '/exam/',
+    tablet: true,
+    prepare: async (page) => {
+      await page.getByTestId('exam-read-go').click();
+      await page.getByTestId('exam-reader-done').click();
+      await expect(page.getByTestId('exam-reader-pos')).toContainText(/^(第 2／|Question 2 of )/);
+      await page.goBack();
+      await expect(page.getByTestId('exam-read-count')).toContainText(/已讀 1／|Read 1 of /);
+    },
+  },
   { group: '苦練', name: '練習中', path: '/exam/d1s1/', prepare: (page) => expect(question(page)).toBeVisible() },
   {
     group: '苦練',

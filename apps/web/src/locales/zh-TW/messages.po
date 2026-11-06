@@ -464,6 +464,18 @@ msgstr "先看名詞圖鑑"
 msgid "lab.home.startDemo"
 msgstr "先看示範"
 
+#. 首頁苦練入口卡的說明
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.exam.desc"
+msgstr "先讀題、再練習、最後模擬考；題目與答案照講義"
+
+#. 「我的」學習群組苦練列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.exam.desc"
+msgstr "先讀題、再練習、最後模擬考；題目與答案照講義"
+
 #. 依名稱排序、不分組時的標題
 #. js-lingui-explicit-id
 #: src/pages/Terms.tsx
@@ -2638,18 +2650,6 @@ msgstr "關於與授權"
 #: src/components/InstallPrompt.tsx
 msgid "install.laterA11y"
 msgstr "關閉安裝建議，之後再說"
-
-#. 首頁苦練入口卡的說明
-#. js-lingui-explicit-id
-#: src/pages/Home.tsx
-msgid "home.exam.desc"
-msgstr "陳老師講義的練習題，題目與答案照講義"
-
-#. 「我的」學習群組苦練列的說明
-#. js-lingui-explicit-id
-#: src/pages/Me.tsx
-msgid "me.exam.desc"
-msgstr "陳老師講義的練習題，題目與答案照講義"
 
 #. 「我的」連到隱私說明
 #. js-lingui-explicit-id

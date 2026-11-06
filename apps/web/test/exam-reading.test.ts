@@ -4,6 +4,7 @@ import type { HandoutManifestEntry } from '../src/lib/content.ts';
 import { getExamReadDb, indexedDbExamReadDb, memoryExamReadDb, setExamReadDbForTests, type ReadMark } from '../src/features/exam/read-db.ts';
 import {
   ALL_SCOPE,
+  browseParams,
   EMPTY_POS,
   encodeBrowsePos,
   lastIn,
@@ -74,6 +75,15 @@ describe('背題瀏覽：範圍與已讀', () => {
     expect(visibleIds(ids, read, 'all')).toEqual(['hq_a', 'hq_b', 'hq_c']);
     expect(visibleIds(ids, read, 'unread')).toEqual(['hq_a', 'hq_c']);
     expect(visibleIds(ids, read, 'read')).toEqual(['hq_b']);
+  });
+});
+
+describe('背題瀏覽：網址的查詢字串', () => {
+  it('預設的值都不寫；有的才寫', () => {
+    expect(browseParams({ scope: ALL_SCOPE })).toEqual({});
+    expect(browseParams({ scope: 'd2' })).toEqual({ deck: 'd2' });
+    expect(browseParams({ scope: 'd2', show: 'unread', find: '現金 存貨', q: 'hq_d' })).toEqual({ deck: 'd2', show: 'unread', find: '現金 存貨', q: 'hq_d' });
+    expect(browseParams({ scope: ALL_SCOPE, show: 'all', find: '   ', q: null })).toEqual({});
   });
 });
 
