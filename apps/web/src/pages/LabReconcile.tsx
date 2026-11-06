@@ -11,6 +11,7 @@ import { CheckLights } from '../features/lab/CheckLights.tsx';
 import { lineAt, useLabLabels } from '../features/lab/labels.ts';
 import { saveReconcile } from '../features/lab/progress.ts';
 import { StatementTable } from '../features/lab/StatementTable.tsx';
+import { StepPicker, type StepPickState } from '../features/lab/StepPicker.tsx';
 import { useFirstStoryId } from '../features/lab/useFirstStory.ts';
 import { useLabStory } from '../features/lab/useLab.ts';
 import { TermsProvider, useTerms } from '../features/quiz/terms.tsx';
@@ -92,6 +93,8 @@ function ReconcileBody({ lab }: { lab: Ok }) {
   const [values, setValues] = useState<Record<string, string>>({});
   const [hints, setHints] = useState<Record<string, number>>({});
   const [done, setDone] = useState(false);
+  // 這次開頁之後才完成的步驟（選步驟的面板要馬上亮起來，不等下次讀進度）
+  const [finished, setFinished] = useState<Record<string, StepPickState>>({});
   const layout = run.ctx.layout;
   const { lineLabel } = useLabLabels(layout);
   usePageReady(ready);
@@ -118,12 +121,11 @@ function ReconcileBody({ lab }: { lab: Ok }) {
   const complete = () => {
     if (done) return;
     setDone(true);
-    void saveReconcile(story.id, stepId, {
-      done: true,
-      sawAnswer: Object.entries(hints)
-        .filter(([, n]) => n >= 3)
-        .map(([id]) => id),
-    });
+    const sawAnswer = Object.entries(hints)
+      .filter(([, n]) => n >= 3)
+      .map(([id]) => id);
+    setFinished((f) => ({ ...f, [stepId]: sawAnswer.length > 0 ? 'peeked' : 'done' }));
+    void saveReconcile(story.id, stepId, { done: true, sawAnswer });
   };
   if (allPass && !done) complete();
   const pick = (id: string) => {
@@ -164,6 +166,12 @@ function ReconcileBody({ lab }: { lab: Ok }) {
       </span>
     );
   }
+  const saved = lab.progress.progress.reconciled;
+  const pickItems = steps.map((s) => {
+    const r = saved[s.id];
+    const state: StepPickState = finished[s.id] ?? (r?.done ? (r.sawAnswer.length > 0 ? 'peeked' : 'done') : 'todo');
+    return { id: s.id, order: s.order, title: s.title, state };
+  });
   const firstFailed = check.firstFailedStep;
   const nextStepId = run.stepIds[step.index + 1];
   return (
@@ -174,16 +182,7 @@ function ReconcileBody({ lab }: { lab: Ok }) {
         </Trans>
       </p>
       <div className="ll-lab-reconcile__controls">
-        <label className="ll-lab-reconcile__pick">
-          {t({ id: 'lab.reconcile.pick', message: '故事的哪一步之後', comment: '選步驟的下拉選單名稱' })}
-          <select value={stepId} onChange={(e) => pick(e.target.value)} data-testid="lab-reconcile-step">
-            {steps.map((s) => (
-              <option key={s.id} value={s.id}>
-                {t({ id: 'lab.story.stepN', message: `第 ${s.order} 步` })} {s.title}
-              </option>
-            ))}
-          </select>
-        </label>
+        <StepPicker steps={pickItems} value={stepId} onPick={pick} />
         <Switch
           checked={advanced}
           onChange={setAdvanced}

@@ -348,6 +348,65 @@ test.describe('勾稽練習', () => {
     await expect(page.getByTestId('lab-reconcile-done')).toBeVisible();
   });
 
+  test('選一步：按鈕打開面板，選了就換步驟、焦點回到按鈕；練完的步驟在面板裡標出來，重新載入後還在', async ({ page }) => {
+    // 2026-11-06：原生下拉選單換成面板（Sheet 加 NavRow）。看得到的號碼牌是裝飾，可讀名稱用「第 n 步」開頭
+    await page.goto(`/lab/reconcile/?step=${STEP7}`);
+    await waitForApp(page);
+    const trigger = page.getByTestId('lab-reconcile-step');
+    const sheet = page.getByTestId('lab-step-sheet');
+    await expect(trigger).toHaveAccessibleName(/^第 7 步/);
+    await trigger.click();
+    await expect(sheet).toBeVisible();
+    await expect(sheet.getByRole('listitem')).toHaveCount(18);
+    await expect(page.getByTestId('lab-step-option-7')).toHaveAttribute('aria-current', 'location');
+    await expect(page.getByTestId('lab-step-option-7')).toContainText('目前');
+    // Esc 關閉，焦點回到按鈕，步驟沒有變
+    await page.keyboard.press('Escape');
+    await expect(sheet).toBeHidden();
+    await expect(trigger).toBeFocused();
+    await expect(trigger).toHaveAccessibleName(/^第 7 步/);
+    // 選第 3 步：面板關閉、按鈕換成第 3 步、網址帶著那一步、焦點回到按鈕
+    await trigger.click();
+    await page.getByTestId('lab-step-option-3').click();
+    await expect(sheet).toBeHidden();
+    await expect(trigger).toHaveAccessibleName(/^第 3 步/);
+    await expect(trigger).toBeFocused();
+    await expect(page).toHaveURL(/[?&]step=/);
+    await expect(page).not.toHaveURL(new RegExp(`step=${STEP7}`));
+    // 用第三層提示填完第 3 步
+    for (const id of ['cf_pretax_income', 'bs_cash', 'bs_retained_earnings']) {
+      const cell = page.getByTestId(`lab-cell-${id}`);
+      const hint = cell.getByRole('button', { name: /提示/ });
+      await hint.click();
+      await hint.click();
+      await hint.click();
+      const answer = ((await cell.getByRole('status').textContent()) ?? '').replace(/[^0-9-]/g, '');
+      await cell.getByRole('textbox').fill(answer);
+    }
+    await expect(page.getByTestId('lab-reconcile-done')).toBeVisible();
+    // 換到別的步驟再打開：第 3 步標「看過答案」，副標數到 1 步
+    await trigger.click();
+    await page.getByTestId('lab-step-option-4').click();
+    await trigger.click();
+    await expect(page.getByTestId('lab-step-option-3')).toContainText('看過答案');
+    await expect(sheet).toContainText('已經練過 1／18 步');
+    await page.keyboard.press('Escape');
+    // 重新載入後從存下來的進度讀回來（寫入是非同步的，還沒寫完就再載入一次）
+    await expect
+      .poll(
+        async () => {
+          await page.goto(`/lab/reconcile/?step=${STEP7}`);
+          await waitForApp(page);
+          await trigger.click();
+          const text = (await page.getByTestId('lab-step-option-3').textContent()) ?? '';
+          await page.keyboard.press('Escape');
+          return text;
+        },
+        { timeout: 20_000 },
+      )
+      .toContain('看過答案');
+  });
+
   test('三張表不必左右捲：進階模式開更多格子後，每張表的內容都不比自己的欄位寬，整頁也不橫向捲', async ({ page }) => {
     // 2026-11-06：輸入列原本是「名稱一格、輸入框一格」，把表格撐得比欄位寬，三表並排時每張表都要左右捲才看得到金額
     await page.goto(`/lab/reconcile/?step=${STEP7}`);

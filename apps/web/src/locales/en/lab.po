@@ -415,6 +415,12 @@ msgstr "A ratio it relies on is N/A"
 msgid "lab.ratio.reason.chainedNaOrZero"
 msgstr "A ratio it relies on is N/A or 0"
 
+#. 選步驟面板：這一步的勾稽練習全部相符
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.done"
+msgstr "Done"
+
 #. 最後一個階段的主按鈕
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
@@ -445,6 +451,13 @@ msgstr "Left equals right"
 #: src/features/lab/CheckLights.tsx
 msgid "lab.check.fail"
 msgstr "Off by {0}"
+
+#. 勾稽練習選步驟的面板副標；兩個數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: steps.length
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.progress"
+msgstr "{done} of {0} steps practised"
 
 #. 記下預測後的播報
 #. js-lingui-explicit-id
@@ -577,11 +590,17 @@ msgstr "Story"
 msgid "lab.step.back.short"
 msgstr "Story"
 
-#. 選步驟的下拉選單名稱
+#. 選步驟的按鈕上方的說明
 #. js-lingui-explicit-id
-#: src/pages/LabReconcile.tsx
+#: src/features/lab/StepPicker.tsx
 msgid "lab.reconcile.pick"
 msgstr "After which step of the story"
+
+#. 勾稽練習選步驟面板裡清單的可讀名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.list"
+msgstr "Steps of the story"
 
 #. 預測面板的主按鈕（已記過一次）
 #. js-lingui-explicit-id
@@ -725,6 +744,12 @@ msgstr "Cash flow"
 msgid "lab.stage.cashflow"
 msgstr "Cash flow statement"
 
+#. 選步驟面板：現在正在練的這一步
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.current"
+msgstr "Current"
+
 #. 步驟狀態
 #. js-lingui-explicit-id
 #: src/pages/LabStory.tsx
@@ -800,6 +825,12 @@ msgstr "Show statements"
 msgid "lab.story.seen"
 msgstr "Watched the demo"
 
+#. 選步驟面板：這一步完成了，但有格子用過第三層提示
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.peeked"
+msgstr "Saw the answer"
+
 #. 模式名稱：沒有預測、可以隨時跳階段
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
@@ -839,7 +870,7 @@ msgstr "Profit before tax"
 #. 步驟編號（螢幕閱讀器）
 #. js-lingui-explicit-id
 #. placeholder {0}: s.order
-#: src/pages/LabReconcile.tsx
+#: src/features/lab/StepPicker.tsx
 #: src/pages/LabStory.tsx
 msgid "lab.story.stepN"
 msgstr "Step {0}"
@@ -1149,6 +1180,12 @@ msgstr "This transaction never touches the income statement, so all five profit 
 #: src/pages/LabReconcile.tsx
 msgid "lab.reconcile.advanced"
 msgstr "Advanced mode (more cells to fill)"
+
+#. 勾稽練習選步驟的面板標題
+#. js-lingui-explicit-id
+#: src/features/lab/StepPicker.tsx
+msgid "lab.reconcile.sheet.title"
+msgstr "Pick a step to practise"
 
 #. 小螢幕切換三表的分段控制名稱
 #. js-lingui-explicit-id
