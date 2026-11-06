@@ -20,7 +20,7 @@
   <img src="docs/readme/badges/zh-questions.svg" height="26" alt="原創題目：281 題" />
   <img src="docs/readme/badges/zh-terms.svg" height="26" alt="名詞圖鑑：163 個名詞" />
   <img src="docs/readme/badges/zh-lab.svg" height="26" alt="報表實驗室：18 步故事" />
-  <img src="docs/readme/badges/zh-drill.svg" height="26" alt="期中考苦練：講義 300 題" />
+  <img src="docs/readme/badges/zh-drill.svg" height="26" alt="期中考苦練：講義 307 題" />
 </p>
 
 [![CI](https://github.com/swiftruru/ledger-land/actions/workflows/ci.yml/badge.svg)](https://github.com/swiftruru/ledger-land/actions/workflows/ci.yml)
@@ -74,7 +74,7 @@ LedgerLand 會計樂園是給會計新手的學習網站：公開、開源、手
     <td valign="top">14 章 47 關、281 題原創題目。答完立刻有解說；答錯的題收進錯題本，隔幾天再回來找你。</td>
     <td valign="top">一家公司的 18 筆交易，一步一步看它怎麼流進損益表、現金流量表與資產負債表。也可以自己改數字做實驗。</td>
     <td valign="top">163 個名詞，在關卡裡遇到就收進圖鑑。每張卡有白話的解釋，並對照教材與 IFRS 的用語。</td>
-    <td valign="top">陳彥宏老師三份講義的 300 題練習題原文：照順序練、隨機抽、模擬考、背題瀏覽，錯過與還不熟的題另外收好。</td>
+    <td valign="top">陳彥宏老師三份講義的 307 題練習題原文：照順序練、隨機抽、模擬考、背題瀏覽，錯過與還不熟的題另外收好。</td>
   </tr>
 </table>
 

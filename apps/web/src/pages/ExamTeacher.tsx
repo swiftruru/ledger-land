@@ -33,8 +33,13 @@ export default function ExamTeacher() {
 
   const reasonLabel: Record<Exclude<Filter, 'all'>, string> = {
     conflicting_answer: t({ id: 'exam.teacher.reason.conflict', message: '兩份講義答案不同', comment: '審核頁的原因標籤' }),
-    explanation_issue: t({ id: 'exam.teacher.reason.explanation', message: '解析有誤', comment: '審核頁的原因標籤：解析有錯字或和公式不合' }),
-    check: t({ id: 'exam.teacher.reason.check', message: '已收錄，請老師確認', comment: '審核頁的原因標籤：題目照收，但想請老師看一眼' }),
+    // 這一頁是給老師看的：用請教的語氣，不寫「解析有誤」「不收」這種下判斷的字（2026-11-06）
+    explanation_issue: t({
+      id: 'exam.teacher.reason.explanation',
+      message: '還沒收錄，想請教',
+      comment: '給老師的頁面的分類標籤：我對解析有疑問、還沒放進苦練區的題；語氣是請教，不是指正',
+    }),
+    check: t({ id: 'exam.teacher.reason.check', message: '已收錄，想請教', comment: '給老師的頁面的分類標籤：已經放進苦練區，但想請老師看看的題' }),
   };
   const byId = useMemo(() => new Map(state.kind === 'ok' ? state.review.questions.map((q) => [q.id, q] as const) : []), [state]);
   const deckOf = (q: HandoutReviewQuestion) => (state.kind === 'ok' ? state.review.decks.find((d) => d.id === q.deck) : undefined);
@@ -42,7 +47,7 @@ export default function ExamTeacher() {
 
   const topBar = (
     <TopBar
-      title={t({ id: 'exam.teacher.title', message: '講義題庫審核', comment: '老師審核頁的標題' })}
+      title={t({ id: 'exam.teacher.title', message: '想請教老師的題目', comment: '給老師的頁面的標題；不用「審核」這種字' })}
       titleId="ll-exam-teacher-title"
       backHref={localePath(locale, '/exam/')}
       backLabel={t({ id: 'exam.run.back', message: '回到期中考苦練' })}
@@ -81,16 +86,23 @@ export default function ExamTeacher() {
       {topBar}
       <div className="ll-exam-teacher">
         <p className="ll-exam-intro">
-          <Trans id="exam.teacher.intro" comment="審核頁開頭給老師的說明">
-            這一頁列出我沒有收進苦練區的題目與原因，以及幾題照收但想請老師看一眼的題。題目、選項、解答與解析都是講義原文，只加了我的說明。這個網址沒有放在網站的任何地方，只給老師。
+          <Trans id="exam.teacher.intro" comment="給老師的頁面開頭的話：謙遜、請教的語氣">
+            老師好，這一頁整理了我還沒放進苦練區的題目，以及幾題已經放進去、但想請老師幫忙看看的題。題目、選項、解答與解析都是講義原文，我只在每一題下面寫了自己的想法；很可能是我理解得不夠，還請老師指正。這個網址沒有放在網站的任何地方，只給老師。
           </Trans>
         </p>
         <p className="ll-exam-teacher__stats ll-num" data-testid="exam-teacher-stats">
-          {t({
-            id: 'exam.teacher.stats',
-            message: `收錄 ${n(index.questionCount)} 題；不收 ${n(index.review.excluded)} 題（答案不同 ${n(counts.conflicting_answer)}、解析有誤 ${n(counts.explanation_issue)}）；請老師確認 ${n(counts.check)} 題。`,
-            comment: '審核頁的統計；數字都已格式化',
-          })}
+          {/* 沒有「兩份講義答案不同」的題時（2026-11-06 重新審過後是 0 題），統計與篩選都不列這一類，免得老師看到一個 0 */}
+          {counts.conflicting_answer > 0
+            ? t({
+                id: 'exam.teacher.stats',
+                message: `目前收錄 ${n(index.questionCount)} 題；有 ${n(index.review.excluded)} 題我還沒收錄（兩份講義答案不同 ${n(counts.conflicting_answer)}、解析想請教 ${n(counts.explanation_issue)}），想先請教老師；另外 ${n(counts.check)} 題已經收錄，也想請老師看看。`,
+                comment: '給老師的頁面的統計；數字都已格式化',
+              })
+            : t({
+                id: 'exam.teacher.statsNoConflict',
+                message: `目前收錄 ${n(index.questionCount)} 題；有 ${n(index.review.excluded)} 題我還沒收錄，想先請教老師；另外 ${n(counts.check)} 題已經收錄，也想請老師看看。`,
+                comment: '給老師的頁面的統計：沒有「兩份講義答案不同」的題時用這一句；數字都已格式化',
+              })}
         </p>
         <Segmented<Filter>
           value={filter}
@@ -98,7 +110,9 @@ export default function ExamTeacher() {
           label={t({ id: 'exam.teacher.filter', message: '依原因篩選', comment: '審核頁篩選列的可讀名稱' })}
           options={[
             { value: 'all', label: t({ id: 'exam.teacher.filter.all', message: `全部 ${n(review.questions.length)}`, comment: '篩選：全部；count 已格式化' }) },
-            { value: 'conflicting_answer', label: `${reasonLabel.conflicting_answer} ${n(counts.conflicting_answer)}` },
+            ...(counts.conflicting_answer > 0
+              ? [{ value: 'conflicting_answer' as const, label: `${reasonLabel.conflicting_answer} ${n(counts.conflicting_answer)}` }]
+              : []),
             { value: 'explanation_issue', label: `${reasonLabel.explanation_issue} ${n(counts.explanation_issue)}` },
             { value: 'check', label: `${reasonLabel.check} ${n(counts.check)}` },
           ]}
@@ -122,9 +136,12 @@ export default function ExamTeacher() {
                   answerLine={t({ id: 'exam.teacher.answer', message: `講義的解答：${q.answer.join('／')}`, comment: '審核頁：講義標的解答字母' })}
                 >
                   <div className="ll-exam-q__reason">
-                    <p className="ll-exam-q__reason-title">{t({ id: 'exam.teacher.note', message: '我的說明', comment: '審核頁原因框的小標' })}</p>
+                    <p className="ll-exam-q__reason-title">
+                      {t({ id: 'exam.teacher.note', message: '我的想法', comment: '給老師的頁面每一題下面那一框的小標' })}
+                    </p>
                     <p>{q.exclusion.note}</p>
-                    {q.exclusion.related.length > 0 && (
+                    {/* 相關題只連到這一頁上有的題（沒收或請老師確認的）；指到已經收錄的題時不畫，免得只剩一個沒有內容的小標 */}
+                    {q.exclusion.related.some((id) => byId.has(id)) && (
                       <p className="ll-exam-q__related">
                         {t({ id: 'exam.teacher.related', message: '相關的題：', comment: '審核頁原因框：答案不同的另一題的連結前綴' })}
                         {q.exclusion.related.map((id, i) => {

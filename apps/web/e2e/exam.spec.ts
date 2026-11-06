@@ -360,19 +360,33 @@ test.describe('期中考苦練', () => {
     await clearAll(page);
     await page.goto('/exam/teacher/');
     await waitForApp(page);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('講義題庫審核');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('想請教老師的題目');
+    // 「兩份講義答案不同」這一類沒有題目時（2026-11-06 重新審過後是 0 題），統計與篩選都不列它
+    const conflicts = byReason('conflicting_answer');
     await expect(page.getByTestId('exam-teacher-stats')).toHaveText(
-      `收錄 ${idx.questionCount} 題；不收 ${idx.review.excluded} 題（答案不同 ${byReason('conflicting_answer')}、解析有誤 ${byReason('explanation_issue')}）；請老師確認 ${byReason('check')} 題。`,
+      conflicts > 0
+        ? `目前收錄 ${idx.questionCount} 題；有 ${idx.review.excluded} 題我還沒收錄（兩份講義答案不同 ${conflicts}、解析想請教 ${byReason('explanation_issue')}），想先請教老師；另外 ${byReason('check')} 題已經收錄，也想請老師看看。`
+        : `目前收錄 ${idx.questionCount} 題；有 ${idx.review.excluded} 題我還沒收錄，想先請教老師；另外 ${byReason('check')} 題已經收錄，也想請老師看看。`,
     );
     await expect(page.getByTestId('exam-teacher-card')).toHaveCount(review.questions.length);
-    await page.getByRole('radio', { name: /^解析有誤/ }).click();
+    await page.getByRole('radio', { name: /^還沒收錄，想請教/ }).click();
     await expect(page.getByTestId('exam-teacher-card')).toHaveCount(byReason('explanation_issue'));
-    await page.getByRole('radio', { name: /^兩份講義答案不同/ }).click();
-    await expect(page.getByTestId('exam-teacher-card')).toHaveCount(byReason('conflicting_answer'));
+    if (conflicts > 0) {
+      await page.getByRole('radio', { name: /^兩份講義答案不同/ }).click();
+      await expect(page.getByTestId('exam-teacher-card')).toHaveCount(conflicts);
+    } else await expect(page.getByRole('radio', { name: /^兩份講義答案不同/ })).toHaveCount(0);
     const first = page.getByTestId('exam-teacher-card').first();
     await expect(first.locator('.ll-exam-q__option.is-correct')).toHaveCount(1);
-    await expect(first.getByText('我的說明')).toBeVisible();
-    await expect(first.getByRole('link', { name: /解答 [ABC]/ }).first()).toHaveAttribute('href', /#hq_[0-9a-z]{8}$/);
+    await expect(first.getByText('我的想法')).toBeVisible();
+    // 相關題的連結只在有題目互相指向時才有（「兩份講義答案不同」那一類）；現在的資料沒有，這一段跟著資料走
+    if (review.questions.some((q) => q.exclusion.related.length > 0))
+      await expect(
+        page
+          .getByTestId('exam-teacher-card')
+          .getByRole('link', { name: /解答 [ABC]/ })
+          .first(),
+      ).toHaveAttribute('href', /#hq_[0-9a-z]{8}$/);
+    else await expect(page.getByTestId('exam-teacher-card').getByRole('link', { name: /解答 [ABC]/ })).toHaveCount(0);
     // 路由加的 noindex 帶 data-ll（預覽與本機的殼層另有一個全站的 noindex，正式站沒有）
     const routeMeta = page.locator('meta[name="robots"][data-ll]');
     await expect(routeMeta).toHaveAttribute('content', 'noindex');

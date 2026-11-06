@@ -54,7 +54,7 @@ const BADGES = [
   ['questions', 'sparkle', 'mint', ['原創題目', '281 題'], ['Original questions', '281']],
   ['terms', 'heart', 'pink', ['名詞圖鑑', '163 個名詞'], ['Glossary', '163 terms']],
   ['lab', 'coin', 'cream', ['報表實驗室', '18 步故事'], ['Statement lab', '18 story steps']],
-  ['drill', 'book', 'ledger', ['期中考苦練', '講義 300 題'], ['Midterm drill', '300 handout questions']],
+  ['drill', 'book', 'ledger', ['期中考苦練', '講義 307 題'], ['Midterm drill', '307 handout questions']],
   ['a11y', 'sparkle', 'mint', ['無障礙', 'axe 把關'], ['Accessibility', 'checked with axe']],
   ['code', 'coin', 'cream', ['程式碼', 'MIT'], ['Code', 'MIT']],
   ['content', 'heart', 'pink', ['內容', 'CC BY-SA 4.0'], ['Content', 'CC BY-SA 4.0']],

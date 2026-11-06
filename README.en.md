@@ -20,7 +20,7 @@
   <img src="docs/readme/badges/en-questions.svg" height="26" alt="Original questions: 281" />
   <img src="docs/readme/badges/en-terms.svg" height="26" alt="Glossary: 163 terms" />
   <img src="docs/readme/badges/en-lab.svg" height="26" alt="Statement lab: 18 story steps" />
-  <img src="docs/readme/badges/en-drill.svg" height="26" alt="Midterm drill: 300 handout questions" />
+  <img src="docs/readme/badges/en-drill.svg" height="26" alt="Midterm drill: 307 handout questions" />
 </p>
 
 [![CI](https://github.com/swiftruru/ledger-land/actions/workflows/ci.yml/badge.svg)](https://github.com/swiftruru/ledger-land/actions/workflows/ci.yml)
@@ -76,7 +76,7 @@ Switch to the dark theme Night Sky and the lighthouse on the coast of chapter 6 
     <td valign="top">14 chapters, 47 levels and 281 original questions. Every answer gets an explanation straight away; the ones you get wrong go into a review book and come back to find you a few days later.</td>
     <td valign="top">Eighteen transactions of one company, followed step by step into the income statement, the cash flow statement and the balance sheet. You can also change the numbers and experiment.</td>
     <td valign="top">163 terms, collected as you meet them in the levels. Each card has a plain explanation and sets the course wording beside the IFRS wording.</td>
-    <td valign="top">The 300 practice questions from the teacher’s three handouts, word for word (in Chinese only): in order, at random, as a mock exam or as a page to browse, with the ones you missed or have not yet got solid kept aside.</td>
+    <td valign="top">The 307 practice questions from the teacher’s three handouts, word for word (in Chinese only): in order, at random, as a mock exam or as a page to browse, with the ones you missed or have not yet got solid kept aside.</td>
   </tr>
 </table>
 
