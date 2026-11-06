@@ -190,7 +190,7 @@ export default defineConfig({
             // 名詞列表與名詞頁因此多載約 1.5 KB 用不到的元件，換作答頁少 5 個請求、地圖少 6 個）。首頁不載它（殼層入口不 import）
             // 2026-10-25（M3 整合）另外放進來：頁首的 TopBar 與 BackButton（章節頁、名詞頁、子頁都用）、卡片 Card、展開列 Disclosure 與減少動態的判斷（motion.ts，各自不到 1 KB，
             // 單獨成 chunk 時名詞圖鑑、地圖、章節頁第一波各多一個請求）、名詞類別的顯示名稱（useCategoryLabel，名詞圖鑑、名詞頁與作答頁的名詞卡共用）。
-            // tokens 的斷點常數（scale.ts，「我的」頁的 useExpanded 與實驗室的 useWide 都用）、useExpanded 本身與實驗室進度的形狀與讀取（lab/progress-shape.ts，「我的」頁的實驗室一列用）
+            // tokens 的斷點常數（scale.ts，「我的」頁與實驗室的 useExpanded 用）、useExpanded 本身與實驗室進度的形狀與讀取（lab/progress-shape.ts，「我的」頁的實驗室一列用）
             // 也放這裡（2026-11-01，V24）：不放的話前者會被後面的 lab-ui 群組連依賴抓走，「我的」頁為了一個常數要載整個實驗室的 chunk；後兩者落在 shared 時各是一個 0.3 到 1.2 KB 的小 chunk，
             // 步驟頁第一波多兩個請求，而 shared 的 4 KB 合併門檻又可能把它們併回 lab-ui。common 因此從 2.2 KB 變成約 3.3 KB，仍在一次往返送得完的範圍內。
             // 不放的話它們被 quiz-view 群組連依賴一起抓走，名詞圖鑑、名詞頁與章節頁為了一個小函式要在第一波多載 quiz-view、level-view 與 session（約 30 KB gzip）。

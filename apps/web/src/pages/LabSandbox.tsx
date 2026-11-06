@@ -47,7 +47,7 @@ import {
 import { StatementTable } from '../features/lab/StatementTable.tsx';
 import { useFirstStoryId } from '../features/lab/useFirstStory.ts';
 import { useLabStory } from '../features/lab/useLab.ts';
-import { useWide } from '../features/lab/useWide.ts';
+import { useColumnsFit } from '../features/lab/useColumnsFit.ts';
 import { MarkupParagraphs } from '../features/quiz/Markup.tsx';
 import { TermsProvider, useTerms } from '../features/quiz/terms.tsx';
 import { usePageReady } from '../lib/page-ready.tsx';
@@ -112,7 +112,7 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
   const locale = useLocale();
   const [params, setParams] = useSearchParams();
   const { ready } = useTerms();
-  const wide = useWide();
+  const [tablesRef, wide] = useColumnsFit();
   const story = lab.story;
   const lastStep = [...story.steps].sort((a, b) => a.order - b.order).at(-1)!.id;
   const [sandbox, setSandbox] = useState<SandboxState>(() => (initial && initial.basedOn.story === story.id ? initial : newSandbox(story, lastStep, nowIso())));
@@ -633,7 +633,7 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
             {formatMoney(lineAt(shown.after, 'bs_total_equity'), locale)}
           </p>
           <CheckLights fiveStep={shown.fiveStep} layout={layout} compact />
-          <div className="ll-lab-tables__grid">
+          <div className="ll-lab-tables__grid" ref={tablesRef}>
             {(['income_statement', 'cash_flow_indirect', 'balance_sheet'] as const).map((k) => (
               <StatementTable
                 key={k}

@@ -36,7 +36,7 @@ import type { StatementView } from '../features/lab/StatementTable.tsx';
 import { TransactionCard } from '../features/lab/TransactionCard.tsx';
 import { useLabStepLoad } from '../features/lab/useLab.ts';
 import { useExpanded } from '../features/me/useExpanded.ts';
-import { useWide } from '../features/lab/useWide.ts';
+import { useColumnsFit } from '../features/lab/useColumnsFit.ts';
 import { MarkupParagraphs } from '../features/quiz/Markup.tsx';
 import { TermsProvider, useTerms } from '../features/quiz/terms.tsx';
 import { findLevelOfQuestion, type StorySnapshot, type StoryStepSnapshot } from '../lib/content.ts';
@@ -142,7 +142,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
   const names = useStageNames();
   const roles = useRoleLabels();
   const expanded = useExpanded();
-  const wide = useWide();
+  // 三表並排而且每張表放得下三欄時才用三欄並列（量表格區的寬度，不看視窗）
+  const [tablesRef, wide] = useColumnsFit();
   const reduced = labPrefersReducedMotion();
   const href = (p: string) => localePath(locale, p);
   const storyHref = href(`/lab/story/${story.id}/`);
@@ -646,7 +647,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
                 })}
               </ul>
             )}
-            <div className="ll-lab-tables__grid">
+            <div className="ll-lab-tables__grid" ref={expanded ? tablesRef : undefined}>
               {expanded ? (['is', 'cf', 'bs'] as const).map((c) => table(views, step, c, wide ? 'columns' : view)) : table(views, step, tab, view)}
             </div>
           </div>
