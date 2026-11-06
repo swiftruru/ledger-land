@@ -542,6 +542,47 @@ test.describe('勾稽練習', () => {
   });
 });
 
+test.describe('三張表在寬螢幕', () => {
+  // 2026-11-06：視窗 1440 起每張表改成「交易前、交易後、本筆變動」三欄，但內容區最寬 1040px，每張表只有 336px 左右，
+  // 現金流量表與資產負債表都要左右捲。改成量表格區的寬度：放不下三欄就維持一欄加「累計／本筆變動」切換。
+  for (const width of [1440, 1920]) {
+    test(`故事步驟頁 ${width}px：三表並排，每張表都不必左右捲，有「累計／本筆變動」的切換`, async ({ page }, testInfo) => {
+      test.skip(testInfo.project.name !== 'desktop-chromium' && testInfo.project.name !== 'desktop-firefox', '只看電腦寬度');
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`/lab/story/${STORY}/${STEP1}/?mode=demo`);
+      await waitForApp(page);
+      // 一次按一下，等階段標題換了再按下一下（連按時，換階段的途中按下去可能沒有反應）
+      for (let stage = 2; stage <= 5; stage++) {
+        await page.getByTestId('lab-next').click();
+        await expect(page.getByTestId('lab-stage-title')).toContainText(`階段 ${stage}／9`);
+      }
+      await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 5／9：現金流量表');
+      const tables = page.locator('.ll-lab-tables__grid .ll-lab-table');
+      await expect(tables).toHaveCount(3);
+      await expect(page.getByRole('radio', { name: '本筆變動' })).toBeVisible();
+      const over = await page.evaluate(() => ({
+        tables: [...document.querySelectorAll('.ll-lab-tables__grid .ll-lab-table')].map((el) => el.scrollWidth - el.clientWidth),
+        page: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      }));
+      for (const o of over.tables) expect(o).toBeLessThanOrEqual(1);
+      expect(over.page).toBeLessThanOrEqual(1);
+    });
+  }
+
+  test('自由實驗 1440px：最後的三張表都不必左右捲', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-chromium' && testInfo.project.name !== 'desktop-firefox', '只看電腦寬度');
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/lab/sandbox/');
+    await waitForApp(page);
+    const tables = page.locator('.ll-lab-sandbox__result .ll-lab-table');
+    await expect(tables).toHaveCount(3);
+    const over = await page.evaluate(() =>
+      [...document.querySelectorAll('.ll-lab-sandbox__result .ll-lab-table')].map((el) => el.scrollWidth - el.clientWidth),
+    );
+    for (const o of over) expect(o).toBeLessThanOrEqual(1);
+  });
+});
+
 test.describe('報表的篩選', () => {
   test('「只看有變動的列」是設計系統的開關，不是原生核選框；打開後只剩有變動的列與小標', async ({ page }) => {
     await page.goto(`/lab/story/${STORY}/${STEP1}/?mode=demo`);
