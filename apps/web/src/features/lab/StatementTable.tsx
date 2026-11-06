@@ -23,7 +23,8 @@ export interface StatementTableProps {
   onlyChanged?: boolean;
   /** 醒目標示的列（勾稽燈號點選） */
   highlight?: ReadonlySet<string>;
-  /** 勾稽練習：可填的格子與填入的值（數字輸入框由父層畫，這裡只標示） */
+  /** 勾稽練習：可填的格子（數字輸入框連同它的標籤由父層畫）。累計檢視裡這一列改成一格橫跨整列：標籤在左、輸入框在右，放不下就換到下一行，
+   * 不把表格撐得比欄位寬（2026-11-06：原本標籤一格、輸入框一格，三表並排時每張表都要左右捲） */
   inputs?: Readonly<Record<string, ReactNode>>;
   layout: Parameters<typeof useLabLabels>[0];
   /** 變動列的金額從交易前滾到交易後（減少動態時 false） */
@@ -127,6 +128,24 @@ export function StatementTable({
             );
             const note = r.kind === 'working_capital' && view !== 'cumulative' ? <span className="ll-lab-row__note">{noteCumulative}</span> : null;
             const afterCell = changed ? <RollingMoney from={b} to={a} animate={animate} locale={locale} /> : fmt(a);
+            const mark = changed ? (
+              <span className="ll-lab-row__mark" data-dir={dir}>
+                <span aria-hidden="true">{ARROW[dir]}</span>
+                <span className="ll-sr-only">{headChange}</span>
+              </span>
+            ) : null;
+            if (input && view === 'cumulative')
+              return (
+                <tr key={r.id} className={`${cls} has-input`} data-line={r.id}>
+                  <td colSpan={2} className="ll-lab-row__fill">
+                    <div className="ll-lab-fill">
+                      <div className="ll-lab-fill__main">{input}</div>
+                      {/* 箭頭的位置每一列都留著：有變動與沒變動的列，輸入框才會上下對齊 */}
+                      <span className="ll-lab-fill__mark">{mark}</span>
+                    </div>
+                  </td>
+                </tr>
+              );
             return (
               <tr key={r.id} className={cls} data-line={r.id}>
                 <th scope="row" className={`ll-mini-table__line ll-indent-${indentOf(r)}`}>
@@ -144,13 +163,8 @@ export function StatementTable({
                   <td className="ll-num ll-mini-table__value">{changeCell}</td>
                 ) : (
                   <td className="ll-num ll-mini-table__value">
-                    {input ?? afterCell}
-                    {changed && (
-                      <span className="ll-lab-row__mark" data-dir={dir}>
-                        <span aria-hidden="true">{ARROW[dir]}</span>
-                        <span className="ll-sr-only">{dir === 'up' ? headChange : headChange}</span>
-                      </span>
-                    )}
+                    {afterCell}
+                    {mark}
                   </td>
                 )}
               </tr>

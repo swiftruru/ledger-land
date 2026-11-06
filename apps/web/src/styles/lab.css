@@ -631,10 +631,17 @@
 .ll-lab-tables[data-expanded='true'] .ll-lab-tables__grid,
 .ll-lab-sandbox__result .ll-lab-tables__grid,
 .ll-lab-reconcile .ll-lab-tables__grid {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* min(300px, 100%)：320px 的手機上內容區不到 300px，欄寬不能比它寬（不然整頁橫向捲） */
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 }
 .ll-lab-table__table th.ll-mini-table__line {
   min-width: 9em;
+}
+/* 320px 的手機：名稱欄留 9em 時，七位數的金額加箭頭放不下、表格要左右捲；名稱欄讓到 6em（長的名稱換行） */
+@media (max-width: 359px) {
+  .ll-lab-table__table th.ll-mini-table__line {
+    min-width: 6em;
+  }
 }
 .ll-lab-table {
   overflow-x: auto;
@@ -1104,13 +1111,63 @@
   color: var(--ll-warning-ink);
   font-weight: 600;
 }
+/* 可填的列（2026-11-06）：一格橫跨整列（StatementTable 的 ll-lab-row__fill）。數字輸入框自己的標籤就是這一列的名稱，排在左邊；
+   輸入框與「±」在右邊，欄位放不下時整組換到下一行靠右，所以表格不會比欄位寬、三表並排也不必左右捲。變動的箭頭留在最右邊，和其他列對齊 */
+.ll-lab-table__table .ll-lab-row__fill {
+  padding: var(--ll-space-1) 10px var(--ll-space-1) 0;
+}
+.ll-lab-fill {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ll-space-1);
+}
+.ll-lab-fill__main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.ll-lab-fill__mark {
+  flex: none;
+  width: 1em;
+  line-height: var(--ll-target-min);
+  text-align: right;
+}
+.ll-lab-fill .ll-lab-row__mark {
+  margin-left: 0;
+}
 .ll-lab-reconcile__cell {
   display: grid;
-  gap: var(--ll-space-1);
-  min-width: 180px;
+  gap: 2px;
+  justify-items: end;
   text-align: left;
 }
+.ll-lab-reconcile__cell .ll-numinput {
+  justify-self: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ll-space-1) var(--ll-space-3);
+}
+.ll-lab-reconcile__cell .ll-numinput__label {
+  flex: 1 1 auto;
+  margin: 0;
+  font-weight: inherit;
+}
+.ll-lab-reconcile__cell .ll-numinput__row {
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+}
+.ll-lab-reconcile__cell .ll-numinput__input {
+  flex: 0 0 auto;
+  width: 7.5em;
+}
+.ll-lab-reconcile__cell .ll-numinput__help {
+  flex: 0 0 100%;
+  margin: 0;
+  text-align: right;
+}
 .ll-lab-reconcile__hint {
+  text-align: right;
   color: var(--ll-info-ink);
   font-size: var(--ll-type-footnote-size);
   line-height: var(--ll-type-footnote-line);
