@@ -9,6 +9,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { localePath } from '@ledgerland/i18n';
 import { ErrorState, TopBar } from '@ledgerland/web-ui';
+import { awardExamBadges } from '../features/badges/award-exam.ts';
+import type { ExamBadgeKey } from '../features/badges/exam.ts';
+import { ExamBadgeToast } from '../features/badges/ExamBadgeToast.tsx';
 import { BrowseList } from '../features/exam/BrowseList.tsx';
 import { BrowseReader } from '../features/exam/BrowseReader.tsx';
 import { readExamBrowseHide, readExamBrowsePos, writeExamBrowseHide, writeExamBrowsePos } from '../features/exam/prefs.ts';
@@ -154,10 +157,18 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
   }, [currentId, currentDeck, scope]);
 
   const db = getExamReadDb();
+  /** 這一次讀完而新拿到的苦練徽章（浮動提示用） */
+  const [newBadges, setNewBadges] = useState<readonly ExamBadgeKey[]>([]);
   const markRead = (q: HandoutQuestionSnapshot) => {
     const mark: ReadMark = { questionId: q.id, answerRev: q.answerRev, at: new Date().toISOString() };
     setMarks((prev) => [...prev.filter((m) => m.questionId !== q.id), mark]);
     void db.put([mark]);
+    // 讀題的兩枚徽章：讀完一份、讀遍題庫（features/badges/exam.ts）
+    void awardExamBadges({
+      read: { decks: index.decks.map((d) => d.sections.flatMap((sec) => sec.questionIds)), readIds: new Set([...read, q.id]) },
+    }).then((award) => {
+      if (award.added.length > 0) setNewBadges(award.added);
+    });
   };
   const markUnread = (id: string) => {
     setMarks((prev) => prev.filter((m) => m.questionId !== id));
@@ -228,6 +239,7 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
           nextDeck={nextDeck ? { code: nextDeck.code, href: hrefOf(nextDeck.id, 'all', null, '') } : null}
           practiseHref={localePath(locale, `/exam/${scopeDeck ? scopeDeck.id : 'all'}/`)}
         />
+        <ExamBadgeToast keys={newBadges} onDismiss={() => setNewBadges([])} />
       </>
     );
   }
@@ -264,6 +276,7 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
         focusId={leftQuestion}
         onFocusUsed={() => setLeftQuestion(null)}
       />
+      <ExamBadgeToast keys={newBadges} onDismiss={() => setNewBadges([])} />
     </>
   );
 }

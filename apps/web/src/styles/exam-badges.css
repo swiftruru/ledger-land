@@ -1,0 +1,75 @@
+/* 苦練徽章的圖樣（features/badges/ExamBadgeArt.tsx）：沿用章節徽章的獎章與緞帶（web-ui 的 .ll-chbadge 與它的變數，10-map-badges.css），
+   這裡只加三步各自的配色與幣面上的圖案。未取得沿用 .ll-chbadge--locked 的灰階外框，圖案只有外框。
+   放在自己的檔案：苦練各頁與徽章頁都會用到，不進入口 CSS。只用 tokens。 */
+.ll-chbadge--exam-read.ll-chbadge--done {
+  --ll-cb-face: var(--ll-info-ink);
+  --ll-cb-rim: var(--ll-info-ink);
+  --ll-cb-ring: var(--ll-surface);
+  --ll-cb-star: var(--ll-surface);
+  --ll-cb-star-rim: var(--ll-surface);
+  --ll-cb-ribbon: var(--ll-info-ink);
+  --ll-cb-ribbon-rim: var(--ll-info-ink);
+}
+.ll-chbadge--exam-practise.ll-chbadge--done {
+  --ll-cb-face: var(--ll-success-ink);
+  --ll-cb-rim: var(--ll-success-ink);
+  --ll-cb-ring: var(--ll-surface);
+  --ll-cb-star: var(--ll-surface);
+  --ll-cb-star-rim: var(--ll-surface);
+  --ll-cb-ribbon: var(--ll-success-ink);
+  --ll-cb-ribbon-rim: var(--ll-success-ink);
+}
+/* 模擬考：和精通、特別徽章同一組金色（終點的那一步） */
+.ll-chbadge--exam-mock.ll-chbadge--done {
+  --ll-cb-face: var(--ll-star);
+  --ll-cb-rim: var(--ll-warning-ink);
+  --ll-cb-ring: var(--ll-warning-ink);
+  --ll-cb-star: var(--ll-accent);
+  --ll-cb-star-rim: var(--ll-accent-pressed);
+  --ll-cb-ribbon: var(--ll-accent);
+  --ll-cb-ribbon-rim: var(--ll-accent-pressed);
+}
+/* 緞帶上的小星（要走完的那一枚）：已取得是星星色，未取得只有外框 */
+.ll-exam-badge__tier {
+  fill: none;
+  stroke: var(--ll-cb-ribbon-rim);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+.ll-chbadge--done .ll-exam-badge__tier {
+  fill: var(--ll-star);
+  stroke: var(--ll-surface);
+}
+
+/* 苦練首頁步驟卡裡的徽章列：小圖、名稱與條件；未取得的名稱用次要文字色（另有螢幕閱讀器唸的狀態） */
+.ll-exam-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2) var(--ll-space-5);
+  margin: var(--ll-space-4) 0 0;
+  padding: var(--ll-space-3) 0 0;
+  border-top: 1px solid var(--ll-border);
+  list-style: none;
+}
+.ll-exam-badges__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--ll-space-2);
+}
+.ll-exam-badges__icon {
+  grid-row: span 2;
+}
+.ll-exam-badges__name {
+  font-weight: 600;
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-exam-badges__item[data-state='locked'] .ll-exam-badges__name,
+.ll-exam-badges__cond {
+  color: var(--ll-text-2);
+}
+.ll-exam-badges__cond {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+}

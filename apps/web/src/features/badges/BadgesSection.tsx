@@ -3,6 +3,7 @@
 // 與已取得的日期；取得條件只在摘要卡說一次。整章不計分的延伸章（finding pages-a-1）的規則也在摘要卡。
 // 徽章格分「主線」與「延伸」兩段（第 2 輪看圖驗收：延伸章原本從第三列中間開始），各有一個小標與已取得數；完成卡和精通卡一樣有淡底與內框，顏色和狀態 Badge 同一個色系（精通星星金、完成成功色，第 4 輪看圖驗收：完成卡原本是 accent，深色像「被選取」；me.css）。
 // 徽章圖重用地圖的 ChapterBadge（@ledgerland/web-ui/map）；這個元件只在徽章頁以 lazy 載入，不進首次載入的 chunk。
+// 最後是「苦練徽章」一區（features/badges/exam.ts，2026-11-06）：期中考苦練的六枚，自己有「已取得 a／b」，不算進摘要卡的 n／m。
 // 章節之後另有「特別徽章」一區（features/badges/special.ts，維護者 2026-10-27）：探索獎勵，和章節徽章分開算，
 // 自己有「已取得 a／b」；頂端摘要卡與進度條的 n／m 只算章節徽章。
 // 章節索引、進度的徽章與不計分的章一掛載就讀，三樣都到齊才經 usePageReady 回報、整頁一次出現（維護者 2026-10-26：不先畫骨架格再補徽章）；
@@ -18,6 +19,9 @@ import { useGlossaryIndex } from '../glossary/useGlossaryIndex.ts';
 import { useUnlocks } from '../glossary/useUnlocks.ts';
 import { awardChapterBadges } from './award.ts';
 import { badgeStatusOf, isoDatePart, unscoredChapterIds } from './badges.ts';
+import { EXAM_BADGES, examBadgesOf, type ExamBadgeStep } from './exam.ts';
+import { ExamBadgeArt } from './ExamBadgeArt.tsx';
+import { useExamBadgeText } from './exam-text.ts';
 import { SPECIAL_BADGES, specialBadgeStatus, type SpecialBadgeKey } from './special.ts';
 import '../../styles/me.css';
 
@@ -56,6 +60,7 @@ function useSpecialBadgeText(): (key: SpecialBadgeKey) => { title: string; cond:
 export default function BadgesSection({ locale }: { locale: Locale }) {
   const { t } = useLingui();
   const specialText = useSpecialBadgeText();
+  const examText = useExamBadgeText();
   const index = useGlossaryIndex(locale);
   // 讀徽章之前先補寫：已達成但還沒寫進進度的章（例如這個修正之前完成、還沒開過地圖的章），取得時間用該章最後一關完成的時間
   const reconcile = useCallback(() => awardChapterBadges(locale), [locale]);
@@ -105,6 +110,24 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
     const b = fmt(specials.length);
     return t({ id: 'me.stat.ratio', message: `${a}／${b}`, comment: '統計膠囊上的「已取得／總數」；a、b 已格式化' });
   })();
+
+  // 苦練徽章（features/badges/exam.ts）：期中考苦練自己的一類，自己有「已取得 a／b」，不算進摘要卡的 n／m
+  const examOwned = ready ? examBadgesOf(unlocks) : new Map<string, string>();
+  const exams = EXAM_BADGES.map((def) => {
+    const at = examOwned.get(def.key);
+    return { def, done: at !== undefined, earnedDate: at === undefined ? null : date(at), text: examText(def.key) };
+  });
+  const examCount = (() => {
+    const a = fmt(exams.filter((e) => e.done).length);
+    const b = fmt(exams.length);
+    return t({ id: 'me.stat.ratio', message: `${a}／${b}`, comment: '統計膠囊上的「已取得／總數」；a、b 已格式化' });
+  })();
+  const examStep = (step: ExamBadgeStep) =>
+    step === 'read'
+      ? t({ id: 'badges.exam.step.read', message: '讀題', comment: '苦練徽章格的眉標：背題瀏覽的徽章' })
+      : step === 'practise'
+        ? t({ id: 'badges.exam.step.practise', message: '刷題', comment: '苦練徽章格的眉標：作答練習的徽章' })
+        : t({ id: 'badges.exam.step.mock', message: '模擬考', comment: '苦練徽章格的眉標：模擬考的徽章' });
 
   return (
     <section className="ll-badges" aria-labelledby="ll-badges-summary" data-testid="badges">
@@ -240,6 +263,42 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
                     <Badge>{t({ id: 'badges.state.locked', message: '未取得', comment: '徽章格的狀態：還沒取得' })}</Badge>
                   )}
                   {/* 特別徽章各有自己的條件，寫在格子裡；已取得時再加取得日期 */}
+                  <span className="ll-badges__cond">{text.cond}</span>
+                  {earnedDate !== null && (
+                    <span className="ll-badges__cond">
+                      {t({
+                        id: 'badges.earnedOn',
+                        message: `${earnedDate} 取得`,
+                        comment: '徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）',
+                      })}
+                    </span>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {ready && (
+        <section className="ll-badges__group" aria-labelledby="ll-badges-exam" data-testid="badges-exam">
+          <h2 id="ll-badges-exam" className="ll-badges__group-title">
+            {t({ id: 'badges.group.exam', message: '苦練徽章', comment: '徽章頁的分段小標：期中考苦練的徽章' })}{' '}
+            <Badge>
+              <span className="ll-num">{examCount}</span>
+            </Badge>
+          </h2>
+          <ul className="ll-badges__grid">
+            {exams.map(({ def, done, earnedDate, text }) => (
+              <li key={def.key} className="ll-badges__item" data-exam-badge={def.key} data-state={done ? 'done' : 'locked'}>
+                <ExamBadgeArt step={def.step} tier={def.tier} state={done ? 'done' : 'locked'} size={72} className="ll-badges__icon" />
+                <span className="ll-badges__eyebrow">{examStep(def.step)}</span>
+                <span className="ll-badges__title">{text.title}</span>
+                <span className="ll-badges__state">
+                  {done ? (
+                    <Badge kind="success">{t({ id: 'badges.state.done', message: '完成', comment: '徽章格的狀態：完成' })}</Badge>
+                  ) : (
+                    <Badge>{t({ id: 'badges.state.locked', message: '未取得', comment: '徽章格的狀態：還沒取得' })}</Badge>
+                  )}
                   <span className="ll-badges__cond">{text.cond}</span>
                   {earnedDate !== null && (
                     <span className="ll-badges__cond">

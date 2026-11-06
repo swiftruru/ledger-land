@@ -1382,6 +1382,8 @@ describe('章節徽章（03 第 2.10 節）', () => {
     expect(badgeCount(q)).toBe(3);
     expect(p.badges.size).toBe(3);
     expect(q.badges.has('badge:ch_c')).toBe(true);
+    // 特別徽章與苦練徽章不是章節徽章，不算進去
+    expect(badgeCount(progressOf({}, ['badge:ch_a', 'badge:special:credits-eggs', 'badge:exam:read-all', 'badge:exam:mock-pass']))).toBe(1);
   });
 
   it('特別徽章（badge:special:）不計入章節徽章數', () => {

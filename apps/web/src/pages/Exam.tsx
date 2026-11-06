@@ -3,6 +3,7 @@
 // 選項順序的開關、三份講義各一張卡與各段的入口。熟練 = 連續答對兩次（features/exam/stats.ts）。
 // 版面（2026-11-06）：三張步驟卡，先讀題（背題瀏覽，主要按鈕直接進閱讀頁）、再自己練（作答）、最後模擬考；
 // 其中一張掛「建議」的標籤、主要按鈕用實心的（features/exam/steps.ts）。很多人還沒看過題目，所以讀題排第一。
+// 每張步驟卡最下面是這一步的兩枚苦練徽章（features/badges/exam.ts）；打開這一頁時判定一次全部並補發。
 // 紀錄存在這台裝置，每題的累計會跟著備份走（06 第 4.6 節；features/exam/backup.ts）；英文站的介面是英文，題目仍是中文。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
@@ -28,6 +29,11 @@ import {
   TimerIcon,
   TopBar,
 } from '@ledgerland/web-ui';
+import { awardExamBadges } from '../features/badges/award-exam.ts';
+import { EXAM_BADGES, type ExamBadgeKey } from '../features/badges/exam.ts';
+import { ExamBadgeArt } from '../features/badges/ExamBadgeArt.tsx';
+import { ExamBadgeToast } from '../features/badges/ExamBadgeToast.tsx';
+import { useExamBadgeText } from '../features/badges/exam-text.ts';
 import { getExamDb, type QuestionState } from '../features/exam/db.ts';
 import { scheduleHandoutPrefetch } from '../features/exam/prefetch.ts';
 import { COUNT_OPTIONS, DEFAULT_RANDOM_COUNT, type CountOption } from '../features/exam/options.ts';
@@ -56,6 +62,11 @@ export default function Exam() {
   const [readIds, setReadIds] = useState<ReadonlySet<string> | null>(null);
   /** 模擬考的那一輪（進行中或交過卷的）；沒有是 null */
   const [mock, setMock] = useState<ExamRun | null | undefined>(undefined);
+  /** 已經拿到的苦練徽章（鍵對取得時間）；判定與補發完成前是 null */
+  const [badges, setBadges] = useState<ReadonlyMap<ExamBadgeKey, string> | null>(null);
+  /** 這一次打開首頁新拿到的（浮動提示用） */
+  const [newBadges, setNewBadges] = useState<readonly ExamBadgeKey[]>([]);
+  const badgeText = useExamBadgeText();
   const [shuffle, setShuffle] = useState(readExamShuffle);
   const [randomCount, setRandomCount] = useState<CountOption>(readExamRandomCount);
 
@@ -88,7 +99,9 @@ export default function Exam() {
       alive = false;
     };
   }, []);
-  usePageReady(state.kind !== 'loading' && states !== null && resume !== undefined && readIds !== null && mock !== undefined);
+  usePageReady(
+    state.kind !== 'loading' && states !== null && resume !== undefined && readIds !== null && mock !== undefined && (state.kind !== 'ok' || badges !== null),
+  );
 
   const index = state.kind === 'ok' ? state.index : null;
   // 離線保險：頁面畫好後請 Service Worker 把三份講義檔抓進快取，沒練過的講義離線也開得了
@@ -97,6 +110,28 @@ export default function Exam() {
   const stats = useMemo(() => statsOf(all, states ?? new Map()), [all, states]);
   const wrongCount = useMemo(() => (states ? [...wrongIdsOf(states)].filter((id) => all.includes(id)).length : 0), [states, all]);
   const unsureCount = useMemo(() => (states ? [...unsureIdsOf(states)].filter((id) => all.includes(id)).length : 0), [states, all]);
+
+  // 苦練徽章：資料都到齊後判定一次全部，達成而還沒有的寫進進度（補發），再拿來顯示
+  const loaded = index !== null && states !== null && readIds !== null && mock !== undefined;
+  useEffect(() => {
+    if (!index || !states || !readIds || mock === undefined) return;
+    let alive = true;
+    const done = mock && isFinished(mock) ? summarise(mock) : null;
+    void awardExamBadges({
+      read: { decks: index.decks.map((d) => d.sections.flatMap((sec) => sec.questionIds)), readIds },
+      practice: { total: stats.total, practised: stats.practised, wrong: stats.wrong },
+      ...(done ? { mock: { total: done.total, correct: done.correct } } : {}),
+    }).then((award) => {
+      if (!alive) return;
+      setBadges(award.owned);
+      if (award.added.length > 0) setNewBadges(award.added);
+    });
+    return () => {
+      alive = false;
+    };
+    // 只在資料第一次到齊時判定（之後這一頁的資料不會再變）
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loaded]);
 
   const topBar = (
     <TopBar
@@ -107,7 +142,7 @@ export default function Exam() {
       backShortLabel={t({ id: 'exam.back.short', message: '地圖', comment: '苦練區頁首返回按鈕上的短字（必須是「回到闖關地圖」的一部分）' })}
     />
   );
-  if (state.kind === 'loading' || states === null || readIds === null || mock === undefined) return topBar;
+  if (state.kind === 'loading' || states === null || readIds === null || mock === undefined || (state.kind === 'ok' && badges === null)) return topBar;
   if (state.kind !== 'ok') {
     return (
       <>
@@ -173,6 +208,30 @@ export default function Exam() {
     );
   };
 
+  /** 步驟卡最下面：這一步可以拿到的兩枚徽章 */
+  const stepBadges = (which: ExamStep) => (
+    <ul className="ll-exam-badges" aria-label={t({ id: 'exam.step.badges', message: '這一步的徽章', comment: '苦練首頁步驟卡裡徽章列的可讀名稱' })}>
+      {EXAM_BADGES.filter((b) => b.step === which).map((b) => {
+        const owned = badges?.has(b.key) === true;
+        const text = badgeText(b.key);
+        return (
+          <li key={b.key} className="ll-exam-badges__item" data-state={owned ? 'done' : 'locked'} data-testid={`exam-badge-${b.key}`}>
+            <ExamBadgeArt step={b.step} tier={b.tier} state={owned ? 'done' : 'locked'} size={32} className="ll-exam-badges__icon" />
+            <span className="ll-exam-badges__name">
+              {text.title}
+              <span className="ll-sr-only">
+                {owned
+                  ? t({ id: 'exam.badge.owned', message: '（已取得）', comment: '苦練首頁的徽章列：螢幕閱讀器唸的狀態' })
+                  : t({ id: 'exam.badge.locked', message: '（未取得）', comment: '苦練首頁的徽章列：螢幕閱讀器唸的狀態' })}
+              </span>
+            </span>
+            <span className="ll-exam-badges__cond">{text.cond}</span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+
   return (
     <>
       {topBar}
@@ -224,6 +283,7 @@ export default function Exam() {
             {t({ id: 'exam.step.read.list', message: '題目清單與搜尋', comment: '苦練首頁第 1 步的次要按鈕：背題瀏覽的清單' })}
           </Button>
         </div>
+        {stepBadges('read')}
       </Card>
 
       {/* 第 2 步：再自己練（作答） */}
@@ -334,6 +394,7 @@ export default function Exam() {
             {t({ id: 'exam.step.practise.list', message: '看答錯與還不熟的題', comment: '苦練首頁第 2 步最下面的連結：錯題與不熟的清單' })}
           </Button>
         </div>
+        {stepBadges('practise')}
       </Card>
 
       {/* 第 3 步：最後模擬考 */}
@@ -367,6 +428,7 @@ export default function Exam() {
                 : t({ id: 'exam.step.mock.go', message: '開始模擬考', comment: '苦練首頁第 3 步的按鈕' })}
           </Button>
         </div>
+        {stepBadges('mock')}
       </Card>
 
       <h2 className="ll-exam-decks">{t({ id: 'exam.decks.title', message: '各份講義', comment: '苦練首頁：三張講義卡上面的標題' })}</h2>
@@ -432,6 +494,12 @@ export default function Exam() {
         );
       })}
 
+      <div className="ll-exam-hero__actions">
+        <Button size="sm" variant="quiet" iconEnd={<ArrowRightIcon />} href={href('/me/badges/')} data-testid="exam-badges-link">
+          {t({ id: 'exam.badges.link', message: '看全部徽章', comment: '苦練首頁最下面的連結：到「我的」的徽章頁' })}
+        </Button>
+      </div>
+      <ExamBadgeToast keys={newBadges} onDismiss={() => setNewBadges([])} />
       <p className="ll-exam-hero__note" data-testid="exam-notes">
         <Trans id="exam.note.records" comment="苦練首頁頁尾的說明：兩種紀錄各自存在哪裡">
           作答的紀錄存在這台裝置上，匯出備份時會一起帶走；已讀的紀錄目前只在這台裝置，還不會跟著備份。

@@ -20,17 +20,35 @@ msgstr ", {0} left blank (counted as wrong, not recorded)"
 msgid "eggs.version.name"
 msgstr ", tap to learn the secret of the version number"
 
+#. 一次取得幾枚苦練徽章時，名稱之間的分隔
+#. js-lingui-explicit-id
+#: src/features/badges/ExamBadgeToast.tsx
+msgid "badges.exam.listSep"
+msgstr ", "
+
 #. triggerLabel 是觸發來源的文字，persistDate 是已格式化的日期
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.status.persistDetail"
 msgstr "({triggerLabel}, {persistDate})"
 
+#. 苦練首頁的徽章列：螢幕閱讀器唸的狀態
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.badge.owned"
+msgstr "(earned)"
+
 #. 背題瀏覽的題目列：螢幕閱讀器唸的狀態
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
 msgid "exam.browse.row.read"
 msgstr "(read)"
+
+#. 苦練首頁的徽章列：螢幕閱讀器唸的狀態
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.badge.locked"
+msgstr "(not earned)"
 
 #. 背題瀏覽的題目列：螢幕閱讀器唸的狀態
 #. js-lingui-explicit-id
@@ -64,6 +82,7 @@ msgstr "{0} (answer {1})"
 
 #. 統計膠囊上的「已取得／總數」；a、b 已格式化
 #. 統計膠囊上的「已取得／總數」；a、b 已格式化
+#. 統計膠囊上的「已取得／總數」；a、b 已格式化
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
 msgid "me.stat.ratio"
@@ -81,6 +100,7 @@ msgstr "Answer records: {attempts}"
 msgid "backup.stat.badges"
 msgstr "Badges: {badges}"
 
+#. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. js-lingui-explicit-id
@@ -191,6 +211,12 @@ msgstr "swift.moe"
 #: src/pages/Credits.tsx
 msgid "credits.links.github.desc"
 msgstr "swiftruru, where the source code lives"
+
+#. 苦練徽章「模擬考過關」的取得條件；min 是已格式化的題數，pass 是已格式化的百分比
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.mockPass.cond"
+msgstr "Score {pass} or more in a mock exam of {min} questions or more"
 
 #. 模擬考範圍：全部講義
 #. js-lingui-explicit-id
@@ -309,6 +335,18 @@ msgstr "Also apply the language and timer settings"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.submit"
 msgstr "Hand in"
+
+#. 苦練徽章「初次上場」的取得條件；min 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.mockFirst.cond"
+msgstr "Hand in a mock exam of {min} questions or more"
+
+#. 苦練徽章「讀完一份」的取得條件
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.readDeck.cond"
+msgstr "Read every question in any one handout"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -561,6 +599,12 @@ msgstr "All questions, shuffled"
 msgid "exam.set.all"
 msgstr "All questions"
 
+#. 苦練徽章「讀遍題庫」的取得條件
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.readAll.cond"
+msgstr "Read every question"
+
 #. 審核頁的原因標籤
 #. js-lingui-explicit-id
 #: src/pages/ExamTeacher.tsx
@@ -643,11 +687,23 @@ msgstr "Finish with a mock exam"
 msgid "exam.browse.print"
 msgstr "Print"
 
+#. 苦練徽章的名稱：交卷第一次夠長的模擬考
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.mockFirst"
+msgstr "First mock exam"
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.quiz.role"
 msgstr "Scoring: how each question type counts as correct and how many stars it earns, all in one place."
+
+#. 苦練徽章格的眉標：作答練習的徽章
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.exam.step.practise"
+msgstr "Practice"
 
 #. 模擬考的倒數；time 是時間長度
 #. js-lingui-explicit-id
@@ -706,6 +762,12 @@ msgstr "Practise"
 #: src/pages/Credits.tsx
 msgid "eggs.badge.title"
 msgstr "Special badge earned"
+
+#. 取得苦練徽章時浮動提示的標題
+#. js-lingui-explicit-id
+#: src/features/badges/ExamBadgeToast.tsx
+msgid "badges.exam.earned"
+msgstr "Drill badge earned"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -970,6 +1032,7 @@ msgstr "Install and hosting"
 msgid "eggs.hint.offline"
 msgstr "The PWA panel in the Install and hosting layer asks a question; ask it."
 
+#. 徽章格的狀態：完成
 #. 徽章格的狀態：完成
 #. 徽章格的狀態：完成
 #. js-lingui-explicit-id
@@ -1671,6 +1734,7 @@ msgstr " The midterm drill record is too large for a backup code, so this one do
 
 #. 徽章格的狀態：還沒取得
 #. 徽章格的狀態：還沒取得
+#. 徽章格的狀態：還沒取得
 #. js-lingui-explicit-id
 #: src/features/badges/BadgesSection.tsx
 msgid "badges.state.locked"
@@ -1711,6 +1775,12 @@ msgstr "On this page"
 msgid "backup.error.format"
 msgstr "This is not a LedgerLand backup."
 
+#. 苦練徽章格的眉標：模擬考的徽章
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.exam.step.mock"
+msgstr "Mock exam"
+
 #. 模擬考頁的標題；苦練首頁的入口也用這個名稱
 #. js-lingui-explicit-id
 #: src/pages/ExamMock.tsx
@@ -1722,6 +1792,12 @@ msgstr "Mock exam"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.result"
 msgstr "Mock exam result"
+
+#. 苦練徽章的名稱：夠長的模擬考答對八成
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.mockPass"
+msgstr "Mock exam passed"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1769,6 +1845,18 @@ msgstr "One badge per chapter: at least one star on every level is ‘Completed�
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.confirm.done"
 msgstr "You have answered every question. Once handed in you cannot change anything; you will see your score and the explanation for every question."
+
+#. 苦練徽章「題題練過」的取得條件
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.practisedAll.cond"
+msgstr "Answer every question at least once"
+
+#. 苦練徽章「錯題歸零」的取得條件
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.noWrong.cond"
+msgstr "Practise every question, with none left on a wrong answer"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -2048,6 +2136,12 @@ msgstr "Camera"
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.related"
 msgstr "Related question: "
+
+#. 苦練首頁最下面的連結：到「我的」的徽章頁
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.badges.link"
+msgstr "See all badges"
 
 #. 總結卡：連到錯題與不熟的清單頁
 #. js-lingui-explicit-id
@@ -2348,6 +2442,12 @@ msgstr "Answer for yourself and see straight away whether you were right, with t
 msgid "exam.run.back.short"
 msgstr "drill"
 
+#. 徽章頁的分段小標：期中考苦練的徽章
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.group.exam"
+msgstr "Drill badges"
+
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 #: src/features/credits/StackExplorer.tsx
@@ -2540,6 +2640,12 @@ msgstr "Thank you to the teacher for turning accounting into a story I could fol
 msgid "exam.browse.end.partial"
 msgstr "That was the last question"
 
+#. 苦練徽章的名稱：背題瀏覽讀完任一份講義
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.readDeck"
+msgstr "One handout read"
+
 #. 背題瀏覽的閱讀頁：範圍的最後一題，記成已讀
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseReader.tsx
@@ -2557,6 +2663,18 @@ msgstr "Done, next question"
 #: src/pages/Exam.tsx
 msgid "exam.deck.read"
 msgstr "Read this handout"
+
+#. 苦練徽章的名稱：背題瀏覽讀完全部題目
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.readAll"
+msgstr "Read them all"
+
+#. 苦練徽章格的眉標：背題瀏覽的徽章
+#. js-lingui-explicit-id
+#: src/features/badges/BadgesSection.tsx
+msgid "badges.exam.step.read"
+msgstr "Reading"
 
 #. 背題瀏覽：遮住答案開關的說明
 #. js-lingui-explicit-id
@@ -2590,6 +2708,12 @@ msgstr "Follow system"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.setup"
 msgstr "Set up this paper"
+
+#. 苦練首頁步驟卡裡徽章列的可讀名稱
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.badges"
+msgstr "Badges for this step"
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -2908,6 +3032,12 @@ msgstr "Questions I got wrong"
 msgid "exam.list.title"
 msgstr "Wrong and not yet solid"
 
+#. 苦練徽章的名稱：每一題都練過而且沒有停在答錯的題
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.noWrong"
+msgstr "No mistakes left"
+
 #. 苦練首頁第 3 步的按鈕
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -3093,6 +3223,12 @@ msgstr "Question list and search"
 #: src/pages/Exam.tsx
 msgid "exam.licence"
 msgstr "Questions used with the permission of Dr Yen-Hung Chen."
+
+#. 苦練徽章的名稱：每一題都作答過
+#. js-lingui-explicit-id
+#: src/features/badges/exam-text.ts
+msgid "badges.exam.practisedAll"
+msgstr "Every one practised"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx

@@ -23,6 +23,9 @@ import {
   TimerIcon,
   TopBar,
 } from '@ledgerland/web-ui';
+import { awardExamBadges } from '../features/badges/award-exam.ts';
+import type { ExamBadgeKey } from '../features/badges/exam.ts';
+import { ExamBadgeToast } from '../features/badges/ExamBadgeToast.tsx';
 import { getExamDb, nextState, type QuestionState } from '../features/exam/db.ts';
 import { HandoutQuestionCard } from '../features/exam/HandoutQuestionCard.tsx';
 import { HandoutQuestionReadout } from '../features/exam/HandoutQuestionReadout.tsx';
@@ -90,6 +93,21 @@ export default function ExamMock() {
   const n = (x: number) => formatNumber(x, locale);
   const db = getExamDb();
   const [view, setView] = useState<View>({ kind: 'loading' });
+  /** 這一次交卷而新拿到的苦練徽章（浮動提示用） */
+  const [newBadges, setNewBadges] = useState<readonly ExamBadgeKey[]>([]);
+  // 模擬考的兩枚徽章：成績出來時判定（features/badges/exam.ts；交卷、時間到自動交卷、回來看上次的成績都會到這裡）
+  const resultRun = view.kind === 'result' ? view.run : null;
+  useEffect(() => {
+    if (!resultRun) return;
+    let alive = true;
+    const sum = summarise(resultRun);
+    void awardExamBadges({ mock: { total: sum.total, correct: sum.correct } }).then((award) => {
+      if (alive && award.added.length > 0) setNewBadges(award.added);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [resultRun]);
   const [settings, setSettings] = useState<MockSettings>(readExamMockSettings);
   const [shuffle] = useState(readExamShuffle);
   const [confirming, setConfirming] = useState(false);
@@ -362,6 +380,7 @@ export default function ExamMock() {
     return (
       <>
         {topBar}
+        <ExamBadgeToast keys={newBadges} onDismiss={() => setNewBadges([])} />
         <Card as="section" className="ll-exam-summary" aria-labelledby="ll-exam-mock-result" data-testid="exam-mock-result">
           <h2 id="ll-exam-mock-result" className="ll-exam-summary__title">
             {t({ id: 'exam.mock.result', message: '模擬考成績', comment: '模擬考成績卡的標題' })}
