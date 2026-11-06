@@ -7,13 +7,6 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: zh-TW\n"
 
-#. 提示按鈕的可讀名稱
-#. js-lingui-explicit-id
-#. placeholder {0}: lineLabel(id)
-#: src/pages/LabReconcile.tsx
-msgid "lab.reconcile.hintFor"
-msgstr "{0}的提示"
-
 #. 指標預測的選項
 #. js-lingui-explicit-id
 #: src/features/lab/PredictPanel.tsx
@@ -1215,6 +1208,13 @@ msgstr "階段 {0}／{1}：{2}"
 #: src/pages/LabReconcile.tsx
 msgid "lab.reconcile.hint"
 msgstr "需要提示"
+
+#. 提示按鈕的可讀名稱；開頭要和按鈕上看得到的字（lab.reconcile.hint）一樣，後面接這一列的名稱
+#. js-lingui-explicit-id
+#. placeholder {0}: lineLabel(id)
+#: src/pages/LabReconcile.tsx
+msgid "lab.reconcile.hintFor"
+msgstr "需要提示：{0}"
 
 #. 報表表格第一欄的表頭
 #. js-lingui-explicit-id

@@ -336,7 +336,7 @@ test.describe('勾稽練習', () => {
     await expect(page.getByText(/先修正步驟 2 用到的格子/)).toBeVisible();
     for (const id of cells) {
       const cell = page.getByTestId(`lab-cell-${id}`);
-      const hint = cell.getByRole('button', { name: /的提示$/ });
+      const hint = cell.getByRole('button', { name: /^需要提示：/ });
       await hint.click();
       await hint.click();
       await hint.click();
@@ -357,7 +357,7 @@ test.describe('勾稽練習', () => {
     // 填一格並按提示：讀到的數字與提示文字也算在寬度裡
     const cell = page.getByTestId('lab-cell-cf_pretax_income');
     await cell.getByRole('textbox').fill('1250000');
-    await cell.getByRole('button', { name: /的提示$/ }).click();
+    await cell.getByRole('button', { name: /^需要提示：/ }).click();
     await expect(cell.getByRole('status')).toBeVisible();
     const widths = await page.evaluate(() => ({
       tables: [...document.querySelectorAll('.ll-lab-table')].map((el) => el.scrollWidth - el.clientWidth),
