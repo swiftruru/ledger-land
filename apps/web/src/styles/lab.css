@@ -599,11 +599,10 @@
   align-items: center;
   margin-bottom: var(--ll-space-2);
 }
+/* 「只看有變動的列」：web-ui 的 Switch，放在控制列裡時名稱與開關靠在一起（不是設定頁那種左右撐開的一列） */
 .ll-lab-tables__only {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ll-space-1);
-  min-height: var(--ll-target-min);
+  justify-content: flex-start;
+  gap: var(--ll-space-2);
   font-size: var(--ll-type-body-sm-size);
 }
 .ll-lab-summary {

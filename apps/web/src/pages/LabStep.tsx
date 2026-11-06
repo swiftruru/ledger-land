@@ -615,10 +615,13 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
                   size="sm"
                 />
               )}
-              <label className="ll-lab-tables__only">
-                <input type="checkbox" checked={onlyChanged} onChange={(e) => setOnlyChanged(e.target.checked)} />{' '}
-                {t({ id: 'lab.tables.onlyChanged', message: '只看有變動的列', comment: '表格的篩選' })}
-              </label>
+              {/* 設計系統的開關，不用瀏覽器原生的核選框（2026-11-06） */}
+              <views.Switch
+                className="ll-lab-tables__only"
+                checked={onlyChanged}
+                onChange={setOnlyChanged}
+                label={t({ id: 'lab.tables.onlyChanged', message: '只看有變動的列', comment: '表格的篩選' })}
+              />
             </div>
             <Button variant="quiet" size="sm" block className="ll-lab-summary" data-testid="lab-summary" onClick={() => !wide && setView('transaction')}>
               <span className="ll-lab-summary__label">{t({ id: 'lab.tables.summary', message: '本筆變動：', comment: '本筆變動摘要列的開頭' })}</span>

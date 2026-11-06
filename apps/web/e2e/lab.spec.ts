@@ -542,6 +542,29 @@ test.describe('勾稽練習', () => {
   });
 });
 
+test.describe('報表的篩選', () => {
+  test('「只看有變動的列」是設計系統的開關，不是原生核選框；打開後只剩有變動的列與小標', async ({ page }) => {
+    await page.goto(`/lab/story/${STORY}/${STEP1}/?mode=demo`);
+    await waitForApp(page);
+    for (let stage = 2; stage <= 5; stage++) {
+      await page.getByTestId('lab-next').click();
+      await expect(page.getByTestId('lab-stage-title')).toContainText(`階段 ${stage}／9`);
+    }
+    await expect(page.locator('.ll-lab-tables input[type="checkbox"]')).toHaveCount(0);
+    const only = page.getByRole('switch', { name: '只看有變動的列' });
+    await expect(only).toHaveAttribute('aria-checked', 'false');
+    const rows = page.locator('.ll-lab-tables__grid tbody tr');
+    const all = await rows.count();
+    await only.click();
+    await expect(only).toHaveAttribute('aria-checked', 'true');
+    await expect.poll(() => rows.count()).toBeLessThan(all);
+    // 第 1 步股東出資：現金及約當現金有變動，還在
+    await expect(page.locator('.ll-lab-tables__grid')).toContainText('NT$3,000,000');
+    await only.click();
+    await expect.poll(() => rows.count()).toBe(all);
+  });
+});
+
 test.describe('指標實驗室', () => {
   test('分組、版本切換（杜邦）、N/A 的建議連到自由實驗', async ({ page }) => {
     await page.goto('/lab/ratios/');
