@@ -1152,8 +1152,10 @@
   grid-row: 1 / span 2;
   margin: 0;
 }
+/* 清單的 class 叫 ll-lab-steppick__list，不要用 ll-lab-steps：那是故事頁步驟清單（LabStory.tsx）的名字。2026-11-06 一開始撞名，
+   下面這段分兩欄的規則套到故事頁，600px 以上每一章的步驟被排成並排的幾欄 */
 @media (min-width: 600px) {
-  .ll-lab-steps {
+  .ll-lab-steppick__list {
     position: relative;
     grid-template-rows: repeat(var(--_rows), auto);
     grid-auto-flow: column;
@@ -1161,7 +1163,7 @@
     column-gap: var(--ll-space-4);
   }
   /* 清單的分隔線畫在「第二列起每一列的上緣」，分成兩欄後右欄第一列的上面也會有一條、左欄沒有；用面板的底色蓋掉右欄頂端那一條 */
-  .ll-lab-steps::before {
+  .ll-lab-steppick__list::before {
     content: '';
     position: absolute;
     z-index: 1;

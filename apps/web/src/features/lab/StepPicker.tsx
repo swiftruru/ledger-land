@@ -92,11 +92,11 @@ export function StepPicker({ steps, value, onPick }: StepPickerProps) {
         data-testid="lab-step-sheet"
       >
         {/* 兩欄時每欄幾列（先上到下、再左到右）由步驟數決定：自訂屬性寫在外層，裡面清單的格線用它 */}
-        <div className="ll-lab-steps__wrap" style={{ '--_rows': Math.ceil(steps.length / 2) } as CSSProperties}>
+        <div className="ll-lab-steppick__rows" style={{ '--_rows': Math.ceil(steps.length / 2) } as CSSProperties}>
           <NavList
             aria-label={t({ id: 'lab.reconcile.sheet.list', message: '故事的步驟', comment: '勾稽練習選步驟面板裡清單的可讀名稱' })}
             inset={false}
-            className="ll-lab-steps"
+            className="ll-lab-steppick__list"
           >
             {steps.map((s) => (
               <NavRow

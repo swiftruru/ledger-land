@@ -83,6 +83,29 @@ test.describe('實驗室首頁與故事步驟列表', () => {
     await expect(page.getByTestId('lab-step-practice').first()).toHaveText('練習');
     await expect(page.getByRole('heading', { name: '相關關卡' }).first()).toBeVisible();
   });
+
+  test('故事步驟列表的排列：同一章的步驟一列一張、由上往下，步驟卡和清單一樣寬', async ({ page }) => {
+    // 2026-11-06：另一個元件誤用了同名的 class，600px 以上的螢幕每一章的步驟被排成並排的幾欄、名稱擠成一字一行，
+    // 原本的案例只檢查連結與文字、沒有抓到。這裡不比絕對座標，只比同一章裡步驟卡彼此與清單的相對位置
+    await page.goto(`/lab/story/${STORY}/`);
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-step-row')).toHaveCount(18);
+    const boxes = await page
+      .getByTestId('lab-chapter')
+      .first()
+      .evaluate((chapter) => {
+        const list = chapter.querySelector('ol')!.getBoundingClientRect();
+        const rows = [...chapter.querySelectorAll('[data-testid="lab-step-row"]')].map((el) => el.getBoundingClientRect());
+        return { list: { left: list.left, width: list.width }, rows: rows.map((r) => ({ top: r.top, bottom: r.bottom, left: r.left, width: r.width })) };
+      });
+    expect(boxes.rows.length).toBeGreaterThan(1);
+    for (let i = 1; i < boxes.rows.length; i++) {
+      // 下一張在上一張的下方，左緣對齊（不是並排）
+      expect(boxes.rows[i]!.top).toBeGreaterThanOrEqual(boxes.rows[i - 1]!.bottom - 1);
+      expect(Math.abs(boxes.rows[i]!.left - boxes.rows[0]!.left)).toBeLessThanOrEqual(1);
+    }
+    for (const row of boxes.rows) expect(row.width).toBeGreaterThanOrEqual(boxes.list.width - 1);
+  });
 });
 
 test.describe('故事步驟頁', () => {
