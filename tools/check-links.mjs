@@ -1,6 +1,6 @@
 // check:links（站規 4.1）：全站的可點元素只准用設計系統元件，不得出現瀏覽器預設樣式的連結、帶底線的按鈕或沒設計過的可點元素。
 // 純解析原始碼、不需要建置：TS、TSX、JS 用 TypeScript 的 AST，CSS 用 lightningcss 的選擇器 AST，index.html 與字串產生的 HTML 用標籤掃描。
-// 規則 R1 到 R12 的設定在 tools/link-rules.json；例外在 tools/link-exceptions.json（檔案加規則為鍵，count 必須和實際數量相同，用不到的例外也算失敗）。
+// 規則 R1 到 R13 的設定在 tools/link-rules.json；例外在 tools/link-exceptions.json（檔案加規則為鍵，count 必須和實際數量相同，用不到的例外也算失敗）。
 // 用法：node tools/check-links.mjs [--report] [--json]
 //   --report：只輸出違規清單，不讓檢查失敗（本機盤點用；CI 一律用失敗模式）
 //   --json：改輸出 JSON（盤點腳本用）
@@ -102,7 +102,7 @@ function unwrap(expr) {
 const isStr = (n) => !!n && (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n));
 
 /**
- * 掃描一個 TS、TSX 或 JS 檔（R1 到 R10、R12）
+ * 掃描一個 TS、TSX 或 JS 檔（R1 到 R10、R12、R13）
  * @param {string} text 原始碼
  * @param {string} file repo 內的相對路徑（以 / 分隔），用來判斷設計系統檔案
  * @param {ReturnType<typeof normaliseRules>} rules
@@ -284,6 +284,12 @@ export function scanTsx(text, file, rules) {
         const cn = findAttr(el, 'className');
         if (!cn || !classHasLl(attrValue(cn))) add(el, 'R4', '的 <button> 要有靜態可判定、含 ll- 片段的 className');
       }
+    }
+    // R13：原生核選框（瀏覽器預設的樣子，和站上的開關不一致；2026-11-06）
+    if (intrinsic && tag === 'input' && !inButtonDir) {
+      const type = findAttr(el, 'type');
+      const v = type ? unwrap(attrValue(type)) : null;
+      if (v && isStr(v) && v.text.trim() === 'checkbox') add(el, 'R13', '的 <input type="checkbox"> 請改用 <Switch>（或設計系統裡的作答元件）');
     }
     // R5：非連結的導航
     if (intrinsic && rules.nonInteractiveElements.has(tag))

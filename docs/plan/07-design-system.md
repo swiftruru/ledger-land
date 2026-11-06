@@ -8,7 +8,7 @@
 - **主題**：已決定（2026-10-21）：淺色是紙質（頁面 `#FCF8F0`、卡片 `#FFFDF9`、暖墨文字、赤陶強調色），深色是三個風味（夜空、莓果、紅酒：換底色色相，強調色也隨風味：夜空紫、莓果洋紅、紅酒覆盆子紅；狀態色與文字色共用），完整色票、對比度門檻與切換機制見 [16 主題](16-themes.md)；「不用紫色」只限淺色，夜空用紫當填色（第 2.2 節）。
 - **不只靠顏色傳達資訊**：會計五大要素的顏色一律搭配圖示與文字；增減一律用 ▲▼、正負號與文字；答對答錯一律有圖示與文字（第 2.4、2.5 節）。
 - **系統字型**：中文 PingFang TC 與 Noto Sans TC 等系統字型，不下載字型檔；中文堆疊把拉丁系統字放在前面（2026-10-25），關卡代號的連字號不會看起來像破折號；金額與表格一律等寬數字（第 3 節）。
-- **全站不得有未設計的連結**（2026-10-24，我的要求，M3 實作）：可點元素只准用第 9.2 節列的元件與第 9.3 節的專用元件；瀏覽器預設樣式的連結、帶底線的按鈕、沒有 class 的原生按鈕、看起來像普通文字的可點元素一律視為缺陷，任何里程碑、任何占位頁都適用；由原始碼檢查 `pnpm check:links`（`tools/check-links.mjs`，規則 R1 到 R12）與 E2E `apps/web/e2e/link-style.spec.ts` 擋下（第 8.5 節）。
+- **全站不得有未設計的連結**（2026-10-24，我的要求，M3 實作）：可點元素只准用第 9.2 節列的元件與第 9.3 節的專用元件；瀏覽器預設樣式的連結、帶底線的按鈕、沒有 class 的原生按鈕、看起來像普通文字的可點元素一律視為缺陷，任何里程碑、任何占位頁都適用；由原始碼檢查 `pnpm check:links`（`tools/check-links.mjs`，規則 R1 到 R13）與 E2E `apps/web/e2e/link-style.spec.ts` 擋下（第 8.5 節）。
 - **遊戲感按鈕與同一套手感**（M3）：Button 五種變體（primary、secondary、back、quiet、danger）、三種尺寸（sm 44、md 48、lg 56px）；primary、secondary、danger 是「代幣」，有 4px 立體底邊（`--ll-btn-depth`），按下時沉 4px、底邊歸零，減少動態時只換色與底邊、不位移；地圖節點用同一組底邊與按壓規則；頁首、工具列、HUD、Tab bar 是平的（第 1、4.6、9.2 節）。
 - **全站一套中文換行規則**（M3）：`line-break: strict`、`text-wrap: pretty`，標點與「的」不落在行首；整句要依詞換行的地方用共用的切詞工具，不在各頁另寫（第 3.5 節）。
 - **寬版頁面**（M3）：首頁、章節頁、名詞圖鑑、我的、徽章、安裝教學、關於系統設計的內容最寬 1040px，其他頁 720px，闖關地圖全幅（第 10 節）。
@@ -779,7 +779,7 @@ axe 沒有 serious 或 critical 問題；Playwright 純鍵盤 E2E；iOS VoiceOve
 
 M3 起另加三項（2026-10-24，我要求全站連結重新設計）：
 
-- `pnpm check:links`（`tools/check-links.mjs`，CI 的 verify）：原始碼檢查。react-router 的 `Link` 只准出現在 `apps/web/src/components/RouterLink.tsx`；JSX 的 `<a>` 只准在設計系統的元件檔；設計系統的 class 名稱（`ll-btn`、`ll-navrow`、`ll-termitem` 等）保留給元件檔，其他檔案出現就失敗；CSS 只有 `base.css`（`:where(a)` 把所有連結重設成繼承顏色、沒有底線）、`dev.css` 與 web-ui 的 `07-core-components.css`（TextLink 與漏網裸連結的保底外觀）可以用型別選擇器 `a`；`:visited`、`text-decoration`、style 物件、innerHTML 產生的連結也在檢查範圍（規則 R1 到 R12 在 `tools/link-rules.json`）。例外寫在 `tools/link-exceptions.json`，數量必須和實際相同，用不到的例外也算失敗（目前 1 條：備份頁程式產生、不插進畫面的下載連結）。
+- `pnpm check:links`（`tools/check-links.mjs`，CI 的 verify）：原始碼檢查。react-router 的 `Link` 只准出現在 `apps/web/src/components/RouterLink.tsx`；JSX 的 `<a>` 只准在設計系統的元件檔；設計系統的 class 名稱（`ll-btn`、`ll-navrow`、`ll-termitem` 等）保留給元件檔，其他檔案出現就失敗；CSS 只有 `base.css`（`:where(a)` 把所有連結重設成繼承顏色、沒有底線）、`dev.css` 與 web-ui 的 `07-core-components.css`（TextLink 與漏網裸連結的保底外觀）可以用型別選擇器 `a`；`:visited`、`text-decoration`、style 物件、innerHTML 產生的連結也在檢查範圍；原生的核選框（`<input type="checkbox">`）只准在設計系統的元件檔，其他地方改用 `Switch`（R13，2026-11-06：實驗室步驟頁「只看有變動的列」原本是瀏覽器預設的核選框）（規則 R1 到 R13 在 `tools/link-rules.json`）。例外寫在 `tools/link-exceptions.json`，數量必須和實際相同，用不到的例外也算失敗（目前 1 條：備份頁程式產生、不插進畫面的下載連結）。
 - `apps/web/e2e/link-style.spec.ts`（desktop-chromium 與 reduced-motion）：每一頁、每一種狀態檢查沒有瀏覽器預設連結色、連結與按鈕的文字色在 token 白名單內、按鈕類與其後代沒有底線（`ll-link` 除外）、每個連結都帶核准的 class、裸連結的數量是 0、文中連結的底線合格、觸控目標 44px、滑過與按下後再檢查一次、Tab 走完整頁的焦點框、強制色彩下看得到邊界、站內連結不通往找不到頁面。按鈕狀態板（`?ll-fixture=buttons`，只在開發伺服器與 `VITE_LL_FIXTURES=1` 的建置存在）另有一組。
 - 看圖驗收：設計審查者對 375、768、1280（地圖另加 1440、1920）四個主題的截圖評分（全站九項、地圖八項，各 1 到 5 分），每項至少 4 分、平均至少 4.3，而且沒有一票否決項（瀏覽器預設連結、按鈕底線、文字被遮、觸控目標不足、焦點框被切、右下浮動按鈕、同一畫面兩顆 primary、站內連結通往找不到頁面；地圖另有文字被路線壓住、元件被裁切、硬邊矩形場景、HUD 和軌道不對齊、延伸區路線斷開）才算通過。M3 跑了八輪，結果見 [M3 回報](../reports/m3.md) 第 5 節。
 

@@ -1,4 +1,4 @@
-// check:links 的自我測試（站規 4.1）：R1 到 R12 的代表寫法各自會失敗或通過，例外清單的數量比對與過期都會被抓到。
+// check:links 的自我測試（站規 4.1）：R1 到 R13 的代表寫法各自會失敗或通過，例外清單的數量比對與過期都會被抓到。
 // 規則設定用 repo 裡的 tools/link-rules.json（測試同時確認設定檔本身能用）。
 import { describe, expect, it } from 'vitest';
 import { applyExceptions, listFiles, loadRules, scanCss, scanHtmlDocument, scanHtmlString, scanTsx } from '../check-links.mjs';
@@ -290,6 +290,15 @@ describe('R11：CSS', () => {
   });
 });
 
+describe('R13：原生核選框', () => {
+  it('設計系統元件以外的 <input type="checkbox"> 失敗，其他 type 與元件資料夾裡的可以', () => {
+    expect(rulesOf(tsx(`export const A = () => <input type="checkbox" checked={false} onChange={() => {}} />;`))).toEqual(['R13']);
+    expect(rulesOf(tsx(`export const A = () => <input type={'checkbox'} />;`))).toEqual(['R13']);
+    expect(tsx(`export const A = () => <input type="radio" name="x" />;`)).toEqual([]);
+    expect(tsx(`export const A = () => <input type="checkbox" className="ll-choice__input" />;`, 'packages/web-ui/src/components/ChoiceGroup.tsx')).toEqual([]);
+  });
+});
+
 describe('R12：style 物件', () => {
   it("style={{ textDecoration: 'none' }} 失敗", () => {
     expect(rulesOf(tsx(`export const A = () => <span style={{ textDecoration: 'none' }} />;`))).toEqual(['R12']);
@@ -326,7 +335,7 @@ describe('例外清單', () => {
     const today = '2026-10-25';
     expect(validateLinkExceptions([ex('a.tsx', 'R9', 1)], today)).toEqual([]);
     expect(validateLinkExceptions({}, today)).toHaveLength(1);
-    expect(validateLinkExceptions([{ file: 'a.tsx', rule: 'R13', count: 0, reason: '', added: '24/10' }], today)).toHaveLength(4);
+    expect(validateLinkExceptions([{ file: 'a.tsx', rule: 'R99', count: 0, reason: '', added: '24/10' }], today)).toHaveLength(4);
     expect(validateLinkExceptions([{ ...ex('a.tsx', 'R9', 1), added: '2026-12-01' }], today)[0]).toContain('之後');
     expect(validateLinkExceptions([{ ...ex('a.tsx', 'R9', 1), expires: '2026-10-01' }], today)[0]).toContain('到期');
     expect(validateLinkExceptions([ex('a.tsx', 'R9', 1), ex('a.tsx', 'R9', 2)], today)[0]).toContain('重複');

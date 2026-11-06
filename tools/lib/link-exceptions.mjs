@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const LINK_EXCEPTIONS_FILE = 'tools/link-exceptions.json';
-export const LINK_RULE_IDS = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8', 'R9', 'R10', 'R11', 'R12'];
+export const LINK_RULE_IDS = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8', 'R9', 'R10', 'R11', 'R12', 'R13'];
 
 /**
  * 讀例外清單；檔案不存在時視為空清單
@@ -39,7 +39,7 @@ export function validateLinkExceptions(list, today = new Date().toISOString().sl
     for (const k of Object.keys(entry)) if (!allowed.has(k)) problems.push(`${where} 有不認得的欄位 ${k}`);
     if (typeof entry.file !== 'string' || !entry.file || entry.file.startsWith('/') || entry.file.includes('\\'))
       problems.push(`${where} 的 file 必須是 repo 內的相對路徑（以 / 分隔）`);
-    if (!LINK_RULE_IDS.includes(entry.rule)) problems.push(`${where} 的 rule 必須是 R1 到 R12 之一`);
+    if (!LINK_RULE_IDS.includes(entry.rule)) problems.push(`${where} 的 rule 必須是 R1 到 R13 之一`);
     if (!Number.isInteger(entry.count) || entry.count < 1) problems.push(`${where} 的 count 必須是正整數`);
     if (typeof entry.reason !== 'string' || !entry.reason.trim()) problems.push(`${where} 缺 reason`);
     if (typeof entry.added !== 'string' || !DATE.test(entry.added)) problems.push(`${where} 的 added 必須是 YYYY-MM-DD`);
