@@ -915,11 +915,11 @@ msgstr "<0>{earned} of {total}</0> earned"
 msgid "backup.import.merged"
 msgstr "Merged. Records from both sides are kept."
 
-#. 審核頁的原因標籤：題目照收，但想請老師看一眼
+#. 給老師的頁面的分類標籤：已經放進苦練區，但想請老師看看的題
 #. js-lingui-explicit-id
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.reason.check"
-msgstr "Included, please check"
+msgstr "In the drill, a question too"
 
 #. 備份頁狀態卡的欄位標籤，後面是 KB 數（保持短字：320 寬時標籤欄太寬會把日期擠成兩行）
 #. js-lingui-explicit-id
@@ -1057,6 +1057,12 @@ msgstr "Badges"
 msgid "exam.scenario"
 msgstr "Scenario"
 
+#. 給老師的頁面的標題；不用「審核」這種字
+#. js-lingui-explicit-id
+#: src/pages/ExamTeacher.tsx
+msgid "exam.teacher.title"
+msgstr "Questions I would like to ask"
+
 #. 苦練首頁入口的說明：錯題與不熟的清單
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -1094,11 +1100,11 @@ msgstr "I am Yu-Ru Pan (潘昱如). I like turning what I learn into something I
 msgid "me.back.short"
 msgstr "Me"
 
-#. 審核頁原因框的小標
+#. 給老師的頁面每一題下面那一框的小標
 #. js-lingui-explicit-id
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.note"
-msgstr "My note"
+msgstr "My thoughts"
 
 #. 苦練區唯讀的題目：標在我上次選的選項後面
 #. js-lingui-explicit-id
@@ -1229,17 +1235,6 @@ msgstr "Change settings"
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.related"
 msgstr "Works with"
-
-#. 審核頁的統計；數字都已格式化
-#. js-lingui-explicit-id
-#. placeholder {0}: n(index.questionCount)
-#. placeholder {1}: n(index.review.excluded)
-#. placeholder {2}: n(counts.conflicting_answer)
-#. placeholder {3}: n(counts.explanation_issue)
-#. placeholder {4}: n(counts.check)
-#: src/pages/ExamTeacher.tsx
-msgid "exam.teacher.stats"
-msgstr "{0} included; {1} left out ({2} with different answers, {3} with explanation issues); {4} to check with the teacher."
 
 #. 模擬考：丟掉這一場，回到設定畫面
 #. js-lingui-explicit-id
@@ -1707,6 +1702,26 @@ msgstr "The skeleton of every screen. Each page is assembled from its components
 msgid "eggs.hint.flavours"
 msgstr "The tokens panel in the Screen layer has three flavours; try all three."
 
+#. 給老師的頁面的統計：沒有「兩份講義答案不同」的題時用這一句；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(index.questionCount)
+#. placeholder {1}: n(index.review.excluded)
+#. placeholder {2}: n(counts.check)
+#: src/pages/ExamTeacher.tsx
+msgid "exam.teacher.statsNoConflict"
+msgstr "{0} questions are in the drill. {1} are not in yet, because I would like to ask about them first. Another {2} are in, and I would be grateful if you could look at them too."
+
+#. 給老師的頁面的統計；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(index.questionCount)
+#. placeholder {1}: n(index.review.excluded)
+#. placeholder {2}: n(counts.conflicting_answer)
+#. placeholder {3}: n(counts.explanation_issue)
+#. placeholder {4}: n(counts.check)
+#: src/pages/ExamTeacher.tsx
+msgid "exam.teacher.stats"
+msgstr "{0} questions are in the drill. {1} are not in yet ({2} with different answers in two handouts, {3} where I have a question about the explanation), because I would like to ask about them first. Another {4} are in, and I would be grateful if you could look at them too."
+
 #. 診斷資訊：錯誤紀錄是空的時候，停用的「清除」旁邊的說明
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -1967,6 +1982,12 @@ msgstr "A question counts as solid once you answer it correctly twice in a row; 
 msgid "exam.start.resume"
 msgstr "Continue in handout order (question {0})"
 
+#. 給老師的頁面開頭的話：謙遜、請教的語氣
+#. js-lingui-explicit-id
+#: src/pages/ExamTeacher.tsx
+msgid "exam.teacher.intro"
+msgstr "This page gathers the questions I have not yet put into the drill, plus a few that are already in it but that I would be grateful if you could look at. Questions, options, answers and explanations are the handout text; I have only added my thoughts under each one. I may well have misunderstood something, so please do correct me. This address is not linked from anywhere on the site and is for the teacher only."
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.unsaid.title"
@@ -2094,12 +2115,6 @@ msgstr "Replace current progress"
 msgid "exam.feedback.fromHandout"
 msgstr "Explanation from the handout"
 
-#. 審核頁的原因標籤：解析有錯字或和公式不合
-#. js-lingui-explicit-id
-#: src/pages/ExamTeacher.tsx
-msgid "exam.teacher.reason.explanation"
-msgstr "Explanation issue"
-
 #. 練習頁底部的一句：解析出自講義
 #. js-lingui-explicit-id
 #: src/pages/ExamRun.tsx
@@ -2189,12 +2204,6 @@ msgstr "Handout option {0}"
 msgid "exam.teacher.answer"
 msgstr "Answer in the handout: {0}"
 
-#. 老師審核頁的標題
-#. js-lingui-explicit-id
-#: src/pages/ExamTeacher.tsx
-msgid "exam.teacher.title"
-msgstr "Handout question review"
-
 #. 老師那一節第三段：致謝
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -2233,12 +2242,6 @@ msgstr "Follow system"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.setup"
 msgstr "Set up this paper"
-
-#. 審核頁開頭給老師的說明
-#. js-lingui-explicit-id
-#: src/pages/ExamTeacher.tsx
-msgid "exam.teacher.intro"
-msgstr "This page lists the questions I left out of the drill and why, plus a few that are included but that I would like the teacher to look at. Questions, options, answers and explanations are the handout text; only my notes are added. This address is not linked from anywhere on the site and is for the teacher only."
 
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
@@ -2449,6 +2452,12 @@ msgstr "No backup"
 #: src/pages/Backup.tsx
 msgid "backup.toApp.install"
 msgstr "Not added to the home screen yet? See the install guide"
+
+#. 給老師的頁面的分類標籤：我對解析有疑問、還沒放進苦練區的題；語氣是請教，不是指正
+#. js-lingui-explicit-id
+#: src/pages/ExamTeacher.tsx
+msgid "exam.teacher.reason.explanation"
+msgstr "Not in yet, a question first"
 
 #. 練習頁：「只練不熟的」但這台裝置沒有練過而未熟練的題
 #. js-lingui-explicit-id
