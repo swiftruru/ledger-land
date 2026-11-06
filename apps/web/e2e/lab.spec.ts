@@ -344,6 +344,97 @@ test.describe('自由實驗', () => {
     await expect(page.getByTestId('lab-sandbox-noeffect')).toHaveCount(1);
     await expect(page).toHaveURL(/\/lab\/sandbox\/$/);
   });
+
+  test('刪除會讓後面算不下去的步驟被擋下並說明原因；刪除可以復原；全部拿掉不會壞掉，可以加第一步或還原', async ({ page }) => {
+    await page.goto('/lab/sandbox/');
+    await waitForApp(page);
+    const steps = page.getByTestId('lab-sandbox-step');
+    await expect(steps).toHaveCount(18);
+    // 一開始有玩法說明，沒有還原的按鈕（還沒有修改）
+    await expect(page.getByTestId('lab-sandbox-guide')).toContainText('可以這樣玩');
+    await expect(page.getByTestId('lab-sandbox-status')).toHaveText('現在和故事原本一模一樣。');
+    await expect(page.getByTestId('lab-sandbox-reset')).toHaveCount(0);
+    // 刪第 1 步（股東出資）：第 2 步會沒有現金，擋下並寫在卡片上，步驟一步都沒少
+    const step1 = page.locator(`[data-step="${STEP1}"]`);
+    await step1.getByRole('button', { name: '刪除第 1 步' }).click();
+    await expect(step1.locator('.ll-lab-sbstep__issue')).toContainText('這一步先留著：刪掉之後，第 2 步');
+    await expect(steps).toHaveCount(18);
+    await expect(page.getByTestId('lab-sandbox-broken')).toHaveCount(0);
+    // 刪最後一步：可以，浮動提示有「復原」
+    await steps.last().getByRole('button', { name: '刪除第 18 步' }).click();
+    await expect(steps).toHaveCount(17);
+    await expect(page.getByTestId('lab-sandbox-status')).toHaveText('目前改了 1 個地方。');
+    const toasts = page.getByTestId('lab-sandbox-toasts');
+    await expect(toasts).toContainText('已刪除第 18 步');
+    await toasts.getByRole('button', { name: '復原' }).click();
+    await expect(steps).toHaveCount(18);
+    // 從最後一步往前全部拿掉：出空白狀態，報表區收起來，頁面沒有壞掉
+    for (let n = 18; n >= 1; n--) {
+      await steps
+        .last()
+        .getByRole('button', { name: `刪除第 ${n} 步` })
+        .click();
+      await expect(steps).toHaveCount(n - 1);
+    }
+    const empty = page.getByTestId('lab-sandbox-empty');
+    await expect(empty).toContainText('步驟都拿掉了');
+    await expect(page.getByTestId('lab-sandbox-result')).toHaveCount(0);
+    // 重新整理後還是空白狀態（狀態存在本機），不是錯誤頁
+    await page.reload();
+    await waitForApp(page);
+    await expect(empty).toBeVisible();
+    // 選第一步：回到一步，報表回來
+    await empty.getByRole('button', { name: '股東出資成立公司' }).click();
+    await expect(steps).toHaveCount(1);
+    await expect(page.getByTestId('lab-sandbox-result')).toBeVisible();
+    // 還原：18 步都回來
+    await page.getByTestId('lab-sandbox-reset').click();
+    await expect(steps).toHaveCount(18);
+    await expect(page.getByTestId('lab-sandbox-status')).toHaveText('現在和故事原本一模一樣。');
+  });
+
+  test('以前存下來、已經算不下去的狀態：橫幅說明是哪一步、為什麼，按還原就回到故事原本的樣子', async ({ page }) => {
+    await page.goto('/lab/sandbox/');
+    await waitForApp(page);
+    const steps = page.getByTestId('lab-sandbox-step');
+    // 先做一個修改，讓本機有一筆自由實驗的狀態
+    const step6 = page.locator(`[data-step="${STEP6}"]`);
+    await step6.getByRole('textbox').fill('1600000');
+    await step6.getByTestId('lab-sandbox-apply').click();
+    await expect(page.getByTestId('lab-sandbox-toasts')).toContainText('已套用');
+    // 把它改成舊版會留下的樣子：第 1 步被拿掉，後面的步驟還在
+    await expect
+      .poll(() =>
+        page.evaluate(async (first) => {
+          const open = indexedDB.open('ledgerland');
+          const db = await new Promise<IDBDatabase>((res, rej) => {
+            open.onsuccess = () => res(open.result);
+            open.onerror = () => rej(open.error);
+          });
+          const tx = db.transaction('labSandbox', 'readwrite');
+          const store = tx.objectStore('labSandbox');
+          const all = await new Promise<{ removed: string[]; overrides: unknown[] }[]>((res) => {
+            const r = store.getAll();
+            r.onsuccess = () => res(r.result);
+          });
+          for (const rec of all) store.put({ ...rec, removed: [first], overrides: [] });
+          await new Promise((res) => (tx.oncomplete = res));
+          db.close();
+          return all.length;
+        }, STEP1),
+      )
+      .toBe(1);
+    await page.reload();
+    await waitForApp(page);
+    const broken = page.getByTestId('lab-sandbox-broken');
+    await expect(broken).toContainText('這份實驗現在算不下去');
+    await expect(broken).toContainText('第 1 步「購買辦公事務用品」做不到');
+    await expect(steps).toHaveCount(17);
+    await broken.getByRole('button', { name: '還原成故事原本的樣子' }).click();
+    await expect(broken).toHaveCount(0);
+    await expect(steps).toHaveCount(18);
+    await expect(page.getByTestId('lab-sandbox-result')).toBeVisible();
+  });
 });
 
 test.describe('勾稽練習', () => {

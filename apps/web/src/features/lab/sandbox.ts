@@ -115,7 +115,7 @@ export function withMoved(sandbox: LabSandbox, stepId: string, direction: -1 | 1
   return { ...sandbox, inserted: sandbox.inserted.map((s) => (s.id === stepId ? { ...s, after } : s)), updatedAt };
 }
 
-/** 重設為故事原本的金額：清掉覆寫、插入與刪除 */
+/** 還原成故事原本的樣子：清掉覆寫、插入與刪除 */
 export function resetSandbox(sandbox: LabSandbox, updatedAt: string): LabSandbox {
   return { ...sandbox, overrides: [], inserted: [], removed: [], updatedAt };
 }
