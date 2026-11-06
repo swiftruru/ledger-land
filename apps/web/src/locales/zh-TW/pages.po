@@ -346,6 +346,12 @@ msgstr "你的學習紀錄只存在這台裝置的這個瀏覽器裡；網站沒
 msgid "backup.preview.source"
 msgstr "來源：{sourceLabel}，{sourceDate}"
 
+#. 背題瀏覽：搜尋欄的提示文字（只是例子）
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.find.placeholder"
+msgstr "例如：毛利率、存貨"
+
 #. 審核頁篩選列的可讀名稱
 #. js-lingui-explicit-id
 #: src/pages/ExamTeacher.tsx
@@ -1272,6 +1278,18 @@ msgstr "打亂選項順序"
 msgid "backup.toApp.step2"
 msgstr "打開主畫面的會計樂園。"
 
+#. 背題瀏覽：搜尋沒有結果；keyword 是使用者輸入的字
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.find.empty"
+msgstr "找不到含有「{keyword}」的題目。換一個詞，或清掉搜尋看全部。"
+
+#. 背題瀏覽：搜尋結果的題數；hitsText 已格式化
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.find.count"
+msgstr "找到 {hitsText} 題"
+
 #. 彩蛋提示清單：這一個已經找到
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -1391,6 +1409,18 @@ msgstr "換個瀏覽器安裝"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.resetup"
 msgstr "換設定"
+
+#. 背題瀏覽的閱讀頁：這一題在搜尋結果裡的位置；數字已格式化
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseReader.tsx
+msgid "exam.browse.pos.find"
+msgstr "搜尋結果第 {at}／{of} 題"
+
+#. 背題瀏覽：關鍵字搜尋欄的標籤
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.find.label"
+msgstr "搜尋題目"
 
 #. 面板裡「搭配」清單的小標
 #. js-lingui-explicit-id
@@ -1995,7 +2025,7 @@ msgstr "第 {0} 頁"
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseReader.tsx
 msgid "exam.browse.pos"
-msgstr "第 {at}／{b} 題"
+msgstr "第 {at}／{of} 題"
 
 #. 徽章所屬的章（讀不到章節名）；chapterNo 是已格式化的章序號
 #. js-lingui-explicit-id

@@ -346,6 +346,12 @@ msgstr "Your learning records stay in this browser on this device. There are no 
 msgid "backup.preview.source"
 msgstr "Source: {sourceLabel}, {sourceDate}"
 
+#. 背題瀏覽：搜尋欄的提示文字（只是例子）
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.find.placeholder"
+msgstr "For example: 毛利率, 存貨"
+
 #. 審核頁篩選列的可讀名稱
 #. js-lingui-explicit-id
 #: src/pages/ExamTeacher.tsx
@@ -1272,6 +1278,18 @@ msgstr "Shuffle the options"
 msgid "backup.toApp.step2"
 msgstr "Open LedgerLand from your home screen."
 
+#. 背題瀏覽：搜尋沒有結果；keyword 是使用者輸入的字
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.find.empty"
+msgstr "No question contains ‘{keyword}’. Try another word, or clear the search to see them all."
+
+#. 背題瀏覽：搜尋結果的題數；hitsText 已格式化
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.find.count"
+msgstr "{hitsText} found"
+
 #. 彩蛋提示清單：這一個已經找到
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -1391,6 +1409,18 @@ msgstr "Use another browser"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.resetup"
 msgstr "Change settings"
+
+#. 背題瀏覽的閱讀頁：這一題在搜尋結果裡的位置；數字已格式化
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseReader.tsx
+msgid "exam.browse.pos.find"
+msgstr "Search result {at} of {of}"
+
+#. 背題瀏覽：關鍵字搜尋欄的標籤
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.find.label"
+msgstr "Search the questions"
 
 #. 面板裡「搭配」清單的小標
 #. js-lingui-explicit-id
@@ -1995,7 +2025,7 @@ msgstr "Slide {0}"
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseReader.tsx
 msgid "exam.browse.pos"
-msgstr "Question {at} of {b}"
+msgstr "Question {at} of {of}"
 
 #. 徽章所屬的章（讀不到章節名）；chapterNo 是已格式化的章序號
 #. js-lingui-explicit-id

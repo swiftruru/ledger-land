@@ -2,6 +2,7 @@
 // 同一條路由兩個畫面，由網址決定：沒有 q 是清單（features/exam/BrowseList.tsx：依講義與段落收合，只列標題），?q=題目 ID 是閱讀頁
 // （BrowseReader.tsx：一次一題）。?deck=d1 是範圍（沒給時用上次的範圍），?show=unread|read 是篩選。
 // 已讀只在閱讀頁按「讀完了」才記（read-db.ts，以題目 ID 為鍵，全站一份，所以「全部」與各份講義的數字一致）；
+// 清單上面的搜尋框用關鍵字找題（?find=，features/exam/search.ts）。
 // 在閱讀頁打開一題就記下位置（prefs.ts 的 ll:exam-browse-pos），下次回來清單最上面的卡片可以接著讀。noindex。
 import { useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -26,6 +27,7 @@ import {
   type BrowsePos,
   type ShowFilter,
 } from '../features/exam/reading.ts';
+import { buildSearchIndex, matchingIds, searchTerms } from '../features/exam/search.ts';
 import { loadHandoutDeck, loadHandoutIndex, type HandoutManifestEntry, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -118,13 +120,19 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
   const scope = current && !orderOf(index, listScope).includes(current.id) ? ALL_SCOPE : listScope;
   const order = orderOf(index, scope);
 
-  const paramsOf = (s: string, f: ShowFilter, q: string | null): Record<string, string> => ({
+  // 關鍵字搜尋（?find=）：清單只列比中的題，閱讀頁的上一題與下一題也只在結果裡走
+  const find = search.get('find') ?? '';
+  const terms = searchTerms(find);
+  const searchIndex = useMemo(() => buildSearchIndex(questions.values()), [questions]);
+
+  const paramsOf = (s: string, f: ShowFilter, q: string | null, keyword: string = find): Record<string, string> => ({
     ...(s === ALL_SCOPE ? {} : { deck: s }),
     ...(f === 'all' ? {} : { show: f }),
+    ...(keyword.trim() === '' ? {} : { find: keyword }),
     ...(q === null ? {} : { q }),
   });
-  const hrefOf = (s: string, f: ShowFilter, q: string | null): string => {
-    const query = new URLSearchParams(paramsOf(s, f, q)).toString();
+  const hrefOf = (s: string, f: ShowFilter, q: string | null, keyword: string = find): string => {
+    const query = new URLSearchParams(paramsOf(s, f, q, keyword)).toString();
     return localePath(locale, '/exam/browse/') + (query ? `?${query}` : '');
   };
 
@@ -185,7 +193,11 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
     const section = deck?.sections.find((s) => s.id === current.section);
     const scopeDeck = scope === ALL_SCOPE ? null : (decks.find((d) => d.id === scope) ?? null);
     const nextDeck = scopeDeck ? (decks[decks.indexOf(scopeDeck) + 1] ?? null) : null;
-    const { prev, next } = neighbours(order, current.id, read, show);
+    // 搜尋中而且這一題在結果裡：上一題、下一題與「第幾題」都照搜尋結果；不在結果裡（例如貼來的連結）就照整個範圍
+    const hits = terms.length > 0 ? matchingIds(order, searchIndex, terms) : order;
+    const searching = terms.length > 0 && hits.includes(current.id);
+    const sequence = searching ? hits : order;
+    const { prev, next } = neighbours(sequence, current.id, read, show);
     return (
       <>
         <TopBar
@@ -200,7 +212,9 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
           q={current}
           deckCode={deck?.code ?? ''}
           sectionTitle={section?.title ?? ''}
-          position={order.indexOf(current.id) + 1}
+          position={sequence.indexOf(current.id) + 1}
+          positionTotal={sequence.length}
+          searching={searching}
           total={order.length}
           readCount={readCountOf(order, read)}
           isRead={read.has(current.id)}
@@ -214,7 +228,7 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
           onUnread={() => markUnread(current.id)}
           listHref={hrefOf(scope, show, null)}
           scopeDeckCode={scopeDeck?.code ?? null}
-          nextDeck={nextDeck ? { code: nextDeck.code, href: hrefOf(nextDeck.id, 'all', null) } : null}
+          nextDeck={nextDeck ? { code: nextDeck.code, href: hrefOf(nextDeck.id, 'all', null, '') } : null}
           practiseHref={localePath(locale, `/exam/${scopeDeck ? scopeDeck.id : 'all'}/`)}
         />
       </>
@@ -245,6 +259,10 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
           setSearch(paramsOf(s, show, null), { replace: true });
         }}
         onShow={(f) => setSearch(paramsOf(scope, f, null), { replace: true })}
+        find={find}
+        terms={terms}
+        searchIndex={searchIndex}
+        onFind={(v) => setSearch(paramsOf(scope, show, null, v), { replace: true })}
         onReset={resetScope}
         focusId={leftQuestion}
         onFocusUsed={() => setLeftQuestion(null)}
