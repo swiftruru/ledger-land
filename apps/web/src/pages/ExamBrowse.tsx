@@ -15,6 +15,7 @@ import { readExamBrowseHide, readExamBrowsePos, writeExamBrowseHide, writeExamBr
 import { getExamReadDb, type ReadMark } from '../features/exam/read-db.ts';
 import {
   ALL_SCOPE,
+  browseParams,
   neighbours,
   orderOf,
   parseShow,
@@ -125,12 +126,8 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
   const terms = searchTerms(find);
   const searchIndex = useMemo(() => buildSearchIndex(questions.values()), [questions]);
 
-  const paramsOf = (s: string, f: ShowFilter, q: string | null, keyword: string = find): Record<string, string> => ({
-    ...(s === ALL_SCOPE ? {} : { deck: s }),
-    ...(f === 'all' ? {} : { show: f }),
-    ...(keyword.trim() === '' ? {} : { find: keyword }),
-    ...(q === null ? {} : { q }),
-  });
+  const paramsOf = (s: string, f: ShowFilter, q: string | null, keyword: string = find): Record<string, string> =>
+    browseParams({ scope: s, show: f, find: keyword, q });
   const hrefOf = (s: string, f: ShowFilter, q: string | null, keyword: string = find): string => {
     const query = new URLSearchParams(paramsOf(s, f, q, keyword)).toString();
     return localePath(locale, '/exam/browse/') + (query ? `?${query}` : '');

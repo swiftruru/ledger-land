@@ -2,6 +2,7 @@
 // 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、離線保險（開過首頁後講義檔都在快取）、英文站的介面英文而題目中文。
 // 第二批（2026-11-05）：隨機抽幾題、熟練與「只練不熟的」、錯題與不熟的清單、背題瀏覽（講義篩選、遮住答案、列印樣式）。
 // 背題瀏覽改成清單加逐題閱讀（2026-11-06）：按「讀完了」才算已讀、各範圍的數字一致、接著讀、改回未讀、篩選、重設與復原。
+// 苦練首頁改成三步（2026-11-06）：先讀題、再自己練、最後模擬考；建議的步驟跟著進度換。
 // 背題瀏覽的關鍵字搜尋（2026-11-06）：只列比中的題、閱讀頁在結果裡翻頁、換範圍、沒有結果與清除。
 // 模擬考（第二批的第二次交付）：設定與記住上次的選擇、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄、接續與限時自動交卷。
 // 苦練的紀錄跟著備份走（2026-11-05）：練過的題匯出備份碼、清掉資料、匯入後回來，再匯入一次不重複計算。
@@ -237,25 +238,43 @@ async function allQuestions(request: APIRequestContext, idx: Index): Promise<Map
 }
 
 test.describe('期中考苦練', () => {
-  test('首頁與「我的」的入口；苦練首頁的統計、三顆按鈕與講義卡', async ({ page, request }) => {
+  test('首頁與「我的」的入口；苦練首頁的三步（先讀題、再自己練、最後模擬考），新來的人建議從讀題開始；講義卡', async ({ page, request }) => {
     const idx = await index(request);
+    const d1 = idx.decks.find((d) => d.id === 'd1')!;
+    const first = d1.sections[0]!.questionIds[0]!;
     await clearAll(page);
     await page.getByTestId('home-exam').click();
     await expect(page).toHaveURL(/\/exam\/$/);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('期中考苦練');
-    await expect(page.getByTestId('exam-hero')).toContainText(`講義 ${idx.questionCount} 題`);
+    // 三張步驟卡的順序；新來的人：只有第 1 步掛「建議」，主要按鈕直接進第一題
+    await expect(page.getByTestId('exam-route')).toHaveText('建議的順序：先讀題，再自己練，最後模擬考。');
+    await expect(page.locator('section[data-testid^="exam-step-"] > h2')).toHaveText(['先讀題', '再自己練', '最後模擬考']);
+    await expect(page.getByTestId('exam-step-recommended')).toHaveCount(1);
+    await expect(page.getByTestId('exam-step-read').getByTestId('exam-step-recommended')).toHaveText('建議從這裡開始');
+    await expect(page.getByTestId('exam-read-count')).toHaveText('還沒開始讀');
+    await expect(page.getByTestId('exam-read-go')).toHaveText('從第一題開始讀');
+    await expect(page.getByTestId('exam-read-go')).toHaveAttribute('href', new RegExp(`/exam/browse/\\?q=${first}$`));
     await expect(page.getByTestId('exam-progress')).toHaveText('還沒開始練');
     await expect(page.getByTestId('exam-start-order')).toHaveAttribute('href', /\/exam\/all\/$/);
     await expect(page.getByTestId('exam-start-random')).toHaveAttribute('href', /\/exam\/all\/\?order=random$/);
     await expect(page.getByTestId('exam-start-wrong')).toBeDisabled();
     await expect(page.getByTestId('exam-start-unsure')).toBeDisabled();
     await expect(page.getByTestId('exam-more-mock')).toHaveAttribute('href', /\/exam\/mock\/$/);
+    await expect(page.getByTestId('exam-more-mock')).toHaveText('開始模擬考');
+    await expect(page.getByTestId('exam-mock-last')).toHaveCount(0);
     await expect(page.getByTestId('exam-more-browse')).toHaveAttribute('href', /\/exam\/browse\/$/);
     await expect(page.getByTestId('exam-more-list')).toHaveAttribute('href', /\/exam\/list\/$/);
     await expect(page.getByRole('switch', { name: '打亂選項順序' })).not.toBeChecked();
-    for (const d of idx.decks) await expect(page.getByTestId(`exam-deck-${d.id}`)).toContainText(`講義 ${d.code}`);
+    for (const d of idx.decks) {
+      await expect(page.getByTestId(`exam-deck-${d.id}`)).toContainText(`講義 ${d.code}`);
+      await expect(page.getByTestId(`exam-deck-count-${d.id}`)).toHaveText(`已讀 0／${d.questionCount} 題，練過 0／${d.questionCount} 題，熟練 0`);
+      await expect(page.getByTestId(`exam-deck-read-${d.id}`)).toHaveAttribute('href', new RegExp(`/exam/browse/\\?deck=${d.id}$`));
+    }
     await page.getByTestId('exam-deck-d1').locator('summary', { hasText: '各段分開練' }).click();
     await expect(page.getByTestId(`exam-section-${idx.decks[0]!.sections[0]!.id}`)).toBeVisible();
+    // 第 1 步的主要按鈕：不用先進清單，直接是第一題
+    await page.getByTestId('exam-read-go').click();
+    await expect(page.getByTestId('exam-reader')).toHaveAttribute('data-question', first);
     await page.goto('/me/');
     await waitForApp(page);
     await expect(page.getByTestId('me-exam-row')).toHaveAttribute('href', /\/exam\/$/);
@@ -293,6 +312,9 @@ test.describe('期中考苦練', () => {
     await page.goto('/exam/');
     await waitForApp(page);
     await expect(page.getByTestId('exam-progress')).toContainText(`練過 ${total}／${idx.questionCount} 題`);
+    // 作答過之後，建議的步驟移到第 2 步
+    await expect(page.getByTestId('exam-step-recommended')).toHaveCount(1);
+    await expect(page.getByTestId('exam-step-practise').getByTestId('exam-step-recommended')).toHaveText('建議下一步');
     await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
     await page.getByTestId('exam-start-wrong').click();
     await expect(page).toHaveURL(/\/exam\/wrong\/$/);
@@ -660,7 +682,13 @@ test.describe('期中考苦練', () => {
     await expect.poll(() => readMarkCount(page)).toBe(2);
     await page.goto('/exam/');
     await waitForApp(page);
-    await expect(page.getByTestId('exam-more-browse')).toContainText(`已讀 2／${all} 題，上次讀到講義 ${d1.code}。`);
+    // 苦練首頁的第 1 步：已讀幾題、「接著讀」直接到第三題；還沒作答過，所以建議接著讀；講義卡也寫已讀
+    await expect(page.getByTestId('exam-read-count')).toHaveText(`已讀 2／${all} 題`);
+    await expect(page.getByTestId('exam-read-go')).toHaveText(`接著讀（講義 ${d1.code}）`);
+    await expect(page.getByTestId('exam-read-go')).toHaveAttribute('href', new RegExp(`/exam/browse/\\?deck=d1&q=${id3}$`));
+    await expect(page.getByTestId('exam-step-read').getByTestId('exam-step-recommended')).toHaveText('建議接著讀');
+    await expect(page.getByTestId('exam-deck-count-d1')).toContainText(`已讀 2／${d1.questionCount} 題`);
+    await expect(page.getByTestId('exam-deck-count-d2')).toContainText(`已讀 0／${d2.questionCount} 題`);
     // 下次回來（網址沒有範圍）：記得上次的範圍，開始卡接著讀第三題
     await page.getByTestId('exam-more-browse').click();
     await waitForApp(page);
@@ -867,6 +895,9 @@ test.describe('期中考苦練', () => {
     await waitForApp(page);
     await expect(page.getByTestId('exam-progress')).toContainText(`練過 2／${idx.questionCount} 題`);
     await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
+    // 第 3 步：寫著上次的成績，按鈕回到成績頁
+    await expect(page.getByTestId('exam-mock-last')).toHaveText('上次模擬考：答對 1／20 題');
+    await expect(page.getByTestId('exam-more-mock')).toHaveText('看成績，或再考一次');
     // 換設定：回到設定畫面，記得上次選的
     await page.goto('/exam/mock/');
     await waitForApp(page);
@@ -1010,7 +1041,8 @@ test.describe('期中考苦練', () => {
     await page.goto('/en/exam/');
     await waitForApp(page);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Midterm drill');
-    await expect(page.getByTestId('exam-hero')).toContainText('The question bank is in Chinese only.');
+    await expect(page.getByTestId('exam-notes')).toContainText('The question bank is in Chinese only.');
+    await expect(page.locator('section[data-testid^="exam-step-"] > h2')).toHaveText(['Read the questions first', 'Then practise', 'Finish with a mock exam']);
     await page.goto('/en/exam/d1s1/');
     await waitForApp(page);
     await expect(card(page).getByRole('button', { name: 'Check answer' })).toBeVisible();

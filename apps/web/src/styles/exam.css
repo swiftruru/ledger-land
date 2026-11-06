@@ -137,6 +137,24 @@
 .ll-exam-q__reason > p:first-child {
   margin-top: 0;
 }
+/* 苦練首頁的三張步驟卡：最上面一列是「第 N 步」與建議的標籤；三張卡下面是「各份講義」的標題 */
+.ll-exam-step__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ll-space-2);
+  margin: 0 0 var(--ll-space-1);
+}
+.ll-exam-route {
+  margin: var(--ll-space-2) 0 0;
+  font-weight: 600;
+}
+.ll-exam-decks {
+  margin: var(--ll-space-6) 0 0;
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+}
 /* 打亂選項的開關：寬版的主卡很寬，開關不貼右緣（離文字太遠），整列只和內容一樣寬；窄版放不下時照常換行 */
 .ll-exam-hero__switch {
   width: fit-content;
