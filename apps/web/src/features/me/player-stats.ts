@@ -7,6 +7,7 @@ import { loadTermIndex } from '../../lib/content.ts';
 import { getProgressStore } from '../../lib/progress/index.ts';
 import { collectionCounts, unlockedTermMap } from '../glossary/unlocks.ts';
 import { contentSource, type QuestMapData } from '../quest-map/data.ts';
+import { EXAM_BADGES } from '../badges/exam.ts';
 import { SPECIAL_BADGES } from '../badges/special.ts';
 import { badgeStateFor, loadMapProgress, totalStars, type BadgeState, type MapProgress } from '../quest-map/progress.ts';
 
@@ -17,7 +18,8 @@ export interface EarnedChapterBadge {
 
 export interface PlayerStats {
   readonly stars: number;
-  /** earned／total 含特別徽章（維護者 2026-10-27：徽章頁、「我的」徽章卡與首頁捷徑都算進去；地圖頂部仍只算章節）；list 與 chapterTotal 只有章節徽章（徽章橫排用） */
+  /** earned／total 含特別徽章（維護者 2026-10-27：徽章頁、「我的」徽章卡與首頁捷徑都算進去；地圖頂部仍只算章節）與苦練徽章（維護者 2026-11-07）；
+   *  list 與 chapterTotal 只有章節徽章（徽章橫排用） */
   readonly badges: { readonly earned: number; readonly total: number; readonly chapterTotal: number; readonly list: readonly EarnedChapterBadge[] };
   /** 讀不到名詞索引時是 null（只少一個數字，不影響其他） */
   readonly terms: { readonly done: number; readonly total: number } | null;
@@ -53,8 +55,9 @@ export async function loadPlayerStats(locale: Locale, loaded?: { data: QuestMapD
   return {
     stars: totalStars(progress),
     badges: {
-      earned: list.length + SPECIAL_BADGES.filter((d) => progress.badges.has(d.unlockId)).length,
-      total: data.chapters.length + SPECIAL_BADGES.length,
+      earned:
+        list.length + SPECIAL_BADGES.filter((d) => progress.badges.has(d.unlockId)).length + EXAM_BADGES.filter((d) => progress.badges.has(d.unlockId)).length,
+      total: data.chapters.length + SPECIAL_BADGES.length + EXAM_BADGES.length,
       chapterTotal: data.chapters.length,
       list,
     },

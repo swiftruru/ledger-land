@@ -3,9 +3,9 @@
 // 與已取得的日期；取得條件只在摘要卡說一次。整章不計分的延伸章（finding pages-a-1）的規則也在摘要卡。
 // 徽章格分「主線」與「延伸」兩段（第 2 輪看圖驗收：延伸章原本從第三列中間開始），各有一個小標與已取得數；完成卡和精通卡一樣有淡底與內框，顏色和狀態 Badge 同一個色系（精通星星金、完成成功色，第 4 輪看圖驗收：完成卡原本是 accent，深色像「被選取」；me.css）。
 // 徽章圖重用地圖的 ChapterBadge（@ledgerland/web-ui/map）；這個元件只在徽章頁以 lazy 載入，不進首次載入的 chunk。
-// 最後是「苦練徽章」一區（features/badges/exam.ts，2026-11-06）：期中考苦練的六枚，自己有「已取得 a／b」，不算進摘要卡的 n／m。
+// 最後是「苦練徽章」一區（features/badges/exam.ts，2026-11-06）：期中考苦練的六枚，自己有「已取得 a／b」，也算進摘要卡的 n／m（維護者 2026-11-07）。
 // 章節之後另有「特別徽章」一區（features/badges/special.ts，維護者 2026-10-27）：探索獎勵，和章節徽章分開算，
-// 自己有「已取得 a／b」；頂端摘要卡與進度條的 n／m 只算章節徽章。
+// 自己有「已取得 a／b」；頂端摘要卡與進度條的 n／m 是章節、特別、苦練三類的合計。
 // 章節索引、進度的徽章與不計分的章一掛載就讀，三樣都到齊才經 usePageReady 回報、整頁一次出現（維護者 2026-10-26：不先畫骨架格再補徽章）；
 // 讀到之前整頁看不見，所以沒有骨架、數字也不是「…」。
 import { Trans, useLingui } from '@lingui/react/macro';
@@ -71,9 +71,11 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
   const fmt = (n: number) => formatNumber(n, locale);
   const chapterCount = index?.chapters.length ?? 0;
   // 摘要卡的 n／m 含特別徽章（維護者 2026-10-27：拿到的特別徽章要算進徽章頁的總數；地圖頂部統計仍只算章節）
+  // 與苦練徽章（維護者 2026-11-07：頁面上看得到的徽章都算，不然總數和下面的格子對不起來）
+  const examDone = ready ? examBadgesOf(unlocks).size : 0;
   const specialDone = ready ? SPECIAL_BADGES.filter((d) => specialBadgeStatus(unlocks, d).state === 'done').length : 0;
-  const earnedCount = (ready ? index.chapters.filter((c) => badgeStatusOf(unlocks, c.id).state !== 'locked').length : 0) + specialDone;
-  const totalCount = chapterCount + SPECIAL_BADGES.length;
+  const earnedCount = (ready ? index.chapters.filter((c) => badgeStatusOf(unlocks, c.id).state !== 'locked').length : 0) + specialDone + examDone;
+  const totalCount = chapterCount + SPECIAL_BADGES.length + EXAM_BADGES.length;
   const earned = fmt(earnedCount);
   const total = fmt(totalCount);
   const date = (iso: string) => formatDate(isoDatePart(iso), locale, 'medium');
@@ -111,7 +113,7 @@ export default function BadgesSection({ locale }: { locale: Locale }) {
     return t({ id: 'me.stat.ratio', message: `${a}／${b}`, comment: '統計膠囊上的「已取得／總數」；a、b 已格式化' });
   })();
 
-  // 苦練徽章（features/badges/exam.ts）：期中考苦練自己的一類，自己有「已取得 a／b」，不算進摘要卡的 n／m
+  // 苦練徽章（features/badges/exam.ts）：期中考苦練自己的一類，自己有「已取得 a／b」，也算進摘要卡的 n／m
   const examOwned = ready ? examBadgesOf(unlocks) : new Map<string, string>();
   const exams = EXAM_BADGES.map((def) => {
     const at = examOwned.get(def.key);

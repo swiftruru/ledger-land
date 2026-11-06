@@ -541,7 +541,6 @@ msgstr "全部"
 #. 題數選項：全部題目
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
-#: src/pages/ExamMock.tsx
 msgid "exam.random.all"
 msgstr "全部"
 
