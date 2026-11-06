@@ -684,6 +684,8 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 
 **講義題庫的紀錄另開資料庫 `ledgerland-exam`**（M4c，2026-11-04；08 的「講義題庫」一節）：三個 object store：`attempts`（每次作答：題目 `id`、`rev`、`answerRev`、選的字母、對錯、時間，只增不改）、`questionState`（每題的累計狀態：答過幾次、最後一次的結果、`answerRev` 變了之前的對錯不再採計；第二批（2026-11-05）加 `streak`（連續答對幾次，答錯歸零；連對 2 次算熟練）與 `lastChosen`（最近一次選的字母，錯題清單用），第一批存的紀錄沒有 `streak`，讀出來時補成「最近答對 1、答錯 0」，資料庫版本不升）、`runs`（每一輪練習：講義、選項順序的設定、開始與結束時間、答對題數；模擬考是鍵為 `mock` 的一輪，多 `mode`、`secondsPerQuestion`、`deadlineAt` 與開始時的設定，一次只留一場，成績留到下一場開始為止）。和 `ledgerland` 是兩個資料庫、各自的版本號與 migration，互不引用；每題的累計跟著備份走，明細與做到一半的一輪不帶（4.6，2026-11-05 改；原本整個資料庫都不進備份）；同一個 origin，所以 `persist()` 與清除規則（4.5）一樣適用。
 
+**背題瀏覽的已讀紀錄另開資料庫 `ledgerland-exam-read`**（2026-11-06；02 第 1.1 節的背題瀏覽）：一個 object store `marks`，鍵是題目 ID，內容是 `questionId`、`answerRev`（讀的時候答案是哪一版）與 `at`（時間）。只有在閱讀頁按「讀完了」才寫入；「改回未讀」與重設是刪掉紀錄。`answerRev` 和現在的題庫不同的紀錄不算已讀（答案改過的題要再讀一次）。不放進 `ledgerland-exam`：那個資料庫沒有處理「另一個分頁還開著舊版」時的升版，多一個 store 要升版本，舊分頁沒關時新分頁會一直等；另開一個資料庫沒有這個問題（作答的暫存 `ledgerland-session` 也是這樣）。IndexedDB 開不了時退到記憶體。已讀紀錄目前只存在這台裝置，還不進備份檔與備份碼（備份碼有 8,000 字的上限，要先設計精簡格式與放不下時的取捨），頁面上有說明。上次所在的範圍與停的題是裝置偏好，放 localStorage 的 `ll:exam-browse-pos`（第 4.1 節的規則：不進 IndexedDB、不隨備份）。
+
 **`attempts.answer` 的格式（依題型）**：欄位與題型代號依 04 第 16.2 節；正式型別以 `packages/content-schema` 的 Zod schema 為準，M2 與作答元件一起定案。
 
 | 題型 | `answer` 的形狀 | 範例 |

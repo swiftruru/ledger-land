@@ -26,7 +26,8 @@ import {
 import { getExamDb, type QuestionState } from '../features/exam/db.ts';
 import { scheduleHandoutPrefetch } from '../features/exam/prefetch.ts';
 import { COUNT_OPTIONS, DEFAULT_RANDOM_COUNT, type CountOption } from '../features/exam/options.ts';
-import { readExamRandomCount, readExamShuffle, writeExamRandomCount, writeExamShuffle } from '../features/exam/prefs.ts';
+import { readExamBrowsePos, readExamRandomCount, readExamShuffle, writeExamRandomCount, writeExamShuffle } from '../features/exam/prefs.ts';
+import { getExamReadDb } from '../features/exam/read-db.ts';
 import type { ExamRun } from '../features/exam/run.ts';
 import { allQuestionIds } from '../features/exam/sets.ts';
 import { statsOf, unsureIdsOf, wrongIdsOf } from '../features/exam/stats.ts';
@@ -44,6 +45,8 @@ export default function Exam() {
   const [state, setState] = useState<IndexState>({ kind: 'loading' });
   const [states, setStates] = useState<ReadonlyMap<string, QuestionState> | null>(null);
   const [resume, setResume] = useState<ExamRun | null | undefined>(undefined);
+  /** 背題瀏覽讀過的題（題目 ID）；入口那一列用 */
+  const [readIds, setReadIds] = useState<ReadonlySet<string> | null>(null);
   const [shuffle, setShuffle] = useState(readExamShuffle);
   const [randomCount, setRandomCount] = useState<CountOption>(readExamRandomCount);
 
@@ -58,6 +61,12 @@ export default function Exam() {
       (list) => alive && setStates(new Map(list.map((s) => [s.questionId, s]))),
       () => alive && setStates(new Map()),
     );
+    void getExamReadDb()
+      .all()
+      .then(
+        (list) => alive && setReadIds(new Set(list.map((m) => m.questionId))),
+        () => alive && setReadIds(new Set()),
+      );
     void db.getRun('all:handout').then(
       (run) => alive && setResume(run && run.finishedAt === undefined && run.index > 0 ? run : null),
       () => alive && setResume(null),
@@ -66,7 +75,7 @@ export default function Exam() {
       alive = false;
     };
   }, []);
-  usePageReady(state.kind !== 'loading' && states !== null && resume !== undefined);
+  usePageReady(state.kind !== 'loading' && states !== null && resume !== undefined && readIds !== null);
 
   const index = state.kind === 'ok' ? state.index : null;
   // 離線保險：頁面畫好後請 Service Worker 把三份講義檔抓進快取，沒練過的講義離線也開得了
@@ -85,7 +94,7 @@ export default function Exam() {
       backShortLabel={t({ id: 'exam.back.short', message: '地圖', comment: '苦練區頁首返回按鈕上的短字（必須是「回到闖關地圖」的一部分）' })}
     />
   );
-  if (state.kind === 'loading' || states === null) return topBar;
+  if (state.kind === 'loading' || states === null || readIds === null) return topBar;
   if (state.kind !== 'ok') {
     return (
       <>
@@ -105,6 +114,26 @@ export default function Exam() {
   const n = (x: number) => formatNumber(x, locale);
   const bank = state.index;
   const decks = [...bank.decks].sort((a, b) => a.order - b.order);
+  // 背題瀏覽的入口：讀過就寫讀了幾題、上次讀到哪一份（這裡沒有載題庫，不比對答案版本，數字以背題瀏覽頁為準）
+  const browseReadCount = all.filter((id) => readIds.has(id)).length;
+  const browseRead = n(browseReadCount);
+  const browseTotal = n(all.length);
+  const browseLast = readExamBrowsePos().last;
+  const browseCode = decks.find((d) => d.sections.some((s) => browseLast !== null && s.questionIds.includes(browseLast)))?.code;
+  const browseNote =
+    browseReadCount === 0 && browseCode === undefined
+      ? t({
+          id: 'exam.more.browse',
+          message: '依講義列出全部題目，點進去一題一題讀；可以遮住答案，也可以列印。',
+          comment: '苦練首頁入口的說明：背題瀏覽（還沒讀過）',
+        })
+      : browseCode === undefined
+        ? t({ id: 'exam.more.browse.count', message: `已讀 ${browseRead}／${browseTotal} 題。`, comment: '苦練首頁入口的說明：背題瀏覽讀了幾題；數字已格式化' })
+        : t({
+            id: 'exam.more.browse.last',
+            message: `已讀 ${browseRead}／${browseTotal} 題，上次讀到講義 ${browseCode}。`,
+            comment: '苦練首頁入口的說明：背題瀏覽讀了幾題、上次讀到哪一份講義；數字已格式化，browseCode 是講義編號',
+          });
   return (
     <>
       {topBar}
@@ -235,11 +264,7 @@ export default function Exam() {
         <NavRow
           icon={<CardsIcon />}
           title={t({ id: 'exam.browse.title', message: '背題瀏覽' })}
-          description={t({
-            id: 'exam.more.browse',
-            message: '依講義列出全部題目、正解與解析，可以遮住答案，也可以列印。',
-            comment: '苦練首頁入口的說明：背題瀏覽',
-          })}
+          description={browseNote}
           href={href('/exam/browse/')}
           data-testid="exam-more-browse"
         />

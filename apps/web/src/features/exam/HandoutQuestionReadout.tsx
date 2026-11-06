@@ -12,6 +12,8 @@ export interface HandoutQuestionReadoutProps {
   /** 主題的標題層級；false 不畫主題（外層的展開列已經是主題） */
   heading?: 'h2' | 'h3' | 'h4' | false;
   headingId?: string;
+  /** 標題可以用程式移焦點（背題瀏覽的閱讀頁換題時） */
+  headingFocusable?: boolean;
   /** 主題上面的來源列（講義與頁次、原因標籤），由頁面給 */
   source?: ReactNode;
   /** 我選的講義字母：標在那個選項上，選錯時用 danger */
@@ -30,6 +32,7 @@ export function HandoutQuestionReadout({
   q,
   heading = 'h3',
   headingId,
+  headingFocusable = false,
   source,
   chosen,
   hideAnswer = false,
@@ -45,7 +48,7 @@ export function HandoutQuestionReadout({
     <div className={`ll-exam-q${hideAnswer ? ' is-answer-hidden' : ''}${className ? ` ${className}` : ''}`}>
       {source !== undefined && <p className="ll-exam-q__source">{source}</p>}
       {Heading && (
-        <Heading id={headingId} className="ll-exam-q__title" lang="zh-TW">
+        <Heading id={headingId} className="ll-exam-q__title" lang="zh-TW" tabIndex={headingFocusable ? -1 : undefined}>
           {q.topic}
         </Heading>
       )}

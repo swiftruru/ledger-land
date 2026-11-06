@@ -230,14 +230,71 @@
   justify-content: space-between;
 }
 .ll-exam-browse__tools {
-  position: sticky;
-  top: 0;
+  margin-top: var(--ll-space-4);
+}
+/* 清單：每段一張展開列；題目列已讀的圖示用成功色（另有螢幕閱讀器唸的「已讀」，顏色不是唯一線索） */
+.ll-exam-browse__sec,
+.ll-exam-browse__more {
+  margin-top: var(--ll-space-2);
+}
+.ll-exam-browse__more {
+  margin-top: var(--ll-space-6);
+}
+.ll-exam-browse__row.is-read svg:first-child {
+  color: var(--ll-success-ink);
+}
+.ll-exam-browse__print {
+  display: none;
+}
+/* 閱讀頁：最上面是位置與已讀；底部固定一列（上一題、主要按鈕、下一題），在 Tab bar 上方 */
+/* 寬版頁上一行字太長不好讀：題目與底部那一列都限制在 46rem，靠左和頁首對齊 */
+.ll-exam-reader {
+  max-width: 46rem;
+  padding-bottom: calc(var(--ll-btn-h-md) + var(--ll-space-8));
+}
+.ll-exam-reader__pos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+  min-height: var(--ll-btn-h-sm);
+  margin: var(--ll-space-3) 0;
+  color: var(--ll-text-2);
+  font-weight: 600;
+}
+.ll-exam-reader__hide {
+  width: fit-content;
+  max-width: 100%;
+  margin-top: var(--ll-space-5);
+}
+.ll-exam-readbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px));
   z-index: var(--ll-z-sticky);
-  justify-content: space-between;
-  margin: var(--ll-space-3) calc(-1 * var(--ll-space-2)) 0;
-  padding: var(--ll-space-2);
+  padding: var(--ll-space-2) var(--ll-space-4);
   background: var(--ll-bg);
-  border-bottom: 1px solid var(--ll-border);
+  border-top: 1px solid var(--ll-border);
+}
+.ll-exam-readbar__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ll-space-2);
+  max-width: 46rem;
+}
+/* 電腦：Tab bar 在左側，底部那一列貼到底；左右內距和 main 一樣，才會和題目對齊（base.css 的 main） */
+@media (min-width: 1024px) {
+  .ll-exam-readbar {
+    left: 0;
+    bottom: 0;
+    padding-inline: calc(var(--ll-tabbar-rail-w) + 32px) var(--ll-space-4);
+  }
+  .ll-exam-readbar__row {
+    width: min(46rem, 100%);
+    margin-inline: max(0px, (100% - var(--ll-layout-wide)) / 2) auto;
+  }
 }
 .ll-exam-browse__deck {
   margin-top: var(--ll-space-6);
@@ -280,11 +337,16 @@
   .ll-tabbar,
   .ll-skiplink,
   .ll-topbar__bar,
-  .ll-exam-browse__tools,
-  .ll-exam-browse__reveal {
+  .ll-exam-browse__screen,
+  .ll-exam-browse__reveal,
+  .ll-exam-reader__hide,
+  .ll-exam-reader__pos,
+  .ll-exam-readbar,
+  .ll-float-toasts {
     display: none !important;
   }
-  .ll-exam-print-only {
+  .ll-exam-print-only,
+  .ll-exam-browse__print {
     display: block;
   }
   .ll-exam-browse__item,
