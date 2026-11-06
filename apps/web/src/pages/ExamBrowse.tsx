@@ -1,27 +1,44 @@
-// 背題瀏覽（M4c 第二批，2026-11-05；02 第 1.1 節）：/exam/browse/，?deck=d1 只看一份講義。期中考照講義原題出，這一頁依講義與段落列出
-// 全部收錄的題目、正解與解析（HandoutQuestionReadout），可以列印（exam.css 的 @media print）。答案與解析預設直接顯示，
-// 工具列的開關可以整頁遮住（維護者 2026-11-05 的決定；存 localStorage），遮住時每題有「看答案」只掀開那一題。純瀏覽，不寫紀錄。noindex。
-import { Trans, useLingui } from '@lingui/react/macro';
-import { useEffect, useState } from 'react';
+// 背題瀏覽（M4c 第二批，2026-11-05；2026-11-06 改成「清單找題、點進去一題一題讀」；02 第 1.1 節）：/exam/browse/。
+// 同一條路由兩個畫面，由網址決定：沒有 q 是清單（features/exam/BrowseList.tsx：依講義與段落收合，只列標題），?q=題目 ID 是閱讀頁
+// （BrowseReader.tsx：一次一題）。?deck=d1 是範圍（沒給時用上次的範圍），?show=unread|read 是篩選。
+// 已讀只在閱讀頁按「讀完了」才記（read-db.ts，以題目 ID 為鍵，全站一份，所以「全部」與各份講義的數字一致）；
+// 在閱讀頁打開一題就記下位置（prefs.ts 的 ll:exam-browse-pos），下次回來清單最上面的卡片可以接著讀。noindex。
+import { useLingui } from '@lingui/react/macro';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { formatNumber, localePath } from '@ledgerland/i18n';
-import { Button, ErrorState, FileIcon, Segmented, Switch, TopBar } from '@ledgerland/web-ui';
-import { HandoutQuestionReadout } from '../features/exam/HandoutQuestionReadout.tsx';
-import { readExamBrowseHide, writeExamBrowseHide } from '../features/exam/prefs.ts';
+import { localePath } from '@ledgerland/i18n';
+import { ErrorState, TopBar } from '@ledgerland/web-ui';
+import { BrowseList } from '../features/exam/BrowseList.tsx';
+import { BrowseReader } from '../features/exam/BrowseReader.tsx';
+import { readExamBrowseHide, readExamBrowsePos, writeExamBrowseHide, writeExamBrowsePos } from '../features/exam/prefs.ts';
+import { getExamReadDb, type ReadMark } from '../features/exam/read-db.ts';
+import {
+  ALL_SCOPE,
+  neighbours,
+  orderOf,
+  parseShow,
+  readCountOf,
+  readSetOf,
+  scopeOf,
+  withoutPositions,
+  withScope,
+  withVisited,
+  type BrowsePos,
+  type ShowFilter,
+} from '../features/exam/reading.ts';
 import { loadHandoutDeck, loadHandoutIndex, type HandoutManifestEntry, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
 import '../styles/exam.css';
 
-type State = { kind: 'loading' } | { kind: 'error' } | { kind: 'ok'; index: HandoutManifestEntry; questions: ReadonlyMap<string, HandoutQuestionSnapshot> };
+type Questions = ReadonlyMap<string, HandoutQuestionSnapshot>;
+type State = { kind: 'loading' } | { kind: 'error' } | { kind: 'ok'; index: HandoutManifestEntry; questions: Questions };
 
 export default function ExamBrowse() {
   const { t } = useLingui();
   const locale = useLocale();
-  const [search, setSearch] = useSearchParams();
   const [state, setState] = useState<State>({ kind: 'loading' });
-  const [hide, setHide] = useState(readExamBrowseHide);
-  const [revealed, setRevealed] = useState<ReadonlySet<string>>(new Set());
+  const [marks, setMarks] = useState<readonly ReadMark[] | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -34,12 +51,20 @@ export default function ExamBrowse() {
       (s) => alive && setState(s),
       () => alive && setState({ kind: 'error' }),
     );
+    void getExamReadDb()
+      .all()
+      .then(
+        (list) => alive && setMarks(list),
+        () => alive && setMarks([]),
+      );
     return () => {
       alive = false;
     };
   }, []);
-  usePageReady(state.kind !== 'loading');
+  const ready = state.kind !== 'loading' && marks !== null;
+  usePageReady(ready);
 
+  if (state.kind === 'ok' && marks !== null) return <Browse index={state.index} questions={state.questions} initialMarks={marks} />;
   const topBar = (
     <TopBar
       title={t({ id: 'exam.browse.title', message: '背題瀏覽', comment: '背題瀏覽頁的標題' })}
@@ -49,114 +74,181 @@ export default function ExamBrowse() {
       backShortLabel={t({ id: 'exam.run.back.short', message: '苦練' })}
     />
   );
-  if (state.kind === 'loading') return topBar;
-  if (state.kind === 'error')
-    return (
-      <>
-        {topBar}
-        <ErrorState
-          title={t({ id: 'exam.error.title', message: '題庫載入不到' })}
-          description={t({ id: 'exam.error.desc', message: '重新整理再試一次；離線時要先在有網路時開過這一頁。' })}
-          onRetry={() => window.location.reload()}
-        />
-      </>
-    );
-
-  const { index, questions } = state;
-  const n = (x: number) => formatNumber(x, locale);
-  const decks = [...index.decks].sort((a, b) => a.order - b.order);
-  const wanted = search.get('deck');
-  const deckId = decks.some((d) => d.id === wanted) ? wanted! : 'all';
-  const shown = decks.filter((d) => deckId === 'all' || d.id === deckId);
-  const toggle = (id: string) =>
-    setRevealed((prev) => {
-      const next = new Set(prev);
-      if (!next.delete(id)) next.add(id);
-      return next;
-    });
+  if (!ready) return topBar;
   return (
     <>
       {topBar}
-      <p className="ll-exam-intro">
-        <Trans id="exam.browse.intro" comment="背題瀏覽頁開頭的說明">
-          依講義與段落列出收錄的全部題目，題目、選項、解答與解析都照講義。想自己先想一遍，可以把答案遮起來。
-        </Trans>
-      </p>
-      <p className="ll-exam-print-only">
-        <Trans id="exam.licence">題目經陳彥宏老師授權使用。</Trans>
-      </p>
-      <div className="ll-exam-browse__tools" data-testid="exam-browse-tools">
-        <Segmented<string>
-          size="sm"
-          value={deckId}
-          onChange={(v) => setSearch(v === 'all' ? {} : { deck: v }, { replace: true })}
-          label={t({ id: 'exam.browse.deck', message: '要看哪一份講義', comment: '背題瀏覽頁工具列：講義篩選的可讀名稱' })}
-          options={[
-            {
-              value: 'all',
-              label: t({ id: 'exam.browse.deck.all', message: `全部 ${n(index.questionCount)}`, comment: '背題瀏覽頁的講義篩選：全部；count 已格式化' }),
-            },
-            ...decks.map((d) => ({
-              value: d.id,
-              label: <span className="ll-num">{d.code}</span>,
-              ariaLabel: t({ id: 'exam.deck.code', message: `講義 ${d.code}` }),
-            })),
-          ]}
+      <ErrorState
+        title={t({ id: 'exam.error.title', message: '題庫載入不到' })}
+        description={t({ id: 'exam.error.desc', message: '重新整理再試一次；離線時要先在有網路時開過這一頁。' })}
+        onRetry={() => window.location.reload()}
+      />
+    </>
+  );
+}
+
+function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntry; questions: Questions; initialMarks: readonly ReadMark[] }) {
+  const { t } = useLingui();
+  const locale = useLocale();
+  const [search, setSearch] = useSearchParams();
+  const [marks, setMarks] = useState(initialMarks);
+  const [pos, setPosState] = useState(readExamBrowsePos);
+  const posRef = useRef(pos);
+  const [hide, setHideState] = useState(readExamBrowseHide);
+  /** 剛離開閱讀頁的那一題：回到清單時打開它那一段、捲到它那一列 */
+  const [leftQuestion, setLeftQuestion] = useState<string | null>(null);
+
+  const savePos = (next: BrowsePos) => {
+    if (next === posRef.current) return;
+    posRef.current = next;
+    setPosState(next);
+    writeExamBrowsePos(next);
+  };
+  const setHide = (on: boolean) => {
+    setHideState(on);
+    writeExamBrowseHide(on);
+  };
+
+  const read = useMemo(() => readSetOf(marks, (id) => questions.get(id)?.answerRev), [marks, questions]);
+  const show = parseShow(search.get('show'));
+  // 網址沒給範圍時用上次的範圍
+  const listScope = scopeOf(index, search.get('deck') ?? pos.scope);
+  const current = questions.get(search.get('q') ?? '');
+  // 閱讀頁：題目不在網址的範圍裡（例如貼來的連結）就用全部
+  const scope = current && !orderOf(index, listScope).includes(current.id) ? ALL_SCOPE : listScope;
+  const order = orderOf(index, scope);
+
+  const paramsOf = (s: string, f: ShowFilter, q: string | null): Record<string, string> => ({
+    ...(s === ALL_SCOPE ? {} : { deck: s }),
+    ...(f === 'all' ? {} : { show: f }),
+    ...(q === null ? {} : { q }),
+  });
+  const hrefOf = (s: string, f: ShowFilter, q: string | null): string => {
+    const query = new URLSearchParams(paramsOf(s, f, q)).toString();
+    return localePath(locale, '/exam/browse/') + (query ? `?${query}` : '');
+  };
+
+  // 這一頁自己管捲動位置（閱讀頁換題回到頁首、回清單捲到剛才那一題）：關掉瀏覽器按返回時的還原，
+  // 不然它會在清單捲好之後又把位置改回離開時的樣子（從開始卡進去的話是頁首）。離開這一頁時還原設定。
+  useEffect(() => {
+    const before = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
+    return () => {
+      window.history.scrollRestoration = before;
+    };
+  }, []);
+
+  const currentId = current?.id ?? null;
+  const currentDeck = current?.deck ?? null;
+  useEffect(() => {
+    if (currentId === null || currentDeck === null) return;
+    setLeftQuestion(currentId);
+    savePos(withVisited(posRef.current, scope, currentDeck, currentId));
+    // savePos 只碰 ref 與 setState，不必列進相依
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentId, currentDeck, scope]);
+
+  const db = getExamReadDb();
+  const markRead = (q: HandoutQuestionSnapshot) => {
+    const mark: ReadMark = { questionId: q.id, answerRev: q.answerRev, at: new Date().toISOString() };
+    setMarks((prev) => [...prev.filter((m) => m.questionId !== q.id), mark]);
+    void db.put([mark]);
+  };
+  const markUnread = (id: string) => {
+    setMarks((prev) => prev.filter((m) => m.questionId !== id));
+    void db.remove([id]);
+  };
+  /** 把目前範圍全部改回未讀，位置一起清掉；回傳「復原」 */
+  const resetScope = (): (() => void) => {
+    const ids = new Set(order);
+    const removed = marks.filter((m) => ids.has(m.questionId));
+    const before = posRef.current;
+    setMarks((prev) => prev.filter((m) => !ids.has(m.questionId)));
+    void db.remove(order);
+    savePos(
+      withoutPositions(
+        before,
+        index.decks.filter((d) => scope === ALL_SCOPE || d.id === scope).map((d) => d.id),
+        ids,
+      ),
+    );
+    return () => {
+      setMarks((prev) => [...prev.filter((m) => !ids.has(m.questionId)), ...removed]);
+      void db.put(removed);
+      savePos(before);
+    };
+  };
+
+  const decks = [...index.decks].sort((a, b) => a.order - b.order);
+  if (current) {
+    const deck = decks.find((d) => d.id === current.deck);
+    const section = deck?.sections.find((s) => s.id === current.section);
+    const scopeDeck = scope === ALL_SCOPE ? null : (decks.find((d) => d.id === scope) ?? null);
+    const nextDeck = scopeDeck ? (decks[decks.indexOf(scopeDeck) + 1] ?? null) : null;
+    const { prev, next } = neighbours(order, current.id, read, show);
+    return (
+      <>
+        <TopBar
+          title={t({ id: 'exam.browse.title', message: '背題瀏覽', comment: '背題瀏覽頁的標題' })}
+          titleId="ll-exam-browse-title"
+          backHref={hrefOf(scope, show, null)}
+          backLabel={t({ id: 'exam.browse.back', message: '回到題目清單', comment: '背題瀏覽的閱讀頁：返回鈕' })}
+          backShortLabel={t({ id: 'exam.browse.back.short', message: '清單', comment: '背題瀏覽的閱讀頁：返回鈕的短版' })}
         />
-        <Switch
-          checked={hide}
-          onChange={(on) => {
-            setHide(on);
-            setRevealed(new Set());
-            writeExamBrowseHide(on);
-          }}
-          label={t({ id: 'exam.browse.hide', message: '遮住答案與解析', comment: '背題瀏覽頁工具列的開關' })}
+        <BrowseReader
+          key={current.id}
+          q={current}
+          deckCode={deck?.code ?? ''}
+          sectionTitle={section?.title ?? ''}
+          position={order.indexOf(current.id) + 1}
+          total={order.length}
+          readCount={readCountOf(order, read)}
+          isRead={read.has(current.id)}
+          hide={hide}
+          onHide={setHide}
+          hasPrev={prev !== null}
+          hasNext={next !== null}
+          onPrev={() => prev !== null && setSearch(paramsOf(scope, show, prev), { replace: true })}
+          onNext={() => next !== null && setSearch(paramsOf(scope, show, next), { replace: true })}
+          onRead={() => markRead(current)}
+          onUnread={() => markUnread(current.id)}
+          listHref={hrefOf(scope, show, null)}
+          scopeDeckCode={scopeDeck?.code ?? null}
+          nextDeck={nextDeck ? { code: nextDeck.code, href: hrefOf(nextDeck.id, 'all', null) } : null}
+          practiseHref={localePath(locale, `/exam/${scopeDeck ? scopeDeck.id : 'all'}/`)}
         />
-        <Button size="sm" icon={<FileIcon />} onClick={() => window.print()} data-testid="exam-browse-print">
-          {t({ id: 'exam.browse.print', message: '列印', comment: '背題瀏覽頁工具列的按鈕：列印目前顯示的題目' })}
-        </Button>
-      </div>
-      {shown.map((d) => (
-        <section key={d.id} aria-labelledby={`ll-exam-browse-${d.id}`} data-testid={`exam-browse-deck-${d.id}`}>
-          <h2 id={`ll-exam-browse-${d.id}`} className="ll-exam-browse__deck">
-            <span className="ll-num">{t({ id: 'exam.deck.code', message: `講義 ${d.code}` })}</span> <span lang="zh-TW">{d.title}</span>
-          </h2>
-          {d.sections.map((s) => (
-            <div key={s.id}>
-              <h3 className="ll-exam-browse__section">
-                <span lang="zh-TW">{s.title}</span>
-                {'　'}
-                <span className="ll-num">{t({ id: 'exam.section.untouched', message: `${n(s.questionIds.length)} 題` })}</span>
-              </h3>
-              {s.questionIds.map((id) => {
-                const q = questions.get(id);
-                if (!q) return null;
-                const hidden = hide && !revealed.has(id);
-                return (
-                  <article key={id} className="ll-exam-browse__item" data-testid="exam-browse-item">
-                    <HandoutQuestionReadout
-                      q={q}
-                      heading="h4"
-                      hideAnswer={hidden}
-                      source={<span className="ll-num">{t({ id: 'exam.q.slide', message: `第 ${n(q.slide)} 頁` })}</span>}
-                    >
-                      {hide && (
-                        <div className="ll-exam-browse__reveal">
-                          <Button size="sm" variant="quiet" onClick={() => toggle(id)} aria-expanded={!hidden}>
-                            {hidden
-                              ? t({ id: 'exam.browse.reveal', message: '看答案', comment: '背題瀏覽頁：答案遮住時，只掀開這一題' })
-                              : t({ id: 'exam.browse.cover', message: '遮回去', comment: '背題瀏覽頁：把這一題的答案再遮起來' })}
-                          </Button>
-                        </div>
-                      )}
-                    </HandoutQuestionReadout>
-                  </article>
-                );
-              })}
-            </div>
-          ))}
-        </section>
-      ))}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <TopBar
+        title={t({ id: 'exam.browse.title', message: '背題瀏覽', comment: '背題瀏覽頁的標題' })}
+        titleId="ll-exam-browse-title"
+        backHref={localePath(locale, '/exam/')}
+        backLabel={t({ id: 'exam.run.back', message: '回到期中考苦練' })}
+        backShortLabel={t({ id: 'exam.run.back.short', message: '苦練' })}
+      />
+      <BrowseList
+        index={index}
+        questions={questions}
+        scope={scope}
+        show={show}
+        read={read}
+        pos={pos}
+        hide={hide}
+        onHide={setHide}
+        hrefOf={hrefOf}
+        onScope={(s) => {
+          savePos(withScope(posRef.current, s));
+          setSearch(paramsOf(s, show, null), { replace: true });
+        }}
+        onShow={(f) => setSearch(paramsOf(scope, f, null), { replace: true })}
+        onReset={resetScope}
+        focusId={leftQuestion}
+        onFocusUsed={() => setLeftQuestion(null)}
+      />
     </>
   );
 }

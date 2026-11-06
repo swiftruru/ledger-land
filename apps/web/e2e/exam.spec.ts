@@ -1,6 +1,7 @@
 // 期中考苦練（M4c，02 第 1.1 節）：首頁與「我的」的入口、苦練首頁的統計與按鈕、練一段（答對與答錯的回饋、講義順序的字母、總結卡、只練錯過的）、
 // 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、離線保險（開過首頁後講義檔都在快取）、英文站的介面英文而題目中文。
 // 第二批（2026-11-05）：隨機抽幾題、熟練與「只練不熟的」、錯題與不熟的清單、背題瀏覽（講義篩選、遮住答案、列印樣式）。
+// 背題瀏覽改成清單加逐題閱讀（2026-11-06）：按「讀完了」才算已讀、各範圍的數字一致、接著讀、改回未讀、篩選、重設與復原。
 // 模擬考（第二批的第二次交付）：設定與記住上次的選擇、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄、接續與限時自動交卷。
 // 苦練的紀錄跟著備份走（2026-11-05）：練過的題匯出備份碼、清掉資料、匯入後回來，再匯入一次不重複計算。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
@@ -496,42 +497,188 @@ test.describe('期中考苦練', () => {
     await expect(page.getByTestId('exam-list-practise')).toHaveAttribute('href', /\/exam\/unsure\/$/);
   });
 
-  test('背題瀏覽：全部題目、講義篩選、遮住答案與單題掀開、偏好記住、列印時不印工具列；noindex', async ({ page, request }) => {
+  test('背題瀏覽：清單只列標題、點進去一次一題、遮住答案與看答案、偏好記住、列印印出這個範圍的完整題目；noindex', async ({ page, request }) => {
     const idx = await index(request);
+    const d1 = idx.decks.find((d) => d.id === 'd1')!;
     const d2 = idx.decks.find((d) => d.id === 'd2')!;
     await clearAll(page);
     await page.goto('/exam/browse/');
     await waitForApp(page);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('背題瀏覽');
     await expect(page.locator('meta[name="robots"][data-ll]')).toHaveAttribute('content', 'noindex');
-    const items = page.getByTestId('exam-browse-item');
-    await expect(items).toHaveCount(idx.questionCount);
-    const firstItem = items.first();
-    await expect(firstItem.locator('.ll-exam-q__answer')).toBeVisible();
-    await expect(firstItem.locator('.ll-exam-q__option.is-correct').first()).toBeVisible();
-    await expect(firstItem.locator('.ll-exam-q__options')).toHaveAttribute('lang', 'zh-TW');
+    // 清單：不再把題目全部攤開；只打開第一段，其餘收著
+    const rows = page.getByTestId('exam-browse-row');
+    await expect(page.getByTestId('exam-browse-item')).toHaveCount(0);
+    await expect(page.getByTestId('exam-browse-start')).toHaveAttribute('data-kind', 'start');
+    await expect(page.getByTestId('exam-browse-count')).toHaveText(`已讀 0／${idx.questionCount} 題`);
+    await expect(rows).toHaveCount(d1.sections[0]!.questionIds.length);
     await page.getByRole('radio', { name: `講義 ${d2.code}` }).click();
     await expect(page).toHaveURL(/\/exam\/browse\/\?deck=d2$/);
-    await expect(items).toHaveCount(d2.questionCount);
+    await expect(page.getByTestId('exam-browse-count')).toHaveText(`已讀 0／${d2.questionCount} 題`);
+    await expect(rows).toHaveCount(d2.sections[0]!.questionIds.length);
+    await page.getByTestId(`exam-browse-section-${d2.sections[1]!.id}`).locator('summary').click();
+    await expect(rows).toHaveCount(d2.sections[0]!.questionIds.length + d2.sections[1]!.questionIds.length);
+    // 點一題進閱讀頁：一次一題
+    const [first, second] = d2.sections[0]!.questionIds as [string, string];
+    await rows.first().click();
+    const reader = page.getByTestId('exam-reader');
+    await expect(reader).toHaveAttribute('data-question', first);
+    await expect(page).toHaveURL(new RegExp(`\\?deck=d2&q=${first}$`));
+    await expect(page.getByTestId('exam-reader-pos')).toHaveText(`第 1／${d2.questionCount} 題`);
+    await expect(reader.locator('.ll-exam-q__answer')).toBeVisible();
+    await expect(reader.locator('.ll-exam-q__option.is-correct').first()).toBeVisible();
+    await expect(reader.locator('.ll-exam-q__options')).toHaveAttribute('lang', 'zh-TW');
+    await expect(page.getByTestId('exam-reader-prev')).toBeDisabled();
     // 遮住：解答行與解析不見，選項沒有打勾；「看答案」只掀開這一題
     await page.getByRole('switch', { name: '遮住答案與解析' }).click();
-    await expect(firstItem.locator('.ll-exam-q__answer')).toBeHidden();
-    await expect(firstItem.locator('.ll-exam-q__explain')).toBeHidden();
-    await expect(firstItem.locator('.ll-exam-q__mark')).toBeHidden();
-    await firstItem.getByRole('button', { name: '看答案' }).click();
-    await expect(firstItem.locator('.ll-exam-q__answer')).toBeVisible();
-    await expect(items.nth(1).locator('.ll-exam-q__answer')).toBeHidden();
-    await firstItem.getByRole('button', { name: '遮回去' }).click();
-    await expect(firstItem.locator('.ll-exam-q__answer')).toBeHidden();
+    await expect(reader.locator('.ll-exam-q__answer')).toBeHidden();
+    await expect(reader.locator('.ll-exam-q__explain')).toBeHidden();
+    await expect(reader.locator('.ll-exam-q__mark')).toBeHidden();
+    await reader.getByRole('button', { name: '看答案' }).click();
+    await expect(reader.locator('.ll-exam-q__answer')).toBeVisible();
+    await reader.getByRole('button', { name: '遮回去' }).click();
+    await expect(reader.locator('.ll-exam-q__answer')).toBeHidden();
+    await reader.getByRole('button', { name: '看答案' }).click();
+    // 換一題：又是遮住的
+    await page.getByTestId('exam-reader-next').click();
+    await expect(reader).toHaveAttribute('data-question', second);
+    await expect(reader.locator('.ll-exam-q__answer')).toBeHidden();
     await page.reload();
     await waitForApp(page);
+    await expect(reader).toHaveAttribute('data-question', second);
     await expect(page.getByRole('switch', { name: '遮住答案與解析' })).toBeChecked();
-    await expect(items.first().locator('.ll-exam-q__answer')).toBeHidden();
+    await expect(reader.locator('.ll-exam-q__answer')).toBeHidden();
+    // 回清單（換題不留瀏覽紀錄，按一次返回就回到清單）
+    await page.goBack();
+    await expect(page.getByTestId('exam-browse-start')).toBeVisible();
+    await expect(page).toHaveURL(/\/exam\/browse\/\?deck=d2$/);
+    // 列印：按下去才畫出這個範圍的完整題目；列印時不印清單與工具
+    await page.evaluate(() => {
+      window.print = () => undefined;
+    });
+    await page.getByTestId('exam-browse-more').locator('summary').click();
+    await page.getByTestId('exam-browse-print').click();
+    const items = page.getByTestId('exam-browse-item');
+    await expect(items).toHaveCount(d2.questionCount);
     await page.emulateMedia({ media: 'print' });
-    await expect(page.getByTestId('exam-browse-tools')).toBeHidden();
+    await expect(page.getByTestId('exam-browse-tools').first()).toBeHidden();
+    await expect(page.getByTestId('exam-browse-start')).toBeHidden();
     await expect(page.locator('.ll-exam-print-only')).toBeVisible();
     await expect(items.first().locator('.ll-exam-q__question')).toBeVisible();
+    await expect(items.first().locator('.ll-exam-q__answer')).toBeHidden();
     await page.emulateMedia({ media: 'screen' });
+    await expect(items.first()).toBeHidden();
+  });
+
+  test('背題瀏覽：按「讀完了」才算已讀、全部與各份講義的數字一致、下次回來接著讀、單題改回未讀、篩選未讀、重設與復原', async ({ page, request }) => {
+    const idx = await index(request);
+    const d1 = idx.decks.find((d) => d.id === 'd1')!;
+    const d2 = idx.decks.find((d) => d.id === 'd2')!;
+    const s1 = d1.sections[0]!;
+    expect(s1.questionIds.length).toBeGreaterThanOrEqual(3);
+    const [id1, id2, id3] = s1.questionIds as [string, string, string];
+    const topics = await deckQuestions(request, d1);
+    const all = idx.questionCount;
+    const start = page.getByTestId('exam-browse-start');
+    const count = page.getByTestId('exam-browse-count');
+    const reader = page.getByTestId('exam-reader');
+    const row = (id: string) => page.locator(`#ll-exam-browse-row-${id}`);
+    await clearAll(page);
+    await page.goto('/exam/browse/');
+    await waitForApp(page);
+    await page.getByTestId('exam-browse-go').click();
+    await expect(reader).toHaveAttribute('data-question', id1);
+    // 只翻頁：不算已讀，但位置會記
+    await page.getByTestId('exam-reader-next').click();
+    await expect(reader).toHaveAttribute('data-question', id2);
+    await page.getByTestId('exam-reader-prev').click();
+    await expect(reader).toHaveAttribute('data-question', id1);
+    await page.goBack();
+    await expect(count).toHaveText(`已讀 0／${all} 題`);
+    await expect(start).toHaveAttribute('data-kind', 'resume');
+    await expect(page.getByTestId('exam-browse-resume-where')).toContainText(topics.get(id1)!.topic);
+    // 讀完兩題
+    await page.getByTestId('exam-browse-go').click();
+    await expect(reader).toHaveAttribute('data-question', id1);
+    await expect(page.getByTestId('exam-reader-done')).toHaveText('讀完了，下一題');
+    await page.getByTestId('exam-reader-done').click();
+    await expect(reader).toHaveAttribute('data-question', id2);
+    await page.getByTestId('exam-reader-done').click();
+    await expect(reader).toHaveAttribute('data-question', id3);
+    await expect(page.getByTestId('exam-reader-pos')).toHaveText(`第 3／${all} 題`);
+    await page.goBack();
+    // 清單：開始卡、這一份、這一段的數字一致；回到剛才那一題的列
+    await expect(count).toHaveText(`已讀 2／${all} 題`);
+    await expect(page.getByTestId('exam-browse-deck-count-d1')).toHaveText(`已讀 2／${d1.questionCount} 題`);
+    await expect(page.getByTestId('exam-browse-deck-count-d2')).toHaveText(`已讀 0／${d2.questionCount} 題`);
+    await expect(page.getByTestId(`exam-browse-section-${s1.id}`).locator('summary')).toContainText(`已讀 2／${s1.questionIds.length}`);
+    await expect(row(id1)).toContainText('（已讀）');
+    await expect(row(id2)).toContainText('（已讀）');
+    await expect(row(id3)).toContainText('（未讀）');
+    await expect(row(id3)).toContainText('上次讀到');
+    expect(await page.evaluate(() => document.activeElement?.closest('[id^="ll-exam-browse-row-"]')?.id)).toBe(`ll-exam-browse-row-${id3}`);
+    // 同一題在「全部」與講義裡是同一份狀態
+    await page.getByRole('radio', { name: `講義 ${d1.code}` }).click();
+    await expect(count).toHaveText(`已讀 2／${d1.questionCount} 題`);
+    await expect(row(id1)).toContainText('（已讀）');
+    await page.getByRole('radio', { name: `講義 ${d2.code}` }).click();
+    await expect(count).toHaveText(`已讀 0／${d2.questionCount} 題`);
+    await expect(start).toHaveAttribute('data-kind', 'start');
+    await page.getByRole('radio', { name: `講義 ${d1.code}` }).click();
+    await expect(page).toHaveURL(/\/exam\/browse\/\?deck=d1$/);
+    // 苦練首頁的入口寫著讀了幾題、上次讀到哪一份
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-more-browse')).toContainText(`已讀 2／${all} 題，上次讀到講義 ${d1.code}。`);
+    // 下次回來（網址沒有範圍）：記得上次的範圍，開始卡接著讀第三題
+    await page.getByTestId('exam-more-browse').click();
+    await waitForApp(page);
+    await expect(page.getByRole('radio', { name: `講義 ${d1.code}` })).toBeChecked();
+    await expect(start).toHaveAttribute('data-kind', 'resume');
+    await expect(page.getByTestId('exam-browse-resume-where')).toContainText(topics.get(id3)!.topic);
+    await page.getByTestId('exam-browse-go').click();
+    await expect(reader).toHaveAttribute('data-question', id3);
+    // 單題改回未讀
+    await page.getByTestId('exam-reader-prev').click();
+    await expect(reader).toHaveAttribute('data-question', id2);
+    await expect(page.getByTestId('exam-reader-done')).toHaveText('下一題');
+    await page.getByTestId('exam-reader-unread').click();
+    await expect(page.getByTestId('exam-reader-unread')).toHaveCount(0);
+    await expect(page.getByTestId('exam-reader-done')).toHaveText('讀完了，下一題');
+    await page.goBack();
+    await expect(count).toHaveText(`已讀 1／${d1.questionCount} 題`);
+    // 篩選未讀：已讀的題不列；閱讀頁的上一題與下一題跳過已讀
+    await page.getByRole('radiogroup', { name: '要列出哪些題' }).getByRole('radio', { name: '未讀' }).click();
+    await expect(page).toHaveURL(/\?deck=d1&show=unread$/);
+    await expect(row(id1)).toHaveCount(0);
+    await row(id2).click();
+    await expect(reader).toHaveAttribute('data-question', id2);
+    await expect(page.getByTestId('exam-reader-prev')).toBeDisabled();
+    await page.goBack();
+    await page.getByRole('radiogroup', { name: '要列出哪些題' }).getByRole('radio', { name: '全部' }).click();
+    // 重設這一份：先確認，做完可以復原
+    await page.getByTestId('exam-browse-more').locator('summary').click();
+    await page.getByTestId('exam-browse-reset').click();
+    const sheet = page.getByRole('dialog');
+    await expect(sheet).toContainText(`把講義 ${d1.code} 改回未讀`);
+    await expect(sheet).toContainText('會把 1 題改回未讀');
+    await sheet.getByRole('button', { name: '改回未讀' }).click();
+    await expect(count).toHaveText(`已讀 0／${d1.questionCount} 題`);
+    await expect(start).toHaveAttribute('data-kind', 'start');
+    await page.getByTestId('exam-browse-toasts').getByRole('button', { name: '復原' }).click();
+    await expect(count).toHaveText(`已讀 1／${d1.questionCount} 題`);
+    await expect(start).toHaveAttribute('data-kind', 'resume');
+    // 範圍的最後一題：按「讀完了」後是結束卡
+    const last = d1.sections.at(-1)!.questionIds.at(-1)!;
+    await page.goto(`/exam/browse/?deck=d1&q=${last}`);
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-reader-next')).toBeDisabled();
+    await expect(page.getByTestId('exam-reader-done')).toHaveText('讀完了');
+    await page.getByTestId('exam-reader-done').click();
+    const end = page.getByTestId('exam-reader-end');
+    await expect(end.getByRole('heading')).toHaveText('讀到最後一題了');
+    await expect(end).toContainText(`已讀 2／${d1.questionCount} 題`);
+    await expect(page.getByTestId('exam-reader-end-list')).toHaveAttribute('href', /\/exam\/browse\/\?deck=d1$/);
   });
 
   test('模擬考：設定會記住、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄；noindex', async ({ page, request }) => {

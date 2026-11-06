@@ -2,6 +2,7 @@
 // 預設和講義一樣（維護者 2026-11-04 的決定），所以只有打亂時才寫鍵。
 import { readPref, writePref } from '../../lib/prefs.ts';
 import { DEFAULT_RANDOM_COUNT, encodeMockSettings, parseCount, parseMockSettings, type CountOption, type MockSettings } from './options.ts';
+import { encodeBrowsePos, parseBrowsePos, type BrowsePos } from './reading.ts';
 
 export const EXAM_SHUFFLE_KEY = 'll:exam-shuffle';
 
@@ -22,6 +23,13 @@ export const EXAM_BROWSE_HIDE_KEY = 'll:exam-browse-hide';
 export const readExamBrowseHide = (): boolean => readPref(EXAM_BROWSE_HIDE_KEY) === '1';
 export function writeExamBrowseHide(on: boolean): void {
   writePref(EXAM_BROWSE_HIDE_KEY, on ? '1' : null);
+}
+
+/** 背題瀏覽上次所在的範圍與停的題（2026-11-06；reading.ts 的 BrowsePos）：還沒讀過時不寫鍵 */
+export const EXAM_BROWSE_POS_KEY = 'll:exam-browse-pos';
+export const readExamBrowsePos = (): BrowsePos => parseBrowsePos(readPref(EXAM_BROWSE_POS_KEY));
+export function writeExamBrowsePos(pos: BrowsePos): void {
+  writePref(EXAM_BROWSE_POS_KEY, encodeBrowsePos(pos));
 }
 
 /** 模擬考上次選的範圍、題數與每題秒數（M4c 第二批） */
