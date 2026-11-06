@@ -1,5 +1,5 @@
 // 模擬考（M4c 第二批的第二次交付，2026-11-05；02 第 1.1 節）：/exam/mock/，同一條路由三個畫面，由 ledgerland-exam 裡鍵是 mock 的那一輪決定。
-// 設定：範圍（全部或一份講義）、題數（20、30、50、全部）、每題秒數（不限時、45、60、90；維護者的決定：由學生在開頭自己選），選的存在裝置上。
+// 設定：範圍（全部或一份講義）、題數（30、40、50；維護者 2026-11-07 的決定）、每題秒數（不限時、45、60、90；維護者的決定：由學生在開頭自己選），選的存在裝置上。
 // 作答：隨機抽題，不顯示對錯、沒有回饋，可以上一題、下一題與改選；限時的場次題號列右邊倒數，時間照牆上的鐘走（離開頁面不暫停），時間到自動交卷。
 // 交卷後：成績、用時、未作答題數，逐題可展開看我選的、正解與解析（HandoutQuestionReadout）。作答算進同一份紀錄（錯過的題、熟練），
 // 沒選的題算錯但不寫進紀錄。成績留到下一場開始或按「換設定」為止。noindex，作答中不跳更新提示。
@@ -30,12 +30,12 @@ import { getExamDb, nextState, type QuestionState } from '../features/exam/db.ts
 import { HandoutQuestionCard } from '../features/exam/HandoutQuestionCard.tsx';
 import { HandoutQuestionReadout } from '../features/exam/HandoutQuestionReadout.tsx';
 import {
-  COUNT_OPTIONS,
+  MOCK_COUNT_OPTIONS,
   SECONDS_OPTIONS,
   encodeMockSettings,
   limitOf,
   parseMockSettings,
-  type CountOption,
+  type MockCountOption,
   type MockSettings,
   type SecondsOption,
 } from '../features/exam/options.ts';
@@ -323,10 +323,10 @@ export default function ExamMock() {
             <Segmented<string>
               value={String(settings.count)}
               labelledBy="ll-exam-mock-count"
-              onChange={(v) => pick({ count: COUNT_OPTIONS.find((c) => String(c) === v) as CountOption })}
-              options={COUNT_OPTIONS.map((c) => ({
+              onChange={(v) => pick({ count: MOCK_COUNT_OPTIONS.find((c) => String(c) === v) as MockCountOption })}
+              options={MOCK_COUNT_OPTIONS.map((c) => ({
                 value: String(c),
-                label: c === 'all' ? t({ id: 'exam.random.all', message: '全部' }) : <span className="ll-num">{n(c)}</span>,
+                label: <span className="ll-num">{n(c)}</span>,
               }))}
             />
           </div>

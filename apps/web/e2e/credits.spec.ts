@@ -157,7 +157,7 @@ test.describe('幕後頁', () => {
     // 徽章頁：特別徽章那一區已取得，章節徽章的「已取得 n／m」仍是 0
     await page.goto('/me/badges/');
     await waitForApp(page);
-    await expect(page.locator('#ll-badges-summary')).toContainText('已取得 1／15 枚');
+    await expect(page.locator('#ll-badges-summary')).toContainText('已取得 1／21 枚');
     const special = page.getByTestId('badges-special');
     await expect(special.locator('[data-special-badge="creditsEggs"]')).toHaveAttribute('data-state', 'done');
     await expect(special).toContainText('幕後偵探');
