@@ -889,22 +889,25 @@ test.describe('期中考苦練', () => {
     await waitForApp(page);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('模擬考');
     await expect(page.locator('meta[name="robots"][data-ll]')).toHaveAttribute('content', 'noindex');
-    // 預設 40 題、每題 60 秒；題數只有 30、40、50
+    // 預設 40 題、每題 60 秒；題數只有 40、50、100
     await expect(page.getByTestId('exam-mock-plan')).toHaveText('共 40 題，限時 40 分 0 秒，時間到自動交卷。');
     await page
       .getByRole('radiogroup', { name: '範圍' })
       .getByRole('radio', { name: `講義 ${d2.code}` })
       .click();
-    await expect(page.getByRole('radiogroup', { name: '題數' }).getByRole('radio')).toHaveText(['30', '40', '50']);
-    await page.getByRole('radiogroup', { name: '題數' }).getByRole('radio', { name: '30' }).click();
+    await expect(page.getByRole('radiogroup', { name: '題數' }).getByRole('radio')).toHaveText(['40', '50', '100']);
+    // 只考一份講義時，超過該份題數的選項抽整份
+    await page.getByRole('radiogroup', { name: '題數' }).getByRole('radio', { name: '100' }).click();
     await page.getByRole('radiogroup', { name: '每題時間' }).getByRole('radio', { name: '不限時' }).click();
-    await expect(page.getByTestId('exam-mock-plan')).toHaveText('共 30 題，不限時。');
+    await expect(page.getByTestId('exam-mock-plan')).toHaveText(`共 ${d2.questionCount} 題，不限時。`);
+    await page.getByRole('radiogroup', { name: '題數' }).getByRole('radio', { name: '50' }).click();
+    await expect(page.getByTestId('exam-mock-plan')).toHaveText('共 50 題，不限時。');
     await page.getByTestId('exam-mock-start').click();
-    await expect(card(page)).toContainText('第 1 題，共 30 題');
-    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 0／30 題');
+    await expect(card(page)).toContainText('第 1 題，共 50 題');
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 0／50 題');
     await expect(page.getByTestId('exam-mock-timer')).toHaveCount(0);
     const run = (await mockRun(page))!;
-    expect(run.questionIds).toHaveLength(30);
+    expect(run.questionIds).toHaveLength(50);
     for (const id of run.questionIds) expect(d2.sections.flatMap((s) => s.questionIds)).toContain(id);
     const q1 = qs.get(run.questionIds[0]!)!;
     const q2 = qs.get(run.questionIds[1]!)!;
@@ -914,40 +917,40 @@ test.describe('期中考苦練', () => {
     await radios(page)
       .nth(indexOf(q1, wrongOf(q1)))
       .check();
-    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 1／30 題');
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 1／50 題');
     await expect(feedbackTitle(page)).toHaveCount(0);
     await card(page).getByRole('button', { name: '下一題' }).click();
-    await expect(card(page)).toContainText('第 2 題，共 30 題');
+    await expect(card(page)).toContainText('第 2 題，共 50 題');
     await radios(page)
       .nth(indexOf(q2, wrongOf(q2)))
       .check();
     // 沒選也能跳過；上一題回來選擇還在，可以改選
     await card(page).getByRole('button', { name: '下一題' }).click();
     await card(page).getByRole('button', { name: '下一題' }).click();
-    await expect(card(page)).toContainText('第 4 題，共 30 題');
+    await expect(card(page)).toContainText('第 4 題，共 50 題');
     for (let i = 0; i < 3; i++) await page.getByTestId('exam-mock-prev').click();
-    await expect(card(page)).toContainText('第 1 題，共 30 題');
+    await expect(card(page)).toContainText('第 1 題，共 50 題');
     await expect(page.getByTestId('exam-mock-prev')).toBeDisabled();
     await expect(radios(page).nth(indexOf(q1, wrongOf(q1)))).toBeChecked();
     await radios(page).nth(indexOf(q1, q1.answer[0]!)).check();
-    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 2／30 題');
+    await expect(page.getByTestId('exam-mock-status')).toHaveText('已作答 2／50 題');
     // 交卷：先確認，取消不交
     await page.getByTestId('exam-mock-submit').click();
     const sheet = page.getByTestId('exam-mock-confirm');
-    await expect(sheet).toContainText('還有 28 題沒作答');
+    await expect(sheet).toContainText('還有 48 題沒作答');
     await sheet.getByRole('button', { name: '取消' }).click();
     await expect(page.getByTestId('exam-mock-result')).toHaveCount(0);
     await page.getByTestId('exam-mock-submit').click();
     await sheet.getByRole('button', { name: '交卷' }).click();
-    await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／30 題（3%）');
-    await expect(page.getByTestId('exam-mock-detail')).toContainText('28 題沒作答');
+    await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／50 題（2%）');
+    await expect(page.getByTestId('exam-mock-detail')).toContainText('48 題沒作答');
     await expect(page.getByTestId('exam-mock-expired')).toHaveCount(0);
     const items = page.getByTestId('exam-mock-items').locator('summary');
-    await expect(items).toHaveCount(30);
+    await expect(items).toHaveCount(50);
     await expect(page.getByTestId('exam-mock-items').getByText('答對', { exact: true })).toHaveCount(1);
-    await expect(page.getByTestId('exam-mock-items').getByText('沒作答', { exact: true })).toHaveCount(28);
-    await page.getByRole('radio', { name: '答錯與沒作答 29' }).click();
-    await expect(items).toHaveCount(29);
+    await expect(page.getByTestId('exam-mock-items').getByText('沒作答', { exact: true })).toHaveCount(48);
+    await page.getByRole('radio', { name: '答錯與沒作答 49' }).click();
+    await expect(items).toHaveCount(49);
     await items.first().click();
     const firstWrong = page.getByTestId('exam-mock-items').locator('.ll-exam-q').first();
     await expect(firstWrong.locator('.ll-exam-q__option.is-wrong')).toContainText('我選的');
@@ -957,13 +960,13 @@ test.describe('期中考苦練', () => {
     await expect.poll(() => seenOf(page, q2.id)).toBe(1);
     await page.reload();
     await waitForApp(page);
-    await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／30 題（3%）');
+    await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／50 題（2%）');
     await page.goto('/exam/');
     await waitForApp(page);
     await expect(page.getByTestId('exam-progress')).toContainText(`練過 2／${idx.questionCount} 題`);
     await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
     // 第 3 步：寫著上次的成績，按鈕回到成績頁
-    await expect(page.getByTestId('exam-mock-last')).toHaveText('上次模擬考：答對 1／30 題');
+    await expect(page.getByTestId('exam-mock-last')).toHaveText('上次模擬考：答對 1／50 題');
     // 交過一場模擬考：有「初次上場」；答對不到八成，沒有「模擬考過關」
     await expect(page.getByTestId('exam-badge-mockFirst')).toHaveAttribute('data-state', 'done');
     await expect(page.getByTestId('exam-badge-mockPass')).toHaveAttribute('data-state', 'locked');
@@ -973,7 +976,7 @@ test.describe('期中考苦練', () => {
     await waitForApp(page);
     await page.getByTestId('exam-mock-resetup').click();
     await expect(page.getByTestId('exam-mock-setup')).toBeVisible();
-    await expect(page.getByRole('radiogroup', { name: '題數' }).getByRole('radio', { name: '30' })).toBeChecked();
+    await expect(page.getByRole('radiogroup', { name: '題數' }).getByRole('radio', { name: '50' })).toBeChecked();
     await expect(page.getByRole('radiogroup', { name: '每題時間' }).getByRole('radio', { name: '不限時' })).toBeChecked();
     await expect(page.getByRole('radiogroup', { name: '範圍' }).getByRole('radio', { name: `講義 ${d2.code}` })).toBeChecked();
   });
