@@ -347,6 +347,26 @@ test.describe('勾稽練習', () => {
     for (const s of [2, 3, 4, 5]) await expect(page.getByTestId(`lab-light-${s}`)).toHaveAttribute('data-state', 'pass');
     await expect(page.getByTestId('lab-reconcile-done')).toBeVisible();
   });
+
+  test('三張表不必左右捲：進階模式開更多格子後，每張表的內容都不比自己的欄位寬，整頁也不橫向捲', async ({ page }) => {
+    // 2026-11-06：輸入列原本是「名稱一格、輸入框一格」，把表格撐得比欄位寬，三表並排時每張表都要左右捲才看得到金額
+    await page.goto(`/lab/reconcile/?step=${STEP7}`);
+    await waitForApp(page);
+    await page.getByRole('switch').click();
+    await expect(page.locator('[data-testid^="lab-cell-"]')).not.toHaveCount(3);
+    // 填一格並按提示：讀到的數字與提示文字也算在寬度裡
+    const cell = page.getByTestId('lab-cell-cf_pretax_income');
+    await cell.getByRole('textbox').fill('1250000');
+    await cell.getByRole('button', { name: /的提示$/ }).click();
+    await expect(cell.getByRole('status')).toBeVisible();
+    const widths = await page.evaluate(() => ({
+      tables: [...document.querySelectorAll('.ll-lab-table')].map((el) => el.scrollWidth - el.clientWidth),
+      page: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }));
+    expect(widths.tables).toHaveLength(3);
+    for (const over of widths.tables) expect(over).toBeLessThanOrEqual(1);
+    expect(widths.page).toBeLessThanOrEqual(1);
+  });
 });
 
 test.describe('指標實驗室', () => {
