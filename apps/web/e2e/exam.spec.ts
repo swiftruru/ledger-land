@@ -2,6 +2,7 @@
 // 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、離線保險（開過首頁後講義檔都在快取）、英文站的介面英文而題目中文。
 // 第二批（2026-11-05）：隨機抽幾題、熟練與「只練不熟的」、錯題與不熟的清單、背題瀏覽（講義篩選、遮住答案、列印樣式）。
 // 背題瀏覽改成清單加逐題閱讀（2026-11-06）：按「讀完了」才算已讀、各範圍的數字一致、接著讀、改回未讀、篩選、重設與復原。
+// 苦練徽章（2026-11-06）：讀完一份時頒發與提示、首頁與徽章頁的顯示、模擬考 30 題以上才算。
 // 苦練首頁改成三步（2026-11-06）：先讀題、再自己練、最後模擬考；建議的步驟跟著進度換。
 // 背題瀏覽的關鍵字搜尋（2026-11-06）：只列比中的題、閱讀頁在結果裡翻頁、換範圍、沒有結果與清除。
 // 模擬考（第二批的第二次交付）：設定與記住上次的選擇、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄、接續與限時自動交卷。
@@ -812,6 +813,71 @@ test.describe('期中考苦練', () => {
     await expect(box).toHaveValue('');
   });
 
+  test('苦練徽章：讀完一份講義時跳提示並寫進進度；苦練首頁與徽章頁顯示，章節徽章的總數不變；不會重複頒發', async ({ page, request }) => {
+    const idx = await index(request);
+    const d2 = idx.decks.find((d) => d.id === 'd2')!;
+    const ids = d2.sections.flatMap((sec) => sec.questionIds);
+    const last = ids.at(-1)!;
+    await clearAll(page);
+    await page.goto('/exam/');
+    await waitForApp(page);
+    // 一開始六枚都還沒有；每一步各兩枚
+    for (const step of ['read', 'practise', 'mock']) await expect(page.getByTestId(`exam-step-${step}`).locator('.ll-exam-badges__item')).toHaveCount(2);
+    await expect(page.locator('.ll-exam-badges__item[data-state="done"]')).toHaveCount(0);
+    await expect(page.getByTestId('exam-badge-readDeck')).toContainText('讀完一份');
+    await expect(page.getByTestId('exam-badge-readDeck')).toContainText('（未取得）');
+    // 把講義 0-2 除了最後一題都標成已讀（直接寫進已讀的資料庫；首頁已經開過，資料庫與 store 都在）
+    await page.evaluate(
+      async ({ file, questionIds }) => {
+        const deck = (await (await fetch(`/${file}`)).json()) as { questions: { id: string; answerRev: number }[] };
+        const revs = new Map(deck.questions.map((q) => [q.id, q.answerRev]));
+        await new Promise<void>((resolve, reject) => {
+          const req = indexedDB.open('ledgerland-exam-read');
+          req.onerror = () => reject(req.error);
+          req.onsuccess = () => {
+            const tx = req.result.transaction('marks', 'readwrite');
+            for (const id of questionIds) tx.objectStore('marks').put({ questionId: id, answerRev: revs.get(id), at: new Date().toISOString() });
+            tx.oncomplete = () => {
+              req.result.close();
+              resolve();
+            };
+            tx.onerror = () => reject(tx.error);
+          };
+        });
+      },
+      { file: d2.file, questionIds: ids.slice(0, -1) },
+    );
+    // 讀最後一題：這一份讀完了，跳出取得徽章的提示
+    await page.goto(`/exam/browse/?deck=d2&q=${last}`);
+    await waitForApp(page);
+    await page.getByTestId('exam-reader-done').click();
+    await expect(page.getByTestId('exam-reader-end')).toContainText(`講義 ${d2.code} 都讀完了`);
+    const toasts = page.getByTestId('exam-badge-toasts');
+    await expect(toasts).toContainText('取得苦練徽章');
+    await expect(toasts).toContainText('讀完一份');
+    await expect(toasts).not.toContainText('讀遍題庫');
+    await expect.poll(() => readMarkCount(page)).toBe(ids.length);
+    // 苦練首頁：那一枚亮了，其他還沒；已經有了，不再跳提示
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-badge-readDeck')).toHaveAttribute('data-state', 'done');
+    await expect(page.getByTestId('exam-badge-readDeck')).toContainText('（已取得）');
+    await expect(page.locator('.ll-exam-badges__item[data-state="done"]')).toHaveCount(1);
+    await expect(page.getByTestId('exam-badge-toasts')).not.toContainText('取得苦練徽章');
+    // 徽章頁：苦練徽章自己一區、自己算 1／6；上面摘要卡的總數（章節與特別徽章）還是 0
+    await page.getByTestId('exam-badges-link').click();
+    await waitForApp(page);
+    const group = page.getByTestId('badges-exam');
+    await expect(group.locator('h2')).toContainText('苦練徽章');
+    await expect(group.locator('h2')).toContainText('1／6');
+    await expect(group.locator('.ll-badges__item')).toHaveCount(6);
+    await expect(group.locator('[data-exam-badge="readDeck"]')).toHaveAttribute('data-state', 'done');
+    await expect(group.locator('[data-exam-badge="readDeck"]')).toContainText('取得');
+    await expect(group.locator('[data-exam-badge="mockPass"]')).toHaveAttribute('data-state', 'locked');
+    await expect(group.locator('[data-exam-badge="mockPass"]')).toContainText('一次 30 題以上的模擬考答對 80% 以上');
+    await expect(page.locator('.ll-badges__count')).toContainText('已取得 0／');
+  });
+
   test('模擬考：設定會記住、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄；noindex', async ({ page, request }) => {
     const idx = await index(request);
     const d2 = idx.decks.find((d) => d.id === 'd2')!;
@@ -897,6 +963,8 @@ test.describe('期中考苦練', () => {
     await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
     // 第 3 步：寫著上次的成績，按鈕回到成績頁
     await expect(page.getByTestId('exam-mock-last')).toHaveText('上次模擬考：答對 1／20 題');
+    // 20 題的場次太短，不算模擬考的徽章
+    await expect(page.getByTestId('exam-badge-mockFirst')).toHaveAttribute('data-state', 'locked');
     await expect(page.getByTestId('exam-more-mock')).toHaveText('看成績，或再考一次');
     // 換設定：回到設定畫面，記得上次選的
     await page.goto('/exam/mock/');
@@ -942,6 +1010,10 @@ test.describe('期中考苦練', () => {
     await expect(page.getByTestId('exam-mock-expired')).toHaveText('時間到，已自動交卷。', { timeout: 15_000 });
     await expect(page.getByTestId('exam-mock-score')).toHaveText('答對 1／30 題（3%）');
     await expect(page.getByTestId('exam-mock-detail')).toContainText('29 題沒作答');
+    // 30 題以上的模擬考交了卷：拿到苦練徽章「初次上場」（答對不到八成，沒有「模擬考過關」）
+    await expect(page.getByTestId('exam-badge-toasts')).toContainText('取得苦練徽章');
+    await expect(page.getByTestId('exam-badge-toasts')).toContainText('初次上場');
+    await expect(page.getByTestId('exam-badge-toasts')).not.toContainText('模擬考過關');
     // 期限已過才回來：直接看到成績，不再是作答畫面
     await page.reload();
     await waitForApp(page);

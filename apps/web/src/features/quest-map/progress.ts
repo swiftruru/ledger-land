@@ -6,6 +6,7 @@
 // 判定是純函式（badgeStateFor、earnedBadges）；寫入走 ProgressStore 的 addUnlock（kind badge，id badge:<章節 ID> 與 badge:<章節 ID>:mastery），由 syncBadges 負責。
 import type { Stars, Unlock } from '@ledgerland/progress';
 import { getProgressStore, nowIso, todayLocal } from '../../lib/progress/index.ts';
+import { isExamBadgeId } from '../badges/exam.ts';
 import { isSpecialBadgeId } from '../badges/special.ts';
 import { orderedLevels, type MapLevel, type QuestMapData } from './data.ts';
 
@@ -67,7 +68,7 @@ export function badgeStateFor(data: QuestMapData, progress: MapProgress, chapter
  *  章節徽章的 n／m 是學習進度、特別徽章是探索獎勵（維護者 2026-10-27：分開算，徽章頁另開一區） */
 export function badgeCount(progress: MapProgress): number {
   let n = 0;
-  for (const id of progress.badges) if (!id.endsWith(':mastery') && !isSpecialBadgeId(id)) n++;
+  for (const id of progress.badges) if (!id.endsWith(':mastery') && !isSpecialBadgeId(id) && !isExamBadgeId(id)) n++;
   return n;
 }
 

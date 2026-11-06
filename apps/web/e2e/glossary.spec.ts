@@ -581,7 +581,9 @@ test.describe('徽章與收藏（「我的」頁，03 第 2.7、2.10 節）', ()
     await expect(locked).toContainText('未取得');
     await expect(locked).not.toContainText('2026');
     // 每一格都有徽章圖：章節徽章加特別徽章（2026-10-27 起徽章頁多了「特別徽章」一區，SpecialBadge 也是 svg.ll-chbadge）
-    await expect(badges.locator('svg.ll-chbadge')).toHaveCount(await badges.locator('[data-chapter-id], [data-special-badge]').count());
+    await expect(badges.locator('svg.ll-chbadge')).toHaveCount(await badges.locator('[data-chapter-id], [data-special-badge], [data-exam-badge]').count());
+    // 苦練徽章自己一區（六枚），圖是苦練的配色
+    await expect(badges.locator('[data-exam-badge] svg.ll-chbadge')).toHaveCount(6);
     await expect(badges.locator('[data-special-badge] svg.ll-chbadge--special')).toHaveCount(1);
   });
 

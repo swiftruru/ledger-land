@@ -355,6 +355,8 @@ html[data-theme='dark'] .ll-badges__item[data-state='done'] {
   line-height: var(--ll-type-footnote-line);
   font-variant-numeric: tabular-nums;
   text-wrap: balance;
+  /* 徽章格是 li，全站的規則讓清單項目左右對齊；條件換成兩行時字會被拉開（苦練徽章的條件比較長），這裡明確置中 */
+  text-align: center;
 }
 
 /* ---- 設定（2.9）：卡片小標、分段控制的小標與說明；計時的開關列之間留 16 ---- */
