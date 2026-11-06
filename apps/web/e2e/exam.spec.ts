@@ -102,6 +102,69 @@ async function answerOne(page: Page, q: Question, pickCorrect: boolean): Promise
   return letter;
 }
 
+/** ledgerland-exam 的 runs 裡每一輪做到第幾題的總和（資料庫還沒建是 0）：按一次「下一題」剛好加 1（最後一題按下去是題數，也是加 1），
+ *  用來確認題目真的前進、而且這一輪已經寫進資料庫 */
+async function runProgress(page: Page): Promise<number> {
+  return page.evaluate(async () => {
+    const dbs = await indexedDB.databases();
+    if (!dbs.some((d) => d.name === 'ledgerland-exam')) return 0;
+    return new Promise<number>((resolve) => {
+      const req = indexedDB.open('ledgerland-exam');
+      req.onerror = () => resolve(0);
+      req.onsuccess = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains('runs')) {
+          db.close();
+          return resolve(0);
+        }
+        const all = db.transaction('runs', 'readonly').objectStore('runs').getAll();
+        all.onsuccess = () => {
+          db.close();
+          resolve((all.result as { index?: number }[]).reduce((n, run) => n + (run.index ?? 0), 0));
+        };
+        all.onerror = () => {
+          db.close();
+          resolve(0);
+        };
+      };
+    });
+  });
+}
+
+/** 按「下一題」，並等題目真的前進、這一輪寫進資料庫才回來。兩件事都曾讓測試偶爾失敗（2026-11-06）：
+ *  (1) 確認答案後回饋面板會平滑捲到畫面上緣（FeedbackPanel 的 scrollOnMount），捲動途中用滑鼠點，按鈕在按下與放開之間會移位，點擊可能落空：
+ *      main 的 Firefox 工作同一個案例連兩次卡在這裡，trace 裡「下一題」在確認後 160 到 280ms 送出、Playwright 回報點擊完成，畫面卻停在原題。
+ *      所以先等按鈕的位置停下來（每 50ms 取樣，連續四次一樣；最多等 3 秒）才點。用計時器取樣，不用 requestAnimationFrame：
+ *      Linux 的 WebKit 在靜止的頁面幾乎不跑 rAF。
+ *  (2) 這一輪做到第幾題是非同步寫進 IndexedDB 的，測試接著整頁導航（page.goto）會和寫入競速，回到首頁看到的還是上一題。
+ *      所以點完等 runs 裡的進度加 1（和 answerOne 等作答紀錄落地是同一個道理） */
+async function goNext(page: Page): Promise<void> {
+  const before = await runProgress(page);
+  await next(page).evaluate(
+    (el) =>
+      new Promise<void>((resolve) => {
+        let last = el.getBoundingClientRect().top;
+        let same = 0;
+        let ticks = 0;
+        const timer = setInterval(() => {
+          ticks += 1;
+          const top = el.getBoundingClientRect().top;
+          if (top === last) same += 1;
+          else {
+            same = 0;
+            last = top;
+          }
+          if (same >= 4 || ticks >= 60) {
+            clearInterval(timer);
+            resolve();
+          }
+        }, 50);
+      }),
+  );
+  await next(page).click();
+  await expect.poll(() => runProgress(page), { message: '按「下一題」之後這一輪的進度要加 1' }).toBe(before + 1);
+}
+
 /** ledgerland-exam 裡鍵是 mock 的那一輪（模擬考）；patch 有給就把欄位寫回去（測試用來把期限撥近）。資料庫還沒建回 null */
 async function mockRun(page: Page, patch?: Record<string, unknown>): Promise<{ questionIds: string[]; deadlineAt?: string; index: number } | null> {
   return page.evaluate(async (fields) => {
@@ -190,7 +253,7 @@ test.describe('期中考苦練', () => {
       await expect(page.getByText(`正確答案：${q.answer.join('、')}`)).toBeVisible();
       await expect(page.getByText('解析出自講義')).toBeVisible();
       await expect(page.locator('.ll-exam-explain .ll-handout-text')).toHaveAttribute('lang', 'zh-TW');
-      await next(page).click();
+      await goNext(page);
     }
     await expect(page.getByTestId('exam-summary')).toBeVisible();
     await expect(page.getByTestId('exam-score')).toHaveText(`答對 ${total - 1}／${total} 題`);
@@ -204,7 +267,7 @@ test.describe('期中考苦練', () => {
     await expect(page).toHaveURL(/\/exam\/wrong\/$/);
     await expect(card(page)).toContainText('第 1 題，共 1 題');
     await answerOne(page, qs.get(section.questionIds[0]!)!, true);
-    await next(page).click();
+    await goNext(page);
     await expect(page.getByTestId('exam-score')).toHaveText('答對 1／1 題');
     await expect(page.getByTestId('exam-retry-wrong')).toHaveCount(0);
   });
@@ -218,7 +281,7 @@ test.describe('期中考苦練', () => {
     await waitForApp(page);
     for (let i = 0; i < 2; i++) {
       await answerOne(page, qs.get(d1.sections[0]!.questionIds[i]!)!, true);
-      await next(page).click();
+      await goNext(page);
     }
     await page.goto('/exam/');
     await waitForApp(page);
@@ -275,7 +338,8 @@ test.describe('期中考苦練', () => {
     await waitForApp(page);
     for (let i = 0; i < multiIndex; i++) {
       await answerOne(page, qs.get(section.questionIds[i]!)!, true);
-      await next(page).click();
+      await goNext(page);
+      await expect(card(page)).toContainText(`第 ${i + 2} 題，共 ${section.questionIds.length} 題`);
     }
     const q = qs.get(section.questionIds[multiIndex]!)!;
     await expect(card(page).getByText('這題有不只一個合理答案，選出任一個即可。')).toBeVisible();
@@ -395,7 +459,7 @@ test.describe('期中考苦練', () => {
     await page.goto(`/exam/${d1.sections[0]!.id}/`);
     await waitForApp(page);
     const wrongLetter = await answerOne(page, qs.get(ids[0]!)!, false);
-    await next(page).click();
+    await goNext(page);
     await answerOne(page, qs.get(ids[1]!)!, true);
     await page.goto('/exam/list/');
     await waitForApp(page);
@@ -615,7 +679,7 @@ test.describe('期中考苦練', () => {
     await page.goto(`/exam/${d1.sections[0]!.id}/`);
     await waitForApp(page);
     await answerOne(page, qs.get(ids[0]!)!, false);
-    await next(page).click();
+    await goNext(page);
     await answerOne(page, qs.get(ids[1]!)!, true);
     // 匯出：備份碼帶著苦練的紀錄（兩題而已，放得下）
     await page.goto('/me/backup/');
