@@ -1,6 +1,7 @@
 // 背題瀏覽的清單（2026-11-06）：範圍、開始卡（從第一題開始讀、接著讀、都讀完了）、篩選、依講義與段落收合的題目標題，
 // 最下面的「更多」放遮住答案、列印與把這個範圍改回未讀。點一題進閱讀頁（BrowseReader.tsx）。
 // 一進來只打開一段（接著讀的那一題所在的段；從閱讀頁回來時是剛才那一題的段），其餘收著，收著的段不畫題目列。
+// 搜尋框（2026-11-06）：用關鍵字找題（search.ts），搜尋中不顯示開始卡、比中的段落全部打開，題目列多一行比中的地方的摘錄。
 // 列印：按「列印」或瀏覽器自己的列印時，才把這個範圍的完整題目畫出來（.ll-exam-browse__print，只在列印時顯示）。
 import { useLingui } from '@lingui/react/macro';
 import { useEffect, useRef, useState } from 'react';
@@ -21,6 +22,7 @@ import {
   PlayIcon,
   ProgressBar,
   RetryIcon,
+  SearchField,
   Segmented,
   Switch,
   Toast,
@@ -29,6 +31,7 @@ import {
 import type { HandoutManifestEntry, HandoutQuestionSnapshot } from '../../lib/content.ts';
 import { useLocale } from '../../lib/useLocale.ts';
 import { HandoutQuestionReadout } from './HandoutQuestionReadout.tsx';
+import { excerptOf, highlightOf, matchesTerms, type SearchIndex } from './search.ts';
 import { ALL_SCOPE, lastIn, orderOf, readCountOf, resumeTarget, visibleIds, type BrowsePos, type ShowFilter } from './reading.ts';
 
 export interface BrowseListProps {
@@ -43,6 +46,11 @@ export interface BrowseListProps {
   hrefOf: (scope: string, show: ShowFilter, q: string | null) => string;
   onScope: (scope: string) => void;
   onShow: (show: ShowFilter) => void;
+  /** 搜尋框裡的字、拆好的詞（空的代表不搜尋）與比對用的索引 */
+  find: string;
+  terms: readonly string[];
+  searchIndex: SearchIndex;
+  onFind: (keyword: string) => void;
   /** 把目前範圍改回未讀；回傳復原 */
   onReset: () => () => void;
   /** 剛從閱讀頁回來時的那一題 */
@@ -64,6 +72,10 @@ export function BrowseList({
   hrefOf,
   onScope,
   onShow,
+  find,
+  terms,
+  searchIndex,
+  onFind,
   onReset,
   focusId,
   onFocusUsed,
@@ -165,7 +177,27 @@ export function BrowseList({
     : t({ id: 'exam.browse.reset.all', message: '全部改回未讀', comment: '背題瀏覽：重設全部題目的已讀' });
   const readCountText = n(readCount);
   const noteCount = n(note?.count ?? 0);
-  const anyVisible = visibleIds(order, read, show).length > 0;
+  // 搜尋：清單只列比中的題（再套已讀與未讀的篩選）
+  const searching = terms.length > 0;
+  const listed = (ids: readonly string[]) => visibleIds(ids, read, show).filter((id) => matchesTerms(searchIndex, id, terms));
+  const scopeHits = searching ? order.filter((id) => matchesTerms(searchIndex, id, terms)).length : order.length;
+  const listedCount = listed(order).length;
+  const anyVisible = listedCount > 0;
+  const hitsText = n(listedCount);
+  const keyword = find.trim();
+  /** 把比中的字標出來 */
+  const marked = (text: string) => {
+    const h = searching ? highlightOf(text, terms) : null;
+    return h ? (
+      <>
+        {h.before}
+        <mark className="ll-exam-browse__hit">{h.hit}</mark>
+        {h.after}
+      </>
+    ) : (
+      text
+    );
+  };
 
   return (
     <>
@@ -192,8 +224,23 @@ export function BrowseList({
             ]}
           />
         </div>
+        <SearchField
+          className="ll-exam-browse__search"
+          label={t({ id: 'exam.browse.find.label', message: '搜尋題目', comment: '背題瀏覽：關鍵字搜尋欄的標籤' })}
+          placeholder={t({ id: 'exam.browse.find.placeholder', message: '例如：毛利率、存貨', comment: '背題瀏覽：搜尋欄的提示文字（只是例子）' })}
+          value={find}
+          onChange={onFind}
+          describedBy={searching ? 'll-exam-browse-found' : undefined}
+          data-testid="exam-browse-search"
+        />
+        {/* 結果數：看得到，輸入時也禮貌地唸出來 */}
+        <p id="ll-exam-browse-found" className="ll-exam-browse__found" aria-live="polite" data-testid="exam-browse-found">
+          {searching && scopeHits > 0
+            ? t({ id: 'exam.browse.find.count', message: `找到 ${hitsText} 題`, comment: '背題瀏覽：搜尋結果的題數；hitsText 已格式化' })
+            : ''}
+        </p>
 
-        {target && (
+        {target && !searching && (
           <Card as="section" className="ll-exam-hero" aria-labelledby="ll-exam-browse-start" data-testid="exam-browse-start" data-kind={target.kind}>
             <h2 id="ll-exam-browse-start" className="ll-exam-hero__title">
               {target.kind === 'start'
@@ -265,15 +312,21 @@ export function BrowseList({
 
         {!anyVisible && (
           <p className="ll-exam-intro" data-testid="exam-browse-empty">
-            {show === 'unread'
-              ? t({ id: 'exam.browse.empty.unread', message: '這個範圍的題都讀過了。', comment: '背題瀏覽：篩選未讀但沒有未讀的題' })
-              : t({ id: 'exam.browse.empty.read', message: '這個範圍還沒有讀過的題。', comment: '背題瀏覽：篩選已讀但還沒有已讀的題' })}
+            {searching && scopeHits === 0
+              ? t({
+                  id: 'exam.browse.find.empty',
+                  message: `找不到含有「${keyword}」的題目。換一個詞，或清掉搜尋看全部。`,
+                  comment: '背題瀏覽：搜尋沒有結果；keyword 是使用者輸入的字',
+                })
+              : show === 'unread'
+                ? t({ id: 'exam.browse.empty.unread', message: '這個範圍的題都讀過了。', comment: '背題瀏覽：篩選未讀但沒有未讀的題' })
+                : t({ id: 'exam.browse.empty.read', message: '這個範圍還沒有讀過的題。', comment: '背題瀏覽：篩選已讀但還沒有已讀的題' })}
           </p>
         )}
 
         {shown.map((d) => {
           const deckIds = d.sections.flatMap((s) => s.questionIds);
-          if (visibleIds(deckIds, read, show).length === 0) return null;
+          if (listed(deckIds).length === 0) return null;
           return (
             <section key={d.id} aria-labelledby={`ll-exam-browse-${d.id}`} data-testid={`exam-browse-deck-${d.id}`}>
               <h2 id={`ll-exam-browse-${d.id}`} className="ll-exam-browse__deck">
@@ -288,10 +341,11 @@ export function BrowseList({
                 </div>
               )}
               {d.sections.map((s) => {
-                const ids = visibleIds(s.questionIds, read, show);
+                const ids = listed(s.questionIds);
                 if (ids.length === 0) return null;
                 const done = readCountOf(s.questionIds, read);
-                const isOpen = open.has(s.id);
+                // 搜尋中比中的段落都打開
+                const isOpen = searching || open.has(s.id);
                 return (
                   <Disclosure
                     key={s.id}
@@ -312,17 +366,27 @@ export function BrowseList({
                           const q = questions.get(id);
                           if (!q) return null;
                           const isRead = read.has(id);
+                          const excerpt = searching ? excerptOf(q, terms) : null;
                           return (
                             <NavRow
                               key={id}
                               id={`ll-exam-browse-row-${id}`}
-                              size="compact"
+                              size={searching ? 'md' : 'compact'}
+                              description={
+                                excerpt ? (
+                                  <span lang="zh-TW">
+                                    {excerpt.before}
+                                    <mark className="ll-exam-browse__hit">{excerpt.hit}</mark>
+                                    {excerpt.after}
+                                  </span>
+                                ) : undefined
+                              }
                               className={isRead ? 'll-exam-browse__row is-read' : 'll-exam-browse__row'}
                               href={hrefOf(scope, show, id)}
                               icon={isRead ? <CheckCircleIcon filled /> : <CircleIcon />}
                               title={
                                 <>
-                                  <span lang="zh-TW">{q.topic}</span>
+                                  <span lang="zh-TW">{marked(q.topic)}</span>
                                   <span className="ll-sr-only">
                                     {isRead
                                       ? t({ id: 'exam.browse.row.read', message: '（已讀）', comment: '背題瀏覽的題目列：螢幕閱讀器唸的狀態' })

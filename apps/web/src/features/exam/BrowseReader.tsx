@@ -13,10 +13,13 @@ export interface BrowseReaderProps {
   q: HandoutQuestionSnapshot;
   deckCode: string;
   sectionTitle: string;
-  /** 這一題在範圍裡是第幾題（從 1 起算）與範圍的總題數 */
+  /** 這一題是第幾題（從 1 起算）與一共幾題：平常照範圍，搜尋中照搜尋結果 */
   position: number;
+  positionTotal: number;
+  /** 上一題與下一題是不是只在搜尋結果裡走 */
+  searching: boolean;
+  /** 範圍的總題數與其中已讀的題數（結束卡用） */
   total: number;
-  /** 範圍裡已讀的題數（結束卡用） */
   readCount: number;
   isRead: boolean;
   hide: boolean;
@@ -40,6 +43,8 @@ export function BrowseReader({
   deckCode,
   sectionTitle,
   position,
+  positionTotal,
+  searching,
   total,
   readCount,
   isRead,
@@ -109,6 +114,7 @@ export function BrowseReader({
 
   const hidden = hide && !revealed;
   const at = n(position);
+  const of = n(positionTotal);
   const prevLabel = t({ id: 'exam.browse.prev', message: '上一題', comment: '背題瀏覽的閱讀頁：只翻頁，不記已讀' });
   const nextLabel = t({ id: 'exam.browse.next', message: '下一題', comment: '背題瀏覽的閱讀頁：只翻頁，不記已讀' });
   return (
@@ -116,7 +122,9 @@ export function BrowseReader({
       <article className="ll-exam-reader" aria-labelledby="ll-exam-reader-title" data-testid="exam-reader" data-question={q.id}>
         <p className="ll-exam-reader__pos">
           <span className="ll-num" data-testid="exam-reader-pos">
-            {t({ id: 'exam.browse.pos', message: `第 ${at}／${b} 題`, comment: '背題瀏覽的閱讀頁：這一題在目前範圍裡的位置；數字已格式化' })}
+            {searching
+              ? t({ id: 'exam.browse.pos.find', message: `搜尋結果第 ${at}／${of} 題`, comment: '背題瀏覽的閱讀頁：這一題在搜尋結果裡的位置；數字已格式化' })
+              : t({ id: 'exam.browse.pos', message: `第 ${at}／${of} 題`, comment: '背題瀏覽的閱讀頁：這一題在目前範圍裡的位置；數字已格式化' })}
           </span>
           {isRead && (
             <>

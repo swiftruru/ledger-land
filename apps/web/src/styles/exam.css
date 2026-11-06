@@ -246,6 +246,25 @@
 .ll-exam-browse__print {
   display: none;
 }
+/* 搜尋：結果數緊接在搜尋框下面（沒有結果數時不佔高度）；比中的字用淡底加粗標出來（摘錄是次要文字色，比中的字用主要文字色） */
+.ll-exam-browse__search {
+  margin-bottom: 0;
+}
+.ll-exam-browse__found {
+  margin: var(--ll-space-1) 4px 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+}
+.ll-exam-browse__found:empty {
+  display: none;
+}
+.ll-exam-browse__hit {
+  border-radius: 3px;
+  background: var(--ll-warning-tint);
+  color: var(--ll-text);
+  font-weight: 600;
+}
 /* 閱讀頁：最上面是位置與已讀；底部固定一列（上一題、主要按鈕、下一題），在 Tab bar 上方 */
 /* 寬版頁上一行字太長不好讀：題目與底部那一列都限制在 46rem，靠左和頁首對齊 */
 .ll-exam-reader {

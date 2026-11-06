@@ -428,6 +428,17 @@ export const CASES: readonly PageCase[] = [
   { group: '苦練', name: '老師審核', path: '/exam/teacher/', tablet: true, prepare: (page) => visible(page, 'exam-teacher-card') },
   // 第二批（2026-11-05）：背題瀏覽只看第一份講義（整份 300 題掃起來太久）、錯題與不熟的清單（新使用者是空狀態）
   { group: '苦練', name: '背題瀏覽', path: '/exam/browse/?deck=d1', tablet: true, prepare: (page) => visible(page, 'exam-browse-tools') },
+  // 背題瀏覽的搜尋結果（2026-11-06）：比中的字有底色，摘錄是第二行
+  {
+    group: '苦練',
+    name: '背題搜尋',
+    path: '/exam/browse/?deck=d1&find=%E7%8F%BE%E9%87%91',
+    tablet: true,
+    prepare: async (page) => {
+      await visible(page, 'exam-browse-row');
+      await expect(page.locator('.ll-exam-browse__hit').first()).toBeVisible();
+    },
+  },
   // 背題瀏覽的閱讀頁（2026-11-06）：從清單的開始卡進第一題
   {
     group: '苦練',

@@ -2,6 +2,7 @@
 // 沿用上次與重新開始、打亂選項時確認後的講義字母、B/C 都對那一題是任一正確、老師審核頁的統計與篩選、noindex、離線保險（開過首頁後講義檔都在快取）、英文站的介面英文而題目中文。
 // 第二批（2026-11-05）：隨機抽幾題、熟練與「只練不熟的」、錯題與不熟的清單、背題瀏覽（講義篩選、遮住答案、列印樣式）。
 // 背題瀏覽改成清單加逐題閱讀（2026-11-06）：按「讀完了」才算已讀、各範圍的數字一致、接著讀、改回未讀、篩選、重設與復原。
+// 背題瀏覽的關鍵字搜尋（2026-11-06）：只列比中的題、閱讀頁在結果裡翻頁、換範圍、沒有結果與清除。
 // 模擬考（第二批的第二次交付）：設定與記住上次的選擇、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄、接續與限時自動交卷。
 // 苦練的紀錄跟著備份走（2026-11-05）：練過的題匯出備份碼、清掉資料、匯入後回來，再匯入一次不重複計算。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
@@ -201,6 +202,35 @@ async function mockRun(page: Page, patch?: Record<string, unknown>): Promise<{ q
 }
 
 /** 三份講義收錄的題合成一張表（模擬考跨講義抽題） */
+/** 背題瀏覽的已讀紀錄（ledgerland-exam-read 的 marks）現在有幾筆；資料庫還沒建就是 0（不自己開庫，理由同 seenOf）。
+ *  已讀是先改畫面再寫資料庫，測試要換頁或重新載入之前先等它寫進去 */
+async function readMarkCount(page: Page): Promise<number> {
+  return page.evaluate(async () => {
+    const dbs = await indexedDB.databases();
+    if (!dbs.some((d) => d.name === 'ledgerland-exam-read')) return 0;
+    return new Promise<number>((resolve) => {
+      const req = indexedDB.open('ledgerland-exam-read');
+      req.onerror = () => resolve(0);
+      req.onsuccess = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains('marks')) {
+          db.close();
+          return resolve(0);
+        }
+        const count = db.transaction('marks').objectStore('marks').count();
+        count.onsuccess = () => {
+          db.close();
+          resolve(count.result);
+        };
+        count.onerror = () => {
+          db.close();
+          resolve(0);
+        };
+      };
+    });
+  });
+}
+
 async function allQuestions(request: APIRequestContext, idx: Index): Promise<Map<string, Question>> {
   const maps = await Promise.all(idx.decks.map((d) => deckQuestions(request, d)));
   return new Map(maps.flatMap((m) => [...m]));
@@ -627,6 +657,7 @@ test.describe('期中考苦練', () => {
     await page.getByRole('radio', { name: `講義 ${d1.code}` }).click();
     await expect(page).toHaveURL(/\/exam\/browse\/\?deck=d1$/);
     // 苦練首頁的入口寫著讀了幾題、上次讀到哪一份
+    await expect.poll(() => readMarkCount(page)).toBe(2);
     await page.goto('/exam/');
     await waitForApp(page);
     await expect(page.getByTestId('exam-more-browse')).toContainText(`已讀 2／${all} 題，上次讀到講義 ${d1.code}。`);
@@ -668,7 +699,8 @@ test.describe('期中考苦練', () => {
     await page.getByTestId('exam-browse-toasts').getByRole('button', { name: '復原' }).click();
     await expect(count).toHaveText(`已讀 1／${d1.questionCount} 題`);
     await expect(start).toHaveAttribute('data-kind', 'resume');
-    // 範圍的最後一題：按「讀完了」後是結束卡
+    // 範圍的最後一題：按「讀完了」後是結束卡（先等復原的那一筆寫回資料庫再換頁）
+    await expect.poll(() => readMarkCount(page)).toBe(1);
     const last = d1.sections.at(-1)!.questionIds.at(-1)!;
     await page.goto(`/exam/browse/?deck=d1&q=${last}`);
     await waitForApp(page);
@@ -679,6 +711,77 @@ test.describe('期中考苦練', () => {
     await expect(end.getByRole('heading')).toHaveText('讀到最後一題了');
     await expect(end).toContainText(`已讀 2／${d1.questionCount} 題`);
     await expect(page.getByTestId('exam-reader-end-list')).toHaveAttribute('href', /\/exam\/browse\/\?deck=d1$/);
+  });
+
+  test('背題瀏覽：關鍵字搜尋只列比中的題、標出比中的字、閱讀頁在結果裡翻頁、回清單還在、換範圍、沒有結果與清除', async ({ page, request }) => {
+    const idx = await index(request);
+    type Full = Question & { scenario: string; question: string; explanation: string; deck: string };
+    const norm = (s: string) => s.normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim();
+    const byDeck = new Map<string, Full[]>();
+    for (const d of idx.decks) {
+      const file = (await (await request.get(`/${d.file}`)).json()) as { questions: Full[] };
+      const order = d.sections.flatMap((s) => s.questionIds);
+      byDeck.set(
+        d.id,
+        [...file.questions].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id)),
+      );
+    }
+    const hay = (q: Full) => [q.topic, q.scenario, q.question, ...q.options.map((o) => o.text), q.explanation].map(norm).join('\n');
+    const decks = [...idx.decks].sort((x, y) => Number(x.id.slice(1)) - Number(y.id.slice(1)));
+    const allInOrder = decks.flatMap((d) => byDeck.get(d.id)!);
+    // 關鍵字：第一份講義裡一個沒有空白的標題（測試不寫死講義文字）
+    const target = byDeck.get(decks[0]!.id)!.find((q) => !/\s/.test(q.topic) && q.topic.length >= 4)!;
+    const keyword = target.topic;
+    const hits = allInOrder.filter((q) => hay(q).includes(norm(keyword)));
+    expect(hits.length).toBeGreaterThanOrEqual(1);
+    const found = page.getByTestId('exam-browse-found');
+    const rows = page.getByTestId('exam-browse-row');
+    const box = page.getByRole('searchbox', { name: '搜尋題目' });
+    const reader = page.getByTestId('exam-reader');
+    await clearAll(page);
+    await page.goto('/exam/browse/');
+    await waitForApp(page);
+    await expect(found).toBeHidden();
+    await box.fill(keyword);
+    await expect(found).toHaveText(`找到 ${hits.length} 題`);
+    await expect(page).toHaveURL(/[?&]find=/);
+    // 搜尋中：不顯示開始卡，只列比中的題，比中的字標出來
+    await expect(page.getByTestId('exam-browse-start')).toHaveCount(0);
+    await expect(rows).toHaveCount(hits.length);
+    const row = page.locator(`#ll-exam-browse-row-${target.id}`);
+    await expect(row.locator('mark')).toHaveText(keyword);
+    // 點進去：位置與翻頁都照搜尋結果
+    await row.click();
+    await expect(reader).toHaveAttribute('data-question', target.id);
+    const at = hits.findIndex((q) => q.id === target.id) + 1;
+    await expect(page.getByTestId('exam-reader-pos')).toHaveText(`搜尋結果第 ${at}／${hits.length} 題`);
+    if (at === 1) await expect(page.getByTestId('exam-reader-prev')).toBeDisabled();
+    if (at === hits.length) await expect(page.getByTestId('exam-reader-next')).toBeDisabled();
+    else {
+      await page.getByTestId('exam-reader-next').click();
+      await expect(reader).toHaveAttribute('data-question', hits[at]!.id);
+    }
+    // 回清單：搜尋的字與結果都還在
+    await page.goBack();
+    await expect(box).toHaveValue(keyword);
+    await expect(found).toHaveText(`找到 ${hits.length} 題`);
+    // 換範圍：只在那一份講義裡找
+    const other = decks[1]!;
+    const otherHits = byDeck.get(other.id)!.filter((q) => hay(q).includes(norm(keyword)));
+    await page.getByRole('radio', { name: `講義 ${other.code}` }).click();
+    if (otherHits.length > 0) await expect(found).toHaveText(`找到 ${otherHits.length} 題`);
+    else await expect(page.getByTestId('exam-browse-empty')).toContainText(`找不到含有「${keyword}」的題目`);
+    await expect(rows).toHaveCount(otherHits.length);
+    // 沒有結果
+    await box.fill('沒有這個詞qqq');
+    await expect(page.getByTestId('exam-browse-empty')).toContainText('找不到含有「沒有這個詞qqq」的題目');
+    await expect(rows).toHaveCount(0);
+    await expect(found).toBeHidden();
+    // 清除：回到平常的清單
+    await page.getByRole('button', { name: '清除搜尋' }).click();
+    await expect(page.getByTestId('exam-browse-start')).toBeVisible();
+    await expect(page).not.toHaveURL(/find=/);
+    await expect(box).toHaveValue('');
   });
 
   test('模擬考：設定會記住、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄；noindex', async ({ page, request }) => {
