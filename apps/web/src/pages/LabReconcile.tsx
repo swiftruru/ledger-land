@@ -154,7 +154,12 @@ function ReconcileBody({ lab }: { lab: Ok }) {
           size="sm"
           variant="quiet"
           onClick={() => setHints((h) => ({ ...h, [id]: Math.min(3, (h[id] ?? 0) + 1) }))}
-          aria-label={t({ id: 'lab.reconcile.hintFor', message: `${lineLabel(id)}的提示`, comment: '提示按鈕的可讀名稱' })}
+          // 可讀名稱以看得到的字（「需要提示」）開頭，後面才接是哪一列：用語音控制的人念畫面上的字就點得到（WCAG 2.5.3）
+          aria-label={t({
+            id: 'lab.reconcile.hintFor',
+            message: `需要提示：${lineLabel(id)}`,
+            comment: '提示按鈕的可讀名稱；開頭要和按鈕上看得到的字（lab.reconcile.hint）一樣，後面接這一列的名稱',
+          })}
         >
           {t({ id: 'lab.reconcile.hint', message: '需要提示', comment: '提示按鈕' })}
         </Button>
