@@ -196,6 +196,12 @@ test('INP：CPU 降速 4 倍，作答頁、地圖、圖鑑與實驗室的互動�
   await page.getByTestId('lab-trace').waitFor();
   await log('實驗室：開來源面板');
   await page.keyboard.press('Escape');
+  // IFRS 對照（M4b）：第一次切換要以 ifrs@1 重播整個故事再重畫三表
+  await page.getByTestId('lab-trace').waitFor({ state: 'hidden' });
+  await settle();
+  await page.getByTestId('lab-policy').getByRole('radio', { name: 'IFRS 對照' }).click();
+  await page.getByTestId('lab-basis').waitFor();
+  await log('實驗室：切換到 IFRS 對照');
   await page.goto('/lab/sandbox/');
   await waitForApp(page);
   const step6 = page.locator('[data-step="st_g4h3hx"]');

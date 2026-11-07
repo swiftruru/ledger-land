@@ -16,9 +16,18 @@ export interface StoryProgress {
   readonly predictScores: Readonly<Record<string, PredictScore>>;
   /** 勾稽練習：每一步做完了沒、有沒有看過答案 */
   readonly reconciled: Readonly<Record<string, { readonly done: boolean; readonly sawAnswer: readonly string[] }>>;
+  /** 預測是對照哪一套口徑判定的（03 第 3.13 節）：只記 IFRS 對照的步驟，沒有就是教材 */
+  readonly predictBasis: Readonly<Record<string, 'ifrs@1'>>;
 }
 
-export const EMPTY_PROGRESS: StoryProgress = { done: [], practised: [], predictions: {}, predictScores: {}, reconciled: {} };
+export const EMPTY_PROGRESS: StoryProgress = { done: [], practised: [], predictions: {}, predictScores: {}, reconciled: {}, predictBasis: {} };
+
+function basisOf(v: unknown): StoryProgress['predictBasis'] {
+  if (typeof v !== 'object' || v === null) return {};
+  const out: Record<string, 'ifrs@1'> = {};
+  for (const [k, b] of Object.entries(v as Record<string, unknown>)) if (b === 'ifrs@1') out[k] = b;
+  return out;
+}
 
 export const settingKey = (storyId: string) => `lab:${storyId}`;
 
@@ -56,6 +65,7 @@ function normalise(v: unknown): StoryProgress {
     predictions: typeof o.predictions === 'object' && o.predictions !== null ? (o.predictions as StoryProgress['predictions']) : {},
     predictScores: scoresOf(o.predictScores),
     reconciled: typeof o.reconciled === 'object' && o.reconciled !== null ? (o.reconciled as StoryProgress['reconciled']) : {},
+    predictBasis: basisOf(o.predictBasis),
   };
 }
 

@@ -3,12 +3,15 @@
 // 平板橫向與電腦）。變動的列用醒目底色加 ▲▼ 與文字，不只靠顏色；onlyChanged 只看有變動的列。帶 (+)(-) 的累計列在本筆變動檢視加註（T12）。
 // 給了 onTrace 時（M4b，03 第 3.9 節）交易後的金額與本筆變動的差額是可追蹤的數字（ValueButton，虛線下框），按下去開來源面板；
 // 交易前的金額與沒變的「不變」不是（前一步的數字要到前一步追）。
+// 給了 compare 時（IFRS 對照，03 第 3.13 節）這張表是 ifrs@1 的版面與數字，caption 加「（IFRS 對照）」，金額和教材口徑不同的列加「與教材口徑不同」
+// 標記、列下方小字「教材口徑：x」（累計檢視比交易後的金額，本筆變動檢視比差額）。
 import { useLingui } from '@lingui/react/macro';
 import { formatMoney } from '@ledgerland/i18n';
 import type { ReactNode } from 'react';
 import { NoteTag, ValueButton } from '@ledgerland/web-ui';
 import type { Statements, TraceWindow } from './lab-core.ts';
 import { ARROW, directionOf, useLabLabels } from './labels.ts';
+import { LabTag } from './LabTag.tsx';
 import { RollingMoney } from './RollingMoney.tsx';
 
 type Row = Statements['statements'][keyof Statements['statements']][number];
@@ -33,6 +36,8 @@ export interface StatementTableProps {
   animate?: boolean;
   /** 點可追蹤的數字（交易後的金額是累計視窗、本筆變動的差額是本筆變動視窗）；沒給就只是數字（勾稽練習） */
   onTrace?: (lineId: string, window: TraceWindow, el: HTMLButtonElement) => void;
+  /** IFRS 對照：同一步教材口徑的交易後報表與本筆變動，畫差異標記與「教材口徑：x」；沒給就是教材口徑本身 */
+  compare?: { readonly after: Statements; readonly change: Statements };
   id?: string;
   className?: string;
 }
@@ -55,6 +60,7 @@ export function StatementTable({
   layout,
   animate = false,
   onTrace,
+  compare,
   id,
   className,
 }: StatementTableProps) {
@@ -62,6 +68,18 @@ export function StatementTable({
   const { locale, lineLabel } = useLabLabels(layout);
   const rows = after.statements[statement];
   const fmt = (v: number) => formatMoney(v, locale);
+  const shownCaption =
+    compare !== undefined && typeof caption === 'string'
+      ? t({ id: 'lab.policy.caption', message: `${caption}（IFRS 對照）`, comment: 'IFRS 對照時的表格標題；caption 是報表名稱' })
+      : caption;
+  // 教材口徑的同一列：累計檢視比交易後的金額、本筆變動檢視比差額；教材版面沒有這一列（不會發生：兩個版面共用線 ID）就不標
+  const teacherValue = (lineId: string, delta: number): number | null => {
+    if (compare === undefined) return null;
+    const line = view === 'transaction' ? compare.change.lines.get(lineId) : compare.after.lines.get(lineId);
+    if (line === undefined) return null;
+    const mine = view === 'transaction' ? delta : (after.lines.get(lineId)?.value ?? 0);
+    return line.value === mine ? null : line.value;
+  };
   const same = t({ id: 'lab.table.same', message: '不變', comment: '本筆變動檢視裡沒有變動的列' });
   const headBefore = t({ id: 'lab.table.before', message: '交易前', comment: '三欄表頭' });
   const headAfter = t({ id: 'lab.table.after', message: '交易後', comment: '三欄表頭' });
@@ -95,7 +113,7 @@ export function StatementTable({
   return (
     <div className={`ll-lab-table${className ? ` ${className}` : ''}`} id={id}>
       <table className="ll-mini-table ll-lab-table__table">
-        <caption>{caption}</caption>
+        <caption>{shownCaption}</caption>
         <thead>
           <tr>
             <th scope="col">
@@ -155,6 +173,13 @@ export function StatementTable({
               <span className="ll-lab-delta is-same">{same}</span>
             );
             const note = r.kind === 'working_capital' && view !== 'cumulative' ? <span className="ll-lab-row__note">{noteCumulative}</span> : null;
+            const teacher = teacherValue(r.id, delta);
+            const basis =
+              teacher === null ? null : (
+                <span className="ll-lab-row__basis" data-testid="lab-row-basis">
+                  {t({ id: 'lab.policy.teacherValue', message: `教材口徑：${fmt(teacher)}`, comment: 'IFRS 對照時列下方的小字；金額已格式化' })}
+                </span>
+              );
             const afterCell = traceable(r.id, 'cumulative', a, changed ? <RollingMoney from={b} to={a} animate={animate} locale={locale} /> : fmt(a));
             const mark = changed ? (
               <span className="ll-lab-row__mark" data-dir={dir}>
@@ -175,11 +200,13 @@ export function StatementTable({
                 </tr>
               );
             return (
-              <tr key={r.id} className={cls} data-line={r.id}>
+              <tr key={r.id} className={`${cls}${basis ? ' is-diff' : ''}`} data-line={r.id}>
                 <th scope="row" className={`ll-mini-table__line ll-indent-${indentOf(r)}`}>
                   {lineLabel(r.id)}
                   {r.flags.includes('not_ifrs_line') && <NoteTag kind="not_ifrs_line" className="ll-lab-row__tag" />}
+                  {basis && <LabTag kind="diff" className="ll-lab-row__tag" testId="lab-row-diff" />}
                   {note}
+                  {basis}
                 </th>
                 {view === 'columns' ? (
                   <>

@@ -332,7 +332,7 @@ export default defineConfig({
             // 抓進 lab-ui 就回到第一波（約 7 KB gzip，連帶 web-ui 的 Segmented 與 ImpactPicker 那個 chunk）
             {
               name: 'lab-ui',
-              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](?!(lab-core|summary|stage-views|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling|TracePanel|TraceTree|TraceSources|trace-model)\.tsx?$)/,
+              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](?!(lab-core|summary|stage-views|PolicyToggle|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling|TracePanel|TraceTree|TraceSources|trace-model)\.tsx?$)/,
               priority: 1,
             },
             // 步驟頁階段 2 到 10 的畫面元件：lazy-stages.ts 動態載入的進入點 stage-views.tsx 加它 re-export 的元件（只有這些階段用到的 RollingMoney 與 rolling 也在）。

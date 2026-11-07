@@ -79,6 +79,12 @@ msgstr "{0}的{1}（勾稽點{2}）"
 msgid "lab.sandbox.whyAccount"
 msgstr "{account}會變成負數"
 
+#. IFRS 對照時的表格標題；caption 是報表名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StatementTable.tsx
+msgid "lab.policy.caption"
+msgstr "{caption}（IFRS 對照）"
+
 #. 往下鑽到最底層時的播報；名稱與金額已代入
 #. js-lingui-explicit-id
 #: src/features/lab/TraceTree.tsx
@@ -156,6 +162,30 @@ msgstr "0-3 投影片"
 #: src/pages/LabRatios.tsx
 msgid "lab.version.excel"
 msgstr "Excel 版"
+
+#. 交易卡的標記：這一步的範本在 IFRS 下的分錄不一樣
+#. js-lingui-explicit-id
+#: src/features/lab/LabTag.tsx
+msgid "lab.policy.differs"
+msgstr "IFRS 下的處理不同"
+
+#. 來源面板副標前的口徑標記
+#. js-lingui-explicit-id
+#: src/features/lab/LabTag.tsx
+msgid "lab.policy.tag"
+msgstr "IFRS 對照"
+
+#. 報表口徑的選項：依 IFRS 重算的對照版
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.ifrs"
+msgstr "IFRS 對照"
+
+#. 自由實驗：IFRS 口徑重播失敗而教材口徑成功時的說明
+#. js-lingui-explicit-id
+#: src/features/lab/BasisBanner.tsx
+msgid "lab.policy.ifrsFailed"
+msgstr "IFRS 對照算不出這組修改，先顯示教材口徑的數字。"
 
 #. 勾稽練習的導言
 #. js-lingui-explicit-id
@@ -286,6 +316,12 @@ msgstr "來源步驟"
 #: src/features/lab/TracePanel.tsx
 msgid "lab.trace.path"
 msgstr "來源路徑"
+
+#. 揭曉卡：預測是對照 IFRS 口徑的數字判定的
+#. js-lingui-explicit-id
+#: src/features/lab/PredictReveal.tsx
+msgid "lab.policy.revealBasis"
+msgstr "依 IFRS 對照揭曉，不計分。"
 
 #. 第 4 到 18 步的小標記（T33）
 #. js-lingui-explicit-id
@@ -570,6 +606,12 @@ msgstr "基準為負或為 0，結果不具意義"
 msgid "lab.journal.note"
 msgstr "報表上的「本期進貨」「期末存貨」不是分錄裡的科目，而是由存貨帳推導出來的列。"
 
+#. 口徑切換（分段控制）的群組名稱
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.toggleLabel"
+msgstr "報表口徑"
+
 #. 來源步驟對這一列的方向（螢幕閱讀器）
 #. js-lingui-explicit-id
 #: src/features/lab/TraceSources.tsx
@@ -642,6 +684,18 @@ msgstr "左右平衡"
 #: src/features/lab/CheckLights.tsx
 msgid "lab.check.fail"
 msgstr "差 {0}"
+
+#. 切到 IFRS 對照時的播報
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.switchedIfrs"
+msgstr "已切換到 IFRS 對照，不計分。和教材口徑不同的列已加上標記。"
+
+#. 切回教材時的播報
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.switchedTeacher"
+msgstr "已切換回教材口徑。"
 
 #. 刪除後的浮動提示；數字已代入
 #. js-lingui-explicit-id
@@ -865,6 +919,31 @@ msgstr "故事的哪一步之後"
 #: src/features/lab/StepPicker.tsx
 msgid "lab.reconcile.sheet.list"
 msgstr "故事的步驟"
+
+#. 報表口徑的選項：課程教材的版面與處理
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.teacher"
+msgstr "教材"
+
+#. IFRS 對照時列下方的小字；金額已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: fmt(teacher)
+#: src/features/lab/StatementTable.tsx
+msgid "lab.policy.teacherValue"
+msgstr "教材口徑：{0}"
+
+#. IFRS 對照時指標卡下方的小字；指標值已格式化
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.policy.teacherRatio"
+msgstr "教材口徑：{teacher}"
+
+#. IFRS 對照橫幅的說明句
+#. js-lingui-explicit-id
+#: src/features/lab/BasisBanner.tsx
+msgid "lab.policy.banner"
+msgstr "數字依 IFRS 的處理重算；和教材口徑不同的列有標記。"
 
 #. 預測面板的主按鈕（已記過一次）
 #. js-lingui-explicit-id
@@ -1338,6 +1417,12 @@ msgstr "自由實驗"
 #: src/features/lab/TraceSources.tsx
 msgid "lab.trace.localStep"
 msgstr "自由實驗插入的步驟"
+
+#. IFRS 對照時，金額和教材口徑不一樣的報表列的標記
+#. js-lingui-explicit-id
+#: src/features/lab/LabTag.tsx
+msgid "lab.policy.rowDiff"
+msgstr "與教材口徑不同"
 
 #. 預測面板的主按鈕
 #. js-lingui-explicit-id

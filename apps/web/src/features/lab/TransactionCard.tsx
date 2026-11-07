@@ -9,6 +9,7 @@ import type { StoryStepSnapshot } from '../../lib/content.ts';
 import { MarkupParagraphs } from '../quiz/Markup.tsx';
 import { useTerms } from '../quiz/terms.tsx';
 import { joinList, useLabLabels } from './labels.ts';
+import { LabTag } from './LabTag.tsx';
 
 export interface TransactionCardProps {
   spec: StoryStepSnapshot;
@@ -23,6 +24,8 @@ export interface TransactionCardProps {
   recap: boolean;
   /** 從中間「開始」時的一次性提示 */
   suggestEarlier: boolean;
+  /** IFRS 對照（03 第 3.13 節）：這一步的範本在 IFRS 下的分錄不一樣，加「IFRS 下的處理不同」標記（lab-core.ts 的 policyDiffers） */
+  policyDiffers?: boolean;
 }
 
 function TermChipRow({ ids, termLabels }: { ids: readonly string[]; termLabels?: Readonly<Record<string, string>> }) {
@@ -66,7 +69,7 @@ export function Recap({ before, layout }: { before: (lineId: string) => number; 
   );
 }
 
-export function TransactionCard({ spec, values, before, layout, termLabels, recap, suggestEarlier }: TransactionCardProps) {
+export function TransactionCard({ spec, values, before, layout, termLabels, recap, suggestEarlier, policyDiffers = false }: TransactionCardProps) {
   const { t } = useLingui();
   const notes = [...new Set(spec.events.flatMap((e) => e.pendingRefs ?? []))];
   return (
@@ -89,6 +92,7 @@ export function TransactionCard({ spec, values, before, layout, termLabels, reca
           </span>
         )}
         {notes.length > 0 && <NoteTag kind="design_note" subject={notes.join(', ')} />}
+        {policyDiffers && <LabTag kind="policy" testId="lab-policy-differs" />}
       </div>
       <TermChipRow ids={spec.termRefs} termLabels={termLabels} />
     </article>

@@ -37,6 +37,10 @@ import { canGoTo, canJumpTo, canSkipToEnd, stagesOf, statementForStage, type Lab
 import { StageBar, useStageNames } from '../features/lab/StageBar.tsx';
 import type { StatementView } from '../features/lab/StatementTable.tsx';
 import { TransactionCard } from '../features/lab/TransactionCard.tsx';
+import { BasisBanner } from '../features/lab/BasisBanner.tsx';
+import { LabTag } from '../features/lab/LabTag.tsx';
+import { IFRS_POLICY } from '../features/lab/lab-policy.ts';
+import { useLabView, type UseLabView } from '../features/lab/lab-view.ts';
 import { useLabStepLoad } from '../features/lab/useLab.ts';
 import { useExpanded } from '../features/me/useExpanded.ts';
 import { useColumnsFit } from '../features/lab/useColumnsFit.ts';
@@ -45,7 +49,6 @@ import { TermsProvider, useTerms } from '../features/quiz/terms.tsx';
 import { findLevelOfQuestion, type StorySnapshot, type StoryStepSnapshot } from '../lib/content.ts';
 import { afterFirstPaint } from '../lib/idle.ts';
 import { usePageReady, useRevealed } from '../lib/page-ready.tsx';
-import { getProgressStore, nowIso } from '../lib/progress/index.ts';
 import { useLocale } from '../lib/useLocale.ts';
 import { NotFound } from './NotFound.tsx';
 import { useLabBack } from '../features/lab/useLabBack.ts';
@@ -79,7 +82,12 @@ export default function LabStep() {
   useEffect(() => (revealed ? afterFirstPaint(loadCore) : undefined), [revealed, loadCore]);
   usePageReady(lab.kind !== 'loading' && (!needCoreFirst || lab.core !== null || lab.coreError !== undefined));
   const core = lab.core;
+  // 報表口徑（03 第 3.13 節）：教材的重播一直都有（計分、預測與對照的基準）；切到 IFRS 對照時另用 ifrs@1 重播一次，兩份都用 useMemo 留著，切回來不重算。
+  // 從題目開啟（?from=）一律先用教材
+  const labView = useLabView({ fromQuestion: params.get('from') !== null });
+  const ifrs = labView.policy === IFRS_POLICY;
   const replay = useMemo(() => (core && story ? core.replayLab(core.asCoreStory(story)) : null), [core, story]);
+  const replayIfrs = useMemo(() => (core && story && ifrs ? core.replayLab(core.asCoreStory(story), [], IFRS_POLICY) : null), [core, story, ifrs]);
   if (lab.kind === 'error' && lab.error.kind === 'missing') return <NotFound />;
   if (lab.kind === 'error')
     return (
@@ -92,8 +100,11 @@ export default function LabStep() {
     return <TopBar title={t({ id: 'lab.story.title', message: '故事' })} backHref={href('/lab/')} backLabel={back.label} backShortLabel={back.short} />;
   if (!spec) return <NotFound />;
   if (replay && !replay.ok) throw new Error(`故事重播失敗：${replay.error.code}`);
-  const run = replay ? replay.value : null;
+  if (replayIfrs && !replayIfrs.ok) throw new Error(`故事以 IFRS 對照重播失敗：${replayIfrs.error.code}`);
+  const baseRun = replay ? replay.value : null;
+  const run = ifrs ? (replayIfrs ? replayIfrs.value : null) : baseRun;
   const step = run && stepId ? run.stepById(stepId) : undefined;
+  const baseStep = baseRun && stepId ? baseRun.stepById(stepId) : undefined;
   if (run && !step) return <NotFound />;
   return (
     <TermsProvider locale={locale} deferIndex={!needCoreFirst}>
@@ -106,7 +117,9 @@ export default function LabStep() {
         story={story}
         spec={spec}
         step={step ?? null}
+        baseStep={baseStep ?? null}
         run={run}
+        labView={labView}
         progress={lab.progress.progress}
         onProgress={lab.refreshProgress}
       />
@@ -122,21 +135,28 @@ interface SessionProps {
   onLoadCore: () => void;
   story: StorySnapshot;
   spec: StoryStepSnapshot;
+  /** 顯示中的口徑的這一步（教材或 IFRS 對照） */
   step: LabStepModel | null;
+  /** 教材口徑的這一步（IFRS 對照時畫差異標記與「教材口徑：x」；教材時和 step 同一個） */
+  baseStep: LabStepModel | null;
   run: LabRun | null;
+  labView: UseLabView;
   progress: StoryProgress;
   onProgress: () => void;
 }
 
 type Answer = { answer: PredictChoice; nearly: boolean; exact?: 'up' | 'down' | 'unchanged' };
 
-function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run, progress, onProgress }: SessionProps) {
+function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, baseStep, run, labView, progress, onProgress }: SessionProps) {
   const { t } = useLingui();
   const locale = useLocale();
   const [params, setParams] = useSearchParams();
   const demo = mode === 'demo';
   const stages = stagesOf(mode);
   const from = params.get('from');
+  const ifrs = labView.policy === IFRS_POLICY;
+  // IFRS 對照時表格與指標要對照的教材數字；教材口徑不比
+  const compare = ifrs && baseStep ? { after: baseStep.after, change: baseStep.change } : undefined;
   const { ready: termsReady } = useTerms();
   const revealed = useRevealed();
   // 版面：核心與名詞索引都到了才用核心的版面；之前由快照的 firstPaint.lines 做成（只有恆等式、前情摘要與預測目標的列，名稱已是名詞的名稱）
@@ -212,7 +232,9 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
   const [onlyChanged, setOnlyChanged] = useState(false);
   const [highlight, setHighlight] = useState<ReadonlySet<string>>(() => new Set());
   const [selectedLight, setSelectedLight] = useState<2 | 3 | 4 | 5 | null>(null);
-  const [journalOpen, setJournalOpen] = useState(false);
+  // 分錄層的展開狀態記在 settings 的 labView.journalLayerOpen（lab-view.ts）
+  const journalOpen = labView.journalLayerOpen;
+  const toggleJournal = labView.setJournalLayerOpen;
   // 來源面板（M4b，03 第 3.9 節）：第一次點可追蹤的數字才載面板的模組；關閉後焦點回到那個數字
   const [trace, setTrace] = useState<TraceTarget | null>(null);
   const [traceViews, setTraceViews] = useState<TraceViews | null>(() => tracePanelNow());
@@ -228,33 +250,6 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
   const [fromHref, setFromHref] = useState<string | null>(null);
   const liveRef = useRef<HTMLParagraphElement>(null);
 
-  // 分錄層的展開狀態記在 settings 的 labView.journalLayerOpen
-  useEffect(() => {
-    let alive = true;
-    getProgressStore()
-      .then((s) => s.getSetting('labView'))
-      .then((v) => {
-        const open = (v?.value as { journalLayerOpen?: boolean } | undefined)?.journalLayerOpen;
-        if (alive && typeof open === 'boolean') setJournalOpen(open);
-      })
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
-  }, []);
-  const toggleJournal = (open: boolean) => {
-    setJournalOpen(open);
-    void getProgressStore()
-      .then(async (s) => {
-        const cur = ((await s.getSetting('labView'))?.value as Record<string, unknown> | undefined) ?? {
-          policy: 'teacher@1',
-          window: 'cumulative',
-          statement: 'is',
-        };
-        await s.setSetting('labView', { ...cur, journalLayerOpen: open }, nowIso());
-      })
-      .catch(() => {});
-  };
   // 從題目開啟（?from=題目 ID）：返回膠囊回到那一關（03 第 4.6 節）
   useEffect(() => {
     if (!from) return;
@@ -354,12 +349,13 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
           total: targets.length,
         }
       : null;
-  // 記下預測：成績要核心才算得出；核心還沒到時先記著，載好再存（存的是當時的 record）
+  // 記下預測：成績要核心才算得出；核心還沒到時先記著，載好再存（存的是當時的 record）。
+  // 揭曉以畫面上的數字為準（03 第 3.13 節）：IFRS 對照時成績依 IFRS 數字判定，另記 basis；成績只是本機紀錄，不影響闖關計分
   const pendingSave = useRef(false);
   const submitPrediction = () => {
     setSubmitted(true);
     const score = scoreOf(record);
-    if (score) void savePrediction(story.id, spec.id, record, score);
+    if (score) void savePrediction(story.id, spec.id, record, score, labView.policy);
     else {
       pendingSave.current = true;
       onLoadCore();
@@ -369,7 +365,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
     if (!pendingSave.current || !hasCore) return;
     pendingSave.current = false;
     const score = scoreOf(record);
-    if (score) void savePrediction(story.id, spec.id, record, score);
+    if (score) void savePrediction(story.id, spec.id, record, score, labView.policy);
     // scoreOf 與 record 都是這一次 render 的值；只在核心載好的那一次 render 存一次
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasCore]);
@@ -504,6 +500,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
       layout={layout}
       animate={!reduced}
       onTrace={(lineId, window, el) => openTrace({ kind: 'line', lineId, window }, el)}
+      compare={compare}
       id={`ll-lab-table-${code}`}
     />
   );
@@ -541,6 +538,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
       data-core={hasCore ? 'ready' : 'pending'}
       data-views={views ? 'ready' : 'pending'}
       data-terms={termsReady ? 'ready' : 'pending'}
+      data-policy={labView.policy}
     >
       <TopBar
         title={title}
@@ -569,6 +567,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
           {lineLabel(EQUATION_LINES[0])} {equationValue(EQUATION_LINES[0])} ＝ {lineLabel(EQUATION_LINES[1])} {equationValue(EQUATION_LINES[1])} ＋{' '}
           {lineLabel(EQUATION_LINES[2])} {equationValue(EQUATION_LINES[2])}
         </p>
+        {/* IFRS 對照時每個階段都看得到「IFRS 對照，不計分」（10 第 11.2 節完成標準第 5 條）；教材口徑沒有這一列，第一次繪製的 DOM 不變 */}
+        {ifrs && <BasisBanner />}
       </div>
       <h2 id="ll-lab-stage-heading" className="ll-lab-session__stage" data-testid="lab-stage-title">
         {t({ id: 'lab.stage.progress', message: `階段 ${stage + 1}／${stages.length}：${names[stageId]}` })}
@@ -595,6 +595,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
             termLabels={firstPaint?.terms}
             recap={!alreadyDone && index > 0 && !prevDone}
             suggestEarlier={!demo && !from && index > 0 && !prevDone}
+            policyDiffers={ifrs && core !== null && core.policyDiffers(spec)}
           />
         )}
         {views && stageId === 'predict' && (
@@ -609,7 +610,14 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
           />
         )}
         {views && step && chart && stageId === 'effects' && revealScore && (
-          <views.PredictReveal items={revealItems} right={revealScore.right} total={revealScore.total} locale={locale} note={revealNote} />
+          <views.PredictReveal
+            items={revealItems}
+            right={revealScore.right}
+            total={revealScore.total}
+            locale={locale}
+            note={revealNote}
+            basis={labView.policy}
+          />
         )}
         {views && step && chart && stageId === 'effects' && (
           <views.EffectsList
@@ -658,6 +666,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
                 onChange={setOnlyChanged}
                 label={t({ id: 'lab.tables.onlyChanged', message: '只看有變動的列', comment: '表格的篩選' })}
               />
+              {/* 報表口徑（03 第 3.13 節）：教材／IFRS 對照，和「累計／本筆變動」同一列 */}
+              <views.PolicyToggle value={labView.policy} onChange={labView.setPolicy} />
             </div>
             <Button variant="quiet" size="sm" block className="ll-lab-summary" data-testid="lab-summary" onClick={() => !wide && setView('transaction')}>
               <span className="ll-lab-summary__label">{t({ id: 'lab.tables.summary', message: '本筆變動：', comment: '本筆變動摘要列的開頭' })}</span>
@@ -711,6 +721,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
             splitUnchanged
             verdicts={ratioVerdicts}
             onTrace={(item, el) => openTrace({ kind: 'ratio', ratioRef: item.ratioRef, spec: item.spec, result: item.after }, el)}
+            compareAfter={ifrs ? baseStep?.ratiosAfter : undefined}
           />
         )}
         {step && stageId === 'insight' && (
@@ -807,6 +818,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
           trace={(window, lineId) => core!.traceLabLine(run, step, window, lineId)}
           entriesOf={(id) => core!.entriesOfStep(run, id)}
           layout={layout}
+          basisTag={ifrs ? <LabTag kind="ifrs" testId="lab-trace-basis" /> : undefined}
           stepInfo={(id) => {
             const s = story.steps.find((x) => x.id === id);
             return s === undefined ? undefined : { order: s.order, title: s.title };

@@ -3,6 +3,7 @@
 // 自由實驗存 labSandbox。寫不進去（儲存壞掉）時不丟錯，畫面照常。進度的形狀與讀取在 progress-shape.ts（common chunk），這裡只有寫入。
 import type { LabSandbox } from '@ledgerland/progress';
 import { getProgressStore, nowIso } from '../../lib/progress/index.ts';
+import { IFRS_POLICY, type LabPolicyId } from './lab-policy.ts';
 import type { PredictScore, PredictionRecord } from './predict.ts';
 import type { LabMode } from './stages.ts';
 import { readStoryProgress, settingKey, type StoryProgress } from './progress-shape.ts';
@@ -31,14 +32,18 @@ function enqueue<T>(storyId: string, task: () => Promise<T>): Promise<T> {
   return next;
 }
 
-/** 記下一步的預測（每次預測都存，揭曉用） */
-export function savePrediction(storyId: string, stepId: string, record: PredictionRecord, score?: PredictScore): Promise<void> {
+/** 記下一步的預測（每次預測都存，揭曉用）；basis 是揭曉對照的口徑（03 第 3.13 節），IFRS 對照才記，教材不記 */
+export function savePrediction(storyId: string, stepId: string, record: PredictionRecord, score?: PredictScore, basis?: LabPolicyId): Promise<void> {
   return enqueue(storyId, async () => {
     const { progress } = await readStoryProgress(storyId);
+    const predictBasis = { ...progress.predictBasis };
+    if (basis === IFRS_POLICY) predictBasis[stepId] = 'ifrs@1';
+    else delete predictBasis[stepId];
     await writeProgress(storyId, {
       ...progress,
       predictions: { ...progress.predictions, [stepId]: record },
       predictScores: score ? { ...progress.predictScores, [stepId]: score } : progress.predictScores,
+      predictBasis,
     });
   });
 }

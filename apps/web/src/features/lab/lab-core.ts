@@ -15,6 +15,7 @@ import {
   fiveStepCheck,
   measureMap,
   orderedSteps,
+  policyWhenMatches,
   replayStory,
   type AllowedRange,
   type CoreContext,
@@ -38,6 +39,7 @@ import {
   traceLine,
 } from '@ledgerland/core';
 import type { StorySnapshot } from '../../lib/content.ts';
+import { IFRS_POLICY, TEACHER_POLICY, type LabPolicyId } from './lab-policy.ts';
 
 export type {
   AllowedRange,
@@ -81,8 +83,12 @@ export interface LabStep {
   readonly tAccounts: readonly TAccount[];
 }
 
+export { IFRS_POLICY, TEACHER_POLICY, type LabPolicyId };
+
 export interface LabRun {
   readonly ctx: CoreContext;
+  /** 這次重播用的口徑（ctx.policy.id 同一個值，給畫面判斷用） */
+  readonly policyId: LabPolicyId;
   readonly story: Story;
   readonly run: StoryRun;
   readonly stepIds: readonly string[];
@@ -97,13 +103,33 @@ export type LabReplay =
   | { readonly ok: true; readonly value: LabRun }
   | { readonly ok: false; readonly error: StepError & { readonly allowedRange?: AllowedRange; readonly edited?: ParamAddress } };
 
-let sharedCtx: CoreContext | null = null;
+const sharedCtx = new Map<LabPolicyId, CoreContext>();
 let sharedRegistry: RatioRegistry | null = null;
 
-/** 核心的執行環境（科目表、範本、teacher@1 政策與版面）：整個 App 共用一份 */
-export function labContext(): CoreContext {
-  sharedCtx ??= createCoreContext();
-  return sharedCtx;
+/** 核心的執行環境（科目表、範本、政策與配好的版面）：每套口徑整個 App 共用一份；不給就是教材口徑 teacher@1 */
+export function labContext(policyId: LabPolicyId = TEACHER_POLICY): CoreContext {
+  let ctx = sharedCtx.get(policyId);
+  if (ctx === undefined) {
+    ctx = policyId === TEACHER_POLICY ? createCoreContext() : createCoreContext({ policy: policyId });
+    sharedCtx.set(policyId, ctx);
+  }
+  return ctx;
+}
+
+/**
+ * 這一步的範本在兩套口徑下的分錄行不一樣（有帶 policyWhen 的行只在其中一套成立）：交易卡在 IFRS 對照時加「IFRS 下的處理不同」標記
+ * （03 第 3.13 節；正式故事是第 5 步設立費與第 17 步攤銷）。前置條件的 policyWhen 不算：它只決定擋不擋，不改變分錄。
+ */
+export function policyDiffers(step: { readonly events: readonly { readonly template: string }[] }): boolean {
+  const teacher = labContext(TEACHER_POLICY).policy.switches;
+  const ifrs = labContext(IFRS_POLICY).policy.switches;
+  return step.events.some((ev) => {
+    const tpl = templates.find((x) => x.id === ev.template);
+    return (
+      tpl?.lines.some((line) => line.policyWhen !== undefined && policyWhenMatches(teacher, line.policyWhen) !== policyWhenMatches(ifrs, line.policyWhen)) ??
+      false
+    );
+  });
 }
 
 export function ratioRegistry(): RatioRegistry {
@@ -126,9 +152,12 @@ function valuesOf(posted: PostedStep, step: Story['steps'][number]): Record<stri
   return out;
 }
 
-/** 重播整個故事（可帶自由實驗的覆寫）；失敗時把核心附上的可輸入範圍一起回傳 */
-export function replayLab(story: Story, overrides: readonly ParamOverride[] = []): LabReplay {
-  const ctx = labContext();
+/**
+ * 重播整個故事（可帶自由實驗的覆寫）；失敗時把核心附上的可輸入範圍一起回傳。
+ * policyId 是口徑：教材（預設）或 IFRS 對照；IFRS 對照用 ifrs@1 的政策與版面重算，計分與儲存一律仍用教材口徑（頁面只把它當對照顯示）。
+ */
+export function replayLab(story: Story, overrides: readonly ParamOverride[] = [], policyId: LabPolicyId = TEACHER_POLICY): LabReplay {
+  const ctx = labContext(policyId);
   const r = replayStory(story, overrides, ctx);
   if (!r.ok) return { ok: false, error: r.error as LabReplay extends { ok: false; error: infer E } ? E : never };
   const run = r.value;
@@ -187,6 +216,7 @@ export function replayLab(story: Story, overrides: readonly ParamOverride[] = []
     ok: true,
     value: {
       ctx,
+      policyId,
       story,
       run,
       stepIds,
@@ -200,9 +230,9 @@ export function replayLab(story: Story, overrides: readonly ParamOverride[] = []
   };
 }
 
-/** 自由實驗：某個參數的可輸入範圍（04 第 9.3 節）；不能搜尋的參數是 null */
+/** 自由實驗：某個參數的可輸入範圍（04 第 9.3 節）；不能搜尋的參數是 null。一律照教材口徑算（基準口徑） */
 export function labAllowedRange(story: Story, overrides: readonly ParamOverride[], target: ParamAddress): AllowedRange | null {
-  return allowedRange(story, overrides, target, labContext());
+  return allowedRange(story, overrides, target, labContext(TEACHER_POLICY));
 }
 
 /** 勾稽練習：學習者填的格子代進累計報表後的五步驟檢查 */
