@@ -1545,6 +1545,16 @@ msgstr "{stars} stars"
 msgid "me.backup.yesterday"
 msgstr "Backed up yesterday"
 
+#. 首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）
+#. 首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）
+#. 首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+#: src/pages/Me.tsx
+#: src/pages/Terms.tsx
+msgid "formulas.entry.title"
+msgstr "Formulas"
+
 #. 首頁頁首的站名
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
@@ -1614,6 +1624,12 @@ msgstr "DuPont analysis"
 msgid "ratio.version.dupont"
 msgstr "DuPont analysis formulas"
 
+#. 首頁捷徑：會計公式的說明
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.shortcut.formulas.desc"
+msgstr "How each ratio is calculated, what the items mean and where it is in the handouts"
+
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
@@ -1661,6 +1677,18 @@ msgstr "Each level gets twice the time limit. Only applies when ‘Time my answe
 #: src/features/chapter/ChapterHero.tsx
 msgid "chapter.badge.masteryHint"
 msgstr "Get three stars on every level to upgrade it to mastery"
+
+#. 圖鑑頁會計公式入口列的說明
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.formulas.desc"
+msgstr "How ratios and statement relations are calculated: formula, what each item means, example, handout pages and related questions"
+
+#. 「我的」學習群組會計公式列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.formulas.desc"
+msgstr "Formulas, examples and handout pages for the ratios and statement relations"
 
 #. 掃描畫面：拒絕相機權限或相機打不開時的提示（06 第 4.9 節）
 #. js-lingui-explicit-id

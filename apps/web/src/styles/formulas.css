@@ -1,0 +1,182 @@
+/* 會計公式（02 第 1.1 節的 /formulas/ 與 /formulas/<id>/，2026-11-07）：總覽與條目頁的版面。條目頁沿用 glossary.css 的 .ll-termpage 系列（頁首列、meta、段落標題、
+   相關膠囊、頁尾按鈕），這裡只放公式自己的：總覽的說明與工具列、分類展開列、列上的公式一行；條目頁的公式卡、版本對照、各項數值、範例、出處、相關題目。
+   只用 tokens，不寫死色碼；class 都以 ll-fx 開頭（新增前已 grep 確認沒有同名）。 */
+
+/* ---- 總覽 ---- */
+.ll-fx {
+  display: block;
+}
+.ll-fx__intro {
+  margin: 0 0 var(--ll-space-4);
+  color: var(--ll-text-2);
+}
+.ll-fx__tools {
+  display: grid;
+  gap: var(--ll-space-3);
+  min-width: 0;
+  margin-bottom: var(--ll-space-4);
+}
+.ll-fx__search {
+  margin: 0;
+  min-width: 0;
+}
+.ll-fx__seg {
+  display: flex;
+  width: 100%;
+  padding: 1px;
+}
+/* 分類有十一個，任何寬度都放不進一列，所以搜尋框與分類一律上下排（分類在寬版自己排成一列或兩列）；搜尋框寬版限制寬度 */
+@media (min-width: 900px) {
+  .ll-fx__search {
+    max-width: 32rem;
+  }
+}
+.ll-fx__groups {
+  display: grid;
+  gap: var(--ll-space-3);
+}
+.ll-fx__section + .ll-fx__section {
+  margin-top: var(--ll-space-5);
+}
+.ll-fx__heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ll-space-2);
+  margin: 0 0 var(--ll-space-2);
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 700;
+}
+.ll-fx__hcount {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 400;
+  color: var(--ll-text-2);
+}
+/* 列上的公式一行：等寬數字字型、略小、次要色；長公式照字換行 */
+.ll-fx-row__formula {
+  display: block;
+  color: var(--ll-text-2);
+  overflow-wrap: anywhere;
+}
+
+/* ---- 條目頁 ---- */
+.ll-fx-card {
+  margin-top: var(--ll-space-3);
+}
+.ll-fx-card p {
+  margin: 0 0 var(--ll-space-2);
+}
+.ll-fx-card p:last-child {
+  margin-bottom: 0;
+}
+/* 公式一行：淡底的算式框、大一號；名稱、等號、算式之間可以換行（手機上長公式分兩三行） */
+.ll-fx-formula {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ll-space-1) var(--ll-space-2);
+  margin: 0;
+  padding: var(--ll-space-3) var(--ll-space-4);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+  font-size: var(--ll-type-title-3-size);
+  line-height: var(--ll-type-title-3-line);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.ll-fx-formula__name {
+  color: var(--ll-text-2);
+  font-weight: 500;
+}
+.ll-fx-formula__eq {
+  color: var(--ll-text-3);
+}
+/* 版本對照：每一列是小標加寫法，說明在下一行、次要色 */
+.ll-fx-versions {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin: var(--ll-space-3) 0 0;
+}
+.ll-fx-versions__row {
+  display: grid;
+  gap: var(--ll-space-1);
+}
+.ll-fx-versions__row dt {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 700;
+  color: var(--ll-text-2);
+}
+.ll-fx-versions__row dd {
+  display: grid;
+  gap: var(--ll-space-1);
+  margin: 0;
+}
+.ll-fx-versions__note {
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  color: var(--ll-text-2);
+}
+/* 各項數值：手機上下排，項目名（膠囊）在上、意思在下；600 起左欄項目、右欄意思 */
+.ll-fx-parts {
+  display: grid;
+  gap: var(--ll-space-3);
+  margin: 0;
+}
+.ll-fx-parts__row {
+  display: grid;
+  gap: var(--ll-space-1);
+  align-items: start;
+}
+.ll-fx-parts__row dt {
+  display: flex;
+  min-width: 0;
+}
+.ll-fx-parts__row dd {
+  margin: 0;
+}
+.ll-fx-parts__plain {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ll-target-min);
+  padding: 0 var(--ll-space-3);
+  border-radius: var(--ll-radius-pill);
+  background: var(--ll-surface-2);
+  font-weight: 600;
+}
+@media (min-width: 600px) {
+  .ll-fx-parts__row {
+    grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+    gap: var(--ll-space-3);
+  }
+}
+.ll-fx-example {
+  padding: var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+}
+.ll-fx-sources {
+  margin: 0;
+  padding-left: 1.25em;
+}
+.ll-fx-sources li + li {
+  margin-top: var(--ll-space-1);
+}
+.ll-fx-qnote {
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+}
+.ll-fx-qgroup + .ll-fx-qgroup {
+  margin-top: var(--ll-space-2);
+}
+.ll-fx-termlink {
+  display: grid;
+  margin-top: var(--ll-space-4);
+}
+@media (min-width: 600px) {
+  .ll-fx-termlink {
+    justify-items: start;
+  }
+}

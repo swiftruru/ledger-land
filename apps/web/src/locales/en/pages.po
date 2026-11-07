@@ -100,6 +100,12 @@ msgstr "Answer records: {attempts}"
 msgid "backup.stat.badges"
 msgstr "Badges: {badges}"
 
+#. 公式總覽每一列右側：相關講義題的題數；count 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.row.questions"
+msgstr "{count} questions"
+
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
@@ -396,6 +402,12 @@ msgstr "Your learning records stay in this browser on this device. There are no 
 msgid "backup.preview.source"
 msgstr "Source: {sourceLabel}, {sourceDate}"
 
+#. 公式搜尋欄的提示文字（只是例子）
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.placeholder"
+msgstr "e.g. ROE, turnover, profit"
+
 #. 背題瀏覽：搜尋欄的提示文字（只是例子）
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
@@ -491,6 +503,12 @@ msgstr "The backup code is longer than expected; please make sure no other text 
 msgid "exam.step.mock.desc"
 msgstr "Like the real exam: nothing is marked while you answer, and you see your score and the explanations after handing in. You choose the range, the number of questions and the time per question."
 
+#. 公式分類（講義的六大類之一）
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.solvency"
+msgstr "Solvency"
+
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.storage"
@@ -536,6 +554,12 @@ msgstr "One set of tappable things across the whole site: buttons, links and lis
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
 msgid "exam.browse.show.all"
+msgstr "All"
+
+#. 公式總覽的分類切換：不分類
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.group.all"
 msgstr "All"
 
 #. 題數選項：全部題目
@@ -615,6 +639,18 @@ msgstr "Different answers in two handouts"
 msgid "design.languages.title"
 msgstr "Two languages"
 
+#. 公式條目頁返回按鈕在畫面上的短字（必須是「回到會計公式」的一部分）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.back.short"
+msgstr "Formulas"
+
+#. 公式條目頁：公式卡的標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.formula"
+msgstr "Formula"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.open.title"
@@ -634,6 +670,18 @@ msgstr "{0} questions, untimed."
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.plan.timed"
 msgstr "{0} questions in {1}; the paper is handed in automatically when time is up."
+
+#. 頁首統計膠囊的可讀名稱；totalText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.stat.label"
+msgstr "{totalText} formulas in all"
+
+#. 公式分類：其他
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.other"
+msgstr "Other"
 
 #. 總結卡按鈕：同一組重來
 #. js-lingui-explicit-id
@@ -679,6 +727,12 @@ msgstr "Last updated: {updated}"
 #: src/pages/Exam.tsx
 msgid "exam.step.mock.title"
 msgstr "Finish with a mock exam"
+
+#. 公式總覽分類切換的群組名稱
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.group.label"
+msgstr "Category"
 
 #. 背題瀏覽頁工具列的按鈕：列印目前顯示的題目
 #. js-lingui-explicit-id
@@ -822,6 +876,12 @@ msgstr "Only the ones I got wrong ({0})"
 msgid "exam.start.wrongNone"
 msgstr "Only the ones I got wrong (none yet)"
 
+#. 相關題目的第三類；c 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.questions.concept"
+msgstr "Tests the related concept only ({c} questions)"
+
 #. 彩蛋：有 Service Worker 時的回答
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -846,6 +906,12 @@ msgstr "By handout"
 msgid "exam.deck.sections"
 msgstr "Practise section by section"
 
+#. 公式條目頁：各項數值的意思那一段的標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.components"
+msgstr "What each item means"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.preview.confirmMerge"
@@ -866,6 +932,12 @@ msgstr "Unit tests, more than two thousand of them; component tests run directly
 #: src/pages/Settings.tsx
 msgid "me.back"
 msgstr "Back to Me"
+
+#. 公式條目頁返回按鈕的可讀名稱與頁尾按鈕
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.back"
+msgstr "Back to formulas"
 
 #. 練習頁頁首返回按鈕的可讀名稱
 #. js-lingui-explicit-id
@@ -925,6 +997,12 @@ msgstr "Find every easter egg on the Behind the scenes page"
 msgid "about.teacher.qr"
 msgstr "‘Show QR’ there makes a QR code to download or a link to copy; scanning it, or ‘Scan classroom QR’ on the map, opens the level."
 
+#. 公式條目頁連到名詞頁的按鈕（定義、用語對照、常見誤解都在名詞頁）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.term"
+msgstr "See the term in the glossary"
+
 #. 「如何刪除」段；「我的 › 備份」是文中連結
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -952,6 +1030,12 @@ msgstr "The map never locks levels, so a code or QR takes the class straight to 
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.typescript.role"
 msgstr "Types. Packages may only depend in one direction, the accounting core never touches the screen, and nothing merges until the check passes."
+
+#. 公式分類：會計恆等式、五層利益這類報表之間的計算關係
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.statement"
+msgstr "Statement relations"
 
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
@@ -1179,6 +1263,12 @@ msgstr "Read marks are kept on this device only and are not in backups yet; afte
 msgid "settings.protect.state.enabled"
 msgstr "On. This browser has agreed to keep your progress."
 
+#. 公式分類：本益比、融資維持率
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.market"
+msgstr "Market and share price"
+
 #. 「我的」連到幕後（作者、老師與技術棧）
 #. 「我的」連到幕後（作者、老師與技術棧）
 #. js-lingui-explicit-id
@@ -1335,11 +1425,23 @@ msgstr "Badges"
 msgid "badges.title"
 msgstr "Badges"
 
+#. 公式條目頁：怎麼看那一段的標題（高低代表什麼、要和誰比）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.reading"
+msgstr "How to read it"
+
 #. 苦練區題目的情境段落標籤（講義的用語）
 #. js-lingui-explicit-id
 #: src/features/exam/HandoutQuestionCard.tsx
 msgid "exam.scenario"
 msgstr "Scenario"
+
+#. 相關題目的第二類；c 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.questions.numeric"
+msgstr "Gives figures you can check with the formula ({c} questions)"
 
 #. 給老師的頁面的標題；不用「審核」這種字
 #. js-lingui-explicit-id
@@ -1412,11 +1514,23 @@ msgstr "Shuffle the options"
 msgid "backup.toApp.step2"
 msgstr "Open LedgerLand from your home screen."
 
+#. 公式搜尋沒有結果時的標題；shownQuery 是使用者輸入的字
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.empty"
+msgstr "Nothing found for ‘{shownQuery}’"
+
 #. 背題瀏覽：搜尋沒有結果；keyword 是使用者輸入的字
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
 msgid "exam.browse.find.empty"
 msgstr "No question contains ‘{keyword}’. Try another word, or clear the search to see them all."
+
+#. 搜尋結果數（給螢幕閱讀器）；hitsText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.count"
+msgstr "Found {hitsText} formulas"
 
 #. 背題瀏覽：搜尋結果的題數；hitsText 已格式化
 #. js-lingui-explicit-id
@@ -1544,11 +1658,23 @@ msgstr "Go on to handout {nextCode}"
 msgid "install.card.generic"
 msgstr "Use another browser"
 
+#. 公式搜尋沒有結果時的說明
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.emptyHint"
+msgstr "Try another wording, such as the Chinese name of the ratio, its English abbreviation or an item in the formula."
+
 #. 模擬考成績卡的按鈕：回到設定畫面（這一場的成績不再保留）
 #. js-lingui-explicit-id
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.resetup"
 msgstr "Change settings"
+
+#. 公式總覽搜尋欄的標籤
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.label"
+msgstr "Search formulas (name or an item in the formula)"
 
 #. 背題瀏覽的閱讀頁：這一題在搜尋結果裡的位置；數字已格式化
 #. js-lingui-explicit-id
@@ -1561,6 +1687,12 @@ msgstr "Search result {at} of {of}"
 #: src/features/exam/BrowseList.tsx
 msgid "exam.browse.find.label"
 msgstr "Search the questions"
+
+#. 公式分類：毛利率、營業利益率這類損益表的比率
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.income_structure"
+msgstr "Income structure"
 
 #. 面板裡「搭配」清單的小標
 #. js-lingui-explicit-id
@@ -1689,6 +1821,18 @@ msgstr "The full design notes are on the <0>About the design</0> page."
 msgid "exam.browse.reset.desc"
 msgstr "{readCountText} questions will be marked unread, and the place you last read is cleared. Your practice records (right, wrong, mastered) are not affected."
 
+#. 會計公式總覽的頁面標題
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.title"
+msgstr "Formulas"
+
+#. 公式總覽讀不到公式索引時的標題
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.error.title"
+msgstr "Formulas could not be loaded"
+
 #. 老師那一節第一段（課堂師生的口吻，只致謝不背書）
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -1769,10 +1913,34 @@ msgstr "The questions, term cards and example statements on this site are practi
 msgid "design.toc"
 msgstr "On this page"
 
+#. 公式分類：杜邦方程式
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.dupont"
+msgstr "DuPont analysis"
+
+#. 公式卡裡杜邦分解式的小標
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.version.dupont"
+msgstr "DuPont breakdown"
+
+#. 苦練首頁第 2 步最下面的連結：會計公式總覽（卡住時查比率怎麼算）
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.practise.formulas"
+msgstr "Look up a formula"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.error.format"
 msgstr "This is not a LedgerLand backup."
+
+#. 公式分類（講義的六大類之一）
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.leverage"
+msgstr "Leverage"
 
 #. 苦練徽章格的眉標：模擬考的徽章
 #. js-lingui-explicit-id
@@ -1950,6 +2118,12 @@ msgstr "List"
 msgid "debug.errors.clear"
 msgstr "Clear"
 
+#. 搜尋沒有結果時的按鈕
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.clear"
+msgstr "Clear search"
+
 #. 「我的 › 備份」是文中連結
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -2034,6 +2208,12 @@ msgstr "Special"
 msgid "badges.group.special"
 msgstr "Special badges"
 
+#. 公式分類（講義的六大類之一）
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.profitability"
+msgstr "Profitability"
+
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.label"
@@ -2044,6 +2224,12 @@ msgstr "Glass effect"
 #: src/features/credits/StackExplorer.tsx
 msgid "eggs.offline.name"
 msgstr "Would it still open with the network unplugged?"
+
+#. 公式分類（講義的六大類之一）
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.cash_flow"
+msgstr "Cash flow"
 
 #. 安裝教學頁：iPhone、iPad 上這台裝置的教學卡片標題
 #. js-lingui-explicit-id
@@ -2130,11 +2316,23 @@ msgstr "Two things are taken directly from the teacher. One is the setting and t
 msgid "privacy.camera.title"
 msgstr "Camera"
 
+#. 公式條目頁：相關公式段落標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.related"
+msgstr "Related formulas"
+
 #. 審核頁原因框：答案不同的另一題的連結前綴
 #. js-lingui-explicit-id
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.related"
 msgstr "Related question: "
+
+#. 公式條目頁：相關講義題那一段的標題；questionTotalText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.questions"
+msgstr "Related questions ({questionTotalText})"
 
 #. 苦練首頁最下面的連結：到「我的」的徽章頁
 #. js-lingui-explicit-id
@@ -2220,6 +2418,12 @@ msgstr "Chapter {chapterNo}: {title}"
 #: src/pages/Exam.tsx
 msgid "exam.step.no"
 msgstr "Step {stepNo}"
+
+#. 公式一行裡等號的讀法（給螢幕閱讀器）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.equals"
+msgstr "equals"
 
 #. 模擬考逐題清單的標籤
 #. js-lingui-explicit-id
@@ -2312,6 +2516,12 @@ msgstr "Red wine"
 msgid "about.teacher.title"
 msgstr "For teachers"
 
+#. 公式分類（講義的六大類之一）：週轉率與天數
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.activity"
+msgstr "Operating efficiency"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.progress.1"
@@ -2399,6 +2609,12 @@ msgstr "The parts the teacher did not say"
 #: src/pages/Design.tsx
 msgid "design.statements.1"
 msgstr "The teacher starts from the statements and then goes back to the transactions, rather than learning debits and credits before journal entries. I like this order, because it is closer to how most people come to know a company: see the result first, then ask why."
+
+#. 相關題目的第一類；c 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.questions.formula"
+msgstr "Tests how the formula is built or what it relates to ({c} questions)"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -2536,6 +2752,12 @@ msgstr "Explanation from the handout"
 msgid "exam.run.hint"
 msgstr "Answers and explanations follow the handouts; if in doubt, the teacher’s word is final."
 
+#. 公式條目頁：計算範例那一段的標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.example"
+msgstr "Worked example"
+
 #. js-lingui-explicit-id
 #: src/pages/Settings.tsx
 msgid "settings.title"
@@ -2561,6 +2783,12 @@ msgstr "Try the three dark flavours"
 #: src/pages/Settings.tsx
 msgid "lang.label"
 msgstr "Language"
+
+#. 公式卡裡課程 Excel 模板的寫法的小標
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.version.excel"
+msgstr "Course Excel version"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2599,6 +2827,18 @@ msgstr "Handout {0}"
 msgid "exam.teacher.slide"
 msgstr "Handout {0}, slide {1}"
 
+#. 公式卡裡講義版本的小標；code 是講義編號（例如 0-2）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.version.deck"
+msgstr "As written in handout {code}"
+
+#. 講義出處的一列；code 是講義編號、title 是講義名稱、pages 是已格式化、用頓號隔開的頁碼
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.source.item"
+msgstr "Handout {code} ‘{title}’, pages {pages}"
+
 #. 背題瀏覽：一份講義全部已讀
 #. 背題瀏覽：一份講義全部已讀
 #. js-lingui-explicit-id
@@ -2606,6 +2846,12 @@ msgstr "Handout {0}, slide {1}"
 #: src/features/exam/BrowseReader.tsx
 msgid "exam.browse.done.deck"
 msgstr "You have read all of handout {scopeCode}"
+
+#. 公式條目頁：講義出處那一段的標題（講義與頁碼）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.sources"
+msgstr "Where it is in the handouts"
 
 #. 打亂選項時確認後標在選項下的講義字母
 #. js-lingui-explicit-id
@@ -2620,6 +2866,12 @@ msgstr "Handout option {0}"
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.answer"
 msgstr "Answer in the handout: {0}"
+
+#. 公式總覽頁首的一句說明
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.intro"
+msgstr "Every ratio and statement relation the handouts calculate is here: find the formula, then see what each item means, a worked example and where it is in the handouts, and practise the related questions."
 
 #. 老師那一節第三段：致謝
 #. js-lingui-explicit-id
@@ -2691,6 +2943,12 @@ msgstr "Paste backup code"
 msgid "privacy.loss.title"
 msgstr "When data may be lost"
 
+#. 公式分類（講義的六大類之一）：負債比率、權益倍數
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.financial_structure"
+msgstr "Asset structure"
+
 #. 幕後頁吉祥物按鈕的可讀名稱（彩蛋）
 #. js-lingui-explicit-id
 #: src/features/credits/MascotEgg.tsx
@@ -2746,6 +3004,18 @@ msgstr "A few easter eggs are hidden on this page. Find them all and a special b
 #: src/pages/Credits.tsx
 msgid "credits.intro"
 msgstr "This page is about the person who made the site, the teacher who taught me accounting, and the tools that built it. A few easter eggs are hidden along the way."
+
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+#: src/pages/Formulas.tsx
+msgid "content.offlineMissing"
+msgstr "This page has not been downloaded to this device yet. Try again once you are online; content already downloaded still works."
+
+#. 選了一個目前沒有條目的分類
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.group.empty"
+msgstr "No formulas in this category yet"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -2847,6 +3117,12 @@ msgstr "The stars, review list and favourites on this device will be replaced wi
 #: src/features/credits/StackExplorer.tsx
 msgid "eggs.flavour.sample"
 msgstr "These are the background and marker colours of {name}."
+
+#. 公式條目頁讀不到內容（離線而且還沒快取）時的標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.error.title"
+msgstr "This formula could not be loaded"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2980,6 +3256,18 @@ msgstr "Not started reading"
 #: src/pages/Design.tsx
 msgid "design.why.2"
 msgstr "I thought then that if this process could be turned into something you can play with by hand, letting the numbers run on their own, letting people see the trace each transaction leaves in the statements, perhaps accounting would feel less like a pile of rules to memorise."
+
+#. 公式分類：人均營收、研發、資本支出與行銷的比率
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.department"
+msgstr "Department performance"
+
+#. 相關題目的說明：題目來自講義題庫，點了會到閱讀頁
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.questions.note"
+msgstr "All are practice questions from the handouts; tapping one opens it in the reader."
 
 #. 苦練區載入失敗的說明
 #. js-lingui-explicit-id

@@ -460,8 +460,13 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
       );
     })(),
     // 會計公式（2026-11-07）：索引每語系一檔（進 precache，苦練頁反查題目用），完整內容每語系一檔（不進 precache，Service Worker 執行期快取）
-    formulaIndex: perLocale('formula-index', (locale) => formulaSnapshotList.map((f) => localize(f.index, locale))),
-    formulaDetails: perLocale('formulas', (locale) => formulaSnapshotList.map((f) => localize(f.detail, locale))),
+    // aliases 是兩種語言各一個陣列（名詞的形狀），localize 只攤平字串的 LocalizedText，所以這裡自己依語系取
+    formulaIndex: perLocale('formula-index', (locale) =>
+      formulaSnapshotList.map((f) => ({ ...localize(f.index, locale), aliases: f.index.aliases[locale] ?? [] })),
+    ),
+    formulaDetails: perLocale('formulas', (locale) =>
+      formulaSnapshotList.map((f) => ({ ...localize(f.detail, locale), aliases: f.detail.aliases[locale] ?? [] })),
+    ),
     templates: {},
     stories: stories.map((s) => ({
       id: s.id,

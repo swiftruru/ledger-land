@@ -13,6 +13,9 @@ export interface ManifestChapter {
 }
 export interface Manifest {
   chapters: ManifestChapter[];
+  /** 會計公式（2026-11-07）：索引與完整內容每個語系一檔 */
+  formulaIndex?: Partial<Record<Locale, string>>;
+  formulaDetails?: Partial<Record<Locale, string>>;
   levels: { id: string; chapterId: string; order: number; questionIds: string[]; unscored?: boolean; files: Record<string, string> }[];
   termIndex: Record<string, string>;
   termDetails: Record<string, Record<string, string>>;

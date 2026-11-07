@@ -13,6 +13,7 @@ import {
   Badge,
   BookIcon,
   BookmarkIcon,
+  RatioIcon,
   Button,
   Card,
   CardsIcon,
@@ -392,6 +393,9 @@ export default function Exam() {
         <div className="ll-exam-hero__actions">
           <Button size="sm" variant="quiet" icon={<BookmarkIcon />} iconEnd={<ArrowRightIcon />} href={href('/exam/list/')} data-testid="exam-more-list">
             {t({ id: 'exam.step.practise.list', message: '看答錯與還不熟的題', comment: '苦練首頁第 2 步最下面的連結：錯題與不熟的清單' })}
+          </Button>
+          <Button size="sm" variant="quiet" icon={<RatioIcon />} iconEnd={<ArrowRightIcon />} href={href('/formulas/')} data-testid="exam-more-formulas">
+            {t({ id: 'exam.step.practise.formulas', message: '查公式', comment: '苦練首頁第 2 步最下面的連結：會計公式總覽（卡住時查比率怎麼算）' })}
           </Button>
         </div>
         {stepBadges('practise')}

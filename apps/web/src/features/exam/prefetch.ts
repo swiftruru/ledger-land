@@ -2,10 +2,12 @@
 // 學生只練過 0-1 就斷網，0-2 會開不了。所以開過苦練首頁、頁面畫好之後，在閒置時把三份講義檔的網址送給 SW（PREFETCH_HANDOUT 訊息），
 // 由 SW 用同一個策略抓進快取。不走頁面自己的 fetch：prompt 模式第一次安裝不接管頁面，那些請求不會經過 SW，也就不會進快取。
 // 離線或開了省流量就不送；沒有 Service Worker（本機 dev、舊瀏覽器）就什麼都不做。
-import type { HandoutManifestEntry } from '../../lib/content.ts';
+// 會計公式的完整內容檔（2026-11-07）同理：不進 precache，公式總覽畫好後送 PREFETCH_FORMULAS，兩個語系都抓（切換語言時離線也讀得到）。
+import type { ContentManifest, HandoutManifestEntry } from '../../lib/content.ts';
 import { afterFirstPaint } from '../../lib/idle.ts';
 
 export const PREFETCH_HANDOUT = 'PREFETCH_HANDOUT';
+export const PREFETCH_FORMULAS = 'PREFETCH_FORMULAS';
 
 /** navigator 裡用得到的幾個欄位；connection 只有 Chromium 有，沒有在 lib.dom 裡 */
 export interface PrefetchNavigator {
@@ -37,9 +39,34 @@ export async function postHandoutPrefetch(index: HandoutManifestEntry, nav: Pref
 
 /** 頁面畫好、閒置之後才送（和開進度資料庫一樣不跟首次載入搶）；回傳取消函式給 effect 的清理 */
 export function scheduleHandoutPrefetch(index: HandoutManifestEntry): () => void {
+  return scheduleAfterPaint(() => postHandoutPrefetch(index));
+}
+
+/** 公式完整內容檔的網址（manifest.formulaDetails 的每個語系） */
+export function formulaPrefetchUrls(manifest: Pick<ContentManifest, 'formulaDetails'>): string[] {
+  return Object.values(manifest.formulaDetails ?? {}).map((file) => `/${file}`);
+}
+
+export async function postFormulaPrefetch(
+  manifest: Pick<ContentManifest, 'formulaDetails'>,
+  nav: PrefetchNavigator = navigator as PrefetchNavigator,
+): Promise<boolean> {
+  const urls = formulaPrefetchUrls(manifest);
+  if (urls.length === 0 || !shouldPrefetch(nav)) return false;
+  const registration = await nav.serviceWorker!.ready;
+  if (!registration.active) return false;
+  registration.active.postMessage({ type: PREFETCH_FORMULAS, urls });
+  return true;
+}
+
+export function scheduleFormulaPrefetch(manifest: Pick<ContentManifest, 'formulaDetails'>): () => void {
+  return scheduleAfterPaint(() => postFormulaPrefetch(manifest));
+}
+
+function scheduleAfterPaint(post: () => Promise<boolean>): () => void {
   let cancelled = false;
   const cancel = afterFirstPaint(() => {
-    if (!cancelled) void postHandoutPrefetch(index).catch(() => undefined);
+    if (!cancelled) void post().catch(() => undefined);
   });
   return () => {
     cancelled = true;

@@ -100,6 +100,12 @@ msgstr "{attempts} 筆作答紀錄"
 msgid "backup.stat.badges"
 msgstr "{badges} 個徽章"
 
+#. 公式總覽每一列右側：相關講義題的題數；count 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.row.questions"
+msgstr "{count} 題"
+
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
 #. 徽章格：已取得徽章的取得日期；earnedDate 是已格式化的日期（精通是精通的日期）
@@ -396,6 +402,12 @@ msgstr "你的學習紀錄只存在這台裝置的這個瀏覽器裡；網站沒
 msgid "backup.preview.source"
 msgstr "來源：{sourceLabel}，{sourceDate}"
 
+#. 公式搜尋欄的提示文字（只是例子）
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.placeholder"
+msgstr "例如 ROE、週轉、淨利"
+
 #. 背題瀏覽：搜尋欄的提示文字（只是例子）
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
@@ -491,6 +503,12 @@ msgstr "備份碼比預期長，貼上時請確認沒有夾帶其他文字。"
 msgid "exam.step.mock.desc"
 msgstr "像考試一樣：作答中不顯示對錯，交卷後一次看成績與解析。範圍、題數與每題時間自己選。"
 
+#. 公式分類（講義的六大類之一）
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.solvency"
+msgstr "償債能力"
+
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.storage"
@@ -536,6 +554,12 @@ msgstr "全站只有一套可以點的東西：按鈕、連結、選單列長得
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
 msgid "exam.browse.show.all"
+msgstr "全部"
+
+#. 公式總覽的分類切換：不分類
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.group.all"
 msgstr "全部"
 
 #. 題數選項：全部題目
@@ -615,6 +639,18 @@ msgstr "兩份講義答案不同"
 msgid "design.languages.title"
 msgstr "兩種語言"
 
+#. 公式條目頁返回按鈕在畫面上的短字（必須是「回到會計公式」的一部分）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.back.short"
+msgstr "公式"
+
+#. 公式條目頁：公式卡的標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.formula"
+msgstr "公式"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.open.title"
@@ -634,6 +670,18 @@ msgstr "共 {0} 題，不限時。"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.plan.timed"
 msgstr "共 {0} 題，限時 {1}，時間到自動交卷。"
+
+#. 頁首統計膠囊的可讀名稱；totalText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.stat.label"
+msgstr "共 {totalText} 條公式"
+
+#. 公式分類：其他
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.other"
+msgstr "其他"
 
 #. 總結卡按鈕：同一組重來
 #. js-lingui-explicit-id
@@ -679,6 +727,12 @@ msgstr "最後更新：{updated}"
 #: src/pages/Exam.tsx
 msgid "exam.step.mock.title"
 msgstr "最後模擬考"
+
+#. 公式總覽分類切換的群組名稱
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.group.label"
+msgstr "分類"
 
 #. 背題瀏覽頁工具列的按鈕：列印目前顯示的題目
 #. js-lingui-explicit-id
@@ -822,6 +876,12 @@ msgstr "只練錯過的（{0} 題）"
 msgid "exam.start.wrongNone"
 msgstr "只練錯過的（還沒有）"
 
+#. 相關題目的第三類；c 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.questions.concept"
+msgstr "只考相關概念（{c} 題）"
+
 #. 彩蛋：有 Service Worker 時的回答
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -846,6 +906,12 @@ msgstr "各份講義"
 msgid "exam.deck.sections"
 msgstr "各段分開練"
 
+#. 公式條目頁：各項數值的意思那一段的標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.components"
+msgstr "各項數值的意思"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.preview.confirmMerge"
@@ -866,6 +932,12 @@ msgstr "單元測試，兩千多條；元件的測試直接在 WebKit 裡跑。"
 #: src/pages/Settings.tsx
 msgid "me.back"
 msgstr "回到我的"
+
+#. 公式條目頁返回按鈕的可讀名稱與頁尾按鈕
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.back"
+msgstr "回到會計公式"
 
 #. 練習頁頁首返回按鈕的可讀名稱
 #. js-lingui-explicit-id
@@ -925,6 +997,12 @@ msgstr "在「幕後」找到全部彩蛋"
 msgid "about.teacher.qr"
 msgstr "在同一個展開列按「顯示 QR」就能產生這一關的 QR，下載圖片放在投影片上，或複製連結貼到課程群組；學生用手機相機掃，或在地圖右上按「掃描課堂 QR」，掃到就直接開啟那一關。"
 
+#. 公式條目頁連到名詞頁的按鈕（定義、用語對照、常見誤解都在名詞頁）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.term"
+msgstr "在圖鑑看名詞說明"
+
 #. 「如何刪除」段；「我的 › 備份」是文中連結
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -952,6 +1030,12 @@ msgstr "地圖只建議順序、不鎖關：上課講到哪一關，就可以用
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.typescript.role"
 msgstr "型別。套件之間只准往一個方向依賴，會計核心不碰畫面，檢查不過就不能合併。"
+
+#. 公式分類：會計恆等式、五層利益這類報表之間的計算關係
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.statement"
+msgstr "報表關係"
 
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
@@ -1179,6 +1263,12 @@ msgstr "已讀的紀錄只存在這台裝置，還不會跟著備份；清除網
 msgid "settings.protect.state.enabled"
 msgstr "已開啟，這個瀏覽器同意保留進度。"
 
+#. 公式分類：本益比、融資維持率
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.market"
+msgstr "市場與股價"
+
 #. 「我的」連到幕後（作者、老師與技術棧）
 #. 「我的」連到幕後（作者、老師與技術棧）
 #. js-lingui-explicit-id
@@ -1335,11 +1425,23 @@ msgstr "徽章"
 msgid "badges.title"
 msgstr "徽章"
 
+#. 公式條目頁：怎麼看那一段的標題（高低代表什麼、要和誰比）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.reading"
+msgstr "怎麼看"
+
 #. 苦練區題目的情境段落標籤（講義的用語）
 #. js-lingui-explicit-id
 #: src/features/exam/HandoutQuestionCard.tsx
 msgid "exam.scenario"
 msgstr "情境"
+
+#. 相關題目的第二類；c 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.questions.numeric"
+msgstr "情境裡有數字，可以拿公式驗算（{c} 題）"
 
 #. 給老師的頁面的標題；不用「審核」這種字
 #. js-lingui-explicit-id
@@ -1412,11 +1514,23 @@ msgstr "打亂選項順序"
 msgid "backup.toApp.step2"
 msgstr "打開主畫面的會計樂園。"
 
+#. 公式搜尋沒有結果時的標題；shownQuery 是使用者輸入的字
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.empty"
+msgstr "找不到「{shownQuery}」"
+
 #. 背題瀏覽：搜尋沒有結果；keyword 是使用者輸入的字
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
 msgid "exam.browse.find.empty"
 msgstr "找不到含有「{keyword}」的題目。換一個詞，或清掉搜尋看全部。"
+
+#. 搜尋結果數（給螢幕閱讀器）；hitsText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.count"
+msgstr "找到 {hitsText} 條公式"
 
 #. 背題瀏覽：搜尋結果的題數；hitsText 已格式化
 #. js-lingui-explicit-id
@@ -1544,11 +1658,23 @@ msgstr "接著讀講義 {nextCode}"
 msgid "install.card.generic"
 msgstr "換個瀏覽器安裝"
 
+#. 公式搜尋沒有結果時的說明
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.emptyHint"
+msgstr "換個說法試試，例如指標的中文名稱、英文縮寫，或公式裡的項目。"
+
 #. 模擬考成績卡的按鈕：回到設定畫面（這一場的成績不再保留）
 #. js-lingui-explicit-id
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.resetup"
 msgstr "換設定"
+
+#. 公式總覽搜尋欄的標籤
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.label"
+msgstr "搜尋公式（名稱或公式裡的項目）"
 
 #. 背題瀏覽的閱讀頁：這一題在搜尋結果裡的位置；數字已格式化
 #. js-lingui-explicit-id
@@ -1561,6 +1687,12 @@ msgstr "搜尋結果第 {at}／{of} 題"
 #: src/features/exam/BrowseList.tsx
 msgid "exam.browse.find.label"
 msgstr "搜尋題目"
+
+#. 公式分類：毛利率、營業利益率這類損益表的比率
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.income_structure"
+msgstr "損益結構"
 
 #. 面板裡「搭配」清單的小標
 #. js-lingui-explicit-id
@@ -1689,6 +1821,18 @@ msgstr "更完整的設計筆記在<0>關於系統設計</0>。"
 msgid "exam.browse.reset.desc"
 msgstr "會把 {readCountText} 題改回未讀，上次讀到的位置也會清掉。作答的紀錄（答對、答錯、熟練）不受影響。"
 
+#. 會計公式總覽的頁面標題
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.title"
+msgstr "會計公式"
+
+#. 公式總覽讀不到公式索引時的標題
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.error.title"
+msgstr "會計公式載入失敗"
+
 #. 老師那一節第一段（課堂師生的口吻，只致謝不背書）
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -1769,10 +1913,34 @@ msgstr "本站的題目、名詞卡與報表範例都是會計入門的教學練
 msgid "design.toc"
 msgstr "本頁目錄"
 
+#. 公式分類：杜邦方程式
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.dupont"
+msgstr "杜邦分析"
+
+#. 公式卡裡杜邦分解式的小標
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.version.dupont"
+msgstr "杜邦分解"
+
+#. 苦練首頁第 2 步最下面的連結：會計公式總覽（卡住時查比率怎麼算）
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.practise.formulas"
+msgstr "查公式"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.error.format"
 msgstr "格式不是 LedgerLand 備份。"
+
+#. 公式分類（講義的六大類之一）
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.leverage"
+msgstr "槓桿度"
 
 #. 苦練徽章格的眉標：模擬考的徽章
 #. js-lingui-explicit-id
@@ -1950,6 +2118,12 @@ msgstr "清單"
 msgid "debug.errors.clear"
 msgstr "清除"
 
+#. 搜尋沒有結果時的按鈕
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.search.clear"
+msgstr "清除搜尋"
+
 #. 「我的 › 備份」是文中連結
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -2034,6 +2208,12 @@ msgstr "特別"
 msgid "badges.group.special"
 msgstr "特別徽章"
 
+#. 公式分類（講義的六大類之一）
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.profitability"
+msgstr "獲利能力"
+
 #. js-lingui-explicit-id
 #: src/components/AppearanceSetting.tsx
 msgid "settings.glass.label"
@@ -2044,6 +2224,12 @@ msgstr "玻璃效果"
 #: src/features/credits/StackExplorer.tsx
 msgid "eggs.offline.name"
 msgstr "現在拔掉網路也能開嗎？"
+
+#. 公式分類（講義的六大類之一）
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.cash_flow"
+msgstr "現金流量"
 
 #. 安裝教學頁：iPhone、iPad 上這台裝置的教學卡片標題
 #. js-lingui-explicit-id
@@ -2130,11 +2316,23 @@ msgstr "直接沿用老師的東西有兩處。一是故事裡那家公司的情
 msgid "privacy.camera.title"
 msgstr "相機"
 
+#. 公式條目頁：相關公式段落標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.related"
+msgstr "相關公式"
+
 #. 審核頁原因框：答案不同的另一題的連結前綴
 #. js-lingui-explicit-id
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.related"
 msgstr "相關的題："
+
+#. 公式條目頁：相關講義題那一段的標題；questionTotalText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.questions"
+msgstr "相關題目（{questionTotalText} 題）"
 
 #. 苦練首頁最下面的連結：到「我的」的徽章頁
 #. js-lingui-explicit-id
@@ -2220,6 +2418,12 @@ msgstr "第 {chapterNo} 章：{title}"
 #: src/pages/Exam.tsx
 msgid "exam.step.no"
 msgstr "第 {stepNo} 步"
+
+#. 公式一行裡等號的讀法（給螢幕閱讀器）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.equals"
+msgstr "等於"
 
 #. 模擬考逐題清單的標籤
 #. js-lingui-explicit-id
@@ -2312,6 +2516,12 @@ msgstr "紅酒"
 msgid "about.teacher.title"
 msgstr "給老師"
 
+#. 公式分類（講義的六大類之一）：週轉率與天數
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.activity"
+msgstr "經營能力"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.progress.1"
@@ -2399,6 +2609,12 @@ msgstr "老師沒有說的部分"
 #: src/pages/Design.tsx
 msgid "design.statements.1"
 msgstr "老師的教法是先看報表，再回頭看交易，而不是先學借貸再學分錄。我喜歡這個順序，因為它跟一般人認識一家公司的方式比較像：先看結果，再問為什麼。"
+
+#. 相關題目的第一類；c 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.questions.formula"
+msgstr "考這條公式的組成或關係（{c} 題）"
 
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -2536,6 +2752,12 @@ msgstr "解析出自講義"
 msgid "exam.run.hint"
 msgstr "解答與解析都照講義，有疑問以老師的說明為準。"
 
+#. 公式條目頁：計算範例那一段的標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.example"
+msgstr "計算範例"
+
 #. js-lingui-explicit-id
 #: src/pages/Settings.tsx
 msgid "settings.title"
@@ -2561,6 +2783,12 @@ msgstr "試試三種深色口味"
 #: src/pages/Settings.tsx
 msgid "lang.label"
 msgstr "語言"
+
+#. 公式卡裡課程 Excel 模板的寫法的小標
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.version.excel"
+msgstr "課程 Excel 版"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2599,6 +2827,18 @@ msgstr "講義 {0}"
 msgid "exam.teacher.slide"
 msgstr "講義 {0} 第 {1} 頁"
 
+#. 公式卡裡講義版本的小標；code 是講義編號（例如 0-2）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.version.deck"
+msgstr "講義 {code} 的寫法"
+
+#. 講義出處的一列；code 是講義編號、title 是講義名稱、pages 是已格式化、用頓號隔開的頁碼
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.source.item"
+msgstr "講義 {code}「{title}」第 {pages} 頁"
+
 #. 背題瀏覽：一份講義全部已讀
 #. 背題瀏覽：一份講義全部已讀
 #. js-lingui-explicit-id
@@ -2606,6 +2846,12 @@ msgstr "講義 {0} 第 {1} 頁"
 #: src/features/exam/BrowseReader.tsx
 msgid "exam.browse.done.deck"
 msgstr "講義 {scopeCode} 都讀完了"
+
+#. 公式條目頁：講義出處那一段的標題（講義與頁碼）
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.section.sources"
+msgstr "講義出處"
 
 #. 打亂選項時確認後標在選項下的講義字母
 #. js-lingui-explicit-id
@@ -2620,6 +2866,12 @@ msgstr "講義的 {0}"
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.answer"
 msgstr "講義的解答：{0}"
+
+#. 公式總覽頁首的一句說明
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.intro"
+msgstr "講義裡會算的比率與報表關係都在這裡：先找公式，再看各項數值的意思、數字範例與講義出處，接著練相關的題。"
 
 #. 老師那一節第三段：致謝
 #. js-lingui-explicit-id
@@ -2691,6 +2943,12 @@ msgstr "貼上備份碼"
 msgid "privacy.loss.title"
 msgstr "資料可能消失的情況"
 
+#. 公式分類（講義的六大類之一）：負債比率、權益倍數
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.financial_structure"
+msgstr "資產結構"
+
 #. 幕後頁吉祥物按鈕的可讀名稱（彩蛋）
 #. js-lingui-explicit-id
 #: src/features/credits/MascotEgg.tsx
@@ -2746,6 +3004,18 @@ msgstr "這一頁藏了幾個彩蛋，找齊會有一枚特別徽章。"
 #: src/pages/Credits.tsx
 msgid "credits.intro"
 msgstr "這一頁說說做這個網站的人、教我會計的老師，還有把它做出來的工具。順便藏了幾個彩蛋。"
+
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+#: src/pages/Formulas.tsx
+msgid "content.offlineMissing"
+msgstr "這一頁還沒下載到這台裝置。連上網路後再試一次，已下載的內容現在也能繼續使用。"
+
+#. 選了一個目前沒有條目的分類
+#. js-lingui-explicit-id
+#: src/pages/Formulas.tsx
+msgid "formulas.group.empty"
+msgstr "這一類還沒有公式"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -2847,6 +3117,12 @@ msgstr "這台裝置上的星星、錯題本與收藏會換成備份檔裡的內
 #: src/features/credits/StackExplorer.tsx
 msgid "eggs.flavour.sample"
 msgstr "這是「{name}」的底色和記號色。"
+
+#. 公式條目頁讀不到內容（離線而且還沒快取）時的標題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.error.title"
+msgstr "這條公式讀不到"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
@@ -2980,6 +3256,18 @@ msgstr "還沒開始讀"
 #: src/pages/Design.tsx
 msgid "design.why.2"
 msgstr "那時候我想，如果可以把這個過程做成一個可以動手玩的東西，讓數字自己跑，讓人看見每一筆交易在報表裡留下的痕跡，也許會計就不會那麼像一堆要背的規則了。"
+
+#. 公式分類：人均營收、研發、資本支出與行銷的比率
+#. js-lingui-explicit-id
+#: src/features/formulas/useFormulaCategoryLabel.ts
+msgid "formulas.category.department"
+msgstr "部門績效"
+
+#. 相關題目的說明：題目來自講義題庫，點了會到閱讀頁
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.questions.note"
+msgstr "都是講義的練習題，點一題會到背題瀏覽的閱讀頁。"
 
 #. 苦練區載入失敗的說明
 #. js-lingui-explicit-id

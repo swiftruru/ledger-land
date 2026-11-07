@@ -13,6 +13,7 @@ import {
   BookIcon,
   Button,
   CardsIcon,
+  RatioIcon,
   GearIcon,
   NavCard,
   NavList,
@@ -246,6 +247,13 @@ export function Home() {
                   : null
               }
               href={localePath(locale, '/terms/')}
+            />
+            <NavRow
+              icon={<RatioIcon />}
+              title={t({ id: 'formulas.entry.title', message: '會計公式', comment: '首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）' })}
+              description={t({ id: 'home.shortcut.formulas.desc', message: '查比率怎麼算、各項數值的意思與講義出處', comment: '首頁捷徑：會計公式的說明' })}
+              href={localePath(locale, '/formulas/')}
+              data-testid="home-formulas-row"
             />
             <NavRow
               icon={<MedalIcon />}

@@ -69,16 +69,20 @@ registerRoute(new PrecacheRoute(controller));
 const HANDOUT_PATH = /^\/content\/[^/]+\/handout_[^/]+\.json$/;
 const handoutStrategy = new CacheFirst({ cacheName: 'll-handout', plugins: [new ExpirationPlugin({ maxEntries: 8 })] });
 registerRoute(({ url, sameOrigin }) => sameOrigin && HANDOUT_PATH.test(url.pathname), handoutStrategy);
+// 會計公式的完整內容檔（2026-11-07）：每個語系一檔、合計約 0.3 MB，同樣不進 precache；公式總覽畫好後送 PREFETCH_FORMULAS 把兩個語系抓進快取（索引檔在 precache）
+const FORMULA_PATH = /^\/content\/[^/]+\/formulas\.[^/]+\.json$/;
+const formulaStrategy = new CacheFirst({ cacheName: 'll-formulas', plugins: [new ExpirationPlugin({ maxEntries: 4 })] });
+registerRoute(({ url, sameOrigin }) => sameOrigin && FORMULA_PATH.test(url.pathname), formulaStrategy);
 
-/** 頁面請 SW 預抓講義檔：只收同源、路徑符合講義檔樣式的網址（訊息來自頁面，不照單全收）；已在快取的直接命中，抓不到（離線）就略過，不讓訊息處理失敗 */
-function prefetchHandout(event: ExtendableMessageEvent, urls: unknown): void {
+/** 頁面請 SW 預抓內容檔：只收同源、路徑符合該種檔案樣式的網址（訊息來自頁面，不照單全收）；已在快取的直接命中，抓不到（離線）就略過，不讓訊息處理失敗 */
+function prefetchContent(event: ExtendableMessageEvent, urls: unknown, path: RegExp, strategy: CacheFirst): void {
   if (!Array.isArray(urls)) return;
   const requests = urls
     .filter((u): u is string => typeof u === 'string')
     .map((u) => new URL(u, location.href))
-    .filter((u) => u.origin === location.origin && HANDOUT_PATH.test(u.pathname))
+    .filter((u) => u.origin === location.origin && path.test(u.pathname))
     .map((u) => new Request(u.href));
-  event.waitUntil(Promise.all(requests.map((request) => Promise.all(handoutStrategy.handleAll({ request, event })).catch(() => undefined))));
+  event.waitUntil(Promise.all(requests.map((request) => Promise.all(strategy.handleAll({ request, event })).catch(() => undefined))));
 }
 // 離線導覽 fallback：中文與 /en/ 開頭的路徑都回同一份殼層 index.html；/assets/ 與 /content/ 找不到檔案時不回殼層，
 // Cloudflare 保留的 /cdn-cgi/、sw.js 本身、stub 端點、sitemap.xml 與 robots.txt（給搜尋引擎的檔案，在瀏覽器打開也要看到原檔）一律走網路（06 第 3.1 節）
@@ -87,9 +91,10 @@ registerRoute(
     denylist: [/^\/assets\//, /^\/content\//, /^\/sw\.js$/, /^\/cdn-cgi\//, /^\/__ll/, /^\/sitemap\.xml$/, /^\/robots\.txt$/],
   }),
 );
-// prompt 模式：只有頁面按下更新提示、workbox-window 送來 SKIP_WAITING 才切換（06 第 3.3 節）；PREFETCH_HANDOUT 是苦練首頁的預抓
+// prompt 模式：只有頁面按下更新提示、workbox-window 送來 SKIP_WAITING 才切換（06 第 3.3 節）；PREFETCH_HANDOUT 是苦練首頁的預抓，PREFETCH_FORMULAS 是公式總覽的預抓
 self.addEventListener('message', (event) => {
   if (!event.data) return;
   if (event.data.type === 'SKIP_WAITING') void self.skipWaiting();
-  else if (event.data.type === 'PREFETCH_HANDOUT') prefetchHandout(event, event.data.urls);
+  else if (event.data.type === 'PREFETCH_HANDOUT') prefetchContent(event, event.data.urls, HANDOUT_PATH, handoutStrategy);
+  else if (event.data.type === 'PREFETCH_FORMULAS') prefetchContent(event, event.data.urls, FORMULA_PATH, formulaStrategy);
 });

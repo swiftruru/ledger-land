@@ -1545,6 +1545,16 @@ msgstr "星星 {stars} 顆"
 msgid "me.backup.yesterday"
 msgstr "昨天備份過"
 
+#. 首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）
+#. 首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）
+#. 首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+#: src/pages/Me.tsx
+#: src/pages/Terms.tsx
+msgid "formulas.entry.title"
+msgstr "會計公式"
+
 #. 首頁頁首的站名
 #. js-lingui-explicit-id
 #: src/pages/Home.tsx
@@ -1614,6 +1624,12 @@ msgstr "杜邦分析"
 msgid "ratio.version.dupont"
 msgstr "杜邦分析口徑"
 
+#. 首頁捷徑：會計公式的說明
+#. js-lingui-explicit-id
+#: src/pages/Home.tsx
+msgid "home.shortcut.formulas.desc"
+msgstr "查比率怎麼算、各項數值的意思與講義出處"
+
 #. 分類題的分類格（指標類別）
 #. js-lingui-explicit-id
 #: src/features/quiz/categories.ts
@@ -1661,6 +1677,18 @@ msgstr "每一關的時間上限變成兩倍。開啟作答時計時後才有作
 #: src/features/chapter/ChapterHero.tsx
 msgid "chapter.badge.masteryHint"
 msgstr "每一關都拿到三顆星，徽章會升級為精通"
+
+#. 圖鑑頁會計公式入口列的說明
+#. js-lingui-explicit-id
+#: src/pages/Terms.tsx
+msgid "terms.formulas.desc"
+msgstr "比率與報表關係怎麼算：公式、各項數值的意思、範例、講義出處與相關題"
+
+#. 「我的」學習群組會計公式列的說明
+#. js-lingui-explicit-id
+#: src/pages/Me.tsx
+msgid "me.formulas.desc"
+msgstr "比率與報表關係的公式、範例與講義出處"
 
 #. 掃描畫面：拒絕相機權限或相機打不開時的提示（06 第 4.9 節）
 #. js-lingui-explicit-id

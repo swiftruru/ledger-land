@@ -6,6 +6,10 @@
   display: block;
 }
 /* 收集進度卡與搜尋列：手機上下排；600 起搜尋框與分組切換同一列；1024 起進度卡 4/12、搜尋與分組 8/12 同一列 */
+/* 會計公式的入口列（2026-11-07）：一列，和下面的收集進度卡隔一格 */
+.ll-glossary__formulas {
+  margin: 0 0 var(--ll-space-4);
+}
 .ll-glossary__top {
   display: grid;
   gap: var(--ll-space-3);
