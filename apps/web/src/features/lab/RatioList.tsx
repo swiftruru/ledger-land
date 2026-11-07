@@ -1,10 +1,10 @@
 // 指標卡（03 第 3.3 節階段 9、第 3.10 節）：每張卡顯示名稱、版本的公式（分子 ÷ 分母，線以版面名稱顯示）、代入的分子分母、前 → 後與狀態、原因說明。
 // 階段 9 先列狀態或數值有變的指標，其餘收在「其他指標」；指標實驗室列全部並依六大類分組。數字全部來自核心的 RatioResult。
 import { Trans, useLingui } from '@lingui/react/macro';
-import { CheckCircleIcon, Disclosure, NoteTag, WarningIcon, XCircleIcon } from '@ledgerland/web-ui';
+import { CheckCircleIcon, Disclosure, NoteTag, ValueButton, WarningIcon, XCircleIcon } from '@ledgerland/web-ui';
 import type { ReactNode } from 'react';
 import type { RatioResult } from './lab-core.ts';
-import { formatRatio, useLabLabels } from './labels.ts';
+import { formatRatio, useFormulaText, useLabLabels } from './labels.ts';
 import type { RatioUnit } from '../quiz/ratio-units.ts';
 
 export interface RatioSpecLike {
@@ -29,16 +29,7 @@ export interface RatioChange {
   readonly changed: boolean;
 }
 
-const REF_RE = /\b(line|input|ratio)\.([a-z][a-z0-9_]*)(?:\.([a-z][a-z0-9_]*))?/g;
-
-/** 公式文字：line.x 換成版面名稱、ratio.x 換成指標名稱 */
-export function useFormulaText(layout: Parameters<typeof useLabLabels>[0]) {
-  const { lineLabel, ratioLabel } = useLabLabels(layout);
-  const humanise = (source: string): string =>
-    source.replace(REF_RE, (_m, ns: string, name: string) => (ns === 'line' ? lineLabel(name) : ns === 'ratio' ? ratioLabel(name) : name.replace(/_/g, ' ')));
-  return (spec: RatioSpecLike): string =>
-    spec.expr !== undefined ? humanise(spec.expr) : `${humanise(spec.numerator ?? '')} ÷ ${humanise(spec.denominator ?? '')}`;
-}
+export { useFormulaText } from './labels.ts';
 
 export function useRatioReason() {
   const { t } = useLingui();
@@ -72,9 +63,11 @@ export interface RatioCardProps {
   /** N/A 時的建議（指標實驗室） */
   suggestion?: ReactNode;
   versionLabel?: string;
+  /** 點結果開來源面板（M4b，03 第 3.9 節）；N/A 沒有數字可追 */
+  onTrace?: (item: RatioChange, el: HTMLButtonElement) => void;
 }
 
-export function RatioCard({ item, layout, verdict = null, suggestion, versionLabel }: RatioCardProps) {
+export function RatioCard({ item, layout, verdict = null, suggestion, versionLabel, onTrace }: RatioCardProps) {
   const { t } = useLingui();
   const { locale, ratioLabel } = useLabLabels(layout);
   const formula = useFormulaText(layout);
@@ -105,7 +98,22 @@ export function RatioCard({ item, layout, verdict = null, suggestion, versionLab
             <span aria-hidden="true"> → </span>
           </>
         )}
-        <span className="ll-lab-ratio__after">{fmt(after)}</span>
+        {onTrace !== undefined && after.status !== 'na' ? (
+          <ValueButton
+            className="ll-lab-ratio__after"
+            label={t({
+              id: 'lab.trace.openRatio',
+              message: `${ratioLabel(spec.id, spec.termRef)} ${fmt(after)}，看這個數字從哪裡來`,
+              comment: '可追蹤的指標結果（按鈕）的可讀名稱；指標名稱與數值已代入',
+            })}
+            onClick={(e) => onTrace(item, e.currentTarget)}
+            data-testid="lab-trace-ratio"
+          >
+            {fmt(after)}
+          </ValueButton>
+        ) : (
+          <span className="ll-lab-ratio__after">{fmt(after)}</span>
+        )}
         {status === 'not_meaningful' && (
           <span className="ll-lab-ratio__warn">
             <WarningIcon /> {t({ id: 'lab.ratio.notMeaningful', message: '不具意義', comment: '指標狀態的警示' })}
@@ -138,9 +146,10 @@ export interface RatioListProps {
   /** 階段 9：有變的在前、沒變的收起來 */
   splitUnchanged?: boolean;
   verdicts?: Readonly<Record<string, { correct: boolean; nearly: boolean }>>;
+  onTrace?: RatioCardProps['onTrace'];
 }
 
-export function RatioList({ items, layout, splitUnchanged = false, verdicts }: RatioListProps) {
+export function RatioList({ items, layout, splitUnchanged = false, verdicts, onTrace }: RatioListProps) {
   const { t } = useLingui();
   const changed = splitUnchanged ? items.filter((i) => i.changed) : items;
   const rest = splitUnchanged ? items.filter((i) => !i.changed) : [];
@@ -155,7 +164,7 @@ export function RatioList({ items, layout, splitUnchanged = false, verdicts }: R
       )}
       <ul className="ll-lab-ratios__list" data-testid="lab-ratios-changed">
         {changed.map((i) => (
-          <RatioCard key={i.ratioRef} item={i} layout={layout} verdict={verdicts?.[i.ratioRef] ?? null} />
+          <RatioCard key={i.ratioRef} item={i} layout={layout} verdict={verdicts?.[i.ratioRef] ?? null} onTrace={onTrace} />
         ))}
       </ul>
       {rest.length > 0 && (
@@ -166,7 +175,7 @@ export function RatioList({ items, layout, splitUnchanged = false, verdicts }: R
         >
           <ul className="ll-lab-ratios__list">
             {rest.map((i) => (
-              <RatioCard key={i.ratioRef} item={i} layout={layout} />
+              <RatioCard key={i.ratioRef} item={i} layout={layout} onTrace={onTrace} />
             ))}
           </ul>
         </Disclosure>

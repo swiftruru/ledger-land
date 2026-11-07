@@ -201,7 +201,8 @@ export function audit(opts: AuditOptions): string[] {
   const targets = [...document.querySelectorAll('a, button, summary, select, input:not([type="hidden"]), [role="menuitem"]')];
   for (const el of targets) {
     if (hiddenTree(el)) continue;
-    if (el.matches('.ll-link, .ll-chip--inline')) continue;
+    // 行內例外（WCAG 2.5.8）：文中連結、行內名詞 chip、報表與指標卡裡可追蹤的數字（ValueButton，M4b）
+    if (el.matches('.ll-link, .ll-chip--inline, .ll-valuebtn')) continue;
     if (el.matches('.ll-skiplink') && document.activeElement !== el) continue;
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden') continue;

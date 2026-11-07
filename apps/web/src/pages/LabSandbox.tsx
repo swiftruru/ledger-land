@@ -27,7 +27,9 @@ import {
   normalizeInput,
 } from '@ledgerland/web-ui';
 import { CheckLights } from '../features/lab/CheckLights.tsx';
-import type { LabReplay, ParamOverride } from '../features/lab/lab-core.ts';
+import type { LabReplay, LabRun, LabStep, ParamOverride } from '../features/lab/lab-core.ts';
+import { loadTracePanel, tracePanelNow, type TraceViews } from '../features/lab/lazy-trace.ts';
+import type { TraceTarget } from '../features/lab/TracePanel.tsx';
 import { lineAt, useLabLabels } from '../features/lab/labels.ts';
 import { labPrefersReducedMotion } from '../features/lab/motion.ts';
 import { clearSandbox, readSandbox, writeSandbox } from '../features/lab/progress.ts';
@@ -385,6 +387,23 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
   const ratios = last ? ratioChanges(lab.core, 'excel', null, last.ratiosAfter) : [];
   const focused = focusStep && replay.ok ? replay.value.stepById(focusStep) : null;
   const shown = focused ?? last;
+  // 來源面板（M4b，03 第 3.9 節）：報表區的數字用顯示中的那一步、指標卡用最後一步；第一次點才載面板的模組。
+  // 開面板時把當時的 run 一起記住：覆寫陣列每次重繪都是新的，replay 會重算，面板的報表要和它自己的 run 配對（核心會擋下不同 run 的報表）
+  const [trace, setTrace] = useState<{ target: TraceTarget; step: LabStep; run: LabRun } | null>(null);
+  const [traceViews, setTraceViews] = useState<TraceViews | null>(() => tracePanelNow());
+  const traceReturn = useRef<HTMLElement | null>(null);
+  const openTrace = (target: TraceTarget, step: LabStep, el: HTMLElement) => {
+    if (!replay.ok) return;
+    traceReturn.current = el;
+    setTrace({ target, step, run: replay.value });
+    if (traceViews === null) loadTracePanel().then(setTraceViews, () => setTrace(null));
+  };
+  const sandboxStepInfo = (id: string) => {
+    const s = edited.steps.find((x) => x.id === id);
+    return s === undefined || s.local ? undefined : { order: s.order, title: s.title };
+  };
+  // 本機插入的步驟沒有故事頁；故事的步驟連到它的步驟頁（練習模式）
+  const sandboxStepHref = (id: string) => (story.steps.some((x) => x.id === id) ? localePath(locale, `/lab/story/${story.id}/${id}/`) : null);
   return (
     <div className="ll-lab-sandbox" data-testid="lab-sandbox">
       <p className="ll-lab-sandbox__intro">
@@ -643,11 +662,31 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
                 after={shown.after}
                 view={wide ? 'columns' : 'cumulative'}
                 layout={layout}
+                onTrace={(lineId, window, el) => openTrace({ kind: 'line', lineId, window }, shown, el)}
               />
             ))}
           </div>
-          <RatioList items={ratios} layout={layout} />
+          <RatioList
+            items={ratios}
+            layout={layout}
+            onTrace={(item, el) => last && openTrace({ kind: 'ratio', ratioRef: item.ratioRef, spec: item.spec, result: item.after }, last, el)}
+          />
         </section>
+      )}
+      {traceViews && trace && (
+        <traceViews.TracePanel
+          open
+          onClose={() => setTrace(null)}
+          returnFocusTo={traceReturn}
+          target={trace.target}
+          run={trace.run}
+          step={trace.step}
+          trace={(window, lineId) => lab.core.traceLabLine(trace.run, trace.step, window, lineId)}
+          entriesOf={(id) => lab.core.entriesOfStep(trace.run, id)}
+          layout={layout}
+          stepInfo={sandboxStepInfo}
+          stepHref={sandboxStepHref}
+        />
       )}
       <ToastRegion className="ll-float-toasts" data-testid="lab-sandbox-toasts" onHoldChange={(held) => (noteHeld.current = held)}>
         {note && (

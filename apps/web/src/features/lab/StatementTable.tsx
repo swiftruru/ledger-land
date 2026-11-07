@@ -1,11 +1,13 @@
 // 報表表格（03 第 3.5 節、02 第 3.4 節）：真正的 table 與表頭，金額等寬靠右；列從核心的 Statements 來，不另存數字。
 // 三種檢視：cumulative（交易後的累計一欄）、transaction（本筆變動一欄，沒變的列寫「不變」並淡化）、columns（交易前、交易後、本筆變動三欄並列，
 // 平板橫向與電腦）。變動的列用醒目底色加 ▲▼ 與文字，不只靠顏色；onlyChanged 只看有變動的列。帶 (+)(-) 的累計列在本筆變動檢視加註（T12）。
+// 給了 onTrace 時（M4b，03 第 3.9 節）交易後的金額與本筆變動的差額是可追蹤的數字（ValueButton，虛線下框），按下去開來源面板；
+// 交易前的金額與沒變的「不變」不是（前一步的數字要到前一步追）。
 import { useLingui } from '@lingui/react/macro';
 import { formatMoney } from '@ledgerland/i18n';
 import type { ReactNode } from 'react';
-import { NoteTag } from '@ledgerland/web-ui';
-import type { Statements } from './lab-core.ts';
+import { NoteTag, ValueButton } from '@ledgerland/web-ui';
+import type { Statements, TraceWindow } from './lab-core.ts';
 import { ARROW, directionOf, useLabLabels } from './labels.ts';
 import { RollingMoney } from './RollingMoney.tsx';
 
@@ -29,6 +31,8 @@ export interface StatementTableProps {
   layout: Parameters<typeof useLabLabels>[0];
   /** 變動列的金額從交易前滾到交易後（減少動態時 false） */
   animate?: boolean;
+  /** 點可追蹤的數字（交易後的金額是累計視窗、本筆變動的差額是本筆變動視窗）；沒給就只是數字（勾稽練習） */
+  onTrace?: (lineId: string, window: TraceWindow, el: HTMLButtonElement) => void;
   id?: string;
   className?: string;
 }
@@ -50,6 +54,7 @@ export function StatementTable({
   inputs,
   layout,
   animate = false,
+  onTrace,
   id,
   className,
 }: StatementTableProps) {
@@ -69,6 +74,24 @@ export function StatementTable({
   });
   const visible = rows.filter((r) => r.visible && !r.hidden);
   const cols = view === 'columns' ? 3 : 1;
+  // 可追蹤的數字：可讀名稱是完整的一句，數字本身對螢幕閱讀器隱藏
+  const traceable = (lineId: string, window: TraceWindow, amount: number, node: ReactNode): ReactNode =>
+    onTrace === undefined ? (
+      node
+    ) : (
+      <ValueButton
+        label={t({
+          id: 'lab.trace.open',
+          message: `${lineLabel(lineId)} ${fmt(amount)}，看這個數字從哪裡來`,
+          comment: '可追蹤的數字（按鈕）的可讀名稱；列名與金額已代入',
+        })}
+        onClick={(e) => onTrace(lineId, window, e.currentTarget)}
+        data-testid="lab-trace-value"
+        data-line={lineId}
+      >
+        {node}
+      </ValueButton>
+    );
   return (
     <div className={`ll-lab-table${className ? ` ${className}` : ''}`} id={id}>
       <table className="ll-mini-table ll-lab-table__table">
@@ -119,15 +142,20 @@ export function StatementTable({
             const input = inputs?.[r.id];
             const cls = `ll-mini-table__row ll-lab-row${total ? ' is-total' : ''}${changed ? ` is-changed is-${dir}` : ''}${marked ? ' is-marked' : ''}`;
             const changeCell = changed ? (
-              <span className="ll-lab-delta" data-dir={dir}>
-                <span aria-hidden="true">{ARROW[dir]} </span>
-                {fmt(delta)}
-              </span>
+              traceable(
+                r.id,
+                'transaction',
+                delta,
+                <span className="ll-lab-delta" data-dir={dir}>
+                  <span aria-hidden="true">{ARROW[dir]} </span>
+                  {fmt(delta)}
+                </span>,
+              )
             ) : (
               <span className="ll-lab-delta is-same">{same}</span>
             );
             const note = r.kind === 'working_capital' && view !== 'cumulative' ? <span className="ll-lab-row__note">{noteCumulative}</span> : null;
-            const afterCell = changed ? <RollingMoney from={b} to={a} animate={animate} locale={locale} /> : fmt(a);
+            const afterCell = traceable(r.id, 'cumulative', a, changed ? <RollingMoney from={b} to={a} animate={animate} locale={locale} /> : fmt(a));
             const mark = changed ? (
               <span className="ll-lab-row__mark" data-dir={dir}>
                 <span aria-hidden="true">{ARROW[dir]}</span>

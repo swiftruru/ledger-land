@@ -7,11 +7,101 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
 
+#. 可追蹤的指標結果（按鈕）的可讀名稱；指標名稱與數值已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: ratioLabel(spec.id, spec.termRef)
+#. placeholder {1}: fmt(after)
+#: src/features/lab/RatioList.tsx
+msgid "lab.trace.openRatio"
+msgstr "{0} {1}, see where this number comes from"
+
+#. 可追蹤的數字（按鈕）的可讀名稱；列名與金額已代入
+#. 可追蹤的數字（按鈕）的可讀名稱；列名與金額已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: lineLabel(lineId)
+#. placeholder {1}: fmt(amount)
+#. placeholder {1}: formatMoney(after(lineId), locale)
+#: src/features/lab/StatementTable.tsx
+#: src/pages/LabStep.tsx
+msgid "lab.trace.open"
+msgstr "{0} {1}, see where this number comes from"
+
+#. 指標面板第一層報表列按鈕的可讀名稱；名稱與金額已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: lineLabel(p.ref)
+#. placeholder {1}: formatMoney(values.lines.get(p.ref)?.value ?? 0, locale)
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.node.line"
+msgstr "{0} {1}, see how this number is worked out"
+
+#. 來源面板的副標（本筆變動視窗）；報表名稱與步數已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: statementName(target.lineId)
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.window.transaction"
+msgstr "{0}, change from step {order}"
+
+#. 來源面板的副標（累計視窗）；報表名稱與步數已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: statementName(target.lineId)
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.window.cumulative"
+msgstr "{0}, cumulative to step {order}"
+
+#. 從指標鑽進報表列時的播報；名稱與代入數字的公式已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: lineLabel(lineId)
+#. placeholder {1}: sentence(trace('cumulative', lineId))
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.live.line"
+msgstr "{0}: {1}"
+
+#. 跨表對應的一列：另一張表的名稱與列名已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: names[l.statement]
+#. placeholder {1}: lineLabel(l.line)
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.link"
+msgstr "{1} on the {0}"
+
+#. 跨表對應的一列，附五步驟的勾稽點編號：報表名稱、列名與編號已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: names[l.statement]
+#. placeholder {1}: lineLabel(l.line)
+#. placeholder {2}: CIRCLED[l.check]
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.linkCheck"
+msgstr "{1} on the {0} (check {2})"
+
 #. 算不下去的原因：某個科目的餘額會變成負數
 #. js-lingui-explicit-id
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.whyAccount"
 msgstr "{account} would go negative"
+
+#. 往下鑽到最底層時的播報；名稱與金額已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.live.leaf"
+msgstr "{label} {amount}, listing the source steps."
+
+#. 公式樹節點按鈕的可讀名稱（最底層的科目節點）；名稱與金額已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.node.leaf"
+msgstr "{label} {amount}, see the source steps"
+
+#. 公式樹節點按鈕的可讀名稱（有公式的節點）；名稱、金額與代入數字的公式已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.node.formula"
+msgstr "{label} {amount}, equals {formula}"
+
+#. 展開公式樹節點時的播報；名稱與代入數字的公式已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.live.formula"
+msgstr "{label}: {formula}"
 
 #. 指標預測的選項
 #. js-lingui-explicit-id
@@ -185,6 +275,18 @@ msgstr "You chose {chosen}, and that is right"
 msgid "lab.predict.right"
 msgstr "Your prediction was right"
 
+#. 來源面板第三區的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.sources"
+msgstr "Source steps"
+
+#. 往下鑽之後頂端路徑的可讀名稱
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.path"
+msgstr "Source path"
+
 #. 第 4 到 18 步的小標記（T33）
 #. js-lingui-explicit-id
 #: src/features/lab/TransactionCard.tsx
@@ -194,6 +296,7 @@ msgstr "Inferred from the course scenario"
 #. 分錄表格的欄名
 #. js-lingui-explicit-id
 #: src/features/lab/EffectsList.tsx
+#: src/features/lab/TraceSources.tsx
 msgid "lab.journal.debit"
 msgstr "Debit"
 
@@ -227,6 +330,20 @@ msgstr "The two sides are not equal"
 msgid "lab.scale.balanced"
 msgstr "The two sides are equal"
 
+#. 來源面板第二區的標題
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.formula"
+msgstr "Formula"
+
+#. 公式樹裡金額是 0 而且沒有來源的子節點收在這裡；括號裡是數量
+#. js-lingui-explicit-id
+#. placeholder {0}: zeros.length
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.zeros"
+msgstr "Other zero items ({0})"
+
 #. 沒有變動的指標的展開區標題；括號裡是數量
 #. js-lingui-explicit-id
 #. placeholder {0}: rest.length
@@ -246,6 +363,18 @@ msgstr "Practise again"
 msgid "lab.sandbox.result"
 msgstr "Statements after the last step"
 
+#. 指標公式的分子
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.numerator"
+msgstr "Numerator"
+
+#. 指標公式的分母
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.denominator"
+msgstr "Denominator"
+
 #. 指標無法計算的原因
 #. js-lingui-explicit-id
 #: src/features/lab/RatioList.tsx
@@ -253,9 +382,11 @@ msgid "lab.ratio.reason.denominatorZero"
 msgstr "The denominator is 0, so it cannot be calculated"
 
 #. 分錄表格的標題；eventId 是事件代號
+#. 分錄表格的標題；eventId 是事件代號
 #. js-lingui-explicit-id
 #. placeholder {0}: entry.eventId
 #: src/features/lab/EffectsList.tsx
+#: src/features/lab/TraceSources.tsx
 msgid "lab.journal.entry"
 msgstr "Journal entry {0}"
 
@@ -278,6 +409,12 @@ msgstr "Remove step {0}"
 #: src/features/lab/TransactionCard.tsx
 msgid "lab.card.recap"
 msgstr "Up to the previous step: {0}"
+
+#. 公式裡的加號（螢幕閱讀器）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.op.plus"
+msgstr "plus"
 
 #. 玩法說明第 2 點
 #. js-lingui-explicit-id
@@ -315,6 +452,13 @@ msgstr "The downside"
 msgid "lab.reconcile.policyLabel"
 msgstr "Basis"
 
+#. 原地展開的節點底下 0 元項目的數量；數字已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: splitChildren(child).zeros.length
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.zerosInline"
+msgstr "{0} more zero items"
+
 #. 表格的篩選
 #. js-lingui-explicit-id
 #: src/pages/LabStep.tsx
@@ -332,6 +476,12 @@ msgstr "How to play"
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.broken.bodyUnknown"
 msgstr "Restore the original story to start again."
+
+#. 來源步驟對這一列的方向（螢幕閱讀器）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.contrib.same"
+msgstr "no net change"
 
 #. 建議插入的範本
 #. js-lingui-explicit-id
@@ -396,6 +546,12 @@ msgstr "Back to the question"
 msgid "lab.sandbox.affected"
 msgstr "These later steps changed because of your edit"
 
+#. 跨表對應的按鈕：關面板、醒目標示兩張表上的格子
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.highlight"
+msgstr "Mark on the statements"
+
 #. 範本清單的展開標題
 #. js-lingui-explicit-id
 #: src/pages/LabSandbox.tsx
@@ -413,6 +569,12 @@ msgstr "The base is negative or zero, so the result is not meaningful"
 #: src/features/lab/EffectsList.tsx
 msgid "lab.journal.note"
 msgstr "‘Purchases’ and ‘Closing inventories’ on the statement are not accounts in the entry: they are rows derived from the inventory ledger."
+
+#. 來源步驟對這一列的方向（螢幕閱讀器）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.contrib.up"
+msgstr "increase"
 
 #. 改金額的按鈕
 #. js-lingui-explicit-id
@@ -461,6 +623,12 @@ msgstr "Lab"
 #: src/features/lab/RatioList.tsx
 msgid "lab.ratio.reason.missingInput"
 msgstr "An input it needs is missing"
+
+#. 公式樹節點的按鈕
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.expand"
+msgstr "Expand"
 
 #. 勾稽步驟⑤的名稱
 #. js-lingui-explicit-id
@@ -554,6 +722,13 @@ msgstr "We suggest finishing the earlier steps first, but you can start here."
 msgid "lab.reconcile.order"
 msgstr "Suggested order: fill in the income statement result first, then the cash flow statement, then the balance sheet. One wrong cell can turn several lights red, so fix the most upstream cell first."
 
+#. 公式樹節點的按鈕：面板改以這個節點為主角（小螢幕或更深的層）
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.drill"
+msgstr "Go down"
+
 #. 浮動提示的動作：回到這次修改之前
 #. js-lingui-explicit-id
 #: src/pages/LabSandbox.tsx
@@ -629,6 +804,18 @@ msgstr "Income structure ratios"
 msgid "lab.stage.income"
 msgstr "Income statement"
 
+#. 來源面板裡報表的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.statement.is"
+msgstr "income statement"
+
+#. 公式樹節點的按鈕
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.collapse"
+msgstr "Collapse"
+
 #. 走完一步時解鎖名詞的提示；數字已代入
 #. js-lingui-explicit-id
 #. placeholder {0}: res.unlockedTerms.length
@@ -702,6 +889,12 @@ msgstr "The accounting equation"
 #: src/pages/LabStep.tsx
 msgid "lab.live.checksFail"
 msgstr "A check point does not match."
+
+#. 來源步驟：視窗起點的餘額（自訂期初）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.opening"
+msgstr "Brought forward"
 
 #. 勾稽步驟③的名稱
 #. js-lingui-explicit-id
@@ -802,11 +995,29 @@ msgstr "Step ①: the five profit levels"
 msgid "lab.sandbox.empty.title"
 msgstr "All the steps are gone"
 
+#. 指標的輸入值名稱
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.input.parValue"
+msgstr "Par value per share"
+
 #. 揭曉卡：這個目標沒有猜
 #. js-lingui-explicit-id
 #: src/features/lab/PredictReveal.tsx
 msgid "lab.reveal.none"
 msgstr "not chosen"
+
+#. 公式裡的減號（螢幕閱讀器）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.op.minus"
+msgstr "minus"
+
+#. 來源步驟對這一列的方向（螢幕閱讀器）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.contrib.down"
+msgstr "decrease"
 
 #. 指標類別
 #. js-lingui-explicit-id
@@ -832,6 +1043,12 @@ msgstr "Cash flow"
 #: src/pages/LabReconcile.tsx
 msgid "lab.stage.cashflow"
 msgstr "Cash flow statement"
+
+#. 來源面板裡報表的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.statement.cf"
+msgstr "cash flow statement"
 
 #. 選步驟面板：現在正在練的這一步
 #. js-lingui-explicit-id
@@ -895,6 +1112,12 @@ msgstr "Look at the {0}"
 msgid "lab.reconcile.hint2"
 msgstr "Look at the ‘{0}’ row"
 
+#. 來源步驟下方預設收合的分錄層（D1）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.showEntry"
+msgstr "Show the entry"
+
 #. 階段 3 下方展開區的標題（預設收合，D1）
 #. js-lingui-explicit-id
 #: src/features/lab/EffectsList.tsx
@@ -941,6 +1164,7 @@ msgstr "Demo: no prediction, jump to any stage at any time"
 #. 分錄表格的欄名
 #. js-lingui-explicit-id
 #: src/features/lab/EffectsList.tsx
+#: src/features/lab/TraceSources.tsx
 msgid "lab.journal.account"
 msgstr "Account"
 
@@ -976,6 +1200,14 @@ msgstr "Step {0}"
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.affectedStep"
 msgstr "Step {0}"
+
+#. 來源步驟的名稱；序號與標題已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: info.order
+#. placeholder {1}: info.title
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.stepName"
+msgstr "Step {0} {1}"
 
 #. 階段 1 的播報；數字與標題已代入
 #. js-lingui-explicit-id
@@ -1013,6 +1245,18 @@ msgstr "Chapter {0}: {1}"
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.broken.body"
 msgstr "Step {brokenOrder} ‘{brokenTitle}’ cannot be done ({brokenWhy}), usually because an earlier step it needs was taken out. Remove this step, or restore the original story and start again."
+
+#. 來源面板的副標（指標）；步數已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.window.ratio"
+msgstr "After step {order}"
+
+#. 公式第一項前面的符號（螢幕閱讀器）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.op.equals"
+msgstr "equals"
 
 #. 第三層提示：答案；數字已格式化
 #. js-lingui-explicit-id
@@ -1089,6 +1333,12 @@ msgstr "Shareholder"
 msgid "lab.sandbox.title"
 msgstr "Sandbox"
 
+#. 來源步驟：本機插入、沒有名稱的步驟
+#. js-lingui-explicit-id
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.localStep"
+msgstr "A step inserted in the sandbox"
+
 #. 預測面板的主按鈕
 #. js-lingui-explicit-id
 #: src/features/lab/PredictPanel.tsx
@@ -1155,6 +1405,7 @@ msgstr "Finance lead"
 #. 分錄表格的欄名
 #. js-lingui-explicit-id
 #: src/features/lab/EffectsList.tsx
+#: src/features/lab/TraceSources.tsx
 msgid "lab.journal.credit"
 msgstr "Credit"
 
@@ -1187,6 +1438,18 @@ msgstr "Total assets {0}, now {1}; liabilities {2}; equity {3}. {4}."
 msgid "lab.stage.balance"
 msgstr "Balance sheet"
 
+#. 來源面板裡報表的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.statement.bs"
+msgstr "balance sheet"
+
+#. 來源面板第一區的名稱
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.links"
+msgstr "Matching figure on another statement"
+
 #. 階段選單：直接切到最後一個階段（示範隨時有；練習只在練過的步驟再回來時有）
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
@@ -1204,6 +1467,13 @@ msgstr "Jump to the statements"
 #: src/features/lab/StatementTable.tsx
 msgid "lab.table.cumulativeNote"
 msgstr "This row is a cumulative figure, so the change shows on the original row"
+
+#. 追蹤樹的註記：增加與減少擇一的列（例如銷貨債權增加與應收帳款減少），變動填在另一列；列名已代入
+#. js-lingui-explicit-id
+#. placeholder {0}: lineLabel(node.note.params['line'] ?? '')
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.filledInOtherLine"
+msgstr "The change for this period is shown on the ‘{0}’ line."
 
 #. 刪除被擋下：後面某一步會算不下去；數字已代入，why 是一句原因
 #. js-lingui-explicit-id
@@ -1343,6 +1613,12 @@ msgstr "{0} more rows changed"
 msgid "lab.check.empty"
 msgstr "Not filled yet"
 
+#. 公式樹最底層：這個科目沒有來源分錄
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.noSources"
+msgstr "No step has changed this number yet."
+
 #. 指標類別
 #. js-lingui-explicit-id
 #: src/pages/LabRatios.tsx
@@ -1366,6 +1642,18 @@ msgstr "Bank"
 #: src/pages/LabRatios.tsx
 msgid "lab.ratio.suggest.open"
 msgstr "Open the sandbox"
+
+#. 來源步驟的按鈕：到實驗室的那一步（練習模式）
+#. js-lingui-explicit-id
+#: src/features/lab/TraceSources.tsx
+msgid "lab.trace.openStep"
+msgstr "Open this step"
+
+#. 來源面板右上關閉鈕的可讀名稱
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.close"
+msgstr "Close the source panel"
 
 #. 階段進度文字；數字與名稱已代入
 #. js-lingui-explicit-id

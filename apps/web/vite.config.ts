@@ -191,6 +191,8 @@ export default defineConfig({
             // 2026-10-25（M3 整合）另外放進來：頁首的 TopBar 與 BackButton（章節頁、名詞頁、子頁都用）、卡片 Card、展開列 Disclosure 與減少動態的判斷（motion.ts，各自不到 1 KB，
             // 單獨成 chunk 時名詞圖鑑、地圖、章節頁第一波各多一個請求）、名詞類別的顯示名稱（useCategoryLabel，名詞圖鑑、名詞頁與作答頁的名詞卡共用）。
             // tokens 的斷點常數（scale.ts，「我的」頁與實驗室的 useExpanded 用）、useExpanded 本身與實驗室進度的形狀與讀取（lab/progress-shape.ts，「我的」頁的實驗室一列用）
+            // 可追蹤的數字 ValueButton（M4b，2026-11-07）也放這裡：步驟頁的恆等式摘要和 lab-stages 的報表表格都用它，不放的話它落在 lab-stages，
+            // 步驟頁第一波為了這一個小元件把整個階段畫面的 chunk 拉進來（V24 白做）
             // 也放這裡（2026-11-01，V24）：不放的話前者會被後面的 lab-ui 群組連依賴抓走，「我的」頁為了一個常數要載整個實驗室的 chunk；後兩者落在 shared 時各是一個 0.3 到 1.2 KB 的小 chunk，
             // 步驟頁第一波多兩個請求，而 shared 的 4 KB 合併門檻又可能把它們併回 lab-ui。common 因此從 2.2 KB 變成約 3.3 KB，仍在一次往返送得完的範圍內。
             // 不放的話它們被 quiz-view 群組連依賴一起抓走，名詞圖鑑、名詞頁與章節頁為了一個小函式要在第一波多載 quiz-view、level-view 與 session（約 30 KB gzip）。
@@ -202,7 +204,7 @@ export default defineConfig({
             // 同時 6 個請求時每條連線一次往返只送約 4.3 KB（含約 0.9 KB 的回應標頭），common 目前約 3.4 KB gzip，再大就多一次往返
             {
               name: 'common',
-              test: /[\\/](packages[\\/](i18n[\\/]src[\\/]format\.ts|tokens[\\/]src[\\/](index|scale)\.ts|web-ui[\\/]src[\\/]components[\\/](icons|NoteTag|Skeleton|Toast|States|Stars|Badge|TopBar|BackButton|Disclosure|motion|Card)\.tsx?)|apps[\\/]web[\\/]src[\\/](features[\\/]glossary[\\/]useCategoryLabel|features[\\/]me[\\/]useExpanded|features[\\/]lab[\\/]progress-shape|lib[\\/]level-exit)\.ts)$/,
+              test: /[\\/](packages[\\/](i18n[\\/]src[\\/]format\.ts|tokens[\\/]src[\\/](index|scale)\.ts|web-ui[\\/]src[\\/]components[\\/](icons|NoteTag|Skeleton|Toast|States|Stars|Badge|TopBar|BackButton|Disclosure|motion|Card|ValueButton)\.tsx?)|apps[\\/]web[\\/]src[\\/](features[\\/]glossary[\\/]useCategoryLabel|features[\\/]me[\\/]useExpanded|features[\\/]lab[\\/]progress-shape|lib[\\/]level-exit)\.ts)$/,
               priority: 3,
             },
             { name: 'zod', test: /[\\/]node_modules[\\/](\.pnpm[\\/][^\\/]+[\\/]node_modules[\\/])?zod[\\/]/, priority: 2 },
@@ -330,7 +332,7 @@ export default defineConfig({
             // 抓進 lab-ui 就回到第一波（約 7 KB gzip，連帶 web-ui 的 Segmented 與 ImpactPicker 那個 chunk）
             {
               name: 'lab-ui',
-              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](?!(lab-core|summary|stage-views|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling)\.tsx?$)/,
+              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](?!(lab-core|summary|stage-views|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling|TracePanel|TraceTree|TraceSources|trace-model)\.tsx?$)/,
               priority: 1,
             },
             // 步驟頁階段 2 到 10 的畫面元件：lazy-stages.ts 動態載入的進入點 stage-views.tsx 加它 re-export 的元件（只有這些階段用到的 RollingMoney 與 rolling 也在）。
@@ -338,6 +340,13 @@ export default defineConfig({
             {
               name: 'lab-stages',
               test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](stage-views|PredictPanel|PredictReveal|EffectsList|BalanceScale|CheckLights|RatioList|StatementTable|RollingMoney|rolling)\.tsx?$/,
+              priority: 1,
+            },
+            // 來源面板（M4b，03 第 3.9 節）：lazy-trace.ts 第一次點可追蹤的數字才載的進入點 TracePanel.tsx 與它的樹、來源步驟、純函式；
+            // lazy-trace.ts 本身留在 lab-ui（它是載入點）。不放進 lab-stages：階段 2 到 10 用不到它，掀開之後也不必先載
+            {
+              name: 'lab-trace',
+              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]lab[\\/](TracePanel|TraceTree|TraceSources|trace-model)\.tsx?$/,
               priority: 1,
             },
             { name: 'shared', minShareCount: 2, entriesAware: true, entriesAwareMergeThreshold: 4096, priority: 1 },

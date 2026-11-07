@@ -11,11 +11,14 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { formatMoney, formatNumber, localePath } from '@ledgerland/i18n';
-import { Button, Card, CheckCircleIcon, ErrorState, HintBar, Toast, ToastRegion, TopBar, XCircleIcon } from '@ledgerland/web-ui';
+import { Button, Card, CheckCircleIcon, ErrorState, HintBar, Toast, ToastRegion, TopBar, ValueButton, XCircleIcon } from '@ledgerland/web-ui';
 import { labPrefersReducedMotion } from '../features/lab/motion.ts';
 import type { LabRun, LabStep as LabStepModel } from '../features/lab/lab-core.ts';
 import type { LabCore } from '../features/lab/lazy-core.ts';
 import { loadStageViews, stageViewsNow, type StageViews } from '../features/lab/lazy-stages.ts';
+import { loadTracePanel, tracePanelNow, type TraceViews } from '../features/lab/lazy-trace.ts';
+import type { TraceTarget } from '../features/lab/TracePanel.tsx';
+import type { ShownStatement } from '../features/lab/trace-model.ts';
 import { firstPaintLayout, joinList, lineAt, useChangeText, useLabLabels, type LayoutLike } from '../features/lab/labels.ts';
 import type { RevealItem } from '../features/lab/PredictReveal.tsx';
 import {
@@ -50,6 +53,7 @@ import '../styles/lab.css';
 
 type StatementCode = 'is' | 'cf' | 'bs';
 const STATEMENT_KEY = { is: 'income_statement', cf: 'cash_flow_indirect', bs: 'balance_sheet' } as const;
+const STATEMENT_CODE: Record<ShownStatement, StatementCode> = { income_statement: 'is', cash_flow_indirect: 'cf', balance_sheet: 'bs' };
 /** 固定在上方的恆等式三列；要和 tools/lib/content-rules.mjs 的 FIRST_PAINT_LINES.equation 一致（核心載入前用快照的數字） */
 const EQUATION_LINES = ['bs_total_assets', 'bs_total_liabilities', 'bs_total_equity'] as const;
 
@@ -209,6 +213,16 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
   const [highlight, setHighlight] = useState<ReadonlySet<string>>(() => new Set());
   const [selectedLight, setSelectedLight] = useState<2 | 3 | 4 | 5 | null>(null);
   const [journalOpen, setJournalOpen] = useState(false);
+  // 來源面板（M4b，03 第 3.9 節）：第一次點可追蹤的數字才載面板的模組；關閉後焦點回到那個數字
+  const [trace, setTrace] = useState<TraceTarget | null>(null);
+  const [traceViews, setTraceViews] = useState<TraceViews | null>(() => tracePanelNow());
+  const traceReturn = useRef<HTMLElement | null>(null);
+  const openTrace = (target: TraceTarget, el: HTMLElement) => {
+    traceReturn.current = el;
+    setTrace(target);
+    if (!hasCore) onLoadCore();
+    if (traceViews === null) loadTracePanel().then(setTraceViews, () => setTrace(null));
+  };
   const [finished, setFinished] = useState<{ unlockedTerms: string[] } | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [fromHref, setFromHref] = useState<string | null>(null);
@@ -489,9 +503,30 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
       highlight={highlight}
       layout={layout}
       animate={!reduced}
+      onTrace={(lineId, window, el) => openTrace({ kind: 'line', lineId, window }, el)}
       id={`ll-lab-table-${code}`}
     />
   );
+  // 恆等式摘要的三個合計也可以追。核心載好之前也畫成按鈕（按了先載核心、載好就開）：第一次繪製的 DOM 和之後一樣，
+  // 核心載好時不換節點，Chrome 才不會把 sticky 列重新登記成 LCP（2026-11-07 量到換節點讓模擬的 LCP 多 1.3 秒）
+  const equationValue = (lineId: string) => {
+    const text = formatMoney(after(lineId), locale);
+    return (
+      <ValueButton
+        label={t({
+          id: 'lab.trace.open',
+          // 和 StatementTable 共用這個 ID：兩個參數都寫成呼叫，抽出來的佔位符才一樣是 {0} {1}
+          message: `${lineLabel(lineId)} ${formatMoney(after(lineId), locale)}，看這個數字從哪裡來`,
+          comment: '可追蹤的數字（按鈕）的可讀名稱；列名與金額已代入',
+        })}
+        onClick={(e) => openTrace({ kind: 'line', lineId, window: 'cumulative' }, e.currentTarget)}
+        data-testid="lab-trace-value"
+        data-line={lineId}
+      >
+        {text}
+      </ValueButton>
+    );
+  };
   const stageId = stages[stage]!;
   const designNotes = [...new Set(spec.events.flatMap((e) => e.pendingRefs ?? []))];
   const title = t({ id: 'lab.step.title', message: `第 ${spec.order} 步：${spec.title}`, comment: '步驟頁的標題；數字與標題已代入' });
@@ -531,8 +566,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
       )}
       <div className="ll-lab-session__sticky">
         <p className="ll-lab-session__equation" data-testid="lab-equation">
-          {lineLabel(EQUATION_LINES[0])} {formatMoney(after(EQUATION_LINES[0]), locale)} ＝ {lineLabel(EQUATION_LINES[1])}{' '}
-          {formatMoney(after(EQUATION_LINES[1]), locale)} ＋ {lineLabel(EQUATION_LINES[2])} {formatMoney(after(EQUATION_LINES[2]), locale)}
+          {lineLabel(EQUATION_LINES[0])} {equationValue(EQUATION_LINES[0])} ＝ {lineLabel(EQUATION_LINES[1])} {equationValue(EQUATION_LINES[1])} ＋{' '}
+          {lineLabel(EQUATION_LINES[2])} {equationValue(EQUATION_LINES[2])}
         </p>
       </div>
       <h2 id="ll-lab-stage-heading" className="ll-lab-session__stage" data-testid="lab-stage-title">
@@ -669,7 +704,15 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
             />
           </div>
         )}
-        {views && step && stageId === 'ratios' && <views.RatioList items={ratios} layout={layout} splitUnchanged verdicts={ratioVerdicts} />}
+        {views && step && stageId === 'ratios' && (
+          <views.RatioList
+            items={ratios}
+            layout={layout}
+            splitUnchanged
+            verdicts={ratioVerdicts}
+            onTrace={(item, el) => openTrace({ kind: 'ratio', ratioRef: item.ratioRef, spec: item.spec, result: item.after }, el)}
+          />
+        )}
         {step && stageId === 'insight' && (
           <div className="ll-lab-insight">
             {spec.insight && <MarkupParagraphs text={spec.insight} className="ll-lab-insight__text" />}
@@ -753,6 +796,30 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, run
         onJump={go}
         onSwitchMode={switchMode}
       />
+      {traceViews && step && run && (
+        <traceViews.TracePanel
+          open={trace !== null}
+          onClose={() => setTrace(null)}
+          returnFocusTo={traceReturn}
+          target={trace}
+          run={run}
+          step={step}
+          trace={(window, lineId) => core!.traceLabLine(run, step, window, lineId)}
+          entriesOf={(id) => core!.entriesOfStep(run, id)}
+          layout={layout}
+          stepInfo={(id) => {
+            const s = story.steps.find((x) => x.id === id);
+            return s === undefined ? undefined : { order: s.order, title: s.title };
+          }}
+          stepHref={(id) => (id === spec.id || !story.steps.some((x) => x.id === id) ? null : href(`/lab/story/${story.id}/${id}/`))}
+          onHighlight={(lines, statement) => {
+            setSelectedLight(null);
+            setHighlight(new Set(lines));
+            setTab(STATEMENT_CODE[statement]);
+            setManualTab(true);
+          }}
+        />
+      )}
       <ToastRegion className="ll-float-toasts" data-testid="lab-toasts">
         {toast && (
           <Toast kind="collect" onDismiss={() => setToast(null)}>

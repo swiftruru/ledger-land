@@ -31,7 +31,11 @@ import {
   type Story,
   type StoryRun,
   type TAccount,
+  type TraceAccount,
+  type TraceNode,
+  type TraceSourceRef,
   type TransactionTemplate,
+  traceLine,
 } from '@ledgerland/core';
 import type { StorySnapshot } from '../../lib/content.ts';
 
@@ -46,8 +50,14 @@ export type {
   Statements,
   StepError,
   TAccount,
+  TraceAccount,
+  TraceNode,
+  TraceSourceRef,
   TransactionTemplate,
 };
+
+/** 一步的分錄（核心過帳的結果，和階段 3 的分錄層同一份） */
+export type PostedEntry = PostedStep['entries'][number];
 
 export interface LabStep {
   readonly id: string;
@@ -198,4 +208,18 @@ export function labAllowedRange(story: Story, overrides: readonly ParamOverride[
 /** 勾稽練習：學習者填的格子代進累計報表後的五步驟檢查 */
 export function reconcileCheck(after: Statements, inputs: Readonly<Record<string, number>>): FiveStepResult {
   return fiveStepCheck(after, inputs);
+}
+
+/** 追蹤的視窗：累計（交易後的報表）或本筆變動（差額，來源只有這一步） */
+export type TraceWindow = 'cumulative' | 'transaction';
+
+/** 某一步某一列的追蹤樹（04 第 6.4 節，D10(c) A）：用已算好的報表，不重算；視窗與該報表一致 */
+export function traceLabLine(run: LabRun, step: LabStep, window: TraceWindow, lineId: string): TraceNode {
+  const st = window === 'cumulative' ? step.after : step.change;
+  return traceLine(run.run, st.window, run.ctx.layout, run.ctx.policy, lineId, { statements: st });
+}
+
+/** 某一步過帳的分錄（來源面板的「看分錄」用）；run 裡沒有這一步時是空陣列 */
+export function entriesOfStep(run: LabRun, stepId: string): readonly PostedEntry[] {
+  return run.run.steps.find((s) => s.stepId === stepId)?.entries ?? [];
 }
