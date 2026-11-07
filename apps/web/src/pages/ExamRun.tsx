@@ -6,7 +6,7 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { formatNumber, localePath } from '@ledgerland/i18n';
-import { BookIcon, Button, Card, Disclosure, ErrorState, HouseIcon, PlayIcon, RetryIcon, TextLink, TopBar } from '@ledgerland/web-ui';
+import { BookIcon, Button, Card, Disclosure, ErrorState, HouseIcon, PlayIcon, RatioIcon, RetryIcon, TextLink, TopBar } from '@ledgerland/web-ui';
 import { getExamDb, nextState, type QuestionState } from '../features/exam/db.ts';
 import { HandoutQuestionCard } from '../features/exam/HandoutQuestionCard.tsx';
 import { HandoutQuestionReadout } from '../features/exam/HandoutQuestionReadout.tsx';
@@ -25,9 +25,10 @@ import {
   type ExamOrder,
   type ExamRun,
 } from '../features/exam/run.ts';
-import { isSetId, resolveSet, type ExamSet } from '../features/exam/sets.ts';
+import { formulaIdOfSet, isSetId, resolveSet, type ExamSet } from '../features/exam/sets.ts';
 import { picksOf } from '../features/exam/stats.ts';
-import { loadHandoutDeck, loadHandoutIndex, type HandoutQuestionSnapshot } from '../lib/content.ts';
+import { FormulaPills, useFormulasOfQuestions } from '../features/formulas/FormulaPills.tsx';
+import { loadFormulaIndex, loadHandoutDeck, loadHandoutIndex, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
 import '../styles/exam.css';
@@ -53,6 +54,7 @@ export default function ExamRun() {
   const [freshConfirm, setFreshConfirm] = useState<string | null>(null);
   const [shuffle] = useState(readExamShuffle);
   const db = getExamDb();
+  const formulasOf = useFormulasOfQuestions();
 
   useEffect(() => {
     let alive = true;
@@ -63,7 +65,9 @@ export default function ExamRun() {
       const list = await db.allStates().catch(() => [] as QuestionState[]);
       const map = new Map(list.map((s) => [s.questionId, s]));
       if (alive) setStates(map);
-      const set = resolveSet(index, setId, picksOf(map));
+      // 公式題組（formula:<id>）的題目清單在公式索引裡（在 precache），只有這種題組才讀
+      const formulas = formulaIdOfSet(setId) === null ? undefined : await loadFormulaIndex(locale).catch(() => []);
+      const set = resolveSet(index, setId, picksOf(map), formulas);
       if (!set) return { kind: 'notfound' } as State;
       if (set.questionIds.length === 0) return { kind: 'empty', set } as State;
       const decks = await Promise.all(set.deckIds.map((d) => loadHandoutDeck(d)));
@@ -129,17 +133,32 @@ export default function ExamRun() {
         return t({ id: 'exam.set.unsure', message: '還不熟的題', comment: '練習頁的標題：只練不熟的（練過但還沒連對兩次）' });
       case 'deck':
         return t({ id: 'exam.set.deck', message: `講義 ${set.deck!.code}`, comment: '練習頁的標題：一份講義；code 是講義編號' });
+      case 'formula': {
+        const label = set.title ?? '';
+        return t({ id: 'exam.set.formula', message: `公式：${label}`, comment: '練習頁的標題：一條公式的相關題；label 是公式名稱' });
+      }
       default:
         return set.title ?? '';
     }
   };
+  // 公式題組從公式頁進來：返回鍵回公式頁
+  const formulaId = formulaIdOfSet(setId);
+  const formulaHref = formulaId === null ? null : href(`/formulas/${formulaId}/`);
   const topBar = (title: string) => (
     <TopBar
       title={<span lang={state.kind === 'ok' && state.set.kind === 'section' ? 'zh-TW' : undefined}>{title}</span>}
       titleId="ll-exam-run-title"
-      backHref={href('/exam/')}
-      backLabel={t({ id: 'exam.run.back', message: '回到期中考苦練', comment: '練習頁頁首返回按鈕的可讀名稱' })}
-      backShortLabel={t({ id: 'exam.run.back.short', message: '苦練', comment: '練習頁頁首返回按鈕上的短字（必須是「回到期中考苦練」的一部分）' })}
+      backHref={formulaHref ?? href('/exam/')}
+      backLabel={
+        formulaHref === null
+          ? t({ id: 'exam.run.back', message: '回到期中考苦練', comment: '練習頁頁首返回按鈕的可讀名稱' })
+          : t({ id: 'exam.run.backFormula', message: '回到公式', comment: '公式題組的練習頁：返回按鈕的可讀名稱（回公式頁）' })
+      }
+      backShortLabel={
+        formulaHref === null
+          ? t({ id: 'exam.run.back.short', message: '苦練', comment: '練習頁頁首返回按鈕上的短字（必須是「回到期中考苦練」的一部分）' })
+          : t({ id: 'exam.run.backFormula.short', message: '公式', comment: '公式題組的練習頁：返回按鈕的短字（必須是「回到公式」的一部分）' })
+      }
     />
   );
 
@@ -172,7 +191,9 @@ export default function ExamRun() {
           title={
             state.set.kind === 'unsure'
               ? t({ id: 'exam.run.emptyUnsure', message: '還沒有不熟的題', comment: '練習頁：「只練不熟的」但這台裝置沒有練過而未熟練的題' })
-              : t({ id: 'exam.run.emptyWrong', message: '還沒有錯過的題', comment: '練習頁：「只練錯過的」但這台裝置沒有答錯的紀錄' })
+              : state.set.kind === 'formula'
+                ? t({ id: 'exam.run.emptyFormula', message: '這條公式還沒有相關題目', comment: '練習頁：公式題組沒有題' })
+                : t({ id: 'exam.run.emptyWrong', message: '還沒有錯過的題', comment: '練習頁：「只練錯過的」但這台裝置沒有答錯的紀錄' })
           }
           description={
             state.set.kind === 'unsure'
@@ -181,7 +202,13 @@ export default function ExamRun() {
                   message: '練過的題連續答對兩次就算熟練；還沒熟練的會集中到這裡。',
                   comment: '練習頁空狀態的說明（不熟的題）',
                 })
-              : t({ id: 'exam.run.emptyWrong.desc', message: '先練幾題，答錯的題會集中到這裡。', comment: '練習頁空狀態的說明' })
+              : state.set.kind === 'formula'
+                ? t({
+                    id: 'exam.run.emptyFormula.desc',
+                    message: '講義的練習題裡沒有用到這條公式的題，先練整份講義吧。',
+                    comment: '練習頁空狀態的說明（公式題組）',
+                  })
+                : t({ id: 'exam.run.emptyWrong.desc', message: '先練幾題，答錯的題會集中到這裡。', comment: '練習頁空狀態的說明' })
           }
           action={
             <Button variant="primary" icon={<PlayIcon />} href={href('/exam/all/')}>
@@ -231,6 +258,11 @@ export default function ExamRun() {
             <Button size="md" variant={wrongHere.length > 0 ? 'secondary' : 'primary'} icon={<RetryIcon />} onClick={restart} data-testid="exam-restart">
               {t({ id: 'exam.summary.again', message: '再練一次', comment: '總結卡按鈕：同一組重來' })}
             </Button>
+            {formulaHref !== null && (
+              <Button size="md" variant="quiet" icon={<RatioIcon />} href={formulaHref} data-testid="exam-back-formula">
+                {t({ id: 'exam.summary.formula', message: '再看公式', comment: '公式題組的總結卡：回公式頁' })}
+              </Button>
+            )}
             <Button size="md" variant="quiet" icon={<HouseIcon />} href={href('/exam/')}>
               {t({ id: 'exam.run.home', message: '回到苦練首頁' })}
             </Button>
@@ -240,7 +272,9 @@ export default function ExamRun() {
               <h3 className="ll-exam-summary__subtitle">{t({ id: 'exam.summary.wrongList', message: '答錯的題', comment: '總結卡：答錯清單的小標' })}</h3>
               {wrongHere.map((q) => (
                 <Disclosure key={q.id} summary={<span lang="zh-TW">{q.topic}</span>} variant="plain">
-                  <HandoutQuestionReadout q={q} heading={false} chosen={answerOf(run, q.id).chosen} />
+                  <HandoutQuestionReadout q={q} heading={false} chosen={answerOf(run, q.id).chosen}>
+                    <FormulaPills questionId={q.id} formulas={formulasOf} />
+                  </HandoutQuestionReadout>
                 </Disclosure>
               ))}
               <p className="ll-exam-run__hint">
@@ -315,6 +349,7 @@ export default function ExamRun() {
             update((r) => nextQuestion(r));
           }}
           scrollOnMount={freshConfirm === qid}
+          extra={<FormulaPills questionId={qid} formulas={formulasOf} />}
         />
       </div>
       <p className="ll-exam-run__hint">

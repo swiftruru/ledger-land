@@ -58,6 +58,7 @@ import {
   usedSeconds,
   type ExamRun,
 } from '../features/exam/run.ts';
+import { FormulaPills, useFormulasOfQuestions } from '../features/formulas/FormulaPills.tsx';
 import { loadHandoutDeck, loadHandoutIndex, type HandoutManifestEntry, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -89,6 +90,8 @@ async function loadQuestions(index: HandoutManifestEntry, wanted: (id: string) =
 export default function ExamMock() {
   const { t } = useLingui();
   const locale = useLocale();
+  // 成績畫面逐題的「相關公式」膠囊（作答中不顯示）
+  const formulasOf = useFormulasOfQuestions();
   const href = (p: string) => localePath(locale, p);
   const n = (x: number) => formatNumber(x, locale);
   const db = getExamDb();
@@ -467,7 +470,9 @@ export default function ExamMock() {
                     )
                   }
                 >
-                  <HandoutQuestionReadout q={q} heading={false} chosen={a.chosen} />
+                  <HandoutQuestionReadout q={q} heading={false} chosen={a.chosen}>
+                    <FormulaPills questionId={q.id} formulas={formulasOf} />
+                  </HandoutQuestionReadout>
                 </Disclosure>
               );
             })}

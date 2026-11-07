@@ -119,6 +119,46 @@ test.describe('會計公式', () => {
     await expect(page.getByTestId('not-found')).toBeVisible();
   });
 
+  test('公式題組：公式頁的「練習相關題目」開一輪只有這些題的練習，標題是公式名、返回回公式頁，答完的回饋與總結卡都連回公式；閱讀頁有「相關公式」膠囊；作答中的模擬考沒有', async ({
+    page,
+    request,
+  }) => {
+    const details = await detailsOf(request);
+    const f = details.find((d) => d.questions.formula.length > 0 && d.questions.concept.length > 0)!;
+    const total = f.questions.formula.length + f.questions.numeric.length + f.questions.concept.length;
+    await page.goto(`/formulas/${f.id}/`);
+    await waitForApp(page);
+    await expect(page.getByTestId('formula-practise')).toHaveText(`練習相關題目（${total} 題）`);
+    await page.getByTestId('formula-practise').click();
+    await waitForApp(page);
+    await expect(page).toHaveURL(new RegExp(`/exam/formula:${f.id}/$`));
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(`公式：${f.label}`);
+    await expect(page.getByRole('link', { name: '回到公式' })).toHaveAttribute('href', `/formulas/${f.id}/`);
+    const card = page.locator('.ll-exam-question');
+    await expect(card).toContainText(`第 1 題，共 ${total} 題`);
+    // 答一題：回饋的解析下面有「相關公式」膠囊，連回這條公式
+    await card.getByRole('radio').first().check();
+    await card.getByRole('button', { name: '確認答案' }).click();
+    const pills = page.getByTestId('formula-pills');
+    await expect(pills).toBeVisible();
+    await expect(pills.locator(`a[href$="/formulas/${f.id}/"]`)).toHaveText(f.label);
+    // 閱讀頁：解析下面也有膠囊
+    const q = f.questions.formula[0]!;
+    await page.goto(`/exam/browse/?deck=${q.deck}&q=${q.id}`);
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-reader').getByTestId('formula-pills').locator(`a[href$="/formulas/${f.id}/"]`)).toBeVisible();
+    // 模擬考作答中沒有膠囊
+    await page.goto('/exam/mock/');
+    await waitForApp(page);
+    await page.getByTestId('exam-mock-start').click();
+    await expect(page.locator('.ll-exam-question')).toBeVisible();
+    await expect(page.getByTestId('formula-pills')).toHaveCount(0);
+    // 沒有題的公式題組不會炸：不存在的公式是「沒有這一組題目」
+    await page.goto('/exam/formula:fm_zzzzzzzz/');
+    await waitForApp(page);
+    await expect(page.getByText('沒有這一組題目')).toBeVisible();
+  });
+
   test('Tab 標示圖鑑；入口：圖鑑、首頁捷徑、「我的」、苦練首頁；英文站的標題與分類是英文', async ({ page, request }) => {
     const index = await indexOf(request, 'en');
     await page.goto('/formulas/');

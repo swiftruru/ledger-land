@@ -163,6 +163,15 @@
 .ll-fx-sources li + li {
   margin-top: var(--ll-space-1);
 }
+.ll-fx-practise {
+  display: grid;
+  margin: 0 0 var(--ll-space-3);
+}
+@media (min-width: 600px) {
+  .ll-fx-practise {
+    justify-items: start;
+  }
+}
 .ll-fx-qnote {
   color: var(--ll-text-2);
   font-size: var(--ll-type-footnote-size);

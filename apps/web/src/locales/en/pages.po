@@ -651,6 +651,18 @@ msgstr "Formulas"
 msgid "formula.section.formula"
 msgstr "Formula"
 
+#. 公式題組的練習頁：返回按鈕的短字（必須是「回到公式」的一部分）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.backFormula.short"
+msgstr "Formula"
+
+#. 練習頁的標題：一條公式的相關題；label 是公式名稱
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.set.formula"
+msgstr "Formula: {label}"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.open.title"
@@ -682,6 +694,12 @@ msgstr "{totalText} formulas in all"
 #: src/features/formulas/useFormulaCategoryLabel.ts
 msgid "formulas.category.other"
 msgstr "Other"
+
+#. 公式題組的總結卡：回公式頁
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.formula"
+msgstr "Back to the formula"
 
 #. 總結卡按鈕：同一組重來
 #. js-lingui-explicit-id
@@ -922,6 +940,12 @@ msgstr "Merge and import"
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.vitest.role"
 msgstr "Unit tests, more than two thousand of them; component tests run directly in WebKit."
+
+#. 公式題組的練習頁：返回按鈕的可讀名稱（回公式頁）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.backFormula"
+msgstr "Back to the formula"
 
 #. 子頁返回「我的」的可讀名稱（必須包含短字「我的」）
 #. 子頁返回「我的」的可讀名稱（必須包含短字「我的」）
@@ -2316,6 +2340,12 @@ msgstr "Two things are taken directly from the teacher. One is the setting and t
 msgid "privacy.camera.title"
 msgstr "Camera"
 
+#. 苦練頁題目底下「相關公式」膠囊列的小標
+#. js-lingui-explicit-id
+#: src/features/formulas/FormulaPills.tsx
+msgid "formulas.pills.title"
+msgstr "Related formulas"
+
 #. 公式條目頁：相關公式段落標題
 #. js-lingui-explicit-id
 #: src/pages/Formula.tsx
@@ -2548,6 +2578,12 @@ msgstr "Line icons. They are written straight into the page at build time, with 
 #: src/pages/ExamRun.tsx
 msgid "exam.summary.done"
 msgstr "Round finished"
+
+#. 公式條目頁的主要按鈕：開一輪只有這些題的練習；questionTotalText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.practise"
+msgstr "Practise the related questions ({questionTotalText})"
 
 #. 清單頁的按鈕：把目前這一組拿去練；count 已格式化
 #. js-lingui-explicit-id
@@ -2860,6 +2896,12 @@ msgstr "Where it is in the handouts"
 msgid "exam.option.handoutLetter"
 msgstr "Handout option {0}"
 
+#. 練習頁空狀態的說明（公式題組）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.emptyFormula.desc"
+msgstr "None of the handout questions use this formula; practise a whole handout instead."
+
 #. 審核頁：講義標的解答字母
 #. js-lingui-explicit-id
 #. placeholder {0}: q.answer.join('／')
@@ -3123,6 +3165,12 @@ msgstr "These are the background and marker colours of {name}."
 #: src/pages/Formula.tsx
 msgid "formula.error.title"
 msgstr "This formula could not be loaded"
+
+#. 練習頁：公式題組沒有題
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.emptyFormula"
+msgstr "No related questions for this formula yet"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx

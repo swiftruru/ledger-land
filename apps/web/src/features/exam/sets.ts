@@ -1,19 +1,25 @@
 // 期中考苦練的題組（M4c）：由 manifest.handouts 的小索引組出來，不必載題庫。
-// 題組 ID：all（全部）、wrong（這台裝置上一次答錯的）、unsure（練過但還沒連對兩次的，M4c 第二批）、講義 ID（d1）、段 ID（d1s2）。
+// 題組 ID：all（全部）、wrong（這台裝置上一次答錯的）、unsure（練過但還沒連對兩次的，M4c 第二批）、講義 ID（d1）、段 ID（d1s2）、
+// formula:<公式 ID>（一條會計公式的相關講義題，2026-11-07；題目清單來自公式索引，依講義順序）。
 // teacher、list、browse、mock 是苦練區其他頁面的路由，不是題組。
-import type { HandoutDeckEntry, HandoutManifestEntry } from '../../lib/content.ts';
+import type { FormulaIndexEntry, HandoutDeckEntry, HandoutManifestEntry } from '../../lib/content.ts';
 
 export interface ExamSet {
   id: string;
-  kind: 'all' | 'wrong' | 'unsure' | 'deck' | 'section';
+  kind: 'all' | 'wrong' | 'unsure' | 'deck' | 'section' | 'formula';
   deckIds: string[];
   questionIds: string[];
-  /** 講義或段的標題（all、wrong 與 unsure 由頁面自己翻譯） */
+  /** 講義或段的標題、公式的名稱（all、wrong 與 unsure 由頁面自己翻譯） */
   title?: string;
   deck?: HandoutDeckEntry;
+  /** formula 題組：公式 ID（回公式頁用） */
+  formulaId?: string;
 }
 
-export const isSetId = (id: string): boolean => id === 'all' || id === 'wrong' || id === 'unsure' || /^d[1-9]\d*(s[1-9]\d*)?$/.test(id);
+const FORMULA_SET_RE = /^formula:(fm_[0-9a-hjkmnp-tv-z]{8})$/;
+export const formulaIdOfSet = (id: string): string | null => FORMULA_SET_RE.exec(id)?.[1] ?? null;
+export const isSetId = (id: string): boolean =>
+  id === 'all' || id === 'wrong' || id === 'unsure' || /^d[1-9]\d*(s[1-9]\d*)?$/.test(id) || FORMULA_SET_RE.test(id);
 
 /** 依這台裝置的紀錄挑出來的兩組題（stats.ts 的 picksOf） */
 export interface SetPicks {
@@ -26,9 +32,21 @@ export function allQuestionIds(index: HandoutManifestEntry): string[] {
   return [...index.decks].sort((a, b) => a.order - b.order).flatMap((d) => d.sections.flatMap((s) => s.questionIds));
 }
 
-export function resolveSet(index: HandoutManifestEntry, setId: string, picks: SetPicks): ExamSet | null {
+/**
+ * @param formulas 公式索引（formula 題組才用得到；沒傳時 formula 題組回 null）
+ */
+export function resolveSet(index: HandoutManifestEntry, setId: string, picks: SetPicks, formulas?: readonly FormulaIndexEntry[]): ExamSet | null {
   const decks = [...index.decks].sort((a, b) => a.order - b.order);
   if (setId === 'all') return { id: setId, kind: 'all', deckIds: decks.map((d) => d.id), questionIds: allQuestionIds(index) };
+  const formulaId = formulaIdOfSet(setId);
+  if (formulaId !== null) {
+    const formula = formulas?.find((f) => f.id === formulaId);
+    if (!formula) return null;
+    const wanted = new Set(formula.questionIds);
+    const ids = allQuestionIds(index).filter((id) => wanted.has(id));
+    const deckIds = decks.filter((d) => d.sections.some((s) => s.questionIds.some((id) => wanted.has(id)))).map((d) => d.id);
+    return { id: setId, kind: 'formula', deckIds, questionIds: ids, title: formula.label, formulaId };
+  }
   if (setId === 'wrong' || setId === 'unsure') {
     const picked = setId === 'wrong' ? picks.wrongIds : picks.unsureIds;
     const ids = allQuestionIds(index).filter((id) => picked.has(id));

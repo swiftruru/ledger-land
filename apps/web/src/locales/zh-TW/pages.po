@@ -651,6 +651,18 @@ msgstr "公式"
 msgid "formula.section.formula"
 msgstr "公式"
 
+#. 公式題組的練習頁：返回按鈕的短字（必須是「回到公式」的一部分）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.backFormula.short"
+msgstr "公式"
+
+#. 練習頁的標題：一條公式的相關題；label 是公式名稱
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.set.formula"
+msgstr "公式：{label}"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.open.title"
@@ -682,6 +694,12 @@ msgstr "共 {totalText} 條公式"
 #: src/features/formulas/useFormulaCategoryLabel.ts
 msgid "formulas.category.other"
 msgstr "其他"
+
+#. 公式題組的總結卡：回公式頁
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.formula"
+msgstr "再看公式"
 
 #. 總結卡按鈕：同一組重來
 #. js-lingui-explicit-id
@@ -922,6 +940,12 @@ msgstr "合併匯入"
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.vitest.role"
 msgstr "單元測試，兩千多條；元件的測試直接在 WebKit 裡跑。"
+
+#. 公式題組的練習頁：返回按鈕的可讀名稱（回公式頁）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.backFormula"
+msgstr "回到公式"
 
 #. 子頁返回「我的」的可讀名稱（必須包含短字「我的」）
 #. 子頁返回「我的」的可讀名稱（必須包含短字「我的」）
@@ -2316,6 +2340,12 @@ msgstr "直接沿用老師的東西有兩處。一是故事裡那家公司的情
 msgid "privacy.camera.title"
 msgstr "相機"
 
+#. 苦練頁題目底下「相關公式」膠囊列的小標
+#. js-lingui-explicit-id
+#: src/features/formulas/FormulaPills.tsx
+msgid "formulas.pills.title"
+msgstr "相關公式"
+
 #. 公式條目頁：相關公式段落標題
 #. js-lingui-explicit-id
 #: src/pages/Formula.tsx
@@ -2548,6 +2578,12 @@ msgstr "線條圖示。建置時直接寫進頁面，不另外發請求，也不
 #: src/pages/ExamRun.tsx
 msgid "exam.summary.done"
 msgstr "練完這一輪"
+
+#. 公式條目頁的主要按鈕：開一輪只有這些題的練習；questionTotalText 已格式化
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.practise"
+msgstr "練習相關題目（{questionTotalText} 題）"
 
 #. 清單頁的按鈕：把目前這一組拿去練；count 已格式化
 #. js-lingui-explicit-id
@@ -2860,6 +2896,12 @@ msgstr "講義出處"
 msgid "exam.option.handoutLetter"
 msgstr "講義的 {0}"
 
+#. 練習頁空狀態的說明（公式題組）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.emptyFormula.desc"
+msgstr "講義的練習題裡沒有用到這條公式的題，先練整份講義吧。"
+
 #. 審核頁：講義標的解答字母
 #. js-lingui-explicit-id
 #. placeholder {0}: q.answer.join('／')
@@ -3123,6 +3165,12 @@ msgstr "這是「{name}」的底色和記號色。"
 #: src/pages/Formula.tsx
 msgid "formula.error.title"
 msgstr "這條公式讀不到"
+
+#. 練習頁：公式題組沒有題
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.emptyFormula"
+msgstr "這條公式還沒有相關題目"
 
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx

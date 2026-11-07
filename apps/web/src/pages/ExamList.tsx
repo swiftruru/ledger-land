@@ -10,6 +10,7 @@ import { getExamDb, type QuestionState } from '../features/exam/db.ts';
 import { HandoutQuestionReadout } from '../features/exam/HandoutQuestionReadout.tsx';
 import { allQuestionIds } from '../features/exam/sets.ts';
 import { picksOf } from '../features/exam/stats.ts';
+import { FormulaPills, useFormulasOfQuestions } from '../features/formulas/FormulaPills.tsx';
 import { loadHandoutDeck, loadHandoutIndex, type HandoutManifestEntry, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -30,6 +31,7 @@ type State =
 
 export default function ExamList() {
   const { t } = useLingui();
+  const formulasOf = useFormulasOfQuestions();
   const locale = useLocale();
   const href = (p: string) => localePath(locale, p);
   const [search, setSearch] = useSearchParams();
@@ -169,7 +171,9 @@ export default function ExamList() {
                         {t({ id: 'exam.q.slide', message: `第 ${n(q.slide)} 頁`, comment: '唯讀題目的來源：講義的頁次（已格式化）' })}
                       </span>
                     }
-                  />
+                  >
+                    <FormulaPills questionId={q.id} formulas={formulasOf} />
+                  </HandoutQuestionReadout>
                 </Disclosure>
               );
             })}

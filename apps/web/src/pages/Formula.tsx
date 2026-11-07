@@ -16,6 +16,7 @@ import {
   ErrorState,
   NavList,
   NavRow,
+  PlayIcon,
   RatioIcon,
   TermPill,
   TermPillList,
@@ -308,6 +309,16 @@ function FormulaPage({ retried, onRetry }: { retried: boolean; onRetry: () => vo
               comment: '相關題目的說明：題目來自講義題庫，點了會到閱讀頁',
             })}
           </p>
+          {/* 一輪只練這些題（formula:<id> 題組，依講義順序；答完的回饋有「相關公式」膠囊回到這裡） */}
+          <div className="ll-fx-practise">
+            <Button variant="primary" size="md" icon={<PlayIcon />} href={localePath(locale, `/exam/formula:${formula.id}/`)} data-testid="formula-practise">
+              {t({
+                id: 'formula.practise',
+                message: `練習相關題目（${questionTotalText} 題）`,
+                comment: '公式條目頁的主要按鈕：開一輪只有這些題的練習；questionTotalText 已格式化',
+              })}
+            </Button>
+          </div>
           {RELATIONS.filter((r) => formula.questions[r].length > 0).map((r, i) => (
             <Disclosure
               key={r}

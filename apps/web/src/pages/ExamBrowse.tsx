@@ -32,6 +32,7 @@ import {
   type ShowFilter,
 } from '../features/exam/reading.ts';
 import { buildSearchIndex, matchingIds, searchTerms } from '../features/exam/search.ts';
+import { useFormulasOfQuestions } from '../features/formulas/FormulaPills.tsx';
 import { loadHandoutDeck, loadHandoutIndex, type HandoutManifestEntry, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -98,6 +99,7 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
   const locale = useLocale();
   const [search, setSearch] = useSearchParams();
   const [marks, setMarks] = useState(initialMarks);
+  const formulasOf = useFormulasOfQuestions();
   const [pos, setPosState] = useState(readExamBrowsePos);
   const posRef = useRef(pos);
   const [hide, setHideState] = useState(readExamBrowseHide);
@@ -218,6 +220,7 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
         <BrowseReader
           key={current.id}
           q={current}
+          formulas={formulasOf}
           deckCode={deck?.code ?? ''}
           sectionTitle={section?.title ?? ''}
           position={sequence.indexOf(current.id) + 1}
