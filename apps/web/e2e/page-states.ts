@@ -42,6 +42,9 @@ const STORY = 'story_ywv2dy';
 const STORY_STEP = 'st_98tppx';
 const EXT_CHAPTER = 'ch_155y47';
 const TERM = 'tm_r4w8n2qe';
+/** 公式頁的案例：權益報酬率（有講義版本、出處與三組相關題）與會計恆等式（報表關係類） */
+const FORMULA = 'fm_0tqaf9qd';
+const FORMULA_RELATION = 'fm_3b2yf4gc';
 /** 收藏用的取捨題（第 3 關，glossary.spec.ts 的 JUDGMENT_QUESTION） */
 const FAV_QUESTION = 'q_ytrpj345';
 /** 不在任何關卡裡的題目 ID（已下架的收藏與錯題） */
@@ -589,6 +592,20 @@ export const CASES: readonly PageCase[] = [
   },
   { group: '名詞頁', name: '未收進', path: `/terms/${TERM}/`, prepare: (page) => visible(page, 'term-definition') },
   { group: '名詞頁', name: '參考', path: (d) => `/terms/${d.reference.id}/`, prepare: (page) => visible(page, 'term-definition') },
+
+  // 會計公式（2026-11-07）：總覽（全部、選一類、搜尋、無結果）與條目頁（ROE：有版本、出處、三組題）
+  { group: '會計公式', name: '全部', path: '/formulas/', tablet: true, prepare: (page) => visible(page, 'formula-groups') },
+  {
+    group: '會計公式',
+    name: '選一類',
+    path: '/formulas/?group=profitability',
+    tablet: true,
+    prepare: (page) => visible(page, 'formula-section-profitability'),
+  },
+  { group: '會計公式', name: '搜尋', path: '/formulas/?q=roe', tablet: true, prepare: (page) => visible(page, 'formula-row') },
+  { group: '會計公式', name: '搜尋無結果', path: '/formulas/?q=zzzzzz', tablet: true, prepare: (page) => visible(page, 'formulas-empty') },
+  { group: '公式頁', name: '指標', path: `/formulas/${FORMULA}/`, prepare: (page) => visible(page, 'formula-questions') },
+  { group: '公式頁', name: '報表關係', path: `/formulas/${FORMULA_RELATION}/`, prepare: (page) => visible(page, 'formula-components') },
 
   // 我的
   { group: '我的', name: '新使用者', path: '/me/', tablet: true },

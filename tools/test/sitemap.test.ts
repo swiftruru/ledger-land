@@ -72,6 +72,12 @@ describe('sitemapPages', () => {
     ]);
   });
 
+  it('公式頁從公式索引取；沒有公式索引時沒有公式頁', () => {
+    const t = { static: ['/formulas/'], dynamic: ['formula'] };
+    expect(sitemapPages({ table: t, contentManifest, termIndex, formulaIndex: [{ id: 'fm_0tqaf9qd' }] })).toEqual(['/formulas/', '/formulas/fm_0tqaf9qd/']);
+    expect(sitemapPages({ table: t, contentManifest, termIndex })).toEqual(['/formulas/']);
+  });
+
   it('不認得的動態種類與格式不對的內容 ID 都丟錯', () => {
     expect(() => sitemapPages({ table: { static: [], dynamic: ['level'] }, contentManifest, termIndex })).toThrow(/不認得的動態頁面種類 level/);
     expect(

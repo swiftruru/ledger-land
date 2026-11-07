@@ -21,8 +21,11 @@ import {
   ErrorState,
   GlossaryGrid,
   GlossaryItem,
+  NavList,
+  NavRow,
   PageHeader,
   ProgressBar,
+  RatioIcon,
   SearchField,
   Segmented,
   StatChip,
@@ -325,6 +328,24 @@ function TermsPage({ onRetry }: { onRetry: () => void }) {
         />
       ) : view === null || counts === null || collectGroups === null ? null : (
         <>
+          {/* 會計公式（2026-11-07）：圖鑑分頁底下的另一區，入口放在收集進度卡前面 */}
+          <NavList
+            aria-label={t({ id: 'formulas.entry.title', message: '會計公式', comment: '首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）' })}
+            className="ll-glossary__formulas"
+            data-testid="terms-formulas"
+          >
+            <NavRow
+              icon={<RatioIcon />}
+              title={t({ id: 'formulas.entry.title', message: '會計公式' })}
+              description={t({
+                id: 'terms.formulas.desc',
+                message: '比率與報表關係怎麼算：公式、各項數值的意思、範例、講義出處與相關題',
+                comment: '圖鑑頁會計公式入口列的說明',
+              })}
+              href={localePath(locale, '/formulas/')}
+              data-testid="terms-formulas-row"
+            />
+          </NavList>
           <div className="ll-glossary__top">
             <Card className="ll-glossary__progress" data-testid="terms-progress">
               <p className="ll-glossary__eyebrow">{t({ id: 'terms.progress.label', message: '圖鑑收集', comment: '名詞圖鑑收集進度卡的小標' })}</p>

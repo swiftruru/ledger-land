@@ -202,9 +202,12 @@ describe('快照裡的公式', () => {
     );
     expect(counts.formulas).toBe(1);
     const index = JSON.parse(files.get(manifest.formulaIndex['zh-TW'].replace(/^content\//, ''))!);
-    expect(index.map((f: { id: string; label: string }) => [f.id, f.label])).toEqual([['fm_f0rm0001', termById(parsed, 'tm_f0rm0001')['zh-TW']]]);
+    expect(index.map((f: { id: string; label: string; aliases: string[] }) => [f.id, f.label, f.aliases])).toEqual([
+      ['fm_f0rm0001', termById(parsed, 'tm_f0rm0001')['zh-TW'], []],
+    ]);
     const details = JSON.parse(files.get(manifest.formulaDetails.en.replace(/^content\//, ''))!);
     expect(details[0].reading).toBe('越高越好，但要看是不是靠借錢。 (en)');
+    expect(details[0].aliases).toEqual([]);
     expect(details[0].versions[0].deck.code).toBe('0-3');
     expect(manifest.formulaIndex['zh-TW']).toMatch(/^content\/zh-TW\/formula-index\.[0-9a-f]{6}\.json$/);
     expect(manifest.formulaDetails['zh-TW']).toMatch(/^content\/zh-TW\/formulas\.[0-9a-f]{6}\.json$/);

@@ -1,7 +1,15 @@
 // 講義題庫的離線保險（features/exam/prefetch.ts）：網址依講義順序、離線或省流量不送、等 SW ready 後把 PREFETCH_HANDOUT 訊息送給 active
 import { describe, expect, it, vi } from 'vitest';
 import type { HandoutManifestEntry } from '../src/lib/content.ts';
-import { handoutPrefetchUrls, postHandoutPrefetch, PREFETCH_HANDOUT, shouldPrefetch } from '../src/features/exam/prefetch.ts';
+import {
+  formulaPrefetchUrls,
+  handoutPrefetchUrls,
+  postFormulaPrefetch,
+  postHandoutPrefetch,
+  PREFETCH_FORMULAS,
+  PREFETCH_HANDOUT,
+  shouldPrefetch,
+} from '../src/features/exam/prefetch.ts';
 
 const index = {
   decks: [
@@ -36,6 +44,16 @@ describe('exam prefetch', () => {
     });
     expect(await postHandoutPrefetch(index, nav(null))).toBe(false);
     expect(await postHandoutPrefetch(index, nav({ postMessage }, { onLine: false }))).toBe(false);
+    expect(postMessage).toHaveBeenCalledTimes(1);
+  });
+
+  it('公式的完整內容檔：manifest 兩個語系的檔都送；沒有公式的快照不送', async () => {
+    const manifest = { formulaDetails: { 'zh-TW': 'content/zh-TW/formulas.aaa.json', en: 'content/en/formulas.bbb.json' } };
+    expect(formulaPrefetchUrls(manifest)).toEqual(['/content/zh-TW/formulas.aaa.json', '/content/en/formulas.bbb.json']);
+    const postMessage = vi.fn<(message: unknown) => void>();
+    expect(await postFormulaPrefetch(manifest, nav({ postMessage }))).toBe(true);
+    expect(postMessage).toHaveBeenCalledWith({ type: PREFETCH_FORMULAS, urls: ['/content/zh-TW/formulas.aaa.json', '/content/en/formulas.bbb.json'] });
+    expect(await postFormulaPrefetch({}, nav({ postMessage }))).toBe(false);
     expect(postMessage).toHaveBeenCalledTimes(1);
   });
 });

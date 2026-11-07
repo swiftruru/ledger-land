@@ -1,7 +1,7 @@
 import { createBrowserRouter, type RouteObject } from 'react-router';
 import type { Locale } from '@ledgerland/i18n';
 import { site } from '../../site.config.ts';
-import { loadChapterIndex, loadLevel, loadTermDetail, loadTermIndex } from '../lib/content.ts';
+import { loadChapterIndex, loadFormulaDetail, loadFormulaIndex, loadLevel, loadTermDetail, loadTermIndex } from '../lib/content.ts';
 import { loadLayerCatalog, type CatalogLayer } from '../i18n/layer-catalogs.ts';
 import { RouteError } from '../components/RouteError.tsx';
 import { Home } from '../pages/Home.tsx';
@@ -31,6 +31,15 @@ function buildRoutes(locale: Locale): RouteObject[] {
   // 另一種語言只給名詞卡的次要名稱，由 TermsProvider 在第一次繪製後補讀，不跟第二波搶頻寬（06 第 8.2 節）
   const prefetchTermIndex = () => {
     void loadTermIndex(locale).catch(() => {});
+  };
+  // 會計公式（2026-11-07）：總覽讀公式索引（在 precache）；條目頁讀完整內容檔（執行期快取）加名詞索引（成分與相關名詞的名稱）
+  const prefetchFormulaIndex = () => {
+    void loadFormulaIndex(locale).catch(() => {});
+  };
+  const prefetchFormulaDetail = ({ params }: { params: { formulaId?: string } }) => {
+    if (params.formulaId) void loadFormulaDetail(params.formulaId, locale).catch(() => {});
+    void loadFormulaIndex(locale).catch(() => {});
+    return null;
   };
   // 名詞頁：兩種語言的這個名詞的完整內容檔（各約 5 個名詞）與章節索引（「會在哪一關遇到」的關卡名）在載入頁面 chunk 的同時就開始讀（loader 不等它）
   const prefetchTermDetail = ({ params }: { params: { termId?: string } }) => {
@@ -126,6 +135,12 @@ function buildRoutes(locale: Locale): RouteObject[] {
       handle: { layout: 'wide' } satisfies RouteHandle,
     },
     { path: 'terms/:termId', lazy: lazyPage(() => import('../pages/Term.tsx')), loader: prefetchTermDetail },
+    {
+      path: 'formulas',
+      lazy: lazyPage(() => import('../pages/Formulas.tsx'), prefetchFormulaIndex, 'pages'),
+      handle: { layout: 'wide' } satisfies RouteHandle,
+    },
+    { path: 'formulas/:formulaId', lazy: lazyPage(() => import('../pages/Formula.tsx'), undefined, 'pages'), loader: prefetchFormulaDetail },
     { path: 'me', lazy: lazyPage(() => import('../pages/Me.tsx')), handle: { noindex: true, layout: 'wide' } satisfies RouteHandle },
     { path: 'me/settings', lazy: lazyPage(() => import('../pages/Settings.tsx'), undefined, 'pages'), handle: { noindex: true } satisfies RouteHandle },
     {

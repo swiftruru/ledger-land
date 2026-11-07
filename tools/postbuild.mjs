@@ -142,7 +142,11 @@ try {
   if (typeof termIndexPath !== 'string') fail('content-manifest 沒有 zh-TW 的 termIndex，無法列出名詞頁');
   const termIndex = JSON.parse(readFileSync(join(dist, termIndexPath), 'utf8'));
   if (!Array.isArray(termIndex)) fail('名詞索引不是陣列，無法列出名詞頁');
-  const pages = sitemapPages({ table: sitemapTable, contentManifest, termIndex });
+  // 公式頁（2026-11-07）：沒有公式索引的快照（舊內容）就沒有公式頁
+  const formulaIndexPath = contentManifest.formulaIndex?.['zh-TW'];
+  const formulaIndex = typeof formulaIndexPath === 'string' ? JSON.parse(readFileSync(join(dist, formulaIndexPath), 'utf8')) : [];
+  if (!Array.isArray(formulaIndex)) fail('公式索引不是陣列，無法列出公式頁');
+  const pages = sitemapPages({ table: sitemapTable, contentManifest, termIndex, formulaIndex });
   const sitemapPath = join(dist, 'sitemap.xml');
   if (isProduction) {
     const xml = buildSitemap({ origin: site.productionOrigin, locales: LOCALES, pages });

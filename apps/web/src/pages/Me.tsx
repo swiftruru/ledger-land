@@ -17,6 +17,7 @@ import {
   DeviceIcon,
   ExportIcon,
   FlaskIcon,
+  RatioIcon,
   GearIcon,
   HeartIcon,
   InfoIcon,
@@ -220,6 +221,13 @@ export default function Me() {
               description={t({ id: 'me.exam.desc', message: '先讀題、再練習、最後模擬考；題目與答案照講義', comment: '「我的」學習群組苦練列的說明' })}
               href={href('/exam/')}
               data-testid="me-exam-row"
+            />
+            <NavRow
+              icon={<RatioIcon />}
+              title={t({ id: 'formulas.entry.title', message: '會計公式', comment: '首頁捷徑、「我的」與圖鑑連到會計公式總覽的標題（和頁面標題相同）' })}
+              description={t({ id: 'me.formulas.desc', message: '比率與報表關係的公式、範例與講義出處', comment: '「我的」學習群組會計公式列的說明' })}
+              href={href('/formulas/')}
+              data-testid="me-formulas-row"
             />
             <NavRow
               icon={<FlaskIcon />}

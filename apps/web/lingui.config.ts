@@ -23,6 +23,10 @@ const PAGE_CATALOG_SOURCES = [
   '<rootDir>/src/pages/Privacy.tsx',
   '<rootDir>/src/pages/Settings.tsx',
   // 期中考苦練（M4c，2026-11-04）：三頁與它的元件都在第二層；首頁與「我的」的入口字串留在第一層
+  // 會計公式（2026-11-07）：兩頁與它的元件在第二層；圖鑑、首頁與「我的」的入口字串留在第一層
+  '<rootDir>/src/pages/Formulas.tsx',
+  '<rootDir>/src/pages/Formula.tsx',
+  '<rootDir>/src/features/formulas/**/*.{ts,tsx}',
   '<rootDir>/src/pages/Exam.tsx',
   '<rootDir>/src/pages/ExamRun.tsx',
   '<rootDir>/src/pages/ExamTeacher.tsx',

@@ -74,6 +74,18 @@
       "content": ["termDetail", "chapterIndex"]
     },
     {
+      "pattern": "^/formulas/$",
+      "module": "src/pages/Formulas.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
+      "pattern": "^/formulas/([^/]+)/$",
+      "module": "src/pages/Formula.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
       "pattern": "^/lab/$",
       "module": "src/pages/Lab.tsx",
       "content": []
