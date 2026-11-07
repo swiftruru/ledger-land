@@ -8,9 +8,11 @@ import { type CoreContext, type PostedRun, buildTAccounts } from '../src/ledger/
 import { unwrap } from '../src/result.ts';
 import { type Statements, buildStatements, checkStatementInvariants, lineValue, measureMap } from '../src/statements/index.ts';
 import { type Story, createCoreContext, orderedSteps, replayStory } from '../src/story/index.ts';
+import { traceAllLines, verifyTraceTree } from '../src/trace/index.ts';
 import officialStoryJson from '../../../content/stories/story_ywv2dy.json' with { type: 'json' };
 
 const ctx: CoreContext = createCoreContext();
+const ifrsCtx: CoreContext = createCoreContext({ policy: 'ifrs@1' });
 const story = officialStoryJson as Story;
 const run = unwrap(replayStory(story, [], ctx));
 const stepIds = orderedSteps(story).map((s) => s.id);
@@ -131,4 +133,45 @@ describe('正式故事 story_ywv2dy 的不變式（每一步、累計與本筆�
       expect(fiveStepCheck(cumulative(stepId, again))).toEqual(fiveStepCheck(cumulative(stepId)));
     }
   });
+});
+
+describe('正式故事在 ifrs@1 政策配 ifrs@1 版面下的不變式（D10(f)，M4b；只斷言不變式，不寫金額）', () => {
+  const ifrsRun = unwrap(replayStory(story, [], ifrsCtx));
+  const build = (win: Statements['window']) => buildStatements(ifrsRun, win, ifrsCtx.layout, ifrsCtx.policy);
+
+  it('18 步全部重播成功；每一步的現金和教材口徑相同；第 5 步費用化、第 17 步的攤銷事件沒有分錄', () => {
+    expect(ifrsRun.steps.map((s) => s.stepId)).toEqual(stepIds);
+    for (let i = 0; i < stepIds.length; i++) expect(ifrsRun.steps[i]?.balancesAfter['cash'], stepIds[i]).toBe(run.steps[i]?.balancesAfter['cash']);
+    expect(ifrsRun.steps[4]?.entries[0]?.lines.map((l) => l.account)).toEqual(['organisation_costs_expense', 'cash']);
+    const amortise = ifrsRun.steps.flatMap((s) => s.entries).filter((e) => e.template === 'tpl.amortise_org_costs');
+    expect(amortise.length).toBeGreaterThan(0);
+    for (const e of amortise) expect(e.lines).toEqual([]);
+  });
+
+  for (const stepId of stepIds) {
+    it(`步驟 ${stepId}：不變式成立、四個勾稽點為 0、步驟①沒有經常利益、間接法等於直接法、期末現金等於資產負債表現金、追蹤樹成立`, () => {
+      for (const st of [build({ kind: 'cumulative', to: stepId }), build({ kind: 'transaction', step: stepId })]) {
+        expect(st.layoutId).toBe('ifrs@1');
+        expect(
+          checkStatementInvariants(st)
+            .filter((r) => !r.pass)
+            .map((r) => `${st.window.kind} ${r.rule} ${r.line} vs ${r.against}`),
+        ).toEqual([]);
+        for (const [indirect, direct] of INDIRECT_VS_DIRECT)
+          expect(lineValue(st, indirect).value, `${st.window.kind} ${indirect}`).toBe(lineValue(st, direct).value);
+        expect(lineValue(st, 'cf_cash_end').value, st.window.kind).toBe(lineValue(st, 'bs_cash').value);
+        for (const node of traceAllLines(ifrsRun, st.window, ifrsCtx.layout, ifrsCtx.policy, { statements: st })) {
+          if (!st.lines.get(node.line)?.visible) continue;
+          expect(verifyTraceTree(node, ifrsCtx.layout, { statements: st }).failures, `${st.window.kind} ${node.line}`).toEqual([]);
+        }
+        if (st.window.kind === 'cumulative') {
+          const r = fiveStepCheck(st);
+          expect(r.checks.map((c) => c.diff)).toEqual([0, 0, 0, 0]);
+          expect(r.step1.ordinaryIncome).toBeNull();
+          expect(r.step1.netIncome).toBe(r.step1.pretaxIncome - lineValue(st, 'is_income_tax_expense').value);
+          expect(r.step1.operatingIncome).toBe(r.step1.grossProfit - lineValue(st, 'is_sga_total').value);
+        }
+      }
+    });
+  }
 });

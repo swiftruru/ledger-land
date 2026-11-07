@@ -55,7 +55,8 @@ export type ParamSpec = z.infer<typeof ParamSpec>;
 export const DerivedSpec = z.object({ name: Name, type: z.enum(['money', 'number']), expr: Expr, label: LocalizedText }).strict();
 export type DerivedSpec = z.infer<typeof DerivedSpec>;
 
-export const Precondition = z.object({ id: SemanticId, expr: Expr, message: LocalizedText }).strict();
+/** 前置條件；policyWhen 有值時只在相符的政策下檢查（14 第 5.2 節 L3，M4b） */
+export const Precondition = z.object({ id: SemanticId, expr: Expr, message: LocalizedText, policyWhen: PolicyWhen.optional() }).strict();
 export type Precondition = z.infer<typeof Precondition>;
 
 /** 範本行 ID：l 加流水號 */

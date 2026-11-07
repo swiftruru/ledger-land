@@ -100,12 +100,17 @@ describe('templates/*.json（04 第 7 節的建置期檢查）', () => {
     'tpl.pay_dividends_cash',
   ];
 
-  it('涵蓋教材故事 18 種交易與黃金測試需要的範本，ID 唯一、rev 1、已發布', () => {
+  it('涵蓋教材故事 18 種交易與黃金測試需要的範本，ID 唯一、rev 1（攤銷範本 2026-11-07 加前置條件後是 rev 2、revKind answer）、已發布', () => {
     expect(defaultTemplates.map((t) => t.id)).toEqual(EXPECTED_IDS);
     for (const t of defaultTemplates) {
       expect(t.id).toMatch(/^tpl\.[a-z][a-z0-9_]*$/);
-      expect(t.rev).toBe(1);
-      expect(t.revKind).toBe('text');
+      if (t.id === 'tpl.amortise_org_costs') {
+        expect(t.rev).toBe(2);
+        expect(t.revKind).toBe('answer');
+      } else {
+        expect(t.rev).toBe(1);
+        expect(t.revKind).toBe('text');
+      }
       expect(t.status).toBe('published');
       expect(Object.keys(t).slice(0, 12)).toEqual([
         'id',

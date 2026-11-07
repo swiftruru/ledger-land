@@ -43,7 +43,7 @@
       "$ref": "#/definitions/__schema16"
     },
     "lines": {
-      "$ref": "#/definitions/__schema17"
+      "$ref": "#/definitions/__schema23"
     },
     "explanation": {
       "$ref": "#/definitions/LocalizedText"
@@ -257,6 +257,13 @@
           },
           "message": {
             "$ref": "#/definitions/LocalizedText"
+          },
+          "policyWhen": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/PolicyWhen"
+              }
+            ]
           }
         },
         "required": [
@@ -271,7 +278,73 @@
       "type": "string",
       "pattern": "^[a-z][a-z0-9_]*$"
     },
+    "PolicyWhen": {
+      "type": "object",
+      "properties": {
+        "orgCosts": {
+          "$ref": "#/definitions/__schema17"
+        },
+        "inventoryOverage": {
+          "$ref": "#/definitions/__schema18"
+        },
+        "inventoryShortage": {
+          "$ref": "#/definitions/__schema19"
+        },
+        "incomeTax": {
+          "$ref": "#/definitions/__schema20"
+        },
+        "interestPaidActivity": {
+          "$ref": "#/definitions/__schema21"
+        },
+        "officeSupplies": {
+          "$ref": "#/definitions/__schema22"
+        }
+      },
+      "additionalProperties": false
+    },
     "__schema17": {
+      "type": "string",
+      "enum": [
+        "capitalise_amortise",
+        "expense"
+      ]
+    },
+    "__schema18": {
+      "type": "string",
+      "enum": [
+        "reduce_cogs",
+        "non_operating_income",
+        "extraordinary_gain"
+      ]
+    },
+    "__schema19": {
+      "type": "string",
+      "enum": [
+        "increase_cogs"
+      ]
+    },
+    "__schema20": {
+      "type": "string",
+      "enum": [
+        "cash_direct",
+        "accrue_then_pay"
+      ]
+    },
+    "__schema21": {
+      "type": "string",
+      "enum": [
+        "operating",
+        "financing"
+      ]
+    },
+    "__schema22": {
+      "type": "string",
+      "enum": [
+        "expense_on_purchase",
+        "asset_then_expense"
+      ]
+    },
+    "__schema23": {
       "minItems": 1,
       "type": "array",
       "items": {
@@ -282,7 +355,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "$ref": "#/definitions/__schema18"
+          "$ref": "#/definitions/__schema24"
         },
         "account": {
           "$ref": "#/definitions/SemanticId"
@@ -294,13 +367,13 @@
           "$ref": "#/definitions/Expr"
         },
         "cf": {
-          "$ref": "#/definitions/__schema19"
+          "$ref": "#/definitions/__schema25"
         },
         "tag": {
-          "$ref": "#/definitions/__schema20"
+          "$ref": "#/definitions/__schema26"
         },
         "policyWhen": {
-          "$ref": "#/definitions/__schema21"
+          "$ref": "#/definitions/__schema27"
         },
         "memo": {
           "$ref": "#/definitions/__schema28"
@@ -314,7 +387,7 @@
       ],
       "additionalProperties": false
     },
-    "__schema18": {
+    "__schema24": {
       "type": "string",
       "pattern": "^l[1-9]\\d*$"
     },
@@ -325,7 +398,7 @@
         "credit"
       ]
     },
-    "__schema19": {
+    "__schema25": {
       "allOf": [
         {
           "$ref": "#/definitions/CashFlowTag"
@@ -378,7 +451,7 @@
         "dividends_paid"
       ]
     },
-    "__schema20": {
+    "__schema26": {
       "type": "string",
       "enum": [
         "purchase",
@@ -389,77 +462,11 @@
         "reserve_appropriation"
       ]
     },
-    "__schema21": {
+    "__schema27": {
       "allOf": [
         {
           "$ref": "#/definitions/PolicyWhen"
         }
-      ]
-    },
-    "PolicyWhen": {
-      "type": "object",
-      "properties": {
-        "orgCosts": {
-          "$ref": "#/definitions/__schema22"
-        },
-        "inventoryOverage": {
-          "$ref": "#/definitions/__schema23"
-        },
-        "inventoryShortage": {
-          "$ref": "#/definitions/__schema24"
-        },
-        "incomeTax": {
-          "$ref": "#/definitions/__schema25"
-        },
-        "interestPaidActivity": {
-          "$ref": "#/definitions/__schema26"
-        },
-        "officeSupplies": {
-          "$ref": "#/definitions/__schema27"
-        }
-      },
-      "additionalProperties": false
-    },
-    "__schema22": {
-      "type": "string",
-      "enum": [
-        "capitalise_amortise",
-        "expense"
-      ]
-    },
-    "__schema23": {
-      "type": "string",
-      "enum": [
-        "reduce_cogs",
-        "non_operating_income",
-        "extraordinary_gain"
-      ]
-    },
-    "__schema24": {
-      "type": "string",
-      "enum": [
-        "increase_cogs"
-      ]
-    },
-    "__schema25": {
-      "type": "string",
-      "enum": [
-        "cash_direct",
-        "accrue_then_pay"
-      ]
-    },
-    "__schema26": {
-      "type": "string",
-      "enum": [
-        "operating",
-        "financing"
-      ]
-    },
-    "__schema27": {
-      "type": "string",
-      "enum": [
-        "expense_on_purchase",
-        "asset_then_expense"
       ]
     },
     "__schema28": {

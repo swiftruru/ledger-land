@@ -1,6 +1,7 @@
 // 內建資料（packages/core/data，MIT）：科目表、交易範本（原始、未編譯）、認列政策、教材版面與指標登錄檔。
 // JSON 匯入後的型別是寬鬆的字串，這裡以本模組的型別宣告收斂；資料的靜態檢查在 test/data.test.ts。
 import accountsJson from '../../data/accounts.json' with { type: 'json' };
+import ifrsLayoutJson from '../../data/layouts/ifrs@1.json' with { type: 'json' };
 import teacherLayoutJson from '../../data/layouts/teacher@1.json' with { type: 'json' };
 import policiesJson from '../../data/policies.json' with { type: 'json' };
 import ratiosJson from '../../data/ratios.json' with { type: 'json' };
@@ -60,6 +61,17 @@ export const defaultTemplates: readonly TransactionTemplate[] = [
 export const defaultPolicies: readonly PolicyDefinition[] = policiesJson as unknown as readonly PolicyDefinition[];
 
 export const teacherLayout: Layout = teacherLayoutJson as unknown as Layout;
+
+/** IFRS 對照的版面（04 第 10.3 節，M4b）：和 teacher@1 共用線 ID；沒有經常利益、非常損益、攤銷遞延資產與遞延資產，cell 全為 null */
+export const ifrsLayout: Layout = ifrsLayoutJson as unknown as Layout;
+
+/** 內建版面，ID 和政策相同（teacher@1、ifrs@1）：一套政策配一套版面（04 第 10.1 節） */
+export const defaultLayouts: readonly Layout[] = [teacherLayout, ifrsLayout];
+
+/** 以 ID 取版面；找不到回傳 undefined */
+export function getLayout(id: string, layouts: readonly Layout[] = defaultLayouts): Layout | undefined {
+  return layouts.find((l) => l.id === id);
+}
 
 export const defaultRatios: readonly RatioDefinition[] = ratiosJson as unknown as readonly RatioDefinition[];
 

@@ -1,7 +1,7 @@
 {
   "id": "tpl.amortise_org_costs",
-  "rev": 1,
-  "revKind": "text",
+  "rev": 2,
+  "revKind": "answer",
   "status": "published",
   "title": {
     "zh-TW": "攤銷設立費",
@@ -36,7 +36,19 @@
       }
     }
   ],
-  "preconditions": [],
+  "preconditions": [
+    {
+      "id": "has_deferred_org_costs",
+      "expr": "balance(deferred_organisation_costs) > 0",
+      "message": {
+        "zh-TW": "帳上沒有設立費可以攤銷。",
+        "en": "There are no start-up costs on the books to amortise."
+      },
+      "policyWhen": {
+        "orgCosts": "capitalise_amortise"
+      }
+    }
+  ],
   "lines": [
     {
       "id": "l1",

@@ -1,7 +1,7 @@
 // CoreContext 的建立：以內建資料（科目表、範本、政策、版面、片語樣板）組成；內建範本編譯失敗是程式錯誤。
 import { buildChart } from '../accounts/chart.ts';
 import type { Account, Chart } from '../accounts/types.ts';
-import { defaultAccounts, defaultPolicies, defaultTemplates, teacherLayout } from '../data/index.ts';
+import { defaultAccounts, defaultPolicies, defaultTemplates, getLayout, teacherLayout } from '../data/index.ts';
 import type { TransactionTemplate } from '../data/types.ts';
 import type { Layout } from '../layout/types.ts';
 import { defaultEffectPhrases } from '../ledger/effects.ts';
@@ -20,6 +20,7 @@ export interface CreateCoreContextOptions {
   readonly chart?: Chart;
   /** 原始範本（會在這裡編譯）或已編譯的 Map */
   readonly templates?: readonly TransactionTemplate[] | ReadonlyMap<string, CompiledTemplate>;
+  /** 版面；省略時配政策同 ID 的內建版面（teacher@1 配 teacher@1、ifrs@1 配 ifrs@1，04 第 10.1 節），沒有同名版面時用教材版面 */
   readonly layout?: Layout;
   readonly effectPhrases?: EffectPhrases;
   readonly enabledExtensions?: readonly string[];
@@ -42,7 +43,7 @@ export function createCoreContext(options: CreateCoreContextOptions = {}): CoreC
     chart,
     templates,
     policy,
-    layout: options.layout ?? teacherLayout,
+    layout: options.layout ?? getLayout(policy.id) ?? teacherLayout,
     effectPhrases: options.effectPhrases ?? defaultEffectPhrases,
     ...(options.enabledExtensions === undefined ? {} : { enabledExtensions: options.enabledExtensions }),
   };
