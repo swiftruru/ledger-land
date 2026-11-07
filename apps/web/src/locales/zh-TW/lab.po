@@ -51,7 +51,7 @@ msgstr "{0}，累計到第 {order} 步"
 #. 從指標鑽進報表列時的播報；名稱與代入數字的公式已代入
 #. js-lingui-explicit-id
 #. placeholder {0}: lineLabel(lineId)
-#. placeholder {1}: sentence(traceLabLine(run, step, 'cumulative', lineId))
+#. placeholder {1}: sentence(trace('cumulative', lineId))
 #: src/features/lab/TracePanel.tsx
 msgid "lab.trace.live.line"
 msgstr "{0}：{1}"
