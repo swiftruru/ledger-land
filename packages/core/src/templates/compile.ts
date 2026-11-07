@@ -76,7 +76,7 @@ export function compileTemplate(raw: TransactionTemplate, chart: Chart): Result<
     preIds.add(p.id);
     const ast = compileExpr(p.expr, 'precondition', declaredAll, 'bool');
     if (!ast.ok) return err(withContext(ast.error, tid, 'preconditions', p.id));
-    preconditions.push({ id: p.id, expr: p.expr, ast: ast.value, message: p.message });
+    preconditions.push({ id: p.id, expr: p.expr, ast: ast.value, message: p.message, ...(p.policyWhen === undefined ? {} : { policyWhen: p.policyWhen }) });
   }
 
   const lines: CompiledLine[] = [];

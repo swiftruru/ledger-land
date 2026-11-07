@@ -332,8 +332,9 @@ describe('政策與版面選項', () => {
     expect(statementInvariantsHold(wrong)).toBe(false);
   });
 
-  it('延伸列：when_nonzero 只在非 0 顯示（ifrs@1 政策下設立費改列費用）、always 一律顯示、never 一律不顯示', () => {
-    const ifrsCtx = createCoreContext({ policy: 'ifrs@1' });
+  it('延伸列：when_nonzero 只在非 0 顯示（ifrs@1 政策配教材版面時設立費改列費用）、always 一律顯示、never 一律不顯示', () => {
+    // 這裡測的是教材版面的 showExtensionRows；ifrs@1 政策配自己的版面另在 layout-ifrs.test.ts
+    const ifrsCtx = createCoreContext({ policy: 'ifrs@1', layout: teacherLayout });
     const ifrsRun = unwrap(replayStory(limeLeafStory, [], ifrsCtx));
     const st = build(ifrsRun, cumulative(null), ifrsCtx.layout, ifrsCtx.policy);
     expect(lineValue(st, 'is_organisation_costs_expense')).toMatchObject({ value: 150_000, visible: true });

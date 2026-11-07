@@ -2578,11 +2578,11 @@
     {
       "id": "tpl.amortise_org_costs",
       "kind": "template",
-      "rev": 1,
-      "revKind": "text",
-      "answerRev": 1,
+      "rev": 2,
+      "revKind": "answer",
+      "answerRev": 2,
       "status": "published",
-      "answerHash": "sha256:83b9249bfeb4c6fb28b27448f6b77b828c2d5415a0ef7d0467a2987ecef844dc",
+      "answerHash": "sha256:4c4b1e23a313b3a8f9b3d7ef2f52c21ba0d2f86152fbb7a20f1b7474abe522b0",
       "optionIds": []
     },
     {

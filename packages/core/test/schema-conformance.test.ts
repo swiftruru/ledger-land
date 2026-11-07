@@ -3,7 +3,7 @@
 // 失敗時列出每個 issue 的路徑與訊息，方便判斷是資料寫錯還是 schema 太嚴。
 import { Account, Layout, PolicyDefinition, RatioDefinition, TransactionTemplate } from '@ledgerland/content-schema';
 import { describe, expect, it } from 'vitest';
-import { defaultAccounts, defaultPolicies, defaultRatios, defaultTemplates, teacherLayout } from '../src/data/index.ts';
+import { defaultAccounts, defaultPolicies, defaultRatios, defaultTemplates, ifrsLayout, teacherLayout } from '../src/data/index.ts';
 import { STATEMENT_IDS } from '../src/layout/index.ts';
 
 interface ParseResult {
@@ -33,9 +33,11 @@ describe('packages/core/data 符合 content-schema', () => {
     for (const p of defaultPolicies) expect(issuesOf(PolicyDefinition, p), `政策 ${p.id}`).toEqual([]);
   });
 
-  it('teacher@1 版面通過 Layout，四張表都有', () => {
-    for (const s of STATEMENT_IDS) expect(teacherLayout.statements[s].length, `版面缺 ${s}`).toBeGreaterThan(0);
-    expect(issuesOf(Layout, teacherLayout), `版面 ${teacherLayout.id}`).toEqual([]);
+  it('teacher@1 與 ifrs@1 版面都通過 Layout，四張表都有', () => {
+    for (const layout of [teacherLayout, ifrsLayout]) {
+      for (const s of STATEMENT_IDS) expect(layout.statements[s].length, `版面 ${layout.id} 缺 ${s}`).toBeGreaterThan(0);
+      expect(issuesOf(Layout, layout), `版面 ${layout.id}`).toEqual([]);
+    }
   });
 
   it('43 個指標都通過 RatioDefinition', () => {

@@ -66,6 +66,8 @@ export interface Precondition {
   readonly id: string;
   readonly expr: string;
   readonly message: LocalizedText;
+  /** 只在這些政策開關相符時才檢查（14 第 5.2 節 L3，M4b）；省略時每一套政策都檢查 */
+  readonly policyWhen?: PolicyWhen;
 }
 
 export interface LineSpec {

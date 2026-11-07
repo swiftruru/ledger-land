@@ -288,7 +288,7 @@ function checkTemplates(parsed, issues, { seed, samples }) {
 
 /**
  * acct.storyReplay、acct.invariants：故事全部重播成功；每一步的累計與本筆變動報表不變式全部成立、五步驟四個勾稽點差額為 0、
- * 每條可見列的追蹤樹通過 verifyTraceTree。只寫規則與位置，不印金額。
+ * 每條可見列的追蹤樹通過 verifyTraceTree。teacher@1 與 ifrs@1（各配自己的版面）都跑；訊息帶政策 ID。只寫規則與位置，不印金額。
  */
 function checkStory(entry, ctx, issues) {
   const story = entry.data;
@@ -297,10 +297,18 @@ function checkStory(entry, ctx, issues) {
     const at = run.error.at;
     const i = story.steps.findIndex((s) => s.id === at.stepId);
     const j = i >= 0 ? story.steps[i].events.findIndex((e) => e.id === at.eventId) : -1;
-    issues.push(error('acct.storyReplay', entry.file, i >= 0 ? `steps.${i}.events.${Math.max(j, 0)}` : 'steps', `重播失敗：${describeStepError(run.error)}`));
+    issues.push(
+      error(
+        'acct.storyReplay',
+        entry.file,
+        i >= 0 ? `steps.${i}.events.${Math.max(j, 0)}` : 'steps',
+        `政策 ${ctx.policy.id} 下重播失敗：${describeStepError(run.error)}`,
+      ),
+    );
     return null;
   }
   const { layout, policy } = ctx;
+  const tag = `政策 ${policy.id}`;
   for (const step of run.value.steps) {
     const index = story.steps.findIndex((s) => s.id === step.stepId);
     const path = `steps.${index}`;
@@ -313,12 +321,14 @@ function checkStory(entry, ctx, issues) {
       const st = buildStatements(run.value, win, layout, policy);
       const label = win.kind === 'cumulative' ? '累計' : '本筆變動';
       for (const r of checkStatementInvariants(st)) {
-        if (!r.pass) issues.push(error('acct.invariants', entry.file, path, `${label}視窗的不變式 ${r.rule} 不成立：${r.line} 對 ${r.against}`));
+        if (!r.pass) issues.push(error('acct.invariants', entry.file, path, `${tag} ${label}視窗的不變式 ${r.rule} 不成立：${r.line} 對 ${r.against}`));
       }
       if (win.kind === 'cumulative') {
         for (const c of fiveStepCheck(st).checks) {
           if (!c.pass)
-            issues.push(error('acct.invariants', entry.file, path, `五步驟檢查步驟 ${c.step}（${c.alias}）兩邊不相等：${c.left.line} 對 ${c.right.line}`));
+            issues.push(
+              error('acct.invariants', entry.file, path, `${tag} 五步驟檢查步驟 ${c.step}（${c.alias}）兩邊不相等：${c.left.line} 對 ${c.right.line}`),
+            );
         }
       }
       for (const node of traceAllLines(run.value, win, layout, policy, { statements: st })) {
@@ -326,7 +336,7 @@ function checkStory(entry, ctx, issues) {
         const v = verifyTraceTree(node, layout, { statements: st });
         if (!v.pass) {
           const rules = [...new Set(v.failures.map((f) => `${f.rule}${f.at ? `（${f.at}）` : ''}`))].join('、');
-          issues.push(error('acct.invariants', entry.file, path, `${label}視窗 ${node.line} 的追蹤樹不成立：${rules}`));
+          issues.push(error('acct.invariants', entry.file, path, `${tag} ${label}視窗 ${node.line} 的追蹤樹不成立：${rules}`));
         }
       }
     }
@@ -728,7 +738,13 @@ export function runAccountingChecks(parsed, options = {}) {
   const teacher = contexts[0];
   let storiesReplayed = 0;
   if (teacher !== undefined) {
-    for (const s of parsed.stories) if (checkStory(s, teacher, issues) !== null) storiesReplayed++;
+    // 故事在兩套政策下都要重播、不變式、五步驟與追蹤樹成立（ifrs@1 配自己的版面；D10(f)，M4b）：教材口徑先跑，重播失敗就不再跑 IFRS
+    // （同一個錯誤不報兩次）；storiesReplayed 只算故事數
+    for (const s of parsed.stories) {
+      if (checkStory(s, teacher, issues) === null) continue;
+      for (const ctx of contexts.slice(1)) checkStory(s, ctx, issues);
+      storiesReplayed++;
+    }
     const stories = new Map(parsed.stories.map((s) => [s.data.id, s.data]));
     const templatesById = new Map(parsed.templates.map((t) => [t.data.id, t.data]));
     const registry = defaultRatioRegistry();

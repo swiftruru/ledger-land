@@ -43,7 +43,8 @@ function toDerivedValue(r: Rat): DerivedValue {
 
 /**
  * 依 04 第 6.2 節順序 1 到 5 產生分錄：
- * 1 參數型別與範圍（缺的用 default；多出的參數是 param.type）；2 依序求推導值；3 前置條件；4 依政策篩選 policyWhen、求每行金額；5 移除金額為 0 的行。
+ * 1 參數型別與範圍（缺的用 default；多出的參數是 param.type）；2 依序求推導值；3 前置條件（帶 policyWhen 的只在相符的政策下檢查）；
+ * 4 依政策篩選 policyWhen、求每行金額；5 移除金額為 0 的行。
  */
 export function instantiateTemplate(
   t: CompiledTemplate,
@@ -90,6 +91,7 @@ export function instantiateTemplate(
   }
 
   for (const p of t.preconditions) {
+    if (!policyWhenMatches(policy.switches, p.policyWhen)) continue;
     const r = evaluateBool(p.ast, env);
     if (!r.ok) return err({ ...r.error, precondition: p.id, template: t.id });
     if (!r.value) return err(coreError('precondition.failed', { precondition: p.id, template: t.id }, { precondition: p.id, preconditionMessage: p.message }));

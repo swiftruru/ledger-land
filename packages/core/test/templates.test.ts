@@ -481,6 +481,16 @@ describe('instantiateTemplate：順序 1 到 5 與執行期錯誤碼', () => {
       expect(b.derivedValues).toEqual({ years: 5, amount: 20_000 });
     });
 
+    it('amortise_org_costs 的前置條件帶 policyWhen（14 第 5.2 節 L3，M4b）：teacher@1 下帳上沒有設立費就被擋下；ifrs@1 下不檢查這條，仍是本筆無影響', () => {
+      const t = tpl('tpl.amortise_org_costs');
+      expect(t.preconditions.map((p) => [p.id, p.policyWhen])).toEqual([['has_deferred_org_costs', { orgCosts: 'capitalise_amortise' }]]);
+      const blocked = instantiateTemplate(t, { years: 5 }, emptyState, teacher, { eventId: 'e2' });
+      expect(codeOf(blocked)).toBe('precondition.failed');
+      expect(errorOf(blocked).precondition).toBe('has_deferred_org_costs');
+      const b = unwrap(instantiateTemplate(t, { years: 5 }, emptyState, ifrs, { eventId: 'e2' }));
+      expect(b.noEffect).toBe(true);
+    });
+
     it('inventory_count：盤盈在三種 inventoryOverage 下貸記不同科目，盤損一律借營業成本', () => {
       const variants: PolicyDefinition['switches']['inventoryOverage'][] = ['reduce_cogs', 'non_operating_income', 'extraordinary_gain'];
       const credited = variants.map((inventoryOverage) => {

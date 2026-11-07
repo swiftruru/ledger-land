@@ -59,7 +59,8 @@ const MOVES: readonly { readonly template: string; readonly pick: Pick }[] = [
     pick: (s, u) =>
       normalBalance(s, 'machinery_equipment') - normalBalance(s, 'accumulated_depreciation_machinery') > 0 ? { usefulLifeYears: 1 + share(u, 49) } : null,
   },
-  { template: 'tpl.amortise_org_costs', pick: (_s, u) => ({ years: 1 + share(u, 49) }) },
+  // 教材政策下帳上要有設立費才攤銷（M4b 加的前置條件，14 第 5.2 節 L3）；ifrs@1 下設立費已費用化、餘額永遠是 0，這一步不會被選到
+  { template: 'tpl.amortise_org_costs', pick: (s, u) => (normalBalance(s, 'deferred_organisation_costs') > 0 ? { years: 1 + share(u, 49) } : null) },
   { template: 'tpl.pay_income_tax_cash', pick: spendCash },
   { template: 'tpl.pay_dividends_cash', pick: spendCash },
 ];

@@ -1091,7 +1091,7 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 
 ### 10.3 IFRS 對照：`ifrs@1` 的版面、差距與黃金測試（已決定 D10(f)）
 
-已決定（D10(f)，2026-10-20）：C，實驗室可以切換整套 IFRS 三表與指標，不計分；M4b 實作 `ifrs@1` 政策與版面並加上黃金測試；IFRS 畫面明確標示「IFRS 對照，不計分」；闖關區一律以教材口徑計分。
+已決定（D10(f)，2026-10-20）：C，實驗室可以切換整套 IFRS 三表與指標，不計分；M4b 實作 `ifrs@1` 政策與版面並加上黃金測試；IFRS 畫面明確標示「IFRS 對照，不計分」；闖關區一律以教材口徑計分。核心側已實作（2026-11-07，M4b 第一個 PR）：`packages/core/data/layouts/ifrs@1.json`（線 ID 與 `teacher@1` 共用，`cell` 全為 null，期初存貨、本期進貨、期末存貨、盤盈排除列與兩條遞延資產列保留為不顯示的計算列給指標公式用）、`createCoreContext({ policy: 'ifrs@1' })` 自動配同名版面（`getLayout`）、青檸文具社的黃金測試 `test/golden/lime-leaf.ifrs@1.json`（獨立計算表，第 18 步與下表一致）、正式故事在 `ifrs@1` 下的性質測試、`content:check` 的故事檢查兩套政策都跑；畫面的切換在後續 PR。
 
 切換的做法：實驗室以 `ctx.policy = ifrs@1` 重播同一個故事與同一組自由實驗覆寫，再以 `ifrs@1` 版面產生三表、指標與追蹤樹（第 2 節）。範本以每一行的 `policyWhen` 選出 `ifrs@1` 的分錄行，例如第 5 筆設立費的範本（節錄，其他欄位見第 7 節）：
 

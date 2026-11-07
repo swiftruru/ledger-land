@@ -19,6 +19,7 @@ export interface CompiledPrecondition {
   readonly expr: string;
   readonly ast: TypedAst;
   readonly message: LocalizedText;
+  readonly policyWhen?: PolicyWhen;
 }
 
 export interface CompiledLine {
