@@ -1,0 +1,56 @@
+{
+  "id": "fm_145684mr",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_2jyfy0hn",
+  "ratioRef": "ap_turnover",
+  "formula": {
+    "zh-TW": "營業成本 ÷ 平均應付帳款",
+    "en": "Cost of sales ÷ average trade payables"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "本期進貨 ÷ 期末應付帳款",
+        "en": "Purchases ÷ closing trade payables"
+      },
+      "note": {
+        "zh-TW": "課程模板的分子用本期進貨，因為欠供應商的是進貨的錢，不是已經賣掉的成本；分母只有一期的資料，用期末餘額代替平均。",
+        "en": "The course template puts purchases in the numerator, since what is owed to suppliers is the cost of goods bought rather than goods already sold; with only one period of data the denominator uses the closing balance instead of an average."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_g5c2m8tw",
+      "meaning": {
+        "zh-TW": "這一期賣出去的商品的成本，拿來代表這一年向供應商買了多少東西；存貨沒有大幅變動時，它和本期進貨很接近。",
+        "en": "The cost of the goods sold this period, standing in for how much was bought from suppliers over the year; when inventories do not change much it is close to purchases."
+      }
+    },
+    {
+      "term": "tm_a3p9y6kc",
+      "meaning": {
+        "zh-TW": "向供應商賒購還沒付的貨款，期初與期末餘額的平均；用平均是因為成本是一整年累積的，應付帳款卻是某一天的餘額。",
+        "en": "Amounts owed to suppliers for goods bought on account, averaged between opening and closing balances; an average is used because cost builds up over a year while payables are a balance on one day."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家零件組裝廠全年營業成本 {{money:730000}}，期初應付帳款 {{money:90000}}、期末 {{money:110000}}，平均 {{money:100000}}。{{money:730000}} ÷ {{money:100000}} ＝ {{number:7.3|unit=turns}}。意思是一年裡把欠供應商的錢付清、再欠新帳大約 {{number:7.3|unit=turns}}，平均每筆貨款大約 {{number:50|unit=day}} 付清。數字是網站自己編的，不是真實公司。",
+    "en": "A parts assembler’s cost of sales for the year is {{money:730000}}; trade payables were {{money:90000}} at the start and {{money:110000}} at the end, an average of {{money:100000}}. {{money:730000}} ÷ {{money:100000}} = {{number:7.3|unit=turns}}. The company settled what it owed suppliers and ran up new accounts about {{number:7.3|unit=turns}} in the year, taking about {{number:50|unit=day}} to pay each round. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "次數越少，表示付款越慢，等於多用了供應商的錢來周轉；次數越多，表示付款越快。這條比率沒有「越高越好」：付得太快是放棄供應商給的免費信用，付得太慢則會傷害關係、拿不到折扣，甚至被要求現金交易。要和同業比，更要和自己的趨勢比，突然變慢往往是現金吃緊的早期訊號。最好和應收款項週轉率放在一起看：收款慢、付款快的公司，營運資金的缺口最大。分子用營業成本還是本期進貨會得到不同的數字，比較時要確認兩邊用的是同一種。常見誤讀是以為週轉率越高越好：只要不拖到影響關係或錯過折扣，付得慢一點對自己的現金其實是好事。",
+    "en": "Fewer turns mean slower payment, that is, using more of the suppliers’ money to run the business; more turns mean faster payment. There is no ‘higher is better’ here: paying too fast gives up the free credit suppliers offer, while paying too slowly damages relationships, forfeits discounts and may lead to demands for cash on delivery. Compare with peers and, above all, with the company’s own trend, since a sudden slowdown is often an early sign of a cash squeeze. Read it next to receivables turnover: a company that collects slowly and pays quickly has the widest working capital gap. Cost of sales and purchases as the numerator give different figures, so check both sides use the same one before comparing. A common misreading is assuming a higher turnover is better: as long as relationships and discounts are not hurt, paying a little later is good for the company’s own cash."
+  },
+  "related": [
+    "fm_1mknnm52",
+    "fm_thn4m036",
+    "fm_mrxttb09",
+    "fm_hqda6nvm"
+  ]
+}

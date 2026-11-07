@@ -1,0 +1,43 @@
+{
+  "id": "fm_pr9ht8fb",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_gkmknxh4",
+  "ratioRef": "dfl",
+  "formula": {
+    "zh-TW": "營業利益 ÷（營業利益 − 利息費用）",
+    "en": "Operating profit ÷ (operating profit − interest expense)"
+  },
+  "components": [
+    {
+      "term": "tm_z3vbt800",
+      "meaning": {
+        "zh-TW": "本業的利潤，還沒付利息、還沒繳稅；槓桿度問的是它每變動一個百分點，付完利息後的利潤會變動幾個百分點。",
+        "en": "Profit from the main business before interest and tax; the leverage question is how many percentage points the profit after interest moves for each one that operating profit moves."
+      }
+    },
+    {
+      "term": "tm_k6t2e9wr",
+      "meaning": {
+        "zh-TW": "借款要付的利息。不管生意好壞都得付同一筆，所以它像固定成本一樣，會放大營業利益的起伏。",
+        "en": "Interest on borrowings. The same amount falls due whether business is good or bad, so like a fixed cost it magnifies the swings in operating profit."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家觀光飯店全年營業利益 {{money:600000}}，利息費用 {{money:100000}}，付完利息剩 {{money:500000}}。{{money:600000}} ÷ {{money:500000}} ＝ {{number:1.2|unit=times}}。意思是營業利益每成長 {{percent:0.1|digits=0}}，稅前淨利大約成長 {{percent:0.12|digits=0}}；營業利益下滑 {{percent:0.1|digits=0}}，稅前淨利也會縮水 {{percent:0.12|digits=0}}。數字是網站自己編的，不是真實公司。",
+    "en": "A resort hotel has operating profit of {{money:600000}} and interest expense of {{money:100000}}, leaving {{money:500000}} after interest. {{money:600000}} ÷ {{money:500000}} = {{number:1.2|unit=times}}. For every {{percent:0.1|digits=0}} operating profit grows, profit before tax grows by about {{percent:0.12|digits=0}}; if operating profit falls {{percent:0.1|digits=0}}, profit before tax shrinks by about {{percent:0.12|digits=0}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "倍數越高，公司越是靠借錢放大獲利：景氣好時股東報酬被放大，景氣差時虧損也被放大，升息時衝擊特別大。沒有借款的公司倍數是 1，利息把營業利益吃掉越多，倍數越往上衝。要和同業比，營建、航空、公用事業本來就偏高；也看自己是不是因為舉債擴張而逐年升高。它只在營業利益大於利息時有意義：營業利益不為正，或付完利息已經是負數時，比率沒有解釋意義。要搭配利息保障倍數看：槓桿度高但保障倍數也高，表示借得多卻付得起；兩者都差才危險。再和營運槓桿度相乘就是整體槓桿度。常見誤讀是把財務槓桿度高一律當成壞事：它是風險的刻度，不是好壞的判決。",
+    "en": "The higher the multiple, the more the company relies on borrowing to amplify its profit: returns are magnified in good years and losses in bad ones, and a rise in interest rates hits hard. A company with no borrowings has a multiple of 1; the more interest eats into operating profit, the higher it climbs. Compare with peers, since builders, airlines and utilities are high by nature, and watch whether the company’s own figure rises year by year because of debt-financed expansion. It only means something when operating profit exceeds interest: when operating profit is not positive, or the remainder after interest is negative, the ratio has no meaning. Read it with times interest earned: a high leverage with a high coverage means the company borrows a lot but can afford it, and only when both are weak is there real danger. Multiplied by the degree of operating leverage it gives the degree of total leverage. A common misreading is treating a high degree of financial leverage as simply bad: it is a scale of risk, not a verdict."
+  },
+  "related": [
+    "fm_pk88kpht",
+    "fm_jvdxknhd",
+    "fm_wfk7jdnd",
+    "fm_pv0bed74"
+  ]
+}

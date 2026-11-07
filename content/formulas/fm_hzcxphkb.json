@@ -1,0 +1,32 @@
+{
+  "id": "fm_hzcxphkb",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_axb9rtr7",
+  "ratioRef": "gross_margin",
+  "formula": {
+    "zh-TW": "營業毛利 ÷ 營業收入",
+    "en": "Gross profit ÷ revenue"
+  },
+  "components": [
+    {
+      "term": "tm_g8p4w1rz",
+      "meaning": { "zh-TW": "營業收入減營業成本，五層利益的第一層：賣出去的東西扣掉它本身的成本後剩下的錢。", "en": "Revenue minus cost of sales, the first of the five profit levels: what is left from the goods sold after their own cost." }
+    },
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "損益表第一列，這一期本業收進來的金額，當分母表示「每做一元生意」。", "en": "The first line of the income statement, what the core business brought in this period; as the denominator it means ‘for each unit of sales’." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家自行車零件批發商這一年營業收入 {{money:5000000}}，營業成本 {{money:3200000}}，營業毛利 {{money:1800000}}：{{money:1800000}} ÷ {{money:5000000}} ＝ {{percent:0.36|digits=0}}。意思是每賣 {{money:100}} 的貨，扣掉貨本身的成本後留下 {{money:36}}，接下來才拿去付薪水、租金等費用。數字是網站自己編的，不是真實公司。",
+    "en": "A bicycle parts wholesaler has revenue of {{money:5000000}} this year, cost of sales of {{money:3200000}} and gross profit of {{money:1800000}}: {{money:1800000}} ÷ {{money:5000000}} = {{percent:0.36|digits=0}}. For every {{money:100}} of goods sold, {{money:36}} is left after the cost of the goods themselves, and only then does it go towards wages, rent and other expenses. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "毛利率看的是產品本身好不好賺：越高表示定價能力越強或進貨成本控制得越好。它和產業關係很大，軟體、精品的毛利率可以很高，量販與批發天生偏低，所以要和同業比；看自己幾年的趨勢更能看出變化，毛利率一年年下滑通常是殺價競爭或原料變貴。它只到五層利益的第一層，毛利率很高的公司如果營業費用也很重，營業利益率可能很低，所以要往下一層接著看。常見誤讀：把毛利率和營業成本率當成兩個獨立的指標，其實營業收入就是拆成成本與毛利兩塊，兩個比率加起來一定是 {{percent:1|digits=0}}，知道一個就知道另一個。",
+    "en": "Gross margin shows how profitable the product itself is: the higher it is, the stronger the pricing power or the tighter the control over purchase costs. It depends heavily on the industry, with software and luxury goods very high and mass retail and wholesale naturally low, so compare with peers; the company’s own trend over several years tells you more, and a margin that slips year after year usually points to price competition or dearer materials. It stops at the first of the five profit levels, so a company with a fat gross margin but heavy operating expenses can still have a thin operating margin, which is why you read the next level down. A common misreading is treating gross margin and the cost of sales ratio as two independent measures: revenue is simply split into cost and gross profit, so the two always add up to {{percent:1|digits=0}} and knowing one gives you the other."
+  },
+  "related": ["fm_g6b7tn65", "fm_hfssf6ha", "fm_zefdfz9a", "fm_scaffwgf", "fm_t18f8tfn"]
+}

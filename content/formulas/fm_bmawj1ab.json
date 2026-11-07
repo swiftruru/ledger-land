@@ -1,0 +1,102 @@
+{
+  "id": "fm_bmawj1ab",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "relation",
+  "termRef": "tm_p2a7c5vk",
+  "label": {
+    "zh-TW": "營業活動現金流量的間接法",
+    "en": "Operating cash flow by the indirect method"
+  },
+  "category": "statement",
+  "formula": {
+    "zh-TW": "營業活動現金流量 ＝ 稅前淨利 ＋ 折舊等非現金費用 − 應收帳款與存貨的增加 ＋ 應付帳款的增加 − 支付的所得稅",
+    "en": "Operating cash flow = profit before tax + depreciation and other non-cash expenses − increases in trade receivables and inventories + increase in trade payables − income taxes paid"
+  },
+  "components": [
+    {
+      "term": "tm_z971merj",
+      "meaning": {
+        "zh-TW": "起算點：直接拿損益表的稅前淨利當底，再一項一項把「有算進利潤但沒動到現金」的部分調整掉。",
+        "en": "The starting point: profit before tax from the income statement, which is then adjusted item by item for everything that counted in profit but moved no cash."
+      }
+    },
+    {
+      "term": "tm_85pkjrv0",
+      "label": {
+        "zh-TW": "折舊費用",
+        "en": "Depreciation"
+      },
+      "meaning": {
+        "zh-TW": "折舊讓利潤變少，但沒有任何現金流出，所以要加回來。",
+        "en": "Depreciation lowers profit without any cash leaving, so it is added back."
+      }
+    },
+    {
+      "term": "tm_873r9bx9",
+      "label": {
+        "zh-TW": "銷貨債權增加",
+        "en": "Increase in trade receivables"
+      },
+      "meaning": {
+        "zh-TW": "應收帳款變多，表示有一部分收入還掛在客戶那邊沒收到現金，要扣掉。",
+        "en": "A rise in receivables means part of the revenue is still with customers rather than in the bank, so it is deducted."
+      }
+    },
+    {
+      "term": "tm_bpt2kp5c",
+      "label": {
+        "zh-TW": "存貨增加",
+        "en": "Increase in inventories"
+      },
+      "meaning": {
+        "zh-TW": "存貨變多，表示現金變成了倉庫裡的商品，這筆支出不在營業成本裡，要扣掉。",
+        "en": "A rise in inventories means cash turned into goods on the shelf, a spend that is not in cost of sales, so it is deducted."
+      }
+    },
+    {
+      "term": "tm_dc0p0nrv",
+      "label": {
+        "zh-TW": "應付帳款增加",
+        "en": "Increase in trade payables"
+      },
+      "meaning": {
+        "zh-TW": "應付帳款變多，表示有一部分進貨還沒付錢，現金留在公司，要加回來。",
+        "en": "A rise in payables means part of the purchases is not yet paid for and the cash is still in the company, so it is added back."
+      }
+    },
+    {
+      "term": "tm_w60nbtch",
+      "label": {
+        "zh-TW": "支付所得稅",
+        "en": "Income taxes paid"
+      },
+      "meaning": {
+        "zh-TW": "這一期真的繳出去的所得稅；因為起算點是稅前淨利，稅要在這裡扣。",
+        "en": "The income tax actually paid in the period; because the starting point is profit before tax, the tax is deducted here."
+      }
+    },
+    {
+      "term": "tm_e61ht6yh",
+      "meaning": {
+        "zh-TW": "調整完的結果：本業這一期實際留下來的現金。",
+        "en": "The result after all adjustments: the cash the core business actually generated this period."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家餐飲設備商稅前淨利 {{money:300000}}，折舊 {{money:60000}}，應收帳款增加 {{money:40000}}，存貨增加 {{money:30000}}，應付帳款增加 {{money:20000}}，支付所得稅 {{money:50000}}：營業活動現金流量 ＝ {{money:300000}} ＋ {{money:60000}} − {{money:40000}} − {{money:30000}} ＋ {{money:20000}} − {{money:50000}} ＝ {{money:260000}}。帳上賺 {{money:300000}}，口袋裡只多了 {{money:260000}}，差額就是被客戶欠款與倉庫存貨吃掉的部分。數字是網站自己編的，不是真實公司。",
+    "en": "A catering equipment dealer has profit before tax of {{money:300000}}, depreciation of {{money:60000}}, an increase in trade receivables of {{money:40000}}, an increase in inventories of {{money:30000}}, an increase in trade payables of {{money:20000}} and income taxes paid of {{money:50000}}: operating cash flow = {{money:300000}} + {{money:60000}} − {{money:40000}} − {{money:30000}} + {{money:20000}} − {{money:50000}} = {{money:260000}}. The books show {{money:300000}} of profit but the pocket gained only {{money:260000}}; the gap is what customers still owe and what sits in the warehouse. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "記法很簡單：營運資產變多要扣、營運負債變多要加。應收帳款與存貨變多，現金就被綁住，所以扣；應付帳款這類營運負債變多，等於暫時用供應商的錢，要加。把營業活動現金流量和本期淨利放在一起看，就是獲利品質：現金長期跟得上利潤，利潤才是真的；利潤年年成長、現金卻一直流出，多半是收款越來越慢或存貨越堆越多，要特別小心。這條式子只算本業，買設備與借還款分別在投資與籌資活動，不要混進來。常見誤讀：以為折舊加回來是「折舊帶來現金」，其實只是把先前不該扣的非現金費用還原，折舊本身不會生出半毛錢。",
+    "en": "The pattern is easy to remember: growth in operating assets is deducted, growth in operating liabilities is added back. When receivables and inventories grow, cash is tied up, so they are deducted; when operating liabilities such as payables grow, the company is temporarily using its suppliers’ money and the amount is added back. Setting operating cash flow beside profit for the period is the test of earnings quality: profit is real only if cash keeps pace with it over time, and profit that grows every year while cash keeps draining usually means slower collections or a swelling warehouse, which deserves a hard look. The relation covers the core business only; buying equipment and borrowing or repaying belong to investing and financing activities and should not be mixed in. A common misreading is that adding back depreciation means depreciation ‘brings in cash’; it merely reverses a non-cash expense that should not have been deducted, and depreciation itself never produces a penny."
+  },
+  "related": [
+    "fm_3vk408ws",
+    "fm_ac6vnhzq",
+    "fm_wxq9e1j5",
+    "fm_scaffwgf"
+  ]
+}

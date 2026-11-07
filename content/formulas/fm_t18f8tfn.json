@@ -1,0 +1,54 @@
+{
+  "id": "fm_t18f8tfn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "relation",
+  "termRef": "tm_g5c2m8tw",
+  "category": "statement",
+  "formula": {
+    "zh-TW": "營業成本 ＝ 期初存貨 ＋ 本期進貨 − 期末存貨",
+    "en": "Cost of sales = opening inventories + purchases − closing inventories"
+  },
+  "components": [
+    {
+      "term": "tm_v6j2k8sr",
+      "meaning": {
+        "zh-TW": "期初倉庫裡已經有的商品成本，也就是上一期的期末存貨。",
+        "en": "The cost of goods already in the warehouse at the start of the period, which is last period’s closing inventories."
+      }
+    },
+    {
+      "term": "tm_p7h3c5xq",
+      "meaning": {
+        "zh-TW": "這段期間買進來的商品成本；加上期初存貨，就是這一期總共可以拿來賣的貨。",
+        "en": "The cost of goods bought during the period; added to opening inventories, it is everything available for sale this period."
+      }
+    },
+    {
+      "term": "tm_q4k9v2nd",
+      "label": {
+        "zh-TW": "期末存貨",
+        "en": "Closing inventories"
+      },
+      "meaning": {
+        "zh-TW": "期末盤點還沒賣出去的商品成本；沒賣出去就不算成本，所以要減掉，它同時是資產負債表上的存貨。",
+        "en": "The cost of goods still unsold at the period-end count; unsold goods are not yet a cost, so they are deducted, and the same figure is the inventories line on the balance sheet."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家茶葉行年初倉庫裡有 {{money:120000}} 的茶葉，這一年又進了 {{money:680000}}，年底盤點還剩 {{money:150000}}：營業成本 ＝ {{money:120000}} ＋ {{money:680000}} − {{money:150000}} ＝ {{money:650000}}。注意進貨 {{money:680000}} 並沒有全部變成成本，有 {{money:30000}} 還躺在倉庫裡，所以期末存貨比期初多了 {{money:30000}}。數字是網站自己編的，不是真實公司。",
+    "en": "A tea merchant starts the year with {{money:120000}} of tea in stock, buys another {{money:680000}} during the year and counts {{money:150000}} still on the shelves at the year end: cost of sales = {{money:120000}} + {{money:680000}} − {{money:150000}} = {{money:650000}}. Note that the {{money:680000}} of purchases did not all become a cost; {{money:30000}} of it is still in the warehouse, which is why closing inventories are {{money:30000}} higher than opening. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "這條式子的重點是配合：收入認列的是賣出去的商品，成本就只算賣出去那一部分，沒賣掉的留在資產負債表當存貨。所以進貨多不等於成本高，進貨少也不等於成本低，差額全在存貨的增減裡。看營業成本要配營業收入一起看，算出來的毛利率才有意義；單獨看絕對數字沒有辦法比。期末盤點數字是這條式子最脆弱的一環：盤點少算會讓成本偏高、利潤偏低，多算則相反，所以盤損盤盈都在這裡調整。常見誤讀：把本期進貨直接當成營業成本，這會在囤貨的期間誇大成本、在去化庫存的期間低估成本。",
+    "en": "The point of this relation is matching: revenue records the goods sold, so cost counts only the goods sold, while the unsold ones stay on the balance sheet as inventories. Buying more therefore does not mean a higher cost, nor does buying less mean a lower one; the difference sits entirely in the change in inventories. Read cost of sales together with revenue, because only the resulting gross margin can be compared; the absolute figure alone cannot. The period-end count is the fragile link: counting too little pushes cost up and profit down, counting too much does the opposite, which is why stock shortfalls and surpluses are adjusted here. A common misreading is treating purchases as cost of sales, which overstates cost in a stock-building period and understates it when stock is being run down."
+  },
+  "related": [
+    "fm_scaffwgf",
+    "fm_hzcxphkb",
+    "fm_g6b7tn65",
+    "fm_mrxttb09"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "id": "fm_zefdfz9a",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_92yzx0fn",
+  "ratioRef": "net_profit_margin",
+  "formula": {
+    "zh-TW": "本期淨利 ÷ 營業收入",
+    "en": "Profit for the period ÷ revenue"
+  },
+  "versions": [
+    {
+      "version": "slides02",
+      "formula": {
+        "zh-TW": "Profit ÷ TR",
+        "en": "Profit ÷ TR"
+      },
+      "note": {
+        "zh-TW": "這一份用四個基本項目的縮寫寫公式：Profit 是本期淨利，TR 是營業收入；算法和主公式相同。",
+        "en": "This handout writes the formula with the four base items: Profit is profit for the period and TR is revenue; the calculation is the same as the main formula."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_n4e8t2jy",
+      "meaning": {
+        "zh-TW": "損益表最後一列：成本、費用、利息、業外損益、所得稅全部扣完真正留下的錢。",
+        "en": "The last line of the income statement: what is truly left after every cost, expense, interest charge, non-operating item and income tax."
+      }
+    },
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": {
+        "zh-TW": "損益表第一列：這一期賣出商品或服務認列的收入，還沒扣任何東西。",
+        "en": "The first line of the income statement: revenue recognised this period from goods or services sold, before anything is deducted."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家寵物用品電商全年營業收入 {{money:1500000}}，本期淨利 {{money:90000}}：{{money:90000}} ÷ {{money:1500000}} ＝ {{percent:0.06|digits=0}}。意思是每賣 {{money:100}} 的東西，付完所有成本、費用、利息和稅之後，口袋裡留下 {{money:6}}。數字是網站自己編的，不是真實公司。",
+    "en": "An online pet supplies retailer booked revenue of {{money:1500000}} and profit for the period of {{money:90000}}: {{money:90000}} ÷ {{money:1500000}} = {{percent:0.06|digits=0}}. Of every {{money:100}} of goods sold, {{money:6}} stayed in the pocket after all costs, expenses, interest and tax. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "它是損益表從第一列走到最後一列的「存活率」：越高，每一塊營收留下的獲利越多。產業之間差距極大，軟體、品牌精品可以超過 {{percent:0.3|digits=0}}，量販、超市往往只有 {{percent:0.02|digits=0}} 到 {{percent:0.03|digits=0}}，靠高週轉率補回來，所以絕對不能跨產業比，只和同業比、和自己的趨勢比。在杜邦三項裡它是最容易改善的一項：節省費用、調整售價都直接反映在這裡。純益率下滑時要往上拆：是毛利率掉了（成本或售價問題）、營業利益率掉了（費用問題），還是利息、業外或稅的問題。一次性的處分利益或減損損失會讓單一年的純益率大起大落。常見誤讀是以為純益率低就表示本業不好：它受利息和業外損益影響，本業很強的公司也可能因為負債重、利息多而純益率偏低，要回頭看營業利益率才知道本業的表現。",
+    "en": "It is the survival rate from the first line of the income statement to the last: the higher it is, the more profit each unit of revenue leaves behind. Industries differ enormously: software and luxury brands can exceed {{percent:0.3|digits=0}} while hypermarkets and supermarkets often make only {{percent:0.02|digits=0}} to {{percent:0.03|digits=0}} and recover it through high turnover, so never compare across industries; compare with peers and with the company’s own trend. Of the three DuPont factors it is the easiest to improve, since trimming expenses or adjusting prices shows up here directly. When the margin slips, work upwards: did gross margin fall (a cost or pricing problem), did operating margin fall (an expense problem), or is it interest, non-operating items or tax? One-off disposal gains or impairment losses can swing a single year’s margin sharply. A common misreading is taking a low net margin as a weak core business: it is affected by interest and non-operating items, and a company with a strong core business can still show a thin margin because of heavy debt, so check the operating margin to see the core business itself."
+  },
+  "related": [
+    "fm_hzcxphkb",
+    "fm_hfssf6ha",
+    "fm_mae66cbh",
+    "fm_0tqaf9qd",
+    "fm_239p828h"
+  ]
+}

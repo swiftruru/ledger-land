@@ -163,6 +163,7 @@ D 系列與本文件有關的項目已在 2026-10-20 全部決定，內容併入
 | Term 名詞 | 名詞卡、名詞圖鑑與中英術語表共用的單一來源 | 04 第 16.3 節；本文件 3.7 節 | 一檔一筆 | `content/terms/` | Question、交易範本、故事、科目表的 `termRef` |
 | TransactionTemplate 交易範本 | 一種交易怎麼過帳（參數、推導值、前置條件、分錄行） | 04 第 7 節；本文件 3.8 節 | 一檔一筆 | `content/templates/`（暫定） | Story、Question 的 `scenario` |
 | Story 故事與步驟 | 報表實驗室的連續故事 | 04 第 9 節；本文件 3.9 節 | 一檔一筆（含全部步驟） | `content/stories/` | Question 的 `labRef` 與 `scenario`、章末連結 |
+| Formula 會計公式（2026-11-07） | 「會計公式」查找區的一條公式：各項數值的意思、原創範例、怎麼看；名稱與類別從名詞和指標登錄檔取 | 本文件 3.11 節 | 一檔一筆 | `content/formulas/` | 講義對照檔 `content/handout/formula-links.json`、公式頁與苦練頁 |
 
 - 科目表、報表版面（layout）、指標登錄檔與認列政策（policy）屬於會計核心的資料，因為核心的測試直接依賴它們；位置與格式見 04 與 [09 技術選擇](09-tech-stack.md)。內容資料只用語意 ID 引用它們，例如科目 `inventory`、版面列 `is_gross_profit`、指標 `roa@excel`、政策 `teacher@1`。
 - 交易範本本文件暫放在 `content/templates/`；若 04 與 09 決定把範本資料放進 `packages/core`，只是換資料夾，本文件的 ID、lock 與驗證規則都不變。
@@ -210,6 +211,8 @@ content/
     tpl.sell_all_inventory_cash.json  一個交易範本一檔（語意 ID）
   stories/
     story_k8p3x6.json               一個故事一檔（含全部步驟）
+  formulas/
+    fm_0tqaf9qd.json                一條會計公式一檔（2026-11-07）
 ```
 
 一筆一檔的理由：多人編輯時不容易衝突；git 歷史可以逐筆追蹤，「還原舊版本」也以檔案為單位；M7 起後台的發布 workflow 把 D1 中的已發布內容匯出回 `content/` 時，一筆對一檔，diff 最清楚（11.6 節）。名詞約 375 筆（底稿約 300 筆），一筆一檔仍然好管理，搜尋與排序交給編輯器與後台。
@@ -627,6 +630,28 @@ content/
 }
 ```
 
+### 3.11 Formula 會計公式（2026-11-07）
+
+「會計公式」查找區（[02 網站架構](02-site-architecture.md) 第 1.1 節的 `/formulas/`）的一條公式。設計原則：名稱、別名、定義與常見誤解都在名詞（`termRef`），公式本身在指標登錄檔（`ratioRef`，`packages/core/data/ratios.json`），這個實體只寫查公式的人要的三件事：各項數值的意思、原創的數字範例、怎麼看。講義出處與相關的講義題**不在這裡**（第 1.4 節），而在講義題庫那一側的對照檔 `content/handout/formula-links.json`（本文件「講義題庫」一節）。
+
+| 欄位 | 意義 |
+| --- | --- |
+| `id` | `fm_` ID（4.1 節） |
+| 管理欄位 | 3.2 節 |
+| `kind` | `ratio`（指標登錄檔有的比率）或 `relation`（報表關係：會計恆等式、五層利益這類計算關係） |
+| `termRef` | 名稱、別名與定義來源的名詞 |
+| `ratioRef` | `kind` 為 `ratio` 時必填、`relation` 不得有：指標登錄檔的 id（例如 `roe`），分類也由它決定 |
+| `category` | `kind` 為 `relation` 時必填：指標的分類加 `statement`；`ratio` 不得寫 |
+| `label` | 只給 `relation`：名稱和名詞不同時（名詞「損益表」、公式「損益表的五層利益」）才寫 |
+| `formula` | 公式一行，用名詞的中文名稱寫 |
+| `versions[]` | 只給 `ratio`：講義或課程 Excel 的寫法和主公式不同時才列，`version` 只能是該指標登錄檔有的版本名（`excel`、`slides01` 到 `slides03`、`dupont`）；建置時依版本名對到講義編號顯示「講義 0-2 的寫法」。只記版本名，不記頁碼 |
+| `components[]` | 公式裡每一項：`term`（有名詞時）或 `label`（沒有名詞的項目，例如股價），加 `meaning` |
+| `example` | 原創的數字範例，數字一律佔位符（`{{money:…}}`、`{{percent:…}}`、`{{number:…}}`），不抄教材的數字 |
+| `reading` | 高低代表什麼、要和誰比、什麼情況會失真、常見誤讀 |
+| `related[]` | 相關公式的 ID |
+
+規則：`ref.ratioExists`、`ref.formulaRatioUnique`、`ref.ratioVersionExists`、警告 `ref.formulaCoverage`（5.3 節）；5.7 節的頁碼與寫死數字規則全部適用（任何欄位出現講義編號或投影片號都是錯誤）。lock 的種類是 `formula`，沒有 `answerHash`（和名詞一樣）。
+
 ---
 
 ## 4. 穩定 ID 與改版
@@ -646,6 +671,7 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `q_` | 題目 | 8 | 全站 | `q_7k2m9x4p` |
 | `tm_` | 名詞 | 8 | 全站 | `tm_m4z7p1cb` |
 | `story_` | 故事 | 6 | 全站 | `story_k8p3x6` |
+| `fm_` | 會計公式（2026-11-07） | 8 | 全站 | `fm_0tqaf9qd` |
 | `st_` | 故事步驟 | 6 | 全站（`labRef` 另帶故事 ID，方便載入） | `st_r2x9k4` |
 | `o_` | 選項 | 4 | 該題內 | `o_x4m7` |
 | `it_` | 分類題的項目 | 4 | 該題內 | `it_k3w9` |
@@ -826,6 +852,9 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `ref.placeholderScope` | 數值佔位符的來源符合文字所在的作用範圍（8.1 節：`param.`、`derived.` 只用於交易範本的 `summary` 與 `explanation`，`amount` 只用於核心的 `effects` 片語樣板），而且引用的 `vars`、事件、參數、推導值或 target 都有宣告 | 錯誤 | 全部 |
 | `ref.labStep` | `labRef`、`labRefs`、`chapterEndLinks` 指向存在的故事與步驟，而且步驟屬於該故事 | 錯誤 | 全部 |
 | `ref.ratio` | `ratioRef` 的指標與版本存在於指標登錄檔 | 錯誤 | 全部 |
+| `ref.ratioExists`、`ref.formulaRatioUnique`、`ref.ratioVersionExists` | 公式的 `ratioRef` 是登錄檔的指標、一個指標只能有一條公式、`versions[].version` 是該指標有的版本（`relation` 不得列 versions）（2026-11-07，`tools/lib/content-rules.mjs` 的 `runFormulaChecks`） | 錯誤 | 公式 |
+| `ref.formulaCoverage` | 指標登錄檔有、公式沒有的指標 | 警告 | 公式 |
+| `handout.formulaLinks` | 講義對照檔：公式存在且只出現一次、講義存在、題目的投影片在 `ids.json` 與 `midterm.json` 都有而且是收錄的題、同一題不在兩種關係裡（`validateFormulaLinks`） | 錯誤 | 講義對照檔 |
 | `ref.account` | 範本與 scenario 的科目存在，而且是可入帳的科目（模板的標題列不可入帳） | 錯誤 | 全部 |
 | `ref.template` | scenario 與故事事件引用的範本存在 | 錯誤 | 全部 |
 | `ref.layoutLine` | `pick_line` 的 `correctLines`、`five_step_fill` 的 `openCells` 與 scenario 的 targets 存在於指定版面 | 錯誤 | 全部 |
@@ -1043,6 +1072,7 @@ interface SourceLocation {
 - 交付格式是「帶 hash 檔名的 JSON，執行期以 fetch 載入」，不使用 `import.meta.glob` 把內容編進 JS chunk。理由：內容可以和程式分開更新與快取；Service Worker 依 hash 檔名預先快取（見 06）；日後若要加遠端快照，格式不必改。
 - 依語系、依章節切分：每章一個「章節包」（2026-10-29，`schemaVersion` 3：章節本身加該章全部關卡與題目，關卡不再各自一檔），名詞、範本、故事各自成檔。名詞分兩層（2026-10-24，`schemaVersion` 2）：每個語系一份名詞索引，加上依名詞 ID 分桶的完整內容檔（2026-10-29 起固定 8 桶）；章節另有每個語系一份章節索引（見本節末）。檔案數要少：Service Worker 的 precache 是一個項目一個項目抓的，十四章雙語的內容從每語系 96 個檔併成 24 個，第一次安裝少 145 趟往返（06 第 3.2 節）。zh-TW 與 en 都是 complete 語系，已發布內容在兩種語言都齊全，正式快照的 en 檔案不會有退回；只有含草稿的預覽建置，或日後新增的 beta 語系，才會在該語系的檔案中直接放入 zh-TW 文字並標記退回，學習端不必同時載入兩個語系的檔案。
 - 草稿不進正式快照；已下架項目只以墓碑形式出現。
+- 會計公式（2026-11-07）：每個語系一份索引 `formulaIndex`（`formula-index.<hash>.json`：id、kind、分類、名稱、別名、公式一行、termRef、ratioRef、相關講義題的 ID；進 precache，苦練頁用它反查「這一題的相關公式」）與一份完整內容 `formulaDetails`（`formulas.<hash>.json`：索引欄位加各版本寫法（帶講義編號）、各項意思、範例、怎麼看、講義出處與相關題（題目帶 `topic`）；不進 precache，Service Worker 執行期快取）。講義出處與相關題由對照檔經 `ids.json` 換成 `hq_` ID，只收錄的題才進去。
 
 ```json
 {
@@ -1684,6 +1714,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 | `decks.json` | 三份講義：`id`（`d1`、`d2`、`d3`）、`order`、`code`（`0-1` 等）、`title`、`file`（pptx 檔名，只用來在本機找檔）、`sections`（各段的 `id`、`title` 與投影片範圍 `slides: [起, 迄]`，1 起算、依播放順序）；`exclusions` 是人工排除與請老師確認的題（`deck`、`slide`、`reason`、`note`，見下面的規則） | 我手改 |
 | `ids.json` | 投影片到題目 ID 的對照表：鍵是 `<deck>:<slide>`（例如 `d1:16`），值是 `hq_` 加 8 碼 Crockford Base32 小寫的 ID（第 4.1 節的規則）。ID 一旦指定永不改變：投影片換順序、改字、換段都不換 ID，學生的紀錄才對得上 | 工具 |
 | `midterm.json` | `{ "id": "midterm", "rev", "title", "questions": [] }`，每一題的欄位見下表 | 工具 |
+| `formula-links.json`（2026-11-07） | 會計公式的講義對照：`links[]` 每一條 `{ formula: fm_id, sources: [{ deck, slides: [投影片號] }], questions: { formula: [{ deck, slide }], numeric: […], concept: […] } }`。`sources` 是這條公式在講義裡說明的投影片（公式頁的「講義出處」）；`questions` 是相關的講義題，分三種關係：`formula` 考這條公式的組成或關係、`numeric` 情境裡有數字可以拿公式驗算、`concept` 只考相關概念。用投影片號寫，建置時經 `ids.json` 換成 `hq_` ID；指到不收錄的題是錯誤，不悄悄略過。這是講義題庫這一側的檔案，所以可以有投影片號；原創的 `content/formulas/` 不行（第 1.4 節）。對應的 JSON Schema 是 `schemas/handout-formula-links.schema.json` | 我手改 |
 
 每一題的欄位：
 
@@ -1692,7 +1723,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 | `id` | `hq_` ID，來自 `ids.json` |
 | `rev`、`revKind` | 文字改版：題幹、選項或解析的字有變時 `rev` 加一，`revKind` 沿用第 4.2 節的種類 |
 | `answerRev` | 答案改版：正解的字母變時加一（`rev` 也加一）；苦練區用它判斷之前答對的那一版答案是否已經變了 |
-| `deck`、`section`、`slide` | 所屬講義、段落與投影片編號（1 起算）。`slide` 是老師審核頁對照講義用的，學生頁不顯示 |
+| `deck`、`section`、`slide` | 所屬講義、段落與投影片編號（1 起算）。老師審核頁用它對照講義；學生頁（背題閱讀頁、錯題清單、列印版）也顯示「講義 0-1 第 N 頁」，方便回頭查原文（2026-11-07 起明定，之前就已顯示） |
 | `topic` | 投影片標題「練習題：」後面的短語 |
 | `scenario`、`question` | 情境與題幹，照原文 |
 | `options[]` | `{ letter, text }` 固定三個，`letter` 是講義上的 A、B、C，順序照講義；打亂只在畫面上做，不改資料 |
@@ -1779,7 +1810,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 - 不經過 `loadContentFiles`、`validateBundle`、`published.lock.json`、`content:coverage` 與第 1.5 節的原創性檢查；`content:check` 的 5.1 到 5.7 都不掃 `content/handout/`。形狀與交叉檢查（ID 對得上、段落範圍不重疊、`exclusions` 指到存在的投影片）由 `packages/content-schema` 的 `validateHandout` 在建置時做，錯誤格式和 `validateBundle` 相同（檔案、JSON 路徑、訊息）。
 - `check:tw` 不掃 `midterm.json` 與 `ids.json`（講義原文逐字保留）；`decks.json` 的 `note` 與這個資料夾的說明文字仍照站規。
-- 第 1.4 節與第 5.7 節的頁碼規則不適用：`slide` 是審核頁要用的。
+- 第 1.4 節與第 5.7 節的頁碼規則不適用：`slide` 是審核頁與學生頁對照講義要用的；`formula-links.json` 同理（公式頁的講義出處只能寫在這裡）。
 - `docs:examples` 只驗 ```json 區塊並依 ID 前綴找 schema，所以本節的範例一律用 ```jsonc。
 - 不進 precache、紀錄另開資料庫 `ledgerland-exam`（每題的累計跟著備份走，2026-11-05）：見 06 第 3.2、4.2、4.6 節；頁面見 [02 網站架構](02-site-architecture.md) 第 1.1 節。
 

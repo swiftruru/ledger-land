@@ -1,0 +1,66 @@
+{
+  "id": "fm_pk88kpht",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_tspyazrx",
+  "ratioRef": "dol",
+  "formula": {
+    "zh-TW": "（營業收入 − 變動營業成本及費用）÷ 營業利益",
+    "en": "(Revenue − variable operating costs and expenses) ÷ operating profit"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "營業毛利 ÷ 營業利益",
+        "en": "Gross profit ÷ operating profit"
+      },
+      "note": {
+        "zh-TW": "課程模板用營業毛利近似貢獻邊際，等於把全部營業成本當成變動成本、全部營業費用當成固定成本；營業利益為 0 時顯示 N/A，為負時標示不具解釋意義。",
+        "en": "The course template approximates the contribution margin with gross profit, treating all cost of sales as variable and all operating expenses as fixed; when operating profit is 0 the result is N/A, and when it is negative the ratio is marked as not meaningful."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": {
+        "zh-TW": "這一期賣出商品或服務認列的收入；槓桿度問的就是它每變動一個百分點，營業利益會變動幾個百分點。",
+        "en": "Revenue recognised this period; the leverage question is how many percentage points operating profit moves for each one that revenue moves."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "變動營業成本及費用",
+        "en": "Variable operating costs and expenses"
+      },
+      "meaning": {
+        "zh-TW": "會跟著銷量一起增減的成本與費用，例如材料、按件計酬的工資、運費。營收減掉它就是貢獻邊際，也就是能拿來付固定成本和賺利潤的部分。",
+        "en": "Costs and expenses that rise and fall with volume, such as materials, piece-rate wages and freight. Revenue less these is the contribution margin: what is left to pay fixed costs and earn a profit."
+      }
+    },
+    {
+      "term": "tm_z3vbt800",
+      "meaning": {
+        "zh-TW": "本業的利潤，貢獻邊際再扣掉房租、折舊、固定薪資這些不隨銷量變動的固定成本。固定成本占比越高，分子和分母差距越大，槓桿度越高。",
+        "en": "Profit from the main business: the contribution margin less fixed costs such as rent, depreciation and salaries that do not move with volume. The larger the share of fixed costs, the wider the gap between numerator and denominator and the higher the leverage."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家健身房全年營業收入 {{money:1000000}}，變動營業成本及費用 {{money:600000}}，貢獻邊際 {{money:400000}}；再扣固定成本後營業利益 {{money:160000}}。{{money:400000}} ÷ {{money:160000}} ＝ {{number:2.5|unit=times}}。意思是營收每成長 {{percent:0.1|digits=0}}，營業利益大約成長 {{percent:0.25|digits=0}}；營收下滑 {{percent:0.1|digits=0}}，營業利益也會縮水 {{percent:0.25|digits=0}}。數字是網站自己編的，不是真實公司。",
+    "en": "A gym booked revenue of {{money:1000000}} with variable operating costs and expenses of {{money:600000}}, a contribution margin of {{money:400000}}; after fixed costs, operating profit is {{money:160000}}. {{money:400000}} ÷ {{money:160000}} = {{number:2.5|unit=times}}. For every {{percent:0.1|digits=0}} revenue grows, operating profit grows by about {{percent:0.25|digits=0}}; if revenue falls {{percent:0.1|digits=0}}, operating profit shrinks by about {{percent:0.25|digits=0}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "倍數越高，表示成本結構裡固定成本的比重越大：營收成長時利潤成長得比營收快，營收衰退時利潤也以同樣倍數縮水，是一把雙面刃。晶圓廠、航空、健身房這類固定成本重的產業天生偏高，貿易、人力派遣則接近 1。要和同業比，也看自己是不是因為擴廠、簽長約而逐年升高，升高代表對景氣更敏感。它只在營業利益為正時有意義：營業利益接近 0 時倍數會暴衝，為負時沒有解釋意義。區分變動與固定成本需要內部資料，外部人只能用營業毛利近似貢獻邊際，算出來的是近似值。常見誤讀是把營運槓桿度高當成經營得好：它描述的是利潤對營收變動的敏感度，不是獲利能力。",
+    "en": "The higher the multiple, the bigger the share of fixed costs in the cost structure: when revenue grows, profit grows faster, and when revenue falls, profit shrinks by the same multiple, a double-edged sword. Wafer fabs, airlines and gyms, with heavy fixed costs, are high by nature; traders and staffing agencies sit near 1. Compare with peers and watch whether the company’s own figure climbs year by year because of plant expansions or long-term contracts, since a climb means more sensitivity to the business cycle. It only means something when operating profit is positive: near 0 the multiple explodes, and when operating profit is negative it has no meaning. Splitting costs into variable and fixed needs internal data, so outsiders approximate the contribution margin with gross profit and the result is an estimate. A common misreading is taking a high degree of operating leverage as good management: it describes how sensitive profit is to a change in revenue, not how profitable the business is."
+  },
+  "related": [
+    "fm_pr9ht8fb",
+    "fm_jvdxknhd",
+    "fm_hfssf6ha",
+    "fm_hzcxphkb"
+  ]
+}

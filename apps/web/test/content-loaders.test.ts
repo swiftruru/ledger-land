@@ -5,6 +5,8 @@ import {
   findLevelOfQuestion,
   loadChapter,
   loadChapterIndex,
+  loadFormulaDetail,
+  loadFormulaIndex,
   loadLevel,
   loadQuestion,
   loadTermDetail,
@@ -48,13 +50,18 @@ const manifest = {
   chapterIndex: { 'zh-TW': 'content/zh-TW/chapter-index.111111.json', en: 'content/en/chapter-index.222222.json' },
   termIndex: { 'zh-TW': 'content/zh-TW/term-index.eeeeee.json', en: 'content/en/term-index.ffffff.json' },
   termDetails: { 'zh-TW': { '1': 'content/zh-TW/terms-1.333333.json' }, en: { '1': 'content/en/terms-1.444444.json' } },
+  formulaIndex: { 'zh-TW': 'content/zh-TW/formula-index.555555.json' },
+  formulaDetails: { 'zh-TW': 'content/zh-TW/formulas.666666.json' },
   tombstones: 'content/tombstones.aaaaaa.json',
 };
 const levelFile = {
   level: { id: 'lv_t3st0001', rev: 1, chapterId: 'ch_t3st001', order: 1, title: '測試關卡', questionIds: ['q_s1ng1e01'] },
   questions: [{ id: 'q_s1ng1e01', type: 'single_choice', rev: 2, revKind: 'answer', answerRev: 2, scored: true, termRefs: [] }],
 };
-const tombstones = [{ kind: 'question', id: 'q_r3t1red1', supersededBy: 'q_s1ng1e01', retiredNote: { 'zh-TW': '已改成新題', en: 'Replaced' } }];
+const tombstones = [
+  { kind: 'question', id: 'q_r3t1red1', supersededBy: 'q_s1ng1e01', retiredNote: { 'zh-TW': '已改成新題', en: 'Replaced' } },
+  { kind: 'formula', id: 'fm_r3t1red1' },
+];
 const chapterBundle = {
   chapter: {
     id: 'ch_t3st001',
@@ -74,6 +81,37 @@ const files: Record<string, unknown> = {
   '/content/zh-TW/term-index.eeeeee.json': [{ id: 'tm_t3st0001', label: '資產' }],
   '/content/zh-TW/terms-1.333333.json': [{ id: 'tm_t3st0001', label: '資產', definition: '公司擁有、預期帶來經濟效益的資源' }],
   '/content/zh-TW/chapter-index.111111.json': [{ id: 'ch_t3st001', order: 1, title: '測試章', levelIds: ['lv_t3st0001'], objectives: [] }],
+  '/content/zh-TW/formula-index.555555.json': [
+    {
+      id: 'fm_t3st0001',
+      kind: 'ratio',
+      category: 'profitability',
+      label: '權益報酬率',
+      aliases: [],
+      formula: '淨利 ÷ 權益',
+      termRef: 'tm_t3st0001',
+      questionIds: [],
+    },
+  ],
+  '/content/zh-TW/formulas.666666.json': [
+    {
+      id: 'fm_t3st0001',
+      kind: 'ratio',
+      category: 'profitability',
+      label: '權益報酬率',
+      aliases: [],
+      formula: '淨利 ÷ 權益',
+      termRef: 'tm_t3st0001',
+      questionIds: [],
+      versions: [],
+      components: [],
+      example: '例',
+      reading: '看',
+      related: [],
+      sources: [],
+      questions: { formula: [], numeric: [], concept: [] },
+    },
+  ],
 };
 
 beforeEach(() => {
@@ -123,6 +161,16 @@ describe('content loaders', () => {
     expect(await resolveId('tm_t3st0001')).toEqual({ status: 'active', kind: 'term' });
     expect(await resolveId('q_r3t1red1', 'en')).toEqual({ status: 'retired', kind: 'question', supersededBy: 'q_s1ng1e01', retiredNote: 'Replaced' });
     expect(await resolveId('q_wh0kn0ws1')).toEqual({ status: 'unknown' });
+    expect(await resolveId('fm_t3st0001')).toEqual({ status: 'active', kind: 'formula' });
+    expect(await resolveId('fm_r3t1red1')).toEqual({ status: 'retired', kind: 'formula' });
+  });
+
+  it('公式：索引與完整內容每個語系一檔；沒有這個語系的檔時索引是空陣列、內容是 undefined；快照裡沒有這條公式回 undefined', async () => {
+    expect((await loadFormulaIndex('zh-TW')).map((f) => f.label)).toEqual(['權益報酬率']);
+    expect((await loadFormulaDetail('fm_t3st0001', 'zh-TW'))?.reading).toBe('看');
+    expect(await loadFormulaDetail('fm_n0n3x1st', 'zh-TW')).toBeUndefined();
+    expect(await loadFormulaIndex('en')).toEqual([]);
+    expect(await loadFormulaDetail('fm_t3st0001', 'en')).toBeUndefined();
   });
 
   it('名詞兩層：索引一個語系一檔；完整內容依 ID 末字元的字元碼分 8 桶，不在快照裡的名詞回 undefined，桶檔讀不到丟 ContentLoadError', async () => {

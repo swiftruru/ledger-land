@@ -1,0 +1,43 @@
+{
+  "id": "fm_505vc635",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_7km3j04r",
+  "ratioRef": "operating_income_to_paid_in_capital",
+  "formula": {
+    "zh-TW": "營業利益 ÷ 股本",
+    "en": "Operating profit ÷ share capital"
+  },
+  "components": [
+    {
+      "term": "tm_z3vbt800",
+      "meaning": {
+        "zh-TW": "本業的利潤：營業收入扣掉營業成本與銷管費用，還沒算利息、投資收益等業外收支，也還沒繳稅。只看本業，所以不受業外一次性收入干擾。",
+        "en": "Profit from the main business: revenue less cost of sales and operating expenses, before non-operating items such as interest and investment income and before tax. Looking only at the core business keeps one-off non-operating income out of the picture."
+      }
+    },
+    {
+      "term": "tm_5e3py55a",
+      "meaning": {
+        "zh-TW": "股東依面額投入的那一份錢，也就是實收資本額，不含資本公積和歷年留下的盈餘。",
+        "en": "The money the owners paid in at par value, that is, paid-in capital, excluding capital surplus and profits kept over the years."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家工業閥件廠的股本 {{money:1000000}}，本期營業利益 {{money:240000}}：{{money:240000}} ÷ {{money:1000000}} ＝ {{percent:0.24|digits=0}}。意思是股東每投入 {{money:100}} 的面額資本，本業一年賺回 {{money:24}}。如果隔年增資到 {{money:1500000}} 而營業利益仍是 {{money:240000}}，比率會掉到 {{percent:0.16|digits=0}}。數字是網站自己編的，不是真實公司。",
+    "en": "An industrial valve maker has share capital of {{money:1000000}} and operating profit of {{money:240000}}: {{money:240000}} ÷ {{money:1000000}} = {{percent:0.24|digits=0}}. For every {{money:100}} of par-value capital the owners put in, the core business earned {{money:24}} in the year. If share capital rose to {{money:1500000}} the next year with operating profit still at {{money:240000}}, the ratio would fall to {{percent:0.16|digits=0}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "越高，表示本業相對於登記資本賺得越多。它只看本業、不含稅與業外收支，所以比稅前利益佔實收資本比率更能看出核心生意的賺錢能力；兩條並排看，差距就是業外收支的貢獻。要和自己幾年的趨勢比，特別留意增資或配股之後：股本變大了，如果營業利益沒跟著成長，比率會被稀釋，這往往是新募的錢還沒發揮、或擴張效益不如預期的訊號。和同業比時要注意股本結構差異：面額相同、股本接近的公司才好比。分母只有股本，不是全部股東權益，所以它不等於權益報酬率。常見誤讀是把股本當成全部的股東權益：股本只有面額那一份，不含資本公積與保留盈餘，所以累積盈餘多的公司這條通常比權益報酬率高很多，兩者不能直接比。",
+    "en": "The higher it is, the more the core business earns relative to registered capital. Because it covers only the main business, before tax and non-operating items, it shows the earning power of the core trade more clearly than the profit before tax to paid-in capital ratio; read side by side, the gap between the two is the contribution of non-operating items. Compare with the company’s own trend, and watch especially after a share issue or stock dividend: share capital grows, and if operating profit does not grow with it the ratio is diluted, often a sign that newly raised money has not yet been put to work or that an expansion fell short. When comparing with peers, mind differences in capital structure: companies with the same par value and similar share capital compare best. The denominator is share capital, not total equity, so this is not return on equity. A common misreading is treating share capital as the whole of equity: it is only the par value portion, without capital surplus and retained earnings, so in companies with large accumulated profits this ratio is usually far higher than return on equity and the two cannot be compared directly."
+  },
+  "related": [
+    "fm_7zq776p7",
+    "fm_hfssf6ha",
+    "fm_0tqaf9qd",
+    "fm_yvx7qnt9"
+  ]
+}

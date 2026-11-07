@@ -17,7 +17,7 @@
 // 關卡只收所屬章節也進快照的（2026-10-25）：草稿章節裡已發布的關卡（連同只在那一關的題目）不進正式快照；已發布章節漏列的關卡照舊收（content:check 另有警告）。
 // 不讀檔也不寫檔：回傳 { manifest, files: Map<相對路徑, JSON 文字> }，content-build.mjs 負責寫到 apps/web/public/content/。
 import { createHash } from 'node:crypto';
-import { createCoreContext, defaultAccounts } from '@ledgerland/core';
+import { createCoreContext, defaultAccounts, defaultRatios } from '@ledgerland/core';
 import { storyFirstPaint } from './content-rules.mjs';
 import { LOCALES } from '@ledgerland/i18n';
 import { isUnscoredLevel, splitHandout } from './content-schema-bridge.mjs';
@@ -203,11 +203,80 @@ function handoutEntry(handout, write) {
   };
 }
 
+/** 指標登錄檔的版本名對講義編號：slides01 到 slides03 是講義 0-1 到 0-3（decks.json 的 code），excel 與 dupont 沒有講義 */
+export const deckCodeOfVersion = (version) => {
+  const m = /^slides0(\d)$/.exec(version);
+  return m ? `0-${m[1]}` : null;
+};
+
+/**
+ * 會計公式（08 第 3.11 節，2026-11-07）：每個語系一份小索引（清單、搜尋與題目反查要的欄位）加一份完整內容檔。名稱、別名與類別從名詞與指標登錄檔取；
+ * 講義出處與相關題目從講義對照檔（handout.resolvedLinks）帶進來，題目另帶 topic，條目頁不必載講義檔就能列題名。沒有講義題庫時 sources 與 questions 是空的。
+ * @param {any[]} formulas 進快照的公式（已發布，或含草稿）
+ * @param {Map<string, any>} termById
+ * @param {{ decks: any; bank: any; resolvedLinks?: import('@ledgerland/content-schema').ResolvedFormulaLink[] } | null | undefined} handout
+ * @param {readonly { id: string; category: string }[]} ratios
+ */
+export function formulaSnapshots(formulas, termById, handout, ratios = defaultRatios) {
+  const categoryOf = new Map(ratios.map((r) => [r.id, r.category]));
+  const decks = new Map((handout?.decks?.decks ?? []).map((d) => [d.id, { id: d.id, code: d.code, title: d.title }]));
+  const deckByCode = new Map([...decks.values()].map((d) => [d.code, d]));
+  const questionById = new Map((handout?.bank?.questions ?? []).map((q) => [q.id, q]));
+  const linkOf = new Map((handout?.resolvedLinks ?? []).map((l) => [l.formula, l]));
+  const order = ['formula', 'numeric', 'concept'];
+  return formulas
+    .slice()
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map((f) => {
+      const term = termById.get(f.termRef);
+      const link = linkOf.get(f.id);
+      const questions = Object.fromEntries(
+        order.map((relation) => [
+          relation,
+          (link?.questions[relation] ?? [])
+            .map((id) => questionById.get(id))
+            .filter((q) => q !== undefined)
+            .map((q) => ({ id: q.id, deck: q.deck, topic: q.topic })),
+        ]),
+      );
+      const index = {
+        id: f.id,
+        kind: f.kind,
+        category: f.kind === 'ratio' ? (categoryOf.get(f.ratioRef) ?? 'statement') : f.category,
+        label: f.label ?? term?.label ?? { 'zh-TW': f.termRef, en: f.termRef },
+        aliases: term?.aliases ?? { 'zh-TW': [], en: [] },
+        formula: f.formula,
+        termRef: f.termRef,
+        ...(f.ratioRef === undefined ? {} : { ratioRef: f.ratioRef }),
+        questionIds: order.flatMap((relation) => questions[relation].map((q) => q.id)),
+      };
+      const detail = {
+        ...index,
+        versions: (f.versions ?? []).map((v) => {
+          const code = deckCodeOfVersion(v.version);
+          const deck = code === null ? undefined : deckByCode.get(code);
+          return { version: v.version, ...(deck === undefined ? {} : { deck }), formula: v.formula, ...(v.note === undefined ? {} : { note: v.note }) };
+        }),
+        components: f.components.map((c) => ({
+          ...(c.term === undefined ? {} : { term: c.term }),
+          label: c.label ?? termById.get(c.term)?.label ?? { 'zh-TW': c.term, en: c.term },
+          meaning: c.meaning,
+        })),
+        example: f.example,
+        reading: f.reading,
+        related: f.related ?? [],
+        sources: (link?.sources ?? []).map((s) => ({ ...(decks.get(s.deck) ?? { id: s.deck, code: s.deck, title: s.deck }), slides: s.slides })),
+        questions,
+      };
+      return { index, detail };
+    });
+}
+
 /**
  * @param {import('./content-rules.mjs').ParsedBundle} parsed Zod 通過的內容（validateBundle 應已無錯誤）
  * @param {Map<string, import('./content-rules.mjs').CompiledQuestion>} compiled runAccountingChecks 的結果
  * @param {{ contentVersion?: number; items?: { id: string; answerRev?: number; rev: number }[] }} lock published.lock.json
- * @param {{ gitCommit?: string; builtAt?: string; includeDrafts?: boolean; accounts?: readonly { id: string; element: string }[]; coreContext?: import('@ledgerland/core').CoreContext; handout?: { decks: any; bank: any } | null }} [meta] includeDrafts：快照連草稿一起收（manifest 標 includesDrafts），
+ * @param {{ gitCommit?: string; builtAt?: string; includeDrafts?: boolean; accounts?: readonly { id: string; element: string }[]; coreContext?: import('@ledgerland/core').CoreContext; handout?: { decks: any; bank: any; resolvedLinks?: import('@ledgerland/content-schema').ResolvedFormulaLink[] } | null; ratios?: readonly { id: string; category: string }[] }} [meta] includeDrafts：快照連草稿一起收（manifest 標 includesDrafts），
  *   只給本機開發與 E2E；CI 與部署不設。accounts：查名詞要素用的科目表，預設是核心內建的科目表（測試可以換）。handout：驗證過的講義題庫（decks.json 與 midterm.json），沒有就不出講義檔
  */
 export function buildSnapshot(parsed, compiled, lock, meta = {}) {
@@ -240,6 +309,7 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
   const questionById = new Map(questions.map((q) => [q.id, q]));
   // 故事（M4a，2026-11-01 起進快照）：每個故事每個語系一檔，authorNotes 不進去；章末與題目的 labRef 只連到快照裡有的故事（quest-map 的 publishedStories）
   const stories = selectItems(parsed.stories, includeDrafts);
+  const formulaSnapshotList = formulaSnapshots(selectItems(parsed.formulas ?? [], includeDrafts), termById, meta.handout, meta.ratios);
   const levelById = new Map(levels.map((l) => [l.id, l]));
   const tombstones = [
     ...parsed.terms.map((x) => ({ kind: 'term', ...x.data })),
@@ -248,6 +318,8 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
     ...parsed.levels.map((x) => ({ kind: 'level', ...x.data })),
     ...parsed.questions.map((x) => ({ kind: 'question', ...x.data })),
     ...parsed.stories.map((x) => ({ kind: 'story', ...x.data })),
+    // 公式自己有 kind 欄位（ratio、relation），墓碑的 kind 要蓋過它
+    ...(parsed.formulas ?? []).map((x) => ({ ...x.data, kind: 'formula' })),
   ]
     .filter((x) => x.status === 'retired')
     .map((x) => ({ kind: x.kind, id: x.id, supersededBy: x.supersededBy, retiredNote: x.retiredNote }));
@@ -387,6 +459,9 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
         ]),
       );
     })(),
+    // 會計公式（2026-11-07）：索引每語系一檔（進 precache，苦練頁反查題目用），完整內容每語系一檔（不進 precache，Service Worker 執行期快取）
+    formulaIndex: perLocale('formula-index', (locale) => formulaSnapshotList.map((f) => localize(f.index, locale))),
+    formulaDetails: perLocale('formulas', (locale) => formulaSnapshotList.map((f) => localize(f.detail, locale))),
     templates: {},
     stories: stories.map((s) => ({
       id: s.id,
@@ -411,6 +486,7 @@ export function buildSnapshot(parsed, compiled, lock, meta = {}) {
       questions: questions.length,
       terms: terms.length,
       stories: stories.length,
+      formulas: formulaSnapshotList.length,
     },
   };
 }

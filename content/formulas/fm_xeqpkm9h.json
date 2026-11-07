@@ -1,0 +1,32 @@
+{
+  "id": "fm_xeqpkm9h",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_x6e56fqp",
+  "ratioRef": "me_intensity",
+  "formula": {
+    "zh-TW": "行銷費用 ÷ 營業收入",
+    "en": "Marketing expenses ÷ revenue"
+  },
+  "components": [
+    {
+      "term": "tm_k1tghpyd",
+      "meaning": { "zh-TW": "營業費用裡花在廣告、促銷與活動的錢，在損益表的毛利之後扣，發生的那一期就全部認列。", "en": "The operating expense spent on advertising, promotions and events, deducted below gross profit on the income statement and recognised in full in the period it is incurred." }
+    },
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "損益表第一列，這一期本業收進來的金額，當分母表示「每做一元生意」。", "en": "The first line of the income statement, what the core business brought in this period; as the denominator it means ‘for each unit of sales’." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家線上寵物用品店這一年行銷費用 {{money:2400000}}，營業收入 {{money:16000000}}：{{money:2400000}} ÷ {{money:16000000}} ＝ {{percent:0.15|digits=0}}。意思是每做 {{money:100}} 的生意，就有 {{money:15}} 花在廣告與促銷上。數字是網站自己編的，不是真實公司。",
+    "en": "An online pet supplies shop spends {{money:2400000}} on marketing this year against revenue of {{money:16000000}}: {{money:2400000}} ÷ {{money:16000000}} = {{percent:0.15|digits=0}}. For every {{money:100}} of sales, {{money:15}} goes on advertising and promotion. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "比例高表示公司很靠廣告與促銷帶動生意，消費品與電商通常偏高，做企業客戶的公司通常很低，所以只能和同業比。看自己連續幾期的變化比單看一期可靠：行銷費用在花的那一期就全部認列，效果卻可能隔幾期才出現，所以一期偏高不一定是錢花得沒效率；真正的警訊是比例持續攀升、營收卻停滯，那表示每多花一元的效果越來越小。常見誤讀：把行銷費用算進營業成本再去算毛利率，行銷費用是營業費用，不影響毛利，它壓縮的是營業利益率。",
+    "en": "A high ratio means the business leans heavily on advertising and promotion; consumer goods and e-commerce are usually high while companies selling to other businesses are usually low, so compare with peers only. Several consecutive periods are more reliable than one: marketing is expensed in full in the period it is spent while the benefit may arrive a few periods later, so one high period does not necessarily mean the money was wasted. The real warning sign is a ratio that keeps climbing while revenue stalls, which says each extra unit of spending is doing less and less. A common misreading is counting marketing in cost of sales and then computing gross margin; marketing is an operating expense, it does not touch gross profit, and what it squeezes is the operating margin."
+  },
+  "related": ["fm_z6x5xxsc", "fm_ehc6qwjn", "fm_3wy1y84s", "fm_hfssf6ha"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "fm_hqda6nvm",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_arb3vgk7",
+  "ratioRef": "cash_conversion_cycle",
+  "formula": {
+    "zh-TW": "營運週期 − 平均付款天數",
+    "en": "Operating cycle − average payment period"
+  },
+  "components": [
+    {
+      "term": "tm_7v02zwjf",
+      "meaning": { "zh-TW": "平均銷貨日數加平均收現日數：從進貨到收回貨款總共經過幾天。", "en": "Days to sell inventory plus the collection period: the total days from buying goods to collecting the cash." }
+    },
+    {
+      "term": "tm_kzkzng5e",
+      "meaning": { "zh-TW": "供應商讓公司賒帳的天數；這段時間貨款還沒付，用的是供應商的錢，所以要扣掉。", "en": "The days suppliers let the company owe them; during that stretch the goods are financed by suppliers, so it is deducted." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家家具行的平均銷貨日數 {{number:73|unit=day}}、平均收現日數 {{number:50|unit=day}}，營運週期 {{number:123|unit=day}}；供應商給它 {{number:50|unit=day}} 的付款期。現金轉換循環就是 {{number:123|unit=day}} − {{number:50|unit=day}} ＝ {{number:73|unit=day}}：每一批貨有 {{number:73|unit=day}} 是公司自己墊錢的。數字是網站自己編的，不是真實公司。",
+    "en": "A furniture shop takes {{number:73|unit=day}} to sell its stock and {{number:50|unit=day}} to collect, so its operating cycle is {{number:123|unit=day}}; its suppliers allow {{number:50|unit=day}} to pay. The cash conversion cycle is {{number:123|unit=day}} − {{number:50|unit=day}} = {{number:73|unit=day}}: for each batch of goods the shop finances {{number:73|unit=day}} out of its own pocket. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "天數越短，公司自己要準備的營運資金越少；數字可以是負的，先向客戶收現金、再慢慢付供應商的零售業就會出現負值，等於拿供應商的錢做生意。要縮短它有三條路：賣得更快、收得更快、付得更慢，三條路的代價不一樣，所以要拆開看是哪一項在變。只能和同業或自己的趨勢比；它由三個天數指標串起來，任何一個用期末餘額或碰到季節性囤貨，誤差都會一路傳下來。常見誤讀：以為越短一定越好，其實靠拖延付款壓短的循環，會賠掉供應商的信任與現金折扣，它是一種權衡，不是比誰最低。",
+    "en": "The shorter the cycle, the less working capital the company must provide itself. It can be negative: a retailer that collects cash from customers first and pays suppliers later shows a negative cycle, effectively trading on its suppliers’ money. There are three ways to shorten it: sell faster, collect faster or pay later, and each carries a different cost, so always look at which leg is moving. Compare only with peers or the company’s own trend; since it chains three day counts, any one built on a closing balance or a seasonal stock-up passes its error straight through. A common misreading is that shorter is always better: a cycle squeezed by stretching payments costs supplier goodwill and cash discounts, so it is a balance to strike, not a contest for the lowest number."
+  },
+  "related": ["fm_qzh8rn8c", "fm_1mknnm52", "fm_6ze3efpg", "fm_73k20388"]
+}

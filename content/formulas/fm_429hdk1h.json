@@ -1,0 +1,43 @@
+{
+  "id": "fm_429hdk1h",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_baexgs31",
+  "ratioRef": "effective_tax_rate",
+  "formula": {
+    "zh-TW": "所得稅費用 ÷ 稅前淨利",
+    "en": "Income tax expense ÷ profit before tax"
+  },
+  "components": [
+    {
+      "term": "tm_3qfqnrmm",
+      "meaning": {
+        "zh-TW": "損益表倒數第二列，這一期的獲利要繳給政府的所得稅。",
+        "en": "The second-to-last line of the income statement: the income tax charged on this period’s profit."
+      }
+    },
+    {
+      "term": "tm_z971merj",
+      "meaning": {
+        "zh-TW": "五層利益的第四層，扣掉所得稅之前的全部獲利，包含本業與業外。",
+        "en": "The fourth of the five profit levels: all the profit, core business and non-operating together, before income tax is deducted."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家自行車零件批發商這一年稅前淨利 {{money:900000}}，所得稅費用 {{money:180000}}：{{money:180000}} ÷ {{money:900000}} ＝ {{percent:0.2|digits=0}}。意思是稅前每賺 {{money:100}}，有 {{money:20}} 繳了稅，剩下的 {{money:720000}} 才是本期淨利。數字是網站自己編的，不是真實公司。",
+    "en": "A bicycle parts wholesaler has profit before tax of {{money:900000}} this year and income tax expense of {{money:180000}}: {{money:180000}} ÷ {{money:900000}} = {{percent:0.2|digits=0}}. Of every {{money:100}} earned before tax, {{money:20}} goes in tax, and the remaining {{money:720000}} is the profit for the period. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "有效稅率是用報表數字算出來的實際稅負，常常和法律規定的法定稅率不一樣：有免稅所得或以前年度虧損可以扣抵時會比法定稅率低，有不可扣除的費用時會比較高，差距越大表示稅務調整的影響越大。它主要和法定稅率比，再和自己前幾年比，忽然跳高或跳低多半是一次性的事件（補稅、認列或迴轉遞延所得稅）。失真的情況：稅前淨利很小的時候，一點點稅額就能讓比率很誇張；稅前淨利是負數時比率沒有意義。常見誤讀：以為有效稅率一定等於法定稅率，所以看到不一樣就以為報表算錯了，其實兩者本來就會不同，本課故事的所得稅金額也是教學上的設定。",
+    "en": "The effective tax rate is the actual tax burden computed from the statements, and it often differs from the statutory rate set by law: tax-exempt income or losses carried forward from earlier years pull it below the statutory rate, non-deductible expenses push it above, and the wider the gap the larger the tax adjustments. Compare it first with the statutory rate and then with the company’s own earlier years; a sudden jump up or down is usually a one-off event such as a back-tax assessment or deferred tax being recognised or reversed. It misleads when profit before tax is very small, because a modest tax charge then produces an extreme ratio, and when profit before tax is negative the ratio has no meaning. A common misreading is expecting the effective rate to equal the statutory rate and assuming the statements are wrong when it does not; the two differ by nature, and the tax amount in the course story is a teaching assumption as well."
+  },
+  "related": [
+    "fm_zefdfz9a",
+    "fm_scaffwgf",
+    "fm_7zq776p7",
+    "fm_hfssf6ha"
+  ]
+}

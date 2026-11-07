@@ -1,0 +1,32 @@
+{
+  "id": "fm_dx2v6nw7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_2ggtxnaz",
+  "ratioRef": "equity_multiplier",
+  "formula": {
+    "zh-TW": "資產總計 ÷ 股東權益總額",
+    "en": "Total assets ÷ total equity"
+  },
+  "components": [
+    {
+      "term": "tm_t7a3s6wb",
+      "meaning": { "zh-TW": "資產負債表左邊的合計，公司手上全部的資源，不管錢是借來的還是股東出的。", "en": "The total on the asset side of the balance sheet: everything the company holds, whether paid for by borrowing or by the owners." }
+    },
+    {
+      "term": "tm_y37ymj9w",
+      "meaning": { "zh-TW": "資產裡真正屬於股東的那一部分：股本、資本公積加上留下來的盈餘。", "en": "The part of the assets that belongs to the owners: share capital, capital surplus and the profits kept in the company." }
+    }
+  ],
+  "example": {
+    "zh-TW": "資產總計 {{money:2000000}}，股東權益總額 {{money:800000}}：{{money:2000000}} ÷ {{money:800000}} ＝ {{number:2.5|unit=times}}。意思是股東每出 {{money:1}}，公司就撐起 {{money:2.5}} 的資產，差額是借來的。同一家公司的負債比率是 {{money:1200000}} ÷ {{money:2000000}} ＝ {{percent:0.6|digits=0}}，1 ÷（1 − {{percent:0.6|digits=0}}）也等於 {{number:2.5|unit=times}}。數字是網站自己編的，不是真實公司。",
+    "en": "Total assets {{money:2000000}}, total equity {{money:800000}}: {{money:2000000}} ÷ {{money:800000}} = {{number:2.5|unit=times}}. For every {{money:1}} the owners put in, the company carries {{money:2.5}} of assets, and the difference is borrowed. The same company’s debt ratio is {{money:1200000}} ÷ {{money:2000000}} = {{percent:0.6|digits=0}}, and 1 ÷ (1 − {{percent:0.6|digits=0}}) also gives {{number:2.5|unit=times}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "倍數剛好是 1 表示完全沒有負債；越往上，資產裡靠借款撐起來的比例越高，財務槓桿越大。槓桿是雙面刃：賺錢時把權益報酬率放大，虧錢時也把虧損放大，所以權益報酬率很高、資產報酬率卻平平的公司，多半是這個倍數在撐。它和負債比率是同一件事的兩種說法，可以互相換算，要和同業比才知道高不高，金融業天生就很高。常見誤讀：被問「資產有多少比例來自負債」時拿權益倍數回答，那題要用負債比率；權益倍數回答的是「每一元權益撐起多少資產」。股東權益是負數時這個倍數沒有意義。",
+    "en": "A multiple of exactly 1 means no liabilities at all; the higher it climbs, the larger the share of assets carried by borrowing and the greater the financial leverage. Leverage cuts both ways: it amplifies return on equity in good years and amplifies losses in bad ones, so a company with a high return on equity but an ordinary return on assets is usually being propped up by this multiple. It says the same thing as the debt ratio in a different form and the two convert into each other; compare with peers to judge the level, since banks are naturally very high. A common misreading is answering ‘what share of assets is funded by debt’ with the equity multiplier: that question wants the debt ratio, while the multiplier answers ‘how many units of assets each unit of equity supports’. When equity is negative the multiple has no meaning."
+  },
+  "related": ["fm_0tqaf9qd", "fm_pv0bed74", "fm_239p828h", "fm_mae66cbh", "fm_3b2yf4gc"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "fm_3wy1y84s",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_2f3fqvmq",
+  "ratioRef": "sga_ratio",
+  "formula": {
+    "zh-TW": "銷管費用 ÷ 營業收入",
+    "en": "Distribution costs and administrative expenses ÷ revenue"
+  },
+  "components": [
+    {
+      "term": "tm_kyjfrraq",
+      "meaning": { "zh-TW": "毛利之後扣的營業費用：薪資、租金、水電、廣告、折舊等推銷與管理的開支，在課程的版面裡就是全部的營業費用。", "en": "The operating expenses deducted below gross profit: wages, rent, utilities, advertising, depreciation and the other costs of selling and running the business; in the course layout they are the whole of operating expenses." }
+    },
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "損益表第一列，這一期本業收進來的金額，當分母表示「每做一元生意」。", "en": "The first line of the income statement, what the core business brought in this period; as the denominator it means ‘for each unit of sales’." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家自行車零件批發商這一年營業收入 {{money:5000000}}，銷管費用 {{money:1050000}}：{{money:1050000}} ÷ {{money:5000000}} ＝ {{percent:0.21|digits=0}}。意思是每做 {{money:100}} 的生意，要花 {{money:21}} 在薪水、租金與推銷上；同一家公司毛利率 {{percent:0.36|digits=0}} 減掉這 {{percent:0.21|digits=0}}，就是營業利益率 {{percent:0.15|digits=0}}。數字是網站自己編的，不是真實公司。",
+    "en": "A bicycle parts wholesaler has revenue of {{money:5000000}} this year and distribution and administrative expenses of {{money:1050000}}: {{money:1050000}} ÷ {{money:5000000}} = {{percent:0.21|digits=0}}. For every {{money:100}} of sales, {{money:21}} goes on wages, rent and selling; the same company’s gross margin of {{percent:0.36|digits=0}} minus this {{percent:0.21|digits=0}} is its operating margin of {{percent:0.15|digits=0}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "比例越高，表示公司要花越多力氣推銷與管理才做得到這些生意；它是毛利率和營業利益率之間的那一段，毛利率不變、這個比率上升，營業利益率就被壓縮。要和同業比，也要看自己幾年的趨勢：營收成長時固定性質的費用（租金、基本薪資）不會等比例增加，比率應該慢慢下降，如果反而上升，表示費用成長得比營收快。失真的情況：公司把部分工作外包，外包費如果列在營業成本，這個比率會變好看，毛利率卻變差，要兩個一起看。常見誤讀：把營業成本也算進分子，營業成本是賣出商品本身的成本，已經在毛利那一層扣掉了，這個比率只看毛利之後的推銷與管理費用。",
+    "en": "The higher the ratio, the more selling and administrative effort the company needs to win its sales; it is the gap between the gross margin and the operating margin, so with gross margin unchanged a rising ratio squeezes operating profit. Compare with peers and watch the company’s own trend: when revenue grows, expenses that are largely fixed (rent, base salaries) do not grow in step, so the ratio should drift down, and if it rises instead expenses are growing faster than revenue. It can mislead: when a company outsources part of its work and the fees are recorded in cost of sales, this ratio looks better while the gross margin gets worse, so read the two together. A common misreading is including cost of sales in the numerator; that is the cost of the goods themselves, already deducted at the gross profit level, and this ratio looks only at the selling and administrative expenses below it."
+  },
+  "related": ["fm_hfssf6ha", "fm_hzcxphkb", "fm_g6b7tn65", "fm_xeqpkm9h"]
+}

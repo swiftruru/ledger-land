@@ -42,6 +42,7 @@ export const CONTENT_DIRS = {
   levels: 'content/levels',
   questions: 'content/questions',
   stories: 'content/stories',
+  formulas: 'content/formulas',
 };
 
 export function loadContentFiles() {
@@ -53,6 +54,7 @@ export function loadContentFiles() {
     questions: readDir(CONTENT_DIRS.questions, { recursive: true }),
     objectives: readDir(CONTENT_DIRS.objectives),
     levels: readDir(CONTENT_DIRS.levels),
+    formulas: readDir(CONTENT_DIRS.formulas),
   };
   for (const list of Object.values(bundle)) for (const x of list) if (x.error) console.error(`content：${x.file} 不是合法的 JSON：${x.error}`);
   return bundle;

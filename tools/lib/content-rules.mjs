@@ -4,7 +4,7 @@
 // 全部呼叫 packages/core，不另寫會計邏輯。這個模組不讀檔也不列印，content-check.mjs 與 content-lock.mjs 負責讀檔與輸出，tools/test 直接呼叫。
 // 故事只做性質檢查：訊息只寫規則、列、步驟與事件，不印任何金額（D2）。
 // acct.pendingBlocked：pendingRefs 自 2026-10-23 起是「相關設計決定的編號」（14 的 T 系列都已決定），只有 open-refs.json 仍列為開放的編號才警告。
-import { Chapter, Level, ObjectiveFile, Question, Story, Term, TransactionTemplate } from '@ledgerland/content-schema';
+import { Chapter, Formula, Level, ObjectiveFile, Question, Story, Term, TransactionTemplate } from '@ledgerland/content-schema';
 import {
   SCENARIO_STEP_ID,
   buildChart,
@@ -18,6 +18,7 @@ import {
   createLedger,
   defaultAccounts,
   defaultRatioRegistry,
+  defaultRatios,
   expectedJournalEntries,
   fiveStepCheck,
   getRatioVersion,
@@ -36,7 +37,7 @@ import { checkPlaceholderValues } from './content-values.mjs';
 /**
  * @typedef {{ rule: string; file: string; path: string; message: string; severity: 'error' | 'warning' }} RuleIssue
  * @typedef {{ file: string; data: any; path?: string }} Parsed 學習目標攤平後 path 是檔內位置（items.<i>），其餘沒有 path
- * @typedef {{ terms: Parsed[]; chapters: Parsed[]; templates: Parsed[]; stories: Parsed[]; questions: Parsed[]; objectives: Parsed[]; levels: Parsed[] }} ParsedBundle
+ * @typedef {{ terms: Parsed[]; chapters: Parsed[]; templates: Parsed[]; stories: Parsed[]; questions: Parsed[]; objectives: Parsed[]; levels: Parsed[]; formulas: Parsed[] }} ParsedBundle
  * @typedef {{ id: string; label: { 'zh-TW': string; en: string }; value: number; level?: number; total?: boolean; heading?: boolean }} CompiledLine
  *   pick_line 題在 after 狀態（cumulative）下該報表的可見列：label 是版面的雙語 label（快照依語系展開），value 是核心算出的金額
  * @typedef {{ ratioRef: string; status: string; exact: { num: string; den: string } | null; displayValue: number | null }} CompiledRatio 核心 RatioResult 進快照的子集
@@ -108,7 +109,43 @@ export function parseBundle(bundle) {
     questions: parseEntries(bundle.questions, Question),
     objectives: parseObjectives(bundle.objectives),
     levels: parseEntries(bundle.levels, Level),
+    formulas: parseEntries(bundle.formulas, Formula),
   };
+}
+
+/**
+ * 會計公式對指標登錄檔的規則（08 第 5.3 節，2026-11-07）：ref.ratioExists（ratioRef 要是登錄檔的指標）、ref.formulaRatioUnique（一個指標只能有一條公式），
+ * ref.ratioVersionExists（versions 列的版本名要是該指標登錄檔裡有的版本；relation 類的公式不得列 versions），以及警告 ref.formulaCoverage（登錄檔有、公式沒有的指標）。
+ * 登錄檔預設是核心內建的 ratios.json（測試可以換）。
+ * @param {ParsedBundle} parsed
+ * @param {readonly { id: string; versions?: Record<string, unknown> }[]} [ratios]
+ * @returns {RuleIssue[]}
+ */
+export function runFormulaChecks(parsed, ratios = defaultRatios) {
+  /** @type {RuleIssue[]} */
+  const issues = [];
+  const ratioIds = new Set(ratios.map((r) => r.id));
+  const ratioById = new Map(ratios.map((r) => [r.id, r]));
+  /** @type {Map<string, string>} */
+  const owner = new Map();
+  for (const f of parsed.formulas) {
+    const ref = f.data.ratioRef;
+    if (ref === undefined) {
+      if (f.data.versions !== undefined) issues.push(error('ref.ratioVersionExists', f.file, 'versions', '報表關係類的公式沒有指標版本，不要列 versions'));
+      continue;
+    }
+    if (!ratioIds.has(ref)) issues.push(error('ref.ratioExists', f.file, 'ratioRef', `指標登錄檔沒有 ${ref}`));
+    else
+      (f.data.versions ?? []).forEach((v, i) => {
+        if (!(v.version in (ratioById.get(ref)?.versions ?? {})))
+          issues.push(error('ref.ratioVersionExists', f.file, `versions.${i}.version`, `指標 ${ref} 的登錄檔沒有 ${v.version} 版本`));
+      });
+    const prev = owner.get(ref);
+    if (prev !== undefined) issues.push(error('ref.formulaRatioUnique', f.file, 'ratioRef', `指標 ${ref} 已經有公式 ${prev}，一個指標只能有一條`));
+    owner.set(ref, f.data.id);
+  }
+  for (const id of ratioIds) if (!owner.has(id)) issues.push(warning('ref.formulaCoverage', '(ratios)', id, `指標 ${id} 還沒有公式條目`));
+  return issues;
 }
 
 /**

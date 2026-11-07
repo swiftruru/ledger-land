@@ -4,7 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { Account } from '../src/account.ts';
 import { Chapter } from '../src/chapter.ts';
-import { HandoutBank, HandoutDecks } from '../src/handout.ts';
+import { Formula } from '../src/formula.ts';
+import { FormulaLinks, HandoutBank, HandoutDecks } from '../src/handout.ts';
 import { Layout } from '../src/layout.ts';
 import { Level } from '../src/level.ts';
 import { ObjectiveFile } from '../src/objective.ts';
@@ -30,6 +31,8 @@ const targets = {
   'level.schema.json': Level,
   'handout.schema.json': HandoutBank,
   'handout-decks.schema.json': HandoutDecks,
+  'handout-formula-links.schema.json': FormulaLinks,
+  'formula.schema.json': Formula,
 } as const;
 const check = process.argv.includes('--check');
 let bad = 0;

@@ -1,0 +1,36 @@
+{
+  "id": "fm_3b2yf4gc",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "relation",
+  "termRef": "tm_cfghjxzq",
+  "category": "statement",
+  "formula": {
+    "zh-TW": "資產總計 ＝ 負債總額 ＋ 股東權益總額",
+    "en": "Total assets = total liabilities + total equity"
+  },
+  "components": [
+    {
+      "term": "tm_t7a3s6wb",
+      "meaning": { "zh-TW": "公司手上全部的資源：現金、應收帳款、存貨、設備等，流動與非流動加起來。", "en": "Everything the company holds: cash, receivables, inventories, equipment and so on, current and non-current together." }
+    },
+    {
+      "term": "tm_fwys72qx",
+      "meaning": { "zh-TW": "資產裡來自別人的錢：欠供應商的貨款、向銀行借的錢、還沒繳的稅。", "en": "The part of the assets financed by others: amounts owed to suppliers, bank borrowings, taxes not yet paid." }
+    },
+    {
+      "term": "tm_y37ymj9w",
+      "meaning": { "zh-TW": "資產裡來自股東的錢：股東投入的股本、資本公積，加上歷年留下來的盈餘。", "en": "The part financed by the owners: share capital and capital surplus paid in, plus profits kept in the company over the years." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家小公司有現金 {{money:300000}}、存貨 {{money:200000}} 與設備 {{money:500000}}，資產總計 {{money:1000000}}；欠銀行 {{money:400000}}，負債總額 {{money:400000}}；股東權益總額就是 {{money:1000000}} − {{money:400000}} ＝ {{money:600000}}。左邊 {{money:1000000}}，右邊 {{money:400000}} ＋ {{money:600000}} ＝ {{money:1000000}}，兩邊一定相等。",
+    "en": "A small company holds cash {{money:300000}}, inventories {{money:200000}} and equipment {{money:500000}}, so total assets are {{money:1000000}}; it owes the bank {{money:400000}}, so total liabilities are {{money:400000}}; total equity is therefore {{money:1000000}} − {{money:400000}} = {{money:600000}}. The left side is {{money:1000000}} and the right side is {{money:400000}} + {{money:600000}} = {{money:1000000}}: the two sides always agree."
+  },
+  "reading": {
+    "zh-TW": "左邊是公司有什麼，右邊是這些東西的錢從哪裡來。任何一筆交易記完，這條式子都還是成立，所以它是資產負債表的最後一道勾稽：兩邊對不上，一定是哪裡記錯了。它只保證金額相等，不代表兩種資金來源的風險一樣：同樣 {{money:1000000}} 的資產，靠借款撐起來的和靠股東出資撐起來的，體質差很多，要再看負債比率或權益倍數。",
+    "en": "The left side says what the company has; the right side says where the money for it came from. The equation still holds after every transaction, so it is the final check on a balance sheet: if the two sides disagree, something was recorded wrongly. It only guarantees that the amounts match, not that the two sources carry the same risk: {{money:1000000}} of assets financed by borrowing is a very different business from the same assets financed by the owners, so read the debt ratio or the equity multiplier next."
+  },
+  "related": ["fm_yvx7qnt9", "fm_pv0bed74", "fm_dx2v6nw7"]
+}

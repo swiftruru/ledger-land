@@ -1,0 +1,32 @@
+{
+  "id": "fm_vk0dq2m7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_qpw1px47",
+  "ratioRef": "capital_surplus_to_share_capital",
+  "formula": {
+    "zh-TW": "資本公積 ÷ 股本",
+    "en": "Capital surplus ÷ share capital"
+  },
+  "components": [
+    {
+      "term": "tm_yka0razf",
+      "meaning": { "zh-TW": "股東權益裡，發行股票時投資人付的價格超過面額的那一部分，是歷年溢價的累積。", "en": "The part of equity made up of what investors paid above par when shares were issued, accumulated over the years." }
+    },
+    {
+      "term": "tm_5e3py55a",
+      "meaning": { "zh-TW": "股東權益裡按面額計算的部分：每股面額乘上發行股數，不管當時實際賣多少錢。", "en": "The part of equity measured at par: par value per share times the number of shares issued, whatever price they actually sold for." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家植物工廠公司發行 {{number:100000}} 股，每股面額 {{money:10}}，投資人每股實際付 {{money:35}}：股本記 {{number:100000}} × {{money:10}} ＝ {{money:1000000}}，超過面額的 {{money:25}} × {{number:100000}} ＝ {{money:2500000}} 記資本公積。{{money:2500000}} ÷ {{money:1000000}} ＝ {{percent:2.5|digits=0}}，意思是投資人付的錢裡，溢價是面額的兩倍半。數字是網站自己編的，不是真實公司。",
+    "en": "A vertical farming company issues {{number:100000}} shares with a par value of {{money:10}} each, and investors actually pay {{money:35}} a share: share capital is recorded as {{number:100000}} × {{money:10}} = {{money:1000000}}, and the {{money:25}} above par × {{number:100000}} = {{money:2500000}} goes to capital surplus. {{money:2500000}} ÷ {{money:1000000}} = {{percent:2.5|digits=0}}, meaning the premium investors paid is two and a half times the par value. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "這是課程用來觀察市場估值的方式，不是標準比率：比例越高，表示公司歷年發行新股時，投資人願意付的價格比面額高出越多，可以當成市場看好這家公司的痕跡；比率是 0 表示股票都是按面額發行。它要和同業或自己過去幾次增資比，而且只有在公司確實向市場募過資時才有意義，股本很小、只增資過一次的公司一筆溢價就能讓比率很高。常見誤讀：把它當成現在的市場估值，資本公積記的是過去發行時的溢價，之後股價怎麼漲跌它都不會動；要看市場現在怎麼評價這家公司，得用股價算的本益比。",
+    "en": "This is a way the course looks at market valuation rather than a standard ratio: the higher it is, the more investors have been willing to pay above par when the company issued new shares over the years, which can be read as a trace of market confidence; a ratio of zero means every share was issued at par. Compare it with peers or with the company’s own earlier share issues, and remember it only means something when the company has actually raised money from the market, since a company with a small share capital and a single issue can show a very high ratio from one premium. A common misreading is treating it as today’s market valuation: capital surplus records the premium at the time of issue and does not move however the share price rises or falls afterwards, so to see how the market values the company now, use the price-to-earnings ratio, which is built from the share price."
+  },
+  "related": ["fm_yvx7qnt9", "fm_9fewe3a3", "fm_52gntpsa", "fm_0tqaf9qd"]
+}

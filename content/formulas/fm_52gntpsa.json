@@ -1,0 +1,72 @@
+{
+  "id": "fm_52gntpsa",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_knqbr6g4",
+  "ratioRef": "eps",
+  "formula": {
+    "zh-TW": "（歸屬於母公司業主的本期淨利 − 特別股股利）÷ 加權平均已發行普通股股數",
+    "en": "(Profit attributable to owners of the parent − preference dividends) ÷ weighted average number of ordinary shares outstanding"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "本期淨利 ÷（股本 ÷ 每股面額）",
+        "en": "Profit for the period ÷ (share capital ÷ par value per share)"
+      },
+      "note": {
+        "zh-TW": "課程模板用股本除以每股面額推算股數（面額預設 {{money:10}}，可以修改），不加權、不扣特別股股利，也不分歸屬母公司；年中有增資或庫藏股時會和正式的加權平均算法有出入。",
+        "en": "The course template estimates the share count as share capital divided by par value per share (default {{money:10}}, editable), with no weighting, no preference dividends deducted and no split for the parent’s share; when shares are issued or bought back during the year it differs from the formal weighted average method."
+      }
+    }
+  ],
+  "components": [
+    {
+      "label": {
+        "zh-TW": "歸屬於母公司業主的本期淨利",
+        "en": "Profit attributable to owners of the parent"
+      },
+      "meaning": {
+        "zh-TW": "本期淨利裡屬於母公司股東的部分；子公司有外人持股時，屬於那些外人的淨利不能算進來。沒有子公司的公司，就是本期淨利。",
+        "en": "The part of profit for the period that belongs to the parent’s shareholders; when a subsidiary has outside shareholders, their share of profit is left out. For a company with no subsidiaries it is simply profit for the period."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "特別股股利",
+        "en": "Preference dividends"
+      },
+      "meaning": {
+        "zh-TW": "要先付給特別股股東的股利。特別股股東排在普通股前面領錢，付完之後剩下的才是普通股股東的；沒有特別股就是 0。",
+        "en": "Dividends that must first go to preference shareholders. They are paid ahead of ordinary shareholders, and only what remains belongs to the ordinary shares; with no preference shares this is 0."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "加權平均已發行普通股股數",
+        "en": "Weighted average number of ordinary shares outstanding"
+      },
+      "meaning": {
+        "zh-TW": "一年裡流通在外的普通股股數，按每一批股票在外流通的時間長短加權。年中才發行的新股只算半年，這樣才對得上一整年累積的淨利。",
+        "en": "The number of ordinary shares outstanding during the year, weighted by how long each block was in issue. Shares issued at mid-year count for half a year, which matches a profit accumulated over the whole year."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家電子零組件公司本期歸屬於母公司業主的淨利 {{money:2400000}}，沒有特別股；年初流通在外 {{number:800000}} 股，年中又發行 {{number:400000}} 股，加權平均股數是 {{number:800000}} ＋ {{number:400000}} × 一半 ＝ {{number:1000000}} 股。{{money:2400000}} ÷ {{number:1000000}} 股 ＝ 每股 {{money:2.4}}。意思是每一股普通股這一年分到 {{money:2.4}} 的獲利，不管有沒有真的發成股利。數字是網站自己編的，不是真實公司。",
+    "en": "An electronic components company has profit attributable to owners of the parent of {{money:2400000}} and no preference shares; {{number:800000}} shares were outstanding at the start of the year and another {{number:400000}} were issued at mid-year, so the weighted average is {{number:800000}} + {{number:400000}} × one half = {{number:1000000}} shares. {{money:2400000}} ÷ {{number:1000000}} shares = {{money:2.4}} per share. Each ordinary share earned {{money:2.4}} this year, whether or not it was paid out as a dividend. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "它把公司的獲利換算成每一股分到多少，是股東最常看的一個數字，也是本益比的分母。同一家公司逐年比最有意義：每股盈餘連年成長，表示獲利跟得上股數。拿兩家公司比絕對值則很危險，股本不同，每股盈餘自然不同；股本小的公司每股盈餘高，不代表賺得多，比較獲利能力要看純益率或權益報酬率。增資發新股會稀釋每股盈餘，買回庫藏股則會墊高，所以每股盈餘上升不一定是獲利變好，要回頭看本期淨利有沒有同步成長。估價時要用預估的未來每股盈餘，不是已經過去的數字。常見誤讀是以為每股盈餘高的公司一定比較賺錢：它受股數影響，只能看價格貴不貴（配本益比）或自己逐年的變化。",
+    "en": "It converts the company’s profit into the amount each share earned, the figure shareholders look at most often and the denominator of the price-to-earnings ratio. It means most when one company is tracked year by year: earnings per share that grow every year show profit keeping pace with the share count. Comparing absolute figures between two companies is risky, since different share capital gives different earnings per share; a company with few shares shows a high figure without earning more, so compare profitability with the net profit margin or return on equity instead. Issuing new shares dilutes earnings per share and buying back treasury shares lifts it, so a rising figure is not necessarily better profit, and you should check whether profit for the period grew with it. For valuation use forecast future earnings per share, not the past figure. A common misreading is assuming a company with higher earnings per share is more profitable: the figure depends on the share count and is best used for judging price (with the price-to-earnings ratio) or the company’s own trend."
+  },
+  "related": [
+    "fm_9fewe3a3",
+    "fm_0tqaf9qd",
+    "fm_zefdfz9a",
+    "fm_yvx7qnt9"
+  ]
+}

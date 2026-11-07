@@ -1,0 +1,48 @@
+{
+  "id": "fm_sm2xtt5h",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_n70k1r9t",
+  "ratioRef": "margin_maintenance",
+  "formula": {
+    "zh-TW": "擔保品市值 ÷ 融資金額",
+    "en": "Market value of collateral ÷ margin loan amount"
+  },
+  "components": [
+    {
+      "label": {
+        "zh-TW": "擔保品市值",
+        "en": "Market value of collateral"
+      },
+      "meaning": {
+        "zh-TW": "用融資買進、押在證券商那裡的股票，按現在的市價算出來的總值；股價一跌它就跟著縮。",
+        "en": "The total value, at today’s market price, of the shares bought on margin and held by the broker as security; it shrinks as soon as the price falls."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "融資金額",
+        "en": "Margin loan amount"
+      },
+      "meaning": {
+        "zh-TW": "投資人向證券商借來買股票的錢，股價怎麼變它都不變，所以比率全靠分子在動。",
+        "en": "The money the investor borrowed from the broker to buy the shares; it stays the same whatever the price does, so the ratio moves entirely through the numerator."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一位投資人用自己的 {{money:300000}} 加上向證券商借的 {{money:500000}}，買進市值 {{money:800000}} 的股票：{{money:800000}} ÷ {{money:500000}} ＝ {{percent:1.6|digits=0}}。股價下跌、市值剩 {{money:650000}} 時，{{money:650000}} ÷ {{money:500000}} ＝ {{percent:1.3|digits=0}}，再跌一點就會接到補繳通知；市值跌到 {{money:500000}} 時比率是 {{percent:1|digits=0}}，股票剛好只夠還借款，自己出的本金全部不見。數字是網站自己編的，不是真實公司。",
+    "en": "An investor puts in {{money:300000}} of her own money plus {{money:500000}} borrowed from the broker and buys shares worth {{money:800000}}: {{money:800000}} ÷ {{money:500000}} = {{percent:1.6|digits=0}}. When the price slips and the shares are worth {{money:650000}}, {{money:650000}} ÷ {{money:500000}} = {{percent:1.3|digits=0}}, and a little further down the margin call arrives; at {{money:500000}} the ratio is {{percent:1|digits=0}}, the shares cover just the loan and all of her own money is gone. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "這個比率不是看公司，是看投資人自己借錢買股票的風險：越高越安全，越接近借款金額越危險。整戶的維持率低於規定的門檻時，證券商會發追繳通知，要在期限內補錢或補擔保品，不補足就會被處分擔保品，也就是俗稱的斷頭；現行門檻是 {{percent:1.3|digits=0}}，課程用的 {{percent:1.2|digits=0}} 是舊制的數字，只當參考值。它只和門檻比，不和同業比，而且實際規定看的是整個信用帳戶合併計算的整戶擔保維持率，上面的公式是只有融資、沒有融券與抵繳品時的簡化寫法。常見誤讀：把它和公司的負債比率混為一談，負債比率講公司的財務結構，融資維持率講投資人自己的借款風險，完全是兩個層次的事。本站的說明只供學習，不是投資建議。",
+    "en": "This ratio is not about the company but about the investor’s own risk from buying shares with borrowed money: the higher it is the safer, and the closer the shares fall to the loan amount the more dangerous. When the account-wide ratio drops below the regulated threshold the broker issues a margin call, the investor must add cash or collateral within the deadline, and if the shortfall is not covered the broker sells the collateral, known as forced selling; the current threshold is {{percent:1.3|digits=0}}, and the {{percent:1.2|digits=0}} used in the course is an older figure kept only as a reference. It is compared with the threshold, not with peers, and the actual rules use the account-wide collateral maintenance ratio combining the whole margin account, so the formula above is the simplified form for margin purchases alone with no short sales or pledged securities. A common misreading is confusing it with the company’s debt ratio: the debt ratio describes the company’s financial structure, while this one describes the investor’s own borrowing risk, two entirely different levels. This is for learning only, not investment advice."
+  },
+  "related": [
+    "fm_9fewe3a3",
+    "fm_pv0bed74",
+    "fm_dx2v6nw7"
+  ]
+}

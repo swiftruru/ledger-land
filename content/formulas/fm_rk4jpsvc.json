@@ -1,0 +1,32 @@
+{
+  "id": "fm_rk4jpsvc",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_g50575m9",
+  "ratioRef": "revenue_per_employee",
+  "formula": {
+    "zh-TW": "營業收入 ÷ 員工人數",
+    "en": "Revenue ÷ number of employees"
+  },
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "損益表第一列，這一期靠本業賣東西或提供服務收進來的金額。", "en": "The first line of the income statement: what the core business brought in this period from selling goods or services." }
+    },
+    {
+      "label": { "zh-TW": "員工人數", "en": "Number of employees" },
+      "meaning": { "zh-TW": "財務報表裡沒有這個數字，要從年報或公司資料另外查，通常用期末人數或全年平均人數。", "en": "Not a line in the financial statements: it comes from the annual report or company data, usually the year-end headcount or the average for the year." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家物流公司這一年的營業收入 {{money:36000000}}，員工 {{number:40}} 人：{{money:36000000}} ÷ {{number:40}} ＝ 每人 {{money:900000}}。意思是平均每位員工替公司做出 {{money:900000}} 的生意。數字是網站自己編的，不是真實公司。",
+    "en": "A logistics company earns revenue of {{money:36000000}} this year with {{number:40}} employees: {{money:36000000}} ÷ {{number:40}} = {{money:900000}} per person. On average each employee generates {{money:900000}} of business for the company. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "數字越高，表示同樣的人力做出越多營收，人力的產出效率越好。它只能和同產業、同規模、經營方式相近的公司比：人少、大量外包或高度自動化的公司天生偏高，軟體公司和餐飲業完全不是同一個量級。看自己的趨勢也有用：增聘一批人之後如果人均營收明顯下滑，表示管理幅度可能到頂，新人還沒帶來等比例的生意。常見誤讀：人均營收上升就以為員工更有效率，其實把工作外包、裁掉人力也會讓分母變小而數字變大，但外包費照樣要付，獲利不一定改善，要看獲利請改看營業利益率或純益率。",
+    "en": "The higher the figure, the more revenue the same workforce produces and the more productive the staff. It only compares well with companies in the same industry, of similar size and run in a similar way: a lean, heavily outsourced or highly automated company is naturally high, and a software firm and a restaurant chain are not in the same league. The company’s own trend is useful too: if revenue per employee drops clearly after a round of hiring, the span of management may have reached its limit and the new staff have yet to bring in a matching share of business. A common misreading is taking a rise as proof that staff became more efficient; outsourcing work or cutting headcount also shrinks the denominator and lifts the figure, yet the outsourcing still has to be paid for and profit may not improve, so turn to the operating or net profit margin for that."
+  },
+  "related": ["fm_ehc6qwjn", "fm_xeqpkm9h", "fm_5k6wp1c0", "fm_zefdfz9a"]
+}

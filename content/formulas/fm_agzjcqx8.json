@@ -1,0 +1,36 @@
+{
+  "id": "fm_agzjcqx8",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_1vxjew8q",
+  "ratioRef": "rd_leverage",
+  "formula": {
+    "zh-TW": "（本期營業收入 − 前期營業收入）÷ 本期研究發展費用",
+    "en": "(Revenue this period − revenue last period) ÷ research and development expenses this period"
+  },
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "本期損益表第一列的營業收入，減掉前期的之後就是這一期營收增加的金額。", "en": "Revenue on this period’s income statement; subtracting last period’s figure leaves the increase in revenue this period." }
+    },
+    {
+      "label": { "zh-TW": "前期營業收入", "en": "Prior-period revenue" },
+      "meaning": { "zh-TW": "上一期損益表的營業收入，要另外輸入；只有一期的報表算不出這個比率。", "en": "Revenue from last period’s income statement, entered separately; a single period’s statements cannot produce this ratio." }
+    },
+    {
+      "term": "tm_avgpa43e",
+      "meaning": { "zh-TW": "本期花在研發上的營業費用，當分母表示「每投入一元研發」。", "en": "The operating expense spent on research this period; as the denominator it means ‘for each unit spent on research’." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家感測器公司本期營業收入 {{money:15000000}}，前期 {{money:12300000}}，本期研究發展費用 {{money:1800000}}：（{{money:15000000}} − {{money:12300000}}）÷ {{money:1800000}} ＝ {{money:2700000}} ÷ {{money:1800000}} ＝ {{number:1.5|unit=times}}。意思是每投入 {{money:1}} 研發，這一期的營收比上一期多了 {{money:1.5}}。數字是網站自己編的，不是真實公司。",
+    "en": "A sensor maker has revenue of {{money:15000000}} this period and {{money:12300000}} last period, with research and development expenses of {{money:1800000}} this period: ({{money:15000000}} − {{money:12300000}}) ÷ {{money:1800000}} = {{money:2700000}} ÷ {{money:1800000}} = {{number:1.5|unit=times}}. For every {{money:1}} spent on research, revenue is {{money:1.5}} higher than last period. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "這是課程自訂的觀察方式，公式是網站補充的定義，目前不出計分題。倍數越高，表示同樣的研發投入對應到越多的營收成長；營收衰退時分子是負的，倍數也變負。它和 RD intensity 回答的是不同問題：RD intensity 只用本期兩個數字看投入占營收的比例，RD leverage 要用兩期的營收看變動。看的時候要記得兩件事：研發通常要好幾期才會變成產品與營收，拿本期的研發費用對本期的營收成長，時間其實對不上；而且營收成長還受景氣、價格與通路影響，不能全算在研發頭上。常見誤讀：看到倍數很高就以為研發很有效，其實研發費用很少的公司只要營收稍微成長，倍數就會很大。",
+    "en": "This is an observation devised in the course; the formula is the site’s own working definition and it is not used in scored questions. The higher the multiple, the more revenue growth the same research spending is matched with; when revenue falls the numerator turns negative and so does the multiple. It answers a different question from R&D intensity: intensity uses two figures from this period to show spending as a share of revenue, while leverage needs two periods’ revenue to look at the change. Keep two things in mind: research usually takes several periods to become products and revenue, so this period’s spending and this period’s growth do not really line up in time; and growth also depends on the economy, prices and distribution, so it cannot all be credited to research. A common misreading is taking a high multiple as proof that research is effective, when a company that spends very little on research gets a large multiple from even a small rise in revenue."
+  },
+  "related": ["fm_ehc6qwjn", "fm_z6x5xxsc", "fm_rk4jpsvc"]
+}

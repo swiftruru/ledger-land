@@ -14,14 +14,15 @@ M0b 只有少量原創的名詞與章節範例資料；題目、交易範本與�
 | `questions/<chapterId>/` | 一題，放在所屬章節的資料夾（路徑不是身分，搬章節時 ID 不變） | `<questionId>.json` | `schemas/question.schema.json` |
 | `terms/` | 一個名詞 | `<termId>.json` | `schemas/term.schema.json` |
 | `stories/` | 一個故事（含全部步驟） | `<storyId>.json` | `schemas/story.schema.json` |
+| `formulas/` | 一條會計公式（2026-11-07）：各項數值的意思、原創範例、怎麼看；名稱與類別從名詞（`termRef`）和指標登錄檔（`ratioRef`）取。任何欄位都不得有講義編號或頁碼，出處寫在 `handout/formula-links.json` | `<formulaId>.json` | `schemas/formula.schema.json` |
 | `handout/` | 講義題庫（老師授權的非原創區，M4c）：`decks.json` 是三份講義、章節範圍與人工排除，`ids.json` 是投影片到 `hq_` ID 的對照表，`midterm.json` 是題目本身；三個檔都由 `pnpm handout:extract` 產生或維護，不走下面的指令 | 固定三個檔名 | `schemas/handout.schema.json`（`midterm.json`）與 `schemas/handout-decks.schema.json`（`decks.json`）；`ids.json` 的形狀在同一個 Zod 模組（`packages/content-schema` 的 `handout.ts`） |
 
 指令（在 repo 根目錄；先 `source tools/env.sh`）：
 
-- `pnpm content:new <question|level|objective|term|chapter> [--chapter ch_xxxxxx] [--type <題型>] [--order <n>]`：產生不與既有 ID 與 lock 衝突的 ID，建立含必填欄位骨架的草稿檔並印出路徑；`objective` 會加進該章的 `objectives/<chapterId>.json`。ID 一律由工具產生，不接受手打。
+- `pnpm content:new <question|level|objective|term|chapter|formula> [--chapter ch_xxxxxx] [--type <題型>] [--order <n>]`：產生不與既有 ID 與 lock 衝突的 ID，建立含必填欄位骨架的草稿檔並印出路徑；`objective` 會加進該章的 `objectives/<chapterId>.json`。ID 一律由工具產生，不接受手打。
 - `pnpm content:check`：結構、多語系、引用（章節的 `objectiveIds` 與 `levelIds`、關卡的 `questionIds` 同章、題目的 `objectiveId` 同章、`misconceptionId` 存在於該目標）、佔位符、會計與答案、文字風格（頁碼樣式、寫死數字、字母引用）、關卡題數（已發布的關卡 5 到 8 題計分題加至多 1 題 `judgment`；草稿只提醒）、lock。
 - `pnpm content:coverage`：觀念覆蓋表（每個學習目標的預計題數、草稿數、已發布數、題型與難度分布、迷思被練到的次數），印到畫面並寫到 `.local-reports/content/coverage.md`。
-- `pnpm content:lock --check` 或 `--write`：比對或更新 `published.lock.json`（名詞、章節、學習目標、關卡、範本、故事、題目）。
+- `pnpm content:lock --check` 或 `--write`：比對或更新 `published.lock.json`（名詞、章節、學習目標、關卡、範本、故事、題目、公式）。
 - `pnpm content:build`：已發布的內容做成快照（草稿不進快照）。
 
 已發布的項目只能引用已發布的項目：章節列出的目標與關卡、關卡列出的題目、題目對應的目標都要是 `published`，否則 `content:check` 回報錯誤；寫到一半時先別把它們列進已發布的章節或關卡。

@@ -3,6 +3,7 @@
 import { LOCALE_CODES, type Locale } from '@ledgerland/i18n';
 import { z } from 'zod';
 import { Chapter } from './chapter.ts';
+import { Formula } from './formula.ts';
 import { EVENT_ID_RE, RATIO_REF_RE } from './common.ts';
 import { PLACEHOLDER_TYPES, idPattern, parsePlaceholders, placeholderKey } from './ids.ts';
 import { LEVEL_MAX_JUDGMENT, LEVEL_MAX_SCORED, LEVEL_MIN_SCORED, LEVEL_UNSCORED_MAX, LEVEL_UNSCORED_MIN, Level } from './level.ts';
@@ -27,6 +28,8 @@ export interface ContentBundle {
   /** M2 起選填：學習目標（一章一檔，data 是 { chapterId, items: Objective[] }）與關卡（一關一檔）。省略時不檢查 objectiveId 與 levelIds 的引用 */
   objectives?: ContentEntry[];
   levels?: ContentEntry[];
+  /** 2026-11-07 起選填：會計公式（content/formulas/，一條一檔）。省略時不檢查 */
+  formulas?: ContentEntry[];
 }
 
 export interface ContentIssue {
@@ -234,6 +237,7 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   const questions = parseAll(bundle.questions, Question, issues, '題目 ');
   const objectiveFiles = parseAll(bundle.objectives, ObjectiveFile, issues, '學習目標檔 ', false);
   const levels = parseAll(bundle.levels, Level, issues, '關卡 ');
+  const formulas = parseAll(bundle.formulas, Formula, issues, '公式 ');
   // 學習目標攤平成一筆一項（path 前綴 items.<i>），ID 全站唯一
   const objectives: { file: string; path: string; data: Objective }[] = [];
   {
@@ -275,6 +279,7 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
       ...questions.map((x) => ({ id: x.data.id, file: x.file, path: 'id', kind: '題目' })),
       ...objectives.map((x) => ({ id: x.data.id, file: x.file, path: `${x.path}.id`, kind: '學習目標' })),
       ...levels.map((x) => ({ id: x.data.id, file: x.file, path: 'id', kind: '關卡' })),
+      ...formulas.map((x) => ({ id: x.data.id, file: x.file, path: 'id', kind: '公式' })),
     ];
     for (const x of all) {
       const prev = owner.get(x.id);
@@ -284,7 +289,7 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   }
 
   // 佔位符（結構失敗的檔案只檢查語法與跨語言，不檢查作用範圍）
-  const parsedFiles = new Set([...terms, ...chapters, ...templates, ...stories, ...questions, ...objectiveFiles, ...levels].map((x) => x.file));
+  const parsedFiles = new Set([...terms, ...chapters, ...templates, ...stories, ...questions, ...objectiveFiles, ...levels, ...formulas].map((x) => x.file));
   for (const e of [
     ...bundle.terms,
     ...bundle.chapters,
@@ -293,6 +298,7 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
     ...(bundle.questions ?? []),
     ...(bundle.objectives ?? []),
     ...(bundle.levels ?? []),
+    ...(bundle.formulas ?? []),
   ]) {
     if (!parsedFiles.has(e.file)) checkPlaceholders(e.file, e.data, [], issues, ctx);
   }
@@ -300,6 +306,7 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   for (const c of chapters) checkPlaceholders(c.file, c.data, [], issues, ctx, () => NO_SCOPE);
   for (const f of objectiveFiles) checkPlaceholders(f.file, f.data, [], issues, ctx, () => NO_SCOPE);
   for (const l of levels) checkPlaceholders(l.file, l.data, [], issues, ctx, () => NO_SCOPE);
+  for (const f of formulas) checkPlaceholders(f.file, f.data, [], issues, ctx, () => NO_SCOPE);
   for (const t of templates) {
     const templateScope: PlaceholderScope = {
       kind: 'template',
@@ -327,6 +334,15 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
   const need = (file: string, path: string, ok: boolean, message: string) => {
     if (!ok) issues.push({ file, path, message });
   };
+  const formulaIds = new Set(formulas.map((f) => f.data.id));
+  for (const f of formulas) {
+    need(f.file, 'termRef', termIds.has(f.data.termRef), `引用不存在的名詞 ${f.data.termRef}`);
+    f.data.components.forEach((c, i) => {
+      if (c.term !== undefined) need(f.file, `components.${i}.term`, termIds.has(c.term), `引用不存在的名詞 ${c.term}`);
+    });
+    for (const rel of f.data.related ?? []) need(f.file, 'related', formulaIds.has(rel), `引用不存在的公式 ${rel}`);
+    if (f.data.supersededBy) need(f.file, 'supersededBy', formulaIds.has(f.data.supersededBy), `引用不存在的公式 ${f.data.supersededBy}`);
+  }
   for (const t of terms) {
     for (const rel of t.data.related ?? []) need(t.file, 'related', termIds.has(rel), `引用不存在的名詞 ${rel}`);
     if (t.data.supersededBy) need(t.file, 'supersededBy', termIds.has(t.data.supersededBy), `引用不存在的名詞 ${t.data.supersededBy}`);
@@ -522,7 +538,8 @@ export function validateBundle(bundle: ContentBundle): ContentIssue[] {
       requireEn(`chapter ${c.data.id}`, 'title.en', c.data.title);
       requireEn(`chapter ${c.data.id}`, 'summary.en', c.data.summary);
     }
-  for (const x of [...templates, ...stories, ...questions, ...levels]) if (x.data.status === 'published') requireEnEverywhere(x.file, x.data, [], issues);
+  for (const x of [...templates, ...stories, ...questions, ...levels, ...formulas])
+    if (x.data.status === 'published') requireEnEverywhere(x.file, x.data, [], issues);
   for (const o of objectives) if (o.data.status === 'published') requireEnEverywhere(o.file, o.data, o.path.split('.'), issues);
 
   // 章節順序不重複

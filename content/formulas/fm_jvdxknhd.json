@@ -1,0 +1,32 @@
+{
+  "id": "fm_jvdxknhd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_jx267rna",
+  "ratioRef": "total_leverage",
+  "formula": {
+    "zh-TW": "營運槓桿度 × 財務槓桿度",
+    "en": "Degree of operating leverage × degree of financial leverage"
+  },
+  "components": [
+    {
+      "term": "tm_tspyazrx",
+      "meaning": { "zh-TW": "營收扣掉變動成本後的邊際貢獻，除以營業利益：固定成本把營收的變動放大成營業利益變動的倍數。", "en": "Revenue less variable costs, divided by operating profit: how many times fixed costs magnify a change in sales into a change in operating profit." }
+    },
+    {
+      "term": "tm_gkmknxh4",
+      "meaning": { "zh-TW": "營業利益除以營業利益減利息費用：固定的利息把營業利益的變動再放大成稅前淨利變動的倍數。", "en": "Operating profit divided by operating profit less interest: how many times fixed interest magnifies a change in operating profit into a change in profit before tax." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家印刷廠營業收入 {{money:2000000}}，變動成本 {{money:1200000}}，營業利益 {{money:400000}}，利息費用 {{money:80000}}。營運槓桿度 ＝ ({{money:2000000}} − {{money:1200000}}) ÷ {{money:400000}} ＝ {{number:2|unit=times}}；財務槓桿度 ＝ {{money:400000}} ÷ ({{money:400000}} − {{money:80000}}) ＝ {{number:1.25|unit=times}}；整體槓桿度 ＝ {{number:2|unit=times}} × {{number:1.25|unit=times}} ＝ {{number:2.5|unit=times}}。意思是營收多 {{percent:0.1|digits=0}}，稅前淨利大約會多 {{percent:0.25|digits=0}}；營收少一成，稅前淨利也會少四分之一。數字是網站自己編的，不是真實公司。",
+    "en": "A printing works has revenue of {{money:2000000}}, variable costs of {{money:1200000}}, operating profit of {{money:400000}} and interest expense of {{money:80000}}. Degree of operating leverage = ({{money:2000000}} − {{money:1200000}}) ÷ {{money:400000}} = {{number:2|unit=times}}; degree of financial leverage = {{money:400000}} ÷ ({{money:400000}} − {{money:80000}}) = {{number:1.25|unit=times}}; degree of total leverage = {{number:2|unit=times}} × {{number:1.25|unit=times}} = {{number:2.5|unit=times}}. So if sales rise {{percent:0.1|digits=0}}, profit before tax rises roughly {{percent:0.25|digits=0}}; if sales fall by a tenth, profit before tax falls by a quarter. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "倍數越高，營收的小波動最後變成獲利的大波動：景氣好時獲利跳得快，景氣差時也摔得重，它是一把雙面刃，不是越高越好。看它要拆成兩層：固定成本（廠房、設備、固定薪資）多的公司營運槓桿高，借款多的公司財務槓桿高，兩層都高的公司最禁不起營收下滑。和同業比才有意義，重資產產業天生偏高；也要看自己幾年的趨勢，擴廠或大舉借款之後倍數通常會跳上去。營業利益接近零或是負的時候，這個倍數會變得很大或沒有意義，不要硬解讀。常見誤讀：把兩個槓桿度相加，其實兩層放大是連乘的，營收的變動先經過固定成本放大成營業利益的變動，再經過利息放大成稅前淨利的變動。",
+    "en": "The higher the multiple, the more a small swing in sales ends up as a large swing in profit: earnings jump in good years and crash in bad ones, so it cuts both ways and higher is not better. Read it in two layers: companies with heavy fixed costs (plant, equipment, salaried staff) carry high operating leverage, companies with heavy borrowing carry high financial leverage, and those with both are the least able to withstand a drop in sales. It only means something against peers, since asset-heavy industries run high by nature, and across the company’s own years, where a new plant or a big loan usually sends the multiple up. When operating profit is close to zero or negative the multiple becomes huge or meaningless, so do not force a reading. A common misreading is adding the two measures instead of multiplying them: the amplifications compound, as a change in sales is first magnified by fixed costs into a change in operating profit, then by interest into a change in profit before tax."
+  },
+  "related": ["fm_pk88kpht", "fm_pr9ht8fb", "fm_wfk7jdnd"]
+}

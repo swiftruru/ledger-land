@@ -8,7 +8,7 @@ import { validateBundle } from '@ledgerland/content-schema';
 import { loadContentFiles } from './lib/content-files.mjs';
 import { allEntityIds, checkLock, currentLockItems, normaliseLock } from './lib/content-lock.mjs';
 import { loadHandout } from './lib/handout-files.mjs';
-import { hasErrors, parseBundle, runAccountingChecks } from './lib/content-rules.mjs';
+import { hasErrors, parseBundle, runAccountingChecks, runFormulaChecks } from './lib/content-rules.mjs';
 import { runTextChecks } from './lib/content-text.mjs';
 import { ROOT, fail, readJson } from './lib/fs.mjs';
 
@@ -20,8 +20,9 @@ for (const i of schemaIssues) fail(`content:check：${i.file} ${i.path}：${i.ru
 const parsed = parseBundle(bundle);
 const acct = runAccountingChecks(parsed);
 const text = runTextChecks(parsed);
+const formulaIssues = runFormulaChecks(parsed);
 let warnings = 0;
-for (const i of [...text, ...acct.issues]) {
+for (const i of [...text, ...acct.issues, ...formulaIssues]) {
   if (i.severity === 'error') fail(`content:check：${i.file} ${i.path}：${i.rule}：${i.message}`);
   else {
     warnings++;
@@ -32,7 +33,7 @@ for (const i of [...text, ...acct.issues]) {
 // lock（08 第 4.4、5.6 節）：只有結構與會計都沒有錯誤時才比對，否則 answerHash 不完整
 const lockPath = join(ROOT, 'content/published.lock.json');
 let lockIssues = 0;
-if (schemaIssues.length === 0 && !hasErrors(acct.issues) && !hasErrors(text)) {
+if (schemaIssues.length === 0 && !hasErrors(acct.issues) && !hasErrors(text) && !hasErrors(formulaIssues)) {
   if (!existsSync(lockPath)) fail('content:check：content/published.lock.json 不存在，請執行 pnpm content:lock --write');
   else {
     const files = new Map();
@@ -43,20 +44,22 @@ if (schemaIssues.length === 0 && !hasErrors(acct.issues) && !hasErrors(text)) {
   }
 }
 
-// 講義題庫（08 的講義題庫一節）：獨立的三個檔案，只做形狀與交叉檢查，不進 lock 與原創性檢查
-const handout = loadHandout();
+// 講義題庫（08 的講義題庫一節）：獨立的三個檔案加講義對照檔，只做形狀與交叉檢查，不進 lock 與原創性檢查
+const handout = loadHandout({ formulaIds: new Set(parsed.formulas.map((f) => f.data.id)) });
 for (const i of handout.issues) fail(`content:check：${i.file} ${i.path}：${i.rule ? `${i.rule}：` : ''}${i.message}`);
-const handoutSummary = handout.handout ? `、講義題庫 ${handout.handout.bank.questions.length} 題` : '';
+const handoutSummary = handout.handout
+  ? `、講義題庫 ${handout.handout.bank.questions.length} 題（對照 ${handout.handout.links.links?.length ?? 0} 條公式）`
+  : '';
 
 const elapsed = ((performance.now() - started) / 1000).toFixed(1);
 if (process.exitCode) {
   console.error(
-    `content:check：失敗（結構 ${schemaIssues.length}、文字與結構 ${text.filter((i) => i.severity === 'error').length}、會計與答案 ${acct.issues.filter((i) => i.severity === 'error').length}、lock ${lockIssues}、講義題庫 ${handout.issues.length} 個錯誤；${elapsed} 秒）`,
+    `content:check：失敗（結構 ${schemaIssues.length}、文字與結構 ${text.filter((i) => i.severity === 'error').length}、會計與答案 ${acct.issues.filter((i) => i.severity === 'error').length}、公式 ${formulaIssues.filter((i) => i.severity === 'error').length}、lock ${lockIssues}、講義題庫 ${handout.issues.length} 個錯誤；${elapsed} 秒）`,
   );
 } else {
   console.log(
     `content:check：${bundle.terms.length} 個名詞、${bundle.chapters.length} 個章節、${parsed.objectives.length} 個學習目標、${bundle.levels.length} 個關卡、` +
       `${acct.stats.templates} 個範本（${acct.stats.combos} 組參數，前置條件不成立跳過 ${acct.stats.skipped} 組）、` +
-      `${acct.stats.storiesReplayed} 個故事、${bundle.questions.length} 個題目${handoutSummary}通過，lock 一致${warnings > 0 ? `，${warnings} 個警告` : ''}（${elapsed} 秒）`,
+      `${acct.stats.storiesReplayed} 個故事、${bundle.questions.length} 個題目、${bundle.formulas.length} 條公式${handoutSummary}通過，lock 一致${warnings > 0 ? `，${warnings} 個警告` : ''}（${elapsed} 秒）`,
   );
 }

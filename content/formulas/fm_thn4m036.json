@@ -1,0 +1,56 @@
+{
+  "id": "fm_thn4m036",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_2s4hterv",
+  "ratioRef": "ar_turnover",
+  "formula": {
+    "zh-TW": "營業收入 ÷ 平均應收帳款",
+    "en": "Revenue ÷ average trade receivables"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "營業收入 ÷ 期末應收帳款",
+        "en": "Revenue ÷ closing trade receivables"
+      },
+      "note": {
+        "zh-TW": "課程模板只有一期的資產負債表，所以分母用期末餘額代替平均。",
+        "en": "The course template has only one balance sheet, so the denominator uses the closing balance instead of an average."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": {
+        "zh-TW": "這一期賣出商品或服務認列的收入，不管錢收到沒有。嚴格說只有賒銷會產生應收帳款，但報表外面看不出賒銷占多少，所以用全部營業收入。",
+        "en": "Revenue recognised this period from goods or services sold, whether or not the cash has come in. Strictly only credit sales create receivables, but outsiders cannot see the credit share, so total revenue is used."
+      }
+    },
+    {
+      "term": "tm_r7x2c9fa",
+      "meaning": {
+        "zh-TW": "客戶還沒付的貨款，期初與期末餘額的平均；年報的寫法會把應收票據一起算進來。用平均是因為收入是一整年累積的，應收帳款卻是某一天的餘額。",
+        "en": "What customers still owe, averaged between opening and closing balances; the annual report wording also includes notes receivable. An average is used because revenue builds up over a year while receivables are a balance on one day."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家工業用清潔劑經銷商全年營業收入 {{money:1200000}}，期初應收帳款 {{money:180000}}、期末 {{money:220000}}，平均 {{money:200000}}。{{money:1200000}} ÷ {{money:200000}} ＝ {{number:6|unit=turns}}。意思是一年裡把應收帳款收回來、再賒出去大約 {{number:6|unit=turns}}，平均每筆帳款大約 2 個月收回。數字是網站自己編的，不是真實公司。",
+    "en": "A distributor of industrial cleaning agents booked revenue of {{money:1200000}} for the year; trade receivables were {{money:180000}} at the start and {{money:220000}} at the end, an average of {{money:200000}}. {{money:1200000}} ÷ {{money:200000}} = {{number:6|unit=turns}}. The company collected its receivables and extended new credit about {{number:6|unit=turns}} in the year, so each round of credit took roughly 2 months to collect. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "次數越多，客戶付款越快，賣出去的東西越快變成現金；次數變少，表示錢卡在客戶那邊的時間變長，呆帳風險也升高。但不是越高越好：收款條件太嚴，可能把需要賒帳的大客戶趕走。要和同業比，因為付款慣例因產業差很多，也要看自己幾年的趨勢。期末應收帳款如果因為年底大單而突然暴增，用期末餘額算出來的週轉率會偏低，所以年報的寫法用平均。現金銷售占比高的公司會算出很高的次數，和主要靠賒銷的公司不能直接比。常見誤讀是以為營收成長這條比率就會變好：如果是靠放寬賒銷條件衝出來的營收，應收帳款會比營收長得更快，週轉率反而下降。",
+    "en": "More turns mean customers pay sooner and sales turn into cash faster; fewer turns mean money sits with customers longer and the risk of bad debts rises. Higher is not always better, though: credit terms that are too strict can drive away large customers who need to buy on account. Compare with peers, because payment customs differ widely between industries, and with the company’s own trend. If closing receivables balloon because of big orders at year end, a turnover computed on the closing balance comes out too low, which is why the annual report wording uses an average. A company with many cash sales shows a very high figure and cannot be compared directly with one that sells mostly on credit. A common misreading is assuming the ratio improves whenever revenue grows: if the growth came from loosening credit terms, receivables grow faster than revenue and the turnover actually falls."
+  },
+  "related": [
+    "fm_73k20388",
+    "fm_145684mr",
+    "fm_mrxttb09",
+    "fm_qzh8rn8c"
+  ]
+}

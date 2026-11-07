@@ -1,0 +1,45 @@
+{
+  "id": "fm_3mjtajx8",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_jcbwesg8",
+  "ratioRef": "ce_turnover",
+  "formula": {
+    "zh-TW": "營業收入 ÷ 資本支出",
+    "en": "Revenue ÷ capital expenditure"
+  },
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": {
+        "zh-TW": "損益表第一列，這一期本業收進來的金額。",
+        "en": "The first line of the income statement: what the core business brought in this period."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "資本支出",
+        "en": "Capital expenditure"
+      },
+      "meaning": {
+        "zh-TW": "這一期付出去買設備、廠房等長期資產的現金，網站取現金流量表投資活動「取得非流動資產」那一列的流出金額；這一期沒有資本支出時分母是 0，算不出來。",
+        "en": "The cash paid this period for equipment, buildings and other long-lived assets; the site takes the outflow on the payments to acquire non-current assets line under investing activities in the statement of cash flows. With no capital expenditure in the period the denominator is zero and there is no result."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家鋁擠型工廠這一年營業收入 {{money:24000000}}，添購新機台付了 {{money:3000000}}：{{money:24000000}} ÷ {{money:3000000}} ＝ {{number:8|unit=times}}。意思是每投入 {{money:1}} 買設備，這一年對應到 {{money:8}} 的營收；同一組數字算 CE intensity 是 {{percent:0.125|digits=1}}，兩個指標互為倒數。數字是網站自己編的，不是真實公司。",
+    "en": "An aluminium extrusion plant has revenue of {{money:24000000}} this year and pays {{money:3000000}} for new machines: {{money:24000000}} ÷ {{money:3000000}} = {{number:8|unit=times}}. Every {{money:1}} spent on equipment is matched with {{money:8}} of revenue this year; the same figures give a CE intensity of {{percent:0.125|digits=1}}, and the two measures are reciprocals. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "倍數越高，表示同樣的設備投資對應到越多營收，投資效率越好；資本支出很重的產業（例如半導體）用百分比表達的 CE intensity 會很大，改看這個倍數比較直覺。它適合看自己的趨勢：產能已經滿載時再加碼投資，新機台要等一段時間才會變成營收，倍數會先掉下來，這是正常的時間差，不一定是投資失敗。常見誤讀：把它和總資產週轉率或不動產、廠房及設備週轉率混在一起，那兩個指標的分母是資產負債表上累積多年的資產餘額，這個指標的分母只是這一期新投入的現金，所以一年不投資它就算不出來，另外兩個照樣能算。",
+    "en": "The higher the multiple, the more revenue the same equipment spending is matched with and the more efficient the investment; in capital-heavy industries such as semiconductors the percentage form, CE intensity, becomes very large, so this multiple is the easier way to read it. It suits the company’s own trend: when capacity is already full and the company invests further, the new machines take time to turn into revenue, so the multiple dips first; that is a normal lag, not necessarily a failed investment. A common misreading is lumping it together with total asset turnover or property, plant and equipment turnover: those divide by the asset balance accumulated over many years on the balance sheet, while this one divides only by the cash newly spent this period, so a year without investment leaves it with no result while the other two still work."
+  },
+  "related": [
+    "fm_4jqqsmna",
+    "fm_xf48bqvs",
+    "fm_5k6wp1c0"
+  ]
+}

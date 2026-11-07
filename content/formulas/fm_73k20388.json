@@ -1,0 +1,47 @@
+{
+  "id": "fm_73k20388",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_gysqtps0",
+  "ratioRef": "days_sales_outstanding",
+  "formula": {
+    "zh-TW": "365 ÷ 應收款項週轉率",
+    "en": "365 ÷ receivables turnover"
+  },
+  "components": [
+    {
+      "label": {
+        "zh-TW": "365 天",
+        "en": "365 days"
+      },
+      "meaning": {
+        "zh-TW": "一年的天數。週轉率說的是一年收回幾次，用天數去除，就換成每收回一次要隔幾天。",
+        "en": "The days in a year. Turnover says how many times a year receivables are collected; dividing the days by it converts that into the gap between collections."
+      }
+    },
+    {
+      "term": "tm_2s4hterv",
+      "meaning": {
+        "zh-TW": "營業收入除以平均應收帳款，一年把帳款收回來幾次；它是這條公式唯一的輸入，所以用哪個版本的週轉率，天數就跟著哪個版本。",
+        "en": "Revenue divided by average trade receivables: how many times a year receivables are collected. It is the only input, so the days follow whichever version of the turnover is used."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家辦公家具廠的應收款項週轉率是 {{number:7.3|unit=turns}}：365 ÷ 7.3 ＝ {{number:50|unit=day}}。意思是賒出去的貨款平均要等 {{number:50|unit=day}} 才收回來；如果給客戶的付款條件是 {{number:30|unit=day}}，表示客戶平均晚付了 {{number:20|unit=day}}。數字是網站自己編的，不是真實公司。",
+    "en": "An office furniture maker has a receivables turnover of {{number:7.3|unit=turns}}: 365 ÷ 7.3 = {{number:50|unit=day}}. Cash from credit sales takes {{number:50|unit=day}} on average to come in; if customers are given {{number:30|unit=day}} to pay, they are paying about {{number:20|unit=day}} late on average. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "天數越少，錢回籠得越快；天數越多，公司等於免費借錢給客戶，自己可能得去借錢周轉。最直接的對照是公司給客戶的付款條件：算出來的天數比條件長很多，表示催收沒跟上或客戶財務吃緊。再和同業比，因為各產業的付款習慣差很多；也看自己逐年有沒有拉長，連年拉長是警訊。它只是週轉率的另一種唸法，所以週轉率用期末餘額的課程版本算出來的天數，也會跟著受期末餘額失真。常見誤讀是以為現金銷售不影響這個數字：分子理論上只該放賒銷，但實務上用全部營業收入，現金銷售占比越高、算出來的天數越短，收款看起來比實際上快。",
+    "en": "Fewer days mean cash comes back sooner; more days mean the company is effectively lending to its customers for free and may have to borrow itself to get by. The most direct benchmark is the company’s own payment terms: a figure well above the terms points to weak collection or customers under strain. Then compare with peers, since payment customs differ a great deal between industries, and watch the company’s own trend, because a stretch that grows year after year is a warning. It is only another way of reading the turnover, so days computed from the course version, which uses the closing balance, inherit the same distortion. A common misreading is assuming cash sales do not matter: in principle only credit sales belong in the numerator, but in practice total revenue is used, so the larger the share of cash sales, the shorter the days and the faster collection appears."
+  },
+  "related": [
+    "fm_thn4m036",
+    "fm_6ze3efpg",
+    "fm_1mknnm52",
+    "fm_qzh8rn8c",
+    "fm_hqda6nvm"
+  ]
+}

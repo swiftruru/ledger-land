@@ -19,6 +19,8 @@ export const ID_RULES = {
   misconception: { prefix: 'mc_', length: 4 },
   /** 講義題庫的題目（老師授權的非原創區，08 的講義題庫一節；ID 由 tools/handout-extract.mjs 在第一次抽到時產生，記在 content/handout/ids.json，之後不變） */
   handoutQuestion: { prefix: 'hq_', length: 8 },
+  /** 會計公式（08 第 3.11 節，2026-11-07）：一條公式的原創說明，連到名詞與指標登錄檔 */
+  formula: { prefix: 'fm_', length: 8 },
 } as const;
 export type IdKind = keyof typeof ID_RULES;
 

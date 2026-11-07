@@ -8,11 +8,11 @@ export const LOCK_VERSION = 1;
 export const LOCK_COMMENT =
   '已發布內容的比對基準（08 第 4.4 節）。items 依 kind 與 id 排序；answerHash 是答案改版欄位加核心算出的答案的 canonical JSON 的 SHA-256；optionIds 只增不減，removedOptionIds 記下曾經發布後被移除的選項 ID（不得再次使用）。由 pnpm content:lock --write 產生，請勿手改。';
 
-/** @typedef {'term' | 'chapter' | 'objective' | 'level' | 'template' | 'story' | 'question'} LockKind */
+/** @typedef {'term' | 'chapter' | 'objective' | 'level' | 'template' | 'story' | 'question' | 'formula'} LockKind */
 /** @typedef {{ id: string; kind: LockKind; rev: number; revKind: 'text' | 'answer'; answerRev: number; status: 'published' | 'retired'; answerHash?: string; optionIds: string[]; removedOptionIds?: string[]; supersededBy?: string }} LockItem */
 /** @typedef {{ lockVersion: number; contentVersion: number; items: LockItem[] }} Lock */
 
-const KIND_ORDER = ['term', 'chapter', 'objective', 'level', 'template', 'story', 'question'];
+const KIND_ORDER = ['term', 'chapter', 'objective', 'level', 'template', 'story', 'question', 'formula'];
 const sorted = (xs) => [...xs].sort();
 
 function pick(obj, keys) {
@@ -37,6 +37,7 @@ export function answerFields(kind, d, compiled) {
   switch (kind) {
     case 'term':
     case 'objective':
+    case 'formula':
       return undefined;
     case 'chapter':
       return { levelIds: d.levelIds };
@@ -156,6 +157,7 @@ export function currentLockItems(parsed, compiled) {
     ['template', parsed.templates],
     ['story', parsed.stories],
     ['question', parsed.questions],
+    ['formula', parsed.formulas ?? []],
   ];
   for (const [kind, entries] of lists) {
     for (const { data } of entries) {
@@ -193,6 +195,7 @@ export function allEntityIds(parsed) {
     ['template', parsed.templates],
     ['story', parsed.stories],
     ['question', parsed.questions],
+    ['formula', parsed.formulas ?? []],
   ];
   for (const [kind, entries] of lists) for (const { data } of entries) out.set(data.id, { kind, status: data.status });
   return out;

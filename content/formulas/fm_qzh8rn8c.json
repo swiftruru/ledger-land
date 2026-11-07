@@ -1,0 +1,32 @@
+{
+  "id": "fm_qzh8rn8c",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_7v02zwjf",
+  "ratioRef": "operating_cycle",
+  "formula": {
+    "zh-TW": "平均銷貨日數 ＋ 平均收現日數",
+    "en": "Average days to sell inventory + average collection period"
+  },
+  "components": [
+    {
+      "term": "tm_fsv83x2z",
+      "meaning": { "zh-TW": "365 除以存貨週轉率：商品進倉之後平均擺幾天才賣出去。", "en": "365 divided by inventory turnover: how many days goods sit in the warehouse before they are sold." }
+    },
+    {
+      "term": "tm_gysqtps0",
+      "meaning": { "zh-TW": "365 除以應收款項週轉率：賣出去之後平均再過幾天才把貨款收回來。", "en": "365 divided by receivables turnover: how many days after the sale the cash actually comes in." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家家具行的存貨一年轉 {{number:5|unit=turns}}，平均銷貨日數是 365 ÷ {{number:5|unit=turns}} ＝ {{number:73|unit=day}}；應收款項一年轉 {{number:7.3|unit=turns}}，平均收現日數是 {{number:50|unit=day}}。營運週期就是 {{number:73|unit=day}} ＋ {{number:50|unit=day}} ＝ {{number:123|unit=day}}：一批家具從進貨到收回貨款，平均要等四個月左右。數字是網站自己編的，不是真實公司。",
+    "en": "A furniture shop turns its inventory {{number:5|unit=turns}} a year, so the average days to sell is 365 ÷ {{number:5|unit=turns}} = {{number:73|unit=day}}; receivables turn {{number:7.3|unit=turns}} a year, giving a collection period of {{number:50|unit=day}}. The operating cycle is therefore {{number:73|unit=day}} + {{number:50|unit=day}} = {{number:123|unit=day}}: about four months pass between buying a batch of furniture and collecting the cash for it. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "天數越長，資金被存貨與應收帳款綁住的時間越久，公司需要越多營運資金才能撐住同樣的生意；天數縮短，通常是賣得更快或收款更快。看它要拆開看：是存貨那一段變長，還是收款那一段變長，對策完全不同。只能和同業或自己過去幾年比，造船、營建、釀酒這類產業的週期本來就很長，和零售業比沒有意義。它建立在兩個週轉率上，分母用期末餘額而不是平均、或旺季期末剛好囤貨時，天數都會偏離。常見誤讀：以為營運週期一定要短於一年，其實週期超過一年的產業，流動與非流動的分界也會跟著用營運週期而不是十二個月。",
+    "en": "The longer the cycle, the longer money is locked up in inventories and receivables, and the more working capital the same volume of business needs; a shorter cycle usually means faster selling or faster collecting. Always split it: whether the inventory leg or the collection leg has grown calls for very different fixes. Compare only with peers or with the company’s own past years; shipbuilders, builders and wine-makers naturally run long cycles, and setting them against a retailer tells you nothing. Because it rests on two turnover ratios, using closing instead of average balances, or a period end that lands on a seasonal stock-up, will throw the day count off. A common misreading is that the cycle must be shorter than a year; in industries where it is longer, the current and non-current split follows the operating cycle rather than twelve months."
+  },
+  "related": ["fm_6ze3efpg", "fm_73k20388", "fm_hqda6nvm", "fm_1mknnm52"]
+}

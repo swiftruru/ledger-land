@@ -1,0 +1,82 @@
+{
+  "id": "fm_wxq9e1j5",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_35qb8and",
+  "ratioRef": "cash_flow_adequacy",
+  "formula": {
+    "zh-TW": "最近 5 年營業活動現金流量總計 ÷ 最近 5 年（資本支出 ＋ 存貨增加額 ＋ 現金股利）",
+    "en": "Net cash from operating activities over the latest 5 years ÷ (capital expenditure + increase in inventories + cash dividends) over the same 5 years"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "營業活動現金流量總計 ÷（資本支出 ＋ 存貨增加額 ＋ 支付股息）",
+        "en": "Net cash from operating activities ÷ (capital expenditure + increase in inventories + dividends paid)"
+      },
+      "note": {
+        "zh-TW": "課程模板只有一期的報表，所以分子分母都只用當期的數字，網站標示為單期近似；分母為負時標示不具解釋意義。",
+        "en": "The course template has only one period of statements, so numerator and denominator use the current period alone and the site labels the result a single-period approximation; a negative denominator is marked as not meaningful."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_e61ht6yh",
+      "meaning": {
+        "zh-TW": "本業真正收進來的現金，收款減付款、付薪水、繳稅之後的淨額；這裡把最近 5 年加總，攤平單一年的起伏。",
+        "en": "The cash the main business actually brought in: receipts less payments to suppliers, staff and the tax office; summed over the latest 5 years to smooth out any one year’s swings."
+      }
+    },
+    {
+      "term": "tm_xen3p30x",
+      "label": {
+        "zh-TW": "取得非流動資產",
+        "en": "Payments to acquire non-current assets"
+      },
+      "meaning": {
+        "zh-TW": "買機器、設備、無形資產這些非流動資產付出去的現金，也就是一般說的資本支出；是公司維持和擴充產能最大的一筆現金用途。",
+        "en": "Cash paid to buy machinery, equipment, intangibles and other non-current assets, in other words capital expenditure; the largest call on cash for keeping up and expanding capacity."
+      }
+    },
+    {
+      "term": "tm_bpt2kp5c",
+      "label": {
+        "zh-TW": "存貨增加",
+        "en": "Increase in inventories"
+      },
+      "meaning": {
+        "zh-TW": "期末存貨比期初多出來的金額：多買的貨還沒賣掉，錢先壓在倉庫裡。存貨減少的年度算 0，不當成現金來源。",
+        "en": "How much closing inventories exceed opening inventories: goods bought but not yet sold, with the cash sitting in the warehouse. A year in which inventories fall counts as 0, not as a source of cash."
+      }
+    },
+    {
+      "term": "tm_zqzrfgfn",
+      "label": {
+        "zh-TW": "支付股息",
+        "en": "Dividends paid"
+      },
+      "meaning": {
+        "zh-TW": "實際付給股東的現金股利；是公司對股東的承諾，一旦開始發放就很難中斷。",
+        "en": "Cash dividends actually paid to shareholders: a commitment that is hard to interrupt once started."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家鋁門窗廠最近 5 年的營業活動現金流量總計合計 {{money:900000}}；同一段期間資本支出 {{money:500000}}、存貨增加 {{money:100000}}、現金股利 {{money:200000}}，三項合計 {{money:800000}}。{{money:900000}} ÷ {{money:800000}} ＝ {{percent:1.125|digits=1}}。意思是五年下來本業的現金不但付得起設備、補貨與股利，還多出 {{money:100000}}。數字是網站自己編的，不是真實公司。",
+    "en": "An aluminium window maker generated {{money:900000}} of net cash from operating activities over the latest 5 years; in the same period capital expenditure was {{money:500000}}, inventories rose by {{money:100000}} and cash dividends were {{money:200000}}, together {{money:800000}}. {{money:900000}} ÷ {{money:800000}} = {{percent:1.125|digits=1}}. Over five years the business paid for its equipment, extra stock and dividends from its own cash and still had {{money:100000}} left over. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "達到 {{percent:1|digits=0}} 以上，表示公司不必靠借款或增資，光靠本業的現金就能養自己：買設備、補貨、發股利都夠。低於 {{percent:1|digits=0}} 不一定是壞事，快速擴張期的公司資本支出會暫時跑在現金前面，但如果連續多年都低，就得問錢從哪裡來、債務是不是一直在堆。要和同業比，也要看自己的趨勢。用五年合計是為了攤平單一年的大額投資，但也會把最近一兩年的惡化藏在前幾年的好成績裡，所以最好把每一年的分子分母都攤開看。常見誤讀是分母為 0 時把比率寫成 0 或無限大：分母為 0 表示這條比率沒有定義，網站顯示 N/A，和「算出來等於 0」是兩回事。",
+    "en": "At {{percent:1|digits=0}} or more, the company can feed itself from operating cash alone, without borrowing or new share issues: equipment, extra stock and dividends are all covered. Below {{percent:1|digits=0}} is not automatically bad, since a fast-growing company’s capital expenditure can run ahead of its cash for a while, but if it stays low for years ask where the money is coming from and whether debt is piling up. Compare with peers and with the company’s own trend. The five-year total smooths out a single year’s big investment, yet it can also bury a recent deterioration under earlier good years, so lay out the numerator and denominator year by year as well. A common misreading is writing the ratio as 0 or infinity when the denominator is 0: a zero denominator means the ratio is undefined, the site shows N/A, and that is not the same as a ratio that works out to 0."
+  },
+  "related": [
+    "fm_ac6vnhzq",
+    "fm_zzdy9bgy",
+    "fm_3vk408ws",
+    "fm_bmawj1ab"
+  ]
+}

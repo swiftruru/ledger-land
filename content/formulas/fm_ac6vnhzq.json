@@ -1,0 +1,43 @@
+{
+  "id": "fm_ac6vnhzq",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_555a7d2s",
+  "ratioRef": "cash_flow_ratio",
+  "formula": {
+    "zh-TW": "營業活動現金流量總計 ÷ 流動負債",
+    "en": "Net cash from operating activities ÷ current liabilities"
+  },
+  "components": [
+    {
+      "term": "tm_e61ht6yh",
+      "meaning": {
+        "zh-TW": "本業這一期真正收進來的現金淨額：賣東西收到的錢，減掉付供應商、付薪水、繳稅的錢。賣廠房、賣股票收到的現金不在這裡。",
+        "en": "The net cash the main business actually brought in this period: receipts from customers less payments to suppliers, staff and the tax office. Cash from selling a building or shares is not included."
+      }
+    },
+    {
+      "term": "tm_c2y9b5ex",
+      "meaning": {
+        "zh-TW": "一年內要付清的債務：應付帳款、短期借款、應付稅款等；比率問的是本業的現金夠付幾成。",
+        "en": "Debts due within a year: trade payables, short-term borrowings, taxes payable and so on; the ratio asks what share of them operating cash could cover."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家物流公司本期營業活動現金流量總計 {{money:360000}}，期末流動負債 {{money:300000}}：{{money:360000}} ÷ {{money:300000}} ＝ {{percent:1.2|digits=0}}。意思是只靠這一年本業收進來的現金，就能把所有短期債務還清，還剩 {{money:60000}}。數字是網站自己編的，不是真實公司。",
+    "en": "A logistics company reports net cash from operating activities of {{money:360000}} for the period and closing current liabilities of {{money:300000}}: {{money:360000}} ÷ {{money:300000}} = {{percent:1.2|digits=0}}. The cash the main business brought in this year alone would clear every short-term debt and leave {{money:60000}} over. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "超過 {{percent:1|digits=0}} 表示本業一年收進來的現金就足夠還清全部短期債務，不必變賣資產或再借錢；越低，短期債務越要靠其他來源來還。它和流動比率問同一個問題，差別在流動比率比的是帳上的存量（流動資產），這條比的是一年裡真正流進來的流量，所以流動比率好看、現金流量比率卻很低的公司，往往是應收帳款或存貨堆了很多。要和同業比，也看自己幾年的走勢；季節性強的產業用單一季的數字會失真。常見誤讀是把分子換成本期淨利：淨利是權責基礎的數字，裡面有還沒收到的賒銷和不花現金的折舊，這條比率特別要用現金，才看得出淨利有多少真的變成了錢。",
+    "en": "Above {{percent:1|digits=0}}, one year of operating cash is enough to clear all short-term debts without selling assets or borrowing again; the lower it goes, the more those debts depend on other sources. It asks the same question as the current ratio, but the current ratio compares a stock on the books (current assets) while this one compares the flow of cash that actually came in during the year, so a company with a healthy current ratio and a weak cash flow ratio has usually piled up receivables or inventories. Compare with peers and with the company’s own trend; for strongly seasonal businesses a single quarter’s figure misleads. A common misreading is swapping profit for the period into the numerator: profit is an accrual figure that includes uncollected credit sales and non-cash depreciation, and this ratio deliberately uses cash to show how much of that profit has really turned into money."
+  },
+  "related": [
+    "fm_nzw80erk",
+    "fm_svxp808g",
+    "fm_wxq9e1j5",
+    "fm_bmawj1ab"
+  ]
+}

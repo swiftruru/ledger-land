@@ -1,0 +1,70 @@
+{
+  "id": "fm_svxp808g",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_n8ysnw1m",
+  "ratioRef": "quick_ratio",
+  "formula": {
+    "zh-TW": "（流動資產 − 存貨 − 預付費用）÷ 流動負債",
+    "en": "(Current assets − inventories − prepayments) ÷ current liabilities"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "（現金及約當現金 ＋ 應收帳款 ＋ 短期放款）÷ 流動負債",
+        "en": "(Cash and cash equivalents + trade receivables + short-term loans receivable) ÷ current liabilities"
+      },
+      "note": {
+        "zh-TW": "課程模板直接點名哪幾列算速動資產：現金、應收帳款與短期放款。在課程版面裡流動資產只有這三項加存貨，沒有預付費用，所以兩種寫法的結果相同；年報的寫法改用減法，是因為實際報表的流動資產項目多很多。",
+        "en": "The course template names the quick assets outright: cash, trade receivables and short-term loans receivable. In the course layout current assets consist of just these three plus inventories, with no prepayments, so both wordings give the same result; the annual report wording subtracts instead because real statements list many more current asset items."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_k52yxb68",
+      "meaning": {
+        "zh-TW": "一年內會變成現金的資產：現金、應收帳款、存貨、預付費用等。",
+        "en": "Assets that will turn into cash within a year: cash, receivables, inventories, prepayments and so on."
+      }
+    },
+    {
+      "term": "tm_n7v3k8pq",
+      "meaning": {
+        "zh-TW": "還沒賣出去的商品。要先賣掉、再等客戶付款才變成現金，中間可能卡很久甚至賣不掉，所以從速動資產裡扣掉。",
+        "en": "Goods not yet sold. They must be sold and then collected before they become cash, which can take a long time or never happen, so they are taken out of quick assets."
+      }
+    },
+    {
+      "term": "tm_5xm3qcz9",
+      "meaning": {
+        "zh-TW": "已經先付出去的租金、保險費等。它們只會變成未來的費用，不會變回現金，所以也扣掉。",
+        "en": "Rent, insurance and similar amounts paid in advance. They will only turn into future expenses, never back into cash, so they are taken out as well."
+      }
+    },
+    {
+      "term": "tm_c2y9b5ex",
+      "meaning": {
+        "zh-TW": "一年內要付清的債務：應付帳款、短期借款、應付稅款等。",
+        "en": "Debts due within a year: trade payables, short-term borrowings, taxes payable and so on."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家腳踏車零件行的流動資產 {{money:750000}}，其中存貨 {{money:250000}}、預付費用 {{money:50000}}，速動資產 {{money:450000}}；流動負債 {{money:500000}}。{{money:450000}} ÷ {{money:500000}} ＝ {{number:0.9|unit=times}}。意思是如果明天所有短期債務同時到期，不賣存貨的話只付得起九成；同一家公司的流動比率是 {{money:750000}} ÷ {{money:500000}} ＝ {{number:1.5|unit=times}}，兩者的差距就是存貨和預付費用占的分量。數字是網站自己編的，不是真實公司。",
+    "en": "A bicycle parts shop has current assets of {{money:750000}}, including inventories of {{money:250000}} and prepayments of {{money:50000}}, so quick assets are {{money:450000}}; current liabilities are {{money:500000}}. {{money:450000}} ÷ {{money:500000}} = {{number:0.9|unit=times}}. If every short-term debt fell due tomorrow, the shop could pay nine tenths of it without selling any stock; the same shop’s current ratio is {{money:750000}} ÷ {{money:500000}} = {{number:1.5|unit=times}}, and the gap between the two is the weight of inventories and prepayments. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "它比流動比率嚴格，問的是幾天之內就要付錢時，不靠賣存貨能不能撐住；{{number:1|unit=times}} 左右常被當成參考線，表示能馬上變現的資產剛好蓋住全部短期債務。越低，臨時要付錢時越可能周轉不過來；但不是越高越好，遠高於同業可能是現金閒置、沒有拿去投資或還債。零售、餐飲收現金快、存貨多，速動比率天生偏低也不一定危險；要和同業比，也看自己的趨勢。和流動比率一起看最有用：兩者差距很大，表示流動資產裡存貨占比很高，資產的品質要再追問。應收帳款裡如果有很多收不回來的呆帳，速動比率也會高估償債能力。常見誤讀是以為存貨很快就能賣掉所以不必扣：存貨要先賣出、再等收款，中間可能卡很久甚至賣不掉，這正是速動比率把它排除的理由。",
+    "en": "It is stricter than the current ratio, asking whether the company could hold up if payment were due within days and no stock could be sold; about {{number:1|unit=times}} is often used as a reference line, meaning assets that can be realised at once just cover all short-term debts. The lower it is, the more likely a sudden bill cannot be met; but higher is not always better, and a figure far above peers may mean idle cash that has not been invested or used to repay debt. Retailers and restaurants collect cash quickly and hold a lot of stock, so a low quick ratio is natural for them and not necessarily dangerous; compare with peers and with the company’s own trend. It is most useful next to the current ratio: a wide gap between the two means inventories make up a large share of current assets, and the quality of those assets deserves a closer look. Receivables that will never be collected also make the quick ratio overstate the company’s ability to pay. A common misreading is leaving inventories in because they will sell soon: they must first be sold and then collected, which can take a long time or never happen, and that is exactly why the quick ratio leaves them out."
+  },
+  "related": [
+    "fm_nzw80erk",
+    "fm_ac6vnhzq",
+    "fm_mrxttb09",
+    "fm_6ze3efpg"
+  ]
+}
