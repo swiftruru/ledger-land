@@ -15,9 +15,10 @@ export function parseCount(raw: string | null | undefined, fallback: CountOption
 /** 實際要抽的題數：all 是全部，其餘不超過題組的題數 */
 export const limitOf = (count: number | 'all', total: number): number => (count === 'all' ? total : Math.min(count, total));
 
-/** 模擬考（M4c 第二批的第二次交付）：題數是 30、40、50（維護者 2026-11-07 的決定：像一場考試的份量，不放 20 與全部），預設 40；
+/** 模擬考（M4c 第二批的第二次交付）：題數是 40、50、100（維護者 2026-11-07 的決定：像一場考試的份量，不放 20、30 與全部；
+ *  只考一份講義時超過該份題數的選項抽全份，見 limitOf），預設 40；
  *  每題秒數由學生在開頭自己選（維護者 2026-11-05 的決定），0 是不限時 */
-export const MOCK_COUNT_OPTIONS = [30, 40, 50] as const;
+export const MOCK_COUNT_OPTIONS = [40, 50, 100] as const;
 export type MockCountOption = (typeof MOCK_COUNT_OPTIONS)[number];
 export const DEFAULT_MOCK_COUNT: MockCountOption = 40;
 
