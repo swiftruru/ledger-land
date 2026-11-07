@@ -1,7 +1,17 @@
 // 自由實驗的狀態（features/lab/sandbox.ts，03 第 3.7 節）：複製到某一步、插入、刪除、移動、覆寫、重設；只存修改
 import { describe, expect, it } from 'vitest';
 import type { StorySnapshot } from '../src/lib/content.ts';
-import { newSandbox, nextLocalId, resetSandbox, sandboxSteps, withInserted, withMoved, withOverride, withRemoved } from '../src/features/lab/sandbox.ts';
+import {
+  newSandbox,
+  nextLocalId,
+  resetSandbox,
+  sandboxSteps,
+  sandboxView,
+  withInserted,
+  withMoved,
+  withOverride,
+  withRemoved,
+} from '../src/features/lab/sandbox.ts';
 
 const step = (id: string, order: number, template = 'tpl.purchase_inventory_cash'): StorySnapshot['steps'][number] => ({
   id,
@@ -24,6 +34,34 @@ const story: StorySnapshot = {
   steps: [step('st_000003', 3), step('st_000001', 1), step('st_000002', 2)],
 };
 const NOW = '2026-11-01T10:00:00+08:00';
+
+describe('sandboxView：報表區這一刻的口徑（04 第 9 節的失敗路徑）', () => {
+  const teacherOk = { ok: true, name: 'teacher' };
+  const teacherFail = { ok: false, name: 'teacher' };
+  const ifrsOk = { ok: true, name: 'ifrs' };
+  const ifrsFail = { ok: false, name: 'ifrs' };
+
+  it('沒開 IFRS 對照：教材，算得下去與否都是教材那一份', () => {
+    expect(sandboxView(teacherOk, null)).toEqual({ view: teacherOk, basis: 'teacher' });
+    expect(sandboxView(teacherFail, null)).toEqual({ view: teacherFail, basis: 'teacher' });
+  });
+
+  it('兩套都算得下去：顯示 IFRS，有教材數字可比', () => {
+    expect(sandboxView(teacherOk, ifrsOk)).toEqual({ view: ifrsOk, basis: 'ifrs' });
+  });
+
+  it('只有 IFRS 算不下去：數字維持教材，橫幅說明', () => {
+    expect(sandboxView(teacherOk, ifrsFail)).toEqual({ view: teacherOk, basis: 'ifrs_failed' });
+  });
+
+  it('只有教材算不下去（舊存檔）：顯示 IFRS 數字，basis 讓表格仍標示 IFRS 對照', () => {
+    expect(sandboxView(teacherFail, ifrsOk)).toEqual({ view: ifrsOk, basis: 'ifrs_only' });
+  });
+
+  it('兩套都算不下去：沒有報表可顯示', () => {
+    expect(sandboxView(teacherFail, ifrsFail)).toEqual({ view: teacherFail, basis: 'both_failed' });
+  });
+});
 
 describe('sandbox', () => {
   it('新的 sandbox 從故事複製到某一步；步驟依 order 排、只取到 throughStep', () => {

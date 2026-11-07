@@ -22,24 +22,28 @@ import type { ShownStatement } from '../features/lab/trace-model.ts';
 import { firstPaintLayout, joinList, lineAt, useChangeText, useLabLabels, type LayoutLike } from '../features/lab/labels.ts';
 import type { RevealItem } from '../features/lab/PredictReveal.tsx';
 import {
-  isPredictionComplete,
+  answeredTargets,
   isPredictionCorrect,
   lineDirection,
   predictTargetsOf,
   ratioDirection,
+  recordOnTargets,
+  targetsOnLayout,
   type PredictChoice,
+  type PredictScore,
   type PredictTarget,
   type PredictionRecord,
 } from '../features/lab/predict.ts';
 import { completeStep, predictTotals, savePrediction, type StoryProgress } from '../features/lab/progress.ts';
-import { ratioChanges, ratioPoint } from '../features/lab/ratio-changes.ts';
+import { ratioChanges, ratioPoint, ratioSpecOf } from '../features/lab/ratio-changes.ts';
 import { canGoTo, canJumpTo, canSkipToEnd, stagesOf, statementForStage, type LabMode, type StageGate } from '../features/lab/stages.ts';
 import { StageBar, useStageNames } from '../features/lab/StageBar.tsx';
 import type { StatementView } from '../features/lab/StatementTable.tsx';
+import { TraceLoadToast } from '../features/lab/TraceLoadToast.tsx';
 import { TransactionCard } from '../features/lab/TransactionCard.tsx';
-import { BasisBanner } from '../features/lab/BasisBanner.tsx';
+import { BasisBanner, BasisNote } from '../features/lab/BasisBanner.tsx';
 import { LabTag } from '../features/lab/LabTag.tsx';
-import { IFRS_POLICY } from '../features/lab/lab-policy.ts';
+import { IFRS_POLICY, TEACHER_POLICY, type LabPolicyId } from '../features/lab/lab-policy.ts';
 import { useLabView, type UseLabView } from '../features/lab/lab-view.ts';
 import { useLabStepLoad } from '../features/lab/useLab.ts';
 import { useExpanded } from '../features/me/useExpanded.ts';
@@ -187,7 +191,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   const nextStepId = ordered[index + 1]?.id;
   // 第一次繪製要的數字：核心載好用核心的結果，還沒載好用快照的 firstPaint（建置時同一份核心算的）
   const firstPaint = spec.firstPaint;
-  const values = step?.values ?? firstPaint?.values ?? {};
+  // 交易卡的敘述兩種口徑相同（03 第 3.13 節），金額也固定用教材的：IFRS 對照時第 17 步的設立費攤銷是 0，「今年攤掉 0 元」和敘述矛盾
+  const values = baseStep?.values ?? firstPaint?.values ?? {};
   const before = (lineId: string): number => (step ? lineAt(step.before, lineId) : (firstPaint?.before[lineId] ?? 0));
   const after = (lineId: string): number => (step ? lineAt(step.after, lineId) : (firstPaint?.after[lineId] ?? 0));
   const hasCore = step !== null && run !== null;
@@ -197,10 +202,19 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   const practised = progress.practised.includes(spec.id);
   const predictRequired = !demo && !practised;
   const savedPrediction = progress.predictions[spec.id];
+  // record 是記下的那一份（揭曉與成績都看它）；draft 是面板上正在選的，按「記下預測」或「更新預測」才變成 record，同一步不會出現兩個成績
   const [record, setRecord] = useState<PredictionRecord>(() => savedPrediction ?? {});
+  const [draft, setDraft] = useState<PredictionRecord>(record);
   const [submitted, setSubmitted] = useState(() => !demo && savedPrediction !== undefined && practised);
-  const targets = useMemo(() => predictTargetsOf(spec.predictTargets), [spec.predictTargets]);
-  const predictDone = submitted && isPredictionComplete(targets, record);
+  // 目標以顯示中的版面為準（03 第 3.13 節）：ifrs@1 沒有經常利益、不顯示遞延的設立費。版面要核心才有，所以 IFRS 對照時預測階段等核心（go）；教材的目標兩邊相同，不必等
+  const allTargets = useMemo(() => predictTargetsOf(spec.predictTargets), [spec.predictTargets]);
+  const targets = useMemo(() => (run ? targetsOnLayout(allTargets, run.ctx.layout) : allTargets), [allTargets, run]);
+  // 這份預測猜過的目標：換口徑之後，揭曉與成績只算兩邊都有的，所以記下之後換口徑不會把人擋在預測關卡
+  const asked = answeredTargets(targets, record);
+  // 這份預測記下時的口徑與成績（存在進度裡的那一份）：畫面可以換口徑重新揭曉，紀錄不跟著改
+  const [recordBasis, setRecordBasis] = useState<LabPolicyId>(() => progress.predictBasis[spec.id] ?? TEACHER_POLICY);
+  const [recordScore, setRecordScore] = useState<PredictScore | null>(() => (submitted ? (progress.predictScores[spec.id] ?? null) : null));
+  const predictDone = submitted;
   const gate: StageGate = useMemo(() => ({ mode, predictRequired, predictDone, revisit: practised }), [mode, predictRequired, predictDone, practised]);
 
   const [stage, setStage] = useState(0);
@@ -239,12 +253,45 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   const [trace, setTrace] = useState<TraceTarget | null>(null);
   const [traceViews, setTraceViews] = useState<TraceViews | null>(() => tracePanelNow());
   const traceReturn = useRef<HTMLElement | null>(null);
-  const openTrace = (target: TraceTarget, el: HTMLElement) => {
+  // 面板的模組或核心載入失敗：記著剛才要開的數字，提示裡的「再試一次」帶著它重開
+  const [traceFailed, setTraceFailed] = useState<{ target: TraceTarget; el: HTMLElement | null; retried: boolean } | null>(null);
+  const traceRetried = useRef(false);
+  const stagesRetried = useRef(false);
+  // 「在報表上標出」：播報的一句（面板關掉之後由步驟頁的 live region 說）與關面板後焦點要去的格子（compact 換表時原本的數字已卸載）
+  const [marked, setMarked] = useState('');
+  const markReturn = useRef<{ code: StatementCode; line: string } | null>(null);
+  useEffect(() => {
+    const m = markReturn.current;
+    if (m === null || trace !== null) return;
+    markReturn.current = null;
+    if (traceReturn.current?.isConnected) return;
+    const cell = document.querySelector<HTMLElement>(`#ll-lab-table-${m.code} [data-line="${m.line}"] [data-testid="lab-trace-value"]`);
+    (cell ?? document.getElementById('ll-lab-stage-heading'))?.focus();
+  });
+  const openTrace = (target: TraceTarget, el: HTMLElement | null, retried = false) => {
     traceReturn.current = el;
+    traceRetried.current = retried;
+    setTraceFailed(null);
     setTrace(target);
     if (!hasCore) onLoadCore();
-    if (traceViews === null) loadTracePanel().then(setTraceViews, () => setTrace(null));
+    if (traceViews === null)
+      loadTracePanel().then(setTraceViews, () => {
+        setTrace(null);
+        setTraceFailed({ target, el, retried });
+      });
   };
+  const retryTrace = () => {
+    if (traceFailed === null) return;
+    // 提示裡的按鈕馬上要卸載：焦點先回到那個數字
+    traceFailed.el?.focus();
+    openTrace(traceFailed.target, traceFailed.el, true);
+  };
+  // 恆等式的數字在核心載好之前就能按：核心載入失敗時收起這次的開啟，不留到之後核心載好才自己彈出來
+  useEffect(() => {
+    if (trace === null || hasCore || coreError === undefined) return;
+    setTraceFailed({ target: trace, el: traceReturn.current, retried: traceRetried.current });
+    setTrace(null);
+  }, [trace, hasCore, coreError]);
   const [finished, setFinished] = useState<{ unlockedTerms: string[] } | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [fromHref, setFromHref] = useState<string | null>(null);
@@ -275,6 +322,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
     setReached((r) => Math.max(r, to));
     setSelectedLight(null);
     setHighlight(new Set());
+    setMarked('');
+    setTraceFailed(null);
   }, []);
   const go = useCallback(
     (to: number) => {
@@ -282,7 +331,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
       // 交易卡之後的階段要畫面元件與名詞索引（科目與指標的名稱）、預測之後的階段還要核心
       const id = stages[to]!;
       const needViews = id !== 'card' && (views === null || !termsReady);
-      const needCore = id !== 'card' && id !== 'predict' && !hasCore;
+      const needCore = id !== 'card' && (id !== 'predict' || ifrs) && !hasCore;
       if (needViews || needCore) {
         setPendingStage(to);
         if (views === null) loadViews();
@@ -291,16 +340,17 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
       }
       enter(to);
     },
-    [stage, stages, gate, hasCore, views, termsReady, onLoadCore, loadViews, enter],
+    [stage, stages, gate, hasCore, ifrs, views, termsReady, onLoadCore, loadViews, enter],
   );
   useEffect(() => {
     if (pendingStage === null || views === null || !termsReady) return;
     const id = stages[pendingStage]!;
-    if (id === 'card' || id === 'predict' || hasCore) enter(pendingStage);
-  }, [pendingStage, stages, views, termsReady, hasCore, enter]);
-  // 方向鍵左右切換階段（焦點不在輸入框時，03 第 3.11 節）
+    if (id === 'card' || (id === 'predict' && !ifrs) || hasCore) enter(pendingStage);
+  }, [pendingStage, stages, views, termsReady, hasCore, ifrs, enter]);
+  // 方向鍵左右切換階段（焦點不在輸入框時，03 第 3.11 節）。元件自己用掉的方向鍵（分段控制、選單）不算，開著面板時背後的階段也不動
   useEffect(() => {
     const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.defaultPrevented || document.querySelector('dialog[open]') !== null) return;
       const tag = (e.target as HTMLElement | null)?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
       if (e.key === 'ArrowRight') go(stage + 1);
@@ -339,23 +389,33 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   };
   const labelOfTarget = (tg: PredictTarget) =>
     tg.kind === 'line' ? lineLabel(tg.line) : tg.kind === 'account' ? accountLabel(tg.account) : ratioLabel(tg.ratioRef.split('@')[0]!);
-  const scoreOf = (rec: PredictionRecord) =>
-    answerOf
-      ? {
-          right: targets.filter((tg) => {
-            const a = answerOf(tg);
-            return isPredictionCorrect(rec[tg.id], a.answer, a.nearly, a.exact);
-          }).length,
-          total: targets.length,
-        }
-      : null;
+  const scoreOf = (rec: PredictionRecord): PredictScore | null => {
+    if (!answerOf) return null;
+    const counted = answeredTargets(targets, rec);
+    return {
+      right: counted.filter((tg) => {
+        const a = answerOf(tg);
+        return isPredictionCorrect(rec[tg.id], a.answer, a.nearly, a.exact);
+      }).length,
+      total: counted.length,
+    };
+  };
   // 記下預測：成績要核心才算得出；核心還沒到時先記著，載好再存（存的是當時的 record）。
   // 揭曉以畫面上的數字為準（03 第 3.13 節）：IFRS 對照時成績依 IFRS 數字判定，另記 basis；成績只是本機紀錄，不影響闖關計分
   const pendingSave = useRef(false);
+  const saveRecord = (rec: PredictionRecord, score: PredictScore) => {
+    const kept = recordOnTargets(targets, rec);
+    setRecord(kept);
+    setDraft(kept);
+    setRecordBasis(labView.policy);
+    setRecordScore(score);
+    void savePrediction(story.id, spec.id, kept, score, labView.policy);
+  };
   const submitPrediction = () => {
+    setRecord(draft);
     setSubmitted(true);
-    const score = scoreOf(record);
-    if (score) void savePrediction(story.id, spec.id, record, score, labView.policy);
+    const score = scoreOf(draft);
+    if (score) saveRecord(draft, score);
     else {
       pendingSave.current = true;
       onLoadCore();
@@ -365,7 +425,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
     if (!pendingSave.current || !hasCore) return;
     pendingSave.current = false;
     const score = scoreOf(record);
-    if (score) void savePrediction(story.id, spec.id, record, score, labView.policy);
+    if (score) saveRecord(record, score);
     // scoreOf 與 record 都是這一次 render 的值；只在核心載好的那一次 render 存一次
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasCore]);
@@ -382,7 +442,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   };
   const revealItems: RevealItem[] =
     submitted && answerOf
-      ? targets.map((tg) => {
+      ? asked.map((tg) => {
           const a = answerOf(tg);
           const v = verdictOf(tg);
           const item: RevealItem = {
@@ -399,13 +459,22 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
         })
       : [];
   const revealScore = submitted ? scoreOf(record) : null;
-  const levelTargets = targets.filter((tg): tg is PredictTarget & { kind: 'line' } => tg.kind === 'line' && tg.line.startsWith('is_'));
+  const levelTargets = asked.filter((tg): tg is PredictTarget & { kind: 'line' } => tg.kind === 'line' && tg.line.startsWith('is_'));
   const revealNote =
     submitted && answerOf && levelTargets.length > 0 && levelTargets.every((tg) => answerOf(tg).answer === 'unchanged')
-      ? t({ id: 'lab.reveal.noteLevels', message: '這筆交易不經過損益表，所以五層利益都不變。', comment: '揭曉卡的原因句：收入與費用都沒動' })
+      ? ifrs
+        ? t({
+            id: 'lab.reveal.noteLevelsIfrs',
+            message: '這筆交易不經過損益表，所以各層利益都不變。',
+            comment: '揭曉卡的原因句：IFRS 對照沒有經常利益，不說五層',
+          })
+        : t({ id: 'lab.reveal.noteLevels', message: '這筆交易不經過損益表，所以五層利益都不變。', comment: '揭曉卡的原因句：收入與費用都沒動' })
       : undefined;
-  // 完成卡的預測成績：這一步加整個故事（含這一步，進度快照可能還是舊的）
-  const storyTotals = predictTotals({ predictScores: revealScore ? { ...progress.predictScores, [spec.id]: revealScore } : progress.predictScores });
+  // 記下之後又改了選項：面板提示要按「更新預測」
+  const draftDirty = submitted && targets.some((tg) => draft[tg.id] !== record[tg.id]);
+  // 完成卡的預測成績是存下來的那一份，不是換口徑後重算的：這一步加整個故事（含這一步，進度快照可能還是舊的）；舊資料沒有成績時才用畫面上算的
+  const finishScore = recordScore ?? revealScore;
+  const storyTotals = predictTotals({ predictScores: finishScore ? { ...progress.predictScores, [spec.id]: finishScore } : progress.predictScores });
 
   const summary = step && views ? views.changeSummary(step.before, step.after, lineLabel, locale) : null;
   const ratios = useMemo(() => (core && step ? ratioChanges(core, 'excel', step.ratiosBefore, step.ratiosAfter) : []), [core, step]);
@@ -445,7 +514,12 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
         return '';
       case 'income':
         return ['is_gross_profit', 'is_net_income']
-          .map((l) => `${lineLabel(l)}由 ${formatMoney(lineAt(step.before, l), locale)} 變為 ${formatMoney(lineAt(step.after, l), locale)}`)
+          .map((l) => {
+            const name = lineLabel(l);
+            const from = formatMoney(lineAt(step.before, l), locale);
+            const to = formatMoney(lineAt(step.after, l), locale);
+            return t({ id: 'lab.live.income', message: `${name}由 ${from} 變為 ${to}`, comment: '階段 4 損益表的播報；列名與金額已代入' });
+          })
           .join(locale === 'en' ? '. ' : '。');
       case 'cashflow':
         return `${lineLabel('cf_cash_end')}${change(cash)}`;
@@ -467,6 +541,12 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
         return names.insight;
     }
   })();
+
+  // 階段播報只在換階段、記下預測或核心到了時更新。切換口徑由 PolicyToggle 自己播報一句：這裡清空，不重唸一次整段階段摘要，也不留著上一種口徑的數字
+  const liveKey = `${stage}:${submitted}:${hasCore}`;
+  const [live, setLive] = useState({ key: liveKey, policy: labView.policy, text: liveText });
+  if (live.key !== liveKey) setLive({ key: liveKey, policy: labView.policy, text: liveText });
+  else if (live.policy !== labView.policy) setLive({ key: liveKey, policy: labView.policy, text: '' });
 
   const finish = async () => {
     if (finished) return;
@@ -528,6 +608,19 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   const designNotes = [...new Set(spec.events.flatMap((e) => e.pendingRefs ?? []))];
   const title = t({ id: 'lab.step.title', message: `第 ${spec.order} 步：${spec.title}`, comment: '步驟頁的標題；數字與標題已代入' });
   const prevDone = prevStepId === undefined || progress.done.includes(prevStepId);
+  // 固定區塊的高度依寬度與有沒有 IFRS 橫幅而變：量好寫給 html 的 scroll-padding-top（lab.css），鍵盤往回走時焦點才不會停在它底下
+  const stickyRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = stickyRef.current;
+    if (el === null || typeof ResizeObserver === 'undefined') return;
+    const root = document.documentElement;
+    const observer = new ResizeObserver(() => root.style.setProperty('--ll-lab-sticky-h', `${Math.ceil(el.getBoundingClientRect().height)}px`));
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty('--ll-lab-sticky-h');
+    };
+  }, []);
 
   return (
     <div
@@ -562,7 +655,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
           </Trans>
         </p>
       )}
-      <div className="ll-lab-session__sticky">
+      <div className="ll-lab-session__sticky" ref={stickyRef}>
         <p className="ll-lab-session__equation" data-testid="lab-equation">
           {lineLabel(EQUATION_LINES[0])} {equationValue(EQUATION_LINES[0])} ＝ {lineLabel(EQUATION_LINES[1])} {equationValue(EQUATION_LINES[1])} ＋{' '}
           {lineLabel(EQUATION_LINES[2])} {equationValue(EQUATION_LINES[2])}
@@ -570,17 +663,24 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
         {/* IFRS 對照時每個階段都看得到「IFRS 對照，不計分」（10 第 11.2 節完成標準第 5 條）；教材口徑沒有這一列，第一次繪製的 DOM 不變 */}
         {ifrs && <BasisBanner />}
       </div>
-      <h2 id="ll-lab-stage-heading" className="ll-lab-session__stage" data-testid="lab-stage-title">
+      {ifrs && <BasisNote />}
+      <h2 id="ll-lab-stage-heading" className="ll-lab-session__stage" tabIndex={-1} data-testid="lab-stage-title">
         {t({ id: 'lab.stage.progress', message: `階段 ${stage + 1}／${stages.length}：${names[stageId]}` })}
       </h2>
       <p ref={liveRef} className="ll-sr-only" aria-live="polite" data-testid="lab-live">
-        {liveText}
+        {marked || live.text}
       </p>
       <section className={`ll-lab-session__content${reduced ? '' : ' ll-lab-animate'}`} aria-labelledby="ll-lab-stage-heading">
         {pendingStage !== null && (coreError !== undefined || viewsError !== undefined) && (
           <ErrorState
             title={t({ id: 'lab.step.coreError', message: '讀不到後面的階段', comment: '核心或階段畫面的模組載入失敗（離線）時的錯誤標題；重試會再載一次' })}
             onRetry={() => {
+              // WebKit 把失敗的動態 import 記在這份文件的模組表裡，再 import 同一個網址不會發請求：重試過一次還是失敗就換一份文件
+              if (stagesRetried.current) {
+                window.location.reload();
+                return;
+              }
+              stagesRetried.current = true;
               if (viewsError !== undefined) loadViews();
               if (coreError !== undefined) onLoadCore();
             }}
@@ -602,11 +702,12 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
           <views.PredictPanel
             targets={targets}
             labelOf={labelOfTarget}
-            record={record}
-            onChange={setRecord}
+            record={draft}
+            onChange={setDraft}
             onSubmit={submitPrediction}
             submitted={submitted}
             submittedNote={t({ id: 'lab.live.predicted', message: '已記下你的預測。' })}
+            dirty={draftDirty}
           />
         )}
         {views && step && chart && stageId === 'effects' && revealScore && (
@@ -617,6 +718,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
             locale={locale}
             note={revealNote}
             basis={labView.policy}
+            recordedBasis={recordBasis}
           />
         )}
         {views && step && chart && stageId === 'effects' && (
@@ -688,7 +790,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
                       <span className="ll-lab-verdict__icon" aria-hidden="true">
                         {v?.correct ? <CheckCircleIcon /> : <XCircleIcon />}
                       </span>
-                      {lineLabel(tg.line)}：
+                      {lineLabel(tg.line)}
+                      {locale === 'en' ? ': ' : '：'}
                       {v?.correct ? t({ id: 'lab.predict.right', message: '你的預測正確' }) : t({ id: 'lab.predict.wrong', message: '和你的預測不同' })}
                     </li>
                   );
@@ -751,13 +854,19 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
                     ? t({ id: 'lab.finish.demo', message: '這一步看完了', comment: '完成卡標題（示範）' })
                     : t({ id: 'lab.finish.story', message: '這一步走完了', comment: '完成卡標題（練習）' })}
                 </h3>
-                {revealScore && (
+                {finishScore && (
                   <p className="ll-lab-finished__score" data-testid="lab-finish-score">
                     {t({
                       id: 'lab.finish.score',
-                      message: `這一步的預測猜對 ${formatNumber(revealScore.right, locale)}／${formatNumber(revealScore.total, locale)}；整個故事到目前 ${formatNumber(storyTotals.right, locale)}／${formatNumber(storyTotals.total, locale)}（${formatNumber(storyTotals.steps, locale)} 步）`,
+                      message: `這一步的預測猜對 ${formatNumber(finishScore.right, locale)}／${formatNumber(finishScore.total, locale)}；整個故事到目前 ${formatNumber(storyTotals.right, locale)}／${formatNumber(storyTotals.total, locale)}（${formatNumber(storyTotals.steps, locale)} 步）`,
                       comment: '完成卡的預測成績；數字都已格式化',
                     })}
+                    {recordBasis === IFRS_POLICY && (
+                      <>
+                        {' '}
+                        <LabTag kind="ifrs" testId="lab-finish-basis" />
+                      </>
+                    )}
                   </p>
                 )}
                 <div className="ll-lab-finished__actions">
@@ -782,6 +891,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
                         setReached(0);
                         setSubmitted(false);
                         setRecord({});
+                        setDraft({});
+                        setRecordScore(null);
                       }}
                     >
                       {t({ id: 'lab.finish.again', message: '再練一次', comment: '完成卡按鈕' })}
@@ -807,7 +918,8 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
         onJump={go}
         onSwitchMode={switchMode}
       />
-      {traceViews && step && run && (
+      {/* 等名詞索引：layout 在那之前只有 firstPaint 的幾列，面板會出現原始線 ID（索引讀不到時 termsReady 一樣會變 true，不會卡住） */}
+      {traceViews && step && run && termsReady && (
         <traceViews.TracePanel
           open={trace !== null}
           onClose={() => setTrace(null)}
@@ -817,6 +929,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
           step={step}
           trace={(window, lineId) => core!.traceLabLine(run, step, window, lineId)}
           entriesOf={(id) => core!.entriesOfStep(run, id)}
+          ratioSpec={(ref) => ratioSpecOf(core!, ref)}
           layout={layout}
           basisTag={ifrs ? <LabTag kind="ifrs" testId="lab-trace-basis" /> : undefined}
           stepInfo={(id) => {
@@ -824,12 +937,22 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
             return s === undefined ? undefined : { order: s.order, title: s.title };
           }}
           stepHref={(id) => (id === spec.id || !story.steps.some((x) => x.id === id) ? null : href(`/lab/story/${story.id}/${id}/`))}
-          onHighlight={(lines, statement) => {
-            setSelectedLight(null);
-            setHighlight(new Set(lines));
-            setTab(STATEMENT_CODE[statement]);
-            setManualTab(true);
-          }}
+          // 只有畫面上有報表的階段才標得出來；其他階段（指標、勾稽燈號等）不放這顆按鈕
+          onHighlight={
+            summary && (stageId === 'income' || stageId === 'cashflow' || stageId === 'balance')
+              ? (lines, statement, said) => {
+                  const code = STATEMENT_CODE[statement];
+                  setSelectedLight(null);
+                  setHighlight(new Set(lines));
+                  setTab(code);
+                  setManualTab(true);
+                  // 「只看有變動的列」可能把要標的列濾掉
+                  setOnlyChanged(false);
+                  setMarked(said);
+                  markReturn.current = { code, line: lines[1] };
+                }
+              : undefined
+          }
         />
       )}
       <ToastRegion className="ll-float-toasts" data-testid="lab-toasts">
@@ -838,6 +961,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
             {toast}
           </Toast>
         )}
+        {traceFailed && <TraceLoadToast retried={traceFailed.retried} onRetry={retryTrace} onDismiss={() => setTraceFailed(null)} />}
       </ToastRegion>
     </div>
   );

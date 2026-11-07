@@ -4,14 +4,15 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useMemo, useRef, useState } from 'react';
 import { localePath } from '@ledgerland/i18n';
-import { Button, ErrorState, Segmented, TopBar } from '@ledgerland/web-ui';
+import { Button, ErrorState, Segmented, ToastRegion, TopBar } from '@ledgerland/web-ui';
 import { formatRatio, useLabLabels } from '../features/lab/labels.ts';
 import { loadTracePanel, tracePanelNow, type TraceViews } from '../features/lab/lazy-trace.ts';
 import { RatioCard, type RatioChange } from '../features/lab/RatioList.tsx';
 import type { TraceTarget } from '../features/lab/TracePanel.tsx';
-import { CATEGORY_ORDER, RATIO_VERSIONS, ratioChanges, type RatioVersionId } from '../features/lab/ratio-changes.ts';
+import { TraceLoadToast } from '../features/lab/TraceLoadToast.tsx';
+import { CATEGORY_ORDER, RATIO_VERSIONS, ratioChanges, ratioSpecOf, type RatioVersionId } from '../features/lab/ratio-changes.ts';
 import { useLabStory } from '../features/lab/useLab.ts';
-import { BasisBanner } from '../features/lab/BasisBanner.tsx';
+import { BasisBanner, BasisNote } from '../features/lab/BasisBanner.tsx';
 import { LabTag } from '../features/lab/LabTag.tsx';
 import { IFRS_POLICY } from '../features/lab/lab-policy.ts';
 import { useLabView } from '../features/lab/lab-view.ts';
@@ -119,10 +120,17 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
   const [trace, setTrace] = useState<TraceTarget | null>(null);
   const [traceViews, setTraceViews] = useState<TraceViews | null>(() => tracePanelNow());
   const traceReturn = useRef<HTMLElement | null>(null);
-  const openTrace = (item: RatioChange, el: HTMLElement) => {
+  // 面板的模組載入失敗：記著剛才要開的卡，提示裡的「再試一次」帶著它重開
+  const [traceFailed, setTraceFailed] = useState<{ item: RatioChange; el: HTMLElement; retried: boolean } | null>(null);
+  const openTrace = (item: RatioChange, el: HTMLElement, retried = false) => {
     traceReturn.current = el;
+    setTraceFailed(null);
     setTrace({ kind: 'ratio', ratioRef: item.ratioRef, spec: item.spec, result: item.after });
-    if (traceViews === null) loadTracePanel().then(setTraceViews, () => setTrace(null));
+    if (traceViews === null)
+      loadTracePanel().then(setTraceViews, () => {
+        setTrace(null);
+        setTraceFailed({ item, el, retried });
+      });
   };
   const groups = CATEGORY_ORDER.map((c) => ({ category: c, items: items.filter((i) => i.spec.category === c) })).filter((g) => g.items.length > 0);
   const suggestionFor = (item: RatioChange) => {
@@ -169,10 +177,15 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
         />
         <PolicyToggle value={labView.policy} onChange={labView.setPolicy} />
       </div>
-      {ifrs && <BasisBanner />}
+      {/* 卡片數十張：橫幅固定在頁面上方，捲到哪張卡都看得到（03 第 3.10 節的卡片標示由這條固定橫幅滿足） */}
+      {ifrs && <BasisBanner className="ll-lab-basis--sticky" />}
+      {ifrs && <BasisNote />}
       {dupont.every((d) => d !== null) && (
         <p className="ll-lab-dupont" data-testid="lab-dupont">
-          <span className="ll-lab-dupont__title">{t({ id: 'lab.ratios.dupont', message: '杜邦拆解', comment: '杜邦樹的標題' })}：</span>
+          <span className="ll-lab-dupont__title">
+            {t({ id: 'lab.ratios.dupont', message: '杜邦拆解', comment: '杜邦樹的標題' })}
+            {locale === 'en' ? ': ' : '：'}
+          </span>
           {dupont.map((d, i) => (
             <span key={d!.ref} className="ll-lab-dupont__factor">
               {i === 1 ? ' ＝ ' : i > 1 ? ' × ' : ''}
@@ -210,6 +223,7 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
           step={step}
           trace={(window, lineId) => lab.core.traceLabLine(run.value, step, window, lineId)}
           entriesOf={(id) => lab.core.entriesOfStep(run.value, id)}
+          ratioSpec={(ref) => ratioSpecOf(lab.core, ref)}
           layout={layout}
           basisTag={ifrs ? <LabTag kind="ifrs" testId="lab-trace-basis" /> : undefined}
           stepInfo={(id) => {
@@ -219,6 +233,19 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
           stepHref={(id) => (lab.story.steps.some((x) => x.id === id) ? localePath(locale, `/lab/story/${lab.story.id}/${id}/`) : null)}
         />
       )}
+      <ToastRegion className="ll-float-toasts" data-testid="lab-ratios-toasts">
+        {traceFailed && (
+          <TraceLoadToast
+            retried={traceFailed.retried}
+            onRetry={() => {
+              // 提示裡的按鈕馬上要卸載：焦點先回到那個數字
+              traceFailed.el.focus();
+              openTrace(traceFailed.item, traceFailed.el, true);
+            }}
+            onDismiss={() => setTraceFailed(null)}
+          />
+        )}
+      </ToastRegion>
     </>
   );
 }

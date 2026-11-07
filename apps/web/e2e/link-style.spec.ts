@@ -5,7 +5,7 @@
 //   4 每個連結都帶核准的 class、沒有任何裸連結；5 文中連結有底線、偏移至少 2px、顏色是 --ll-link；
 //   6 觸控目標至少 44px（文中連結、行內名詞 chip 與可追蹤的數字例外，量元素本身；視覺隱藏的 input 量 label）；
 //   7 滑過與按下時重跑 1 到 3（減少動態的位移檢查在 reduced-motion.spec，跑在 reduced-motion 專案）；8 從頁首按 Tab 走一輪：每個焦點都有至少 2px 的外框、
-//   不和 Tab bar 相交、不被 overflow 不是 visible 的祖先切到；9 強制色彩下按鈕、選單列、名詞卡本身看得到邊界；
+//   不和 Tab bar 相交、不被實驗室固定或黏住的列蓋住、不被 overflow 不是 visible 的祖先切到，走得回第一個焦點（沒有鍵盤陷阱），開著面板時不跑出面板；9 強制色彩下按鈕、選單列、名詞卡本身看得到邊界；
 //   10 站內連結不通往找不到頁面（所有 worker 共用一份已檢查清單，同一個網址整輪只開一次）；11 :visited 量不到（瀏覽器為了隱私一律回傳未造訪的樣式），只靠 check:links 的 R11 擋。
 // 矩陣：PR 與 main 是 Chromium × 淺色與夜空 × 375 與 1280 × 中文（名詞圖鑑、我的、章節頁另加 768）；第 7、8 項是代表頁 × 淺色，第 9 項是四頁 × 375。
 // LL_LINK_STYLE_FULL=1（main 或每日排程）：四種主題 × 375、768、1280 × 兩種語系，每個瀏覽器都跑，第 7 項也跑四種主題。
@@ -44,6 +44,14 @@ const STATE_PAGES: readonly PageCase[] = [
   caseByName('其他子頁', '關於與授權'),
   caseByName('頂層與錯誤', '找不到頁面'),
   caseByName('橫幅', 'Safari 分頁展開'),
+  caseByName('實驗室', '步驟頁交易卡'),
+  caseByName('實驗室', '步驟頁預測'),
+  caseByName('實驗室', 'IFRS 對照（損益表）'),
+  caseByName('實驗室', '來源面板'),
+  caseByName('實驗室', '來源面板（IFRS 對照）'),
+  caseByName('實驗室', '自由實驗'),
+  caseByName('實驗室', '勾稽練習'),
+  caseByName('實驗室', '指標實驗室'),
 ];
 
 /** 一個狀態在哪些寬度量：有指定就照指定；768 在 PR 只量 tablet 的頁面 */
@@ -176,8 +184,11 @@ test.describe('鍵盤焦點（站規 4.2 第 8 項）', () => {
           (document.activeElement as HTMLElement | null)?.blur();
           window.scrollTo(0, 0);
         });
+        // 開著原生 dialog 的狀態（showModal）：背後的頁面是 inert，Tab 只能在面板裡走，跑出去就是問題
+        const modal = (await page.locator('dialog[open]').count()) > 0;
         const seen = new Set<string>();
         let first: string | null = null;
+        let wrapped = false;
         const violations: string[] = [];
         for (let i = 0; i < 400; i++) {
           await page.keyboard.press('Tab');
@@ -222,6 +233,17 @@ test.describe('鍵盤焦點（站規 4.2 第 8 項）', () => {
                   problems.push(`焦點外框被 Tab bar 蓋住（外框 ${Math.round(ring.top)} 到 ${Math.round(ring.bottom)}、Tab bar 從 ${Math.round(b.top)}）`);
               }
             }
+            // 被實驗室固定或黏住的列蓋住（階段操作列、恆等式列、口徑橫幅）：元素正中央最上層的東西不是它自己，而是這些列裡的東西
+            const hit = document.elementFromPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2);
+            if (hit && !el.contains(hit) && !hit.contains(el) && !bar?.contains(hit)) {
+              for (let n: Element | null = hit; n; n = n.parentElement) {
+                const pos = getComputedStyle(n).position;
+                if ((pos === 'fixed' || pos === 'sticky') && [...n.classList].some((k) => k.startsWith('ll-lab-')) && !n.contains(el)) {
+                  problems.push(`焦點被 ${n.tagName.toLowerCase()}.${[...n.classList].slice(0, 2).join('.')}（${pos}）蓋住`);
+                  break;
+                }
+              }
+            }
             // 被 overflow 不是 visible 的祖先切到（以祖先的 padding box 為界，容差 1px）
             for (let p = target.parentElement; p && p !== document.body && p !== document.documentElement; p = p.parentElement) {
               const ps = getComputedStyle(p);
@@ -244,16 +266,66 @@ test.describe('鍵盤焦點（站規 4.2 第 8 項）', () => {
                 break;
               }
             }
-            return { id: el.dataset.e2eFocus, name, problems };
+            return { id: el.dataset.e2eFocus, name, problems, inDialog: el.closest('dialog[open]') !== null };
           });
           if (!info) continue;
           if (first === null) first = info.id!;
-          else if (info.id === first) break;
+          else if (info.id === first) {
+            wrapped = true;
+            break;
+          }
           if (seen.has(info.id!)) continue;
           seen.add(info.id!);
           violations.push(...info.problems.map((p) => `${p}：${info.name}`));
+          if (modal && !info.inDialog) violations.push(`焦點跑出開著的面板：${info.name}`);
         }
         expect(seen.size).toBeGreaterThan(0);
+        expect(violations).toEqual([]);
+        // 走得回第一個焦點才算走完一輪：卡在某幾個元素之間就是鍵盤陷阱
+        expect(wrapped, '走完一輪回到第一個焦點').toBe(true);
+      });
+    }
+  }
+});
+
+test.describe('鍵盤往回走（站規 4.2 第 8 項，WCAG 2.4.11）', () => {
+  test.skip(({ browserName }) => browserName !== 'chromium', '只在 Chromium 跑');
+  // 固定在頂端的列：Tab 往下走時焦點在列的下方，Shift+Tab 往回走才會鑽到列底下
+  const IFRS_STEP = caseByName('實驗室', 'IFRS 對照（損益表）');
+  const PAGES: readonly { name: string; c: PageCase; teacher?: boolean }[] = [
+    { name: label(IFRS_STEP), c: IFRS_STEP },
+    // 同一頁切回教材：固定區塊沒有橫幅，高度不一樣
+    { name: '實驗室：步驟頁損益表（教材）', c: IFRS_STEP, teacher: true },
+    ...[caseByName('實驗室', '指標實驗室（IFRS 對照）'), caseByName('實驗室', '自由實驗（IFRS 對照）')].map((c) => ({ name: label(c), c })),
+  ];
+  for (const { name, c, teacher } of PAGES) {
+    for (const width of [375, 1280]) {
+      test(`從最後一個數字按 Shift+Tab 往回走：焦點不被固定的列蓋住：${name} ${width}`, async ({ page, request }) => {
+        test.setTimeout(120_000);
+        await openCase(page, c, { width, prefix: '', theme: LIGHT, data: await caseData(request) });
+        if (teacher) {
+          await page.getByTestId('lab-policy').getByRole('radio', { name: '教材' }).click();
+          await expect(page.getByTestId('lab-basis')).toHaveCount(0);
+        }
+        await page.locator('[data-testid="lab-trace-value"], [data-testid="lab-trace-ratio"]').last().focus();
+        const violations: string[] = [];
+        for (let i = 0; i < 70; i++) {
+          await page.keyboard.press('Shift+Tab');
+          const found = await page.evaluate(() => {
+            const el = document.activeElement as HTMLElement | null;
+            if (!el || el === document.body) return null;
+            const r = el.getBoundingClientRect();
+            const hit = document.elementFromPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2);
+            if (!hit || el.contains(hit) || hit.contains(el)) return null;
+            for (let n: Element | null = hit; n; n = n.parentElement) {
+              const pos = getComputedStyle(n).position;
+              if ((pos === 'fixed' || pos === 'sticky') && [...n.classList].some((k) => k.startsWith('ll-lab-')) && !n.contains(el))
+                return `焦點「${(el.textContent || el.getAttribute('aria-label') || '').trim().slice(0, 20)}」被 ${[...n.classList].slice(0, 2).join('.')} 蓋住（元素 ${Math.round(r.top)} 到 ${Math.round(r.bottom)}）`;
+            }
+            return null;
+          });
+          if (found) violations.push(found);
+        }
         expect(violations).toEqual([]);
       });
     }

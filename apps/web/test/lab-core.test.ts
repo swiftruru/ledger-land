@@ -16,6 +16,7 @@ import {
 } from '@ledgerland/core';
 import officialJson from '../../../content/stories/story_ywv2dy.json' with { type: 'json' };
 import { asCoreStory, labAllowedRange, policyDiffers, reconcileCheck, replayLab } from '../src/features/lab/lab-core.ts';
+import { newSandbox, sandboxStory, sandboxView } from '../src/features/lab/sandbox.ts';
 import type { StorySnapshot } from '../src/lib/content.ts';
 
 const story = officialJson as unknown as Story;
@@ -121,6 +122,21 @@ describe('勾稽練習', () => {
     expect(step2.pass).toBe(false);
     expect([step2.left.source, step2.right.source]).toContain('learner');
     expect(fiveStepCheck(s.after).checks.every((c) => c.pass)).toBe(true);
+  });
+});
+
+describe('自由實驗只有一套算得下去（04 第 9 節的失敗路徑）', () => {
+  it('舊存檔拿掉第 5 步：教材在第 17 步的攤銷算不下去，IFRS 沒有這筆攤銷、照常算；報表區是 ifrs_only', () => {
+    const sandbox = { ...newSandbox(snapshot, ids.at(-1)!, '2026-11-07T10:00:00+08:00'), removed: ['st_yj3yex'] };
+    const edited = asCoreStory(sandboxStory(snapshot, sandbox));
+    const teacher = replayLab(edited);
+    const ifrs = replayLab(edited, [], 'ifrs@1');
+    expect(teacher.ok).toBe(false);
+    expect(!teacher.ok && teacher.error.at.stepId).toBe('st_j6185k');
+    expect(ifrs.ok).toBe(true);
+    const { view, basis } = sandboxView(teacher, ifrs);
+    expect(basis).toBe('ifrs_only');
+    expect(view.ok && view.value.policyId).toBe('ifrs@1');
   });
 });
 

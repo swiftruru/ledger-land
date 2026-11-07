@@ -382,6 +382,7 @@ test('減少動態：實驗室第 7 步從頭走到尾沒有動畫，天平直�
       await page.getByTestId('lab-policy').getByRole('radio', { name: 'IFRS 對照' }).click();
       await expect(page.getByTestId('lab-basis')).toBeVisible();
       await expect(page.getByTestId('lab-row-diff').first()).toBeVisible();
+      await page.screenshot({ path: 'test-results/reduced-motion-lab-ifrs.png', fullPage: true });
       await page.getByTestId('lab-policy').getByRole('radio', { name: '教材' }).click();
       await expect(page.getByTestId('lab-basis')).toHaveCount(0);
       // 來源面板（M4b）：開、往下鑽、關，都直接切換；面板本身的進出動畫跟著 Sheet 的減少動態規則

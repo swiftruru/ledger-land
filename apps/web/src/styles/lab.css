@@ -112,7 +112,7 @@
   height: 32px;
   border-radius: var(--ll-radius-full);
   background: var(--ll-accent-tint);
-  color: var(--ll-accent);
+  color: var(--ll-text);
   font-family: var(--ll-font-num);
   font-weight: 700;
 }
@@ -568,19 +568,20 @@
   font-size: var(--ll-type-title-2-size);
   font-weight: 700;
 }
+/* 增減用 07 第 2.5 節的 change tokens，不用 success、danger：變動列的底是 accent-tint，danger-ink 在莓果與紅酒只有 4.3:1 */
 .ll-lab-scale__delta[data-dir='up'],
 .ll-lab-delta[data-dir='up'],
 .ll-lab-row__mark[data-dir='up'] {
-  color: var(--ll-success-ink);
+  color: var(--ll-change-up-ink);
 }
 .ll-lab-scale__delta[data-dir='down'],
 .ll-lab-delta[data-dir='down'],
 .ll-lab-row__mark[data-dir='down'] {
-  color: var(--ll-danger-ink);
+  color: var(--ll-change-down-ink);
 }
 .ll-lab-scale__delta[data-dir='same'],
 .ll-lab-delta.is-same {
-  color: var(--ll-text-3);
+  color: var(--ll-change-none-ink);
 }
 .ll-lab-scale__verdict {
   margin: var(--ll-space-2) 0 0;
@@ -642,9 +643,11 @@
     min-width: 6em;
   }
 }
+/* overflow-x 會把上下也變成裁切區：最高那張表最後一列的數字貼著底，底下留位置，焦點外框才不會被切掉 */
 .ll-lab-table {
   overflow-x: auto;
   max-width: 100%;
+  padding-block-end: var(--ll-space-2);
 }
 .ll-lab-table__table {
   min-width: 100%;
@@ -690,7 +693,7 @@
 }
 .ll-lab-row__note {
   display: block;
-  color: var(--ll-text-3);
+  color: var(--ll-text-2);
   font-size: var(--ll-type-footnote-size);
   line-height: var(--ll-type-footnote-line);
   font-weight: 400;
@@ -927,14 +930,18 @@
   gap: var(--ll-space-2);
 }
 
-/* 階段操作列：固定在底部、Tab bar 上方 */
+/* 階段操作列：固定在底部、Tab bar 上方。鍵盤往下走時，焦點不要停在它底下 */
+html:has(.ll-lab-stagebar) {
+  scroll-padding-bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--ll-btn-h-md) + var(--ll-space-16));
+}
 .ll-lab-stagebar {
   position: fixed;
   left: 0;
   right: 0;
   bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px));
   z-index: var(--ll-z-sticky);
-  padding: var(--ll-space-2) var(--ll-space-4);
+  /* Tab bar 離視窗底部有一段距離，操作列的底會壓在它底下：下緣多留一點，按鈕的焦點外框才不會碰到 Tab bar */
+  padding: var(--ll-space-2) var(--ll-space-4) var(--ll-space-4);
   background: var(--ll-bg);
   border-top: 1px solid var(--ll-border);
 }
@@ -962,6 +969,7 @@
   .ll-lab-stagebar {
     left: var(--ll-tabbar-rail-w, 0px);
     bottom: 0;
+    padding-block-end: var(--ll-space-2);
   }
 }
 
@@ -1056,7 +1064,7 @@
   height: 28px;
   border-radius: var(--ll-radius-full);
   background: var(--ll-accent-tint);
-  color: var(--ll-accent);
+  color: var(--ll-text);
   font-family: var(--ll-font-num);
   font-weight: 700;
 }
@@ -1319,6 +1327,14 @@
 .ll-valuebtn .ll-lab-delta {
   display: inline;
 }
+/* 金額和右邊的箭頭留在同一行：欄位窄的時候換行的是左邊的列名與標記，不是箭頭 */
+.ll-lab-row .ll-mini-table__value:has(> .ll-lab-row__mark) {
+  white-space: nowrap;
+}
+/* 本筆變動的箭頭、減號和金額也不換行 */
+.ll-valuebtn .ll-lab-delta {
+  white-space: nowrap;
+}
 .ll-lab-ratio__values .ll-valuebtn {
   font-size: var(--ll-type-title-3-size);
   font-weight: 700;
@@ -1370,6 +1386,12 @@
 .ll-lab-trace__part {
   margin: 0;
   font-weight: 600;
+}
+.ll-lab-trace__formula {
+  margin: var(--ll-space-1) 0 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
 }
 .ll-lab-trace__part {
   margin-top: var(--ll-space-2);
@@ -1453,10 +1475,10 @@
   white-space: nowrap;
 }
 .ll-lab-src__amount.is-up {
-  color: var(--ll-success-ink);
+  color: var(--ll-change-up-ink);
 }
 .ll-lab-src__amount.is-down {
-  color: var(--ll-danger-ink);
+  color: var(--ll-change-down-ink);
 }
 .ll-lab-src__journal {
   grid-column: 1 / -1;
@@ -1480,6 +1502,34 @@
   font-size: var(--ll-type-body-sm-size);
   line-height: var(--ll-type-body-sm-line);
 }
+/* 橫幅下面的說明：跟著內容捲走，不佔固定區塊的高度 */
+.ll-lab-basis-note {
+  margin: var(--ll-space-2) 0 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-lab-basis-note__version {
+  display: block;
+}
+/* 自由實驗的報表區與指標實驗室：橫幅自己固定（步驟頁已在 .ll-lab-session__sticky 裡）；頁首不固定，所以貼齊視窗頂端，左右和內容邊距對齊的做法同步驟頁 */
+.ll-lab-basis--sticky {
+  position: sticky;
+  top: 0;
+  z-index: var(--ll-z-sticky);
+  margin: var(--ll-space-2) calc(-1 * var(--ll-space-4)) 0;
+  padding: var(--ll-space-2) var(--ll-space-4);
+  background: var(--ll-bg);
+  border-bottom: 1px solid var(--ll-border);
+}
+/* 鍵盤往回走時，焦點不要停在固定的橫幅底下 */
+html:has(.ll-lab-basis--sticky) {
+  scroll-padding-top: var(--ll-space-16);
+}
+/* 步驟頁的固定區塊高度依寬度與 IFRS 橫幅而變，LabStep 量好寫進 --ll-lab-sticky-h */
+html:has(.ll-lab-session__sticky) {
+  scroll-padding-top: calc(var(--ll-lab-sticky-h, var(--ll-space-16)) + var(--ll-space-4));
+}
 .ll-lab-basis__icon {
   display: inline-flex;
   color: var(--ll-warning-ink);
@@ -1496,7 +1546,7 @@
 }
 .ll-lab-row__basis {
   display: block;
-  color: var(--ll-text-3);
+  color: var(--ll-text-2);
   font-family: var(--ll-font-num);
   font-size: var(--ll-type-footnote-size);
   line-height: var(--ll-type-footnote-line);
@@ -1510,6 +1560,10 @@
 }
 .ll-lab-tables__controls .ll-lab-policy {
   margin-left: auto;
+}
+/* 兩個選項不換行：選到 IFRS 對照後字變粗，web-ui 的分段控制會折成上下兩列 */
+.ll-lab-policy .ll-seg {
+  flex-wrap: nowrap;
 }
 /* 自由實驗報表區與指標實驗室：標題（或版本切換）和口徑切換同一列，放不下就換行 */
 .ll-lab-sandbox__head,

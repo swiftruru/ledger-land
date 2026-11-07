@@ -15,6 +15,8 @@ export interface PredictPanelProps {
   submitted: boolean;
   /** 「記下預測」後的文字 */
   submittedNote?: string;
+  /** 記下之後又改了選項、還沒按「更新預測」：揭曉與成績仍是記下的那一份 */
+  dirty?: boolean;
 }
 
 const RATIO_CHOICES: readonly RatioChoice[] = ['up', 'down', 'unchanged', 'becomes_computable', 'becomes_na', 'stays_na'];
@@ -31,7 +33,7 @@ export function useRatioChoiceLabels(): Record<RatioChoice, string> {
   };
 }
 
-export function PredictPanel({ targets, labelOf, record, onChange, onSubmit, submitted, submittedNote }: PredictPanelProps) {
+export function PredictPanel({ targets, labelOf, record, onChange, onSubmit, submitted, submittedNote, dirty = false }: PredictPanelProps) {
   const { t } = useLingui();
   const name = useId();
   const ratioLabels = useRatioChoiceLabels();
@@ -95,9 +97,11 @@ export function PredictPanel({ targets, labelOf, record, onChange, onSubmit, sub
             ? t({ id: 'lab.predict.update', message: '更新預測', comment: '預測面板的主按鈕（已記過一次）' })
             : t({ id: 'lab.predict.submit', message: '記下預測', comment: '預測面板的主按鈕' })}
         </Button>
-        {submitted && submittedNote && (
-          <span className="ll-lab-predict__done" role="status">
-            {submittedNote}
+        {submitted && (dirty || submittedNote) && (
+          <span className="ll-lab-predict__done" role="status" data-testid="lab-predict-note">
+            {dirty
+              ? t({ id: 'lab.predict.dirty', message: '改過的選項要按「更新預測」才算數。', comment: '記下預測之後又改了選項、還沒更新時的提示' })
+              : submittedNote}
           </span>
         )}
       </div>

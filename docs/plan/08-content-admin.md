@@ -470,7 +470,7 @@ content/
 | --- | --- | --- |
 | `opening` | 是 | 二擇一：`{ "storyRef": 故事 ID, "afterStep": 步驟 ID }`，或 `{ "balances": { 科目 ID: 金額 } }`；自訂期初只能填資產負債表科目，必須平衡並符合餘額規則 |
 | `events` | 是 | `[{ "id": "e1", "template": 範本 ID, "params": { 名稱: 數字 } }]`；事件 ID 在題目內唯一，寫成 `e1`、`e2`；範本 ID 是 `tpl.` 開頭的語意 ID。題幹以 `{{money:e1.price}}` 這類佔位符引用事件參數或推導值，核心算出的答案以 `{{money:expected.<targetId>.<欄位>}}` 引用 |
-| `policy` | 是 | 題目一律 `teacher@1`（教材口徑）。已決定（D10(f)，2026-10-20）：IFRS 對照只在實驗室切換整套三表與指標、不計分，`ifrs@1` 政策與版面在 M4b 實作，不用在題目裡（5.4 節的 `acct.teacherPolicy`） |
+| `policy` | 是 | 題目一律 `teacher@1`（教材口徑）。已決定（D10(f)，2026-10-20）：IFRS 對照只在實驗室切換整套三表與指標、不計分，`ifrs@1` 政策與版面已在 M4b 實作（2026-11-07，PR 113），不用在題目裡（5.4 節的 `acct.teacherPolicy`） |
 | `layout` | 是 | 題目一律 `teacher@1`（教材版面）；中英介面都用教材版面（D11 已決定），非 IFRS 的列由畫面加標記：中文「非 IFRS 項目」、英文「Not an IFRS line item」（字串在 05 的 catalog） |
 | `window` | 是 | `cumulative`（累計三表）或 `transaction`（本筆變動，定義為累計報表的前後差額） |
 | `targets` | 是 | `[{ id, kind, ... , measure }]`；`kind` 有四種：`line`、`account`、`ratio`、`check`；前三種的 `measure` 為 `direction`、`delta`、`value` 或 `status`（`status` 只用於 `ratio`）；`check` 是勾稽點的差額，寫成 `{ id, kind: "check", step: 2\|3\|4\|5, measure: "value" }`，`step` 是五步驟勾稽的第 2 到 5 步，`measure` 固定為 `value`（見 04 第 15.1 節） |

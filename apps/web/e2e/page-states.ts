@@ -243,6 +243,19 @@ const abort = (pattern: string) => async (page: Page) => {
   await page.route(pattern, (r) => r.abort('internetdisconnected'));
 };
 
+/** 第 5 步（設立費）在 IFRS 下的處理不同：示範模式走到損益表、切到 IFRS 對照，橫幅與差異標記都出現 */
+const IFRS_STEP = `/lab/story/${STORY}/st_yj3yex/?mode=demo`;
+async function ifrsIncome(page: Page): Promise<void> {
+  await visible(page, 'lab-card');
+  for (let s = 2; s <= 4; s++) {
+    await page.getByTestId('lab-next').click();
+    await expect(page.getByTestId('lab-stage-title')).toContainText(new RegExp(`${s}(／| of )9`));
+  }
+  await page.getByTestId('lab-policy').getByRole('radio', { name: /IFRS/ }).click();
+  await visible(page, 'lab-basis');
+  await visible(page, 'lab-row-diff');
+}
+
 export const CASES: readonly PageCase[] = [
   // 首頁
   { group: '首頁', name: '新使用者', path: '/' },
@@ -685,7 +698,7 @@ export const CASES: readonly PageCase[] = [
       await visible(page, 'lab-card');
       for (let s = 2; s <= 4; s++) {
         await page.getByTestId('lab-next').click();
-        await expect(page.getByTestId('lab-stage-title')).toContainText(`${s}／9`);
+        await expect(page.getByTestId('lab-stage-title')).toContainText(new RegExp(`${s}(／| of )9`));
       }
       await page.locator('#ll-lab-table-is [data-line="is_operating_income"] [data-testid="lab-trace-value"]').click();
       await visible(page, 'lab-trace');
@@ -696,20 +709,48 @@ export const CASES: readonly PageCase[] = [
     },
   },
   { group: '實驗室', name: '自由實驗', path: '/lab/sandbox/', tablet: true, prepare: (page) => visible(page, 'lab-sandbox-step') },
+  { group: '實驗室', name: 'IFRS 對照（損益表）', path: IFRS_STEP, tablet: true, prepare: ifrsIncome },
   {
     group: '實驗室',
-    name: 'IFRS 對照（損益表）',
-    path: `/lab/story/${STORY}/st_yj3yex/?mode=demo`,
-    tablet: true,
+    name: 'IFRS 對照（本筆變動）',
+    path: IFRS_STEP,
     prepare: async (page) => {
-      await visible(page, 'lab-card');
-      for (let s = 2; s <= 4; s++) {
-        await page.getByTestId('lab-next').click();
-        await expect(page.getByTestId('lab-stage-title')).toContainText(`${s}／9`);
-      }
-      await page.getByTestId('lab-policy').getByRole('radio', { name: /IFRS/ }).click();
+      await ifrsIncome(page);
+      await page.getByRole('radio', { name: /^(本筆變動|This transaction)$/ }).click();
+      await visible(page, 'lab-row-diff');
+    },
+  },
+  {
+    group: '實驗室',
+    name: '來源面板（IFRS 對照）',
+    path: IFRS_STEP,
+    prepare: async (page) => {
+      await ifrsIncome(page);
+      await page.locator('#ll-lab-table-is [data-line="is_sga_total"] [data-testid="lab-trace-value"]').click();
+      await visible(page, 'lab-trace');
+      await visible(page, 'lab-trace-basis');
+    },
+  },
+  {
+    group: '實驗室',
+    name: '自由實驗（IFRS 對照）',
+    path: '/lab/sandbox/',
+    prepare: async (page) => {
+      await visible(page, 'lab-sandbox-step');
+      await page.getByTestId('lab-sandbox-result').getByTestId('lab-policy').getByRole('radio', { name: /IFRS/ }).click();
       await visible(page, 'lab-basis');
       await visible(page, 'lab-row-diff');
+    },
+  },
+  {
+    group: '實驗室',
+    name: '指標實驗室（IFRS 對照）',
+    path: '/lab/ratios/',
+    prepare: async (page) => {
+      await visible(page, 'lab-ratios-context');
+      await page.getByTestId('lab-policy').getByRole('radio', { name: /IFRS/ }).click();
+      await visible(page, 'lab-basis');
+      await visible(page, 'lab-ratio-basis');
     },
   },
   { group: '實驗室', name: '勾稽練習', path: '/lab/reconcile/', tablet: true, prepare: (page) => visible(page, 'lab-light-2') },

@@ -12,7 +12,7 @@
 - 分錄驗證、過帳快照、變動量與白話的 `effects`（第 6 節）。
 - 交易範本 schema 包含 `params`、`derived`、`preconditions`、逐條帶現金流量標籤的 `lines`、說明與名詞參照；故事步驟與範本分開，一步可以有多個事件（第 7、9 節）。
 - 受控運算式採白名單文法，建置時解析成 AST 並做型別檢查，執行時只走訪 AST，不使用 eval（第 8 節）。
-- 認列政策 `policy` 與表達版面 `layout` 分成兩層。M1 只實作 `teacher@1`，schema 保留 `policy` 欄位與 `policyWhen`；M4b 實作 `ifrs@1` 政策與 `ifrs@1` 版面並加上自編數字的黃金測試，實驗室可以切換整套 IFRS 三表與指標，畫面標示「IFRS 對照，不計分」，闖關區一律以 `teacher@1` 計分（已決定 D10(f)，評估一、第 10 節）。
+- 認列政策 `policy` 與表達版面 `layout` 分成兩層。兩套政策與版面都已實作（`teacher@1` 在 M1；`ifrs@1` 在 M4b，核心 PR 113、來源面板 PR 114、切換畫面 PR 115），各有一份自編數字的黃金測試，schema 保留 `policy` 欄位與 `policyWhen`；實驗室可以切換整套 IFRS 三表與指標，畫面標示「IFRS 對照，不計分」，闖關區一律以 `teacher@1` 計分（已決定 D10(f)，評估一、第 10 節）。
 - 教材版面三表：損益表五層利益、資產負債表、間接法現金流量表（H10 到 H41 每一列都有來源規則）。另外計算直接法，並以「間接法營業活動＝直接法營業活動」為不變式（第 11 節）。
 - 財務指標登錄檔採「一個指標、多個版本」（`excel`、`slides03`、`slides02`、`dupont`、`slides01`）。計分題必須填 `ratioRef`，計分只看題目指定的版本（第 12 節）。
 - 指標狀態的判定順序是 na、not_meaningful、zero、ok；另有連鎖指標規則、-0 與 `signDisplay` 規則，正解為 N/A 的題目用 `acceptStatus`（第 12.6 節）。
@@ -24,7 +24,7 @@
 - 借貸分錄採延伸層（已決定 D1，2026-10-20，評估二）：核心內部一律以分錄過帳，M1 不受影響；實驗室「科目變動」那一步以白話的 `effects` 為主，「看分錄與 T 字帳」預設收合（第 6.5 節）；`journal_entry` 題型只用在「借貸與分錄」延伸章（不列入期中考範圍），計分依第 14 節；設立費、盤盈、攤銷在老師確認前不出分錄題。
 - 正式故事按照老師的情境與金額（已決定 D2，老師已同意公開）：公司名稱原創：綠芽商行，英文 Green Bud Trading（D9，2026-11-01）；故事的敘述文字以網站自己的話撰寫，第 12 筆等疑似誤植依 13 的建議處理並在交易卡加註；情境不夠時（延伸章、自由實驗、故事沒有涵蓋的交易）另建原創情境（第 9 節）。
 - 故事以連續故事為主線，每一步另有「單獨練習」入口，沿用故事在該步之前的狀態（已決定 D10(b)，第 9.1 節）。
-- 追蹤深度採 A 完整公式樹與來源分錄（已決定 D10(c)，評估三）：核心從 M1 起輸出追蹤樹，任一報表數字可以一層一層展開到公式、科目，最底層列出來源步驟、事件與分錄行；來源分錄放在可展開的分錄層。畫面在 M4b 實作（第 6.4 節）。
+- 追蹤深度採 A 完整公式樹與來源分錄（已決定 D10(c)，評估三）：核心從 M1 起輸出追蹤樹，任一報表數字可以一層一層展開到公式、科目，最底層列出來源步驟、事件與分錄行；來源分錄放在可展開的分錄層。畫面已在 M4b 實作（PR 114，第 6.4 節）。
 - 中英兩種介面都用教材版面，非 IFRS 項目在兩種介面都加標記（中文「非 IFRS 項目」、英文「Not an IFRS line item」，字串放在 05 的 catalog），可隨時切到 IFRS 對照；英文拼字用英式，美式拼法列為英文搜尋別名（已決定 D11，評估六、第 16.3 節）。
 - 新增多正解題型 `multi_choice`（已決定 D12，評估五）：`correctOptionIds` 至少兩個，必填 `scoringMode`（`any_correct` 或 `all_correct`），不給部分分數；`scoringMode` 與 `correctOptionIds` 列入 `answerHash`，改動任一個都是答案改版；M2 與單選題共用元件實作（第 16.2、17.10 節）。
 - W01 到 W15 全部採用（已決定 D13，評估七）：科目表與版面的顯示字照 W 系列修改，教材原字一律保留為可搜尋的別名；「短期放貨」已決定（2026-10-23，【待確認 T09】）比照 W 系列以「短期放款」為主要顯示、原字為別名並帶 `typo_fixed`；利息三列依【待確認 T11】的決定改為清楚的寫法、教材原字為別名（第 4、11 節）。
@@ -38,7 +38,7 @@
 
 已決定（D10(f)，2026-10-20）：C 完整切換。實驗室可以切換整套 IFRS 三表與指標，不計分。M1 只在 schema 保留 `policy` 欄位與 `policyWhen`；M4b 實作 `ifrs@1` 政策與 `ifrs@1` 版面，並以自編數字加上黃金測試（第 10.3、18.2 節）。切到 IFRS 時畫面明確標示「IFRS 對照，不計分」；闖關區的題目一律以教材口徑 `teacher@1` 計分。
 
-IFRS 和教材的差異在「認列」，不只是版面：設立費依 IAS 38.69 應在發生時費用化、之後不攤銷，現金流量也從投資活動移到營業活動；經常利益與非常損益在 IFRS 下不存在。同一本帳換版面算不出 IFRS 的數字，必須用另一套認列政策重算（第 10.3 節列出 `ifrs@1` 的設定與差距）。
+IFRS 和教材的差異在「認列」，不只是版面：設立費依 IAS 38.69 應在發生時費用化、之後不攤銷，現金流量也從投資活動移到營業活動；IAS 1 沒有經常利益這個小計（現行報表也不列），非常損益則被 IAS 1.87 禁止。同一本帳換版面算不出 IFRS 的數字，必須用另一套認列政策重算（第 10.3 節列出 `ifrs@1` 的設定與差距）。
 
 | 選項 | 內容 | 優點 | 缺點與風險 | 成本 |
 | --- | --- | --- | --- | --- |
@@ -191,7 +191,7 @@ W 系列在本文件的落點：
 | 決定性 | 金額用整數；中間值用精確有理數；排序一律依科目表的 `order`；雜湊前用鍵排序的 canonical JSON；不依賴物件鍵的插入順序 | 同一組輸入跑兩次結果 deep equal；同一組黃金測試在 Node 與瀏覽器（Vitest browser mode）都跑 |
 | 錯誤是值 | 預期內的錯誤（借貸不平、餘額為負、前置條件不成立）以 `Result` 回傳並附錯誤碼；只有程式錯誤才 throw | 每個錯誤碼都有單元測試 |
 | 教材優先、差異分層 | 教材的處理是預設政策 `teacher@1`；現行準則的差異放在另一個 policy，不混在同一套規則裡 | policy 測試 |
-| 可追蹤 | 每個報表數字都能一層一層回推到公式、來源科目、來源步驟與分錄行（核心從 M1 起輸出追蹤樹；畫面在 M4b 依 D10(c) A 做完整公式樹） | 追蹤測試：公式節點的值等於子節點代入公式的結果；所有 `sources` 的金額加總等於該列數值 |
+| 可追蹤 | 每個報表數字都能一層一層回推到公式、來源科目、來源步驟與分錄行（核心從 M1 起輸出追蹤樹；畫面已在 M4b 依 D10(c) A 做出完整公式樹，PR 114） | 追蹤測試：公式節點的值等於子節點代入公式的結果；非公式節點的值等於科目層、子節點與現金行的合計；科目層的 `opening` 加 `sources` 帶號金額等於 `amount` |
 
 ## 2. 套件邊界與主要 API
 
@@ -205,13 +205,16 @@ packages/core/
     templates/      範本實例化（params、derived、preconditions、lines）
     ledger/         過帳、餘額快照、effects、T 字帳
     story/          故事重播、自由實驗覆寫、可輸入範圍搜尋
-    policy/         認列政策開關（teacher@1；M4b 加 ifrs@1）
+    policy/         認列政策開關（teacher@1、ifrs@1）
     statements/     教材版面三表、ifrs@1 版面、直接法、累計與本筆變動
     trace/          追蹤樹：公式、科目、來源步驟與分錄行（D10(c) A）
     ratios/         指標登錄檔、版本、狀態判定
     checks/         五步驟檢查
     scenario/       計算型題目的情境求解
     entries/        分錄的正規化比對（合併同科目同方向的行、多重集合比對；資料夾名稱示意）
+  data/
+    policies.json   兩套認列政策的開關與停用科目
+    layouts/        版面：teacher@1.json、ifrs@1.json
   test/
 ```
 
@@ -259,12 +262,13 @@ function scoreJournalEntry(submitted: EntryLine[][], expected: EntryLine[][], ch
 - `validateEntry` 回傳 `CoreError[]`（空陣列表示通過），不再包成 `Result`。
 - 分錄比對是 `compareEntries(submitted, expected, chart, options)` 與 `normaliseEntries`。
 - `buildStatements(run, window, layout, policy)`，多帶 `policy`。
+- `traceLine(run, win, layout, policy, lineId, options?)`，同樣多帶 `policy`；`options.statements` 可以傳入已建好的同一份報表，省去重算。另有 `traceAllLines(run, win, layout, policy, options?)` 依版面順序回傳全部線的追蹤樹，給 `content:check` 與性質測試用。
 - `computeRatio(ratioRef, measures, inputs?, registry?, options?)`：`measures` 是以線 ID 為鍵的 `MeasureMap`，`avg` 需要的期初值由 `options.opening` 提供。
 - `fiveStepCheck(st, learnerInputs?)`。
 - `replayStory(story, overrides, ctx)` 與 `allowedRange(story, overrides, target, ctx)`。
 - 錯誤訊息的 key 慣例是 `core.error.<錯誤碼>`；`lab.*` 的介面字串由 UI 對應，不在核心。
 
-`CoreContext` 帶著科目表、已編譯的範本與認列政策。IFRS 對照（D10(f)）不另設 API：呼叫端把 `ctx.policy` 換成 `ifrs@1` 重新呼叫 `replayStory`（沿用同一組自由實驗覆寫），再以 `ifrs@1` 版面呼叫 `buildStatements`、`computeRatio` 與 `traceLine`。計分相關的函式只用在 `teacher@1` 的結果上（第 15.1 節）。
+`CoreContext` 帶著科目表、已編譯的範本、認列政策與版面。IFRS 對照（D10(f)）不另設 API：呼叫端以 `createCoreContext({ policy: 'ifrs@1' })` 建立 context（沒有指定 `layout` 時自動配同名版面），用它重新呼叫 `replayStory`（沿用同一組自由實驗覆寫），再以這個 context 的版面與政策呼叫 `buildStatements` 與 `traceLine`，指標由這份報表的量測值計算（`computeRatio`）。計分相關的函式只用在 `teacher@1` 的結果上（第 15.1 節）。
 
 `packages/core` 的 `exports` 直接指向原始碼，不另外 build（見 09）。型別以 `packages/content-schema` 的 Zod schema 為準，本文件的 TypeScript 型別是說明用的對照。
 
@@ -611,43 +615,49 @@ interface PostedStep {
 
 - `postStep` 依事件順序逐一實例化範本、驗證、過帳；同一步的後一個事件看得到前一個事件的結果。
 - 每一步產生不可變的快照：`balancesBefore`、`balancesAfter`、`delta`。第 k 步的 before 就是第 k-1 步的 after，資料結構共用，不複製整份。
-- 追蹤資料：任一報表數字都能由 `traceLine` 展開成追蹤樹，只在呼叫端要求時計算，並依（run、視窗、版面、線 ID）快取。D10(c) 已決定 A 完整公式樹與來源分錄，所以追蹤資料不是平面的「科目加變動量」清單，而是下面的樹狀結構；M1 就輸出完整的樹，M4b 的畫面只負責呈現。
+- 追蹤資料：任一報表數字都能由 `traceLine` 展開成追蹤樹，只在呼叫端要求時計算，並依（run、版面、政策、視窗）快取報表與各線的節點。D10(c) 已決定 A 完整公式樹與來源分錄，所以追蹤資料不是平面的「科目加變動量」清單，而是下面的樹狀結構；核心從 M1 起輸出完整的樹，M4b 的來源面板（PR 114，[03 模組](03-modules.md) 第 3.9 節）只負責呈現。
 
 ```ts
-type TraceRule = 'formula' | 'link' | 'accounts' | 'working_capital' | 'cash_tag' | 'inventory'; // 與版面列的 kind 對應
+type TraceRule =
+  | 'formula' | 'link' | 'accounts' | 'working_capital' | 'cash_tag' | 'inventory'
+  | 'total' | 'balance_end' | 'retained_earnings' | 'noncash_addback' | 'balance_begin' | 'group';
+// 與版面列的 kind 對應：四種存貨列（inventory_opening、inventory_purchases、inventory_closing、inventory_overage）都是 inventory，其餘同名
 interface TraceNode {
   line: string;                        // 線 ID
   cell: string | null;                 // 老師模板的儲存格；模板沒有的列與 ifrs@1 版面為 null
   value: Money;                        // 與 buildStatements 同一列的值相同
   rule: TraceRule;
   expr?: string;                       // rule 為 formula 時的版面公式，例如 'line.is_revenue - line.is_cogs'
-  children: TraceNode[];               // 公式或連結引用的列；沒有時為空陣列
-  accounts: AccountTrace[];            // 這一列直接取用的科目；沒有時為空陣列
-  sources: SourceRef[];                // 只有 cash_tag 列直接列出現金行；其他為空陣列
-  note?: { key: string; params?: Record<string, string> };  // 例如 H15、H17 擇一時，指向實際填入的列
+  children: TraceNode[];               // 公式、連結、合計引用的列；沒有時為空陣列
+  accounts: TraceAccount[];            // 這一列直接取用的科目；沒有時為空陣列
+  sources: TraceSourceRef[];           // 只有 cash_tag 列直接列出現金行；其他為空陣列
+  note?: { key: 'trace.filled_in_other_line' | 'trace.not_in_policy'; params: Record<string, string> };  // 例如 H15、H17 擇一時指向實際填入的列；盤盈列在目前政策下不適用
 }
-interface AccountTrace {
+interface TraceAccount {
   account: string;
-  sign: 1 | -1;                        // 以什麼正負號進入這一列，例如 H16 存貨增加(-) 為 -1
+  sign: 1 | -1;                        // 以什麼正負號進入這一列，例如 H16 存貨增加(-) 為 -1、抵銷科目為 -1
+  opening: Money;                      // 視窗起點帶進來的餘額（正常餘額表示）：只有累計視窗的餘額型列、而且帳本有自訂期初時不為 0
   amount: Money;                       // 這一列從該科目取用的金額（依列的規則，可能是餘額、發生額、變動量或某種標籤的合計），正常餘額表示
-  sources: SourceRef[];                // 視窗內構成 amount 的每一條分錄行
+  sources: TraceSourceRef[];           // 視窗內構成 amount 的每一條分錄行
 }
-interface SourceRef {
+interface TraceSourceRef {
   stepId: string;
   eventId: string;
   lineRef: string;                     // 'e1.l3'，與 JournalLine.ref 相同
   side: 'debit' | 'credit';
   amount: Money;                       // 分錄行金額（非負）
-  signedAmount: Money;                 // 換算成該科目正常餘額表示的帶號金額
+  signedAmount: Money;                 // 換算成該科目正常餘額表示的帶號金額；現金行（cash_tag 列）則是流入為正、流出為負
 }
 ```
 
+規劃時的 `TraceRule` 只有前六種，M1 實作時補了後六種：`total`（`sum` 的線相加）、`balance_end`（`from` 的線相加）、`retained_earnings`（帳戶餘額加本期淨利子節點）、`noncash_addback`（發生額加回）、`balance_begin`（期初餘額）、`group`（標題列，值為 0）。規劃時叫 `AccountTrace`、`SourceRef` 的兩個型別，程式裡叫 `TraceAccount`、`TraceSourceRef`，因為 statements 模組已經匯出同名、形狀不同的中間介面。
+
 規則：
 - `formula` 節點的值等於 `expr` 代入各子節點的值；其他節點的值等於「科目層 sign 乘 amount 的合計」加上「子節點的值」加上「現金行的帶號金額」。例如 N26 未分配盈餘有一個科目層（`retained_earnings`）與一個子節點（`is_net_income`）。
-- 每個 `AccountTrace` 的 `sources` 帶號金額加總等於 `amount`；樹根的值等於報表上同一列的值。這三條都是性質測試（第 18.1 節）。
-- 最底層的 `SourceRef` 指向來源步驟、事件與分錄行。畫面在「來源分錄」層展開時，用 `stepId` 與 `eventId` 取 `PostedStep.entries` 中的整筆分錄顯示（預設收合，D1 (b)），所以學生看得到這一行在整筆分錄裡的位置。
+- 每個 `TraceAccount` 的 `opening` 加 `sources` 帶號金額的合計等於 `amount`（自訂期初沒有對應的分錄行，所以要加 `opening`；沒有期初時 `opening` 是 0）；樹根的值等於報表上同一列的值。這三條都是性質測試（第 18.1 節）。
+- 最底層的 `TraceSourceRef` 指向來源步驟、事件與分錄行。畫面在「來源分錄」層展開時，用 `stepId` 與 `eventId` 取 `PostedStep.entries` 中的整筆分錄顯示（預設收合，D1 (b)），所以學生看得到這一行在整筆分錄裡的位置。
 - `window: "transaction"` 時，`sources` 只列這一步的分錄行，數值是本筆變動（第 11.5 節）。
-- IFRS 對照時以 `ifrs@1` 的 run 與版面呼叫同一個函式，樹的形狀依 `ifrs@1` 版面（第 10.3 節）。
+- IFRS 對照時以 `ifrs@1` 的 run、版面與政策呼叫同一個函式，樹的形狀依 `ifrs@1` 版面（第 10.3 節）。
 
 例子（自編故事第 7 步之後、累計視窗，追蹤營業毛利 480,000；第 6 步現金進貨的範本是 `tpl.purchase_inventory_cash`，`l1` 為借記存貨的那一行）：
 
@@ -669,6 +679,7 @@ interface SourceRef {
         {
           "account": "revenue",
           "sign": 1,
+          "opening": 0,
           "amount": 1120000,
           "sources": [
             { "stepId": "st_h8q3z6", "eventId": "e1", "lineRef": "e1.l2", "side": "credit", "amount": 1120000, "signedAmount": 1120000 }
@@ -682,9 +693,9 @@ interface SourceRef {
       "cell": "R15",
       "value": 640000,
       "rule": "formula",
-      "expr": "line.is_opening_inventory + line.is_purchases - line.is_closing_inventory",
+      "expr": "line.is_opening_inventory + line.is_purchases + line.is_inventory_overage_excluded - line.is_closing_inventory",
       "children": [
-        { "line": "is_opening_inventory", "cell": "R12", "value": 0, "rule": "inventory", "children": [], "accounts": [{ "account": "inventory", "sign": 1, "amount": 0, "sources": [] }], "sources": [] },
+        { "line": "is_opening_inventory", "cell": "R12", "value": 0, "rule": "inventory", "children": [], "accounts": [{ "account": "inventory", "sign": 1, "opening": 0, "amount": 0, "sources": [] }], "sources": [] },
         {
           "line": "is_purchases",
           "cell": "R13",
@@ -695,6 +706,7 @@ interface SourceRef {
             {
               "account": "inventory",
               "sign": 1,
+              "opening": 0,
               "amount": 640000,
               "sources": [
                 { "stepId": "st_p4n7e2", "eventId": "e1", "lineRef": "e1.l1", "side": "debit", "amount": 640000, "signedAmount": 640000 }
@@ -703,6 +715,7 @@ interface SourceRef {
           ],
           "sources": []
         },
+        { "line": "is_inventory_overage_excluded", "cell": null, "value": 0, "rule": "inventory", "children": [], "accounts": [], "sources": [], "note": { "key": "trace.not_in_policy", "params": { "policy": "teacher@1" } } },
         {
           "line": "is_closing_inventory",
           "cell": "R14",
@@ -713,6 +726,7 @@ interface SourceRef {
             {
               "account": "inventory",
               "sign": 1,
+              "opening": 0,
               "amount": 0,
               "sources": [
                 { "stepId": "st_p4n7e2", "eventId": "e1", "lineRef": "e1.l1", "side": "debit", "amount": 640000, "signedAmount": 640000 },
@@ -732,7 +746,7 @@ interface SourceRef {
 }
 ```
 
-本例中「本期進貨」只取標 `purchase` 的借方行，「期末存貨」取視窗終點的餘額，兩者的 `sources` 不同，這正是公式樹要讓學生看見的差別：營業成本 640,000 來自第 6 步的進貨，第 7 步賣出後期末存貨歸零。
+本例中「本期進貨」只取標 `purchase` 的借方行，「期末存貨」取視窗終點的餘額，兩者的 `sources` 不同，這正是公式樹要讓學生看見的差別：營業成本 640,000 來自第 6 步的進貨，第 7 步賣出後期末存貨歸零。盤盈排除列在 `teacher@1` 下不適用，所以帶 `trace.not_in_policy` 的 `note`。
 
 ### 6.5 effects
 
@@ -867,7 +881,7 @@ interface DerivedSpec {
   label: LocalizedText;
 }
 
-interface Precondition { id: string; expr: string; message: LocalizedText }  // expr 的型別必須是 bool
+interface Precondition { id: string; expr: string; message: LocalizedText; policyWhen?: Partial<PolicySwitches> }  // expr 的型別必須是 bool；有 policyWhen 時只在相符的政策下檢查（14 第 5.2 節 L3）
 
 interface LineSpec {
   id: string;                        // 範本內唯一，例如 'l1'
@@ -881,11 +895,11 @@ interface LineSpec {
 }
 ```
 
-欄位名稱與 08 第 3.8 節一致（`title`、`summary`、`explanation`、陣列形式的 `params` 與 `derived`、`preconditions`、`lines`、`termRefs`、`pendingRefs`、`entryQuestionBlockedBy`）；08 第 3.8 節只列管理上的意義，型別與語意以本節為準。「其他政策的替代分錄行」一律寫成每一行的 `policyWhen`，不另設範本層級的欄位。`pendingRefs` 與 `entryQuestionBlockedBy` 並存、用途不同：前者是相關設計決定的編號（14 的 T 系列），讓實驗室顯示「設計說明」而不是「待確認」，不影響計分；後者阻擋用這個範本出分錄題（第 14 節）。已決定（2026-10-23）：T 系列已全部依專業判斷決定，所以沒有範本帶 `entryQuestionBlockedBy`；機制保留給日後真正懸而未決的做法。
+欄位名稱與 08 第 3.8 節一致（`title`、`summary`、`explanation`、陣列形式的 `params` 與 `derived`、`preconditions`、`lines`、`termRefs`、`pendingRefs`、`entryQuestionBlockedBy`）；08 第 3.8 節只列管理上的意義，型別與語意以本節為準。「其他政策的替代分錄行」一律寫成每一行的 `policyWhen`，不另設範本層級的欄位。前置條件同樣可以帶 `policyWhen`（M4b 加），目前只有 `tpl.amortise_org_costs` 的 `has_deferred_org_costs` 使用。`pendingRefs` 與 `entryQuestionBlockedBy` 並存、用途不同：前者是相關設計決定的編號（14 的 T 系列），讓實驗室顯示「設計說明」而不是「待確認」，不影響計分；後者阻擋用這個範本出分錄題（第 14 節）。已決定（2026-10-23）：T 系列已全部依專業判斷決定，所以沒有範本帶 `entryQuestionBlockedBy`；機制保留給日後真正懸而未決的做法。
 
 建置期檢查（`content:compile`）：
 - 所有運算式都能解析，引用的參數、推導值、科目都存在，型別正確，`derived` 沒有循環引用。
-- 借貸平衡：若每條行的金額都是參數與推導值的線性組合，先做符號比對（借方與貸方的組合化簡後相同）；另外在參數範圍內隨機抽樣（fast-check）實例化，確認每次都平衡。帶 `policyWhen` 的範本，對每一套已實作的政策（`teacher@1`；M4b 起加上 `ifrs@1`）分別篩選後檢查，引用的科目也必須在該政策下啟用。
+- 借貸平衡：若每條行的金額都是參數與推導值的線性組合，先做符號比對（借方與貸方的組合化簡後相同）；另外在參數範圍內隨機抽樣（fast-check）實例化，確認每次都平衡。帶 `policyWhen` 的範本，對每一套已實作的政策（`teacher@1`、`ifrs@1`）分別篩選後檢查，引用的科目也必須在該政策下啟用。
 - 每條現金行恰好一個 `cf`；每條存貨行有存貨類的 `tag`。
 - `summary` 與 `explanation` 的中英佔位符集合一致（見 05）；數值佔位符只用範本範圍允許的 `param.`、`derived.` 與數字常值，引用的名稱必須在 `params` 或 `derived` 宣告過（第 16.1 節）。
 - 已發布的範本被修改時，`rev` 必須遞增；影響金額的修改 `revKind` 必須是 `answer`。
@@ -1018,9 +1032,11 @@ interface Checkpoint { ref: string; value: number }  // 'e1.amount'（推導值�
 
 - 故事模式：正式故事的交易卡顯示老師的金額（D2）。repo 內自編數字的測試故事以黃金測試斷言推導型步驟的值等於 `checkpoints`；正式故事在 CI 只跑性質測試，與老師 Excel 的逐格比對只在本機（第 18 節）。
 - 自由實驗：學生改的是 `(stepId, eventId, param)` 的覆寫，核心從頭重播。後面依帳上狀態推導的金額會跟著變（例如賣出全部存貨的成本、付清貨款的金額）；固定金額的參數維持原值，若因此違反餘額規則就擋下。
-- 金額為 0 合法，該行在驗證前移除；整步都是 0 時顯示「本筆無影響」。
+- 金額為 0 合法，該行在驗證前移除；整步都是 0 時顯示「本筆無影響」。例外是後面的步驟有前置條件依賴這筆金額：正式故事把第 5 筆設立費改成 0 時，教材口徑在第 17 筆攤銷被 `has_deferred_org_costs` 擋下（14 第 5.2 節 L3），所以可輸入範圍的最小值是 1。
 - 未分配盈餘與權益可以為負；資產、負債與機器設備淨額不能為負（第 6.3 節）。
-- IFRS 對照（D10(f)，M4b）：同一組覆寫以 `ifrs@1` 重播一次，兩套結果各自檢查餘額規則；某一步只在其中一套被擋下時，畫面在那一套顯示原因，另一套照常顯示。
+- IFRS 對照（D10(f)，M4b 已實作）：教材口徑是基準。修改一律先以 `teacher@1` 重播，擋下、可輸入範圍、連動清單與儲存都照教材的結果；切到 IFRS 對照時，再用同一組覆寫以 `ifrs@1` 重播一次，只給報表區看（[03 模組](03-modules.md) 第 3.13 節）。教材擋下的修改不會寫入，所以 IFRS 對照也看不到它：把上一條的設立費改成 0，`ifrs@1` 單獨重播算得下去，但這組修改存不下來；刪除第 5 步同理。
+- 報表區的口徑依兩次重播的結果決定（`apps/web/src/features/lab/sandbox.ts` 的 `sandboxView`）：兩套都算得下去時顯示 IFRS 數字；IFRS 算不下去時維持教材數字，固定列說明是哪一步與原因；教材算不下去而 IFRS 算得下去時（只有舊存檔才會發生）顯示 IFRS 數字，沒有差異標記，教材的原因在頁面的橫幅；兩套都算不下去時沒有報表。第二種情況目前走不到：我用核心掃過拿掉單步、覆寫 0 到 50 倍、每個範本插到每一步、組合與移動，都找不到教材成功而 IFRS 失敗的例子，所以這條路徑是防呆，只有 `sandboxView` 的單元測試。
+- 已決定（2026-11-07）：改成上面「教材是基準」的寫法，因為程式與 03 第 3.13 節都是這樣做。未採用：原本規劃的「兩套各自檢查餘額規則，某一步只在其中一套被擋下時，那一套顯示原因，另一套照常顯示」，這要讓教材擋下的修改也能寫入，自由實驗的擋下與可輸入範圍就不再有單一基準。
 
 ### 9.3 可輸入範圍
 
@@ -1072,26 +1088,29 @@ interface LayoutOptions {
 
 `ifrs@1` 只改變 IFRS 和教材真正不同的地方（設立費與版面），其他開關沿用 `teacher@1`，讓對照畫面上的差額都能歸因到同一個原因。
 
-| 開關 | `teacher@1` | `ifrs@1`（M4b） | 可選值 | 影響 | 待確認 |
+| 開關 | `teacher@1` | `ifrs@1` | 可選值 | 影響 | 待確認 |
 | --- | --- | --- | --- | --- | --- |
 | `orgCosts` | `capitalise_amortise`：設立費列遞延資產，依年數直線攤銷、直接減少帳面；付現列 H26 | `expense`：依 IAS 38.69 發生時列營業費用（`organisation_costs_expense`），付現列營業活動，之後不攤銷 | `capitalise_amortise`、`expense` | 稅前淨利、資產、各活動金額、允當比率 | T04、T30 |
 | `amortisationSection`（版面） | `non_operating`：攤銷遞延資產列營業外支出；折舊列銷管費用 | 不適用（沒有攤銷遞延資產） | `non_operating`、`operating` | 營業利益、DOL、DFL、營業利益佔實收資本比率 | T05 |
 | `amortisationAddBack`（版面） | H14 | 不適用 | H14、H12 | 只影響間接法哪一列 | T12 |
 
-M1 的版面以列資料為準，`amortisationSection` 與 `amortisationAddBack` 這兩個選項只作記錄，切換時要同時改列資料（`is_amortisation` 所在的分組、`cf_depreciation` 與 `cf_other_noncash_losses` 的科目清單；`packages/core/test/data.test.ts` 有測試守住一致性）。
 | `inventoryOverage` | `reduce_cogs` | `reduce_cogs`（沿用教材口徑；`ifrs@1` 不允許 `extraordinary_gain`） | `reduce_cogs`、`non_operating_income`、`extraordinary_gain` | 毛利、營業利益、存貨週轉率與平均銷貨日數、DOL、DFL、營業利益佔實收資本比率；列非常利益時另影響經常利益；稅前淨利不變 | T06 |
 | `incomeTax` | `cash_direct` | `cash_direct`（兩邊都沿用故事設定的金額） | `cash_direct`、`accrue_then_pay` | 應付所得稅、H22 的時點 | T10、T36 |
 | `interestPaidActivity` | `operating`（H21） | `operating`（IAS 7 目前允許營業或籌資，沿用教材以免混入第二個差異） | `operating`、`financing` | 營業與籌資活動金額 | T11 |
 | `officeSupplies` | `expense_on_purchase`（W01） | `expense_on_purchase` | `expense_on_purchase`、`asset_then_expense` | 事務用品費的時點 | W01 |
-| `showOrdinaryIncome`、`showExtraordinaryRows`（版面） | 顯示 | 隱藏（IFRS 沒有經常利益；IAS 1.87 禁止非常項目） | 顯示、隱藏 | 五層利益的第 3、4 層 | T01、T02、T03 |
+| `showOrdinaryIncome`、`showExtraordinaryRows`（版面） | 顯示 | 隱藏（IAS 1 沒有經常利益這個小計；IAS 1.87 禁止非常項目） | 顯示、隱藏 | 五層利益的第 3、4 層 | T01、T02、T03 |
 
-M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師回覆後可以只改資料切換做法，不用改核心。M4b 依 D10(f) C 實作 `ifrs@1`（第 10.3 節）。計分題的 `scenario.policy` 只允許 `teacher@1`；`ifrs@1` 只用在實驗室的 IFRS 對照，不進任何題目。
+兩套政策停用與啟用的科目（`policies.json`）：`teacher@1` 的 `disabledAccounts` 是 `organisation_costs_expense`；`ifrs@1` 的 `disabledAccounts` 是 `deferred_organisation_costs`、`amortisation_deferred_assets`、`extraordinary_gains`、`extraordinary_losses`，`enabledAccounts` 是 `organisation_costs_expense`。`deferred_development_costs` 兩套都沒有停用（第 10.3 節的前提）。
 
-`ifrs@1` 以目前的 IAS 1 與 IAS 7 為準。IFRS 18 會改變損益表小計與支付利息的分類，台灣適用年度見 11；屆時 IFRS 對照另立新版本，不改 `ifrs@1`。
+版面以列資料為準，`amortisationSection` 與 `amortisationAddBack` 這兩個選項只作記錄，切換時要同時改列資料（`is_amortisation` 所在的分組、`cf_depreciation` 與 `cf_other_noncash_losses` 的科目清單；`packages/core/test/data.test.ts` 有測試守住 `teacher@1` 版面的一致性）。上表 `ifrs@1` 的「不適用」是行為上的意思：型別沒有「不適用」這個值，所以 `ifrs@1.json` 的 `options` 仍填 `non_operating`、`H14`（`excelExportClosingInventorySign` 也留著），計算不讀這些值，列資料確實沒有攤銷列與 H14 的加回。
+
+兩套都已實作：M1 做 `teacher@1`，M4b 依 D10(f) C 做 `ifrs@1`（PR 113，第 10.3 節）。schema 保留 `policyWhen` 與替代值，讓老師回覆後可以只改資料切換做法，不用改核心。計分題的 `scenario.policy` 只允許 `teacher@1`；`ifrs@1` 只用在實驗室的 IFRS 對照，不進任何題目。
+
+`ifrs@1` 以目前的 IAS 1 與 IAS 7 為準，IFRS 對照的說明句標示「依現行 IAS 1 與 IAS 7，不是 IFRS 18。」（`lab.policy.version`）；版本只標在畫面，`policies.json` 沒有這個欄位。IFRS 18 會改變損益表小計、間接法起算點與支付利息的分類，台灣的適用年度與名詞卡的查證結果見 [11 風險與授權](11-risks-license.md) 第 2.1 節；屆時 IFRS 對照另立新版本，不改 `ifrs@1`。
 
 ### 10.3 IFRS 對照：`ifrs@1` 的版面、差距與黃金測試（已決定 D10(f)）
 
-已決定（D10(f)，2026-10-20）：C，實驗室可以切換整套 IFRS 三表與指標，不計分；M4b 實作 `ifrs@1` 政策與版面並加上黃金測試；IFRS 畫面明確標示「IFRS 對照，不計分」；闖關區一律以教材口徑計分。核心側已實作（2026-11-07，M4b 第一個 PR）：`packages/core/data/layouts/ifrs@1.json`（線 ID 與 `teacher@1` 共用，`cell` 全為 null，期初存貨、本期進貨、期末存貨、盤盈排除列與兩條遞延資產列保留為不顯示的計算列給指標公式用）、`createCoreContext({ policy: 'ifrs@1' })` 自動配同名版面（`getLayout`）、青檸文具社的黃金測試 `test/golden/lime-leaf.ifrs@1.json`（獨立計算表，第 18 步與下表一致）、正式故事在 `ifrs@1` 下的性質測試、`content:check` 的故事檢查兩套政策都跑；畫面的切換在後續 PR。
+已決定（D10(f)，2026-10-20）：C，實驗室可以切換整套 IFRS 三表與指標，不計分；M4b 實作 `ifrs@1` 政策與版面並加上黃金測試；IFRS 畫面明確標示「IFRS 對照，不計分」；闖關區一律以教材口徑計分。核心與畫面都已實作（2026-11-07）。核心（PR 113）：`packages/core/data/layouts/ifrs@1.json`（116 條線，線 ID 與 `teacher@1` 共用，`cell` 全為 null；期初存貨、本期進貨、期末存貨、盤盈排除列、不動產廠房設備毛額與兩條遞延資產列共 7 條保留為不顯示的計算列給指標公式用）、`createCoreContext({ policy: 'ifrs@1' })` 自動配同名版面（`getLayout`）、青檸文具社的黃金測試 `test/golden/lime-leaf.ifrs@1.json`（第 18 步與下表一致，來源見第 18.2 節）、正式故事在 `ifrs@1` 下的性質測試、`content:check` 的故事檢查兩套政策都跑。畫面：來源面板（PR 114）與口徑切換（PR 115）。
 
 切換的做法：實驗室以 `ctx.policy = ifrs@1` 重播同一個故事與同一組自由實驗覆寫，再以 `ifrs@1` 版面產生三表、指標與追蹤樹（第 2 節）。範本以每一行的 `policyWhen` 選出 `ifrs@1` 的分錄行，例如第 5 筆設立費的範本（節錄，其他欄位見第 7 節）：
 
@@ -1104,31 +1123,43 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
     { "id": "l3", "account": "organisation_costs_expense", "side": "debit", "amount": "param.amount", "policyWhen": { "orgCosts": "expense" } },
     { "id": "l4", "account": "cash", "side": "credit", "amount": "param.amount", "cf": { "activity": "operating", "kind": "payments_for_operating_expenses" }, "policyWhen": { "orgCosts": "expense" } }
   ],
-  "pendingRefs": ["T04", "T30"],
-  "entryQuestionBlockedBy": ["T04"]
+  "pendingRefs": ["T04", "T30"]
 }
 ```
 
-第 17 筆的 `tpl.amortise_org_costs` 兩行都只在 `capitalise_amortise` 下產生，所以在 `ifrs@1` 下這個事件「本筆無影響」，同一步的折舊事件照常過帳。
+第 17 筆的 `tpl.amortise_org_costs` 兩行都只在 `capitalise_amortise` 下產生，前置條件 `has_deferred_org_costs` 也帶同樣的 `policyWhen`，所以在 `ifrs@1` 下這個事件「本筆無影響」，同一步的折舊事件照常過帳。
+
+畫面怎麼讀這些資料（互動規則以 [03 模組](03-modules.md) 第 3.13 節為準，決定紀錄在 14 第 5.2 節）：
+
+- 口徑存在設定的 `labView.policy`（`apps/web/src/features/lab/lab-view.ts`），納入備份。預設是教材；同一次使用中換步驟與換頁沿用；重新載入或直接開網址回到教材；從題目開啟（`?from=`）一律教材。
+- 列名：`ifrs@1` 版面用版面自己的 `label`，不用名詞卡的名稱（`apps/web/src/features/lab/line-labels.ts` 的 `lineLabelOf`），因為名詞的名稱是教材用語；`termRef` 只當名詞卡的連結。
+- 版面沒有的列（同一個檔案的 `isAbsentLine`）：不顯示、`kind` 是 `accounts`，而且科目不在任何顯示列上，目前只命中 `bs_deferred_org_costs` 與 `bs_deferred_dev_costs`，公式句與來源面板的第一層不列出來。不能直接濾 `hidden`：`is_purchases`、`bs_ppe_gross` 也不顯示，但指標要用。
+- 交易卡敘述的金額兩種口徑都固定用教材金額，敘述不變（03 第 3.13 節），第 17 步才不會出現「攤掉 NT$0」。
 
 `ifrs@1` 版面和 `teacher@1` 版面的差別：
 
 | 項目 | `teacher@1` 版面 | `ifrs@1` 版面 |
 | --- | --- | --- |
 | 損益表層次 | 五層利益：營業毛利、營業利益、經常利益、稅前淨利、本期淨利 | 營業毛利、營業利益、稅前淨利、本期淨利；不顯示經常利益與非常損益 |
-| 營業成本 | R12 到 R15 四列 | 只顯示一列；期初存貨、本期進貨、期末存貨保留為不顯示的計算列，供指標公式使用 |
-| 營業費用 | 銷管費用小計 R23（折舊在內） | 同一條線 `is_sga_total`，列名用「營業費用」，另含設立費費用化的金額 |
-| 營業外支出 | 支付利息 R27 加攤銷遞延資產 R28 | 只有財務成本（`is_interest_expense`），沒有攤銷列 |
-| 稅前淨利公式 | R30 ＋ R31 － R32 | 營業利益 ＋ 營業外收入 － 營業外支出小計 |
-| 資產負債表 | 含遞延資產（設立費、開發費） | 沒有遞延資產列；開發費符合 IAS 38.57 才列無形資產（故事未用） |
-| 間接法 | 起算點稅前淨利；H14 加回攤銷 | 起算點同為稅前淨利；沒有攤銷加回；設立費付現在營業活動，不在 H26 |
-| 列名 | 教材用語（依 D13 A 的顯示字） | 現行台灣用語與 IFRS 英文（`labels.currentTw`、`labels.ifrsEn`） |
+| 營業成本 | R12 到 R15 四列 | 只顯示一列；期初存貨、本期進貨、期末存貨與盤盈排除列保留為不顯示的計算列，供公式與指標使用 |
+| 營業費用 | 銷管費用小計 R23（折舊在內） | 同一條線 `is_sga_total`，列名是「營業費用合計」（「營業費用」是分組標題 `is_sga_group`），另含設立費費用化的金額（`is_organisation_costs_expense`） |
+| 營業外支出 | 利息費用 R27 加攤銷遞延資產 R28 | 分組標題「營業外費損」，只有財務成本（`is_interest_expense`），沒有攤銷列；合計列「營業外費損合計」 |
+| 稅前淨利公式 | R30 ＋ R31 － R32 | 營業利益 ＋ 營業外收入 － 營業外費損合計 |
+| 資產負債表 | 含遞延資產（設立費、開發費） | 畫面沒有遞延資產列（`bs_deferred_org_costs`、`bs_deferred_dev_costs` 是不顯示的計算列，不計入資產總計）；開發費符合 IAS 38.57 才列無形資產（故事未用） |
+| 間接法 | 起算點稅前淨利；H14 加回攤銷 | 起算點同為稅前淨利；沒有攤銷加回；設立費付現在營業活動，不在 `cf_capex`（教材的 H26） |
+| 列名 | 教材用語（依 D13 A 的顯示字） | 版面自己的 `label`（`zh-TW`、`en`）：英文用 IFRS 英文，IAS 1 沒有定義的小計（Operating profit、Non-operating income）沿用台灣報表慣用的英文；中文只有部分列改成現行用語（見表後的已知限制） |
 | 儲存格與匯出 | 每列有 `cell`，可匯出成老師的 Excel 格式 | `cell` 為 null，不提供 Excel 匯出 |
-| 標記 | 非 IFRS 項目在中英兩種介面都加標記：中文「非 IFRS 項目」、英文「Not an IFRS line item」（D11） | 整張報表標示「IFRS 對照，不計分」 |
+| 標記 | 非 IFRS 項目在中英兩種介面都加標記：中文「非 IFRS 項目」、英文「Not an IFRS line item」（D11） | 沒有列帶 `not_ifrs_line`；固定列標示「IFRS 對照，不計分」，和教材口徑不同的列有差異標記 |
 
-兩套版面中語意相同的列共用同一個線 ID（例如 `is_pretax_income`、`bs_total_assets`、`cf_operating_total`），所以指標登錄檔不用改。老師 Excel 的 23 項 `excel` 版指標只引用兩套版面都有的列（含上表的計算列）；日後若有指標版本引用 `ifrs@1` 沒有的列，建置期列出，畫面在 IFRS 對照中顯示「不適用」。五步驟檢查在 IFRS 對照中照常計算，步驟①的 `ordinaryIncome` 為 null（第 13 節）。
+兩套版面中語意相同的列共用同一個線 ID（例如 `is_pretax_income`、`bs_total_assets`、`cf_operating_total`），所以指標登錄檔不用改。老師 Excel 的 23 項 `excel` 版指標只引用兩套版面都有的列（含上表的計算列），`packages/core/test/layout-ifrs.test.ts` 守住登錄檔引用的每一條線都在 `ifrs@1` 版面；日後若有指標版本引用 `ifrs@1` 沒有的列，這個測試會失敗，到時候再讓畫面在 IFRS 對照中顯示「不適用」。五步驟檢查在 IFRS 對照中照常計算，步驟①的 `ordinaryIncome` 為 null（第 13 節）。
 
-正式故事的差距：下表是對正式故事（老師的情境與金額，D2）18 筆的推算（推論，待老師的 Excel 核對【待確認 T33】），只用來說明「換政策會改變金額」，不是範例資料，也不寫進 repo 的測試；所得稅兩邊都沿用故事設定的金額【待確認 T10】。
+範圍：IFRS 對照只有三表，本期淨利以下的綜合損益與權益變動表不在範圍內，所以「依現行 IAS 1」不是完整的 IAS 1 表達。故事沒有其他綜合損益的交易，數字不受影響。
+
+前提：`ifrs@1` 假設 `deferred_organisation_costs` 與 `deferred_development_costs` 沒有餘額。資產總計（`bs_total_assets`）不含這兩條線，停用科目（第 10.2 節）也擋不下自訂期初；2026-11-07 以核心實測，正式故事帶其中一個科目的期初 100,000 時，資產總計和負債及權益總計差 100,000。目前走不到：沒有範本寫這兩個科目，實驗室的故事也沒有期初。要帶期初之前先處理，要不要在核心擋下留給下一個動到核心的 PR。
+
+已知限制（列名）：116 條線中有 91 條的中文列名和 `teacher@1` 同字，只有 25 條改了（例如營業費用合計、財務成本、不動產、廠房及設備、本期所得稅負債、合約負債、權益）。現金流量表大多還是教材字，例如短期借款收入(+)（名詞的現行用語：短期借款增加）、發行股票收入(+)（現金增資）、支付股息(-)（發放現金股利）、放貸支出(-)（資金貸與）、營業活動的現金流量（營業活動之現金流量）；資產負債表的預付費用（預付款項）也是。逐字比對有 51 條和名詞的 `currentTwLabel` 不同，其中不少只是括號補述或 (+)(-) 的寫法差異；可見的列中有 34 條仍用教材字（列名和名詞的名稱相同），而名詞另有不同的現行用語，[05 多語系](05-i18n.md) 第 12.3 節與 M4b 回報的「34 列」就是這個數。另外「設立費」（`is_organisation_costs_expense`）不在這些比對裡：名詞 `tm_hz08w4k5` 的 `currentTwLabel` 是 null，而 [12 術語表](12-glossary.md) 標的現行用語是開辦費（`accounts.json` 的別名也有開辦費、開辦費用）。目前沒有測試比對版面與名詞的用語。
+
+正式故事的差距：下表是對正式故事（老師的情境與金額，D2）18 筆的推算（推論，待老師的 Excel 核對【待確認 T33】；2026-11-07 以核心重播正式故事核對，五列都相符），只用來說明「換政策會改變金額」，不是範例資料，也不寫進 repo 的測試；所得稅兩邊都沿用故事設定的金額【待確認 T10】。
 
 | 指標 | `teacher@1` | `ifrs@1` | 差額 |
 | --- | --- | --- | --- |
@@ -1138,13 +1169,13 @@ M1 只實作 `teacher@1`。schema 保留 `policyWhen` 與替代值，讓老師�
 | 投資活動現金流量 | -800,000 | -500,000 | +300,000 |
 | 期末現金 | 950,000 | 950,000 | 0 |
 
-黃金測試的期望值（自編青檸文具社故事第 18 步之後，數字由本文件手算，實作時以計算表逐筆核對）：設立費 150,000 改為當期費用，少記攤銷 30,000，所以稅前淨利淨減 120,000；付出的 150,000 由投資活動移到營業活動，期末現金不變。
+黃金測試的期望值（自編青檸文具社故事第 18 步之後，數字由本文件手算，和 `packages/core/test/golden/lime-leaf.teacher@1.json`、`lime-leaf.ifrs@1.json` 第 18 步的值逐列相同）：設立費 150,000 改為當期費用，少記攤銷 30,000，所以稅前淨利淨減 120,000；付出的 150,000 由投資活動移到營業活動，期末現金不變。所得稅兩邊都用故事設定的金額（`incomeTax: cash_direct`，T10），沒有計算遞延所得稅（IAS 12），所以本期淨利與資產總計的差額等於稅前差額，這是模型的簡化：稅務上的處理和帳面不同時，帳面費用化會產生暫時性差異，真正的 IFRS 差額不會剛好相等。前面正式故事的表同樣如此，有效稅率的分母（稅前淨利）在 IFRS 對照下也跟著變。這一段只是揭露，不改 T10 的決定，也不改數字。
 
 | 項目 | `teacher@1` | `ifrs@1` | 差額 |
 | --- | --- | --- | --- |
-| 銷管費用小計（`ifrs@1` 列名：營業費用） | 836,000 | 986,000 | +150,000 |
+| 銷管費用小計（`ifrs@1` 列名：營業費用合計） | 836,000 | 986,000 | +150,000 |
 | 營業利益 | 2,864,000 | 2,714,000 | -150,000 |
-| 營業外支出小計 | 57,000 | 27,000 | -30,000 |
+| 營業外支出小計（`ifrs@1` 列名：營業外費損合計） | 57,000 | 27,000 | -30,000 |
 | 稅前淨利 | 2,807,000 | 2,687,000 | -120,000 |
 | 本期淨利 | 2,247,000 | 2,127,000 | -120,000 |
 | 資產總計（L29） | 4,647,000 | 4,527,000 | -120,000 |
@@ -1947,7 +1978,7 @@ interface QuestionBase {
   supersededBy?: string;            // 只用於發布後的合併
 }
 
-interface ChoiceOption { id: string; text: LocalizedText; feedback: LocalizedText; misconceptionId?: string }  // id 是 'o_' 加 4 碼
+interface ChoiceOption { id: string; text: LocalizedText; short?: LocalizedText; feedback: LocalizedText; misconceptionId?: string; pin?: 'last' }  // id 是 'o_' 加 4 碼；short 給 {{option:o_xxxx}} 引用；pin 讓「以上皆是」這類選項固定在最後，一題最多一個（03 第 2.8 節）
 
 interface SingleChoiceQuestion extends QuestionBase {
   type: 'single_choice' | 'pick_statement' | 'ratio_interpret';
@@ -1994,6 +2025,7 @@ interface TransactionEffectQuestion extends QuestionBase {
   prompt: LocalizedText;
   scenario: Scenario;               // targets 可以是 direction 目標（用 choices 作答；指標 target 另有 becomes_computable、becomes_na），也可以是 delta 或 value 目標（輸入數字作答）
   choices?: Direction[];            // 只適用於 direction 目標，有 direction 目標時必填，例如 ['up', 'down', 'unchanged']
+  scoring?: 'allOrNothing' | 'perTarget';  // 選填，預設全部 target 都對才算對（03 第 2.4 節）
 }
 interface FiveStepFillQuestion extends QuestionBase {
   type: 'five_step_fill';
@@ -2935,7 +2967,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 }
 ```
 
-核對：自編故事第 12 步之後短期借款餘額是第 8 步借入的 900,000，現金 4,214,000 足夠支付 927,000，前置條件成立。`expectedEntries` 是核心依科目表順序輸出的（現金在前），比對不看順序。這個範本沒有 `entryQuestionBlockedBy`，所以可以出分錄題；若改用第 17 筆的 `tpl.amortise_org_costs`，validator 會因為它帶 `entryQuestionBlockedBy: ["T04", "T05"]` 而拒絕。`accountChoices` 另外放了兩個不相關的科目當干擾；學生若輸入別名（例如「利息費用」），會先解析成 `interest_expense` 再比對。
+核對：自編故事第 12 步之後短期借款餘額是第 8 步借入的 900,000，現金 4,214,000 足夠支付 927,000，前置條件成立。`expectedEntries` 是核心依科目表順序輸出的（現金在前），比對不看順序。這個範本沒有 `entryQuestionBlockedBy`，所以可以出分錄題；2026-10-23 起沒有範本帶這個欄位（第 7 節），日後有範本帶上時，validator 會拒絕用它出分錄題。`accountChoices` 另外放了兩個不相關的科目當干擾；學生若輸入別名（例如「利息費用」），會先解析成 `interest_expense` 再比對。
 
 ## 18. 測試策略
 
@@ -2943,7 +2975,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 | --- | --- | --- | --- | --- |
 | 單元測試 | 金額 helper、運算式 parser、型別檢查、求值器、每個範本（含 `policyWhen` 在兩套政策下的篩選）、每個版面列規則、每個指標版本、狀態判定、每個錯誤碼、追蹤樹、T 字帳、分錄比對（別名解析、合併同科目同方向的行、多重集合比對）。已決定（2026-10-20）：判分測試跟著判分移到 `packages/quiz`：多正解題判分（兩種 `scoringMode`）、數字題比對（含 N/A 與位數規則）、分錄題計分的判分結果與回饋（呼叫 `core` 的分錄比對），判分規則不變 | 會計：`packages/core/test/**/*.test.ts`；判分：`packages/quiz/test/**/*.test.ts` | 每次 CI | 是 |
 | 性質測試 | 隨機產生合法的事件序列，檢查不變式（下表），`teacher@1` 與 `ifrs@1` 都跑；另對正式故事（老師的金額，D2）逐步重播，只斷言不變式（每一步都能過帳、四個勾稽點差額為 0、間接法等於直接法、追蹤加總），不寫任何期望值 | `*.property.test.ts`，用 fast-check 與 `@fast-check/vitest`（版本見 09） | 每次 CI | 是 |
-| 黃金測試 | 自編青檸文具社 18 步的完整三表、23 項指標與勾稽結果，`teacher@1` 與 `ifrs@1` 各一份（第 10.3 節）；自訂期初情境；狀態邊界（na、zero、not_meaningful） | `*.golden.test.ts`，期望值放 `test/golden/*.json` | 每次 CI | 是 |
+| 黃金測試 | 自編青檸文具社 18 步的完整三表、23 項指標與勾稽結果，`teacher@1` 與 `ifrs@1` 各一份（第 10.3 節）；狀態邊界（na、zero、not_meaningful）。自訂期初的固定數字測試不在黃金資料裡：在 `scenario.test.ts` 與 `statements.test.ts`，期望值寫在測試內，只跑 `teacher@1` | `*.golden.test.ts`，期望值放 `test/golden/*.json` | 每次 CI | 是 |
 | 內容編譯測試 | 本文件與 fixtures 中的 JSON 範例通過 Zod 驗證與 `content:compile`；正式內容的 `multi_choice` 與 `journal_entry` 規則（第 14、16.2 節） | `tools/` | 每次 CI | 是 |
 | 本機老師 Excel 驗證 | 重播正式故事，對老師 Excel 情境 1 到 3 逐格比對 | `*.local.test.ts` | 只在本機 | 測試程式可進 repo（不寫入教材數字或文字）；期望值在執行時從本機的 `references/` 讀出，不進 repo |
 
@@ -2961,15 +2993,21 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 | 本筆變動 | 各步本筆變動逐列加總 ＝ 累計報表 |
 | 決定性 | 同一輸入跑兩次 deep equal；序列化再解析後結果相同 |
 | 指標狀態 | 狀態為 na 時分母為 0 或來源為 na；狀態為 zero 時分子精確為 0；連鎖規則成立 |
-| 追蹤 | 每個報表數字的追蹤樹（第 6.4 節）：樹根的值等於報表上的值；`formula` 節點等於子節點代入公式；其他節點等於科目層、子節點與現金行的合計；每個科目層的 `sources` 帶號金額加總等於 `amount`；每個 `SourceRef` 都指得到 `PostedStep.entries` 裡的一行 |
+| 追蹤 | 每個報表數字的追蹤樹（第 6.4 節）：樹根的值等於報表上的值；`formula` 節點等於子節點代入公式；其他節點等於科目層、子節點與現金行的合計；每個科目層的 `opening` 加 `sources` 帶號金額等於 `amount`；每個 `TraceSourceRef` 都指得到 `PostedStep.entries` 裡的一行 |
 | T 字帳 | 期初 ＋ 借方合計 － 貸方合計（依正常方向換算）＝ 期末 ＝ 該步的 `balancesAfter` |
 | 兩套政策 | 同一組事件與覆寫在 `teacher@1` 與 `ifrs@1` 下都過帳成功時，每一步的現金餘額相同（兩者只差認列與分類，不差現金）；兩套各自滿足上面所有不變式 |
 
 事件產生器採 model-based 的方式：每一步先讀目前帳上狀態，只在前置條件成立的範圍內產生參數（例如還款不超過借款餘額），避免大量無效樣本。
 
+目前的涵蓋範圍（2026-11-07 逐項核對）：「兩套政策」的逐步現金比對只有固定故事（青檸文具社與正式故事），沒有帶覆寫；隨機性質測試在 `ifrs@1` 下獨立產生事件，各自檢查不變式，沒有和 `teacher@1` 逐步比現金。隨機亂填金額的餘額規則測試與三表的自訂期初只跑 `teacher@1`（追蹤的性質測試在 `ifrs@1` 有帶期初）；指標狀態沒有隨機測試，只有單元測試與黃金資料固定的 23 項。上表是目標，這幾處還沒有隨機測試撐著。
+
 ### 18.2 黃金測試
 
-期望值由我們自己從零建立的計算表算出（不使用老師的檔案，也不寫入正式故事的金額，D2），在 PR 中附上計算過程，由人逐筆核對。黃金資料至少涵蓋：自編故事每一步的三表與 23 項指標，`teacher@1` 與 `ifrs@1` 各一份（M4b 加入 `ifrs@1`，第 18 步的期望值見第 10.3 節）；自編故事第 7 步營業毛利的追蹤樹（第 6.4 節）；「毛利為 0、營業利益為負」使 DOL 為 not_meaningful 的步驟；流動負債為 0 使流動比率為 na 的步驟；股利不為 0 的自訂情境（驗證現金再投資比率，也就是 Excel 格 D17 的分子修正）；盤點後金額低於帳上的盤損情境。
+期望值由我自己從零建立的計算表算出（不使用老師的檔案，也不寫入正式故事的金額，D2）：一支獨立的腳本只用加減法逐步累計餘額與現金標籤，再依第 11 節每一列的規則組成三表、依第 12 節的公式與狀態順序算指標，不是由核心 snapshot 產生；同一支腳本以 `teacher@1` 跑時必須和 `lime-leaf.teacher@1.json` 完全相同。
+
+已知限制：計算表腳本沒有進 repo，PR 113 也只寫了結論，沒有附逐步的計算過程，所以 repo 裡看不出黃金資料確實獨立於核心。目前有獨立依據的只有兩處：`ifrs@1` 第 18 步的十列對得上第 10.3 節的手算表；`ifrs@1` 前 4 步和 `teacher@1` 的黃金資料相同（設立費在第 5 步，`lime-leaf-ifrs.golden.test.ts` 有斷言）。原本的寫法是「在 PR 中附上計算過程，由人逐筆核對」，這一點沒有做到。
+
+黃金資料涵蓋：自編故事每一步的三表與 23 項指標，`teacher@1` 與 `ifrs@1` 各一份（PR 113 加入 `ifrs@1`，第 18 步的期望值見第 10.3 節）。固定數字的測試另外涵蓋：自編故事第 7 步營業毛利的追蹤樹（第 6.4 節，在 `trace.test.ts`）；「毛利為 0、營業利益為負」使 DOL 為 not_meaningful 的步驟；流動負債為 0 使流動比率為 na 的步驟；股利不為 0 的自訂情境（驗證現金再投資比率，也就是 Excel 格 D17 的分子修正）；盤點後金額低於帳上的盤損情境（後四項在 `lime-leaf.golden.test.ts`）。
 
 ### 18.3 本機老師 Excel 驗證
 
@@ -2981,13 +3019,13 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 
 ## 19. 與其他文件的介面
 
-- 03 模組：實驗室的每一步使用 `PostedStep`、`effects`、`buildStatements`（累計與本筆變動）、`fiveStepCheck`；「看分錄與 T 字帳」使用 `PostedStep.entries` 與 `buildTAccounts`（D1 (b)）；追蹤畫面使用 `traceLine`（D10(c) A，M4b）；IFRS 對照以 `ifrs@1` 重播（D10(f)，M4b）；單獨練習以 `scenario.opening` 指到前一步（D10(b)）；預測題直接重用交易影響題的 `scenario` 與求解器。
+- 03 模組：實驗室的每一步使用 `PostedStep`、`effects`、`buildStatements`（累計與本筆變動）、`fiveStepCheck`；「看分錄與 T 字帳」使用 `PostedStep.entries` 與 `buildTAccounts`（D1 (b)）；追蹤畫面使用 `traceLine`（D10(c) A，M4b 已完成）；IFRS 對照以 `ifrs@1` 重播（D10(f)，M4b 已完成）；單獨練習以 `scenario.opening` 指到前一步（D10(b)）；預測題直接重用交易影響題的 `scenario` 與求解器。
 - 05 多語系：佔位符文法、數字格式化（含 `signDisplay`）、作答正規化、缺翻譯退回。
 - 06 PWA：本機只存題目 ID、rev、作答與實驗室參數覆寫（`(stepId, eventId, param)`，第 9.2 節）；報表一律重算。
 - 08 題庫：Zod schema、ID 前綴、題型代號與欄位名稱、生命週期、`rev` 與 `revKind`、`published.lock.json`、驗證清單、原創政策。本文件第 7、9、15、16、17 節的欄位名稱與 08 第 3、4 節一致（snake_case 題型代號、`prompt`、`vars`、`correctOptionId`、`multi_choice` 的 `correctOptionIds` 與 `scoringMode`、`labRef` 的 `{ story, step }`、`tpl.` 範本 ID、`story_` 與 `st_` 的 ID、`teacher@1`、只有 draft、published、retired 三種狀態）；`journal_entry` 的章節限制對應 08 的 `ans.journalScope`；仍待同步的少數欄位見第 20 節。
 - 09 技術：`packages/core`、`packages/quiz`、`packages/content-schema` 與 `packages/i18n` 的位置與依賴方向、測試工具版本、JSON Schema 產生方式。
 - 10 里程碑：M1 的範圍與兩級完成標準（追蹤樹與 `policyWhen` 欄位在 M1 就位）；M2 的 `multi_choice` 與題型凍結（`journal_entry` 的 schema 一併凍結，延伸章的題目與元件時程以 10 為準）；M4a（故事、動畫、預測、自由實驗、勾稽練習）與 M4b（完整公式樹追蹤、`ifrs@1` 政策與版面、IFRS 黃金測試）的範圍。
-- 12 術語表：名詞資料與科目表的 `termRef` 是同一份來源；D13 A 的顯示字與別名、D11 的英式拼字與 `enUsVariant`、`ifrs@1` 版面的列名與 `organisation_costs_expense` 的名詞，以 12 為準。
+- 12 術語表：名詞資料與科目表的 `termRef` 是同一份來源；D13 A 的顯示字與別名、D11 的英式拼字與 `enUsVariant`，以 12 為準。`ifrs@1` 版面的列名以 `packages/core/data/layouts/ifrs@1.json` 為準，`organisation_costs_expense` 的顯示字以 `packages/core/data/accounts.json` 與名詞 `tm_hz08w4k5` 為準，12 沒有另外列。
 - 13、14：本文件引用的 T、W、D 編號。
 
 ## 20. 建議新增的待確認
@@ -3024,15 +3062,15 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 
 仍待同步的項目：
 
-第 7 到 12 項中，除了第 9 項，都是 [03 模組](03-modules.md) 文末「跨文件待同步」提出、本文件與 08 的 schema 還沒有的欄位。是否採用在 M0b 建立內容 schema 時一併定案；定案前本文件的型別維持原樣。第 13 項以後是 2026-10-20 決定 D 系列之後，本文件為了落實決定而新增、需要 08 或 12 對齊的欄位；決定本身不必再議，只需同步寫法。
+第 7 到 12 項中，除了第 9 項，都是 [03 模組](03-modules.md) 文末「跨文件待同步」提出的欄位。第 13 項以後是 2026-10-20 決定 D 系列之後，本文件為了落實決定而新增、需要 08 或 12 對齊的欄位；決定本身不必再議，只需同步寫法。編號不重排，03 用這些編號引用；2026-11-07 逐項對過 schema，第 8、10、12、13、16 項已同步，第 7、9 項已定案，真正還沒做的是第 11 項，第 14、15 項維持原樣。
 
-7. 指標方向多一個值 `stays_na`（前後都是 N/A）：03 第 3.6 節的預測題使用；若採用，要加進第 15.1 節的 `Direction`。
-8. 交易影響題的計分模式 `scoring: 'allOrNothing' | 'perTarget'`（03 第 2.4、4.2 節，預設 `allOrNothing`）：若採用，要加進第 16.2 節的 `TransactionEffectQuestion` 與 08 第 3.6 節。
-9. 名詞的 `definition` 在 08 第 3.7 節與本文件第 16.3 節都是必填；12 第 16 節指出模板列名、別名性質的列只需要用語欄位。這一點在 M0b 建立內容 schema 時定案；12 第 16 節的欄位對應以單一 Term（本文件第 16.3 節、08 第 2.1 節）為準。
-10. 選項的簡短文字 `short` 與固定位置 `pin: "last"`（03 第 2.8 節）：若採用，要加進第 16.2 節的 `ChoiceOption` 與 08 第 3.6 節的選項欄位。
-11. 分類題的事件卡（03 第 2.5 節）：卡片可以是「範本加參數」的交易事件，正解依範本現金行的活動標籤推導；若採用，第 16.2 節分類題的 `items` 與 08 第 3.6 節要另加對應欄位。
-12. 故事層級的章節分組 `chapters: [{ id, title, stepIds }]`（03 第 3.2 節）：若採用，要加進第 9.1 節的 `Story` 與 08 第 3.9 節。
-13. 故事的 `origin: 'teacher' | 'original'`（第 9.1 節，D2、D6）：用來決定授權標示（老師的情境與金額不在 CC 授權內）與 `checkpoints` 是否允許；`teacher` 時顯示「經陳彥宏老師授權使用」並排除在 CC BY-SA 之外。08 第 3.9 節的 Story 欄位用同一個 `origin` 欄位同步，不另設 `rights` 欄位。
+7. 指標方向多一個值 `stays_na`（前後都是 N/A）：03 第 3.6 節的預測題使用。已定案（2026-11-07）：實驗室自用，只在 `apps/web/src/features/lab/predict.ts`，不進第 15.1 節的 `Direction` 與題目 schema。
+8. 交易影響題的計分模式 `scoring: 'allOrNothing' | 'perTarget'`（03 第 2.4、4.2 節，預設 `allOrNothing`）：已同步，在 `packages/content-schema/src/question.ts` 與第 16.2 節的 `TransactionEffectQuestion`。
+9. 名詞的 `definition` 在 08 第 3.7 節與本文件第 16.3 節都是必填；12 第 16 節指出模板列名、別名性質的列只需要用語欄位。已定案：schema 的 `definition` 必填（`packages/content-schema/src/term.ts`）；12 第 16 節的欄位對應以單一 Term（本文件第 16.3 節、08 第 2.1 節）為準。
+10. 選項的簡短文字 `short` 與固定位置 `pin: "last"`（03 第 2.8 節）：已同步，在 `packages/content-schema/src/question.ts`、第 16.2 節的 `ChoiceOption` 與 08 第 3.6 節的選項欄位。
+11. 分類題的事件卡（03 第 2.5 節）：卡片可以是「範本加參數」的交易事件，正解依範本現金行的活動標籤推導。還沒做，schema 沒有這種卡片，也沒有題目使用；要做時，第 16.2 節分類題的 `items` 與 08 第 3.6 節要另加對應欄位。
+12. 故事層級的章節分組 `chapters: [{ id, title, stepIds }]`（03 第 3.2 節）：已同步（M4a，2026-11-01），在 `packages/content-schema/src/story.ts`、第 9.1 節的 `Story` 與 08 第 3.9 節。
+13. 故事的 `origin: 'teacher' | 'original'`（第 9.1 節，D2、D6）：用來決定授權標示（老師的情境與金額不在 CC 授權內）與 `checkpoints` 是否允許；`teacher` 時顯示「經陳彥宏老師授權使用」並排除在 CC BY-SA 之外。已同步：`packages/content-schema/src/story.ts` 的 `origin` 必填，08 第 3.9 節用同一個欄位，不另設 `rights` 欄位。
 14. `multi_choice` 的驗證細節（第 16.2 節）：選項 3 到 5 個且至少一個不是正解、`correctOptionIds` 排序後列入 `answerHash`；08 第 3.6 節的題型表、第 5.5 節的答案驗證與第 4.4 節的 `answerHash` 欄位要同步。
 15. `journal_entry` 的 `scenario.targets` 可為空陣列，編譯結果的正解放在 `compiled.expectedEntries`（第 17.11 節）；08 第 3.6 節與發布快照的欄位要同步。
-16. `ifrs@1` 用到的延伸科目 `organisation_costs_expense` 與 `ifrs@1` 版面的列名（第 4.5、10.3 節）：12 要補對應的名詞與英文名稱。
+16. `ifrs@1` 用到的延伸科目 `organisation_costs_expense` 與 `ifrs@1` 版面的列名（第 4.5、10.3 節）：已同步（2026-11-07）。名詞與英文名稱在 `tm_hz08w4k5` 與 `accounts.json`，列名在 `ifrs@1.json`（第 19 節）；原本的「12 要補對應的名詞與英文名稱」不做，避免同一份列名有兩個來源。

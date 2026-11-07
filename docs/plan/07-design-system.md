@@ -141,6 +141,7 @@ token 的名稱與角色維持本節原本的定義：`--ll-bg`、`--ll-surface`
 | 指標從 N/A 變成可計算 | 圖示 `Sparkle` | `可計算了` | 薄荷（深色綠） | 「由無法計算變為 1.25 倍」 |
 
 - 正負號與千分位由 [05 多語系](05-i18n.md) 的格式器輸出，元件不自己拼字串。負號是 Intl 在 zh-TW 與 en 輸出的一般減號（U+002D），與報表、輸入框一致（iOS 實機的實際輸出【待實測 V14】）。一般數字一律用 `signDisplay: 'negative'`；變動標籤需要「+」，改用 05 第 10 節的變動值格式選項 `|sign`（`signDisplay: 'exceptZero'`，先把 -0 改成 0，四捨五入後為 0 時不帶正負號）。這是 04 第 12.6 節規則的唯一例外。
+- 實驗室的增減金額（恆等式天平、報表的本筆變動與列標記、來源步驟的金額）同樣用 change tokens，不用 success、danger（已決定 2026-11-07，[14 待確認](14-open-questions.md) 第 5.2 節）：報表變動列的底是 accent-tint，danger-ink 在莓果 4.34、紅酒 4.37，未達 4.5（[16 主題](16-themes.md) 第 6 節）。
 - ▲▼ 以圖示或字元呈現（二擇一，全站一致），一律 `aria-hidden="true"`，旁邊的文字或 `aria-label` 才是給輔助科技讀的內容（第 8 節）。
 - **為什麼不用紅綠**：台灣股市習慣紅漲綠跌，與西方相反，兩種直覺都有人；紅綠也是最常見的色覺差異組合；而且在會計裡「增加」不代表好（費用、負債增加都可能是壞消息）。所以改用中性的藍與赭色，在紅綠色覺差異下仍能靠藍黃軸區分，再加上符號與文字。
 
@@ -818,18 +819,24 @@ M3 的元件已實作（2026-10-26）：題型元件 FiveStepFill、RatioNumeric
 | ImpactPicker | 交易影響（`transaction_effect`；增加、減少、不變，題目需要時另有變得可計算、變成 N/A，見 08 第 3.6 節） | 單列、多列 | 否 | 每列一組 radio | M2 |
 | NumberInput | 金額與指標輸入（`ratio_numeric`、`five_step_fill`） | 含 N/A 按鈕、± 按鈕 | 否 | 16px 以上字級、`inputmode` | M2 |
 | FeedbackPanel | 答題回饋 | 答對、答錯、取捨題的解說觀點；多正解題標出全部正確答案（9.1） | 否 | 按「確認答案」後焦點移到回饋區標題，不另用 `aria-live` 重複播報（8.3） | M2 |
-| NoteTag | 小型註記標籤，一律有文字，可點開名詞卡或說明 | 「舊稱」（W07）、「簡化」（W14）、「單期近似」（W12）、「非 IFRS 項目」／"Not an IFRS line item"（D11，中英介面都加，字串在 `packages/web-ui` 的 catalog，訊息 ID 見 05）、「IFRS 對照，不計分」（D10(f)）、「老師觀點」（W15，能否以老師名義標示【待確認 T37】） | 否 | 標籤是按鈕時有完整的可讀名稱（例如 "Not an IFRS line item: Ordinary profit. Show how IFRS treats this."，見 05） | M2 |
+| NoteTag | 小型註記標籤，一律有文字；給了 `onClick` 才是按鈕，可點開名詞卡或說明（實驗室報表列上的「非 IFRS 項目」目前是純文字，05 第 12.1 節） | 「舊稱」（W07）、「簡化」（W14）、「單期近似」（W12）、「非 IFRS 項目」／"Not an IFRS line item"（D11，中英介面都加，字串在 `packages/web-ui` 的 catalog，訊息 ID 見 05）、「IFRS 對照，不計分」（D10(f)）、「老師觀點」（W15，能否以老師名義標示【待確認 T37】） | 否 | 標籤是按鈕時有完整的可讀名稱（例如 "Not an IFRS line item: Ordinary profit. Show how IFRS treats this."，見 05） | M2 |
 | Timer（實作名稱 TimerDisplay） | 計時 | 關閉、進行、暫停；全站設定或「這一關計時」單次開啟；寬鬆加倍 | 否 | 可暫停、文字時間；剩 1 分鐘與時間到的提醒可在設定關閉；切到背景或離開作答畫面自動暫停 | M3（已實作） |
-| StatementTable | 三表 | 累計、本筆變動（W06 並列）；教材版面（中英都用，D11）、IFRS 對照（M4b，D10(f)）；非 IFRS 的列加 NoteTag | 否 | 真正的 table | M4a（IFRS 對照在 M4b） |
-| EquationBalance | 會計恆等式天平 | 平衡、失衡（自由實驗擋下時） | 否 | 文字結論 | M4a |
+| StatementTable | 三表（`apps/web/src/features/lab/`） | 累計、本筆變動（W06 並列）；教材版面（中英都用，D11）、IFRS 對照（D10(f)，標題加「（IFRS 對照）」）；非 IFRS 的列加 NoteTag；IFRS 對照時差異列加「與教材口徑不同」的標記（LabTag）與「教材口徑：x」的小字；給了 `onTrace` 時，交易後的金額與本筆變動的差額是 ValueButton | 否 | 真正的 table | M4a、M4b（已實作） |
+| EquationBalance（實作名稱 BalanceScale） | 會計恆等式天平 | 平衡、失衡（自由實驗擋下時） | 否 | 文字結論 | M4a |
 | CheckLights | 四個勾稽燈號 | 通過、未通過、尚未計算 | 否 | 燈號有文字與圖示 | M4a |
-| RatioCard | 指標卡 | ok、zero、na、not_meaningful（見 04） | 否 | 狀態文字，N/A 與 0 分開說明 | M4a |
-| TransactionCard | 交易卡 | 故事步驟、自由實驗；步驟上的「單獨練習」入口（D10(b)） | 否 | 標題層級 | M4a |
-| JournalLayer | 實驗室「看分錄與 T 字帳」的可展開層（D1；D10(c) 的來源分錄也放在這一層） | 收合（預設）、展開，展開狀態會記住 | 否 | 展開按鈕用 `aria-expanded`；T 字帳是有標題的表格 | M4a |
-| TraceTree | 追蹤：一層一層展開公式，最底層列出來源步驟（D10(c)） | 收合、展開到某一層 | 否 | 樹狀結構用巢狀清單與按鈕，`aria-expanded`；每層有文字公式 | M4b |
-| PolicyToggle | 教材口徑與 IFRS 對照的切換（D10(f)） | 教材、IFRS 對照 | 否 | 分段控制的 radio 語意；切到 IFRS 時頁面頂部顯示 NoteTag「IFRS 對照，不計分」 | M4b |
-| StepController | 實驗室的上一步、下一步 | 浮動 | 是；Safari 17 以下改實色（5.3） | 一般按鈕 | M4a |
-| StakeholderCard | 利害關係人觀點 | 正面、反面、建議 | 否 | 標題層級 | M4a |
+| RatioCard（在 `RatioList.tsx` 裡） | 指標卡 | ok、zero、na、not_meaningful（見 04）；交易後的值是 ValueButton（N/A 時不是按鈕）；IFRS 對照時值不同的指標加「教材口徑：x」的小字 | 否 | 狀態文字，N/A 與 0 分開說明 | M4a、M4b（已實作） |
+| TransactionCard | 交易卡 | 故事步驟、自由實驗；步驟上的「單獨練習」入口（D10(b)）；這一步的範本在 IFRS 下分錄不同時加「IFRS 下的處理不同」標記（敘述的金額兩種口徑都用教材金額，14 第 5.2 節） | 否 | 標題層級 | M4a、M4b（已實作） |
+| JournalLayer（沒有獨立元件，是 EffectsList 裡的 Disclosure） | 實驗室「看分錄與 T 字帳」的可展開層（D1；來源面板每個來源步驟另有自己的「看分錄」層，D10(c)） | 收合（預設）、展開，展開狀態會記住 | 否 | 展開按鈕用 `aria-expanded`；T 字帳是有標題的表格 | M4a |
+| ValueButton（`packages/web-ui`，樣式 `.ll-valuebtn` 在 `apps/web` 的 `lab.css`） | 可追蹤的數字：報表格子、指標卡與恆等式摘要裡的金額本身是按鈕，按下開來源面板 | 行內例外（WCAG 2.5.8，和行內名詞 chip 一樣）：不撐開行高、不加底線，用虛線下框表示可點 | 否 | 可讀名稱是完整的一句（例如「營業利益 48,000，看這個數字從哪裡來」），數字本身 `aria-hidden`，不唸兩次 | M4b（已實作） |
+| TracePanel | 來源面板「這個數字從哪裡來」（D10(c)）：用 Sheet（`.ll-sheet--trace`），由上到下是往下鑽之後的路徑、跨表對應（只有跨表數字才有，含「在報表上標出」）、公式（TraceTree，指標是分子與分母）、來源步驟（TraceSources） | 報表列、指標；IFRS 對照時副標前加「IFRS 對照，不計分」（LabTag）；第一次點數字才載入（`lazy-trace.ts`），失敗時由 TraceLoadToast 提示 | 否 | 對話框；關閉後焦點回到開啟它的數字；往下鑽或按路徑後焦點移到新的聚焦列，並由面板的 live region 播報一句 | M4b（已實作） |
+| TraceTree | 來源面板的公式樹：一層一層拆開公式，最底層列出來源步驟（D10(c)） | 第一層預設展開；medium 以上最多同時原地縮排 3 層（`NEST_LIMIT`），更深或 compact 改成往下鑽，頂端的路徑可以回去；0 元而且沒有來源的子節點收在「其他 0 元的項目」 | 否 | 巢狀清單加按鈕，不用 `role="tree"`（Tab 在按鈕間移動，Enter 或 Space 展開）；原地展開的按鈕有 `aria-expanded`；按鈕的可讀名稱以畫面上的字開頭（WCAG 2.5.3）；每層有文字公式 | M4b（已實作） |
+| TraceSources | 來源面板最底層：讓這個數字改變的每一步（步驟、方向、金額） | 每一筆下方有預設收合的「看分錄」；「開啟這一步」到實驗室的那一步（練習模式）；期初帶入 | 否 | `section` 加可讀名稱；增減金額用 change tokens（2.5 節），有 ▲▼ 符號 | M4b（已實作） |
+| TraceLoadToast | 來源面板或它要用的核心載入失敗時的提示 | 第一次給「再試一次」，重試仍失敗換成「重新載入」（WebKit 把失敗的動態 import 記在文件的模組表裡，再 import 不發請求，2026-11-07 實測）；不自己消失 | 否 | 放在頁面常駐的 ToastRegion 才會被播報；不搶焦點 | M4b（已實作） |
+| PolicyToggle | 教材口徑與 IFRS 對照的切換（D10(f)）：放在步驟頁的報表控制列、自由實驗報表區的標題旁、指標實驗室的版本切換旁；勾稽練習不放 | 教材、IFRS 對照 | 否 | Segmented 的 radio 語意，群組名稱「報表口徑」；切換時自己的 live region 播報一句（05 第 12.3 節）；「IFRS 對照，不計分」由 BasisBanner 顯示 | M4b（已實作） |
+| BasisBanner、BasisNote | 切到 IFRS 對照時的標示：BasisBanner 是不被捲走的一列（圖示加 NoteTag「IFRS 對照，不計分」）；BasisNote 緊接在下面，是差異標記的說明與準則版本，跟著內容捲走 | 步驟頁放在固定在上方的區塊裡，自由實驗的報表區與指標實驗室自己固定（`.ll-lab-basis--sticky`）；IFRS 算不下去時（`failed`）說明句留在固定列；`noCompare` 時不提差異標記 | 否 | 純文字，不搶焦點；切換時的播報在 PolicyToggle | M4b（已實作） |
+| LabTag | 實驗室自己的小標籤：「與教材口徑不同」（報表列）、「IFRS 下的處理不同」（交易卡）、「IFRS 對照，不計分」（來源面板副標、步驟完成卡）；外觀沿用 `.ll-notetag`，字串在第三層 `lab` catalog（最後一種沿用 NoteTag 那一句），不加進 web-ui 的 NoteTag | `diff`、`policy`、`ifrs` | 否 | 一律有文字；不是按鈕，不能點開名詞卡（M4b 的已知限制） | M4b（已實作） |
+| StepController（實作名稱 StageBar） | 實驗室的上一步、下一步 | 浮動 | 是；Safari 17 以下改實色（5.3） | 一般按鈕 | M4a |
+| StakeholderCard（沒有獨立元件，是步驟頁裡的清單 `.ll-lab-stakeholders`） | 利害關係人觀點 | 正面、反面、建議 | 否 | 標題層級 | M4a |
 | LabLink | 從題目跳到實驗室對應步驟 | 無 | 否 | 連結文字說明去處 | M5 |
 | Toast、Banner、HintBar | 更新提示、內建瀏覽器、Safari 分頁提示、備份提醒；HintBar 是地圖頁專用的單行提示條（M3） | 資訊、提醒、錯誤、收集（`kind="collect"`，取得徽章）；Banner 有標題、動作列、關閉鈕 | 預設否 | 事件型提示放在常駐的 `ToastRegion`（`role="status"`）；不搶焦點；焦點或滑鼠停在提示裡時暫停自動收起 | M2，M3 改版 |
 | InstallGuide | iOS 圖解教學 | Compact、Top／Bottom；iOS 17、18 只用 Top／Bottom | 否 | 每步有文字，插圖有替代文字 | M2 精簡、M3 完整（已實作，`/install/` 與安裝建議卡的展開圖解） |
@@ -907,7 +914,7 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 | `NavList`、`NavRow`、`NavCard` | 兩個以上的去處用 NavList 加 NavRow；單一大去處或一筆收集物（收藏的題目）用 NavCard | 列 56px（compact 44px）、36px 圖示方塊、標題 17/600、說明 15、右側箭頭；一個 NavList 最多兩種 tone（accent、neutral），需要注意的狀態只改右側的 Badge；每列只有一個可聚焦元素，`aside`（例如收藏卡的移除鈕）在連結外面；`current` 輸出 `aria-current` |
 | `Disclosure` | 所有 `<details>`（參考名詞、進階選項、iPhone 步驟、回饋的「其他選項」、地圖清單的章節） | 原生 `<details>`；summary 48px、右側箭頭展開轉 180 度；card 與 plain 兩種；可受控（搜尋命中時強制展開） |
 | `MenuButton`、`MenuItem` | 頁首的「更多」選單（地圖 HUD 的 compact 版） | `role="menu"`；方向鍵、Home、End、Esc 關閉並還焦點、Tab 離開時關閉；會開疊加層的項目焦點不回選單按鈕 |
-| `Sheet`、`ConfirmSheet` | 所有面板（關卡介紹、名詞卡、地圖疊加層）與確認（覆蓋進度） | 原生 `<dialog>`；頭部是選用的 lead、h2（開啟時的初始焦點）、副標與右上的關閉鈕；腳部不再放「關閉」按鈕，最後一顆是主動作；手機是滿寬的底部面板，768 以上置中 560 寬；關閉後焦點回到 `returnFocusTo` |
+| `Sheet`、`ConfirmSheet` | 所有面板（關卡介紹、名詞卡、地圖疊加層）與確認（覆蓋進度） | 原生 `<dialog>`；頭部是選用的 lead、h2（開啟時的初始焦點）、副標與右上的關閉鈕；腳部不再放「關閉」按鈕，最後一顆是主動作；手機是滿寬的底部面板，768 以上置中 560 寬（來源面板 `.ll-sheet--trace` 是 640 寬，放得下巢狀的樹與金額欄，第 9 節的 TracePanel）；關閉後焦點回到 `returnFocusTo` |
 | `GlossaryItem`、`GlossaryGrid`、`TermPill` | 名詞圖鑑的收集卡與參考名詞膠囊 | 依格子本身的寬度排欄（每張至少 264px：375 一欄、600 到 1023 兩欄、寬版三欄）；未收進是虛線空位，已收進右上角是金色印章（第一次出現時蓋章一次）；徽記：科目類用要素的淡底與圖示，其他類別用中性底加類別圖示 |
 | `TextLink` | 只用在句子裡提到的頁面 | 強調墨色加半透明底線（中文 0.16em、英文 0.24em）；錯誤與危險區塊裡不用（改 Button sm）；漏網的裸 `<a>` 會套到同一個外觀當保底，但 E2E 要求畫面上沒有任何元素套到它 |
 | `SearchField`、`.ll-input`、`FieldError` | 搜尋框、文字欄位與錯誤 | 48px；搜尋框有字時右側「清除搜尋」；注音組字中不回呼，父層晚一步回傳的值不蓋掉後來打的字 |
@@ -973,7 +980,7 @@ M0a 實測後補充（2026-10-21，iOS 17.0 Simulator；已採用，2026-10-23 �
 
 - 第二人稱（you），plain English，短句；介面標籤用 sentence case（只有第一個字大寫）。
 - 會計術語用 IFRS 英文並經由名詞參照帶出（見 12）。已決定（D11，2026-10-20）：拼字全站用英式，與 IFRS 原文一致（例如 amortisation、organisation、analyse、colour），美式拼法只列為搜尋別名；日期格式也跟英式（日、月、年的順序，例如 5 November 2026，格式器設定以 05 為準）。介面字串同樣用英式拼字。
-- 英文介面的報表也用教材版面（D11），IFRS 沒有或禁止的列加 NoteTag「Not an IFRS line item」，按下後開啟名詞卡的「Under IFRS」段落（見 05）；切到 IFRS 對照時標示「IFRS 對照，不計分」（英文介面的對應文字放在翻譯檔，見 05）。
+- 英文介面的報表也用教材版面（D11），IFRS 沒有或禁止的列加 NoteTag「Not an IFRS line item」，IFRS 的處理由名詞卡的「Under IFRS」段落說明（見 05 第 12.1 節）；切到 IFRS 對照時標示「IFRS 對照，不計分」（英文介面的對應文字放在翻譯檔，見 05 第 12.3 節）。
 - 答錯時先肯定，再說明；不用 "Wrong!"、"Incorrect, try harder"。
 - **不使用 em dash 或 en dash**（這是我在需求中明確要求的，英文也一樣），用逗號、冒號、括號或拆句。
 - 不用行銷語（"best experience"、"supercharge"）。

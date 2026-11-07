@@ -61,6 +61,22 @@ export function sandboxStory(story: StorySnapshot, sandbox: Pick<LabSandbox, 'in
   return { ...story, steps: sandboxSteps(story, sandbox) };
 }
 
+/**
+ * 報表區這一刻的口徑。教材與 IFRS 各自重播，某一步只在其中一套被擋下時，那一套說明原因、另一套照常顯示（04 第 9 節的失敗路徑）：
+ * - teacher：教材口徑（沒開 IFRS 對照）
+ * - ifrs：IFRS 數字，有教材數字可比
+ * - ifrs_failed：開了 IFRS 對照但它算不下去，數字維持教材口徑
+ * - ifrs_only：教材算不下去（舊存檔才會發生）但 IFRS 算得出來：顯示 IFRS 數字，標示照舊、只是沒有差異標記
+ * - both_failed：兩套都算不下去，沒有報表
+ */
+export type SandboxBasis = 'teacher' | 'ifrs' | 'ifrs_failed' | 'ifrs_only' | 'both_failed';
+
+export function sandboxView<R extends { readonly ok: boolean }>(replay: R, replayIfrs: R | null): { readonly view: R; readonly basis: SandboxBasis } {
+  if (replayIfrs === null) return { view: replay, basis: 'teacher' };
+  if (replayIfrs.ok) return { view: replayIfrs, basis: replay.ok ? 'ifrs' : 'ifrs_only' };
+  return { view: replay, basis: replay.ok ? 'ifrs_failed' : 'both_failed' };
+}
+
 /** 新的 sandbox 狀態（從故事複製到某一步） */
 export function newSandbox(story: Pick<StorySnapshot, 'id' | 'rev'>, throughStep: string, updatedAt: string, id = 'sandbox-default'): LabSandbox {
   return {

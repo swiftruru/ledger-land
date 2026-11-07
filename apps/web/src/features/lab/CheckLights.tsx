@@ -107,9 +107,14 @@ export function ProfitLevels({ before, after, layout }: { before: Statements; af
     b: before.lines.get(id)?.value ?? null,
     a: after.lines.get(id)?.visible ? (after.lines.get(id)?.value ?? null) : null,
   }));
+  const shown = rows.filter((r) => r.a !== null);
   return (
     <table className="ll-mini-table ll-lab-levels">
-      <caption>{t({ id: 'lab.check.step1', message: '步驟①：五層利益', comment: '五層利益清單的標題' })}</caption>
+      <caption>
+        {shown.length < rows.length
+          ? t({ id: 'lab.check.step1Levels', message: '步驟①：各層利益', comment: '利益清單的標題：IFRS 對照沒有經常利益，不說五層' })
+          : t({ id: 'lab.check.step1', message: '步驟①：五層利益', comment: '五層利益清單的標題' })}
+      </caption>
       <thead>
         <tr>
           <th scope="col">
@@ -124,17 +129,15 @@ export function ProfitLevels({ before, after, layout }: { before: Statements; af
         </tr>
       </thead>
       <tbody>
-        {rows
-          .filter((r) => r.a !== null)
-          .map((r) => (
-            <tr key={r.id} className={`ll-mini-table__row${r.a !== r.b ? ' is-changed' : ''}`}>
-              <th scope="row" className="ll-mini-table__line ll-indent-0">
-                {lineLabel(r.id)}
-              </th>
-              <td className="ll-num ll-mini-table__value">{formatMoney(r.b ?? 0, locale)}</td>
-              <td className="ll-num ll-mini-table__value">{formatMoney(r.a ?? 0, locale)}</td>
-            </tr>
-          ))}
+        {shown.map((r) => (
+          <tr key={r.id} className={`ll-mini-table__row${r.a !== r.b ? ' is-changed' : ''}`}>
+            <th scope="row" className="ll-mini-table__line ll-indent-0">
+              {lineLabel(r.id)}
+            </th>
+            <td className="ll-num ll-mini-table__value">{formatMoney(r.b ?? 0, locale)}</td>
+            <td className="ll-num ll-mini-table__value">{formatMoney(r.a ?? 0, locale)}</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
