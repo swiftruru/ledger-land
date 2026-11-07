@@ -141,9 +141,11 @@ describe('IFRS 對照（03 第 3.13 節）', () => {
     expect(value.step(0).after.statements.income_statement.some((r) => r.id === 'is_ordinary_income')).toBe(false);
     expect(teacher.value.step(0).after.statements.income_statement.some((r) => r.id === 'is_ordinary_income')).toBe(true);
     // 每套口徑的 context 整個 App 共用一份；預設是教材
-    expect(replayLab(asCoreStory(snapshot), [], 'ifrs@1').value?.ctx).toBe(value.ctx);
+    const again = replayLab(asCoreStory(snapshot), [], 'ifrs@1');
+    expect(again.ok && again.value.ctx).toBe(value.ctx);
     expect(teacher.value.policyId).toBe('teacher@1');
-    expect(teacher.value.ctx).toBe(replayLab(asCoreStory(snapshot)).value?.ctx);
+    const teacherAgain = replayLab(asCoreStory(snapshot));
+    expect(teacherAgain.ok && teacherAgain.value.ctx).toBe(teacher.value.ctx);
   });
 
   it('每一步的三表都等於直接用 ifrs@1 的 context 呼叫 buildStatements；五步驟相符而且 ordinaryIncome 是 null', () => {
