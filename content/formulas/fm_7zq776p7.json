@@ -1,0 +1,43 @@
+{
+  "id": "fm_7zq776p7",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_bkqw8c59",
+  "ratioRef": "pretax_to_paid_in_capital",
+  "formula": {
+    "zh-TW": "稅前淨利 ÷ 股本",
+    "en": "Profit before tax ÷ share capital"
+  },
+  "components": [
+    {
+      "term": "tm_z971merj",
+      "meaning": {
+        "zh-TW": "繳所得稅之前的利潤：本業的營業利益加上利息、投資收益這些業外收支的淨額。用稅前的數字，是為了不受各公司稅率不同的影響。",
+        "en": "Profit before income tax: operating profit plus the net of non-operating items such as interest and investment income. A pre-tax figure keeps differences in tax rates out of the comparison."
+      }
+    },
+    {
+      "term": "tm_5e3py55a",
+      "meaning": {
+        "zh-TW": "股東依面額投入的那一份錢，也就是實收資本額，不含資本公積和歷年留下的盈餘；它代表公司登記的「本錢」有多大。",
+        "en": "The money the owners paid in at par value, that is, paid-in capital, excluding capital surplus and profits kept over the years; it represents the size of the company’s registered ‘stake’."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家工業閥件廠的股本 {{money:1000000}}，本期稅前淨利 {{money:280000}}：{{money:280000}} ÷ {{money:1000000}} ＝ {{percent:0.28|digits=0}}。同一家公司的營業利益是 {{money:240000}}，營業利益佔實收資本比率 {{percent:0.24|digits=0}}，多出來的 {{percent:0.04|digits=0}} 來自業外收入，例如出租閒置廠房的租金。數字是網站自己編的，不是真實公司。",
+    "en": "An industrial valve maker has share capital of {{money:1000000}} and profit before tax of {{money:280000}}: {{money:280000}} ÷ {{money:1000000}} = {{percent:0.28|digits=0}}. The same company’s operating profit is {{money:240000}}, an operating profit to paid-in capital ratio of {{percent:0.24|digits=0}}; the extra {{percent:0.04|digits=0}} comes from non-operating income such as rent on an idle building. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "越高，表示每一塊登記資本賺回的稅前利潤越多；台灣主管機關的財務分析格式把它列在獲利能力。它最有用的讀法是和營業利益佔實收資本比率並排：這條高出那條的部分就是業外收支的貢獻，差距很大時要去看業外收入是不是一次性的（處分資產、匯兌利益），明年還會不會有。要和自己幾年的趨勢比，也和同業比；剛增資的公司分母變大，比率會瞬間下降，不代表獲利變差。分母只有股本，所以累積很多盈餘、資本公積的老公司，這條會比權益報酬率高出很多。常見誤讀是把它和權益報酬率混為一談：分母少了資本公積和保留盈餘，分子又是稅前的數字，數值通常比權益報酬率高，兩者不能直接相比。",
+    "en": "The higher it is, the more pre-tax profit each unit of registered capital earns; the financial analysis format set by Taiwan’s regulator lists it under profitability. Its most useful reading is side by side with the operating profit to paid-in capital ratio: the amount by which this one exceeds that one is the contribution of non-operating items, and when the gap is wide, check whether the non-operating income is one-off (asset disposals, exchange gains) and whether it will be there next year. Compare with the company’s own trend and with peers; a company that has just issued new shares has a larger denominator and the ratio drops at once without profit getting worse. Because the denominator is share capital alone, an old company with large accumulated profits and capital surplus shows a much higher figure than its return on equity. A common misreading is confusing it with return on equity: the denominator leaves out capital surplus and retained earnings and the numerator is pre-tax, so the figure is usually higher than return on equity and the two cannot be compared directly."
+  },
+  "related": [
+    "fm_505vc635",
+    "fm_0tqaf9qd",
+    "fm_52gntpsa",
+    "fm_yvx7qnt9"
+  ]
+}

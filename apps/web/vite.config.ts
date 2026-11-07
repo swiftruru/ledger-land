@@ -393,6 +393,8 @@ export default defineConfig({
         globIgnores: [
           // 講義題庫（M4c，06 第 3.2 節）：一份講義一檔、合計約 0.45 MB，不進 precache；sw.ts 的執行期 CacheFirst 路由在第一次讀到時才快取
           'content/**/handout_*.json',
+          // 會計公式的完整內容（2026-11-07）：每個語系一檔、合計約 0.1 MB，不進 precache；索引檔（formula-index.*）照常進
+          'content/**/formulas.*.json',
           'splash/**',
           'icons/pwa-*.png',
           'icons/maskable-*.png',

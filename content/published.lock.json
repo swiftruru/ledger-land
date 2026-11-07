@@ -5604,6 +5604,465 @@
       "status": "published",
       "answerHash": "sha256:0f9f5839c10e81d1271686c955d2b56537819cb4146f1cfae665e3bc08d9179c",
       "optionIds": ["o_863z", "o_cjzy", "o_q2mh"]
+    },
+    {
+      "id": "fm_077j3dmj",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_0tqaf9qd",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_145684mr",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_1mknnm52",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_239p828h",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_3b2yf4gc",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_3mjtajx8",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_3vk408ws",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_3wy1y84s",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_429hdk1h",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_4jqqsmna",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_505vc635",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_52gntpsa",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_5k6wp1c0",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_6ze3efpg",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_73k20388",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_7zq776p7",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_9fewe3a3",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_9vfmmat3",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_ac6vnhzq",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_agzjcqx8",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_bmawj1ab",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_dx2v6nw7",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_ehc6qwjn",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_g6b7tn65",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_hfssf6ha",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_hqda6nvm",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_hzcxphkb",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_jvdxknhd",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_mae66cbh",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_mrxttb09",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_nzw80erk",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_pk88kpht",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_pr9ht8fb",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_pv0bed74",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_qzh8rn8c",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_rk4jpsvc",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_scaffwgf",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_sm2xtt5h",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_svxp808g",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_t18f8tfn",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_thn4m036",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_vk0dq2m7",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_wfk7jdnd",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_wxq9e1j5",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_xeqpkm9h",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_xf48bqvs",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_yvx7qnt9",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_z6x5xxsc",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_zefdfz9a",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
+    },
+    {
+      "id": "fm_zzdy9bgy",
+      "kind": "formula",
+      "rev": 1,
+      "revKind": "text",
+      "answerRev": 1,
+      "status": "published",
+      "optionIds": []
     }
   ]
 }

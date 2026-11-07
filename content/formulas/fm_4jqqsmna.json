@@ -1,0 +1,46 @@
+{
+  "id": "fm_4jqqsmna",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_1hgn004m",
+  "ratioRef": "ce_intensity",
+  "formula": {
+    "zh-TW": "資本支出 ÷ 營業收入",
+    "en": "Capital expenditure ÷ revenue"
+  },
+  "components": [
+    {
+      "label": {
+        "zh-TW": "資本支出",
+        "en": "Capital expenditure"
+      },
+      "meaning": {
+        "zh-TW": "這一期真的付出去買設備、廠房等長期資產的現金，在現金流量表的投資活動裡，網站取「取得非流動資產」那一列的流出金額。",
+        "en": "The cash actually paid this period for equipment, buildings and other long-lived assets; it sits under investing activities in the statement of cash flows, and the site takes the outflow on the payments to acquire non-current assets line."
+      }
+    },
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": {
+        "zh-TW": "損益表第一列，這一期本業收進來的金額，當分母表示「每做一元生意」。",
+        "en": "The first line of the income statement, what the core business brought in this period; as the denominator it means ‘for each unit of sales’."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家鋁擠型工廠這一年添購新機台付了 {{money:3000000}}，營業收入 {{money:24000000}}：{{money:3000000}} ÷ {{money:24000000}} ＝ {{percent:0.125|digits=1}}。意思是每做 {{money:1000}} 的生意，就有 {{money:125}} 拿去買設備。數字是網站自己編的，不是真實公司。",
+    "en": "An aluminium extrusion plant pays {{money:3000000}} for new machines this year against revenue of {{money:24000000}}: {{money:3000000}} ÷ {{money:24000000}} = {{percent:0.125|digits=1}}. For every {{money:1000}} of sales, {{money:125}} goes into equipment. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "比例高表示公司正在大舉擴充產能，或是這個產業本來就要不停投資設備才能維持競爭力，半導體就是典型；比例低可能是輕資產的服務業，也可能是公司暫停投資。它和 CE turnover 是同一件事的倒數，比例高到不好讀時改看 CE turnover 的倍數會比較直覺。要和同業比，也要看自己好幾年的趨勢：資本支出常常一年很高、隔年很低，單看一年會被大型採購案帶偏。常見誤讀：把損益表的折舊費用當成資本支出，折舊是把以前買設備的錢分期攤成費用，資本支出是這一期真的付出去的現金，時間與金額都不一樣。",
+    "en": "A high ratio means the company is expanding capacity hard, or that the industry has to keep investing in equipment just to stay competitive, semiconductors being the classic case; a low ratio may be an asset-light service business, or a company that has paused investment. It is the reciprocal of CE turnover, and when the percentage gets awkward to read the turnover multiple is more intuitive. Compare with peers and watch several years of the company’s own trend: capital expenditure is often heavy one year and light the next, so a single year can be skewed by one large purchase. A common misreading is treating the depreciation expense on the income statement as capital expenditure; depreciation spreads past equipment purchases into expense over time, while capital expenditure is the cash actually paid this period, so both the timing and the amount differ."
+  },
+  "related": [
+    "fm_3mjtajx8",
+    "fm_xf48bqvs",
+    "fm_ehc6qwjn",
+    "fm_zzdy9bgy"
+  ]
+}

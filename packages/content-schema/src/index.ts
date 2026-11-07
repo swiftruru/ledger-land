@@ -14,4 +14,5 @@ export * from './question.ts';
 export * from './objective.ts';
 export * from './level.ts';
 export * from './handout.ts';
+export * from './formula.ts';
 export { validateBundle, levelSizeIssue, isUnscoredLevel, type ContentBundle, type ContentEntry, type ContentIssue } from './validate.ts';

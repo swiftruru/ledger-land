@@ -1,0 +1,113 @@
+{
+  "$comment": "由 packages/content-schema 產生，不要手改；執行 pnpm schemas:build 重新產生。",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$comment": {
+      "type": "string"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "formula": {
+            "type": "string",
+            "pattern": "^fm_[0123456789abcdefghjkmnpqrstvwxyz]{8}$"
+          },
+          "sources": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/__schema0"
+            }
+          },
+          "questions": {
+            "type": "object",
+            "properties": {
+              "formula": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/__schema2"
+                }
+              },
+              "numeric": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/__schema2"
+                }
+              },
+              "concept": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/__schema2"
+                }
+              }
+            },
+            "required": [
+              "formula",
+              "numeric",
+              "concept"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "formula",
+          "sources",
+          "questions"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "links"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "__schema0": {
+      "type": "object",
+      "properties": {
+        "deck": {
+          "type": "string",
+          "pattern": "^d[1-9]\\d*$"
+        },
+        "slides": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/__schema1"
+          }
+        }
+      },
+      "required": [
+        "deck",
+        "slides"
+      ],
+      "additionalProperties": false
+    },
+    "__schema1": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "__schema2": {
+      "type": "object",
+      "properties": {
+        "deck": {
+          "type": "string",
+          "pattern": "^d[1-9]\\d*$"
+        },
+        "slide": {
+          "$ref": "#/definitions/__schema1"
+        }
+      },
+      "required": [
+        "deck",
+        "slide"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

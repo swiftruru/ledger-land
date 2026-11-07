@@ -1,0 +1,68 @@
+{
+  "id": "fm_5k6wp1c0",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_2cqt9cfd",
+  "ratioRef": "total_asset_turnover",
+  "formula": {
+    "zh-TW": "營業收入 ÷ 平均資產總計",
+    "en": "Revenue ÷ average total assets"
+  },
+  "versions": [
+    {
+      "version": "slides02",
+      "formula": {
+        "zh-TW": "TR ÷ A",
+        "en": "TR ÷ A"
+      },
+      "note": {
+        "zh-TW": "這一份用四個基本項目的縮寫寫公式：TR 是營業收入，A 是資產總計，用期末的資產，不取平均。",
+        "en": "This handout writes the formula with the four base items: TR is revenue and A is total assets, taken at the period end rather than averaged."
+      }
+    },
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "營業收入 ÷ 期末資產總計",
+        "en": "Revenue ÷ closing total assets"
+      },
+      "note": {
+        "zh-TW": "課程模板只有一期的資產負債表，所以分母用期末資產總計代替平均。",
+        "en": "The course template has only one balance sheet, so the denominator uses closing total assets instead of an average."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": {
+        "zh-TW": "這一期賣出商品或服務認列的收入，代表全部資產一年做出多少生意。",
+        "en": "Revenue recognised this period from goods or services sold: how much business all the assets generated in a year."
+      }
+    },
+    {
+      "term": "tm_t7a3s6wb",
+      "meaning": {
+        "zh-TW": "公司全部的資源，現金、應收帳款、存貨、設備加起來，期初與期末的平均；用平均是因為收入是一整年累積的，資產卻是某一天的餘額。",
+        "en": "Everything the company holds, cash, receivables, inventories and equipment together, averaged between opening and closing; an average is used because revenue builds up over a year while assets are a balance on one day."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家連鎖洗衣店全年營業收入 {{money:2400000}}，資產總計期初 {{money:1900000}}、期末 {{money:2100000}}，平均 {{money:2000000}}。{{money:2400000}} ÷ {{money:2000000}} ＝ {{number:1.2|unit=turns}}。意思是每 {{money:1}} 的資產一年做出 {{money:1.2}} 的生意，資產一年可以「轉」一輪多一點。數字是網站自己編的，不是真實公司。",
+    "en": "A laundry chain booked revenue of {{money:2400000}} for the year; total assets were {{money:1900000}} at the start and {{money:2100000}} at the end, an average of {{money:2000000}}. {{money:2400000}} ÷ {{money:2000000}} = {{number:1.2|unit=turns}}. Every {{money:1}} of assets produced {{money:1.2}} of business in the year, so the assets ‘turn’ a little more than once a year. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "次數越多，表示同樣規模的資產做出越多生意，沒有閒置；逐年下降是資產閒置或投資還沒發揮的警訊。它是杜邦分析的中間那一項：純益率乘上它就是資產報酬率，再乘權益倍數就是權益報酬率，所以純益率低的量販業常靠高週轉率把報酬率撐起來。跨產業不能直接比：晶圓廠、電信這類重資產產業天生偏低，貿易、零售天生偏高，要和同業比、看自己的趨勢。年底才大量增加資產的公司，新資產還沒帶來多少營收就整筆算進分母，用期末餘額算會明顯偏低。常見誤讀是拿課程版（期末資產）算出來的數字，直接和公司公開的財務分析（平均資產）比，兩個版本的分母不同，比較前先確認口徑一致。",
+    "en": "More turns mean the same asset base is doing more business with nothing sitting idle; a year-on-year decline warns of idle assets or investment that has not yet paid off. It is the middle term of DuPont analysis: net profit margin times this ratio gives return on assets, and times the equity multiplier again gives return on equity, which is why low-margin retailers often prop up their returns with high turnover. Industries cannot be compared directly: wafer fabs and telecoms are low by nature while traders and retailers are high, so compare with peers and watch the company’s own trend. A company that added a lot of assets late in the year carries them in the denominator in full before they have brought in much revenue, so a closing-balance figure comes out noticeably low. A common misreading is comparing the course version (closing assets) with a company’s published financial analysis (average assets): the denominators differ, so check both use the same version first."
+  },
+  "related": [
+    "fm_mae66cbh",
+    "fm_0tqaf9qd",
+    "fm_239p828h",
+    "fm_xf48bqvs",
+    "fm_zefdfz9a"
+  ]
+}

@@ -9,7 +9,7 @@ import { NEW_KINDS, collectIds, skeleton } from './lib/content-new.mjs';
 import { ROOT, readJson } from './lib/fs.mjs';
 
 const args = process.argv.slice(2);
-const kind = /** @type {'question' | 'level' | 'objective' | 'term' | 'chapter' | undefined} */ (args.find((a) => !a.startsWith('--')));
+const kind = /** @type {'question' | 'level' | 'objective' | 'term' | 'chapter' | 'formula' | undefined} */ (args.find((a) => !a.startsWith('--')));
 const opt = (name) => {
   const i = args.indexOf(`--${name}`);
   return i >= 0 ? args[i + 1] : undefined;

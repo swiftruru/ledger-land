@@ -1,0 +1,32 @@
+{
+  "id": "fm_ehc6qwjn",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_vpzcjk6n",
+  "ratioRef": "rd_intensity",
+  "formula": {
+    "zh-TW": "研究發展費用 ÷ 營業收入",
+    "en": "Research and development expenses ÷ revenue"
+  },
+  "components": [
+    {
+      "term": "tm_avgpa43e",
+      "meaning": { "zh-TW": "營業費用裡花在研究與開發新產品、新技術的錢，在損益表的毛利之後扣。", "en": "The operating expense spent on researching and developing new products and technology, deducted below gross profit on the income statement." }
+    },
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "損益表第一列，這一期本業收進來的金額，當分母表示「每做一元生意」。", "en": "The first line of the income statement, what the core business brought in this period; as the denominator it means ‘for each unit of sales’." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家感測器公司這一年研究發展費用 {{money:1800000}}，營業收入 {{money:15000000}}：{{money:1800000}} ÷ {{money:15000000}} ＝ {{percent:0.12|digits=0}}。意思是每做 {{money:100}} 的生意，就有 {{money:12}} 投入研發。數字是網站自己編的，不是真實公司。",
+    "en": "A sensor maker spends {{money:1800000}} on research and development this year against revenue of {{money:15000000}}: {{money:1800000}} ÷ {{money:15000000}} = {{percent:0.12|digits=0}}. For every {{money:100}} of sales, {{money:12}} goes into research. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "比例越高，表示公司把越大一塊收入拿去押未來的產品；半導體、生技與軟體業通常很高，傳統製造與零售通常很低，所以跨產業比沒有意義，要和同業比才看得出誰比較積極。看自己的趨勢更重要：比例逐年下降，可能是研發預算被砍，也可能只是營收成長得比研發快，要回頭看分子分母各自的變化才知道是哪一種。常見誤讀：把它當成研發的成效，其實它只量投入、不量產出，研發費用花得多不等於做得出好產品，要看成效得另外看營收成長或新產品占營收的比重。",
+    "en": "The higher the ratio, the larger the slice of revenue the company is betting on future products; semiconductors, biotech and software are usually high while traditional manufacturing and retail are low, so comparing across industries is meaningless and only peers show who is investing harder. The company’s own trend matters more: a ratio that falls year after year may mean the research budget was cut, or simply that revenue grew faster than research spending, and only looking at the numerator and denominator separately tells you which. A common misreading is treating it as research effectiveness: it measures input, not output, and spending heavily does not guarantee good products, so judge results by revenue growth or the share of sales from new products instead."
+  },
+  "related": ["fm_agzjcqx8", "fm_4jqqsmna", "fm_xeqpkm9h", "fm_rk4jpsvc"]
+}

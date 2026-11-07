@@ -1,0 +1,49 @@
+{
+  "id": "fm_yvx7qnt9",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "relation",
+  "termRef": "tm_x3n8v5tc",
+  "label": { "zh-TW": "股東權益的組成", "en": "What equity is made of" },
+  "category": "statement",
+  "formula": {
+    "zh-TW": "股東權益總額 ＝ 資產總計 − 負債總額 ＝ 股本 ＋ 資本公積 ＋ 未分配盈餘",
+    "en": "Total equity = total assets − total liabilities = share capital + capital surplus + unappropriated retained earnings"
+  },
+  "components": [
+    {
+      "term": "tm_y37ymj9w",
+      "meaning": { "zh-TW": "股東在公司裡的錢：左邊算是資產減負債的剩餘，右邊算是三個權益項目的合計，兩種算法要一樣。", "en": "The owners’ stake in the company: worked out one way as assets less liabilities, the other way as the sum of three equity items, and the two must agree." }
+    },
+    {
+      "term": "tm_t7a3s6wb",
+      "meaning": { "zh-TW": "公司手上全部的資源，流動與非流動加起來。", "en": "Everything the company holds, current and non-current together." }
+    },
+    {
+      "term": "tm_fwys72qx",
+      "meaning": { "zh-TW": "資產裡來自債權人的那一份，要先還給別人，剩下的才是股東的。", "en": "The part of the assets owed to creditors; it is repaid first, and only what remains belongs to the owners." }
+    },
+    {
+      "term": "tm_5e3py55a",
+      "meaning": { "zh-TW": "股東投入、按股票面額計算的本錢。", "en": "The capital the owners put in, measured at the par value of the shares." }
+    },
+    {
+      "term": "tm_yka0razf",
+      "meaning": { "zh-TW": "股東投入超過面額的部分；也是股東的錢，但不是公司賺來的。", "en": "What the owners paid in above par value; still the owners’ money, but not earned by the company." }
+    },
+    {
+      "term": "tm_4c6v99nn",
+      "meaning": { "zh-TW": "公司歷年賺到、還沒分給股東的盈餘，是權益裡唯一靠經營累積出來的部分。", "en": "Profits earned over the years and not yet distributed: the only part of equity built up by trading." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家設計工作室資產總計 {{money:1800000}}，負債總額 {{money:700000}}，股東權益總額 ＝ {{money:1800000}} − {{money:700000}} ＝ {{money:1100000}}。從組成看：股東當初以面額出資 {{money:800000}} 記為股本，溢價 {{money:100000}} 記為資本公積，歷年留下的盈餘 {{money:200000}} 是未分配盈餘，三項相加也是 {{money:1100000}}。兩種算法對得起來，權益的這一段就沒記錯。數字是網站自己編的，不是真實公司。",
+    "en": "A design studio has total assets of {{money:1800000}} and total liabilities of {{money:700000}}, so total equity = {{money:1800000}} − {{money:700000}} = {{money:1100000}}. By make-up: the owners paid {{money:800000}} at par, recorded as share capital, plus a premium of {{money:100000}}, recorded as capital surplus, and the company has kept {{money:200000}} of profits as retained earnings, which also adds up to {{money:1100000}}. When both routes agree, this section of the balance sheet is in order. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "左邊的算法說明權益是「剩餘」：公司清掉全部負債之後，剩下的才屬於股東，所以虧損會先吃掉股東的錢。右邊的算法說明這些錢從哪裡來：股本與資本公積是股東拿進來的，未分配盈餘是公司自己賺出來的，一家靠賺錢把權益養大的公司，和一家靠不斷增資撐住權益的公司，體質很不一樣。看權益要搭配負債一起看，權益占資產的比重低，表示公司主要靠借款在運作。常見誤讀：以為股東權益是一筆放在銀行裡的錢，其實它只是資產來源的一種說法，對應的資產可能是設備、存貨或應收帳款，不一定是現金。",
+    "en": "The left-hand route shows that equity is a residual: only what is left after all liabilities are settled belongs to the owners, so losses eat into their stake first. The right-hand route shows where that stake came from: share capital and capital surplus were put in by the owners, while retained earnings were earned by the company itself, and a company that has grown its equity by earning is a very different business from one that keeps it up by issuing new shares. Read equity together with liabilities: a low share of equity in total assets means the company runs mainly on borrowed money. A common misreading is picturing equity as a sum sitting in a bank account; it is simply one way of describing where the assets were financed from, and the matching assets may be equipment, inventories or receivables rather than cash."
+  },
+  "related": ["fm_3b2yf4gc", "fm_077j3dmj", "fm_vk0dq2m7", "fm_pv0bed74", "fm_dx2v6nw7"]
+}

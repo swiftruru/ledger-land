@@ -1,0 +1,97 @@
+{
+  "id": "fm_zzdy9bgy",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_jbtbky5v",
+  "ratioRef": "cash_reinvestment",
+  "formula": {
+    "zh-TW": "（營業活動現金流量總計 − 現金股利）÷（不動產廠房設備毛額 ＋ 長期投資 ＋ 其他非流動資產 ＋ 營運資金）",
+    "en": "(Net cash from operating activities − cash dividends) ÷ (gross property, plant and equipment + long-term investments + other non-current assets + working capital)"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "（營業活動現金流量總計 − 支付股息）÷（資產總計 − 流動負債）",
+        "en": "(Net cash from operating activities − dividends paid) ÷ (total assets − current liabilities)"
+      },
+      "note": {
+        "zh-TW": "課程模板把分母簡化成資產總計減流動負債，等於用全部的長期資產加營運資金，而且設備用的是扣完折舊的淨額，不是毛額；年報的寫法要把毛額、長期投資、其他非流動資產與營運資金一項一項加起來。",
+        "en": "The course template simplifies the denominator to total assets less current liabilities, which amounts to all long-lived assets plus working capital with equipment at net rather than gross cost; the annual report wording adds gross equipment, long-term investments, other non-current assets and working capital item by item."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_e61ht6yh",
+      "meaning": {
+        "zh-TW": "本業這一期真正收進來的現金淨額，是公司再投資最主要的來源。",
+        "en": "The net cash the main business brought in this period: the main source of money for reinvestment."
+      }
+    },
+    {
+      "term": "tm_zqzrfgfn",
+      "label": {
+        "zh-TW": "支付股息",
+        "en": "Dividends paid"
+      },
+      "meaning": {
+        "zh-TW": "付給股東的現金股利。這筆錢已經離開公司，不能再拿來投資，所以要從分子扣掉。",
+        "en": "Cash dividends paid to shareholders. This money has left the company and cannot be reinvested, so it is deducted from the numerator."
+      }
+    },
+    {
+      "term": "tm_5y5wj6f4",
+      "meaning": {
+        "zh-TW": "機器、設備、廠房還沒扣累計折舊的原始成本總額。用毛額是因為要衡量的是公司在長期資產上總共投入過多少，不是現在還剩多少帳面價值。",
+        "en": "The original cost of machinery, equipment and buildings before accumulated depreciation. Gross cost is used because the question is how much has been put into long-lived assets in total, not what carrying amount is left."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "長期投資",
+        "en": "Long-term investments"
+      },
+      "meaning": {
+        "zh-TW": "打算持有超過一年的投資，例如對其他公司的長期持股。",
+        "en": "Investments intended to be held for more than a year, such as long-term holdings in other companies."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "其他非流動資產",
+        "en": "Other non-current assets"
+      },
+      "meaning": {
+        "zh-TW": "其他要用超過一年的資產，例如無形資產、遞延資產。",
+        "en": "Other assets that will be used for more than a year, such as intangibles and deferred assets."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "營運資金",
+        "en": "Working capital"
+      },
+      "meaning": {
+        "zh-TW": "流動資產減流動負債，也就是日常營運周轉需要壓在裡面的錢。",
+        "en": "Current assets less current liabilities: the money that has to stay tied up in day-to-day operations."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家精密模具廠本期營業活動現金流量總計 {{money:450000}}，付了現金股利 {{money:90000}}，分子是 {{money:360000}}。分母：不動產廠房設備毛額 {{money:1900000}} ＋ 長期投資 {{money:400000}} ＋ 其他非流動資產 {{money:200000}} ＋ 營運資金 {{money:500000}} ＝ {{money:3000000}}。{{money:360000}} ÷ {{money:3000000}} ＝ {{percent:0.12|digits=0}}。意思是每 {{money:100}} 投在營運上的資金，這一年本業留下 {{money:12}} 可以再投回去。數字是網站自己編的，不是真實公司。",
+    "en": "A precision mould maker has net cash from operating activities of {{money:450000}} and paid cash dividends of {{money:90000}}, so the numerator is {{money:360000}}. The denominator: gross property, plant and equipment {{money:1900000}} + long-term investments {{money:400000}} + other non-current assets {{money:200000}} + working capital {{money:500000}} = {{money:3000000}}. {{money:360000}} ÷ {{money:3000000}} = {{percent:0.12|digits=0}}. For every {{money:100}} tied up in the business, operations left {{money:12}} this year that can be put back in. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "比率越高，公司汰換設備、擴充營運時越能靠本業自己留下的現金，越不用借錢或向股東要錢；{{percent:0.08|digits=0}} 到 {{percent:0.1|digits=0}} 常被當成健康的區間。太低表示付完股利後幾乎沒錢再投資，成長會受限；但不是越高越好，遠高於同業可能是股利發得太少、股東回饋不足，或是砸了超過需要的投資。要和同業比，也和自己前幾年比。分母用設備的毛額，所以設備老舊、折舊提了很多的公司，和剛換新設備的公司在這條比率上並不吃虧，這一點和用淨額的週轉率不同。常見誤讀是把股利加回分子而不是扣掉：發出去的股利已經不在公司手上，分子只能算付完股利後剩下的現金。",
+    "en": "The higher the ratio, the more the company can replace equipment and expand from cash its own operations kept, and the less it needs to borrow or ask the owners; {{percent:0.08|digits=0}} to {{percent:0.1|digits=0}} is often treated as a healthy band. Too low means almost nothing is left to reinvest after dividends and growth will be constrained; but higher is not always better, since a ratio far above peers may mean dividends are too thin or the company is investing more than it needs. Compare with peers and with the company’s own earlier years. Because the denominator uses gross equipment cost, a company with old, heavily depreciated equipment is not penalised against one that has just re-equipped, unlike turnover ratios that use net amounts. A common misreading is adding dividends to the numerator instead of deducting them: dividends paid are no longer in the company’s hands, and only the cash left after paying them counts."
+  },
+  "related": [
+    "fm_wxq9e1j5",
+    "fm_ac6vnhzq",
+    "fm_xf48bqvs",
+    "fm_bmawj1ab"
+  ]
+}

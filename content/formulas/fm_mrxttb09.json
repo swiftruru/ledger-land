@@ -1,0 +1,57 @@
+{
+  "id": "fm_mrxttb09",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_08g66t9j",
+  "ratioRef": "inventory_turnover",
+  "formula": {
+    "zh-TW": "營業成本 ÷ 平均存貨",
+    "en": "Cost of sales ÷ average inventories"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "營業成本 ÷ 期末存貨",
+        "en": "Cost of sales ÷ closing inventories"
+      },
+      "note": {
+        "zh-TW": "課程模板只有一期的資產負債表，所以分母用期末存貨代替平均。",
+        "en": "The course template has only one balance sheet, so the denominator uses closing inventories instead of an average."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_g5c2m8tw",
+      "meaning": {
+        "zh-TW": "這一期賣出去的商品的成本。存貨是用成本記帳的，所以分子也要用成本，兩邊的口徑才一致。",
+        "en": "The cost of the goods sold this period. Inventories are carried at cost, so the numerator must be at cost too for the two sides to match."
+      }
+    },
+    {
+      "term": "tm_n7v3k8pq",
+      "meaning": {
+        "zh-TW": "還沒賣出去、放在倉庫裡的商品成本，期初與期末餘額的平均；用平均是因為成本是一整年累積的，存貨卻是某一天的餘額。",
+        "en": "The cost of goods still in the warehouse, averaged between opening and closing balances; an average is used because cost builds up over a year while inventories are a balance on one day."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家戶外用品批發商全年營業成本 {{money:960000}}，期初存貨 {{money:140000}}、期末 {{money:100000}}，平均 {{money:120000}}。{{money:960000}} ÷ {{money:120000}} ＝ {{number:8|unit=turns}}。意思是倉庫裡的貨一年賣光再補滿大約 {{number:8|unit=turns}}，每一批貨平均停留一個半月左右。數字是網站自己編的，不是真實公司。",
+    "en": "An outdoor gear wholesaler’s cost of sales for the year is {{money:960000}}; inventories were {{money:140000}} at the start and {{money:100000}} at the end, an average of {{money:120000}}. {{money:960000}} ÷ {{money:120000}} = {{number:8|unit=turns}}. The warehouse sold out and was restocked about {{number:8|unit=turns}} in the year, so each batch stayed roughly a month and a half. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "次數越多，商品賣得越快，壓在倉庫裡的資金越少；次數變少，可能是銷售轉弱、進貨過多，或有賣不掉的舊貨還掛在帳上。但太高也不一定好，可能是備貨太少、常常缺貨而錯失訂單。要和同業比，生鮮和精品的次數天差地遠；也要看自己逐年的變化。金融、營建這類沒有一般存貨的產業不適用。年底清倉讓期末存貨特別低時，用期末餘額算出來的次數會偏高，年報的寫法用平均就是為了減少這種失真。常見誤讀是用營業收入當分子：存貨是成本，分子若用售價，售價裡的毛利會把週轉次數灌水。",
+    "en": "More turns mean goods sell faster and less money is tied up in the warehouse; fewer turns can mean weaker sales, over-buying or unsaleable old stock still on the books. Very high is not always good either: it can mean stock is kept too thin and orders are lost to stock-outs. Compare with peers, since fresh food and luxury goods turn at wildly different rates, and watch the company’s own trend. The ratio does not suit banks or builders, which hold no ordinary inventories. When a year-end clearance leaves closing inventories unusually low, a figure computed on the closing balance comes out too high, which is why the annual report wording uses an average. A common misreading is putting revenue in the numerator: inventories are at cost, and a selling-price numerator inflates the turns by the gross margin built into prices."
+  },
+  "related": [
+    "fm_6ze3efpg",
+    "fm_thn4m036",
+    "fm_145684mr",
+    "fm_t18f8tfn",
+    "fm_qzh8rn8c"
+  ]
+}

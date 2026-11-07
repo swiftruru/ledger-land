@@ -1,0 +1,75 @@
+{
+  "id": "fm_0tqaf9qd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_0k8vegyr",
+  "ratioRef": "roe",
+  "formula": {
+    "zh-TW": "本期淨利 ÷ 股東權益總額",
+    "en": "Profit for the period ÷ total equity"
+  },
+  "versions": [
+    {
+      "version": "slides02",
+      "formula": {
+        "zh-TW": "Profit ÷ E，也可以拆成純益率 × 資產週轉率 × 權益倍數",
+        "en": "Profit ÷ E, which also splits into net profit margin × asset turnover × equity multiplier"
+      },
+      "note": {
+        "zh-TW": "這一份用四個基本項目的縮寫寫公式：Profit 是本期淨利，E 是股東權益。",
+        "en": "This handout writes the formula with the four base items: Profit is profit for the period and E is equity."
+      }
+    },
+    {
+      "version": "slides03",
+      "formula": {
+        "zh-TW": "歸屬於母公司業主的本期淨利 ÷ 平均歸屬於母公司業主的權益",
+        "en": "Profit attributable to owners of the parent ÷ average equity attributable to owners of the parent"
+      },
+      "note": {
+        "zh-TW": "這一份只算歸屬母公司的部分，分母用期初與期末的平均；集團有子公司、子公司又有外人持股時，兩個版本才會不一樣。",
+        "en": "This handout counts only the part attributable to the parent and averages opening and closing equity; the two versions differ only when a group has subsidiaries with outside shareholders."
+      }
+    },
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "本期淨利 ÷ 期末股東權益總額",
+        "en": "Profit for the period ÷ closing total equity"
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_n4e8t2jy",
+      "meaning": {
+        "zh-TW": "損益表最後一列，扣完所得稅真正賺到的錢。",
+        "en": "The last line of the income statement: what is left after income tax."
+      }
+    },
+    {
+      "term": "tm_y37ymj9w",
+      "meaning": {
+        "zh-TW": "資產減負債剩下的部分，也就是股本、資本公積與未分配盈餘的合計，代表股東在公司裡的錢。",
+        "en": "Assets minus liabilities: share capital, capital surplus and unappropriated retained earnings together, the owners’ stake in the company."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "本期淨利 {{money:210000}}，股東權益總額 {{money:1400000}}：{{money:210000}} ÷ {{money:1400000}} ＝ {{percent:0.15|digits=0}}。意思是股東每投入 {{money:100}}，這一期替他們賺回 {{money:15}}。拆成杜邦三項來看：純益率 {{percent:0.1|digits=0}} × 總資產週轉率 {{number:1.2|unit=times}} × 權益倍數 {{number:1.25|unit=times}} ＝ {{percent:0.15|digits=0}}。數字是網站自己編的，不是真實公司。",
+    "en": "Profit for the period {{money:210000}}, total equity {{money:1400000}}: {{money:210000}} ÷ {{money:1400000}} = {{percent:0.15|digits=0}}. For every {{money:100}} the owners put in, the company earned {{money:15}} back this period. Split the DuPont way: net profit margin {{percent:0.1|digits=0}} × total asset turnover {{number:1.2|unit=times}} × equity multiplier {{number:1.25|unit=times}} = {{percent:0.15|digits=0}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "這是股東看的第一個數字：越高，股東的錢賺得越有效率。但高不一定好：拆成純益率、總資產週轉率與權益倍數三項，如果是權益倍數撐出來的，就是靠借錢放大報酬，風險也一起放大；和資產報酬率差距越大，越依賴財務槓桿。同一家公司看幾年的趨勢，或和同業比，才有意義。常見誤讀：用集團的合併淨利除以母公司的權益，會把不屬於母公司股東的那一份也算進來而高估。",
+    "en": "This is the first number shareholders look at: the higher it is, the more efficiently their money is working. High is not always good, though. Split it into net profit margin, total asset turnover and the equity multiplier: if the multiplier is doing the work, the return is amplified by borrowing and so is the risk; the wider the gap from return on assets, the more the company leans on financial leverage. It only means something over several years for one company, or against peers. A common misreading is dividing a group’s consolidated profit by the parent’s equity, which counts profit that belongs to outside shareholders and overstates the return."
+  },
+  "related": [
+    "fm_239p828h",
+    "fm_zefdfz9a",
+    "fm_5k6wp1c0",
+    "fm_dx2v6nw7",
+    "fm_mae66cbh"
+  ]
+}

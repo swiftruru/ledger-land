@@ -183,6 +183,113 @@ export function validateHandout(decksData: unknown, idsData: unknown, bankData: 
   return issues;
 }
 
+/**
+ * 講義對照檔 content/handout/formula-links.json（08 的講義題庫一節，2026-11-07）：每一條會計公式在講義裡的出處（講義與投影片）和相關的講義題，
+ * 分成三種關係：formula 考這條公式的組成或關係、numeric 情境裡有數字可以拿公式驗算、concept 只考相關概念。
+ * 題目用 deck 與 slide 寫（和 decks.json、ids.json 同一套），建置時經 ids.json 換成 hq_ ID。這是講義題庫那一側的檔案，所以可以有投影片號；
+ * 原創的 content/formulas/ 不得記錄任何教材頁碼（08 第 1.4 節）。
+ */
+export const FORMULA_LINK_RELATIONS = ['formula', 'numeric', 'concept'] as const;
+export type FormulaLinkRelation = (typeof FORMULA_LINK_RELATIONS)[number];
+const FormulaSource = z.object({ deck: z.string().regex(DECK_ID_RE), slides: z.array(slide).min(1) }).strict();
+export const FormulaLink = z
+  .object({
+    formula: idSchema('formula'),
+    sources: z.array(FormulaSource).min(1),
+    questions: z.object({ formula: z.array(SlideRef), numeric: z.array(SlideRef), concept: z.array(SlideRef) }).strict(),
+  })
+  .strict();
+export type FormulaLink = z.infer<typeof FormulaLink>;
+export const FormulaLinks = z.object({ $comment: z.string().optional(), links: z.array(FormulaLink) }).strict();
+export type FormulaLinks = z.infer<typeof FormulaLinks>;
+const LINKS_FILE = 'content/handout/formula-links.json';
+
+/** 一條公式解析後的對照：出處依講義排序去重，題目換成 hq_ ID（只收錄的題） */
+export interface ResolvedFormulaLink {
+  formula: string;
+  sources: { deck: string; slides: number[] }[];
+  questions: Record<FormulaLinkRelation, string[]>;
+}
+
+/**
+ * 對照檔的形狀與交叉檢查：公式存在且只出現一次、講義存在、題目的投影片在 ids.json 與 midterm.json 都有而且是收錄的題（指到不收的題報錯，不悄悄略過）、
+ * 同一題不在兩種關係裡、出處的投影片不重複。decks、ids、bank 要先通過 validateHandout。
+ */
+export function validateFormulaLinks(
+  linksData: unknown,
+  decks: HandoutDecks,
+  ids: HandoutIds,
+  bank: HandoutBank,
+  formulaIds: ReadonlySet<string>,
+): ContentIssue[] {
+  const issues: ContentIssue[] = [];
+  const links = parseOrIssues(FormulaLinks, linksData, LINKS_FILE, issues);
+  if (!links) return issues;
+  const push = (path: string, message: string) => issues.push({ file: LINKS_FILE, path, message, rule: 'handout.formulaLinks' });
+  const deckIds = new Set(decks.decks.map((d) => d.id));
+  const byId = new Map(bank.questions.map((q) => [q.id, q]));
+  const seenFormula = new Set<string>();
+  links.links.forEach((link, li) => {
+    const path = `links.${li}`;
+    if (!formulaIds.has(link.formula)) push(`${path}.formula`, `公式 ${link.formula} 不存在`);
+    if (seenFormula.has(link.formula)) push(`${path}.formula`, `公式 ${link.formula} 出現兩次`);
+    seenFormula.add(link.formula);
+    link.sources.forEach((s, si) => {
+      if (!deckIds.has(s.deck)) push(`${path}.sources.${si}.deck`, `講義 ${s.deck} 不在 decks.json 裡`);
+      if (new Set(s.slides).size !== s.slides.length) push(`${path}.sources.${si}.slides`, '出處的投影片重複');
+    });
+    const seenQuestion = new Map<string, FormulaLinkRelation>();
+    for (const relation of FORMULA_LINK_RELATIONS) {
+      link.questions[relation].forEach((r, qi) => {
+        const qPath = `${path}.questions.${relation}.${qi}`;
+        const key = `${r.deck}:${r.slide}`;
+        if (!deckIds.has(r.deck)) {
+          push(qPath, `講義 ${r.deck} 不在 decks.json 裡`);
+          return;
+        }
+        const id = ids[key];
+        const q = id === undefined ? undefined : byId.get(id);
+        if (!q) {
+          push(qPath, `${r.deck} 第 ${r.slide} 張不是題目（ids.json 或 midterm.json 裡沒有）`);
+          return;
+        }
+        if (q.status !== 'included') push(qPath, `${r.deck} 第 ${r.slide} 張是不收錄的題（${q.exclusion?.reason ?? 'excluded'}），不能列為相關題`);
+        const prev = seenQuestion.get(key);
+        if (prev !== undefined) push(qPath, `${r.deck} 第 ${r.slide} 張已經列在 ${prev}，同一題只能有一種關係`);
+        seenQuestion.set(key, relation);
+      });
+    }
+  });
+  return issues;
+}
+
+/** 對照檔換成 hq_ ID：出處依講義 order 排、投影片升冪去重；題目依講義順序再投影片，只留收錄的題（驗證過就不會有別的） */
+export function resolveFormulaLinks(links: FormulaLinks, decks: HandoutDecks, ids: HandoutIds, bank: HandoutBank): ResolvedFormulaLink[] {
+  const orderOf = new Map(decks.decks.map((d) => [d.id, d.order]));
+  const included = new Set(bank.questions.filter((q) => q.status === 'included').map((q) => q.id));
+  const sortRefs = (refs: readonly { deck: string; slide: number }[]) =>
+    [...refs].sort((a, b) => (orderOf.get(a.deck) ?? 0) - (orderOf.get(b.deck) ?? 0) || a.slide - b.slide);
+  return links.links.map((link) => {
+    const byDeck = new Map<string, Set<number>>();
+    for (const s of link.sources) {
+      if (!byDeck.has(s.deck)) byDeck.set(s.deck, new Set());
+      for (const n of s.slides) byDeck.get(s.deck)!.add(n);
+    }
+    const sources = [...byDeck.entries()]
+      .sort((a, b) => (orderOf.get(a[0]) ?? 0) - (orderOf.get(b[0]) ?? 0))
+      .map(([deck, set]) => ({ deck, slides: [...set].sort((a, b) => a - b) }));
+    const questions = Object.fromEntries(
+      FORMULA_LINK_RELATIONS.map((relation) => [
+        relation,
+        sortRefs(link.questions[relation])
+          .map((r) => ids[`${r.deck}:${r.slide}`])
+          .filter((id): id is string => id !== undefined && included.has(id)),
+      ]),
+    ) as Record<FormulaLinkRelation, string[]>;
+    return { formula: link.formula, sources, questions };
+  });
+}
+
 /** 收錄的題（苦練區用）與需要老師看的題（審核頁用）；順序依講義 order 再投影片 */
 export function splitHandout(decks: HandoutDecks, bank: HandoutBank): { included: HandoutQuestion[]; review: HandoutQuestion[] } {
   const orderOf = new Map(decks.decks.map((d) => [d.id, d.order]));

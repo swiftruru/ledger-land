@@ -1,0 +1,32 @@
+{
+  "id": "fm_1mknnm52",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_kzkzng5e",
+  "ratioRef": "days_payable",
+  "formula": {
+    "zh-TW": "365 ÷ 應付款項週轉率",
+    "en": "365 ÷ payables turnover"
+  },
+  "components": [
+    {
+      "label": { "zh-TW": "一年的天數（365）", "en": "Days in a year (365)" },
+      "meaning": { "zh-TW": "把「一年付幾次」換成「每次相隔幾天」用的常數；課程一律用 365。", "en": "The constant that turns ‘how many times a year’ into ‘how many days apart’; the course always uses 365." }
+    },
+    {
+      "term": "tm_2jyfy0hn",
+      "meaning": { "zh-TW": "營業成本除以平均應付帳款，表示一年內把欠供應商的貨款付清、再欠新帳的次數。", "en": "Cost of sales divided by average trade payables: how many times a year the company clears what it owes suppliers and runs up a new balance." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家零件經銷商全年營業成本 {{money:1460000}}，平均應付帳款 {{money:200000}}，應付款項週轉率是 {{money:1460000}} ÷ {{money:200000}} ＝ {{number:7.3|unit=turns}}；平均付款天數就是 365 ÷ {{number:7.3|unit=turns}} ＝ {{number:50|unit=day}}。意思是它進貨之後平均隔 {{number:50|unit=day}} 才付錢給供應商。數字是網站自己編的，不是真實公司。",
+    "en": "A parts distributor has cost of sales of {{money:1460000}} for the year and average trade payables of {{money:200000}}, so payables turnover is {{money:1460000}} ÷ {{money:200000}} = {{number:7.3|unit=turns}}; the average payment period is 365 ÷ {{number:7.3|unit=turns}} = {{number:50|unit=day}}. In other words, it pays its suppliers about {{number:50|unit=day}} after buying. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "天數越長，表示供應商給的信用期間越長，或公司付款越慢，等於多用了一段供應商的免費資金；天數很短則是現金提早流出。要和供應商開的付款條件比：條件是 {{number:60|unit=day}} 卻在 {{number:20|unit=day}} 就付清，是放掉了不用付利息的資金；拖到遠超過條件，供應商會收回折扣、縮短信用，甚至要求先付款。它要和平均銷貨日數、平均收現日數放在一起看，三個天數才能拼出現金轉換循環。分母用平均應付帳款，期初與期末差很多時用期末餘額會失真。常見誤讀：以為付款越快越健康，其實一般做法是在期限內付款、有現金折扣時把握折扣期，而不是比誰付得快。",
+    "en": "The longer the period, the more credit suppliers extend or the slower the company pays, which means more free funding from suppliers; a very short period means cash leaves early. Compare it with the terms suppliers actually offer: paying in {{number:20|unit=day}} on {{number:60|unit=day}} terms gives up interest-free money, while stretching far past the terms costs discounts, shortens credit and may end in cash-in-advance demands. Read it alongside the days to sell inventory and the collection period: the three day counts together make up the cash conversion cycle. The denominator is average trade payables, so a closing balance that differs a lot from the opening one will distort the result. A common misreading is that paying faster is always healthier; the usual practice is to pay within the terms and take any cash discount within its window, not to race."
+  },
+  "related": ["fm_145684mr", "fm_hqda6nvm", "fm_qzh8rn8c", "fm_6ze3efpg", "fm_73k20388"]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "fm_239p828h",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "relation",
+  "termRef": "tm_1ebm48ca",
+  "label": {
+    "zh-TW": "杜邦方程式",
+    "en": "The DuPont equation"
+  },
+  "category": "dupont",
+  "formula": {
+    "zh-TW": "權益報酬率 ＝ 純益率 × 總資產週轉率 × 權益倍數",
+    "en": "Return on equity = net profit margin × total asset turnover × equity multiplier"
+  },
+  "components": [
+    {
+      "term": "tm_92yzx0fn",
+      "meaning": {
+        "zh-TW": "本期淨利 ÷ 營業收入：每做一元生意最後留下幾分錢，代表「賺得厚不厚」。",
+        "en": "Profit for the period ÷ revenue: how much of each unit of sales survives as profit, the ‘how thick is the margin’ factor."
+      }
+    },
+    {
+      "term": "tm_2cqt9cfd",
+      "meaning": {
+        "zh-TW": "營業收入 ÷ 資產總計：每一元資產一年做出幾元生意，代表「轉得快不快」。",
+        "en": "Revenue ÷ total assets: how many units of sales each unit of assets produces in a year, the ‘how fast do assets turn’ factor."
+      }
+    },
+    {
+      "term": "tm_2ggtxnaz",
+      "meaning": {
+        "zh-TW": "資產總計 ÷ 股東權益總額：每一元股東的錢撐起幾元資產，倍數越大表示借的錢越多，代表「槓桿開多大」。",
+        "en": "Total assets ÷ total equity: how many units of assets each unit of owners’ money supports; the larger it is, the more is borrowed, the ‘how much leverage’ factor."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家運動用品公司營業收入 {{money:3000000}}，本期淨利 {{money:150000}}，資產總計 {{money:2500000}}，股東權益總額 {{money:1000000}}。純益率 ＝ {{money:150000}} ÷ {{money:3000000}} ＝ {{percent:0.05|digits=0}}；總資產週轉率 ＝ {{money:3000000}} ÷ {{money:2500000}} ＝ {{number:1.2|unit=times}}；權益倍數 ＝ {{money:2500000}} ÷ {{money:1000000}} ＝ {{number:2.5|unit=times}}。三項相乘：{{percent:0.05|digits=0}} × {{number:1.2|unit=times}} × {{number:2.5|unit=times}} ＝ {{percent:0.15|digits=0}}，和直接算 {{money:150000}} ÷ {{money:1000000}} ＝ {{percent:0.15|digits=0}} 一樣；前兩項相乘的 {{percent:0.06|digits=0}} 就是資產報酬率。數字是網站自己編的，不是真實公司。",
+    "en": "A sports goods company has revenue of {{money:3000000}}, profit for the period of {{money:150000}}, total assets of {{money:2500000}} and total equity of {{money:1000000}}. Net profit margin = {{money:150000}} ÷ {{money:3000000}} = {{percent:0.05|digits=0}}; total asset turnover = {{money:3000000}} ÷ {{money:2500000}} = {{number:1.2|unit=times}}; equity multiplier = {{money:2500000}} ÷ {{money:1000000}} = {{number:2.5|unit=times}}. Multiplying the three: {{percent:0.05|digits=0}} × {{number:1.2|unit=times}} × {{number:2.5|unit=times}} = {{percent:0.15|digits=0}}, the same as the direct {{money:150000}} ÷ {{money:1000000}} = {{percent:0.15|digits=0}}; the first two factors alone give {{percent:0.06|digits=0}}, which is return on assets. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "拆開看的目的，是知道權益報酬率靠哪一項推動：純益率高是賣得貴或省得多，週轉率高是資產用得勤，權益倍數高則是借錢放大。前兩項相乘是資產報酬率，所以 ROA 和 ROE 差距越大，表示越依賴負債，景氣反轉時放大的是虧損。三項的體質不同：純益率最容易靠調價或節流改善，但只能和同產業比；週轉率逐年下滑是資產閒置的警訊，重資產產業天生偏低；權益倍數要搭配負債比率與利息保障倍數看。同一個 ROE，一家靠純益率、一家靠槓桿，風險差很多，所以比較兩家公司要比三項，不要只比結果。常見誤讀：看到 ROE 高就以為本業很會賺，先看 ROA，如果 ROA 平平而 ROE 很高，功勞多半在權益倍數。",
+    "en": "The point of splitting ROE is to see which factor drives it: a high margin means pricing well or spending little, high turnover means working the assets hard, and a high equity multiplier means borrowing to amplify. The first two factors multiply to return on assets, so the wider the gap between ROA and ROE, the more the company leans on debt, and when the cycle turns it is losses that get amplified. The three factors behave differently: the margin is the easiest to lift by repricing or trimming costs but only compares within an industry; turnover sliding year after year warns of idle assets and is naturally low in asset-heavy industries; the multiplier should be read with the debt ratio and interest cover. Two companies with the same ROE, one built on margin and one on leverage, carry very different risks, so compare the three factors rather than the single result. A common misreading is taking a high ROE as proof the core business earns well; check ROA first, and if ROA is ordinary while ROE is high, most of the credit belongs to the equity multiplier."
+  },
+  "related": [
+    "fm_0tqaf9qd",
+    "fm_zefdfz9a",
+    "fm_5k6wp1c0",
+    "fm_dx2v6nw7",
+    "fm_mae66cbh"
+  ]
+}

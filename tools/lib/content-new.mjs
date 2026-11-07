@@ -2,7 +2,7 @@
 // 不讀檔也不寫檔，content-new.mjs 負責讀寫與列印；tools/test 直接呼叫。
 import { ID_RULES, QUESTION_TYPES, generateId } from '@ledgerland/content-schema';
 
-export const NEW_KINDS = ['question', 'level', 'objective', 'term', 'chapter'];
+export const NEW_KINDS = ['question', 'level', 'objective', 'term', 'chapter', 'formula'];
 
 /** 內容檔與 lock 裡所有已使用的 ID（含選項、項目、迷思、步驟這類巢狀 ID，保守起見一律視為已用） */
 export function collectIds(bundle, lock) {
@@ -136,7 +136,7 @@ function questionSkeleton(id, chapterId, type, taken, random) {
 
 /**
  * 建立骨架。回傳 { id, data }；objective 的 data 是單一目標（content-new.mjs 會放進該章的檔案）。
- * @param {'question' | 'level' | 'objective' | 'term' | 'chapter'} kind
+ * @param {'question' | 'level' | 'objective' | 'term' | 'chapter' | 'formula'} kind
  * @param {{ chapterId?: string; type?: string; order?: number }} options
  * @param {Set<string>} taken 既有 ID（會把新產生的 ID 加進去）
  * @returns {{ id: string; data: any }}
@@ -201,6 +201,21 @@ export function skeleton(kind, options, taken, random = Math.random) {
           summary: lt('（章節簡介）', '(Chapter summary)'),
           objectiveIds: [],
           levelIds: [],
+        },
+      };
+    case 'formula':
+      return {
+        id,
+        data: {
+          id,
+          ...managed(),
+          kind: 'ratio',
+          termRef: 'tm_xxxxxxxx',
+          ratioRef: 'ratio_id',
+          formula: lt('（分子 ÷ 分母）', '(Numerator ÷ denominator)'),
+          components: [{ term: 'tm_xxxxxxxx', meaning: lt('（這一項是什麼）', '(What this item is)') }],
+          example: lt('（原創的數字範例，數字用佔位符）', '(Original worked example; numbers as placeholders)'),
+          reading: lt('（高低代表什麼、要和誰比）', '(What high or low means and whom to compare with)'),
         },
       };
     default:

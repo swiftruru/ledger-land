@@ -1,0 +1,79 @@
+{
+  "id": "fm_3vk408ws",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "relation",
+  "termRef": "tm_12k2yq6k",
+  "label": {
+    "zh-TW": "現金淨變動與期末現金",
+    "en": "Net change in cash and closing cash"
+  },
+  "category": "statement",
+  "formula": {
+    "zh-TW": "現金增減額 ＝ 營業活動現金流量 ＋ 投資活動現金流量 ＋ 籌資活動現金流量；期末現金 ＝ 期初現金 ＋ 現金增減額",
+    "en": "Net change in cash = operating cash flow + investing cash flow + financing cash flow; closing cash = opening cash + net change in cash"
+  },
+  "components": [
+    {
+      "term": "tm_x6gmpvm5",
+      "meaning": {
+        "zh-TW": "三大活動的現金流量加總：這段期間公司的現金總共多了或少了多少。",
+        "en": "The three activity totals added together: how much the company’s cash rose or fell over the period."
+      }
+    },
+    {
+      "term": "tm_e61ht6yh",
+      "meaning": {
+        "zh-TW": "本業收付的淨額：收貨款、付貨款、付薪資與稅金之後剩下的現金。",
+        "en": "The net cash from the core business: what is left after collecting from customers and paying suppliers, wages and taxes."
+      }
+    },
+    {
+      "term": "tm_fkpb3evq",
+      "label": {
+        "zh-TW": "投資活動的現金流量總計",
+        "en": "Net cash used in investing activities"
+      },
+      "meaning": {
+        "zh-TW": "買賣設備與長期投資的淨額；成長中的公司通常是淨流出。",
+        "en": "The net cash from buying and selling equipment and long-term investments; usually an outflow for a growing company."
+      }
+    },
+    {
+      "term": "tm_vk8v09cy",
+      "meaning": {
+        "zh-TW": "和股東、銀行之間的淨額：借款與增資是流入，還款與發股利是流出。",
+        "en": "The net cash between the company and its shareholders and lenders: borrowing and share issues flow in, repayments and dividends flow out."
+      }
+    },
+    {
+      "term": "tm_z2c8f7d6",
+      "meaning": {
+        "zh-TW": "期初手上的現金，也就是上一期資產負債表的現金及約當現金。",
+        "en": "The cash on hand at the start of the period, which is the cash and cash equivalents on last period’s balance sheet."
+      }
+    },
+    {
+      "term": "tm_12k2yq6k",
+      "meaning": {
+        "zh-TW": "期末手上的現金；它必須和這一期資產負債表的現金及約當現金一模一樣。",
+        "en": "The cash on hand at the end of the period; it must match the cash and cash equivalents on this period’s balance sheet exactly."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家物流公司這一年營業活動淨流入 {{money:350000}}，投資活動買了新車淨流出 {{money:500000}}，籌資活動向銀行借款淨流入 {{money:200000}}：現金增減額 ＝ {{money:350000}} − {{money:500000}} ＋ {{money:200000}} ＝ 增加 {{money:50000}}。期初現金 {{money:180000}}，期末現金 ＝ {{money:180000}} ＋ {{money:50000}} ＝ {{money:230000}}，翻到資產負債表，現金及約當現金那一列也必須是 {{money:230000}}。數字是網站自己編的，不是真實公司。",
+    "en": "A logistics company has a net operating inflow of {{money:350000}} for the year, a net investing outflow of {{money:500000}} for new vans, and a net financing inflow of {{money:200000}} from a bank loan: net change in cash = {{money:350000}} − {{money:500000}} + {{money:200000}} = an increase of {{money:50000}}. Opening cash was {{money:180000}}, so closing cash = {{money:180000}} + {{money:50000}} = {{money:230000}}, and the cash and cash equivalents line on the balance sheet must also read {{money:230000}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "第一條式子把現金的變化拆成三個來源，重點不是總數，而是組合：本業流入、投資流出、籌資流入是成長中公司的常見樣子；本業流出卻靠借款補洞，才是警訊。期末現金對得上資產負債表，是現金流量表的最後一道勾稽，對不上一定是哪裡漏記或算錯。這條關係只保證金額相符，不保證現金夠用，所以還要搭配現金流量比率看本業現金能不能還短債。常見誤讀：看到期末現金比期初多就覺得公司變好了，其實現金增加可能完全來自借款或增資，要看是哪一個活動在貢獻。",
+    "en": "The first equation splits the change in cash into three sources, and what matters is the mix rather than the total: an operating inflow, an investing outflow and a financing inflow is the usual shape of a growing company, whereas an operating outflow patched over with borrowing is the warning sign. Closing cash agreeing with the balance sheet is the final check on the cash flow statement; if it does not, something was missed or miscalculated. The relation only guarantees that the amounts agree, not that the cash is enough, so read the cash flow ratio next to see whether operating cash covers short-term debt. A common misreading is taking a rise in closing cash as a sign the business improved, when the increase may have come entirely from a loan or a share issue; always look at which activity supplied it."
+  },
+  "related": [
+    "fm_bmawj1ab",
+    "fm_3b2yf4gc",
+    "fm_ac6vnhzq",
+    "fm_077j3dmj"
+  ]
+}

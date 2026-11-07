@@ -1,0 +1,66 @@
+{
+  "id": "fm_9vfmmat3",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_8eyx0srs",
+  "ratioRef": "long_term_funds_to_ppe",
+  "formula": {
+    "zh-TW": "（股東權益總額 ＋ 非流動負債）÷ 不動產、廠房及設備淨額",
+    "en": "(Total equity + non-current liabilities) ÷ net property, plant and equipment"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "（股東權益總額 ＋ 非流動負債）÷ 機器設備淨額",
+        "en": "(Total equity + non-current liabilities) ÷ net machinery and equipment"
+      },
+      "note": {
+        "zh-TW": "課程版面的分母只有機器設備那一列的淨額，辦公設備沒有算進去，所以比率會比把全部不動產、廠房及設備放進分母時高一點。",
+        "en": "In the course layout the denominator is the net machinery line alone, without office equipment, so the ratio comes out a little higher than when all property, plant and equipment is included."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_y37ymj9w",
+      "meaning": {
+        "zh-TW": "股東投入加歷年留下的盈餘，是公司最不急著還的一筆錢。",
+        "en": "The owners’ contributions plus the profits kept over the years: the money the company is least pressed to repay."
+      }
+    },
+    {
+      "term": "tm_adqjyfqg",
+      "meaning": {
+        "zh-TW": "一年以後才到期的負債，例如長期借款；因為不用馬上還，也算長期資金。",
+        "en": "Liabilities due more than a year out, such as long-term borrowings; because they need not be repaid soon they count as long-term funds too."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "不動產、廠房及設備淨額",
+        "en": "Net property, plant and equipment"
+      },
+      "meaning": {
+        "zh-TW": "機器、辦公設備、廠房這些要用好幾年的資產，扣掉累計折舊後的帳面金額；它們的錢回收得很慢，所以要用長期資金來撐。",
+        "en": "Machinery, office equipment and buildings used for years, at carrying amount after accumulated depreciation; the money tied up in them comes back slowly, so it should be funded with long-term money."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家烘焙器材製造商的股東權益總額 {{money:600000}}，非流動負債 {{money:300000}}，長期資金合計 {{money:900000}}；不動產、廠房及設備淨額 {{money:750000}}。{{money:900000}} ÷ {{money:750000}} ＝ {{percent:1.2|digits=0}}。意思是長期資金不但蓋住全部設備，還多出 {{money:150000}} 可以支應日常營運。數字是網站自己編的，不是真實公司。",
+    "en": "A maker of bakery equipment has total equity of {{money:600000}} and non-current liabilities of {{money:300000}}, so long-term funds come to {{money:900000}}; net property, plant and equipment is {{money:750000}}. {{money:900000}} ÷ {{money:750000}} = {{percent:1.2|digits=0}}. Long-term funds cover all of the equipment with {{money:150000}} to spare for day-to-day operations. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "{{percent:1|digits=0}} 是分水嶺：高於它，表示長期使用的設備全部由長期資金支應；低於它，表示有一部分設備是靠一年內就要還的流動負債撐著，也就是以短支長，一旦短期借款續借不了，可能被迫賤賣設備或周轉不靈。比率不是越高越好，遠高於 {{percent:1|digits=0}} 可能表示募了很多長期資金卻沒有投入設備，資金運用不夠積極；要看同業的水準，也看自己有沒有逐年下滑。剛完成大筆擴廠、或剛還掉一筆長期借款的那一年，比率會明顯波動，解讀時要連著看兩三年。常見誤讀是只把股東權益當長期資金：長期借款也是長期資金，漏掉它會把比率算低、誤判成以短支長。",
+    "en": "{{percent:1|digits=0}} is the dividing line. Above it, all long-lived equipment is funded by long-term money; below it, part of the equipment rests on current liabilities that fall due within a year, that is, funding long assets with short money, and if the short-term loans cannot be rolled over the company may be forced into a fire sale or a cash squeeze. Higher is not always better: a ratio far above {{percent:1|digits=0}} can mean the company raised plenty of long-term money and has not put it to work in equipment. Compare with peers and watch for a year-on-year slide. The ratio swings in a year with a big plant expansion or a large loan repayment, so read two or three years together. A common misreading is counting only equity as long-term funds: long-term borrowings are long-term funds too, and leaving them out understates the ratio and wrongly signals short money funding long assets."
+  },
+  "related": [
+    "fm_pv0bed74",
+    "fm_nzw80erk",
+    "fm_xf48bqvs",
+    "fm_3b2yf4gc"
+  ]
+}

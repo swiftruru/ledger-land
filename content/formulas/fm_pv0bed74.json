@@ -1,0 +1,44 @@
+{
+  "id": "fm_pv0bed74",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_9e1rb64c",
+  "ratioRef": "debt_ratio",
+  "formula": {
+    "zh-TW": "負債總額 ÷ 資產總計",
+    "en": "Total liabilities ÷ total assets"
+  },
+  "components": [
+    {
+      "term": "tm_fwys72qx",
+      "meaning": {
+        "zh-TW": "資產負債表右上角的合計：欠供應商、欠銀行、欠政府的錢，不管一年內或一年後要還的都算。",
+        "en": "The total on the upper right of the balance sheet: everything owed to suppliers, banks and the government, whether due within a year or later."
+      }
+    },
+    {
+      "term": "tm_t7a3s6wb",
+      "meaning": {
+        "zh-TW": "資產負債表左邊的合計，也等於負債加股東權益；這條比率就是問，這些資產裡有幾成是借來的。",
+        "en": "The total on the left of the balance sheet, which also equals liabilities plus equity; the ratio asks what share of these assets is borrowed."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家小型印刷廠的負債總額 {{money:450000}}，資產總計 {{money:1000000}}：{{money:450000}} ÷ {{money:1000000}} ＝ {{percent:0.45|digits=0}}。意思是每 {{money:100}} 的資產，有 {{money:45}} 是債權人出的，剩下 {{money:55}} 是股東的。換算成權益倍數就是 {{money:1000000}} ÷ {{money:550000}}，約 {{number:1.82|unit=times}}。數字是網站自己編的，不是真實公司。",
+    "en": "A small print shop has total liabilities of {{money:450000}} and total assets of {{money:1000000}}: {{money:450000}} ÷ {{money:1000000}} = {{percent:0.45|digits=0}}. Of every {{money:100}} of assets, {{money:45}} was put in by creditors and the other {{money:55}} by the owners. As an equity multiplier that is {{money:1000000}} ÷ {{money:550000}}, about {{number:1.82|unit=times}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "比率越高，公司越依賴借款，利息負擔和到期還款的壓力也越重；越低則越倚賴股東的錢。多少算高沒有通用答案：銀行放款時常拿 {{percent:0.5|digits=0}} 當參考線，但靠別人的錢做生意的行業（例如銀行、租賃公司）天生就高出一大截，手上現金多的批發零售又常常偏低，所以一定要和同業比，再看自己幾年來的走勢。年底剛借一筆大額長期借款、錢還沒花出去時，負債和資產同時增加，比率會瞬間跳高，不代表體質變差。常見誤讀是把高負債比率一律當成壞事：借款的成本通常比股東資金低，還能放大股東報酬，真正該問的是還不還得起，所以要搭配利息保障倍數與現金流量比率一起看。",
+    "en": "The higher the ratio, the more the company leans on borrowing and the heavier its interest and repayment load; the lower it is, the more it relies on the owners’ money. There is no universal line for ‘too high’: banks often use {{percent:0.5|digits=0}} as a reference when lending, yet businesses that work with other people’s money by nature (banks, leasing companies) sit far above it, while cash-rich wholesalers and retailers often sit well below, so always compare with peers and with the company’s own trend over several years. If a large long-term loan is drawn just before year end and the cash has not yet been spent, liabilities and assets rise together and the ratio jumps without the business getting any weaker. A common misreading is treating a high debt ratio as bad in every case: borrowed money usually costs less than equity and can magnify the owners’ return. The real question is whether the debt can be serviced, which is why you read it alongside times interest earned and the cash flow ratio."
+  },
+  "related": [
+    "fm_dx2v6nw7",
+    "fm_9vfmmat3",
+    "fm_wfk7jdnd",
+    "fm_ac6vnhzq",
+    "fm_3b2yf4gc"
+  ]
+}

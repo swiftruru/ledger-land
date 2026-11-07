@@ -1,0 +1,36 @@
+{
+  "id": "fm_z6x5xxsc",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_j8zg281d",
+  "ratioRef": "me_leverage",
+  "formula": {
+    "zh-TW": "（本期營業收入 − 前期營業收入）÷ 本期行銷費用",
+    "en": "(Revenue this period − revenue last period) ÷ marketing expenses this period"
+  },
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "本期損益表第一列的營業收入，減掉前期的之後就是這一期營收增加的金額。", "en": "Revenue on this period’s income statement; subtracting last period’s figure leaves the increase in revenue this period." }
+    },
+    {
+      "label": { "zh-TW": "前期營業收入", "en": "Prior-period revenue" },
+      "meaning": { "zh-TW": "上一期損益表的營業收入，要另外輸入；只有一期的報表算不出這個比率。", "en": "Revenue from last period’s income statement, entered separately; a single period’s statements cannot produce this ratio." }
+    },
+    {
+      "term": "tm_k1tghpyd",
+      "meaning": { "zh-TW": "本期花在廣告與促銷的營業費用，當分母表示「每投入一元行銷」。", "en": "The operating expense spent on advertising and promotion this period; as the denominator it means ‘for each unit spent on marketing’." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家線上寵物用品店本期營業收入 {{money:16000000}}，前期 {{money:13000000}}，本期行銷費用 {{money:2400000}}：（{{money:16000000}} − {{money:13000000}}）÷ {{money:2400000}} ＝ {{money:3000000}} ÷ {{money:2400000}} ＝ {{number:1.25|unit=times}}。意思是每投入 {{money:1}} 行銷，這一期的營收比上一期多了 {{money:1.25}}。數字是網站自己編的，不是真實公司。",
+    "en": "An online pet supplies shop has revenue of {{money:16000000}} this period and {{money:13000000}} last period, with marketing expenses of {{money:2400000}} this period: ({{money:16000000}} − {{money:13000000}}) ÷ {{money:2400000}} = {{money:3000000}} ÷ {{money:2400000}} = {{number:1.25|unit=times}}. For every {{money:1}} spent on marketing, revenue is {{money:1.25}} higher than last period. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "這是課程自訂的觀察方式，公式是網站補充的定義，目前不出計分題。倍數越高，表示同樣的行銷投入對應到越多營收成長；營收衰退時分子是負的，倍數也變負。它和 ME intensity 回答的是不同問題：ME intensity 看本期行銷費用占營收的比例，ME leverage 看兩期之間營收的變動。要和自己前幾期比：倍數一期比一期低，表示多花的行銷錢帶來的成長越來越少，也就是邊際效益遞減。常見誤讀：把營收成長全部歸功於行銷，其實景氣、新產品與新通路都會推動營收，這個比率只是把成長和行銷支出擺在一起看，不是因果證明。",
+    "en": "This is an observation devised in the course; the formula is the site’s own working definition and it is not used in scored questions. The higher the multiple, the more revenue growth the same marketing spend is matched with; when revenue falls the numerator turns negative and so does the multiple. It answers a different question from ME intensity: intensity shows this period’s marketing as a share of revenue, while leverage looks at the change in revenue between two periods. Compare it with the company’s own earlier periods: a multiple that falls period after period means each extra unit of marketing is bringing less growth, which is diminishing returns. A common misreading is crediting all revenue growth to marketing, when the economy, new products and new channels push revenue too; the ratio merely sets growth beside marketing spend and does not prove cause and effect."
+  },
+  "related": ["fm_xeqpkm9h", "fm_agzjcqx8", "fm_rk4jpsvc"]
+}

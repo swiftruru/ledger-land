@@ -1,0 +1,96 @@
+{
+  "id": "fm_mae66cbh",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_r0a5t3kq",
+  "ratioRef": "roa",
+  "formula": {
+    "zh-TW": "［本期淨利 ＋ 利息費用 ×（1 − 稅率）］÷ 平均資產總計",
+    "en": "[Profit for the period + interest expense × (1 − tax rate)] ÷ average total assets"
+  },
+  "versions": [
+    {
+      "version": "slides02",
+      "formula": {
+        "zh-TW": "Profit ÷ A",
+        "en": "Profit ÷ A"
+      },
+      "note": {
+        "zh-TW": "這一份用四個基本項目的縮寫寫公式：Profit 是本期淨利，A 是資產總計，用期末的資產，不加回利息也不取平均。",
+        "en": "This handout writes the formula with the four base items: Profit is profit for the period and A is total assets at the period end, with no interest added back and no averaging."
+      }
+    },
+    {
+      "version": "dupont",
+      "formula": {
+        "zh-TW": "純益率 × 總資產週轉率",
+        "en": "Net profit margin × total asset turnover"
+      },
+      "note": {
+        "zh-TW": "杜邦分析把它拆成兩項相乘，兩項都用簡化版（期末資產、不加回利息），所以結果和簡化版相同，和年報寫法不同。",
+        "en": "DuPont analysis splits it into two factors multiplied together, both on the simplified basis (closing assets, no interest added back), so the result matches the simplified version rather than the annual report wording."
+      }
+    },
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "本期淨利 ÷ 期末資產總計",
+        "en": "Profit for the period ÷ closing total assets"
+      },
+      "note": {
+        "zh-TW": "課程模板只有一期的資產負債表，分母用期末資產總計，分子也不加回稅後利息。",
+        "en": "The course template has only one balance sheet, so the denominator is closing total assets and the numerator does not add back after-tax interest."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_n4e8t2jy",
+      "meaning": {
+        "zh-TW": "損益表最後一列，扣完利息和所得稅後真正賺到的錢。",
+        "en": "The last line of the income statement: what is really earned after interest and income tax."
+      }
+    },
+    {
+      "term": "tm_k6t2e9wr",
+      "meaning": {
+        "zh-TW": "付給債權人的利息。資產是股東和債權人一起出錢買的，淨利卻只算股東那一份，所以要把付給債權人的利息加回來，才是全部資產賺到的報酬。",
+        "en": "Interest paid to lenders. The assets were funded by owners and lenders together, yet profit counts only the owners’ share, so the interest paid to lenders is added back to get the return earned by all the assets."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "稅率",
+        "en": "Tax rate"
+      },
+      "meaning": {
+        "zh-TW": "所得稅的稅率。利息可以抵稅，公司實際上只多付了稅後的利息，所以加回的利息要先乘上（1 − 稅率）。",
+        "en": "The income tax rate. Interest is tax-deductible, so the company really bore only the after-tax interest, and the amount added back is multiplied by (1 − tax rate)."
+      }
+    },
+    {
+      "term": "tm_t7a3s6wb",
+      "meaning": {
+        "zh-TW": "公司全部的資源，期初與期末的平均；用平均是因為淨利是一整年累積的，資產卻是某一天的餘額。",
+        "en": "Everything the company holds, averaged between opening and closing; an average is used because profit builds up over a year while assets are a balance on one day."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家冷凍倉儲公司本期淨利 {{money:180000}}，利息費用 {{money:50000}}，稅率 {{percent:0.2|digits=0}}，稅後利息是 {{money:40000}}，分子 {{money:220000}}；資產總計期初 {{money:1900000}}、期末 {{money:2100000}}，平均 {{money:2000000}}。{{money:220000}} ÷ {{money:2000000}} ＝ {{percent:0.11|digits=0}}。意思是不管錢是誰出的，每 {{money:100}} 的資產一年賺回 {{money:11}}；若用簡化版直接算 {{money:180000}} ÷ {{money:2000000}}，只有 {{percent:0.09|digits=0}}。數字是網站自己編的，不是真實公司。",
+    "en": "A cold storage company has profit for the period of {{money:180000}}, interest expense of {{money:50000}} and a tax rate of {{percent:0.2|digits=0}}, so after-tax interest is {{money:40000}} and the numerator is {{money:220000}}; total assets were {{money:1900000}} at the start and {{money:2100000}} at the end, an average of {{money:2000000}}. {{money:220000}} ÷ {{money:2000000}} = {{percent:0.11|digits=0}}. Whoever put the money in, every {{money:100}} of assets earned {{money:11}} in the year; the simplified version, {{money:180000}} ÷ {{money:2000000}}, gives only {{percent:0.09|digits=0}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "越高，表示公司把手上的資源用得越有效率，不論這些資源是股東出的還是借來的。把稅後利息加回分子，是為了排除負債多寡的影響，讓借款多和借款少的公司可以放在同一個尺度上比；簡化版直接用本期淨利，借款越多的公司會被利息拉低。重資產產業（製造、倉儲、電信）用它最合適，輕資產的軟體、顧問業資產很少，算出來會高得沒有參考性。要和同業比，也看自己幾年的趨勢。它可以拆成純益率乘總資產週轉率：報酬率下滑時先看是哪一項在掉。常見誤讀是以為資產報酬率和權益報酬率應該差不多：沒有負債時兩者相同，負債越多，權益報酬率被槓桿放得越大，差距就越大，差距本身就是財務槓桿的大小。",
+    "en": "The higher it is, the more efficiently the company is using the resources in its hands, whether the owners put them in or they were borrowed. Adding after-tax interest back to the numerator removes the effect of how much debt there is, so heavily and lightly indebted companies sit on the same scale; the simplified version uses profit alone, and the more a company borrows the more interest drags it down. It suits asset-heavy industries (manufacturing, warehousing, telecoms) best; asset-light software and consulting firms hold so few assets that the figure comes out too high to mean much. Compare with peers and watch the company’s own trend. It splits into net profit margin times total asset turnover, so when the return slips, check which of the two is falling. A common misreading is expecting return on assets and return on equity to be roughly equal: they coincide only with no debt, and the more debt there is, the more leverage inflates return on equity, so the gap itself measures the financial leverage."
+  },
+  "related": [
+    "fm_0tqaf9qd",
+    "fm_zefdfz9a",
+    "fm_5k6wp1c0",
+    "fm_239p828h",
+    "fm_dx2v6nw7"
+  ]
+}

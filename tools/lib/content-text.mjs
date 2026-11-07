@@ -244,6 +244,7 @@ function checkFilenames(parsed, issues) {
   one(parsed.chapters, '章節', 'content/chapters');
   one(parsed.levels, '關卡', 'content/levels');
   one(parsed.stories, '故事', 'content/stories');
+  one(parsed.formulas ?? [], '公式', 'content/formulas');
   for (const q of parsed.questions) {
     if (!q.file.startsWith('content/questions/')) continue;
     if (base(q.file) !== q.data.id) issues.push(error('struct.filename', q.file, 'id', `題目檔名必須等於 id ${q.data.id}`));
@@ -270,7 +271,7 @@ export function runTextChecks(parsed, options = {}) {
   const issues = [];
   checkFilenames(parsed, issues);
   // 學習端文字的延伸只看 LocalizedText（學生看得到的欄位）；pendingRefs、authorNotes、ratioRef 是一般字串，不受影響
-  for (const list of [parsed.terms, parsed.chapters, parsed.objectives, parsed.levels, parsed.stories, parsed.questions])
+  for (const list of [parsed.terms, parsed.chapters, parsed.objectives, parsed.levels, parsed.stories, parsed.questions, parsed.formulas ?? []])
     for (const e of list) checkTextStyle(e, issues, { rawNumbers, learner: true });
   for (const q of parsed.questions) checkQuestion(q, issues);
 

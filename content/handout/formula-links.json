@@ -1,0 +1,2133 @@
+{
+  "$comment": "會計公式的講義對照（08 的講義題庫一節，2026-11-07）：每條公式在三份講義的出處（說明的投影片）與相關的講義題，用 deck 與 slide 寫，建置時換成 hq_ ID。questions 分三種關係：formula 考這條公式的組成或關係、numeric 情境裡有數字可以拿公式驗算、concept 只考相關概念。手改；改完跑 pnpm content:check。",
+  "links": [
+    {
+      "formula": "fm_077j3dmj",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            80,
+            96,
+            159
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d1",
+            "slide": 67
+          },
+          {
+            "deck": "d1",
+            "slide": 117
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d1",
+            "slide": 128
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 22
+          },
+          {
+            "deck": "d1",
+            "slide": 88
+          },
+          {
+            "deck": "d1",
+            "slide": 116
+          },
+          {
+            "deck": "d1",
+            "slide": 118
+          },
+          {
+            "deck": "d1",
+            "slide": 68
+          },
+          {
+            "deck": "d1",
+            "slide": 66
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_0tqaf9qd",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            5,
+            8
+          ]
+        },
+        {
+          "deck": "d3",
+          "slides": [
+            42,
+            47
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d2",
+            "slide": 42
+          },
+          {
+            "deck": "d2",
+            "slide": 52
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 9
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 56
+          },
+          {
+            "deck": "d2",
+            "slide": 59
+          },
+          {
+            "deck": "d2",
+            "slide": 60
+          },
+          {
+            "deck": "d2",
+            "slide": 78
+          },
+          {
+            "deck": "d3",
+            "slide": 140
+          },
+          {
+            "deck": "d3",
+            "slide": 141
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_145684mr",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            21,
+            31
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 101
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 100
+          },
+          {
+            "deck": "d3",
+            "slide": 102
+          },
+          {
+            "deck": "d3",
+            "slide": 103
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_1mknnm52",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            21,
+            31
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 32
+          }
+        ],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_239p828h",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d2",
+            "slide": 57
+          }
+        ],
+        "numeric": [],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 69
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_3b2yf4gc",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            14,
+            76,
+            77,
+            124,
+            155,
+            160
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d1",
+            "slide": 106
+          },
+          {
+            "deck": "d1",
+            "slide": 120
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d1",
+            "slide": 124
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 17
+          },
+          {
+            "deck": "d1",
+            "slide": 20
+          },
+          {
+            "deck": "d1",
+            "slide": 105
+          },
+          {
+            "deck": "d1",
+            "slide": 121
+          },
+          {
+            "deck": "d2",
+            "slide": 50
+          },
+          {
+            "deck": "d2",
+            "slide": 55
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_3mjtajx8",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            27,
+            32
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 94
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_3vk408ws",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            131,
+            158
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d1",
+            "slide": 151
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 18
+          },
+          {
+            "deck": "d1",
+            "slide": 25
+          },
+          {
+            "deck": "d1",
+            "slide": 140
+          },
+          {
+            "deck": "d1",
+            "slide": 141
+          },
+          {
+            "deck": "d1",
+            "slide": 145
+          },
+          {
+            "deck": "d1",
+            "slide": 147
+          },
+          {
+            "deck": "d1",
+            "slide": 148
+          },
+          {
+            "deck": "d1",
+            "slide": 149
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_3wy1y84s",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            32
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_429hdk1h",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            37
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d1",
+            "slide": 64
+          }
+        ],
+        "numeric": [],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 63
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_4jqqsmna",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            27,
+            32
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 33
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 91
+          },
+          {
+            "deck": "d2",
+            "slide": 93
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_505vc635",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            43,
+            49
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 139
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 50
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 135
+          },
+          {
+            "deck": "d3",
+            "slide": 136
+          },
+          {
+            "deck": "d3",
+            "slide": 138
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_52gntpsa",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            18
+          ]
+        },
+        {
+          "deck": "d3",
+          "slides": [
+            44,
+            55
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 147
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d1",
+            "slide": 126
+          },
+          {
+            "deck": "d1",
+            "slide": 127
+          },
+          {
+            "deck": "d3",
+            "slide": 56
+          },
+          {
+            "deck": "d3",
+            "slide": 145
+          },
+          {
+            "deck": "d3",
+            "slide": 146
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 10
+          },
+          {
+            "deck": "d3",
+            "slide": 148
+          },
+          {
+            "deck": "d3",
+            "slide": 149
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_5k6wp1c0",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            6,
+            14
+          ]
+        },
+        {
+          "deck": "d3",
+          "slides": [
+            22,
+            35
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d2",
+            "slide": 47
+          },
+          {
+            "deck": "d3",
+            "slide": 123
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 15
+          },
+          {
+            "deck": "d2",
+            "slide": 73
+          },
+          {
+            "deck": "d3",
+            "slide": 120
+          },
+          {
+            "deck": "d3",
+            "slide": 121
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 71
+          },
+          {
+            "deck": "d2",
+            "slide": 72
+          },
+          {
+            "deck": "d2",
+            "slide": 74
+          },
+          {
+            "deck": "d2",
+            "slide": 75
+          },
+          {
+            "deck": "d3",
+            "slide": 36
+          },
+          {
+            "deck": "d3",
+            "slide": 119
+          },
+          {
+            "deck": "d3",
+            "slide": 122
+          },
+          {
+            "deck": "d3",
+            "slide": 124
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_6ze3efpg",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            20,
+            29
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 30
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 109
+          },
+          {
+            "deck": "d3",
+            "slide": 110
+          },
+          {
+            "deck": "d3",
+            "slide": 111
+          },
+          {
+            "deck": "d3",
+            "slide": 112
+          },
+          {
+            "deck": "d3",
+            "slide": 114
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_73k20388",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            19,
+            25
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 26
+          },
+          {
+            "deck": "d3",
+            "slide": 93
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 95
+          },
+          {
+            "deck": "d3",
+            "slide": 96
+          },
+          {
+            "deck": "d3",
+            "slide": 97
+          },
+          {
+            "deck": "d3",
+            "slide": 98
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_7zq776p7",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            43,
+            51
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 132
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 52
+          },
+          {
+            "deck": "d3",
+            "slide": 130
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 131
+          },
+          {
+            "deck": "d3",
+            "slide": 133
+          },
+          {
+            "deck": "d3",
+            "slide": 134
+          },
+          {
+            "deck": "d3",
+            "slide": 137
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_9fewe3a3",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            18,
+            20,
+            21
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d2",
+            "slide": 101
+          },
+          {
+            "deck": "d2",
+            "slide": 102
+          },
+          {
+            "deck": "d2",
+            "slide": 104
+          },
+          {
+            "deck": "d2",
+            "slide": 105
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 19
+          },
+          {
+            "deck": "d2",
+            "slide": 22
+          },
+          {
+            "deck": "d2",
+            "slide": 103
+          }
+        ],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_9vfmmat3",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            6,
+            9
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 10
+          },
+          {
+            "deck": "d3",
+            "slide": 70
+          },
+          {
+            "deck": "d3",
+            "slide": 71
+          },
+          {
+            "deck": "d3",
+            "slide": 72
+          },
+          {
+            "deck": "d3",
+            "slide": 73
+          },
+          {
+            "deck": "d3",
+            "slide": 74
+          }
+        ],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_ac6vnhzq",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            11,
+            13
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 14
+          },
+          {
+            "deck": "d3",
+            "slide": 155
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 156
+          },
+          {
+            "deck": "d3",
+            "slide": 157
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_agzjcqx8",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            30
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 87
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_bmawj1ab",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            130,
+            131,
+            132
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d1",
+            "slide": 152
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 6
+          },
+          {
+            "deck": "d1",
+            "slide": 23
+          },
+          {
+            "deck": "d1",
+            "slide": 135
+          },
+          {
+            "deck": "d1",
+            "slide": 136
+          },
+          {
+            "deck": "d1",
+            "slide": 137
+          },
+          {
+            "deck": "d1",
+            "slide": 138
+          },
+          {
+            "deck": "d1",
+            "slide": 139
+          },
+          {
+            "deck": "d1",
+            "slide": 142
+          },
+          {
+            "deck": "d1",
+            "slide": 143
+          },
+          {
+            "deck": "d1",
+            "slide": 146
+          },
+          {
+            "deck": "d1",
+            "slide": 150
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_dx2v6nw7",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            7,
+            16
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d1",
+            "slide": 112
+          },
+          {
+            "deck": "d2",
+            "slide": 48
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 17
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 58
+          },
+          {
+            "deck": "d2",
+            "slide": 76
+          },
+          {
+            "deck": "d2",
+            "slide": 77
+          },
+          {
+            "deck": "d2",
+            "slide": 79
+          },
+          {
+            "deck": "d2",
+            "slide": 80
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_ehc6qwjn",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            26,
+            30
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 31
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 88
+          },
+          {
+            "deck": "d2",
+            "slide": 89
+          },
+          {
+            "deck": "d2",
+            "slide": 90
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_g6b7tn65",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            64
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_hfssf6ha",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            33
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d1",
+            "slide": 74
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 48
+          },
+          {
+            "deck": "d1",
+            "slide": 49
+          },
+          {
+            "deck": "d1",
+            "slide": 51
+          },
+          {
+            "deck": "d1",
+            "slide": 52
+          },
+          {
+            "deck": "d1",
+            "slide": 53
+          },
+          {
+            "deck": "d1",
+            "slide": 56
+          },
+          {
+            "deck": "d1",
+            "slide": 72
+          },
+          {
+            "deck": "d1",
+            "slide": 19
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_hqda6nvm",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            104
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 104
+          }
+        ],
+        "numeric": [],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_hzcxphkb",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            31
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 45
+          },
+          {
+            "deck": "d1",
+            "slide": 46
+          },
+          {
+            "deck": "d1",
+            "slide": 47
+          },
+          {
+            "deck": "d1",
+            "slide": 19
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_jvdxknhd",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            37
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 177
+          }
+        ],
+        "numeric": [],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_mae66cbh",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            5,
+            10
+          ]
+        },
+        {
+          "deck": "d3",
+          "slides": [
+            42,
+            45
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d2",
+            "slide": 49
+          },
+          {
+            "deck": "d3",
+            "slide": 128
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 46
+          },
+          {
+            "deck": "d3",
+            "slide": 125
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 61
+          },
+          {
+            "deck": "d3",
+            "slide": 127
+          },
+          {
+            "deck": "d3",
+            "slide": 129
+          },
+          {
+            "deck": "d3",
+            "slide": 142
+          },
+          {
+            "deck": "d3",
+            "slide": 126
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_mrxttb09",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            20,
+            27
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 28
+          },
+          {
+            "deck": "d3",
+            "slide": 107
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 105
+          },
+          {
+            "deck": "d3",
+            "slide": 106
+          },
+          {
+            "deck": "d3",
+            "slide": 108
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_nzw80erk",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            90,
+            93
+          ]
+        },
+        {
+          "deck": "d3",
+          "slides": [
+            57,
+            59
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d1",
+            "slide": 100
+          },
+          {
+            "deck": "d1",
+            "slide": 109
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d1",
+            "slide": 122
+          },
+          {
+            "deck": "d3",
+            "slide": 60
+          },
+          {
+            "deck": "d3",
+            "slide": 75
+          },
+          {
+            "deck": "d3",
+            "slide": 76
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 99
+          },
+          {
+            "deck": "d3",
+            "slide": 77
+          },
+          {
+            "deck": "d3",
+            "slide": 79
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_pk88kpht",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            37,
+            38
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 173
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 39
+          },
+          {
+            "deck": "d3",
+            "slide": 172
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 170
+          },
+          {
+            "deck": "d3",
+            "slide": 171
+          },
+          {
+            "deck": "d3",
+            "slide": 174
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_pr9ht8fb",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            37,
+            40
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 41
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 175
+          },
+          {
+            "deck": "d3",
+            "slide": 176
+          },
+          {
+            "deck": "d3",
+            "slide": 178
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_pv0bed74",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            6,
+            7
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 8
+          },
+          {
+            "deck": "d3",
+            "slide": 65
+          },
+          {
+            "deck": "d3",
+            "slide": 66
+          },
+          {
+            "deck": "d3",
+            "slide": 67
+          },
+          {
+            "deck": "d3",
+            "slide": 69
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 123
+          },
+          {
+            "deck": "d3",
+            "slide": 68
+          },
+          {
+            "deck": "d3",
+            "slide": 143
+          },
+          {
+            "deck": "d3",
+            "slide": 144
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_qzh8rn8c",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            99,
+            113
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 99
+          },
+          {
+            "deck": "d3",
+            "slide": 113
+          }
+        ],
+        "numeric": [],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_rk4jpsvc",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            26,
+            28
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d2",
+            "slide": 39
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 29
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 81
+          },
+          {
+            "deck": "d2",
+            "slide": 82
+          },
+          {
+            "deck": "d2",
+            "slide": 83
+          },
+          {
+            "deck": "d2",
+            "slide": 84
+          },
+          {
+            "deck": "d2",
+            "slide": 85
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_scaffwgf",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            27,
+            28,
+            156
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d1",
+            "slide": 16
+          },
+          {
+            "deck": "d1",
+            "slide": 21
+          },
+          {
+            "deck": "d1",
+            "slide": 50
+          },
+          {
+            "deck": "d1",
+            "slide": 57
+          },
+          {
+            "deck": "d1",
+            "slide": 61
+          }
+        ],
+        "numeric": [],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 54
+          },
+          {
+            "deck": "d1",
+            "slide": 55
+          },
+          {
+            "deck": "d1",
+            "slide": 73
+          },
+          {
+            "deck": "d1",
+            "slide": 58
+          },
+          {
+            "deck": "d1",
+            "slide": 59
+          },
+          {
+            "deck": "d1",
+            "slide": 60
+          },
+          {
+            "deck": "d1",
+            "slide": 62
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_sm2xtt5h",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            23
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [],
+        "concept": []
+      }
+    },
+    {
+      "formula": "fm_svxp808g",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            57,
+            61
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 84
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 62
+          },
+          {
+            "deck": "d3",
+            "slide": 78
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 80
+          },
+          {
+            "deck": "d3",
+            "slide": 81
+          },
+          {
+            "deck": "d3",
+            "slide": 82
+          },
+          {
+            "deck": "d3",
+            "slide": 83
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_t18f8tfn",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            27,
+            28,
+            30
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d1",
+            "slide": 70
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 42
+          },
+          {
+            "deck": "d1",
+            "slide": 43
+          },
+          {
+            "deck": "d1",
+            "slide": 44
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_thn4m036",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            19,
+            23
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 24
+          },
+          {
+            "deck": "d3",
+            "slide": 90
+          },
+          {
+            "deck": "d3",
+            "slide": 91
+          },
+          {
+            "deck": "d3",
+            "slide": 92
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 94
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_vk0dq2m7",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            24
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 25
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 54
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_wfk7jdnd",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            58,
+            63
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 64
+          },
+          {
+            "deck": "d3",
+            "slide": 85
+          },
+          {
+            "deck": "d3",
+            "slide": 87
+          },
+          {
+            "deck": "d3",
+            "slide": 88
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 86
+          },
+          {
+            "deck": "d3",
+            "slide": 89
+          },
+          {
+            "deck": "d3",
+            "slide": 179
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_wxq9e1j5",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            11,
+            15
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 16
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 159
+          },
+          {
+            "deck": "d3",
+            "slide": 163
+          },
+          {
+            "deck": "d3",
+            "slide": 164
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_xeqpkm9h",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            27,
+            34
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 35
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 98
+          },
+          {
+            "deck": "d2",
+            "slide": 99
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_xf48bqvs",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            21,
+            33
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 34
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 115
+          },
+          {
+            "deck": "d3",
+            "slide": 116
+          },
+          {
+            "deck": "d3",
+            "slide": 117
+          },
+          {
+            "deck": "d3",
+            "slide": 118
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_yvx7qnt9",
+      "sources": [
+        {
+          "deck": "d1",
+          "slides": [
+            76,
+            80,
+            95
+          ]
+        },
+        {
+          "deck": "d2",
+          "slides": [
+            4
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 22
+          },
+          {
+            "deck": "d1",
+            "slide": 87
+          },
+          {
+            "deck": "d1",
+            "slide": 89
+          },
+          {
+            "deck": "d1",
+            "slide": 113
+          },
+          {
+            "deck": "d1",
+            "slide": 115
+          },
+          {
+            "deck": "d2",
+            "slide": 51
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_z6x5xxsc",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            34
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [],
+        "concept": [
+          {
+            "deck": "d2",
+            "slide": 97
+          },
+          {
+            "deck": "d2",
+            "slide": 100
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_zefdfz9a",
+      "sources": [
+        {
+          "deck": "d2",
+          "slides": [
+            6,
+            12
+          ]
+        },
+        {
+          "deck": "d3",
+          "slides": [
+            44,
+            53
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [
+          {
+            "deck": "d3",
+            "slide": 153
+          }
+        ],
+        "numeric": [
+          {
+            "deck": "d2",
+            "slide": 13
+          },
+          {
+            "deck": "d2",
+            "slide": 68
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d1",
+            "slide": 52
+          },
+          {
+            "deck": "d2",
+            "slide": 66
+          },
+          {
+            "deck": "d2",
+            "slide": 67
+          },
+          {
+            "deck": "d2",
+            "slide": 69
+          },
+          {
+            "deck": "d2",
+            "slide": 70
+          },
+          {
+            "deck": "d3",
+            "slide": 54
+          },
+          {
+            "deck": "d3",
+            "slide": 151
+          },
+          {
+            "deck": "d3",
+            "slide": 152
+          },
+          {
+            "deck": "d3",
+            "slide": 154
+          }
+        ]
+      }
+    },
+    {
+      "formula": "fm_zzdy9bgy",
+      "sources": [
+        {
+          "deck": "d3",
+          "slides": [
+            12,
+            17
+          ]
+        }
+      ],
+      "questions": {
+        "formula": [],
+        "numeric": [
+          {
+            "deck": "d3",
+            "slide": 18
+          }
+        ],
+        "concept": [
+          {
+            "deck": "d3",
+            "slide": 166
+          },
+          {
+            "deck": "d3",
+            "slide": 167
+          },
+          {
+            "deck": "d3",
+            "slide": 168
+          },
+          {
+            "deck": "d3",
+            "slide": 169
+          }
+        ]
+      }
+    }
+  ]
+}

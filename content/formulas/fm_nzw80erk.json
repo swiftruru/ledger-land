@@ -1,0 +1,43 @@
+{
+  "id": "fm_nzw80erk",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_c8r1t4zm",
+  "ratioRef": "current_ratio",
+  "formula": {
+    "zh-TW": "流動資產 ÷ 流動負債",
+    "en": "Current assets ÷ current liabilities"
+  },
+  "components": [
+    {
+      "term": "tm_k52yxb68",
+      "meaning": {
+        "zh-TW": "一年內會變成現金的資產：現金、應收帳款、存貨、預付費用等，是還短期債務的本錢。",
+        "en": "Assets that will turn into cash within a year: cash, receivables, inventories, prepayments and so on; the means for paying short-term debts."
+      }
+    },
+    {
+      "term": "tm_c2y9b5ex",
+      "meaning": {
+        "zh-TW": "一年內要付清的債務：應付帳款、短期借款、應付稅款等。比率問的是前者是後者的幾倍。",
+        "en": "Debts due within a year: trade payables, short-term borrowings, taxes payable and so on. The ratio asks how many times the former covers the latter."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家腳踏車零件行的流動資產 {{money:750000}}，流動負債 {{money:500000}}：{{money:750000}} ÷ {{money:500000}} ＝ {{number:1.5|unit=times}}。意思是一年內會變成現金的資產，是一年內要還的債務的 {{number:1.5|unit=times}}，每 {{money:1}} 的短期債務有 {{money:1.5}} 的流動資產對應。數字是網站自己編的，不是真實公司。",
+    "en": "A bicycle parts shop has current assets of {{money:750000}} and current liabilities of {{money:500000}}: {{money:750000}} ÷ {{money:500000}} = {{number:1.5|unit=times}}. The assets that will turn into cash within a year are {{number:1.5|unit=times}} the debts due within a year, so every {{money:1}} of short-term debt is matched by {{money:1.5}} of current assets. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "它是最常用的短期償債能力指標：倍數越高，一年內周轉不過來的風險越低；低於 {{number:1|unit=times}} 表示流動資產不夠還流動負債，要靠借新債或變賣長期資產。{{number:1.4|unit=times}} 左右常被當成參考線，但各產業差很多：量販、餐飲收現金快、進貨賒帳久，低於 {{number:1|unit=times}} 也能正常運轉；機械製造備料多、收款慢，通常要更高。要和同業比，也看自己的趨勢。它只是總量指標，看不出流動資產的品質：存貨賣不賣得掉、應收帳款收不收得回，要再看速動比率與現金流量比率。年底突然借一筆短期借款，分子分母同增，比率會往 {{number:1|unit=times}} 靠近，解讀時要留意。常見誤讀是以為越高越好：流動資產裡可能塞滿賣不掉的存貨或收不回的帳款，倍數高不代表隨時有現金，太高也可能是存貨堆積或現金閒置。",
+    "en": "It is the most common measure of short-term solvency: the higher the multiple, the lower the risk of a cash squeeze within the year; below {{number:1|unit=times}}, current assets are not enough to meet current liabilities and the company must borrow afresh or sell long-lived assets. About {{number:1.4|unit=times}} is often used as a reference line, but industries differ widely: hypermarkets and restaurants collect cash quickly and buy on long credit, so they run normally below {{number:1|unit=times}}, while machinery makers hold large stocks and collect slowly and usually need more. Compare with peers and with the company’s own trend. It is only a headline figure and says nothing about the quality of current assets, whether the stock will sell or the receivables will be collected, so read the quick ratio and the cash flow ratio next. A short-term loan taken just before year end raises numerator and denominator alike and pulls the ratio towards {{number:1|unit=times}}, which is worth remembering when reading it. A common misreading is assuming higher is always better: current assets may be stuffed with unsaleable stock or uncollectable receivables, so a high multiple does not guarantee ready cash, and a very high one may itself signal piled-up stock or idle cash."
+  },
+  "related": [
+    "fm_svxp808g",
+    "fm_ac6vnhzq",
+    "fm_9vfmmat3",
+    "fm_pv0bed74"
+  ]
+}

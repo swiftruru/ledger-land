@@ -29,6 +29,37 @@ export interface ContentManifest {
   stories?: StoryManifestEntry[];
   /** 講義題庫（M4c，2026-11-04；08 的講義題庫一節）：老師授權的講義練習題，只有中文；一份講義一檔、審核用的題另一檔，都不進 precache（SW 執行期快取） */
   handouts?: HandoutManifestEntry[];
+  /** 會計公式（2026-11-07；08 第 3.11 節）：索引每個語系一檔（進 precache，清單、搜尋與題目反查用），完整內容每個語系一檔（不進 precache，SW 執行期快取） */
+  formulaIndex?: Record<string, string>;
+  formulaDetails?: Record<string, string>;
+}
+
+/** 公式索引的一筆：名稱與別名已依語系攤平；questionIds 是相關講義題的 ID（三種關係攤平，依講義順序） */
+export interface FormulaIndexEntry {
+  id: string;
+  kind: 'ratio' | 'relation';
+  /** 指標登錄檔的分類（financial_structure 等）或 statement（報表關係） */
+  category: string;
+  label: string;
+  aliases: string[];
+  /** 公式一行 */
+  formula: string;
+  termRef: string;
+  ratioRef?: string;
+  questionIds: string[];
+}
+
+export type FormulaLinkRelation = 'formula' | 'numeric' | 'concept';
+
+/** 公式的完整內容：各版本寫法（有講義的帶講義編號）、各項數值的意思、原創範例、怎麼看、講義出處與相關題（題目帶 topic，不必載講義檔） */
+export interface FormulaSnapshot extends FormulaIndexEntry {
+  versions: { version: string; deck?: { id: string; code: string; title: string }; formula: string; note?: string }[];
+  components: { term?: string; label: string; meaning: string }[];
+  example: string;
+  reading: string;
+  related: string[];
+  sources: { id: string; code: string; title: string; slides: number[] }[];
+  questions: Record<FormulaLinkRelation, { id: string; deck: string; topic: string }[]>;
 }
 
 export interface HandoutManifestEntry {
@@ -232,7 +263,7 @@ export interface ChapterSummary {
 
 /** 已下架項目的墓碑（08 第 7.3 節）：supersededBy 指向替代項目 */
 export interface Tombstone {
-  kind: 'term' | 'chapter' | 'objective' | 'level' | 'question' | 'story';
+  kind: 'term' | 'chapter' | 'objective' | 'level' | 'question' | 'story' | 'formula';
   id: string;
   supersededBy?: string;
   retiredNote?: Record<string, string>;
@@ -417,6 +448,23 @@ function cached<T>(path: string): Promise<T> {
   return p;
 }
 
+/** 公式索引（每個語系一檔，約 5 KB gzip）：公式清單、搜尋、苦練頁的「相關公式」反查都只讀它；沒有公式的快照回空陣列 */
+export async function loadFormulaIndex(locale: Locale): Promise<FormulaIndexEntry[]> {
+  const m = await loadManifest();
+  const path = m.formulaIndex?.[locale];
+  if (!path) return [];
+  return cached<FormulaIndexEntry[]>(path);
+}
+
+/** 一條公式的完整內容：整檔讀進來再找（每個語系一檔）；快照裡沒有這條公式時回傳 undefined */
+export async function loadFormulaDetail(id: string, locale: Locale): Promise<FormulaSnapshot | undefined> {
+  const m = await loadManifest();
+  const path = m.formulaDetails?.[locale];
+  if (!path) return undefined;
+  const list = await cached<FormulaSnapshot[]>(path);
+  return list.find((f) => f.id === id);
+}
+
 /** 講義題庫（M4c）：manifest.handouts 的第一份（目前只有期中考一份）；沒有講義題庫的快照回 undefined */
 export async function loadHandoutIndex(): Promise<HandoutManifestEntry | undefined> {
   const m = await loadManifest();
@@ -527,6 +575,10 @@ export async function resolveId(id: string, locale: Locale = 'zh-TW'): Promise<R
       const terms = await loadTermIndex(locale);
       if (terms.some((t) => t.id === id)) return { status: 'active', kind };
     }
+    if (kind === 'formula') {
+      const formulas = await loadFormulaIndex(locale);
+      if (formulas.some((f) => f.id === id)) return { status: 'active', kind };
+    }
   }
   const tombstones = await loadTombstones();
   const t = tombstones.find((x) => x.id === id);
@@ -557,6 +609,8 @@ function kindOfId(id: string): Tombstone['kind'] | undefined {
       return 'question';
     case 'story':
       return 'story';
+    case 'fm':
+      return 'formula';
     default:
       return undefined;
   }

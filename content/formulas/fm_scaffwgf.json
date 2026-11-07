@@ -1,0 +1,61 @@
+{
+  "id": "fm_scaffwgf",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "relation",
+  "termRef": "tm_tkj8x3a7",
+  "label": { "zh-TW": "損益表的五層利益", "en": "The five profit lines of the income statement" },
+  "category": "statement",
+  "formula": {
+    "zh-TW": "營業收入 − 營業成本 ＝ 營業毛利；營業毛利 − 銷管費用 ＝ 營業利益；營業利益 ± 營業外收支 ＝ 經常利益；經常利益 ± 非常損益 ＝ 稅前淨利；稅前淨利 − 所得稅費用 ＝ 本期淨利",
+    "en": "Revenue − cost of sales = gross profit; gross profit − distribution and administrative expenses = operating profit; operating profit ± non-operating income and expenses = ordinary profit; ordinary profit ± extraordinary items = profit before tax; profit before tax − income tax expense = profit for the period"
+  },
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "最上面那一列：這段期間賣出商品或提供服務認列的金額，賒銷也算。", "en": "The top line: what was earned from selling goods or services in the period, credit sales included." }
+    },
+    {
+      "term": "tm_g5c2m8tw",
+      "meaning": { "zh-TW": "第一個扣減項：本期賣出去的那些商品原本的進貨成本。", "en": "The first deduction: what the goods actually sold in the period originally cost to buy." }
+    },
+    {
+      "term": "tm_g8p4w1rz",
+      "meaning": { "zh-TW": "第一層：售價與進貨成本之間的價差，看商品本身好不好賺。", "en": "Level one: the gap between selling price and purchase cost, showing whether the goods themselves earn well." }
+    },
+    {
+      "term": "tm_kyjfrraq",
+      "meaning": { "zh-TW": "第二個扣減項：做生意的日常開支，例如薪資、租金、運費、廣告與折舊。", "en": "The second deduction: the everyday costs of running the business, such as wages, rent, delivery, advertising and depreciation." }
+    },
+    {
+      "term": "tm_z3vbt800",
+      "meaning": { "zh-TW": "第二層：本業賺了多少，還沒算利息、業外收支與所得稅。", "en": "Level two: what the core business earned before interest, non-operating items and tax." }
+    },
+    {
+      "term": "tm_9hg0gb2b",
+      "meaning": { "zh-TW": "第三層：營業利益加上利息收入等業外收入、減掉利息費用等業外支出之後的結果。", "en": "Level three: operating profit plus non-operating income such as interest earned, less non-operating expenses such as interest paid." }
+    },
+    {
+      "term": "tm_z971merj",
+      "meaning": { "zh-TW": "第四層：再把不常發生的重大利益或損失算進去；多數期間沒有這種項目，第四層就等於第三層。", "en": "Level four: ordinary profit adjusted for rare, one-off gains or losses; in most periods there are none and level four equals level three." }
+    },
+    {
+      "term": "tm_3qfqnrmm",
+      "meaning": { "zh-TW": "第三個扣減項：這一期應負擔的所得稅，按稅前淨利算出來。", "en": "The third deduction: the income tax the period must bear, worked out from profit before tax." }
+    },
+    {
+      "term": "tm_n4e8t2jy",
+      "meaning": { "zh-TW": "第五層，也是最後一列：扣完所得稅真正留給股東的錢，期末併入未分配盈餘。", "en": "Level five and the last line: what is truly left for the owners after tax; at the period end it joins retained earnings." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家文具批發商這一年營業收入 {{money:1000000}}，營業成本 {{money:600000}}，營業毛利 {{money:400000}}；銷管費用 {{money:250000}}，營業利益 {{money:150000}}；利息收入 {{money:10000}}、沒有業外支出，經常利益 {{money:160000}}；沒有非常損益，稅前淨利也是 {{money:160000}}；所得稅費用 {{money:32000}}，本期淨利 {{money:128000}}。從上往下看，利潤縮水最多的一段是銷管費用那一層。數字是網站自己編的，不是真實公司。",
+    "en": "A stationery wholesaler has revenue of {{money:1000000}} for the year and cost of sales of {{money:600000}}, so gross profit is {{money:400000}}; distribution and administrative expenses of {{money:250000}} leave operating profit of {{money:150000}}; interest income of {{money:10000}} and no non-operating expenses give ordinary profit of {{money:160000}}; with no extraordinary items, profit before tax is also {{money:160000}}; income tax expense of {{money:32000}} leaves profit for the period of {{money:128000}}. Reading down the statement, the step that shrinks profit the most is the distribution and administrative expenses. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "五層利益像一道一道的篩子：每往下一層，就知道利潤在哪一段流失最多。毛利薄，是商品本身不好賺或進貨太貴；毛利厚但營業利益薄，是日常開支太重；營業利益與經常利益差距大，表示利息或業外收支的影響大。比較的時候，前兩層適合和同業比，因為它們只反映本業；後三層會受借款多寡、一次性事件與稅率影響，拿去跟別人比容易失真。常見誤讀：只看最後一列的本期淨利就判斷公司好壞，其實靠處分資產撐出來的淨利和靠本業賺到的淨利，體質完全不同，要往上看營業利益才知道。",
+    "en": "The five levels work like a row of sieves: each step down shows where profit leaks the most. A thin gross profit means the goods themselves earn little or cost too much to buy; a fat gross profit but a thin operating profit means running costs are too heavy; a wide gap between operating and ordinary profit points to interest or other non-operating items. For comparisons, the first two levels suit peer comparisons because they reflect only the core business; the last three are swayed by borrowing, one-off events and tax rates, so comparing them across companies is easily misleading. A common misreading is judging a company by the last line alone: a profit propped up by selling assets is a very different business from one earned by trading, and only reading back up to operating profit shows which it is."
+  },
+  "related": ["fm_t18f8tfn", "fm_hzcxphkb", "fm_hfssf6ha", "fm_zefdfz9a", "fm_077j3dmj"]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "fm_xf48bqvs",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_4tz4q9pa",
+  "ratioRef": "ppe_turnover",
+  "formula": {
+    "zh-TW": "營業收入 ÷ 平均不動產、廠房及設備淨額",
+    "en": "Revenue ÷ average net property, plant and equipment"
+  },
+  "versions": [
+    {
+      "version": "excel",
+      "formula": {
+        "zh-TW": "營業收入 ÷ 期末機器設備淨額",
+        "en": "Revenue ÷ closing net machinery and equipment"
+      },
+      "note": {
+        "zh-TW": "課程版面只有機器設備一列，而且只有一期的資料，所以分母用期末的機器設備淨額，不算辦公設備，也不取平均。",
+        "en": "The course layout has a single machinery line and only one period of data, so the denominator is closing net machinery alone, without office equipment and without averaging."
+      }
+    }
+  ],
+  "components": [
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": {
+        "zh-TW": "這一期賣出商品或服務認列的收入，代表這些設備一年做出多少生意。",
+        "en": "Revenue recognised this period from goods or services sold: how much business the equipment generated in a year."
+      }
+    },
+    {
+      "label": {
+        "zh-TW": "不動產、廠房及設備淨額",
+        "en": "Net property, plant and equipment"
+      },
+      "meaning": {
+        "zh-TW": "機器、廠房、辦公設備扣掉累計折舊後的帳面金額，期初與期末的平均；用淨額是因為課程版面與年報都用淨額呈現這些資產。",
+        "en": "Machinery, buildings and office equipment at carrying amount after accumulated depreciation, averaged between opening and closing; net amounts are used because both the course layout and annual reports present these assets net."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家紙箱廠全年營業收入 {{money:1800000}}，不動產、廠房及設備淨額期初 {{money:650000}}、期末 {{money:550000}}，平均 {{money:600000}}。{{money:1800000}} ÷ {{money:600000}} ＝ {{number:3|unit=turns}}。意思是每 {{money:1}} 的設備一年做出 {{money:3}} 的生意。數字是網站自己編的，不是真實公司。",
+    "en": "A carton maker booked revenue of {{money:1800000}} for the year; net property, plant and equipment was {{money:650000}} at the start and {{money:550000}} at the end, an average of {{money:600000}}. {{money:1800000}} ÷ {{money:600000}} = {{number:3|unit=turns}}. Every {{money:1}} of equipment generated {{money:3}} of business in the year. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "次數越多，表示設備用得越滿、每一塊投資做出越多營收；次數下降，可能是設備閒置、產能過剩，或剛大量添購新設備而營收還沒跟上。但太高也可能是產能已經滿載，再接訂單就得擴廠。它受產業性質影響極大：晶圓廠、航運這類重資產產業天生偏低，軟體、顧問業則非常高，所以只能和同業比，再看自己幾年的趨勢。分母用扣完折舊的淨額，所以老舊設備多、折舊提完的公司會算出偏高的次數，不代表它比剛換新機的對手更有效率。常見誤讀是用設備的原始成本當分母：課程版面和年報呈現的都是淨額，比率要用淨額算，用毛額會讓設備老舊的公司看起來效率偏低。",
+    "en": "More turns mean the equipment is kept busier and each unit of investment produces more revenue; a falling figure can mean idle equipment, excess capacity, or a big recent purchase whose revenue has not yet arrived. Very high can also mean capacity is already full and the next order will need a new plant. The ratio depends heavily on the industry: wafer fabs and shipping lines are low by nature while software and consulting firms are very high, so compare only with peers and then with the company’s own trend. Because the denominator is net of depreciation, a company with old, fully depreciated equipment shows a high figure without being more efficient than a rival that has just re-equipped. A common misreading is using the original cost of the equipment as the denominator: both the course layout and annual reports present net amounts, and the ratio uses them; gross cost would make companies with older equipment look less efficient."
+  },
+  "related": [
+    "fm_5k6wp1c0",
+    "fm_9vfmmat3",
+    "fm_zzdy9bgy",
+    "fm_mrxttb09"
+  ]
+}

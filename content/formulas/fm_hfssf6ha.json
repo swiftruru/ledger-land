@@ -1,0 +1,32 @@
+{
+  "id": "fm_hfssf6ha",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_1c1g4a7q",
+  "ratioRef": "operating_margin",
+  "formula": {
+    "zh-TW": "營業利益 ÷ 營業收入",
+    "en": "Operating profit ÷ revenue"
+  },
+  "components": [
+    {
+      "term": "tm_z3vbt800",
+      "meaning": { "zh-TW": "營業毛利再減銷管費用，五層利益的第二層：本業真正賺到的錢，還沒算利息、業外與所得稅。", "en": "Gross profit minus distribution and administrative expenses, the second of the five profit levels: what the core business really earned, before interest, non-operating items and income tax." }
+    },
+    {
+      "term": "tm_v3n8q2ye",
+      "meaning": { "zh-TW": "損益表第一列，這一期本業收進來的金額，當分母表示「每做一元生意」。", "en": "The first line of the income statement, what the core business brought in this period; as the denominator it means ‘for each unit of sales’." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家自行車零件批發商這一年營業收入 {{money:5000000}}，營業毛利 {{money:1800000}}，銷管費用 {{money:1050000}}，營業利益 {{money:750000}}：{{money:750000}} ÷ {{money:5000000}} ＝ {{percent:0.15|digits=0}}。意思是每做 {{money:100}} 的生意，付完貨的成本與薪水、租金等費用後，本業留下 {{money:15}}。數字是網站自己編的，不是真實公司。",
+    "en": "A bicycle parts wholesaler has revenue of {{money:5000000}} this year, gross profit of {{money:1800000}}, distribution and administrative expenses of {{money:1050000}} and operating profit of {{money:750000}}: {{money:750000}} ÷ {{money:5000000}} = {{percent:0.15|digits=0}}. For every {{money:100}} of sales, the core business keeps {{money:15}} after paying for the goods and for wages, rent and other expenses. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "這是看本業賺錢效率最乾淨的一個比率：它不受利息、業外損益與所得稅影響，所以兩家公司借款多寡不同、稅負不同，營業利益率還是可以直接比，當然仍要限於同業。和毛利率放在一起看，兩者的差距就是銷管費用占營收的比重：毛利率穩定、營業利益率卻一直掉，問題在費用控制不在產品。看自己幾年的趨勢時，營收成長但營業利益率下滑，常表示公司用降價或加碼行銷換成長。常見誤讀：把營業利益率和純益率混用，純益率還要再扣利息、業外損益與所得稅，兩者差很多時通常是利息負擔重或有大筆業外損益。",
+    "en": "This is the cleanest ratio for how efficiently the core business earns: it is untouched by interest, non-operating items and income tax, so two companies with different borrowings and tax positions can still be compared directly, within the same industry of course. Set it beside the gross margin and the gap between them is operating expenses as a share of revenue: a steady gross margin with a sliding operating margin points to expense control rather than the product. Over several years, rising revenue with a falling operating margin often means the company is buying growth with price cuts or extra marketing. A common misreading is using operating margin and net profit margin interchangeably; the net margin goes on to deduct interest, non-operating items and tax, and a wide gap between the two usually means a heavy interest burden or a large non-operating item."
+  },
+  "related": ["fm_hzcxphkb", "fm_3wy1y84s", "fm_zefdfz9a", "fm_scaffwgf", "fm_pk88kpht"]
+}

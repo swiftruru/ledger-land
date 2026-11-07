@@ -7,5 +7,6 @@
 | `decks.json` | 三份講義的編號、標題、檔名、各段的投影片範圍，以及人工排除（`explanation_issue`、`conflicting_answer`）與請老師確認（`check`）的清單 | 手改；改完重抽 |
 | `ids.json` | 投影片（`d2:48`）到題目 ID（`hq_` 加 8 碼）的對照表，ID 永不改變 | 工具維護，不手改 |
 | `midterm.json` | 題目本身：題幹（情境、問題）、三個選項、解答字母、解析，逐字照講義；`rev` 與 `answerRev` 由工具依文字與答案的差異遞增 | 工具產生，不手改 |
+| `formula-links.json` | 會計公式（`content/formulas/`）的講義對照（2026-11-07）：每條公式在講義裡說明的投影片（公式頁的「講義出處」）與相關的講義題，分三種關係（`formula` 考公式的組成或關係、`numeric` 情境有數字可以驗算、`concept` 只考概念）。用 `deck` 與 `slide` 寫，建置時換成 `hq_` ID；指到不收錄的題會被 `content:check` 擋下。公式的原創說明不得寫頁碼，出處只能寫在這裡 | 手改；改完跑 `pnpm content:check` |
 
 重抽：pptx 原檔只在本機的 `references/handouts/`（永不 commit），執行 `pnpm handout:extract`（或 `--src <講義資料夾>`）；報告在 `.local-reports/handout/report.md`。`pnpm content:check` 會檢查三個檔案一致，`pnpm content:build` 把收錄的題依講義分檔、不收與請老師確認的題另成審核檔（老師審核頁 `/exam/teacher/` 用）。

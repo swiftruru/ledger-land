@@ -1,0 +1,37 @@
+{
+  "id": "fm_077j3dmj",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "relation",
+  "termRef": "tm_4c6v99nn",
+  "label": { "zh-TW": "未分配盈餘的變動", "en": "How retained earnings move" },
+  "category": "statement",
+  "formula": {
+    "zh-TW": "期末未分配盈餘 ＝ 期初未分配盈餘 ＋ 本期淨利 − 發放的股利",
+    "en": "Closing retained earnings = opening retained earnings + profit for the period − dividends declared"
+  },
+  "components": [
+    {
+      "term": "tm_4c6v99nn",
+      "meaning": { "zh-TW": "公司歷年賺到、還沒分給股東的盈餘；期初是上一期留下來的，期末是加上這一期的變動之後的餘額。", "en": "Profits earned over the years and not yet distributed; the opening figure is what last period left behind, the closing figure is after this period’s movements." }
+    },
+    {
+      "term": "tm_n4e8t2jy",
+      "meaning": { "zh-TW": "損益表最後一列；結帳時整筆併進未分配盈餘，是損益表流進資產負債表的通道。", "en": "The last line of the income statement; at closing it joins retained earnings in full, the channel through which the income statement flows into the balance sheet." }
+    },
+    {
+      "label": { "zh-TW": "發放的股利", "en": "Dividends declared" },
+      "meaning": { "zh-TW": "決定分給股東的盈餘；分出去的部分就不再留在公司，所以從未分配盈餘減掉。", "en": "The profit the company decides to hand to its owners; what is handed out no longer stays in the company, so it is deducted from retained earnings." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家園藝公司期初未分配盈餘 {{money:500000}}，這一年本期淨利 {{money:180000}}，股東會決定發股利 {{money:60000}}：期末未分配盈餘 ＝ {{money:500000}} ＋ {{money:180000}} − {{money:60000}} ＝ {{money:620000}}。如果這一年完全不發股利，未分配盈餘會剛好增加 {{money:180000}}，和本期淨利一樣多，這就是損益表和資產負債表之間的勾稽。數字是網站自己編的，不是真實公司。",
+    "en": "A garden-care company opens the year with retained earnings of {{money:500000}}, earns a profit for the period of {{money:180000}} and the shareholders vote a dividend of {{money:60000}}: closing retained earnings = {{money:500000}} + {{money:180000}} − {{money:60000}} = {{money:620000}}. Had no dividend been paid, retained earnings would have risen by exactly {{money:180000}}, the same as profit for the period, which is the check that ties the income statement to the balance sheet. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "這條式子是三張報表接起來的關鍵：損益表算出本期淨利，淨利經由這一列進入資產負債表的股東權益。在沒有發股利、也沒有提撥公積的前提下，本期淨利會剛好等於未分配盈餘的增加額，核對這一點就能知道兩張報表有沒有接好；有發股利時，增加額會比淨利少，差額就是分出去的部分。未分配盈餘持續成長，表示公司靠本業把權益養大；長期是負數（累積虧損）則表示股東的錢已經被虧掉一部分。常見誤讀：以為未分配盈餘是一筆可以隨時動用的現金，其實它只是權益的來源說明，對應的資產早就變成設備、存貨或應收帳款，帳上盈餘很多的公司也可能發不出現金股利。",
+    "en": "This relation is the hinge that links the statements: the income statement produces profit for the period, and that profit enters equity on the balance sheet through this line. With no dividend and no reserves set aside, profit for the period equals the increase in retained earnings exactly, so checking that one figure tells you whether the two statements are properly joined; when a dividend is paid, the increase falls short of profit by the amount handed out. Steadily growing retained earnings mean the company is building equity from its own trading; a long-standing negative balance (an accumulated deficit) means part of the owners’ money has been lost. A common misreading is treating retained earnings as cash that can be spent at will; it is only a description of where equity came from, the matching assets long since turned into equipment, inventories or receivables, and a company rich in retained earnings may still be unable to pay a cash dividend."
+  },
+  "related": ["fm_yvx7qnt9", "fm_scaffwgf", "fm_3vk408ws", "fm_3b2yf4gc"]
+}

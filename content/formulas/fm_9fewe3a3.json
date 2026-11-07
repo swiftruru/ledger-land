@@ -1,0 +1,32 @@
+{
+  "id": "fm_9fewe3a3",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_wd3fx6rh",
+  "ratioRef": "pe_ratio",
+  "formula": {
+    "zh-TW": "股價 ÷ 每股盈餘",
+    "en": "Share price ÷ earnings per share"
+  },
+  "components": [
+    {
+      "label": { "zh-TW": "股價", "en": "Share price" },
+      "meaning": { "zh-TW": "市場上買一股要付的價格，不在財務報表裡，要自己輸入，每天都會變。", "en": "What one share costs on the market; it is not in the financial statements, has to be entered by hand and changes every day." }
+    },
+    {
+      "term": "tm_knqbr6g4",
+      "meaning": { "zh-TW": "一股在一年裡分到的淨利，用本期淨利除以股數算出來；估價時最好用預估的未來一年數字，不是去年的。", "en": "The profit earned by one share in a year, profit for the period divided by the number of shares; for valuation it is best to use the forecast for the coming year rather than last year’s figure." }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家冷鏈倉儲公司的股價 {{money:90}}，每股盈餘 {{money:6}}：{{money:90}} ÷ {{money:6}} ＝ {{number:15|unit=times}}。意思是用現在的價格買進，如果每年都賺這麼多，要 {{number:15}} 年才賺回本金。反過來估價：如果認為合理的本益比是 {{number:12|unit=times}}，合理價就是 {{number:12|unit=times}} × {{money:6}} ＝ {{money:72}}。數字是網站自己編的，不是真實公司。",
+    "en": "A cold-chain warehousing company’s share price is {{money:90}} and its earnings per share {{money:6}}: {{money:90}} ÷ {{money:6}} = {{number:15|unit=times}}. Buying at today’s price, it would take {{number:15}} years of earnings at this level to get the money back. Run it backwards to value the share: if a fair multiple is {{number:12|unit=times}}, the fair price is {{number:12|unit=times}} × {{money:6}} = {{money:72}}. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "倍數可以讀成「幾年回本」：倍數高表示市場願意為每一元盈餘付較高的價格，通常是看好未來成長；倍數低可能是便宜，也可能是市場預期獲利會衰退。所以要和同業、和這家公司自己過去幾年的區間比，不能只看一個數字。估價時合理價是合理本益比乘上預估的每股盈餘，再打個折當安全邊際；注意每股盈餘要用預估的未來數字，獲利忽高忽低或虧損的公司不適用，一次性的業外收益把每股盈餘墊高時倍數會看起來很低但不是真的便宜。常見誤讀：以為本益比低就該買，它只是比較的起點，不是結論；也要記得本益比是價格和盈餘的比值，不會告訴你股價接下來會漲還是跌。本站的說明只供學習，不是投資建議。",
+    "en": "Read the multiple as ‘years to earn the price back’: a high multiple means the market pays more for each unit of earnings, usually because it expects growth; a low one may be cheap, or may mean the market expects earnings to fall. So compare it with peers and with the company’s own range over the past few years rather than reading one number on its own. For valuation, a fair price is a fair multiple times forecast earnings per share, with a discount taken off as a margin of safety; the earnings figure should be the forecast for the coming year, the method does not suit companies whose profits swing wildly or run at a loss, and a one-off gain that inflates earnings per share makes the multiple look low without the share being truly cheap. A common misreading is that a low multiple means buy; it is a starting point for comparison, not a conclusion, and because it is simply price divided by earnings it says nothing about whether the price will rise or fall next. This is for learning only, not investment advice."
+  },
+  "related": ["fm_52gntpsa", "fm_vk0dq2m7", "fm_sm2xtt5h", "fm_0tqaf9qd"]
+}

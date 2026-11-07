@@ -134,6 +134,12 @@ function contentTexts(bundle) {
   for (const f of bundle.objectives) (f.data?.items ?? []).forEach((o, i) => push(f.file, `items.${i}.statement`, o.statement));
   for (const s of bundle.stories) (s.data?.steps ?? []).forEach((st, i) => push(s.file, `steps.${i}.narrative`, st.narrative));
   for (const c of bundle.chapters) push(c.file, 'summary', c.data?.summary);
+  // 會計公式（2026-11-07）：公式本身與名稱依教材是允許的，所以只掃原創的說明欄位
+  for (const f of bundle.formulas ?? []) {
+    for (const k of ['example', 'reading']) push(f.file, k, f.data?.[k]);
+    (f.data?.components ?? []).forEach((c, i) => push(f.file, `components.${i}.meaning`, c.meaning));
+    (f.data?.versions ?? []).forEach((v, i) => push(f.file, `versions.${i}.note`, v.note));
+  }
   return out;
 }
 

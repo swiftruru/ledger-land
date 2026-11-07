@@ -1,0 +1,43 @@
+{
+  "id": "fm_wfk7jdnd",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_h3c7v1xe",
+  "ratioRef": "interest_coverage",
+  "formula": {
+    "zh-TW": "（稅前淨利 ＋ 利息費用）÷ 利息費用",
+    "en": "(Profit before tax + interest expense) ÷ interest expense"
+  },
+  "components": [
+    {
+      "term": "tm_z971merj",
+      "meaning": {
+        "zh-TW": "繳所得稅之前的利潤，已經扣掉利息。加回利息之後就是息前稅前盈餘，也就是付利息之前公司總共賺了多少。",
+        "en": "Profit before income tax, which is already after interest. Adding interest back gives earnings before interest and tax: everything the company earned before paying its lenders."
+      }
+    },
+    {
+      "term": "tm_k6t2e9wr",
+      "meaning": {
+        "zh-TW": "借款要付的利息。它同時出現在分子（加回去）和分母（被除），倍數說的就是賺到的錢是利息的幾倍。",
+        "en": "Interest on borrowings. It appears both in the numerator (added back) and as the denominator, so the multiple says how many times earnings cover the interest."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家塑膠射出廠全年稅前淨利 {{money:350000}}，利息費用 {{money:50000}}，息前稅前盈餘 {{money:400000}}。{{money:400000}} ÷ {{money:50000}} ＝ {{number:8|unit=times}}。意思是公司付利息之前賺的錢是利息的 {{number:8|unit=times}}，就算獲利掉到只剩原來的八分之一，也還剛好付得起利息。數字是網站自己編的，不是真實公司。",
+    "en": "A plastic injection moulder has profit before tax of {{money:350000}} and interest expense of {{money:50000}}, so earnings before interest and tax are {{money:400000}}. {{money:400000}} ÷ {{money:50000}} = {{number:8|unit=times}}. The company earns {{number:8|unit=times}} its interest before paying it, so profit could fall to an eighth of what it is and the interest would still just be covered. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "倍數越高，獲利下滑時付利息的緩衝越大；{{number:4|unit=times}} 以上常被當成安心的參考線，低於 {{number:1|unit=times}} 表示連利息都付不起，已經在吃老本或借新還舊。要和同業比，也看自己的趨勢，倍數連年下滑通常是負債累積或獲利走弱的訊號。它和負債比率是一組：負債比率看借了多少，利息保障倍數看付不付得起，借得多但倍數高的公司並不危險。分子用的是權責基礎的利潤，不是現金，獲利裡如果有很多還沒收到的賒銷，實際付息能力會比倍數顯示的差；有些題目用營業利益 ÷ 利息費用的簡化算法，分子少了業外收支，比較時要確認口徑。利息費用為 0 時沒有定義，顯示 N/A。常見誤讀是用本期淨利當分子：淨利已經扣掉利息和所得稅，用它會低估付息能力，要把利息和稅加回去，看的是付息繳稅之前有多少錢可以付利息。",
+    "en": "The higher the multiple, the more cushion there is to keep paying interest when profit falls; {{number:4|unit=times}} or more is often treated as a comfortable reference line, and below {{number:1|unit=times}} the company cannot even cover its interest and is eating into its reserves or borrowing to repay. Compare with peers and with the company’s own trend, since a multiple that falls year after year usually signals mounting debt or weakening profit. It pairs with the debt ratio: the debt ratio shows how much was borrowed, this one whether it can be afforded, and a company that borrows heavily but keeps a high multiple is not in danger. The numerator is accrual profit, not cash, so if much of the profit is uncollected credit sales the real ability to pay interest is weaker than the multiple suggests; some questions use the simplified operating profit ÷ interest expense, which leaves non-operating items out of the numerator, so check the basis before comparing. With no interest expense the ratio is undefined and shows N/A. A common misreading is using profit for the period as the numerator: profit is already after interest and tax and would understate the ability to pay, so add both back and look at what was available before interest and tax."
+  },
+  "related": [
+    "fm_pr9ht8fb",
+    "fm_pv0bed74",
+    "fm_ac6vnhzq",
+    "fm_hfssf6ha"
+  ]
+}

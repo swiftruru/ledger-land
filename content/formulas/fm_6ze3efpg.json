@@ -1,0 +1,47 @@
+{
+  "id": "fm_6ze3efpg",
+  "rev": 1,
+  "revKind": "text",
+  "status": "published",
+  "kind": "ratio",
+  "termRef": "tm_fsv83x2z",
+  "ratioRef": "days_inventory",
+  "formula": {
+    "zh-TW": "365 ÷ 存貨週轉率",
+    "en": "365 ÷ inventory turnover"
+  },
+  "components": [
+    {
+      "label": {
+        "zh-TW": "365 天",
+        "en": "365 days"
+      },
+      "meaning": {
+        "zh-TW": "一年的天數。週轉率說的是一年賣幾輪，用天數去除，就換成每一輪要花幾天。",
+        "en": "The days in a year. Turnover says how many rounds inventory sells in a year; dividing the days by it converts that into the days each round takes."
+      }
+    },
+    {
+      "term": "tm_08g66t9j",
+      "meaning": {
+        "zh-TW": "營業成本除以平均存貨，一年把存貨賣光再補滿幾輪；它是這條公式唯一的輸入，用哪個版本的週轉率，天數就跟著哪個版本。",
+        "en": "Cost of sales divided by average inventories: how many rounds inventory sells and is restocked in a year. It is the only input, so the days follow whichever version of the turnover is used."
+      }
+    }
+  ],
+  "example": {
+    "zh-TW": "一家文具進口商的存貨週轉率是 {{number:12|unit=turns}}：365 ÷ 12 ＝ {{number:30.4|unit=day}}。意思是一批貨進倉後平均要放 {{number:30.4|unit=day}} 才賣完；如果供應商給的付款期是 {{number:30|unit=day}}，貨還沒賣完就得先付錢了。數字是網站自己編的，不是真實公司。",
+    "en": "A stationery importer has an inventory turnover of {{number:12|unit=turns}}: 365 ÷ 12 = {{number:30.4|unit=day}}. A batch of goods sits for about {{number:30.4|unit=day}} on average before it is sold; if suppliers allow {{number:30|unit=day}} to pay, the bill falls due before the goods are gone. The figures are made up for the site, not a real company."
+  },
+  "reading": {
+    "zh-TW": "天數越少，貨賣得越快，資金壓在倉庫裡的時間越短；天數拉長，表示銷售變慢或進太多貨，也要留意有沒有過時、變質的存貨。但太短可能是備貨不足、常缺貨。要和同業比，生鮮幾天、機械設備好幾個月都正常；也要看自己逐年的變化。把它加上平均收現日數就是營運週期，再減平均付款天數就是現金轉換循環，三個天數放在一起才看得出資金卡在哪一段。它只是存貨週轉率的另一種唸法，週轉率用期末餘額時，天數也會跟著失真。常見誤讀是用 12 個月去除週轉率，算出來是「月」卻當成「天」：公式固定用 365 天，單位是天，基準弄錯會差三十倍。",
+    "en": "Fewer days mean goods sell faster and money spends less time in the warehouse; a lengthening figure means slower sales or over-buying, and is a cue to check for obsolete or spoiled stock. Too short, though, can mean stock is kept too thin and runs out. Compare with peers, since a few days for fresh food and several months for machinery are both normal, and watch the company’s own trend. Add the average collection period to get the operating cycle, then subtract the average payment period to get the cash conversion cycle; the three day counts together show where the money is stuck. It is only another way of reading inventory turnover, so when the turnover uses a closing balance the days inherit the same distortion. A common misreading is dividing 12 months by the turnover and reading the result as days: the formula uses 365 and the unit is days, and mixing up the base gives a figure thirty times too small."
+  },
+  "related": [
+    "fm_mrxttb09",
+    "fm_73k20388",
+    "fm_1mknnm52",
+    "fm_qzh8rn8c",
+    "fm_hqda6nvm"
+  ]
+}
