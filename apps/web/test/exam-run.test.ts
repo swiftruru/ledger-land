@@ -144,6 +144,34 @@ describe('sets 與 stats', () => {
     expect(isSetId('d1s10')).toBe(true);
   });
 
+  it('公式題組 formula:<id>：題目是公式索引列的那些、依講義順序，只載有題的講義；沒傳索引或沒這條公式回 null', () => {
+    const none = { wrongIds: new Set<string>(), unsureIds: new Set<string>() };
+    const formulas = [
+      {
+        id: 'fm_t3st0001',
+        kind: 'ratio' as const,
+        category: 'profitability',
+        label: '權益報酬率',
+        aliases: [],
+        formula: 'a ÷ b',
+        termRef: 'tm_t3st0001',
+        questionIds: ['hq_bbbbbbb1', 'hq_aaaaaaa1', 'hq_zzzzzzzz'],
+      },
+    ];
+    expect(isSetId('formula:fm_t3st0001')).toBe(true);
+    expect(isSetId('formula:fm_t3st')).toBe(false);
+    expect(isSetId('formula:')).toBe(false);
+    expect(resolveSet(index, 'formula:fm_t3st0001', none, formulas)).toMatchObject({
+      kind: 'formula',
+      deckIds: ['d1', 'd2'],
+      questionIds: ['hq_aaaaaaa1', 'hq_bbbbbbb1'],
+      title: '權益報酬率',
+      formulaId: 'fm_t3st0001',
+    });
+    expect(resolveSet(index, 'formula:fm_t3st0001', none)).toBeNull();
+    expect(resolveSet(index, 'formula:fm_n0n3x1st', none, formulas)).toBeNull();
+  });
+
   it('統計：練過的題數、答錯的題數、熟練的題數、答對率；不熟的是練過但還沒連對兩次的', () => {
     const s = (questionId: string, seen: number, correct: number, lastCorrect: boolean, streak: number): QuestionState => ({
       questionId,

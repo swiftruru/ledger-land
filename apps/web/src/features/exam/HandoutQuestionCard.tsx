@@ -28,6 +28,8 @@ export interface HandoutQuestionCardProps {
   submitLabel?: ReactNode;
   /** 題號列右側（模擬考的倒數） */
   meta?: ReactNode;
+  /** 回饋面板的解析下面（「相關公式」膠囊，2026-11-07） */
+  extra?: ReactNode;
 }
 
 export function HandoutQuestionCard({
@@ -44,6 +46,7 @@ export function HandoutQuestionCard({
   mode = 'drill',
   submitLabel,
   meta,
+  extra,
 }: HandoutQuestionCardProps) {
   const { t } = useLingui();
   const options = useMemo(() => {
@@ -81,6 +84,7 @@ export function HandoutQuestionCard({
                   {t({ id: 'exam.feedback.fromHandout', message: '解析出自講義', comment: '苦練區回饋：解析是老師講義的原文' })}
                 </Badge>
                 <HandoutText text={q.explanation} />
+                {extra}
               </div>
             }
             onNext={onNext}

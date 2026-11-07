@@ -1,0 +1,14 @@
+/* 苦練頁的「相關公式」膠囊列（features/formulas/FormulaPills.tsx，2026-11-07）：小標加膠囊，放在解析或題目的下面；class 以 ll-fxpills 開頭（新增前已 grep） */
+.ll-fxpills {
+  margin-top: var(--ll-space-3);
+}
+.ll-fxpills__title {
+  margin: 0 0 var(--ll-space-1);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 700;
+  color: var(--ll-text-2);
+}
+.ll-fxpills__list {
+  margin: 0;
+}

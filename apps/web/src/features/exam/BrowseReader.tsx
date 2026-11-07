@@ -7,10 +7,13 @@ import { formatNumber } from '@ledgerland/i18n';
 import { ArrowRightIcon, Badge, Button, Card, CaretLeftIcon, CaretRightIcon, CheckIcon, IconButton, PlayIcon, ProgressBar, Switch } from '@ledgerland/web-ui';
 import type { HandoutQuestionSnapshot } from '../../lib/content.ts';
 import { useLocale } from '../../lib/useLocale.ts';
+import { FormulaPills, type FormulasOfQuestion } from '../formulas/FormulaPills.tsx';
 import { HandoutQuestionReadout } from './HandoutQuestionReadout.tsx';
 
 export interface BrowseReaderProps {
   q: HandoutQuestionSnapshot;
+  /** 題目對相關公式（「相關公式」膠囊，2026-11-07） */
+  formulas: FormulasOfQuestion;
   deckCode: string;
   sectionTitle: string;
   /** 這一題是第幾題（從 1 起算）與一共幾題：平常照範圍，搜尋中照搜尋結果 */
@@ -40,6 +43,7 @@ export interface BrowseReaderProps {
 
 export function BrowseReader({
   q,
+  formulas,
   deckCode,
   sectionTitle,
   position,
@@ -158,6 +162,7 @@ export function BrowseReader({
               </Button>
             </div>
           )}
+          {!hidden && <FormulaPills questionId={q.id} formulas={formulas} />}
         </HandoutQuestionReadout>
         <Switch
           className="ll-exam-reader__hide"
