@@ -1284,3 +1284,187 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   margin-bottom: var(--ll-space-3);
 }
+
+/* 來源面板（M4b，03 第 3.9 節）：可追蹤的數字（web-ui 的 ValueButton；樣式先放這裡，入口 CSS 只剩 0.2 KB，2026-11-07）、面板的路徑、公式樹、
+   來源步驟。可追蹤的數字和行內名詞 chip 一樣是行內例外：不撐開行高、不加底線，用虛線下框表示可點，焦點框沿用全站的 :focus-visible */
+/* 按鈕在瀏覽器裡一律是 inline-block：虛線下框會讓行盒高 1.5px，用同樣大小的負下邊距抵掉，行高和純文字時一樣
+   （步驟頁的恆等式摘要在核心載好後才換成按鈕：sticky 列若因此長高 2px，下面的交易卡會往下移，Chrome 把它重新登記成 LCP，
+   模擬的 LCP 從 2.5 秒變 3.8 秒，2026-11-07 量到） */
+.ll-valuebtn {
+  display: inline;
+  margin: 0 0 -1.5px;
+  padding: 0;
+  border: 0;
+  border-block-end: 1.5px dotted var(--ll-accent-ink);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ll-valuebtn:hover {
+    border-block-end-style: solid;
+    color: var(--ll-accent-ink);
+  }
+}
+.ll-valuebtn:active {
+  color: var(--ll-accent-ink);
+}
+/* 滾動中的金額本身是一個 span，和按鈕一起換行時維持在同一行 */
+.ll-valuebtn .ll-lab-roll,
+.ll-valuebtn .ll-lab-delta {
+  display: inline;
+}
+.ll-lab-ratio__values .ll-valuebtn {
+  font-size: var(--ll-type-title-3-size);
+  font-weight: 700;
+}
+/* 面板在平板以上寬一點：巢狀的樹加上金額欄放得下 */
+@media (min-width: 768px) {
+  .ll-sheet--trace {
+    width: min(100%, 640px);
+  }
+}
+.ll-lab-trace__path ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--ll-space-1);
+  margin: 0 0 var(--ll-space-2);
+  padding: 0;
+  list-style: none;
+  font-size: var(--ll-type-body-sm-size);
+  color: var(--ll-text-2);
+}
+.ll-lab-trace__path li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ll-space-1);
+}
+.ll-lab-trace__path li[aria-current] {
+  color: var(--ll-text);
+  font-weight: 600;
+}
+.ll-lab-trace__crumb {
+  height: auto;
+  min-height: var(--ll-target-min);
+  padding-inline: var(--ll-space-1);
+}
+.ll-lab-trace__section {
+  margin: var(--ll-space-4) 0 var(--ll-space-1);
+  font-size: var(--ll-type-footnote-size);
+  font-weight: 600;
+  color: var(--ll-text-2);
+  text-transform: none;
+}
+.ll-lab-trace__links + .ll-lab-trace__tree .ll-lab-trace__section,
+.ll-lab-trace__path + .ll-lab-trace__links .ll-lab-trace__section,
+.ll-lab-trace__path + .ll-lab-trace__tree .ll-lab-trace__section {
+  margin-top: var(--ll-space-2);
+}
+.ll-lab-trace__focus,
+.ll-lab-trace__part {
+  margin: 0;
+  font-weight: 600;
+}
+.ll-lab-trace__part {
+  margin-top: var(--ll-space-2);
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+}
+.ll-lab-trace__list,
+.ll-lab-trace__linklist,
+.ll-lab-trace__zerolist,
+.ll-lab-src__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* 每一列：運算符號、名稱、金額、按鈕；金額用等寬數字靠右，名稱可以換行 */
+/* 每一列至少 44px（觸控目標，站規 4.2 第 6 項）；按鈕就是 44px 高，列不另外加內距 */
+.ll-lab-trace__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0 var(--ll-space-2);
+  min-height: var(--ll-target-min);
+  border-top: 1px solid var(--ll-border);
+}
+.ll-lab-trace__linklist .ll-lab-trace__row {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+.ll-lab-trace__op {
+  width: 1.2em;
+  color: var(--ll-text-2);
+  text-align: center;
+}
+.ll-lab-trace__name {
+  overflow-wrap: anywhere;
+}
+.ll-lab-trace__value {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.ll-lab-trace__btn {
+  min-height: var(--ll-target-min);
+  padding-inline: var(--ll-space-2);
+}
+/* 原地展開的子樹：縮排一層並畫一條左線，最多三層（TraceTree 的 NEST_LIMIT） */
+.ll-lab-trace__nested {
+  margin: 0 0 var(--ll-space-2) var(--ll-space-3);
+  padding-left: var(--ll-space-2);
+  border-left: 2px solid var(--ll-border);
+}
+.ll-lab-trace__nested .ll-lab-trace__row {
+  font-size: var(--ll-type-body-sm-size);
+}
+.ll-lab-trace__zeros {
+  margin-top: var(--ll-space-1);
+}
+.ll-lab-trace__zerolist {
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+}
+.ll-lab-trace__zerolist li {
+  padding: 2px 0;
+}
+.ll-lab-trace__none {
+  margin: var(--ll-space-1) 0 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+/* 來源步驟：名稱與帶號金額一列，下面是收合的「看分錄」 */
+.ll-lab-src__step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 var(--ll-space-2);
+  padding: var(--ll-space-1) 0;
+  border-top: 1px solid var(--ll-border);
+}
+.ll-lab-src__amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ll-lab-src__amount.is-up {
+  color: var(--ll-success-ink);
+}
+.ll-lab-src__amount.is-down {
+  color: var(--ll-danger-ink);
+}
+.ll-lab-src__journal {
+  grid-column: 1 / -1;
+}
+.ll-lab-src__journal .ll-lab-table {
+  margin: var(--ll-space-1) 0;
+}
+.ll-lab-src__journal .ll-mini-table__row.is-marked th,
+.ll-lab-src__journal .ll-mini-table__row.is-marked td {
+  background: var(--ll-accent-tint);
+}

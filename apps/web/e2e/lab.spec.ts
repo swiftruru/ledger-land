@@ -1,7 +1,7 @@
 // 報表實驗室（M4a，03 第 3 節、10 第 11.1 節）：首頁、故事步驟列表、步驟頁練習模式的 10 個階段（預測閘門、揭曉、報表、燈號、指標、完成與進度）、
 // 練過才有的跳到最後、示範模式（9 個階段、沒有預測、隨時跳到最後、進度只往前、選單換模式）、方向鍵、自由實驗（擋下與可輸入範圍、連動清單、插入與本筆無影響、重設）、勾稽練習（三格、提示三層、完成卡）、
 // 指標實驗室（分組、版本切換、N/A 的建議）、英文介面。等待一律用 expect 的自動重試。
-import { expect, test, type Page, type Route } from '@playwright/test';
+import { expect, test, type Locator, type Page, type Route } from '@playwright/test';
 import { waitForApp } from './helpers.ts';
 
 const STORY = 'story_ywv2dy';
@@ -621,5 +621,178 @@ test.describe('指標實驗室', () => {
     const na = page.locator('.ll-lab-ratio.is-na').first();
     await expect(na).toBeVisible();
     await expect(na.getByRole('link')).toHaveAttribute('href', /\/lab\/sandbox\//);
+  });
+});
+
+test.describe('來源面板（M4b，03 第 3.9 節）', () => {
+  const DEMO7 = `/lab/story/${STORY}/${STEP7}/?mode=demo`;
+  /** 節點自己那一列的按鈕（原地展開之後，子節點的按鈕也在 li 裡面，要限定在直接的那一列） */
+  const rowButton = (item: Locator, testId: string) => item.locator(':scope > .ll-lab-trace__row').getByTestId(testId);
+  /** 示範模式一次按一下「下一步」到第 n 個階段（示範有 9 個階段，階段 4 是損益表、6 是資產負債表、8 是指標變化） */
+  async function toStage(page: Page, n: number, from = 1): Promise<void> {
+    for (let s = from + 1; s <= n; s++) {
+      await page.getByTestId('lab-next').click();
+      await expect(page.getByTestId('lab-stage-title')).toContainText(`階段 ${s}／9`);
+    }
+  }
+  const value = (page: Page, table: 'is' | 'cf' | 'bs', line: string) =>
+    page.locator(`#ll-lab-table-${table} [data-line="${line}"] [data-testid="lab-trace-value"]`);
+
+  test('電腦：點營業利益開面板，原地展開兩層到來源步驟，「看分錄」預設收合，Esc 關閉後焦點回到那個數字', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-chromium' && testInfo.project.name !== 'desktop-firefox', '原地展開只在 medium 以上');
+    await page.goto(DEMO7);
+    await waitForApp(page);
+    await toStage(page, 4);
+    // 可追蹤的數字：交易後的金額是按鈕，可讀名稱是完整的一句；恆等式摘要的三個合計也是
+    const oi = value(page, 'is', 'is_operating_income');
+    await expect(oi).toHaveAttribute('aria-label', /營業利益 NT\$1,250,000，看這個數字從哪裡來/);
+    await expect(page.getByTestId('lab-equation').getByTestId('lab-trace-value')).toHaveCount(3);
+    await oi.click();
+    const sheet = page.getByTestId('lab-trace');
+    await expect(sheet).toBeVisible();
+    await expect(sheet.getByRole('heading', { level: 2 })).toHaveText('營業利益 NT$1,250,000');
+    await expect(sheet).toContainText('損益表，累計到第 7 步');
+    // 第一層：營業毛利 － 銷管費用小計（核心的公式樹）
+    const first = sheet.locator('.ll-lab-trace__list--1 > li');
+    await expect(first).toHaveCount(2);
+    await expect(first.nth(0)).toContainText('營業毛利');
+    await expect(first.nth(0)).toContainText('NT$1,500,000');
+    await expect(first.nth(1)).toContainText('銷管費用小計');
+    await expect(first.nth(1)).toContainText('NT$250,000');
+    // 原地展開銷管費用小計：0 元的科目收在「另有 n 個 0 元的項目」，播報一句
+    const sgaExpand = rowButton(first.nth(1), 'lab-trace-expand');
+    await expect(sgaExpand).toHaveAttribute('aria-expanded', 'false');
+    await expect(sgaExpand).toHaveAttribute('aria-label', /銷管費用小計 NT\$250,000，等於 外包費用 NT\$200,000 ＋ 事務用品費 NT\$50,000/);
+    await sgaExpand.click();
+    await expect(sgaExpand).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.getByTestId('lab-trace-live')).toHaveText('銷管費用小計：外包費用 NT$200,000 ＋ 事務用品費 NT$50,000');
+    const second = first.nth(1).locator('.ll-lab-trace__list--2 > li');
+    await expect(second).toHaveCount(2);
+    await expect(first.nth(1)).toContainText('另有 6 個 0 元的項目');
+    // 再展開外包費用（最底層）：來源步驟是第 4 步，分錄層預設收合，展開後是該步的分錄，可以開啟那一步
+    await rowButton(second.nth(0), 'lab-trace-expand').click();
+    const src = second.nth(0).locator('.ll-lab-src__step');
+    await expect(src).toHaveCount(1);
+    await expect(src).toHaveAttribute('data-step', 'st_84jzxr');
+    await expect(src).toContainText('第 4 步');
+    await expect(src).toContainText('增加 NT$200,000');
+    await expect(page.getByTestId('lab-trace-entry')).toBeHidden();
+    await src.locator('summary').click();
+    await expect(page.getByTestId('lab-trace-entry')).toBeVisible();
+    await expect(page.getByTestId('lab-trace-entry')).toContainText('外包費用');
+    await expect(page.getByTestId('lab-trace-open-step')).toHaveAttribute('href', `/lab/story/${STORY}/st_84jzxr/`);
+    // Esc 關閉，焦點回到原本的數字
+    await page.keyboard.press('Escape');
+    await expect(sheet).toBeHidden();
+    await expect(oi).toBeFocused();
+  });
+
+  test('320px：往下鑽、路徑可以回去、0 元的項目收起來、整頁沒有橫向捲動', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto(DEMO7);
+    await waitForApp(page);
+    await toStage(page, 4);
+    await value(page, 'is', 'is_operating_income').click();
+    const sheet = page.getByTestId('lab-trace');
+    await expect(sheet).toBeVisible();
+    // 小螢幕沒有原地展開，只有往下
+    await expect(sheet.getByTestId('lab-trace-expand')).toHaveCount(0);
+    const first = sheet.locator('.ll-lab-trace__list--1 > li');
+    await rowButton(first.nth(0), 'lab-trace-drill').click();
+    await expect(page.getByTestId('lab-trace-focus')).toContainText('營業毛利');
+    await expect(page.getByTestId('lab-trace-path')).toContainText('營業利益');
+    await expect(page.getByTestId('lab-trace-live')).toHaveText('營業毛利：營業收入 NT$3,000,000 － 營業成本 NT$1,500,000');
+    // 營業成本小計：期初存貨與盤盈排除列是 0 元且沒有來源，收起來；期末存貨是 0 但有第 6、7 步的來源，留著
+    await rowButton(sheet.locator('.ll-lab-trace__list--1 > li').nth(1), 'lab-trace-drill').click();
+    await expect(page.getByTestId('lab-trace-focus')).toContainText('營業成本');
+    await expect(sheet.locator('.ll-lab-trace__list--1 > li')).toHaveCount(2);
+    await expect(page.getByTestId('lab-trace-zeros')).toContainText('其他 0 元的項目（2）');
+    await rowButton(sheet.locator('.ll-lab-trace__list--1 > li').nth(1), 'lab-trace-drill').click();
+    await expect(page.getByTestId('lab-trace-focus')).toContainText('期末存貨');
+    const src = sheet.locator('.ll-lab-src__step');
+    await expect(src).toHaveCount(2);
+    await expect(src.nth(0)).toContainText('第 6 步');
+    await expect(src.nth(1)).toContainText('第 7 步');
+    // 路徑：回到營業毛利
+    await page.getByTestId('lab-trace-path').getByRole('button', { name: '營業毛利' }).click();
+    await expect(page.getByTestId('lab-trace-focus')).toContainText('營業毛利');
+    const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(over).toBeLessThanOrEqual(1);
+  });
+
+  test('跨表對應：未分配盈餘對損益表的本期淨利（勾稽點④），「在報表上標出」關面板並醒目標示兩張表的列；指標卡的第一層是分子與分母', async ({ page }) => {
+    await page.goto(DEMO7);
+    await waitForApp(page);
+    await toStage(page, 6);
+    await value(page, 'bs', 'bs_retained_earnings').click();
+    const sheet = page.getByTestId('lab-trace');
+    await expect(sheet).toBeVisible();
+    const links = page.getByTestId('lab-trace-links');
+    await expect(links).toContainText('損益表的本期淨利（勾稽點④）');
+    await expect(links).toContainText('NT$1,250,000');
+    await page.getByTestId('lab-trace-highlight').click();
+    await expect(sheet).toBeHidden();
+    // 小螢幕一次只顯示一張表：關面板後切到另一張表（損益表）；電腦三表並排，兩張表的列都標出
+    await expect(page.locator('#ll-lab-table-is tr[data-line="is_net_income"]')).toHaveClass(/is-marked/);
+    if ((await page.locator('#ll-lab-table-bs').count()) > 0)
+      await expect(page.locator('#ll-lab-table-bs tr[data-line="bs_retained_earnings"]')).toHaveClass(/is-marked/);
+    else await expect(page.getByRole('radio', { name: '損益表' })).toHaveAttribute('aria-checked', 'true');
+    // 指標卡
+    await toStage(page, 8, 6);
+    await page.getByTestId('lab-trace-ratio').first().click();
+    await expect(sheet).toBeVisible();
+    await expect(page.getByTestId('lab-trace-tree')).toContainText('分子');
+    await expect(page.getByTestId('lab-trace-tree')).toContainText('分母');
+    await page.getByTestId('lab-trace-drill').first().click();
+    await expect(page.getByTestId('lab-trace-focus')).toBeVisible();
+    await expect(page.getByTestId('lab-trace-path')).toBeVisible();
+  });
+
+  test('只用鍵盤：Tab 到數字按 Enter 開面板、Tab 到節點按 Enter 展開、Esc 關閉', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-chromium' && testInfo.project.name !== 'desktop-firefox', '只在電腦鍵盤上驗');
+    await page.goto(DEMO7);
+    await waitForApp(page);
+    await toStage(page, 4);
+    const oi = value(page, 'is', 'is_operating_income');
+    await oi.focus();
+    await page.keyboard.press('Enter');
+    const sheet = page.getByTestId('lab-trace');
+    await expect(sheet).toBeVisible();
+    await expect(sheet.getByRole('heading', { level: 2 })).toBeFocused();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Tab');
+    await expect(sheet.getByTestId('lab-trace-expand').first()).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(sheet.getByTestId('lab-trace-expand').first()).toHaveAttribute('aria-expanded', 'true');
+    await page.keyboard.press('Escape');
+    await expect(sheet).toBeHidden();
+    await expect(oi).toBeFocused();
+  });
+
+  test('自由實驗與指標實驗室的數字也能追；來源步驟連到故事的那一步', async ({ page }) => {
+    await page.goto('/lab/ratios/');
+    await waitForApp(page);
+    await page.getByTestId('lab-trace-ratio').first().click();
+    await expect(page.getByTestId('lab-trace')).toBeVisible();
+    await expect(page.getByTestId('lab-trace-tree')).toContainText('分母');
+    await page.keyboard.press('Escape');
+    await page.goto('/lab/sandbox/');
+    await waitForApp(page);
+    await page.getByTestId('lab-sandbox-result').getByTestId('lab-trace-value').first().waitFor();
+    await page
+      .locator(
+        '#ll-lab-table-is [data-line="is_revenue"] [data-testid="lab-trace-value"], .ll-lab-sandbox__result [data-line="is_revenue"] [data-testid="lab-trace-value"]',
+      )
+      .first()
+      .click();
+    const sheet = page.getByTestId('lab-trace');
+    await expect(sheet).toBeVisible();
+    await expect(sheet).toContainText('累計到第 18 步');
+    // 第 18 步之後的營業收入來自第 7 步與第 10 步；「看分錄」預設收合，展開後可以開啟那一步（故事的步驟才有）
+    await expect(sheet.locator('.ll-lab-src__step')).toHaveCount(2);
+    await expect(page.getByTestId('lab-trace-open-step').first()).toBeHidden();
+    await sheet.locator('.ll-lab-src__step').first().locator('summary').click();
+    await expect(page.getByTestId('lab-trace-open-step').first()).toBeVisible();
+    await expect(page.getByTestId('lab-trace-open-step').first()).toHaveAttribute('href', `/lab/story/${STORY}/${STEP7}/`);
   });
 });

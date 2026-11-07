@@ -69,6 +69,17 @@ export function lineAt(st: Statements, lineId: string): number {
   return st.lines.get(lineId)?.value ?? 0;
 }
 
+const REF_RE = /\b(line|input|ratio)\.([a-z][a-z0-9_]*)(?:\.([a-z][a-z0-9_]*))?/g;
+
+/** 指標公式的文字：line.x 換成版面名稱、ratio.x 換成指標名稱（指標卡與來源面板共用；放這裡是為了讓來源面板不必靜態引用 lab-stages） */
+export function useFormulaText(layout: LayoutLike) {
+  const { lineLabel, ratioLabel } = useLabLabels(layout);
+  const humanise = (source: string): string =>
+    source.replace(REF_RE, (_m, ns: string, name: string) => (ns === 'line' ? lineLabel(name) : ns === 'ratio' ? ratioLabel(name) : name.replace(/_/g, ' ')));
+  return (spec: { readonly numerator?: string; readonly denominator?: string; readonly expr?: string }): string =>
+    spec.expr !== undefined ? humanise(spec.expr) : `${humanise(spec.numerator ?? '')} ÷ ${humanise(spec.denominator ?? '')}`;
+}
+
 /** 指標的顯示文字：ok 與 zero 依版本的單位與位數格式化（和作答頁同一個函式）；na 是「N/A」；not_meaningful 有數字就顯示數字（畫面另加警示） */
 export function formatRatio(r: RatioResult, unit: RatioUnit | undefined, locale: Locale, decimals: number): string {
   if (r.status === 'na' || r.displayValue === null) return 'N/A';

@@ -2,11 +2,13 @@
 // 可以切換版本（只影響顯示，不存設定）；每張卡有公式、代入值、狀態與原因；N/A 的卡提供「想讓它變得可以計算？」的建議（連到自由實驗）。
 // 杜邦拆解：ROE ＝ 純益率 × 資產週轉率 × 權益倍數，三個因子即時代入。字串在第三層 catalog。
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { localePath } from '@ledgerland/i18n';
 import { Button, ErrorState, Segmented, TopBar } from '@ledgerland/web-ui';
 import { formatRatio, useLabLabels } from '../features/lab/labels.ts';
+import { loadTracePanel, tracePanelNow, type TraceViews } from '../features/lab/lazy-trace.ts';
 import { RatioCard, type RatioChange } from '../features/lab/RatioList.tsx';
+import type { TraceTarget } from '../features/lab/TracePanel.tsx';
 import { CATEGORY_ORDER, RATIO_VERSIONS, ratioChanges, type RatioVersionId } from '../features/lab/ratio-changes.ts';
 import { useLabStory } from '../features/lab/useLab.ts';
 import { TermsProvider, useTerms } from '../features/quiz/terms.tsx';
@@ -99,6 +101,15 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
   const layout = run.value.ctx.layout;
   const { ratioLabel } = useLabLabels(layout);
   usePageReady(ready);
+  // 來源面板（M4b）：點指標卡的結果，第一層是分子與分母，再往下接報表列的公式樹
+  const [trace, setTrace] = useState<TraceTarget | null>(null);
+  const [traceViews, setTraceViews] = useState<TraceViews | null>(() => tracePanelNow());
+  const traceReturn = useRef<HTMLElement | null>(null);
+  const openTrace = (item: RatioChange, el: HTMLElement) => {
+    traceReturn.current = el;
+    setTrace({ kind: 'ratio', ratioRef: item.ratioRef, spec: item.spec, result: item.after });
+    if (traceViews === null) loadTracePanel().then(setTraceViews, () => setTrace(null));
+  };
   const groups = CATEGORY_ORDER.map((c) => ({ category: c, items: items.filter((i) => i.spec.category === c) })).filter((g) => g.items.length > 0);
   const suggestionFor = (item: RatioChange) => {
     if (item.after.status !== 'na') return undefined;
@@ -159,11 +170,29 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
           </h2>
           <ul className="ll-lab-ratios__list">
             {g.items.map((item) => (
-              <RatioCard key={item.ratioRef} item={item} layout={layout} suggestion={suggestionFor(item)} />
+              <RatioCard key={item.ratioRef} item={item} layout={layout} suggestion={suggestionFor(item)} onTrace={openTrace} />
             ))}
           </ul>
         </section>
       ))}
+      {traceViews && (
+        <traceViews.TracePanel
+          open={trace !== null}
+          onClose={() => setTrace(null)}
+          returnFocusTo={traceReturn}
+          target={trace}
+          run={run.value}
+          step={step}
+          trace={(window, lineId) => lab.core.traceLabLine(run.value, step, window, lineId)}
+          entriesOf={(id) => lab.core.entriesOfStep(run.value, id)}
+          layout={layout}
+          stepInfo={(id) => {
+            const s = lab.story.steps.find((x) => x.id === id);
+            return s === undefined ? undefined : { order: s.order, title: s.title };
+          }}
+          stepHref={(id) => (lab.story.steps.some((x) => x.id === id) ? localePath(locale, `/lab/story/${lab.story.id}/${id}/`) : null)}
+        />
+      )}
     </>
   );
 }

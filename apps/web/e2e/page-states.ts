@@ -676,6 +676,25 @@ export const CASES: readonly PageCase[] = [
       await visible(page, 'lab-predict');
     },
   },
+  {
+    group: '實驗室',
+    name: '來源面板',
+    path: `/lab/story/${STORY}/${STORY_STEP}/?mode=demo`,
+    tablet: true,
+    prepare: async (page) => {
+      await visible(page, 'lab-card');
+      for (let s = 2; s <= 4; s++) {
+        await page.getByTestId('lab-next').click();
+        await expect(page.getByTestId('lab-stage-title')).toContainText(`${s}／9`);
+      }
+      await page.locator('#ll-lab-table-is [data-line="is_operating_income"] [data-testid="lab-trace-value"]').click();
+      await visible(page, 'lab-trace');
+      const expand = page.getByTestId('lab-trace-expand');
+      if ((await expand.count()) > 0) await expand.last().click();
+      else await page.getByTestId('lab-trace-drill').last().click();
+      await visible(page, 'lab-trace-focus');
+    },
+  },
   { group: '實驗室', name: '自由實驗', path: '/lab/sandbox/', tablet: true, prepare: (page) => visible(page, 'lab-sandbox-step') },
   { group: '實驗室', name: '勾稽練習', path: '/lab/reconcile/', tablet: true, prepare: (page) => visible(page, 'lab-light-2') },
   { group: '實驗室', name: '指標實驗室', path: '/lab/ratios/', tablet: true, prepare: (page) => visible(page, 'lab-ratios-context') },

@@ -378,6 +378,14 @@ test('減少動態：實驗室第 7 步從頭走到尾沒有動畫，天平直�
           .first()
           .evaluate((el) => getComputedStyle(el).animationName),
       ).toBe('none');
+      // 來源面板（M4b）：開、往下鑽、關，都直接切換；面板本身的進出動畫跟著 Sheet 的減少動態規則
+      await page.locator('#ll-lab-table-is [data-line="is_operating_income"] [data-testid="lab-trace-value"]').click();
+      await expect(page.getByTestId('lab-trace')).toBeVisible();
+      await page.getByTestId('lab-trace-drill').first().click();
+      await expect(page.getByTestId('lab-trace-focus')).toContainText('營業毛利');
+      await page.screenshot({ path: 'test-results/reduced-motion-lab-trace.png', fullPage: true });
+      await page.keyboard.press('Escape');
+      await expect(page.getByTestId('lab-trace')).toBeHidden();
     }
     await page.screenshot({ path: `test-results/reduced-motion-lab-${stage}.png`, fullPage: true });
   }

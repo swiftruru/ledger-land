@@ -22,6 +22,7 @@ export { NavList, NavRow, NavCard, type NavListProps, type NavRowProps, type Nav
 export { Disclosure, type DisclosureProps } from './components/Disclosure.tsx';
 export { MenuButton, MenuItem, menuItemClass, type MenuButtonProps, type MenuItemProps } from './components/Menu.tsx';
 export { Sheet, ConfirmSheet, type SheetProps, type ConfirmSheetProps } from './components/Sheet.tsx';
+export { ValueButton, type ValueButtonProps } from './components/ValueButton.tsx';
 export {
   GlossaryItem,
   GlossaryGrid,

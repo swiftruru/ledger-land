@@ -188,6 +188,14 @@ test('INP：CPU 降速 4 倍，作答頁、地圖、圖鑑與實驗室的互動�
   await page.getByTestId('lab-next').click();
   await page.getByTestId('lab-scale-verdict').waitFor();
   await log('實驗室：下一步（天平）');
+  // 來源面板（M4b）：第一次點數字要載面板的 chunk 並算追蹤樹
+  await page.getByTestId('lab-next').click();
+  await page.locator('#ll-lab-table-is [data-testid="lab-trace-value"]').first().waitFor();
+  await settle();
+  await page.locator('#ll-lab-table-is [data-line="is_operating_income"] [data-testid="lab-trace-value"]').click();
+  await page.getByTestId('lab-trace').waitFor();
+  await log('實驗室：開來源面板');
+  await page.keyboard.press('Escape');
   await page.goto('/lab/sandbox/');
   await waitForApp(page);
   const step6 = page.locator('[data-step="st_g4h3hx"]');
