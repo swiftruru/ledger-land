@@ -309,12 +309,13 @@ describe('模擬考（run.ts 的 mock 模式）', () => {
     expect(parseSeconds(null, 90)).toBe(90);
     expect(parseMockSettings(null)).toEqual(DEFAULT_MOCK_SETTINGS);
     expect(parseMockSettings('d2|40|0')).toEqual({ scope: 'd2', count: 40, seconds: 0 });
-    // 題數只有 30、40、50：以前存的 20 與 all 用預設
+    // 題數只有 40、50、100：以前存的 20、30 與 all 用預設
+    expect(parseMockSettings('d2|30|0')).toEqual({ scope: 'd2', count: DEFAULT_MOCK_SETTINGS.count, seconds: 0 });
     expect(parseMockSettings('d2|all|0')).toEqual({ scope: 'd2', count: DEFAULT_MOCK_SETTINGS.count, seconds: 0 });
     expect(parseMockSettings('all|20|45')).toEqual({ scope: 'all', count: DEFAULT_MOCK_SETTINGS.count, seconds: 45 });
     expect(DEFAULT_MOCK_SETTINGS.count).toBe(40);
     expect(parseMockSettings('teacher|7|x')).toEqual(DEFAULT_MOCK_SETTINGS);
     expect(encodeMockSettings({ scope: 'd3', count: 50, seconds: 90 })).toBe('d3|50|90');
-    expect(parseMockSettings(encodeMockSettings({ scope: 'all', count: 30, seconds: 45 }))).toEqual({ scope: 'all', count: 30, seconds: 45 });
+    expect(parseMockSettings(encodeMockSettings({ scope: 'all', count: 100, seconds: 45 }))).toEqual({ scope: 'all', count: 100, seconds: 45 });
   });
 });
