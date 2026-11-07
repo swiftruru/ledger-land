@@ -2,7 +2,7 @@
 
 對照 [10 分階段里程碑](../plan/10-milestones.md) 第 11.2 節的範圍、交付物與完成標準，以及第 4 節有介面里程碑的驗收閘門。本機專用的輸出（Lighthouse 報告、規格稽核的逐項紀錄、看圖驗收的截圖）不在 repo 內；本文只保留結論與可以公開的數字。
 
-M4b 於 2026-11-07 在 M4c、M4d 之後開工，分四個 PR：PR 113（核心，main f85e9f5）、PR 114（來源面板，main 42b3013）、PR 115（IFRS 切換，main f9eff4d）與本回報所在的 PR（規格稽核後的修正加文件）。前三個已合併，PR 115 已部署並在正式站驗過。第 4 節的數字是本回報所在的 PR 定稿程式的最後一輪閘門；這個 PR 還沒有合併與部署。
+M4b 於 2026-11-07 在 M4c、M4d 之後開工，分四個 PR：PR 113（核心，main f85e9f5）、PR 114（來源面板，main 42b3013）、PR 115（IFRS 切換，main f9eff4d）與PR 116（規格稽核後的修正加文件）。前三個已合併，PR 115 已部署並在正式站驗過。第 4 節的數字是PR 116 定稿程式的最後一輪閘門；這個 PR 還沒有合併與部署。
 
 ## 1. 開工前的決定
 
@@ -24,8 +24,8 @@ IFRS 18 的核對：10 第 11.2 節要求實作 IFRS 說明前先核對 IFRS 18 
 | 核心（PR 113） | `packages/core/data/layouts/ifrs@1.json`（畫面上沒有經常利益、非常損益、攤銷與遞延資產，線 ID 和 `teacher@1` 共用）；`createCoreContext` 的政策與版面配對（`getLayout`、`ifrsLayout`）；`Precondition.policyWhen` 與 `tpl.amortise_org_costs` 的前置條件；黃金測試 `golden/lime-leaf.ifrs@1.json`；性質測試與 `content:check` 的故事檢查都跑兩套政策 |
 | 來源面板（PR 114） | `features/lab/` 的 `TracePanel`、`TraceTree`、`TraceSources`、`trace-model.ts`、`lazy-trace.ts`（`lab-trace` chunk，第一次點數字才載）：跨表對應、一層一層的公式、來源步驟、預設收合的分錄層；步驟頁的報表階段與恆等式摘要、自由實驗報表區、指標實驗室的數字都是可點的按鈕，指標卡第一層是分子與分母 |
 | IFRS 切換（PR 115） | `lab-view.ts`、`PolicyToggle.tsx`、`BasisBanner.tsx`；步驟頁、自由實驗、指標實驗室可切換，三表、指標、科目變動、分錄與追蹤樹依 `ifrs@1` 重算；「與教材口徑不同」標記與「教材口徑：x」小字；交易卡的「IFRS 下的處理不同」；預測另記 `predictBasis`；勾稽練習維持教材 |
-| 規格稽核（本回報所在的 PR） | 逐條對照 02、03、04、05、06、07、10、11、14 與 M4a 回報裡和 M4b 有關的規格，共 242 項：已完成 116、只能實機驗 7、文件過期 57、缺口 62。缺口修完後再從頭獨立審查一次：14 條意見 13 條屬實已修，1 條（指標面板的教材專屬列）改了修法 |
-| 修掉的缺陷（本回報所在的 PR） | 電腦上第 3 層往下鑽時公式樹整塊消失；未分配盈餘在有股利時公式對不起來、股利那一步不列出；連鎖指標沒有往下、單位與名稱錯；往下鑽後焦點掉到 body；面板少了「不計分」；IFRS 下預測出現原始線 ID `is_ordinary_income` 且算進成績；自由實驗與指標實驗室的橫幅被捲走；標出之後沒有文字（改由 live region 說明）；舊存檔只有 IFRS 算得下去時報表少了標示；模組載不到時沒有提示（`TraceLoadToast`）；按鈕的可讀名稱沒有以可見文字開頭；英文 catalog 佔位符不符（第 8 節） |
+| 規格稽核（PR 116） | 逐條對照 02、03、04、05、06、07、10、11、14 與 M4a 回報裡和 M4b 有關的規格，共 242 項：已完成 116、只能實機驗 7、文件過期 57、缺口 62。缺口修完後再從頭獨立審查一次：14 條意見 13 條屬實已修，1 條（指標面板的教材專屬列）改了修法 |
+| 修掉的缺陷（PR 116） | 電腦上第 3 層往下鑽時公式樹整塊消失；未分配盈餘在有股利時公式對不起來、股利那一步不列出；連鎖指標沒有往下、單位與名稱錯；往下鑽後焦點掉到 body；面板少了「不計分」；IFRS 下預測出現原始線 ID `is_ordinary_income` 且算進成績；自由實驗與指標實驗室的橫幅被捲走；標出之後沒有文字（改由 live region 說明）；舊存檔只有 IFRS 算得下去時報表少了標示；模組載不到時沒有提示（`TraceLoadToast`）；按鈕的可讀名稱沒有以可見文字開頭；英文 catalog 佔位符不符（第 8 節） |
 | 準則版本 | IFRS 橫幅下的說明句加一句「依現行 IAS 1 與 IAS 7，不是 IFRS 18。」（`lab.policy.version`，資料 `lab-basis-version`） |
 | 測試 | 單元：`packages/core/test/layout-ifrs.test.ts`、`lime-leaf-ifrs.golden.test.ts`、`story-official.property.test.ts` 的 `ifrs@1` 區段，`apps/web/test/lab-trace-model.test.ts`、`lab-view.test.ts`、`lab-predict.test.ts`、`lab-labels.test.ts`、`catalog-placeholders.test.ts`，`packages/tokens/test/contrast.test.ts` 的新配對。E2E：`lab.spec.ts` 新增「來源面板」「IFRS 對照」「來源面板載入失敗或還沒好」三組；`page-states.ts` 的實驗室狀態增加到 13 個；`link-style.spec.ts` 的 Tab 走一輪加實驗室，另加往回走；`inp.spec.ts` 加開面板與切換口徑 |
 | 文件 | 見第 10 節 |
