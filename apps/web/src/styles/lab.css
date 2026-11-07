@@ -1468,3 +1468,58 @@
 .ll-lab-src__journal .ll-mini-table__row.is-marked td {
   background: var(--ll-accent-tint);
 }
+
+/* IFRS 對照（M4b，03 第 3.13 節）：橫幅、口徑切換、差異標記與「教材口徑：x」的小字 */
+.ll-lab-basis {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2);
+  margin: var(--ll-space-2) 0 0;
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-lab-basis__icon {
+  display: inline-flex;
+  color: var(--ll-warning-ink);
+}
+.ll-lab-basis__icon svg {
+  width: 16px;
+  height: 16px;
+}
+.ll-lab-tag--diff,
+.ll-lab-tag--policy,
+.ll-lab-tag--ifrs {
+  background: var(--ll-warning-tint);
+  color: var(--ll-warning-ink);
+}
+.ll-lab-row__basis {
+  display: block;
+  color: var(--ll-text-3);
+  font-family: var(--ll-font-num);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+  font-weight: 400;
+}
+.ll-lab-ratio__basis {
+  margin: var(--ll-space-1) 0 0;
+  color: var(--ll-text-3);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+}
+.ll-lab-tables__controls .ll-lab-policy {
+  margin-left: auto;
+}
+/* 自由實驗報表區與指標實驗室：標題（或版本切換）和口徑切換同一列，放不下就換行 */
+.ll-lab-sandbox__head,
+.ll-lab-ratios__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ll-space-2) var(--ll-space-3);
+}
+.ll-lab-sandbox__head h2 {
+  margin: 0;
+}

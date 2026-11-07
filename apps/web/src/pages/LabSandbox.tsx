@@ -47,6 +47,11 @@ import {
   type SandboxStep,
 } from '../features/lab/sandbox.ts';
 import { StatementTable } from '../features/lab/StatementTable.tsx';
+import { BasisBanner } from '../features/lab/BasisBanner.tsx';
+import { LabTag } from '../features/lab/LabTag.tsx';
+import { IFRS_POLICY, TEACHER_POLICY } from '../features/lab/lab-policy.ts';
+import { useLabView } from '../features/lab/lab-view.ts';
+import { PolicyToggle } from '../features/lab/PolicyToggle.tsx';
 import { useFirstStoryId } from '../features/lab/useFirstStory.ts';
 import { useLabStory } from '../features/lab/useLab.ts';
 import { useColumnsFit } from '../features/lab/useColumnsFit.ts';
@@ -163,11 +168,24 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
   const edited = useMemo(() => sandboxStory(story, sandbox), [story, sandbox]);
   const toOverrides = (sb: SandboxState): ParamOverride[] =>
     sb.overrides.map((o) => ({ stepId: o.stepId, eventId: o.eventId, param: o.param, value: o.value }));
-  const overrides = toOverrides(sandbox);
+  const overrides = useMemo(
+    (): ParamOverride[] => sandbox.overrides.map((o) => ({ stepId: o.stepId, eventId: o.eventId, param: o.param, value: o.value })),
+    [sandbox],
+  );
   const replayOf = (sb: SandboxState): LabReplay => lab.core.replayLab(lab.core.asCoreStory(sandboxStory(story, sb)), toOverrides(sb));
+  // 教材口徑的重播是基準：擋下、可輸入範圍、連動清單、儲存都照它；切到 IFRS 對照時用同一組修改再以 ifrs@1 重播一次只給報表區看（03 第 3.13 節）
   const replay: LabReplay = useMemo(() => lab.core.replayLab(lab.core.asCoreStory(edited), overrides), [lab.core, edited, overrides]);
   const baseline = useMemo(() => lab.core.replayLab(lab.core.asCoreStory(story)), [lab.core, story]);
-  const layout = lab.core.labContext().layout;
+  const labView = useLabView();
+  const ifrs = labView.policy === IFRS_POLICY;
+  const replayIfrs: LabReplay | null = useMemo(
+    () => (ifrs ? lab.core.replayLab(lab.core.asCoreStory(edited), overrides, IFRS_POLICY) : null),
+    [lab.core, edited, overrides, ifrs],
+  );
+  // IFRS 重播失敗而教材成功（理論上現金流相同，不應發生；防呆）：橫幅說明、數字維持教材口徑
+  const ifrsFailed = ifrs && replay.ok && replayIfrs !== null && !replayIfrs.ok;
+  const view: LabReplay = ifrs && replayIfrs !== null && replayIfrs.ok ? replayIfrs : replay;
+  const layout = lab.core.labContext(view.ok ? view.value.policyId : TEACHER_POLICY).layout;
   const { lineLabel, accountLabel } = useLabLabels(layout);
   const templateOf = (id: string) => lab.core.templates.find((x) => x.id === id);
   const text = (lt: { 'zh-TW': string; en: string } | undefined) => lt?.[locale] ?? lt?.['zh-TW'] ?? '';
@@ -364,7 +382,9 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
           .filter((x): x is NonNullable<typeof x> => x !== null)
       : [];
 
-  const last = replay.ok && replay.value.stepIds.length > 0 ? replay.value.step(replay.value.stepIds.length - 1) : null;
+  // 報表區顯示的口徑（view）：教材或 IFRS 對照；對照用的教材數字由 replay 來
+  const last = view.ok && view.value.stepIds.length > 0 ? view.value.step(view.value.stepIds.length - 1) : null;
+  const baseStepOf = (id: string): LabStep | undefined => (replay.ok ? replay.value.stepById(id) : undefined);
   const failedAt = replay.ok ? null : (edited.steps.find((s) => s.id === replay.error.at.stepId) ?? null);
   const brokenOrder = failedAt?.order ?? 0;
   const brokenTitle = failedAt ? titleOf(failedAt) : '';
@@ -385,17 +405,20 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
     </ul>
   );
   const ratios = last ? ratioChanges(lab.core, 'excel', null, last.ratiosAfter) : [];
-  const focused = focusStep && replay.ok ? replay.value.stepById(focusStep) : null;
+  const focused = focusStep && view.ok ? view.value.stepById(focusStep) : null;
   const shown = focused ?? last;
+  const baseShown = ifrs && shown ? baseStepOf(shown.id) : undefined;
+  const compare = view.ok && view.value.policyId === IFRS_POLICY && baseShown ? { after: baseShown.after, change: baseShown.change } : undefined;
+  const compareRatios = compare && last ? baseStepOf(last.id)?.ratiosAfter : undefined;
   // 來源面板（M4b，03 第 3.9 節）：報表區的數字用顯示中的那一步、指標卡用最後一步；第一次點才載面板的模組。
   // 開面板時把當時的 run 一起記住：覆寫陣列每次重繪都是新的，replay 會重算，面板的報表要和它自己的 run 配對（核心會擋下不同 run 的報表）
   const [trace, setTrace] = useState<{ target: TraceTarget; step: LabStep; run: LabRun } | null>(null);
   const [traceViews, setTraceViews] = useState<TraceViews | null>(() => tracePanelNow());
   const traceReturn = useRef<HTMLElement | null>(null);
   const openTrace = (target: TraceTarget, step: LabStep, el: HTMLElement) => {
-    if (!replay.ok) return;
+    if (!view.ok) return;
     traceReturn.current = el;
-    setTrace({ target, step, run: replay.value });
+    setTrace({ target, step, run: view.value });
     if (traceViews === null) loadTracePanel().then(setTraceViews, () => setTrace(null));
   };
   const sandboxStepInfo = (id: string) => {
@@ -635,17 +658,28 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
           </ul>
         </Card>
       )}
-      {shown && replay.ok && (
-        <section className="ll-lab-sandbox__result" aria-labelledby="ll-lab-sandbox-result" ref={resultRef} data-testid="lab-sandbox-result">
-          <h2 id="ll-lab-sandbox-result" tabIndex={-1}>
-            {focused
-              ? t({
-                  id: 'lab.sandbox.resultAt',
-                  message: `第 ${edited.steps.findIndex((s) => s.id === focused.id) + 1} 步之後的報表`,
-                  comment: '報表區標題；數字已代入',
-                })
-              : t({ id: 'lab.sandbox.result', message: '最後一步之後的報表', comment: '報表區標題' })}
-          </h2>
+      {shown && view.ok && (
+        <section
+          className="ll-lab-sandbox__result"
+          aria-labelledby="ll-lab-sandbox-result"
+          ref={resultRef}
+          data-testid="lab-sandbox-result"
+          data-policy={view.value.policyId}
+        >
+          <div className="ll-lab-sandbox__head">
+            <h2 id="ll-lab-sandbox-result" tabIndex={-1}>
+              {focused
+                ? t({
+                    id: 'lab.sandbox.resultAt',
+                    message: `第 ${edited.steps.findIndex((s) => s.id === focused.id) + 1} 步之後的報表`,
+                    comment: '報表區標題；數字已代入',
+                  })
+                : t({ id: 'lab.sandbox.result', message: '最後一步之後的報表', comment: '報表區標題' })}
+            </h2>
+            {/* 報表口徑（03 第 3.13 節）：修改兩種口徑共用，切換只重算報表區 */}
+            <PolicyToggle value={labView.policy} onChange={labView.setPolicy} />
+          </div>
+          {ifrs && <BasisBanner failed={ifrsFailed} />}
           <p className="ll-lab-session__equation">
             {lineLabel('bs_total_assets')} {formatMoney(lineAt(shown.after, 'bs_total_assets'), locale)} ＝ {lineLabel('bs_total_liabilities')}{' '}
             {formatMoney(lineAt(shown.after, 'bs_total_liabilities'), locale)} ＋ {lineLabel('bs_total_equity')}{' '}
@@ -663,6 +697,7 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
                 view={wide ? 'columns' : 'cumulative'}
                 layout={layout}
                 onTrace={(lineId, window, el) => openTrace({ kind: 'line', lineId, window }, shown, el)}
+                compare={compare}
               />
             ))}
           </div>
@@ -670,6 +705,7 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
             items={ratios}
             layout={layout}
             onTrace={(item, el) => last && openTrace({ kind: 'ratio', ratioRef: item.ratioRef, spec: item.spec, result: item.after }, last, el)}
+            compareAfter={compareRatios}
           />
         </section>
       )}
@@ -683,7 +719,8 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
           step={trace.step}
           trace={(window, lineId) => lab.core.traceLabLine(trace.run, trace.step, window, lineId)}
           entriesOf={(id) => lab.core.entriesOfStep(trace.run, id)}
-          layout={layout}
+          layout={trace.run.ctx.layout}
+          basisTag={trace.run.policyId === IFRS_POLICY ? <LabTag kind="ifrs" testId="lab-trace-basis" /> : undefined}
           stepInfo={sandboxStepInfo}
           stepHref={sandboxStepHref}
         />

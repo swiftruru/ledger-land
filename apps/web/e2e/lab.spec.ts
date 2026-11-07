@@ -796,3 +796,194 @@ test.describe('來源面板（M4b，03 第 3.9 節）', () => {
     await expect(page.getByTestId('lab-trace-open-step').first()).toHaveAttribute('href', `/lab/story/${STORY}/${STEP7}/`);
   });
 });
+
+test.describe('IFRS 對照（M4b，03 第 3.13 節）', () => {
+  const STEP5 = 'st_yj3yex';
+  const DEMO5 = `/lab/story/${STORY}/${STEP5}/?mode=demo`;
+  /** 示範模式一次按一下「下一步」到第 n 個階段（示範有 9 個階段：2 是科目變動、4 是損益表、7 是勾稽燈號） */
+  async function toStage(page: Page, n: number, from = 1): Promise<void> {
+    for (let s = from + 1; s <= n; s++) {
+      await page.getByTestId('lab-next').click();
+      await expect(page.getByTestId('lab-stage-title')).toContainText(`階段 ${s}／9`);
+    }
+  }
+  /** 用階段選單跳到某個階段（示範隨時可跳） */
+  async function jumpTo(page: Page, current: string, item: string): Promise<void> {
+    await page.getByRole('button', { name: current }).click();
+    await page.getByRole('menuitem', { name: item }).click();
+  }
+  const policyRadio = (scope: Locator | Page, name: string) => scope.getByTestId('lab-policy').getByRole('radio', { name });
+  /** ledgerland 資料庫某個 store 的全部紀錄（settings、attempts、reviewQueue） */
+  function readStore(page: Page, store: string): Promise<unknown[]> {
+    return page.evaluate(
+      (name) =>
+        new Promise<unknown[]>((resolve) => {
+          const req = indexedDB.open('ledgerland');
+          req.onerror = () => resolve([]);
+          req.onsuccess = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains(name)) {
+              db.close();
+              resolve([]);
+              return;
+            }
+            const r = db.transaction(name).objectStore(name).getAll();
+            r.onsuccess = () => {
+              db.close();
+              resolve(r.result as unknown[]);
+            };
+            r.onerror = () => {
+              db.close();
+              resolve([]);
+            };
+          };
+        }),
+      store,
+    );
+  }
+  const labViewPolicy = async (page: Page): Promise<unknown> => {
+    const settings = (await readStore(page, 'settings')) as { key: string; value: { policy?: unknown } }[];
+    return settings.find((s) => s.key === 'labView')?.value.policy;
+  };
+
+  test('步驟頁：切到 IFRS 對照後橫幅、caption、差異標記與播報；分錄是設立費費用化；交易卡有標記；五層利益四列；切回教材全部還原；設定有寫入、計分的 store 不動', async ({
+    page,
+  }) => {
+    await page.goto(DEMO5);
+    await waitForApp(page);
+    await toStage(page, 4);
+    const session = page.getByTestId('lab-session');
+    const attemptsBefore = (await readStore(page, 'attempts')).length;
+    const reviewBefore = (await readStore(page, 'reviewQueue')).length;
+    await expect(session).toHaveAttribute('data-policy', 'teacher@1');
+    await expect(page.getByTestId('lab-basis')).toHaveCount(0);
+    await expect(page.locator('#ll-lab-table-is tr[data-line="is_ordinary_income"]')).toHaveCount(1);
+    await expect(page.locator('#ll-lab-table-is caption')).toHaveText('損益表');
+    await policyRadio(page, 'IFRS 對照').click();
+    await expect(session).toHaveAttribute('data-policy', 'ifrs@1');
+    await expect(page.getByTestId('lab-basis')).toContainText('IFRS 對照，不計分');
+    await expect(page.getByTestId('lab-policy-live')).toHaveText('已切換到 IFRS 對照，不計分。和教材口徑不同的列已加上標記。');
+    await expect(page.locator('#ll-lab-table-is caption')).toHaveText('損益表（IFRS 對照）');
+    // ifrs@1 的版面：沒有經常利益；第 5 步設立費 300,000 費用化，營業費用 550,000 和教材口徑的 250,000 不同
+    await expect(page.locator('#ll-lab-table-is tr[data-line="is_ordinary_income"]')).toHaveCount(0);
+    const sga = page.locator('#ll-lab-table-is tr[data-line="is_sga_total"]');
+    await expect(sga).toHaveClass(/is-diff/);
+    await expect(sga.getByTestId('lab-row-diff')).toHaveText('與教材口徑不同');
+    await expect(sga.getByTestId('lab-row-basis')).toHaveText('教材口徑：NT$250,000');
+    await expect(sga.getByTestId('lab-trace-value')).toHaveAttribute('aria-label', /NT\$550,000，看這個數字從哪裡來/);
+    await expect(page.locator('#ll-lab-table-is tr[data-line="is_revenue"] [data-testid="lab-row-diff"]')).toHaveCount(0);
+    await expect.poll(() => labViewPolicy(page)).toBe('ifrs@1');
+    // 來源面板依 ifrs@1 展開，副標帶標記
+    await sga.getByTestId('lab-trace-value').click();
+    await expect(page.getByTestId('lab-trace')).toBeVisible();
+    await expect(page.getByTestId('lab-trace-basis')).toHaveText('IFRS 對照');
+    await expect(page.getByTestId('lab-trace').getByRole('heading', { level: 2 })).toContainText('NT$550,000');
+    await page.keyboard.press('Escape');
+    await expect(page.getByTestId('lab-trace')).toBeHidden();
+    // 階段 2 科目變動：ifrs@1 的分錄是設立費（費用化），沒有遞延的設立費
+    await jumpTo(page, '階段 4／9：損益表', '2. 科目變動');
+    await expect(page.getByTestId('lab-effects').locator('[data-account="organisation_costs_expense"]')).toBeVisible();
+    await expect(page.getByTestId('lab-effects').locator('[data-account="deferred_organisation_costs"]')).toHaveCount(0);
+    await expect(page.getByTestId('lab-basis')).toBeVisible();
+    // 交易卡：這一步的範本在 IFRS 下的處理不同
+    await jumpTo(page, '階段 2／9：科目變動', '1. 交易卡');
+    await expect(page.getByTestId('lab-policy-differs')).toHaveText('IFRS 下的處理不同');
+    // 勾稽燈號：五層利益只有四列（沒有經常利益），四個燈仍相符
+    await jumpTo(page, '階段 1／9：交易卡', '7. 勾稽燈號');
+    await expect(page.locator('.ll-lab-levels tbody tr')).toHaveCount(4);
+    for (const s of [2, 3, 4, 5]) await expect(page.getByTestId(`lab-light-${s}`)).toHaveAttribute('data-state', 'pass');
+    // 切回教材：全部還原
+    await jumpTo(page, '階段 7／9：勾稽燈號', '4. 損益表');
+    await policyRadio(page, '教材').click();
+    await expect(session).toHaveAttribute('data-policy', 'teacher@1');
+    await expect(page.getByTestId('lab-policy-live')).toHaveText('已切換回教材口徑。');
+    await expect(page.getByTestId('lab-basis')).toHaveCount(0);
+    await expect(page.locator('#ll-lab-table-is caption')).toHaveText('損益表');
+    await expect(page.locator('#ll-lab-table-is tr[data-line="is_ordinary_income"]')).toHaveCount(1);
+    await expect(page.getByTestId('lab-row-diff')).toHaveCount(0);
+    await expect.poll(() => labViewPolicy(page)).toBe('teacher@1');
+    // 切換不碰作答紀錄與錯題
+    expect((await readStore(page, 'attempts')).length).toBe(attemptsBefore);
+    expect((await readStore(page, 'reviewQueue')).length).toBe(reviewBefore);
+  });
+
+  test('口徑的記憶：同一次使用中換到別的步驟仍是 IFRS 對照；重新載入回到教材；從題目開啟一律教材', async ({ page }) => {
+    await page.goto(DEMO5);
+    await waitForApp(page);
+    await toStage(page, 4);
+    await policyRadio(page, 'IFRS 對照').click();
+    await expect(page.getByTestId('lab-basis')).toBeVisible();
+    // 走完這一步，從完成卡到第 6 步（同一個 document）
+    await toStage(page, 9, 4);
+    await page.getByTestId('lab-next').click();
+    await page.getByTestId('lab-next-step').click();
+    await expect(page.getByTestId('lab-stage-title')).toHaveText('階段 1／9：交易卡');
+    await expect(page.getByTestId('lab-card')).toBeVisible();
+    await expect(page.getByTestId('lab-session')).toHaveAttribute('data-policy', 'ifrs@1');
+    await expect(page.getByTestId('lab-basis')).toBeVisible();
+    // 第 6 步的範本兩套口徑一樣，交易卡沒有標記
+    await expect(page.getByTestId('lab-policy-differs')).toHaveCount(0);
+    // 重新載入：回到教材（設定仍記著 ifrs@1，備份照常）
+    await page.reload();
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-card')).toBeVisible();
+    await expect(page.getByTestId('lab-session')).toHaveAttribute('data-policy', 'teacher@1');
+    await expect(page.getByTestId('lab-basis')).toHaveCount(0);
+    await expect.poll(() => labViewPolicy(page)).toBe('ifrs@1');
+    // 從題目開啟：一律教材
+    await page.goto(`${DEMO5}&from=hq_nothing`);
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-card')).toBeVisible();
+    await expect(page.getByTestId('lab-session')).toHaveAttribute('data-policy', 'teacher@1');
+  });
+
+  test('自由實驗與指標實驗室：切換只重算報表區與指標，結果不同的卡列出教材口徑；修改仍照教材口徑擋下', async ({ page }) => {
+    await page.goto('/lab/sandbox/');
+    await waitForApp(page);
+    const result = page.getByTestId('lab-sandbox-result');
+    await expect(result).toHaveAttribute('data-policy', 'teacher@1');
+    await policyRadio(result, 'IFRS 對照').click();
+    await expect(result).toHaveAttribute('data-policy', 'ifrs@1');
+    await expect(page.getByTestId('lab-basis')).toContainText('IFRS 對照，不計分');
+    await expect(result.locator('caption').first()).toContainText('（IFRS 對照）');
+    await expect(result.getByTestId('lab-row-diff').first()).toBeVisible();
+    await expect(result.getByTestId('lab-ratio-basis').first()).toBeVisible();
+    await expect(result.locator('#ll-lab-table-is, table').first()).toBeVisible();
+    // 修改仍照教材口徑擋下與算範圍
+    const step12 = page.locator(`[data-step="${STEP12}"]`);
+    await step12.getByRole('textbox').fill('99999999999');
+    await step12.getByTestId('lab-sandbox-apply').click();
+    await expect(step12).toContainText('最多可以輸入 NT$15,000,000');
+    await expect(result).toHaveAttribute('data-policy', 'ifrs@1');
+    // 指標實驗室：重新載入回到教材；切換後結果不同的卡有教材口徑
+    await page.goto('/lab/ratios/');
+    await waitForApp(page);
+    await expect(page.getByTestId('lab-basis')).toHaveCount(0);
+    await policyRadio(page, 'IFRS 對照').click();
+    await expect(page.getByTestId('lab-basis')).toBeVisible();
+    await expect(page.getByTestId('lab-ratio-basis').first()).toBeVisible();
+    await expect(page.getByTestId('lab-ratios-context')).toContainText('綠芽商行');
+    await expect(page.getByTestId('lab-dupont')).toContainText('＝');
+    await policyRadio(page, '教材').click();
+    await expect(page.getByTestId('lab-basis')).toHaveCount(0);
+    await expect(page.getByTestId('lab-ratio-basis')).toHaveCount(0);
+  });
+
+  test('英文介面：切換、橫幅、caption 與差異標記', async ({ page }) => {
+    await page.goto(`/en${DEMO5}`);
+    await waitForApp(page);
+    for (let s = 2; s <= 4; s++) {
+      await page.getByTestId('lab-next').click();
+      await expect(page.getByTestId('lab-stage-title')).toContainText(`Stage ${s} of 9`);
+    }
+    await policyRadio(page, 'IFRS comparison').click();
+    await expect(page.getByTestId('lab-basis')).toContainText('IFRS comparison, not scored');
+    await expect(page.getByTestId('lab-policy-live')).toHaveText(
+      'Switched to the IFRS comparison; not scored. Lines that differ from the course basis are marked.',
+    );
+    await expect(page.locator('#ll-lab-table-is caption')).toContainText('(IFRS comparison)');
+    const sga = page.locator('#ll-lab-table-is tr[data-line="is_sga_total"]');
+    await expect(sga.getByTestId('lab-row-diff')).toHaveText('Differs from the course basis');
+    await expect(sga.getByTestId('lab-row-basis')).toHaveText('Course basis: NT$250,000');
+  });
+});

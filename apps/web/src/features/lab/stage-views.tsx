@@ -5,6 +5,7 @@ export { Segmented, Switch } from '@ledgerland/web-ui';
 export { BalanceScale } from './BalanceScale.tsx';
 export { CheckLights, ProfitLevels } from './CheckLights.tsx';
 export { EffectsList } from './EffectsList.tsx';
+export { PolicyToggle } from './PolicyToggle.tsx';
 export { PredictPanel } from './PredictPanel.tsx';
 export { PredictReveal } from './PredictReveal.tsx';
 export { RatioList } from './RatioList.tsx';

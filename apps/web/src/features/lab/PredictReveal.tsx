@@ -5,6 +5,7 @@ import { formatNumber, type Locale } from '@ledgerland/i18n';
 import { CheckCircleIcon, XCircleIcon, useDirectionLabels } from '@ledgerland/web-ui';
 import type { PredictChoice } from './predict.ts';
 import { useRatioChoiceLabels } from './PredictPanel.tsx';
+import { IFRS_POLICY, type LabPolicyId } from './lab-policy.ts';
 
 export interface RevealItem {
   readonly id: string;
@@ -25,9 +26,11 @@ export interface PredictRevealProps {
   locale: Locale;
   /** 一句話的原因（例如這筆交易不經過損益表） */
   note?: string;
+  /** 揭曉依哪一套口徑（03 第 3.13 節）：IFRS 對照時標示「依 IFRS 對照揭曉」；省略或教材不標 */
+  basis?: LabPolicyId;
 }
 
-export function PredictReveal({ items, right, total, locale, note }: PredictRevealProps) {
+export function PredictReveal({ items, right, total, locale, note, basis }: PredictRevealProps) {
   const { t } = useLingui();
   const dir = useDirectionLabels();
   const ratio = useRatioChoiceLabels();
@@ -43,6 +46,11 @@ export function PredictReveal({ items, right, total, locale, note }: PredictReve
       <h3 id="ll-lab-reveal-title" className="ll-lab-reveal-card__title">
         {t({ id: 'lab.reveal.title', message: `揭曉：${totalText} 個猜對 ${rightText} 個`, comment: '揭曉卡的標題；兩個數字已格式化' })}
       </h3>
+      {basis === IFRS_POLICY && (
+        <p className="ll-lab-reveal-card__note ll-lab-reveal-card__basis" data-testid="lab-reveal-basis">
+          {t({ id: 'lab.policy.revealBasis', message: '依 IFRS 對照揭曉，不計分。', comment: '揭曉卡：預測是對照 IFRS 口徑的數字判定的' })}
+        </p>
+      )}
       {note && <p className="ll-lab-reveal-card__note">{note}</p>}
       <ul className="ll-lab-reveal-card__list">
         {items.map((i) => {

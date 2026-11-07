@@ -1,5 +1,7 @@
 // 預測（features/lab/predict.ts，03 第 3.6 節）：固定六個目標加步驟資料的額外目標；方向看差額正負；指標六選項；幾乎不變時兩種答案都算對
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { resetProgressStoreForTests } from '../src/lib/progress/index.ts';
+import { freshIndexedDB } from './fixtures.ts';
 import {
   DEFAULT_LINE_TARGETS,
   isPredictionComplete,
@@ -67,5 +69,28 @@ describe('predictTotals', () => {
     const { predictTotals } = await import('../src/features/lab/progress.ts');
     expect(predictTotals({ predictScores: {} })).toEqual({ steps: 0, right: 0, total: 0 });
     expect(predictTotals({ predictScores: { a: { right: 4, total: 6 }, b: { right: 6, total: 6 } } })).toEqual({ steps: 2, right: 10, total: 12 });
+  });
+});
+
+describe('savePrediction 的口徑（03 第 3.13 節）', () => {
+  beforeEach(async () => {
+    freshIndexedDB();
+    await resetProgressStoreForTests();
+  });
+  afterEach(() => resetProgressStoreForTests());
+
+  it('IFRS 對照時記 predictBasis；教材時拿掉；成績照常存', async () => {
+    const { readStoryProgress, savePrediction } = await import('../src/features/lab/progress.ts');
+    await savePrediction('story_x', 'st_a', { cash: 'up' }, { right: 1, total: 1 }, 'ifrs@1');
+    let p = (await readStoryProgress('story_x')).progress;
+    expect(p.predictBasis).toEqual({ st_a: 'ifrs@1' });
+    expect(p.predictScores).toEqual({ st_a: { right: 1, total: 1 } });
+    await savePrediction('story_x', 'st_b', { cash: 'down' }, { right: 0, total: 1 });
+    p = (await readStoryProgress('story_x')).progress;
+    expect(p.predictBasis).toEqual({ st_a: 'ifrs@1' });
+    await savePrediction('story_x', 'st_a', { cash: 'up' }, { right: 1, total: 1 }, 'teacher@1');
+    p = (await readStoryProgress('story_x')).progress;
+    expect(p.predictBasis).toEqual({});
+    expect(Object.keys(p.predictions).sort()).toEqual(['st_a', 'st_b']);
   });
 });

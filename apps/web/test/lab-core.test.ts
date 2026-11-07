@@ -15,7 +15,7 @@ import {
   type Story,
 } from '@ledgerland/core';
 import officialJson from '../../../content/stories/story_ywv2dy.json' with { type: 'json' };
-import { asCoreStory, labAllowedRange, reconcileCheck, replayLab } from '../src/features/lab/lab-core.ts';
+import { asCoreStory, labAllowedRange, policyDiffers, reconcileCheck, replayLab } from '../src/features/lab/lab-core.ts';
 import type { StorySnapshot } from '../src/lib/content.ts';
 
 const story = officialJson as unknown as Story;
@@ -121,5 +121,70 @@ describe('勾稽練習', () => {
     expect(step2.pass).toBe(false);
     expect([step2.left.source, step2.right.source]).toContain('learner');
     expect(fiveStepCheck(s.after).checks.every((c) => c.pass)).toBe(true);
+  });
+});
+
+describe('IFRS 對照（03 第 3.13 節）', () => {
+  const ifrsCtx = createCoreContext({ policy: 'ifrs@1' });
+  const ifrsRun = replayStory(story, [], ifrsCtx);
+  if (!ifrsRun.ok) throw new Error('正式故事以 ifrs@1 重播失敗');
+  const lab = replayLab(asCoreStory(snapshot), [], 'ifrs@1');
+  if (!lab.ok) throw new Error('replayLab(ifrs@1) 失敗');
+  const value = lab.value;
+  const teacher = replayLab(asCoreStory(snapshot));
+  if (!teacher.ok) throw new Error('replayLab 失敗');
+
+  it('口徑記在 run 上；context 配 ifrs@1 的政策與版面（損益表沒有經常利益那一列）', () => {
+    expect(value.policyId).toBe('ifrs@1');
+    expect(value.ctx.policy.id).toBe('ifrs@1');
+    expect(value.ctx.layout.id).toBe('ifrs@1');
+    expect(value.step(0).after.statements.income_statement.some((r) => r.id === 'is_ordinary_income')).toBe(false);
+    expect(teacher.value.step(0).after.statements.income_statement.some((r) => r.id === 'is_ordinary_income')).toBe(true);
+    // 每套口徑的 context 整個 App 共用一份；預設是教材
+    expect(replayLab(asCoreStory(snapshot), [], 'ifrs@1').value?.ctx).toBe(value.ctx);
+    expect(teacher.value.policyId).toBe('teacher@1');
+    expect(teacher.value.ctx).toBe(replayLab(asCoreStory(snapshot)).value?.ctx);
+  });
+
+  it('每一步的三表都等於直接用 ifrs@1 的 context 呼叫 buildStatements；五步驟相符而且 ordinaryIncome 是 null', () => {
+    for (let i = 0; i < ids.length; i++) {
+      const s = value.step(i);
+      const after = buildStatements(ifrsRun.value, { kind: 'cumulative', to: ids[i]! }, ifrsCtx.layout, ifrsCtx.policy);
+      for (const [id, line] of after.lines) expect(s.after.lines.get(id)?.value, `第 ${i + 1} 步 ${id}`).toBe(line.value);
+      expect(
+        s.fiveStep.checks.every((c) => c.pass),
+        `第 ${i + 1} 步五步驟`,
+      ).toBe(true);
+      expect(s.fiveStep.step1.ordinaryIncome).toBeNull();
+    }
+  });
+
+  it('現金每一步都和教材口徑相同（口徑只改認列，不改現金流）；第 5 步設立費費用化、第 17 步攤銷那一筆沒有分錄行', () => {
+    for (let i = 0; i < ids.length; i++) {
+      expect(value.step(i).after.lines.get('bs_cash')?.value, `第 ${i + 1} 步現金`).toBe(teacher.value.step(i).after.lines.get('bs_cash')?.value);
+    }
+    const s5 = value.stepById('st_yj3yex')!;
+    expect(s5.posted.entries.flatMap((e) => e.lines.map((l) => l.account))).toContain('organisation_costs_expense');
+    expect(teacher.value.stepById('st_yj3yex')!.posted.entries.flatMap((e) => e.lines.map((l) => l.account))).toContain('deferred_organisation_costs');
+    const s17 = value.stepById('st_j6185k')!;
+    const amortise = s17.posted.entries.find((e) => e.eventId === 'e2');
+    expect(amortise?.lines ?? []).toHaveLength(0);
+    // 第 5 步的營業費用與本期淨利和教材不同（費用化），營業收入相同
+    const t5 = teacher.value.stepById('st_yj3yex')!;
+    expect(s5.after.lines.get('is_net_income')?.value).not.toBe(t5.after.lines.get('is_net_income')?.value);
+    expect(s5.after.lines.get('is_revenue')?.value).toBe(t5.after.lines.get('is_revenue')?.value);
+  });
+
+  it('policyDiffers：只有範本帶 policyWhen 而且兩套政策結果不同的步驟（第 5、17 步）', () => {
+    const differs = steps.filter((s) => policyDiffers(s)).map((s) => s.order);
+    expect(differs).toEqual([5, 17]);
+  });
+
+  it('自由實驗的覆寫也能以 IFRS 對照重播；可輸入範圍一律照教材口徑算', () => {
+    const r = replayLab(asCoreStory(snapshot), [{ stepId: 'st_g4h3hx', eventId: 'e1', param: 'amount', value: 1_600_000 }], 'ifrs@1');
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.value.stepById('st_98tppx')?.values['e1.costOfAllInventory']).toBe(1_600_000);
+    expect(r.value.policyId).toBe('ifrs@1');
   });
 });

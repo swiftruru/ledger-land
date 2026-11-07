@@ -79,6 +79,12 @@ msgstr "{1} on the {0} (check {2})"
 msgid "lab.sandbox.whyAccount"
 msgstr "{account} would go negative"
 
+#. IFRS 對照時的表格標題；caption 是報表名稱
+#. js-lingui-explicit-id
+#: src/features/lab/StatementTable.tsx
+msgid "lab.policy.caption"
+msgstr "{caption} (IFRS comparison)"
+
 #. 往下鑽到最底層時的播報；名稱與金額已代入
 #. js-lingui-explicit-id
 #: src/features/lab/TraceTree.tsx
@@ -156,6 +162,30 @@ msgstr "Slides 0-3"
 #: src/pages/LabRatios.tsx
 msgid "lab.version.excel"
 msgstr "Excel version"
+
+#. 交易卡的標記：這一步的範本在 IFRS 下的分錄不一樣
+#. js-lingui-explicit-id
+#: src/features/lab/LabTag.tsx
+msgid "lab.policy.differs"
+msgstr "Treated differently under IFRS"
+
+#. 來源面板副標前的口徑標記
+#. js-lingui-explicit-id
+#: src/features/lab/LabTag.tsx
+msgid "lab.policy.tag"
+msgstr "IFRS comparison"
+
+#. 報表口徑的選項：依 IFRS 重算的對照版
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.ifrs"
+msgstr "IFRS comparison"
+
+#. 自由實驗：IFRS 口徑重播失敗而教材口徑成功時的說明
+#. js-lingui-explicit-id
+#: src/features/lab/BasisBanner.tsx
+msgid "lab.policy.ifrsFailed"
+msgstr "The IFRS comparison cannot work out this set of changes, so the figures shown use the course basis."
 
 #. 勾稽練習的導言
 #. js-lingui-explicit-id
@@ -286,6 +316,12 @@ msgstr "Source steps"
 #: src/features/lab/TracePanel.tsx
 msgid "lab.trace.path"
 msgstr "Source path"
+
+#. 揭曉卡：預測是對照 IFRS 口徑的數字判定的
+#. js-lingui-explicit-id
+#: src/features/lab/PredictReveal.tsx
+msgid "lab.policy.revealBasis"
+msgstr "Revealed against the IFRS comparison; not scored."
 
 #. 第 4 到 18 步的小標記（T33）
 #. js-lingui-explicit-id
@@ -570,6 +606,12 @@ msgstr "The base is negative or zero, so the result is not meaningful"
 msgid "lab.journal.note"
 msgstr "‘Purchases’ and ‘Closing inventories’ on the statement are not accounts in the entry: they are rows derived from the inventory ledger."
 
+#. 口徑切換（分段控制）的群組名稱
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.toggleLabel"
+msgstr "Reporting basis"
+
 #. 來源步驟對這一列的方向（螢幕閱讀器）
 #. js-lingui-explicit-id
 #: src/features/lab/TraceSources.tsx
@@ -642,6 +684,18 @@ msgstr "Left equals right"
 #: src/features/lab/CheckLights.tsx
 msgid "lab.check.fail"
 msgstr "Off by {0}"
+
+#. 切到 IFRS 對照時的播報
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.switchedIfrs"
+msgstr "Switched to the IFRS comparison; not scored. Lines that differ from the course basis are marked."
+
+#. 切回教材時的播報
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.switchedTeacher"
+msgstr "Switched back to the course basis."
 
 #. 刪除後的浮動提示；數字已代入
 #. js-lingui-explicit-id
@@ -865,6 +919,31 @@ msgstr "After which step of the story"
 #: src/features/lab/StepPicker.tsx
 msgid "lab.reconcile.sheet.list"
 msgstr "Steps of the story"
+
+#. 報表口徑的選項：課程教材的版面與處理
+#. js-lingui-explicit-id
+#: src/features/lab/PolicyToggle.tsx
+msgid "lab.policy.teacher"
+msgstr "Course"
+
+#. IFRS 對照時列下方的小字；金額已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: fmt(teacher)
+#: src/features/lab/StatementTable.tsx
+msgid "lab.policy.teacherValue"
+msgstr "Course basis: {0}"
+
+#. IFRS 對照時指標卡下方的小字；指標值已格式化
+#. js-lingui-explicit-id
+#: src/features/lab/RatioList.tsx
+msgid "lab.policy.teacherRatio"
+msgstr "Course basis: {teacher}"
+
+#. IFRS 對照橫幅的說明句
+#. js-lingui-explicit-id
+#: src/features/lab/BasisBanner.tsx
+msgid "lab.policy.banner"
+msgstr "Figures are recalculated under IFRS; lines that differ from the course basis are marked."
 
 #. 預測面板的主按鈕（已記過一次）
 #. js-lingui-explicit-id
@@ -1338,6 +1417,12 @@ msgstr "Sandbox"
 #: src/features/lab/TraceSources.tsx
 msgid "lab.trace.localStep"
 msgstr "A step inserted in the sandbox"
+
+#. IFRS 對照時，金額和教材口徑不一樣的報表列的標記
+#. js-lingui-explicit-id
+#: src/features/lab/LabTag.tsx
+msgid "lab.policy.rowDiff"
+msgstr "Differs from the course basis"
 
 #. 預測面板的主按鈕
 #. js-lingui-explicit-id

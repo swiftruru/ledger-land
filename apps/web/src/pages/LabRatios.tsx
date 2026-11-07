@@ -11,6 +11,11 @@ import { RatioCard, type RatioChange } from '../features/lab/RatioList.tsx';
 import type { TraceTarget } from '../features/lab/TracePanel.tsx';
 import { CATEGORY_ORDER, RATIO_VERSIONS, ratioChanges, type RatioVersionId } from '../features/lab/ratio-changes.ts';
 import { useLabStory } from '../features/lab/useLab.ts';
+import { BasisBanner } from '../features/lab/BasisBanner.tsx';
+import { LabTag } from '../features/lab/LabTag.tsx';
+import { IFRS_POLICY } from '../features/lab/lab-policy.ts';
+import { useLabView } from '../features/lab/lab-view.ts';
+import { PolicyToggle } from '../features/lab/PolicyToggle.tsx';
 import { TermsProvider, useTerms } from '../features/quiz/terms.tsx';
 import { useFirstStoryId } from '../features/lab/useFirstStory.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
@@ -91,13 +96,22 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
   const { ready } = useTerms();
   const categories = useCategoryLabels();
   const versions = useVersionLabels();
-  const run = useMemo(() => lab.core.replayLab(lab.core.asCoreStory(lab.story)), [lab]);
-  if (!run.ok) throw new Error(`故事重播失敗：${run.error.code}`);
+  // 報表口徑（03 第 3.13 節）：教材的重播一直都有（對照的基準）；切到 IFRS 對照時另以 ifrs@1 重播，指標用它的三表重算，結果不同的卡另列教材口徑
+  const labView = useLabView();
+  const ifrs = labView.policy === IFRS_POLICY;
+  const baseRun = useMemo(() => lab.core.replayLab(lab.core.asCoreStory(lab.story)), [lab]);
+  const ifrsRun = useMemo(() => (ifrs ? lab.core.replayLab(lab.core.asCoreStory(lab.story), [], IFRS_POLICY) : null), [lab, ifrs]);
+  if (!baseRun.ok) throw new Error(`故事重播失敗：${baseRun.error.code}`);
+  if (ifrsRun && !ifrsRun.ok) throw new Error(`故事以 IFRS 對照重播失敗：${ifrsRun.error.code}`);
+  const run = ifrsRun ?? baseRun;
   const current = lab.progress.state?.stepId;
   const index = current ? run.value.stepIds.indexOf(current) : -1;
-  const step = run.value.step(index >= 0 ? index : run.value.stepIds.length - 1);
+  const stepIndex = index >= 0 ? index : run.value.stepIds.length - 1;
+  const step = run.value.step(stepIndex);
+  const baseStep = baseRun.value.step(stepIndex);
   const spec = lab.story.steps.find((s) => s.id === step.id)!;
-  const items = useMemo(() => ratioChanges(lab.core, version, null, step.ratiosAfter), [lab.core, version, step]);
+  // 一個版本約 23 到 43 張卡的對應，每次重繪算一次就好（ratiosAfter 本身已由核心快取）
+  const items = ratioChanges(lab.core, version, null, step.ratiosAfter);
   const layout = run.value.ctx.layout;
   const { ratioLabel } = useLabLabels(layout);
   usePageReady(ready);
@@ -145,13 +159,17 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
           comment: '指標實驗室的帳本說明；公司與數字已代入',
         })}
       </p>
-      <Segmented
-        value={version}
-        options={RATIO_VERSIONS.map((v) => ({ value: v, label: versions[v] }))}
-        onChange={setVersion}
-        label={t({ id: 'lab.ratios.version', message: '指標版本', comment: '版本切換的名稱' })}
-        size="sm"
-      />
+      <div className="ll-lab-ratios__controls" data-policy={run.value.policyId}>
+        <Segmented
+          value={version}
+          options={RATIO_VERSIONS.map((v) => ({ value: v, label: versions[v] }))}
+          onChange={setVersion}
+          label={t({ id: 'lab.ratios.version', message: '指標版本', comment: '版本切換的名稱' })}
+          size="sm"
+        />
+        <PolicyToggle value={labView.policy} onChange={labView.setPolicy} />
+      </div>
+      {ifrs && <BasisBanner />}
       {dupont.every((d) => d !== null) && (
         <p className="ll-lab-dupont" data-testid="lab-dupont">
           <span className="ll-lab-dupont__title">{t({ id: 'lab.ratios.dupont', message: '杜邦拆解', comment: '杜邦樹的標題' })}：</span>
@@ -170,7 +188,14 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
           </h2>
           <ul className="ll-lab-ratios__list">
             {g.items.map((item) => (
-              <RatioCard key={item.ratioRef} item={item} layout={layout} suggestion={suggestionFor(item)} onTrace={openTrace} />
+              <RatioCard
+                key={item.ratioRef}
+                item={item}
+                layout={layout}
+                suggestion={suggestionFor(item)}
+                onTrace={openTrace}
+                compare={ifrs ? baseStep.ratiosAfter.find((r) => r.ratioRef === item.ratioRef) : undefined}
+              />
             ))}
           </ul>
         </section>
@@ -186,6 +211,7 @@ function RatiosBody({ lab }: { lab: Extract<ReturnType<typeof useLabStory>, { ki
           trace={(window, lineId) => lab.core.traceLabLine(run.value, step, window, lineId)}
           entriesOf={(id) => lab.core.entriesOfStep(run.value, id)}
           layout={layout}
+          basisTag={ifrs ? <LabTag kind="ifrs" testId="lab-trace-basis" /> : undefined}
           stepInfo={(id) => {
             const s = lab.story.steps.find((x) => x.id === id);
             return s === undefined ? undefined : { order: s.order, title: s.title };

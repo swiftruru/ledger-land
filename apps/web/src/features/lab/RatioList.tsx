@@ -65,9 +65,11 @@ export interface RatioCardProps {
   versionLabel?: string;
   /** 點結果開來源面板（M4b，03 第 3.9 節）；N/A 沒有數字可追 */
   onTrace?: (item: RatioChange, el: HTMLButtonElement) => void;
+  /** IFRS 對照（03 第 3.13 節）：教材口徑算出來的同一個指標；顯示的結果不同時另列「教材口徑：x」 */
+  compare?: RatioResult;
 }
 
-export function RatioCard({ item, layout, verdict = null, suggestion, versionLabel, onTrace }: RatioCardProps) {
+export function RatioCard({ item, layout, verdict = null, suggestion, versionLabel, onTrace, compare }: RatioCardProps) {
   const { t } = useLingui();
   const { locale, ratioLabel } = useLabLabels(layout);
   const formula = useFormulaText(layout);
@@ -76,6 +78,7 @@ export function RatioCard({ item, layout, verdict = null, suggestion, versionLab
   const fmt = (r: RatioResult) => formatRatio(r, spec.unit, locale, spec.displayDecimals);
   const status = after.status;
   const why = reason(after);
+  const teacher = compare !== undefined && (compare.status !== after.status || fmt(compare) !== fmt(after)) ? fmt(compare) : null;
   const transition =
     before === null
       ? null
@@ -121,6 +124,11 @@ export function RatioCard({ item, layout, verdict = null, suggestion, versionLab
         )}
         {transition && <span className="ll-lab-ratio__transition">{transition}</span>}
       </p>
+      {teacher !== null && (
+        <p className="ll-lab-ratio__basis" data-testid="lab-ratio-basis">
+          {t({ id: 'lab.policy.teacherRatio', message: `教材口徑：${teacher}`, comment: 'IFRS 對照時指標卡下方的小字；指標值已格式化' })}
+        </p>
+      )}
       {why && <p className="ll-lab-ratio__reason">{why}</p>}
       {spec.flags.includes('single_period_approx') || after.flags.includes('single_period_approx') ? <NoteTag kind="single_period" /> : null}
       {verdict && (
@@ -147,12 +155,15 @@ export interface RatioListProps {
   splitUnchanged?: boolean;
   verdicts?: Readonly<Record<string, { correct: boolean; nearly: boolean }>>;
   onTrace?: RatioCardProps['onTrace'];
+  /** IFRS 對照：教材口徑在同一步交易後的全部指標（依 ratioRef 對上） */
+  compareAfter?: readonly RatioResult[];
 }
 
-export function RatioList({ items, layout, splitUnchanged = false, verdicts, onTrace }: RatioListProps) {
+export function RatioList({ items, layout, splitUnchanged = false, verdicts, onTrace, compareAfter }: RatioListProps) {
   const { t } = useLingui();
   const changed = splitUnchanged ? items.filter((i) => i.changed) : items;
   const rest = splitUnchanged ? items.filter((i) => !i.changed) : [];
+  const compareOf = (ref: string) => compareAfter?.find((r) => r.ratioRef === ref);
   return (
     <div className="ll-lab-ratios">
       {changed.length === 0 && splitUnchanged && (
@@ -164,7 +175,7 @@ export function RatioList({ items, layout, splitUnchanged = false, verdicts, onT
       )}
       <ul className="ll-lab-ratios__list" data-testid="lab-ratios-changed">
         {changed.map((i) => (
-          <RatioCard key={i.ratioRef} item={i} layout={layout} verdict={verdicts?.[i.ratioRef] ?? null} onTrace={onTrace} />
+          <RatioCard key={i.ratioRef} item={i} layout={layout} verdict={verdicts?.[i.ratioRef] ?? null} onTrace={onTrace} compare={compareOf(i.ratioRef)} />
         ))}
       </ul>
       {rest.length > 0 && (
@@ -175,7 +186,7 @@ export function RatioList({ items, layout, splitUnchanged = false, verdicts, onT
         >
           <ul className="ll-lab-ratios__list">
             {rest.map((i) => (
-              <RatioCard key={i.ratioRef} item={i} layout={layout} onTrace={onTrace} />
+              <RatioCard key={i.ratioRef} item={i} layout={layout} onTrace={onTrace} compare={compareOf(i.ratioRef)} />
             ))}
           </ul>
         </Disclosure>

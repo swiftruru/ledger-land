@@ -378,6 +378,12 @@ test('減少動態：實驗室第 7 步從頭走到尾沒有動畫，天平直�
           .first()
           .evaluate((el) => getComputedStyle(el).animationName),
       ).toBe('none');
+      // IFRS 對照（M4b）：切換口徑沒有動畫，橫幅與差異標記直接出現，再切回教材
+      await page.getByTestId('lab-policy').getByRole('radio', { name: 'IFRS 對照' }).click();
+      await expect(page.getByTestId('lab-basis')).toBeVisible();
+      await expect(page.getByTestId('lab-row-diff').first()).toBeVisible();
+      await page.getByTestId('lab-policy').getByRole('radio', { name: '教材' }).click();
+      await expect(page.getByTestId('lab-basis')).toHaveCount(0);
       // 來源面板（M4b）：開、往下鑽、關，都直接切換；面板本身的進出動畫跟著 Sheet 的減少動態規則
       await page.locator('#ll-lab-table-is [data-line="is_operating_income"] [data-testid="lab-trace-value"]').click();
       await expect(page.getByTestId('lab-trace')).toBeVisible();
