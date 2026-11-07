@@ -1,14 +1,20 @@
 // 預測（features/lab/predict.ts，03 第 3.6 節）：固定六個目標加步驟資料的額外目標；方向看差額正負；指標六選項；幾乎不變時兩種答案都算對
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { createCoreContext } from '@ledgerland/core';
+import officialJson from '../../../content/stories/story_ywv2dy.json' with { type: 'json' };
+import type { StorySnapshot } from '../src/lib/content.ts';
 import { resetProgressStoreForTests } from '../src/lib/progress/index.ts';
 import { freshIndexedDB } from './fixtures.ts';
 import {
   DEFAULT_LINE_TARGETS,
-  isPredictionComplete,
+  answeredTargets,
   isPredictionCorrect,
   lineDirection,
   predictTargetsOf,
   ratioDirection,
+  recordOnTargets,
+  targetsOnLayout,
+  type PredictionRecord,
 } from '../src/features/lab/predict.ts';
 
 describe('predictTargetsOf', () => {
@@ -53,14 +59,59 @@ describe('方向', () => {
     expect(isPredictionCorrect('up', 'unchanged', true, 'up')).toBe(true);
     expect(isPredictionCorrect('down', 'unchanged', true, 'up')).toBe(false);
   });
+});
 
-  it('每個目標都選了才算完成', () => {
-    const t = predictTargetsOf(undefined);
-    expect(isPredictionComplete(t, undefined)).toBe(false);
-    const all = Object.fromEntries(t.map((x) => [x.id, 'up' as const]));
-    expect(isPredictionComplete(t, all)).toBe(true);
-    const { cash: _c, ...rest } = all;
-    expect(isPredictionComplete(t, rest)).toBe(false);
+describe('依版面篩選目標（03 第 3.13 節）', () => {
+  const teacher = createCoreContext().layout;
+  const ifrs = createCoreContext({ policy: 'ifrs@1' }).layout;
+  const story = officialJson as unknown as StorySnapshot;
+  const step5 = story.steps.find((s) => s.id === 'st_yj3yex')!;
+  const all = predictTargetsOf(step5.predictTargets);
+  const shown = targetsOnLayout(all, ifrs);
+  const lineOf = (t: (typeof all)[number]) => (t.kind === 'line' ? t.line : '');
+
+  it('ifrs@1：經常利益不在版面上、遞延的設立費是不顯示的計算列，兩個目標都拿掉；其他照舊', () => {
+    expect(all.map(lineOf)).toContain('is_ordinary_income');
+    expect(all.map(lineOf)).toContain('bs_deferred_org_costs');
+    expect(shown.map(lineOf)).toEqual(['bs_cash', 'is_gross_profit', 'is_operating_income', 'is_pretax_income', 'is_net_income', 'bs_total_assets']);
+  });
+
+  it('正式故事的每一步：教材一個都不少；ifrs@1 留下的線目標都是版面上看得到的列', () => {
+    const rows = new Map(Object.values(ifrs.statements).flatMap((r) => r.map((l) => [l.id, l] as const)));
+    for (const s of story.steps) {
+      const targets = predictTargetsOf(s.predictTargets);
+      expect(targetsOnLayout(targets, teacher)).toEqual(targets);
+      const lines = targetsOnLayout(targets, ifrs).flatMap((t) => (t.kind === 'line' ? [t.line] : []));
+      expect(lines.filter((l) => rows.get(l) === undefined || rows.get(l)?.hidden === true)).toEqual([]);
+    }
+  });
+
+  it('科目與指標目標不受版面影響；版面找不到的線拿掉', () => {
+    const t = [
+      { id: 'a', kind: 'account', account: 'no_such_account' },
+      { id: 'r', kind: 'ratio', ratioRef: 'current_ratio@excel' },
+      { id: 'l', kind: 'line', line: 'no_such_line' },
+    ] as const;
+    expect(targetsOnLayout(t, ifrs).map((x) => x.id)).toEqual(['a', 'r']);
+  });
+
+  it('換口徑：成績只算兩邊都有的目標；另一套的紀錄不會讓目標變成沒選', () => {
+    const teacherTargets = targetsOnLayout(all, teacher);
+    // 教材記下的八個答案，在 IFRS 對照時算六個
+    const teacherRecord = Object.fromEntries(teacherTargets.map((t) => [t.id, 'up' as const]));
+    expect(answeredTargets(shown, teacherRecord).map((t) => t.id)).toEqual(shown.map((t) => t.id));
+    // IFRS 對照記下的六個答案，回到教材仍是六個，不把經常利益算成沒選
+    const ifrsRecord: PredictionRecord = Object.fromEntries(shown.map((t) => [t.id, 'down' as const]));
+    expect(answeredTargets(teacherTargets, ifrsRecord)).toHaveLength(6);
+    expect(answeredTargets(teacherTargets, ifrsRecord).some((t) => t.id === 'l3')).toBe(false);
+    // 舊紀錄是空的或有已經不存在的目標：不會壞
+    expect(answeredTargets(teacherTargets, {})).toEqual([]);
+    expect(answeredTargets(teacherTargets, { gone: 'up' })).toEqual([]);
+  });
+
+  it('記下預測時只留畫面上的目標：教材留下的經常利益不跟著 IFRS 對照的紀錄存', () => {
+    const record: PredictionRecord = { cash: 'up', l3: 'down', gone: 'up' };
+    expect(recordOnTargets(shown, record)).toEqual({ cash: 'up' });
   });
 });
 

@@ -49,6 +49,7 @@ function pairs(t: ThemeColors): { name: string; fg: string; bg: string; min: num
     { name: '主按鈕文字對填色', fg: t['accent-contrast'], bg: t.accent, min: 4.5 },
     { name: 'accent-ink 對 surface', fg: t['accent-ink'], bg: t.surface, min: 4.5 },
     { name: 'text 對選取膠囊', fg: t.text, bg: t['accent-tint'], min: 4.5 },
+    { name: 'text-2 對 accent-tint（報表變動列裡的小字）', fg: t['text-2'], bg: t['accent-tint'], min: 4.5 },
     { name: 'accent-ink 對選取膠囊（圖示）', fg: t['accent-ink'], bg: t['accent-tint'], min: 3 },
     { name: 'link 對 surface', fg: t.link, bg: t.surface, min: 4.5 },
     { name: 'focus 對 bg', fg: t.focus, bg: t.bg, min: 3 },
@@ -66,6 +67,8 @@ function pairs(t: ThemeColors): { name: string; fg: string; bg: string; min: num
     { name: '費用 ink 對 tint', fg: t['element-expense-ink'], bg: t['element-expense-tint'], min: 4.5 },
     { name: 'change-up 對 surface-2', fg: t['change-up-ink'], bg: t['surface-2'], min: 4.5 },
     { name: 'change-down 對 surface-2', fg: t['change-down-ink'], bg: t['surface-2'], min: 4.5 },
+    { name: 'change-up 對 accent-tint（報表變動列）', fg: t['change-up-ink'], bg: t['accent-tint'], min: 4.5 },
+    { name: 'change-down 對 accent-tint（報表變動列）', fg: t['change-down-ink'], bg: t['accent-tint'], min: 4.5 },
     { name: 'change-none 對 tint', fg: t['change-none-ink'], bg: t['change-none-tint'], min: 4.5 },
   ];
 }

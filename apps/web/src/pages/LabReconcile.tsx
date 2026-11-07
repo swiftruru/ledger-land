@@ -209,7 +209,13 @@ function ReconcileBody({ lab }: { lab: Ok }) {
         {(['income_statement', 'cash_flow_indirect', 'balance_sheet'] as const).map((k) => (
           <StatementTable
             key={k}
-            caption={lineLabel(k === 'income_statement' ? 'is_net_income' : k === 'balance_sheet' ? 'bs_total_assets' : 'cf_cash_end')}
+            caption={
+              k === 'income_statement'
+                ? t({ id: 'lab.stage.income', message: '損益表' })
+                : k === 'balance_sheet'
+                  ? t({ id: 'lab.stage.balance', message: '資產負債表' })
+                  : t({ id: 'lab.stage.cashflow', message: '現金流量表' })
+            }
             statement={k}
             before={step.before}
             after={step.after}

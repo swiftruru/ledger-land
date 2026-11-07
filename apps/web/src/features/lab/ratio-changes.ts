@@ -20,29 +20,38 @@ export const CATEGORY_ORDER: readonly string[] = [
   'market',
 ];
 
+type RatioDefinitionOf = LabCore['ratioDefinitions'][number];
+
+function specOf(core: LabCore, d: RatioDefinitionOf, version: RatioVersionId): RatioSpecLike | null {
+  const v = d.versions[version];
+  if (v === undefined || !core.ratioRegistry().versions.has(`${d.id}@${version}`)) return null;
+  return {
+    id: d.id,
+    termRef: d.termRef,
+    category: d.category,
+    framework: d.framework,
+    unit: v.unit,
+    displayDecimals: v.displayDecimals,
+    ...(v.numerator === undefined ? {} : { numerator: v.numerator }),
+    ...(v.denominator === undefined ? {} : { denominator: v.denominator }),
+    ...(v.expr === undefined ? {} : { expr: v.expr }),
+    ...(v.inputs === undefined ? {} : { inputs: v.inputs }),
+    flags: v.flags,
+    pendingRefs: d.pendingRefs,
+  };
+}
+
 export function ratioSpecs(core: LabCore, version: RatioVersionId): RatioSpecLike[] {
-  const registry = core.ratioRegistry();
-  const out: RatioSpecLike[] = [];
-  for (const d of core.ratioDefinitions) {
-    const v = d.versions[version];
-    if (v === undefined) continue;
-    const compiled = registry.versions.get(`${d.id}@${version}`);
-    if (compiled === undefined) continue;
-    out.push({
-      id: d.id,
-      termRef: d.termRef,
-      category: d.category,
-      framework: d.framework,
-      unit: v.unit,
-      displayDecimals: v.displayDecimals,
-      ...(v.numerator === undefined ? {} : { numerator: v.numerator }),
-      ...(v.denominator === undefined ? {} : { denominator: v.denominator }),
-      ...(v.expr === undefined ? {} : { expr: v.expr }),
-      flags: v.flags,
-      pendingRefs: d.pendingRefs,
-    });
-  }
-  return out.sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category));
+  return core.ratioDefinitions
+    .flatMap((d) => specOf(core, d, version) ?? [])
+    .sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category));
+}
+
+/** 某個 ratioRef（ar_turnover@excel）的規格：來源面板的連鎖指標用，名稱查 termRef、單位與位數是來源那個版本自己的 */
+export function ratioSpecOf(core: LabCore, ratioRef: string): RatioSpecLike | null {
+  const [id, version] = ratioRef.split('@');
+  const d = core.ratioDefinitions.find((x) => x.id === id);
+  return d === undefined || version === undefined ? null : specOf(core, d, version as RatioVersionId);
 }
 
 function same(a: RatioResult | null, b: RatioResult): boolean {

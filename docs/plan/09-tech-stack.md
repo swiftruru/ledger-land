@@ -706,7 +706,7 @@ ledger-land/
 | `packages/i18n/` | 語系登錄檔（代號、顯示名稱、`html lang`、數字格式、退回語系、complete 或 beta；zh-TW 與 en 從 M0b 起都是 complete，beta 只給日後新增的第三種語言）、網址的語系函式、金額與百分比等格式化函式、作答輸入正規化；原名 `i18n-config`，已決定改名（第 8.1 節） | commit |
 | `packages/content-schema/` | 題目、名詞、交易範本、章節、故事的 Zod schema、ID 產生、佔位符文法、內容驗證規則 | commit |
 | `packages/core/` | 會計核心，只放會計：科目表、交易範本、過帳、三表、指標、五步驟勾稽、追蹤、IFRS 政策、分錄的正規化比對（第 8.1 節） | commit |
-| `packages/core/data/` | 會計核心的程式資料：科目表、交易範本、指標登錄檔、政策、effects 片語、版面（`layouts/teacher@1.json`）；適用 MIT（11 第 4.1 節，已決定 2026-10-23） | commit |
+| `packages/core/data/` | 會計核心的程式資料：科目表、交易範本、指標登錄檔、政策、effects 片語、版面（`layouts/teacher@1.json`、`layouts/ifrs@1.json`）；適用 MIT（11 第 4.1 節，已決定 2026-10-23） | commit |
 | `packages/core/test/` | 單元測試、性質測試、自編數字的黃金測試 | commit |
 | `packages/core/test/**/*.local.test.ts` | 對老師 Excel 的本機驗證。期望值在執行時從 `references/` 讀出，不用 `toMatchSnapshot` 或 `toMatchInlineSnapshot`；`references/` 不存在時由 Vitest 設定自動排除 | commit（檔案本身不含老師的數字或教材文字；逐格比對只在本機執行，D3） |
 | `packages/quiz/` | 題型的判分、選項打散、星星計算、錯題本的間隔複習排程（第 8.1 節） | commit |

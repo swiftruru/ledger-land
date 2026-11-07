@@ -111,7 +111,9 @@ Both are original characters of this project.
 | M2, M3 Quest            | the chapters in the midterm scope, question types, glossary, badges, the quest map                    | Done   |
 | M4a Statement lab (one) | story and animation, predictions, free experiments, reconciliation practice, ratio panel              | Done   |
 | M4c Midterm drill       | handout question bank, mock exam, browsing page, mastery marks                                        | Done   |
-| M4b Statement lab (two) | a formula tree for ‘where does this number come from’, an IFRS comparison                             | Next   |
+| M4d Formulas            | a formula list and entry pages, a practice round from any formula                                     | Done   |
+| M4b Statement lab (two) | a formula tree for ‘where does this number come from’, an IFRS comparison                             | Done   |
+| M5 Cross-module links   | tying the quest and the lab together: the state before a transaction, end-of-chapter links            | Next   |
 
 The full plan and the later milestones are in [`docs/plan/10-milestones.md`](docs/plan/10-milestones.md) (in Chinese).
 

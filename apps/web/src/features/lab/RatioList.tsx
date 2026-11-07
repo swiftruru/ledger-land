@@ -2,6 +2,7 @@
 // 階段 9 先列狀態或數值有變的指標，其餘收在「其他指標」；指標實驗室列全部並依六大類分組。數字全部來自核心的 RatioResult。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { CheckCircleIcon, Disclosure, NoteTag, ValueButton, WarningIcon, XCircleIcon } from '@ledgerland/web-ui';
+import type { Locale } from '@ledgerland/i18n';
 import type { ReactNode } from 'react';
 import type { RatioResult } from './lab-core.ts';
 import { formatRatio, useFormulaText, useLabLabels } from './labels.ts';
@@ -17,6 +18,8 @@ export interface RatioSpecLike {
   readonly numerator?: string;
   readonly denominator?: string;
   readonly expr?: string;
+  /** 這個版本的輸入值（名稱依語系；來源面板用） */
+  readonly inputs?: Readonly<Record<string, { readonly label: Readonly<Record<Locale, string>> }>>;
   readonly flags: readonly string[];
   readonly pendingRefs: readonly string[];
 }

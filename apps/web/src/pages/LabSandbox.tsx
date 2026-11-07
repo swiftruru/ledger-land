@@ -30,16 +30,18 @@ import { CheckLights } from '../features/lab/CheckLights.tsx';
 import type { LabReplay, LabRun, LabStep, ParamOverride } from '../features/lab/lab-core.ts';
 import { loadTracePanel, tracePanelNow, type TraceViews } from '../features/lab/lazy-trace.ts';
 import type { TraceTarget } from '../features/lab/TracePanel.tsx';
+import { TraceLoadToast } from '../features/lab/TraceLoadToast.tsx';
 import { lineAt, useLabLabels } from '../features/lab/labels.ts';
 import { labPrefersReducedMotion } from '../features/lab/motion.ts';
 import { clearSandbox, readSandbox, writeSandbox } from '../features/lab/progress.ts';
 import { RatioList } from '../features/lab/RatioList.tsx';
-import { ratioChanges } from '../features/lab/ratio-changes.ts';
+import { ratioChanges, ratioSpecOf } from '../features/lab/ratio-changes.ts';
 import {
   isLocalStepId,
   newSandbox,
   resetSandbox,
   sandboxStory,
+  sandboxView,
   withInserted,
   withMoved,
   withOverride,
@@ -47,7 +49,7 @@ import {
   type SandboxStep,
 } from '../features/lab/sandbox.ts';
 import { StatementTable } from '../features/lab/StatementTable.tsx';
-import { BasisBanner } from '../features/lab/BasisBanner.tsx';
+import { BasisBanner, BasisNote } from '../features/lab/BasisBanner.tsx';
 import { LabTag } from '../features/lab/LabTag.tsx';
 import { IFRS_POLICY, TEACHER_POLICY } from '../features/lab/lab-policy.ts';
 import { useLabView } from '../features/lab/lab-view.ts';
@@ -182,9 +184,8 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
     () => (ifrs ? lab.core.replayLab(lab.core.asCoreStory(edited), overrides, IFRS_POLICY) : null),
     [lab.core, edited, overrides, ifrs],
   );
-  // IFRS 重播失敗而教材成功（理論上現金流相同，不應發生；防呆）：橫幅說明、數字維持教材口徑
-  const ifrsFailed = ifrs && replay.ok && replayIfrs !== null && !replayIfrs.ok;
-  const view: LabReplay = ifrs && replayIfrs !== null && replayIfrs.ok ? replayIfrs : replay;
+  // 只有一套算得下去時：算不下去的那一套說明原因，另一套照常顯示；教材算不下去時有 lab-sandbox-broken 的橫幅，IFRS 的原因在 BasisBanner
+  const { view, basis } = sandboxView(replay, replayIfrs);
   const layout = lab.core.labContext(view.ok ? view.value.policyId : TEACHER_POLICY).layout;
   const { lineLabel, accountLabel } = useLabLabels(layout);
   const templateOf = (id: string) => lab.core.templates.find((x) => x.id === id);
@@ -192,15 +193,17 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
   usePageReady(ready);
   const titleOf = (s: SandboxStep) => (s.local ? text(templateOf(s.events[0]!.template)?.title) : s.title);
   type ReplayError = Extract<LabReplay, { ok: false }>['error'];
-  /** 算不下去的原因，一句話（放在括號裡） */
-  const whyOf = (e: ReplayError): string => {
+  /** 算不下去的原因，一句話（放在括號裡）；錯誤沒有說原因時是 null */
+  const knownWhyOf = (e: ReplayError): string | null => {
     const account = typeof e['account'] === 'string' ? accountLabel(e['account']) : null;
     if (account) return t({ id: 'lab.sandbox.whyAccount', message: `${account}會變成負數`, comment: '算不下去的原因：某個科目的餘額會變成負數' });
     // 前置條件的說明是一整句（句尾有句號），放進括號前把句尾的標點拿掉
     const pre =
       e.code === 'precondition.failed' ? text(e['preconditionMessage'] as { 'zh-TW': string; en: string } | undefined).replace(/[。．.\s]+$/u, '') : '';
-    return pre || t({ id: 'lab.sandbox.whyOther', message: '帳會算不下去', comment: '算不下去的原因：不知道是哪個科目' });
+    return pre === '' ? null : pre;
   };
+  const whyOf = (e: ReplayError): string =>
+    knownWhyOf(e) ?? t({ id: 'lab.sandbox.whyOther', message: '帳會算不下去', comment: '算不下去的原因：不知道是哪個科目' });
   const changeCount = sandbox.overrides.length + sandbox.inserted.length + sandbox.removed.length;
   const jumpToResult = () => {
     requestAnimationFrame(() => {
@@ -389,6 +392,25 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
   const brokenOrder = failedAt?.order ?? 0;
   const brokenTitle = failedAt ? titleOf(failedAt) : '';
   const brokenWhy = replay.ok ? '' : whyOf(replay.error);
+  // IFRS 算不下去：橫幅說是哪一步、為什麼；找不到是哪一步就維持通用的一句
+  const ifrsError = basis === 'ifrs_failed' && replayIfrs !== null && !replayIfrs.ok ? replayIfrs.error : null;
+  const ifrsFailedStep = ifrsError ? edited.steps.find((s) => s.id === ifrsError.at.stepId) : undefined;
+  const ifrsFailedOrder = ifrsFailedStep?.order ?? 0;
+  const ifrsFailedTitle = ifrsFailedStep ? titleOf(ifrsFailedStep) : '';
+  const ifrsFailedWhy = ifrsError ? knownWhyOf(ifrsError) : null;
+  const ifrsFailedText = !ifrsFailedStep
+    ? undefined
+    : ifrsFailedWhy === null
+      ? t({
+          id: 'lab.policy.ifrsFailedStep',
+          message: `IFRS 對照在第 ${ifrsFailedOrder} 步「${ifrsFailedTitle}」算不下去，先顯示教材口徑的數字。`,
+          comment: '自由實驗：IFRS 口徑重播失敗而教材口徑成功時的說明；步驟序號與標題已代入',
+        })
+      : t({
+          id: 'lab.policy.ifrsFailedAt',
+          message: `IFRS 對照在第 ${ifrsFailedOrder} 步「${ifrsFailedTitle}」算不下去（${ifrsFailedWhy}），先顯示教材口徑的數字。`,
+          comment: '自由實驗：IFRS 口徑重播失敗而教材口徑成功時的說明；步驟序號與標題已代入，括號裡是一句原因',
+        });
   const storyCount = formatNumber(story.steps.length, locale);
   const storyTitle = story.title;
   const changes = formatNumber(changeCount, locale);
@@ -408,18 +430,27 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
   const focused = focusStep && view.ok ? view.value.stepById(focusStep) : null;
   const shown = focused ?? last;
   const baseShown = ifrs && shown ? baseStepOf(shown.id) : undefined;
-  const compare = view.ok && view.value.policyId === IFRS_POLICY && baseShown ? { after: baseShown.after, change: baseShown.change } : undefined;
+  const compare = basis === 'ifrs' && baseShown ? { after: baseShown.after, change: baseShown.change } : undefined;
   const compareRatios = compare && last ? baseStepOf(last.id)?.ratiosAfter : undefined;
   // 來源面板（M4b，03 第 3.9 節）：報表區的數字用顯示中的那一步、指標卡用最後一步；第一次點才載面板的模組。
   // 開面板時把當時的 run 一起記住：覆寫陣列每次重繪都是新的，replay 會重算，面板的報表要和它自己的 run 配對（核心會擋下不同 run 的報表）
   const [trace, setTrace] = useState<{ target: TraceTarget; step: LabStep; run: LabRun } | null>(null);
   const [traceViews, setTraceViews] = useState<TraceViews | null>(() => tracePanelNow());
   const traceReturn = useRef<HTMLElement | null>(null);
-  const openTrace = (target: TraceTarget, step: LabStep, el: HTMLElement) => {
-    if (!view.ok) return;
+  // 面板的模組載入失敗：記著剛才要開的數字（連同當時的 run），提示裡的「再試一次」帶著它重開
+  const [traceFailed, setTraceFailed] = useState<{ open: NonNullable<typeof trace>; el: HTMLElement; retried: boolean } | null>(null);
+  const showTrace = (open: NonNullable<typeof trace>, el: HTMLElement, retried = false) => {
     traceReturn.current = el;
-    setTrace({ target, step, run: view.value });
-    if (traceViews === null) loadTracePanel().then(setTraceViews, () => setTrace(null));
+    setTraceFailed(null);
+    setTrace(open);
+    if (traceViews === null)
+      loadTracePanel().then(setTraceViews, () => {
+        setTrace(null);
+        setTraceFailed({ open, el, retried });
+      });
+  };
+  const openTrace = (target: TraceTarget, step: LabStep, el: HTMLElement) => {
+    if (view.ok) showTrace({ target, step, run: view.value }, el);
   };
   const sandboxStepInfo = (id: string) => {
     const s = edited.steps.find((x) => x.id === id);
@@ -658,55 +689,76 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
           </ul>
         </Card>
       )}
-      {shown && view.ok && (
+      {/* 這一套口徑算不下去時報表區也留著標題與切換：另一套可能算得下去（sandbox.ts 的 sandboxView），切換卸載的話焦點會掉、播報唸不出來，也回不去 */}
+      {edited.steps.length > 0 && (
         <section
           className="ll-lab-sandbox__result"
           aria-labelledby="ll-lab-sandbox-result"
           ref={resultRef}
           data-testid="lab-sandbox-result"
-          data-policy={view.value.policyId}
+          data-policy={view.ok ? view.value.policyId : undefined}
         >
           <div className="ll-lab-sandbox__head">
             <h2 id="ll-lab-sandbox-result" tabIndex={-1}>
-              {focused
-                ? t({
-                    id: 'lab.sandbox.resultAt',
-                    message: `第 ${edited.steps.findIndex((s) => s.id === focused.id) + 1} 步之後的報表`,
-                    comment: '報表區標題；數字已代入',
-                  })
-                : t({ id: 'lab.sandbox.result', message: '最後一步之後的報表', comment: '報表區標題' })}
+              {!shown || !view.ok
+                ? t({ id: 'lab.sandbox.resultNone', message: '這組修改算不出報表', comment: '報表區標題：顯示中的口徑算不下去' })
+                : focused
+                  ? t({
+                      id: 'lab.sandbox.resultAt',
+                      message: `第 ${edited.steps.findIndex((s) => s.id === focused.id) + 1} 步之後的報表`,
+                      comment: '報表區標題；數字已代入',
+                    })
+                  : t({ id: 'lab.sandbox.result', message: '最後一步之後的報表', comment: '報表區標題' })}
             </h2>
             {/* 報表口徑（03 第 3.13 節）：修改兩種口徑共用，切換只重算報表區 */}
             <PolicyToggle value={labView.policy} onChange={labView.setPolicy} />
           </div>
-          {ifrs && <BasisBanner failed={ifrsFailed} />}
-          <p className="ll-lab-session__equation">
-            {lineLabel('bs_total_assets')} {formatMoney(lineAt(shown.after, 'bs_total_assets'), locale)} ＝ {lineLabel('bs_total_liabilities')}{' '}
-            {formatMoney(lineAt(shown.after, 'bs_total_liabilities'), locale)} ＋ {lineLabel('bs_total_equity')}{' '}
-            {formatMoney(lineAt(shown.after, 'bs_total_equity'), locale)}
-          </p>
-          <CheckLights fiveStep={shown.fiveStep} layout={layout} compact />
-          <div className="ll-lab-tables__grid" ref={tablesRef}>
-            {(['income_statement', 'cash_flow_indirect', 'balance_sheet'] as const).map((k) => (
-              <StatementTable
-                key={k}
-                caption={lineLabel(k === 'income_statement' ? 'is_net_income' : k === 'balance_sheet' ? 'bs_total_assets' : 'cf_cash_end')}
-                statement={k}
-                before={shown.before}
-                after={shown.after}
-                view={wide ? 'columns' : 'cumulative'}
+          {shown && view.ok && (
+            <>
+              {ifrs && (
+                <BasisBanner
+                  failed={basis === 'ifrs_failed'}
+                  {...(ifrsFailedText === undefined ? {} : { failedText: ifrsFailedText })}
+                  className="ll-lab-basis--sticky"
+                />
+              )}
+              {(basis === 'ifrs' || basis === 'ifrs_only') && <BasisNote noCompare={basis === 'ifrs_only'} />}
+              <p className="ll-lab-session__equation">
+                {lineLabel('bs_total_assets')} {formatMoney(lineAt(shown.after, 'bs_total_assets'), locale)} ＝ {lineLabel('bs_total_liabilities')}{' '}
+                {formatMoney(lineAt(shown.after, 'bs_total_liabilities'), locale)} ＋ {lineLabel('bs_total_equity')}{' '}
+                {formatMoney(lineAt(shown.after, 'bs_total_equity'), locale)}
+              </p>
+              <CheckLights fiveStep={shown.fiveStep} layout={layout} compact />
+              <div className="ll-lab-tables__grid" ref={tablesRef}>
+                {(['income_statement', 'cash_flow_indirect', 'balance_sheet'] as const).map((k) => (
+                  <StatementTable
+                    key={k}
+                    caption={
+                      k === 'income_statement'
+                        ? t({ id: 'lab.stage.income', message: '損益表' })
+                        : k === 'balance_sheet'
+                          ? t({ id: 'lab.stage.balance', message: '資產負債表' })
+                          : t({ id: 'lab.stage.cashflow', message: '現金流量表' })
+                    }
+                    statement={k}
+                    before={shown.before}
+                    after={shown.after}
+                    view={wide ? 'columns' : 'cumulative'}
+                    layout={layout}
+                    onTrace={(lineId, window, el) => openTrace({ kind: 'line', lineId, window }, shown, el)}
+                    compare={compare}
+                    ifrsOnly={basis === 'ifrs_only'}
+                  />
+                ))}
+              </div>
+              <RatioList
+                items={ratios}
                 layout={layout}
-                onTrace={(lineId, window, el) => openTrace({ kind: 'line', lineId, window }, shown, el)}
-                compare={compare}
+                onTrace={(item, el) => last && openTrace({ kind: 'ratio', ratioRef: item.ratioRef, spec: item.spec, result: item.after }, last, el)}
+                compareAfter={compareRatios}
               />
-            ))}
-          </div>
-          <RatioList
-            items={ratios}
-            layout={layout}
-            onTrace={(item, el) => last && openTrace({ kind: 'ratio', ratioRef: item.ratioRef, spec: item.spec, result: item.after }, last, el)}
-            compareAfter={compareRatios}
-          />
+            </>
+          )}
         </section>
       )}
       {traceViews && trace && (
@@ -719,6 +771,7 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
           step={trace.step}
           trace={(window, lineId) => lab.core.traceLabLine(trace.run, trace.step, window, lineId)}
           entriesOf={(id) => lab.core.entriesOfStep(trace.run, id)}
+          ratioSpec={(ref) => ratioSpecOf(lab.core, ref)}
           layout={trace.run.ctx.layout}
           basisTag={trace.run.policyId === IFRS_POLICY ? <LabTag kind="ifrs" testId="lab-trace-basis" /> : undefined}
           stepInfo={sandboxStepInfo}
@@ -752,6 +805,17 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
           >
             {note.text}
           </Toast>
+        )}
+        {traceFailed && (
+          <TraceLoadToast
+            retried={traceFailed.retried}
+            onRetry={() => {
+              // 提示裡的按鈕馬上要卸載：焦點先回到那個數字
+              traceFailed.el.focus();
+              showTrace(traceFailed.open, traceFailed.el, true);
+            }}
+            onDismiss={() => setTraceFailed(null)}
+          />
         )}
       </ToastRegion>
     </div>

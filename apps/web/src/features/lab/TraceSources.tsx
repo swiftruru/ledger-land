@@ -1,11 +1,12 @@
 // 來源面板第三區（03 第 3.9 節）：讓這個科目層的數字改變的每一步（「第 6 步 現金進貨 ▲ 120,000」），每一筆下方有預設收合的「看分錄」層
-// （D1 選 (b)），展開後是該步過帳的分錄；「開啟這一步」到實驗室的那一步（練習模式）。數字都來自核心的追蹤樹與過帳結果。
+// （D1 選 (b)），展開後是該步過帳的分錄；「開啟這一步」到實驗室的那一步（練習模式）。本期進貨與期末存貨的分錄層加註它們是由存貨帳推導的列。
+// 數字都來自核心的追蹤樹與過帳結果。
 import { useLingui } from '@lingui/react/macro';
 import { formatMoney } from '@ledgerland/i18n';
 import { ArrowRightIcon, Button, Disclosure } from '@ledgerland/web-ui';
 import type { LabRun, PostedEntry, TraceNode } from './lab-core.ts';
 import { ARROW, directionOf, useLabLabels } from './labels.ts';
-import { openingOf, sourceSteps } from './trace-model.ts';
+import { isDerivedInventoryLine, openingOf, sourceSteps } from './trace-model.ts';
 
 export interface TraceStepInfo {
   readonly order: number;
@@ -32,6 +33,7 @@ export function TraceSources({ node, run, entriesOf, layout, stepInfo, stepHref,
   const steps = sourceSteps(node);
   const opening = openingOf(node);
   const chart = run.ctx.chart;
+  const derived = isDerivedInventoryLine(run.ctx.layout, node.line);
   if (steps.length === 0 && opening === 0) return null;
   const stepName = (stepId: string): string => {
     const info = stepInfo(stepId);
@@ -73,6 +75,15 @@ export function TraceSources({ node, run, entriesOf, layout, stepInfo, stepHref,
                 summary={t({ id: 'lab.trace.showEntry', message: '看分錄', comment: '來源步驟下方預設收合的分錄層（D1）' })}
                 data-testid="lab-trace-journal"
               >
+                {derived && (
+                  <p className="ll-lab-journal__note" data-testid="lab-trace-derived">
+                    {t({
+                      id: 'lab.journal.note',
+                      message: '報表上的「本期進貨」「期末存貨」不是分錄裡的科目，而是由存貨帳推導出來的列。',
+                      comment: '分錄層的說明（03 第 3.3 節）',
+                    })}
+                  </p>
+                )}
                 {entries.map((entry) => (
                   <div key={entry.eventId} className="ll-lab-table">
                     <table className="ll-mini-table ll-lab-journal__entry" data-testid="lab-trace-entry">

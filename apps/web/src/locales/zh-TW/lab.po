@@ -26,40 +26,24 @@ msgstr "{0} {1}，看這個數字從哪裡來"
 msgid "lab.trace.open"
 msgstr "{0} {1}，看這個數字從哪裡來"
 
-#. 指標面板第一層報表列按鈕的可讀名稱；名稱與金額已代入
-#. js-lingui-explicit-id
-#. placeholder {0}: lineLabel(p.ref)
-#. placeholder {1}: formatMoney(values.lines.get(p.ref)?.value ?? 0, locale)
-#: src/features/lab/TracePanel.tsx
-msgid "lab.trace.node.line"
-msgstr "{0} {1}，看這個數字的公式"
-
 #. 來源面板的副標（本筆變動視窗）；報表名稱與步數已代入
 #. js-lingui-explicit-id
-#. placeholder {0}: statementName(target.lineId)
+#. placeholder {0}: atSentenceStart(statementName(target.lineId))
 #: src/features/lab/TracePanel.tsx
 msgid "lab.trace.window.transaction"
 msgstr "{0}，第 {order} 步的本筆變動"
 
 #. 來源面板的副標（累計視窗）；報表名稱與步數已代入
 #. js-lingui-explicit-id
-#. placeholder {0}: statementName(target.lineId)
+#. placeholder {0}: atSentenceStart(statementName(target.lineId))
 #: src/features/lab/TracePanel.tsx
 msgid "lab.trace.window.cumulative"
 msgstr "{0}，累計到第 {order} 步"
 
-#. 從指標鑽進報表列時的播報；名稱與代入數字的公式已代入
-#. js-lingui-explicit-id
-#. placeholder {0}: lineLabel(lineId)
-#. placeholder {1}: sentence(trace('cumulative', lineId))
-#: src/features/lab/TracePanel.tsx
-msgid "lab.trace.live.line"
-msgstr "{0}：{1}"
-
 #. 跨表對應的一列：另一張表的名稱與列名已代入
 #. js-lingui-explicit-id
-#. placeholder {0}: names[l.statement]
-#. placeholder {1}: lineLabel(l.line)
+#. placeholder {0}: names[statement]
+#. placeholder {1}: lineLabel(lineId)
 #: src/features/lab/TracePanel.tsx
 msgid "lab.trace.link"
 msgstr "{0}的{1}"
@@ -79,11 +63,35 @@ msgstr "{0}的{1}（勾稽點{2}）"
 msgid "lab.sandbox.whyAccount"
 msgstr "{account}會變成負數"
 
+#. 公式樹節點按鈕的可讀名稱（最底層的科目節點）；按鈕上的字、名稱與金額已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.node.leaf"
+msgstr "{action}：{label} {amount}，看來源步驟"
+
+#. 公式樹節點按鈕的可讀名稱（有公式的節點）；按鈕上的字、名稱、金額與代入數字的公式已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.node.formula"
+msgstr "{action}：{label} {amount}，等於 {formula}"
+
 #. IFRS 對照時的表格標題；caption 是報表名稱
 #. js-lingui-explicit-id
 #: src/features/lab/StatementTable.tsx
 msgid "lab.policy.caption"
 msgstr "{caption}（IFRS 對照）"
+
+#. 指標面板第一層報表列按鈕的可讀名稱；按鈕上的字、名稱與金額已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.node.line"
+msgstr "{drillLabel}：{label} {amount}，看這個數字的公式"
+
+#. 指標面板裡連鎖指標按鈕的可讀名稱；按鈕上的字、名稱與數值已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.node.ratio"
+msgstr "{drillLabel}：{label} {shown}，看這個指標怎麼算"
 
 #. 往下鑽到最底層時的播報；名稱與金額已代入
 #. js-lingui-explicit-id
@@ -91,23 +99,35 @@ msgstr "{caption}（IFRS 對照）"
 msgid "lab.trace.live.leaf"
 msgstr "{label} {amount}，列出來源步驟。"
 
-#. 公式樹節點按鈕的可讀名稱（最底層的科目節點）；名稱與金額已代入
+#. 往下鑽到沒有來源的列時的播報；名稱與金額已代入
 #. js-lingui-explicit-id
 #: src/features/lab/TraceTree.tsx
-msgid "lab.trace.node.leaf"
-msgstr "{label} {amount}，看來源步驟"
+msgid "lab.trace.live.plain"
+msgstr "{label} {amount}。"
 
-#. 公式樹節點按鈕的可讀名稱（有公式的節點）；名稱、金額與代入數字的公式已代入
-#. js-lingui-explicit-id
-#: src/features/lab/TraceTree.tsx
-msgid "lab.trace.node.formula"
-msgstr "{label} {amount}，等於 {formula}"
-
-#. 展開公式樹節點時的播報；名稱與代入數字的公式已代入
+#. 展開公式樹節點或往下鑽時的播報；名稱與代入數字的公式已代入
 #. js-lingui-explicit-id
 #: src/features/lab/TraceTree.tsx
 msgid "lab.trace.live.formula"
 msgstr "{label}：{formula}"
+
+#. 回到或進到指標時的播報；名稱、數值與公式已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.live.ratio"
+msgstr "{name} {shown}：{formula}"
+
+#. 階段 4 損益表的播報；列名與金額已代入
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.live.income"
+msgstr "{name}由 {from} 變為 {to}"
+
+#. 公式裡科目本身那一項（例如未分配盈餘裡本期淨利以外的部分）；科目名稱已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.accountPart"
+msgstr "{name}科目"
 
 #. 指標預測的選項
 #. js-lingui-explicit-id
@@ -169,17 +189,23 @@ msgstr "Excel 版"
 msgid "lab.policy.differs"
 msgstr "IFRS 下的處理不同"
 
-#. 來源面板副標前的口徑標記
-#. js-lingui-explicit-id
-#: src/features/lab/LabTag.tsx
-msgid "lab.policy.tag"
-msgstr "IFRS 對照"
-
 #. 報表口徑的選項：依 IFRS 重算的對照版
 #. js-lingui-explicit-id
 #: src/features/lab/PolicyToggle.tsx
 msgid "lab.policy.ifrs"
 msgstr "IFRS 對照"
+
+#. 自由實驗：IFRS 口徑重播失敗而教材口徑成功時的說明；步驟序號與標題已代入
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.policy.ifrsFailedStep"
+msgstr "IFRS 對照在第 {ifrsFailedOrder} 步「{ifrsFailedTitle}」算不下去，先顯示教材口徑的數字。"
+
+#. 自由實驗：IFRS 口徑重播失敗而教材口徑成功時的說明；步驟序號與標題已代入，括號裡是一句原因
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.policy.ifrsFailedAt"
+msgstr "IFRS 對照在第 {ifrsFailedOrder} 步「{ifrsFailedTitle}」算不下去（{ifrsFailedWhy}），先顯示教材口徑的數字。"
 
 #. 自由實驗：IFRS 口徑重播失敗而教材口徑成功時的說明
 #. js-lingui-explicit-id
@@ -323,6 +349,12 @@ msgstr "來源路徑"
 msgid "lab.policy.revealBasis"
 msgstr "依 IFRS 對照揭曉，不計分。"
 
+#. IFRS 對照的說明：依據的準則版本（10 第 11.2 節）；IAS、IFRS 與編號不翻譯
+#. js-lingui-explicit-id
+#: src/features/lab/BasisBanner.tsx
+msgid "lab.policy.version"
+msgstr "依現行 IAS 1 與 IAS 7，不是 IFRS 18。"
+
 #. 第 4 到 18 步的小標記（T33）
 #. js-lingui-explicit-id
 #: src/features/lab/TransactionCard.tsx
@@ -392,6 +424,12 @@ msgstr "其他指標（{0}）"
 #: src/pages/LabStep.tsx
 msgid "lab.finish.again"
 msgstr "再練一次"
+
+#. 來源面板載入失敗的提示裡的按鈕：重新開啟同一個數字
+#. js-lingui-explicit-id
+#: src/features/lab/TraceLoadToast.tsx
+msgid "lab.trace.loadRetry"
+msgstr "再試一次"
 
 #. 報表區標題
 #. js-lingui-explicit-id
@@ -487,13 +525,6 @@ msgstr "反面看法"
 #: src/pages/LabReconcile.tsx
 msgid "lab.reconcile.policyLabel"
 msgstr "口徑"
-
-#. 原地展開的節點底下 0 元項目的數量；數字已代入
-#. js-lingui-explicit-id
-#. placeholder {0}: splitChildren(child).zeros.length
-#: src/features/lab/TraceTree.tsx
-msgid "lab.trace.zerosInline"
-msgstr "另有 {0} 個 0 元的項目"
 
 #. 表格的篩選
 #. js-lingui-explicit-id
@@ -601,8 +632,10 @@ msgid "lab.ratio.reason.negativeBase"
 msgstr "基準為負或為 0，結果不具意義"
 
 #. 分錄層的說明（03 第 3.3 節）
+#. 分錄層的說明（03 第 3.3 節）
 #. js-lingui-explicit-id
 #: src/features/lab/EffectsList.tsx
+#: src/features/lab/TraceSources.tsx
 msgid "lab.journal.note"
 msgstr "報表上的「本期進貨」「期末存貨」不是分錄裡的科目，而是由存貨帳推導出來的列。"
 
@@ -715,11 +748,23 @@ msgstr "已加入「{name}」，可以改它的金額。"
 msgid "lab.sandbox.insertedZero"
 msgstr "已加入「{name}」，金額先放 0：這個位置放不下預設的金額，可以自己填。"
 
+#. 「在報表上標出」之後的播報；兩邊的報表與列名已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TracePanel.tsx
+msgid "lab.trace.marked"
+msgstr "已在報表上標出{first}和{second}。"
+
 #. 套用金額後的浮動提示
 #. js-lingui-explicit-id
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.applied"
 msgstr "已套用，三張報表與指標重算好了。"
+
+#. 收合公式樹節點時的播報；名稱已代入
+#. js-lingui-explicit-id
+#: src/features/lab/TraceTree.tsx
+msgid "lab.trace.live.collapsed"
+msgstr "已收合{label}。"
 
 #. 勾稽練習選步驟的面板副標；兩個數字已代入
 #. js-lingui-explicit-id
@@ -855,6 +900,7 @@ msgstr "損益結構比率"
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
 #: src/pages/LabReconcile.tsx
+#: src/pages/LabSandbox.tsx
 msgid "lab.stage.income"
 msgstr "損益表"
 
@@ -888,6 +934,12 @@ msgstr "改亂了也沒關係，按「還原成故事原本的樣子」就能重
 #: src/features/lab/StageBar.tsx
 msgid "lab.stage.switchMode"
 msgstr "改用{other}"
+
+#. 記下預測之後又改了選項、還沒更新時的提示
+#. js-lingui-explicit-id
+#: src/features/lab/PredictPanel.tsx
+msgid "lab.predict.dirty"
+msgstr "改過的選項要按「更新預測」才算數。"
 
 #. 玩法說明第 1 點
 #. js-lingui-explicit-id
@@ -939,11 +991,17 @@ msgstr "教材口徑：{0}"
 msgid "lab.policy.teacherRatio"
 msgstr "教材口徑：{teacher}"
 
-#. IFRS 對照橫幅的說明句
+#. IFRS 對照橫幅下面的說明句
 #. js-lingui-explicit-id
 #: src/features/lab/BasisBanner.tsx
 msgid "lab.policy.banner"
 msgstr "數字依 IFRS 的處理重算；和教材口徑不同的列有標記。"
+
+#. 自由實驗的舊存檔：教材口徑重播失敗、只有 IFRS 數字時的說明句
+#. js-lingui-explicit-id
+#: src/features/lab/BasisBanner.tsx
+msgid "lab.policy.bannerNoCompare"
+msgstr "數字依 IFRS 的處理重算；教材口徑算不下去，所以這裡沒有差異標記。"
 
 #. 預測面板的主按鈕（已記過一次）
 #. js-lingui-explicit-id
@@ -1068,17 +1126,17 @@ msgstr "步驟{0}（勾稽點 {1}）"
 msgid "lab.check.step1"
 msgstr "步驟①：五層利益"
 
+#. 利益清單的標題：IFRS 對照沒有經常利益，不說五層
+#. js-lingui-explicit-id
+#: src/features/lab/CheckLights.tsx
+msgid "lab.check.step1Levels"
+msgstr "步驟①：各層利益"
+
 #. 步驟全部拿掉時的標題
 #. js-lingui-explicit-id
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.empty.title"
 msgstr "步驟都拿掉了"
-
-#. 指標的輸入值名稱
-#. js-lingui-explicit-id
-#: src/features/lab/TracePanel.tsx
-msgid "lab.trace.input.parValue"
-msgstr "每股面額"
 
 #. 揭曉卡：這個目標沒有猜
 #. js-lingui-explicit-id
@@ -1120,6 +1178,7 @@ msgstr "現金流量"
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
 #: src/pages/LabReconcile.tsx
+#: src/pages/LabSandbox.tsx
 msgid "lab.stage.cashflow"
 msgstr "現金流量表"
 
@@ -1457,6 +1516,12 @@ msgstr "讀不到實驗室的故事"
 msgid "lab.step.coreError"
 msgstr "讀不到後面的階段"
 
+#. 來源面板的模組或核心載入失敗（離線）時的提示
+#. js-lingui-explicit-id
+#: src/features/lab/TraceLoadToast.tsx
+msgid "lab.trace.loadError"
+msgstr "讀不到這個數字的來源，可能是離線了。"
+
 #. 指標預測的選項
 #. js-lingui-explicit-id
 #: src/features/lab/PredictPanel.tsx
@@ -1520,6 +1585,7 @@ msgstr "資產總計{0}，變為 {1}；負債{2}；股東權益{3}。{verdict}�
 #. js-lingui-explicit-id
 #: src/features/lab/StageBar.tsx
 #: src/pages/LabReconcile.tsx
+#: src/pages/LabSandbox.tsx
 msgid "lab.stage.balance"
 msgstr "資產負債表"
 
@@ -1586,8 +1652,8 @@ msgstr "這一步的前置條件不成立"
 
 #. 完成卡的預測成績；數字都已格式化
 #. js-lingui-explicit-id
-#. placeholder {0}: formatNumber(revealScore.right, locale)
-#. placeholder {1}: formatNumber(revealScore.total, locale)
+#. placeholder {0}: formatNumber(finishScore.right, locale)
+#. placeholder {1}: formatNumber(finishScore.total, locale)
 #. placeholder {2}: formatNumber(storyTotals.right, locale)
 #. placeholder {3}: formatNumber(storyTotals.total, locale)
 #. placeholder {4}: formatNumber(storyTotals.steps, locale)
@@ -1612,6 +1678,12 @@ msgstr "這一步走完了"
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.broken.title"
 msgstr "這份實驗現在算不下去"
+
+#. 揭曉卡：預測記下之後使用者換了口徑
+#. js-lingui-explicit-id
+#: src/features/lab/PredictReveal.tsx
+msgid "lab.reveal.otherBasis"
+msgstr "這份預測是在另一種口徑下記下的：這裡依畫面上的數字重新揭曉，存下來的成績不變。"
 
 #. 自由實驗的導言；故事名稱與步數已代入
 #. js-lingui-explicit-id
@@ -1649,6 +1721,18 @@ msgstr "這樣改會讓第 {order} 步的{account}變成負數；這一格可以
 msgid "lab.reveal.noteLevels"
 msgstr "這筆交易不經過損益表，所以五層利益都不變。"
 
+#. 揭曉卡的原因句：IFRS 對照沒有經常利益，不說五層
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.reveal.noteLevelsIfrs"
+msgstr "這筆交易不經過損益表，所以各層利益都不變。"
+
+#. 報表區標題：顯示中的口徑算不下去
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.resultNone"
+msgstr "這組修改算不出報表"
+
 #. 插入被擋下；why 是一句原因
 #. js-lingui-explicit-id
 #: src/pages/LabSandbox.tsx
@@ -1685,6 +1769,12 @@ msgstr "選擇報表"
 msgid "lab.sandbox.reset"
 msgstr "還原成故事原本的樣子"
 
+#. 按了再試一次仍載入失敗時的提示
+#. js-lingui-explicit-id
+#: src/features/lab/TraceLoadToast.tsx
+msgid "lab.trace.loadStuck"
+msgstr "還是讀不到這個數字的來源，重新載入這一頁再試試。"
+
 #. 摘要列放不下時；數字已代入
 #. js-lingui-explicit-id
 #. placeholder {0}: summary.more
@@ -1709,6 +1799,12 @@ msgstr "還沒有任何步驟動過這個數字。"
 #: src/pages/LabRatios.tsx
 msgid "lab.cat.department"
 msgstr "部門指標"
+
+#. 來源面板重試仍失敗的提示裡的按鈕：重新載入這一頁
+#. js-lingui-explicit-id
+#: src/features/lab/TraceLoadToast.tsx
+msgid "lab.trace.loadReload"
+msgstr "重新載入"
 
 #. 累計檢視的欄名
 #. js-lingui-explicit-id

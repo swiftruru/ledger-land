@@ -1,7 +1,9 @@
 // 預測（03 第 3.6 節）：目標、方向判定與揭曉，純函式。畫面固定提供現金與五層利益六個目標，步驟資料的 predictTargets 再加（02、03）。
+// 目標要是畫面上真的有的列（targetsOnLayout）：ifrs@1 版面沒有經常利益、遞延的設立費也不顯示，這些目標在 IFRS 對照時不出現、不揭曉、不算成績（03 第 3.13 節）。
 // 方向看數字本身的差額正負，不因列名的 (+)(-) 再轉號；指標目標有六個選項（up、down、unchanged、becomes_computable、becomes_na、stays_na），
 // 0 是數字（從 0 變成數字是上升，不是變得可以計算）；比較前先依顯示位數四捨五入，四捨五入後相同就是「幾乎不變」，不變與實際方向都算對。
 import type { StoryPredictTarget } from '../../lib/content.ts';
+import type { LayoutLike } from './line-labels.ts';
 
 export type LineChoice = 'up' | 'down' | 'unchanged';
 export type RatioChoice = LineChoice | 'becomes_computable' | 'becomes_na' | 'stays_na';
@@ -36,6 +38,32 @@ export function predictTargetsOf(extra: readonly StoryPredictTarget[] | undefine
     else if (t.kind === 'ratio') out.push({ id: `x-${t.id}`, kind: 'ratio', ratioRef: t.ratioRef });
   }
   return out;
+}
+
+/**
+ * 這個版面看得到的目標：線目標要在版面上、而且不是不顯示的計算列；科目與指標目標不受版面影響。
+ * 只看版面本身，不看這一步的金額（`when_nonzero` 的列金額是 0 時也不顯示，依金額篩選等於先告訴使用者答案）。
+ */
+export function targetsOnLayout(targets: readonly PredictTarget[], layout: LayoutLike): PredictTarget[] {
+  const lines = new Map(Object.values(layout.statements).flatMap((rows) => rows.map((r) => [r.id, r] as const)));
+  return targets.filter((t) => {
+    if (t.kind !== 'line') return true;
+    const line = lines.get(t.line);
+    return line !== undefined && line.hidden !== true;
+  });
+}
+
+/**
+ * 揭曉與成績要算的目標：畫面上有、而且這份預測真的猜過。換口徑之後兩邊的目標不同：教材記下的預測在 IFRS 對照時少了經常利益，
+ * IFRS 對照記下的預測回到教材時，沒猜過的經常利益不算錯，也不算進總數。
+ */
+export function answeredTargets(targets: readonly PredictTarget[], record: PredictionRecord): PredictTarget[] {
+  return targets.filter((t) => record[t.id] !== undefined);
+}
+
+/** 記下預測時只留畫面上這些目標的答案：另一套口徑留下的答案不跟著這次的紀錄存 */
+export function recordOnTargets(targets: readonly PredictTarget[], record: PredictionRecord): PredictionRecord {
+  return Object.fromEntries(targets.flatMap((t) => (record[t.id] === undefined ? [] : [[t.id, record[t.id]!] as const])));
 }
 
 /** 金額或餘額的方向 */
@@ -73,8 +101,4 @@ export type PredictionRecord = Readonly<Record<string, PredictChoice>>;
 export interface PredictScore {
   readonly right: number;
   readonly total: number;
-}
-
-export function isPredictionComplete(targets: readonly PredictTarget[], record: PredictionRecord | undefined): boolean {
-  return targets.every((t) => record?.[t.id] !== undefined);
 }

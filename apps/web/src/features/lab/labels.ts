@@ -7,7 +7,7 @@ import { formatRatioValue } from '../quiz/ratio-format.ts';
 import type { RatioUnit } from '../quiz/ratio-units.ts';
 import type { RatioResult, Statements } from './lab-core.ts';
 import { useTerms } from '../quiz/terms.tsx';
-import { lineLabelOf, type LayoutLike, type LocalizedText } from './line-labels.ts';
+import { formulaTextOf, lineLabelOf, type FormulaSpec, type LayoutLike, type LocalizedText } from './line-labels.ts';
 
 export { firstPaintLayout, lineLabelOf, type LayoutLike } from './line-labels.ts';
 
@@ -28,7 +28,9 @@ export function useLabLabels(layout: LayoutLike) {
         const byRef = labelOf(termRef);
         if (byRef !== undefined) return byRef;
       }
-      for (const t of terms.values()) if (t.ratioRef === ratioId) return t.label;
+      // 名詞的 ratioRef 帶版本（ar_turnover@excel），公式裡的參照與指標 ID 不帶；同一個指標的名詞只有一個
+      const prefix = `${ratioId}@`;
+      for (const t of terms.values()) if (t.ratioRef === ratioId || t.ratioRef?.startsWith(prefix)) return t.label;
       return ratioId;
     },
     [terms, labelOf],
@@ -69,15 +71,10 @@ export function lineAt(st: Statements, lineId: string): number {
   return st.lines.get(lineId)?.value ?? 0;
 }
 
-const REF_RE = /\b(line|input|ratio)\.([a-z][a-z0-9_]*)(?:\.([a-z][a-z0-9_]*))?/g;
-
-/** 指標公式的文字：line.x 換成版面名稱、ratio.x 換成指標名稱（指標卡與來源面板共用；放這裡是為了讓來源面板不必靜態引用 lab-stages） */
+/** 指標公式的文字（formulaTextOf）：指標卡與來源面板共用；放這裡是為了讓來源面板不必靜態引用 lab-stages */
 export function useFormulaText(layout: LayoutLike) {
-  const { lineLabel, ratioLabel } = useLabLabels(layout);
-  const humanise = (source: string): string =>
-    source.replace(REF_RE, (_m, ns: string, name: string) => (ns === 'line' ? lineLabel(name) : ns === 'ratio' ? ratioLabel(name) : name.replace(/_/g, ' ')));
-  return (spec: { readonly numerator?: string; readonly denominator?: string; readonly expr?: string }): string =>
-    spec.expr !== undefined ? humanise(spec.expr) : `${humanise(spec.numerator ?? '')} ÷ ${humanise(spec.denominator ?? '')}`;
+  const { locale, lineLabel, ratioLabel } = useLabLabels(layout);
+  return (spec: FormulaSpec): string => formulaTextOf(spec, layout, locale, { line: lineLabel, ratio: (id) => ratioLabel(id) });
 }
 
 /** 指標的顯示文字：ok 與 zero 依版本的單位與位數格式化（和作答頁同一個函式）；na 是「N/A」；not_meaningful 有數字就顯示數字（畫面另加警示） */

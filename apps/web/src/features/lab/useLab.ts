@@ -101,6 +101,8 @@ export function useLabStepLoad(
     }
     if (loading.current) return;
     loading.current = true;
+    // 重試中不算失敗：來源面板與階段的錯誤提示要等這一次的結果
+    setCoreState((s) => (s.error === undefined ? s : { core: s.core, error: undefined }));
     loadLabCore().then(
       (core) => {
         loading.current = false;

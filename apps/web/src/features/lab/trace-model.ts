@@ -1,7 +1,8 @@
 // 「這個數字從哪裡來」面板的純函式（03 第 3.9 節，D10(c) A）：核心的追蹤樹（traceLine）已經是完整的公式樹與來源分錄行，
 // 這裡只做畫面要的整理：跨表對應（從版面推得）、0 元且沒有來源的子節點分組、節點在公式裡的正負號、來源分錄行依步驟分組、
-// 往下鑽的路徑、指標公式的分子分母引用哪些線。不算任何金額，不 import React 或 Lingui。
+// 往下鑽的路徑與聚焦的位置、指標公式的分子分母引用哪些線、同時有子節點與科目層的列（未分配盈餘）的科目部分。不算任何金額，不 import React 或 Lingui。
 import type { Layout, StatementId, TraceNode } from '@ledgerland/core';
+import { isAbsentLine } from './line-labels.ts';
 
 /** 畫面上有的三張表（直接法不顯示，跨表對應不指向它） */
 export type ShownStatement = 'income_statement' | 'balance_sheet' | 'cash_flow_indirect';
@@ -24,14 +25,19 @@ export interface CrossLink {
 
 /**
  * 從版面推出跨表對應，兩個方向都有：link 列對它的 from（H11 對 R33，勾稽點②）、帶 check step3 的 balance_end 對同一科目的餘額列（H41 對 L12，③）、
- * retained_earnings 列對它的 netIncomeLine（N26 對 R35，④）、inventory_closing 對存貨的餘額列（R14 對 L14，沒有編號）。只收畫面上有的三張表。
+ * retained_earnings 列對它的 netIncomeLine（N26 對 R35，④）、inventory_closing 對存貨的餘額列（R14 對 L14，沒有編號）。只收畫面上有的三張表，
+ * 版面不顯示的列（hidden，例如 ifrs@1 的期末存貨）報表上標不出來，不算對應。
  */
 export function crossLinks(layout: Layout): ReadonlyMap<string, readonly CrossLink[]> {
   const out = new Map<string, CrossLink[]>();
+  const shownOn = (lineId: string): ShownStatement | null => {
+    const s = statementOf(layout, lineId);
+    return s !== null && isShown(s) && layout.statements[s].find((l) => l.id === lineId)?.hidden !== true ? s : null;
+  };
   const add = (a: string, b: string, check: CrossLink['check']) => {
-    const sa = statementOf(layout, a);
-    const sb = statementOf(layout, b);
-    if (sa === null || sb === null || !isShown(sa) || !isShown(sb) || sa === sb) return;
+    const sa = shownOn(a);
+    const sb = shownOn(b);
+    if (sa === null || sb === null || sa === sb) return;
     const push = (from: string, to: string, statement: ShownStatement) => {
       const list = out.get(from) ?? [];
       if (!list.some((x) => x.line === to)) list.push({ line: to, statement, check });
@@ -102,6 +108,24 @@ export function childOperators(node: TraceNode): ReadonlyMap<string, TraceOperat
   return out;
 }
 
+/** 同時有子節點與科目層的列（有股利的未分配盈餘）裡，科目層那一部分：amount 已帶號，公式裡顯示 op 與絕對值 */
+export interface OwnPart {
+  readonly account: string;
+  readonly amount: number;
+  readonly op: TraceOperator;
+}
+
+/**
+ * 公式列裡自己的科目層：只有畫出子節點的時候才需要（沒有子節點時科目層就是最底層，直接列來源步驟）。
+ * 0 元而且沒有來源的科目不佔一列（沒有股利的未分配盈餘）。子節點加上這幾列等於列值，畫面上的公式才對得起來。
+ */
+export function ownParts(node: TraceNode): readonly OwnPart[] {
+  if (splitChildren(node).shown.length === 0) return [];
+  return node.accounts
+    .filter((a) => a.amount !== 0 || a.sources.length > 0)
+    .map((a) => ({ account: a.account, amount: a.amount, op: a.amount < 0 ? ('－' as const) : ('＋' as const) }));
+}
+
 /** 來源分錄行依步驟分組（面板第三區）：每一步對這一列的帶號貢獻，與構成它的每一條分錄行 */
 export interface SourceLine {
   readonly eventId: string;
@@ -150,6 +174,70 @@ export function nodeAtPath(root: TraceNode, path: readonly string[]): TraceNode 
   return node;
 }
 
+/**
+ * 面板聚焦的位置。ratios 是從指標目標往下進過的連鎖指標（ratio 參照），lineRoot 是公式樹的根（指標目標一開始是 null，進了某條線才有），
+ * path 是 lineRoot 之後每一層的線 ID（一定是完整路徑，nodeAtPath 才走得到）。
+ */
+export interface TraceFocus {
+  readonly ratios: readonly string[];
+  readonly lineRoot: string | null;
+  readonly path: readonly string[];
+}
+
+/** 面板的目標：這裡只需要它是哪一條線或哪一個指標 */
+export type FocusTarget = { readonly kind: 'line'; readonly lineId: string } | { readonly kind: 'ratio'; readonly ratioRef: string };
+
+/** 開面板時聚焦的位置：線目標是那條線本身，指標目標是指標的分子與分母 */
+export function startFocus(target: FocusTarget | null): TraceFocus {
+  return { ratios: [], lineRoot: target?.kind === 'line' ? target.lineId : null, path: [] };
+}
+
+/** 往下鑽：trail 是從目前聚焦的節點走到那個子節點的完整路徑（原地展開的第 3 層是三段，不是只有最後一段） */
+export function focusDeeper(focus: TraceFocus, trail: readonly string[]): TraceFocus {
+  return { ...focus, path: [...focus.path, ...trail] };
+}
+
+/** 從指標的分子或分母進到某條線的公式樹 */
+export function focusLine(focus: TraceFocus, lineId: string): TraceFocus {
+  return { ratios: focus.ratios, lineRoot: lineId, path: [] };
+}
+
+/** 從指標進到它引用的另一個指標（連鎖指標），看那個指標自己的分子與分母 */
+export function focusRatio(focus: TraceFocus, ratioRef: string): TraceFocus {
+  return { ratios: [...focus.ratios, ratioRef], lineRoot: null, path: [] };
+}
+
+/** 頂端路徑的一段：名稱由畫面查（kind 與 ref），focus 是按下去要回到的位置 */
+export interface FocusCrumb {
+  readonly key: string;
+  readonly kind: 'ratio' | 'line';
+  readonly ref: string;
+  readonly focus: TraceFocus;
+}
+
+/** 頂端路徑：目標的指標、進過的連鎖指標、公式樹的根、往下鑽的每一層；最後一段就是目前的位置 */
+export function focusTrail(target: FocusTarget, focus: TraceFocus): readonly FocusCrumb[] {
+  const out: FocusCrumb[] = [];
+  const push = (kind: FocusCrumb['kind'], ref: string, to: TraceFocus) => out.push({ key: `${out.length}:${kind}:${ref}`, kind, ref, focus: to });
+  if (target.kind === 'ratio') push('ratio', target.ratioRef, { ratios: [], lineRoot: null, path: [] });
+  focus.ratios.forEach((ref, i) => push('ratio', ref, { ratios: focus.ratios.slice(0, i + 1), lineRoot: null, path: [] }));
+  if (focus.lineRoot !== null) {
+    const lineRoot = focus.lineRoot;
+    push('line', lineRoot, { ratios: focus.ratios, lineRoot, path: [] });
+    focus.path.forEach((id, i) => push('line', id, { ratios: focus.ratios, lineRoot, path: focus.path.slice(0, i + 1) }));
+  }
+  return out;
+}
+
+/** 本期進貨與期末存貨：不是分錄裡的科目，是由存貨帳推導出來的列（03 第 3.3 節的說明，面板的「看分錄」旁要加註） */
+export function isDerivedInventoryLine(layout: Layout, lineId: string): boolean {
+  for (const s of Object.keys(layout.statements) as StatementId[]) {
+    const line = layout.statements[s].find((l) => l.id === lineId);
+    if (line !== undefined) return line.kind === 'inventory_purchases' || line.kind === 'inventory_closing';
+  }
+  return false;
+}
+
 /** 指標公式引用的參照（面板第一層）：line.x 是報表列、ratio.x.version 是連鎖的指標、input.x 是輸入值 */
 export interface RatioPart {
   readonly kind: 'line' | 'ratio' | 'input';
@@ -169,10 +257,15 @@ export function partsOf(source: string | undefined): readonly RatioPart[] {
   return out;
 }
 
-export function ratioParts(spec: { readonly numerator?: string; readonly denominator?: string; readonly expr?: string }): {
+export function ratioParts(
+  spec: { readonly numerator?: string; readonly denominator?: string; readonly expr?: string },
+  layout?: Layout,
+): {
   readonly numerator: readonly RatioPart[];
   readonly denominator: readonly RatioPart[];
   readonly expr: readonly RatioPart[];
 } {
-  return { numerator: partsOf(spec.numerator), denominator: partsOf(spec.denominator), expr: partsOf(spec.expr) };
+  // 版面沒有的列不列出來（ifrs@1 的遞延資產）：和公式句（formulaTextOf）一致
+  const parts = (source: string | undefined) => partsOf(source).filter((p) => !(layout !== undefined && p.kind === 'line' && isAbsentLine(layout, p.ref)));
+  return { numerator: parts(spec.numerator), denominator: parts(spec.denominator), expr: parts(spec.expr) };
 }

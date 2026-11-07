@@ -4,7 +4,7 @@
 // 狀態的開法和 link-style.spec 共用 page-states.ts。
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { ALL_THEMES, caseByName, caseData, openCase, type PageCase } from './page-states.ts';
+import { ALL_THEMES, CASES, caseByName, caseData, openCase, type PageCase } from './page-states.ts';
 import { waitForApp } from './helpers.ts';
 
 const PAGES = [
@@ -36,6 +36,8 @@ const PAGES = [
   '/exam/list/',
   '/exam/browse/?deck=d1',
 ];
+/** 實驗室的每個狀態（page-states 的實驗室群組），新增狀態自動列入；來源面板、IFRS 橫幅與差異標記都在裡面 */
+const LAB_STATES: readonly PageCase[] = CASES.filter((c) => c.group === '實驗室');
 const STATES: readonly PageCase[] = [
   caseByName('首頁', '匯入提示卡'),
   caseByName('闖關', '清單檢視'),
@@ -63,8 +65,11 @@ const STATES: readonly PageCase[] = [
   caseByName('橫幅', 'Safari 分頁展開'),
   caseByName('橫幅', '內建瀏覽器展開'),
   caseByName('苦練', '確認答案後'),
+  ...LAB_STATES,
 ];
 const THEMES = ['light', 'dark'] as const;
+/** 上面的 dark 是夜空；莓果與紅酒的底色和強調色不同，實驗室的狀態也各掃一次（只換顏色，版面一樣，所以中文一種語系就夠）。10 第 4 節閘門 7 */
+const OTHER_FLAVOURS = ALL_THEMES.slice(2);
 
 test.skip(({ browserName }) => browserName !== 'chromium', 'axe 只在 Chromium 專案跑一次');
 
@@ -94,5 +99,16 @@ for (const theme of THEMES) {
         expect(await analyse(page)).toEqual([]);
       });
     }
+  }
+}
+
+for (const flavour of OTHER_FLAVOURS) {
+  for (const c of LAB_STATES) {
+    test(`axe ${flavour.name} /zh-TW ${c.group}：${c.name}`, async ({ page, request }) => {
+      test.setTimeout(90_000);
+      await openCase(page, c, { width: 1280, prefix: '', theme: flavour, data: await caseData(request) });
+      await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
+      expect(await analyse(page)).toEqual([]);
+    });
   }
 }

@@ -38,6 +38,8 @@ export interface StatementTableProps {
   onTrace?: (lineId: string, window: TraceWindow, el: HTMLButtonElement) => void;
   /** IFRS 對照：同一步教材口徑的交易後報表與本筆變動，畫差異標記與「教材口徑：x」；沒給就是教材口徑本身 */
   compare?: { readonly after: Statements; readonly change: Statements };
+  /** 顯示中的是 IFRS 數字但沒有教材數字可比（自由實驗的舊存檔教材重播失敗）：標題照樣加「（IFRS 對照）」，只是沒有差異標記 */
+  ifrsOnly?: boolean;
   id?: string;
   className?: string;
 }
@@ -61,6 +63,7 @@ export function StatementTable({
   animate = false,
   onTrace,
   compare,
+  ifrsOnly = false,
   id,
   className,
 }: StatementTableProps) {
@@ -69,7 +72,7 @@ export function StatementTable({
   const rows = after.statements[statement];
   const fmt = (v: number) => formatMoney(v, locale);
   const shownCaption =
-    compare !== undefined && typeof caption === 'string'
+    (compare !== undefined || ifrsOnly) && typeof caption === 'string'
       ? t({ id: 'lab.policy.caption', message: `${caption}（IFRS 對照）`, comment: 'IFRS 對照時的表格標題；caption 是報表名稱' })
       : caption;
   // 教材口徑的同一列：累計檢視比交易後的金額、本筆變動檢視比差額；教材版面沒有這一列（不會發生：兩個版面共用線 ID）就不標
