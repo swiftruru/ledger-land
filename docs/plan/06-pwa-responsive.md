@@ -700,7 +700,7 @@ kill-switch 只清 Cache Storage 與 SW 註冊，**不碰 IndexedDB**，學習�
 | `ratio_numeric` | 04 `scoreNumeric` 的輸入 `NumericAnswer`（數值，或按下 N/A 的狀態） | 依 04 |
 | `journal_entry` | 04 `scoreJournalEntry` 的輸入 `EntryLine[][]`（每筆分錄的各行） | 依 04 |
 
-**實驗室檢視偏好**（`settings` 的 `labView`，`packages/progress` 的 `LabView` schema）：實驗室共用的檢視設定（02 第 5.1 節、03 的 D10(f) 切換規則），形狀為 `{ policy, window, statement, journalLayerOpen }`，schema 是 strict，四個欄位都要在。目前畫面只用 `policy` 與 `journalLayerOpen`（`apps/web/src/features/lab/lab-view.ts`）：
+**實驗室檢視偏好**（`settings` 的 `labView`，`packages/progress` 的 `LabView` schema）：實驗室共用的檢視設定（02 第 5.1 節、03 的 D10(f) 切換規則），形狀為 `{ policy, window, statement, journalLayerOpen }`，schema 是 strict，四個欄位都要在。目前畫面用 `policy`、`window` 與 `journalLayerOpen`（`apps/web/src/features/lab/lab-view.ts`；`statement` 不讀不寫，02 第 5.1 節）：
 
 - `policy` 是 `teacher@1` 或 `ifrs@1`（教材或 IFRS 對照）。記憶規則（已決定 2026-11-07，[14 待確認](14-open-questions.md) 第 5.2 節）：切換時寫入設定，跟著備份走；同一次使用中換步驟與換頁沿用；重新載入網站或直接開網址，畫面回到教材（設定值不改寫，只有 document 內切換過才照設定值）；從題目開啟（`?from=`）一律先用教材，切換後仍可改。讀不到或值不對時用教材。
 - `journalLayerOpen` 是分錄層的展開狀態，換步驟與重新載入都沿用。

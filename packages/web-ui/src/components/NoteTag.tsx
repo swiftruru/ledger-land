@@ -1,6 +1,7 @@
 // 小型註記標籤（07 第 9 節、05 第 12.1 節）：一律有文字；給 onClick 時是按鈕（有完整的可讀名稱），否則是純文字標籤。
 // 按鈕形式（站規 1.20）：<button> 本身 44px 高、透明，視覺膠囊畫在內層 span（量得到 44px，不用偽元素補範圍），結尾加 InfoIcon，沒有底線。
 import { useLingui } from '@lingui/react/macro';
+import type { MouseEvent } from 'react';
 import { InfoIcon } from './icons.tsx';
 
 export type NoteTagKind = 'old_name' | 'simplified' | 'single_period' | 'not_ifrs_line' | 'ifrs_not_scored' | 'design_note' | 'extension' | 'midterm';
@@ -44,9 +45,26 @@ export function NoteTag({ kind, subject, onClick, className }: NoteTagProps) {
       : subject
         ? t({ id: 'note.a11y', message: `${text}：${line}。查看說明`, comment: '註記標籤按鈕的可讀名稱；text 是標籤文字、line 是列名或名詞' })
         : undefined;
+  return <NoteTagButton text={text} pillClassName={`ll-notetag--${kind.replace(/_/g, '-')}`} onClick={onClick} a11y={a11y} className={className} />;
+}
+
+export interface NoteTagButtonProps {
+  /** 膠囊裡的文字 */
+  text: string;
+  /** 膠囊的修飾 class（顏色），例如 ll-notetag--not-ifrs-line */
+  pillClassName?: string;
+  /** 可讀名稱（完整的一句：標籤、列名、按下去會看到什麼） */
+  a11y?: string;
+  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+  'data-testid'?: string;
+}
+
+/** 註記標籤的按鈕形式（站規 1.20）：<button> 本身 44px 高、透明；視覺膠囊是內層的 .ll-notetag__pill，結尾 14px 的說明圖示。NoteTag 與實驗室自己的標籤共用 */
+export function NoteTagButton({ text, pillClassName, a11y, onClick, className, 'data-testid': testId }: NoteTagButtonProps) {
   return (
-    <button type="button" className={`ll-notetag--btn${className ? ` ${className}` : ''}`} onClick={onClick} aria-label={a11y}>
-      <span className={`ll-notetag ll-notetag--${kind.replace(/_/g, '-')} ll-notetag__pill`}>
+    <button type="button" className={`ll-notetag--btn${className ? ` ${className}` : ''}`} onClick={onClick} aria-label={a11y} data-testid={testId}>
+      <span className={`ll-notetag${pillClassName ? ` ${pillClassName}` : ''} ll-notetag__pill`}>
         {text}
         <InfoIcon size={14} className="ll-notetag__icon" />
       </span>
