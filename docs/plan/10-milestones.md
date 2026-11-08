@@ -99,8 +99,8 @@ D 系列都已決定（2026-10-20），所以下表把「依據的決定」和�
 | M4a 報表實驗室：故事與動畫 | 用逐步動畫呈現交易如何流進三表與指標 | 故事模式與單獨練習、動畫、預測、自由實驗、勾稽練習、指標面板 | D1、D2、D9（故事公司「綠芽商行」，2026-11-01）、D10(b)、D11（報表版面） | 無（故事公司名稱 2026-11-01 已定；T08、T29、T33、T35 已決定） | 已完成（已合併，2026-11-01，PR 63；回報 [docs/reports/m4a.md](../reports/m4a.md)） |
 | M4d 會計公式（2026-11-07 插入，排在 M4c 之後、M4b 之前） | 學生查公式時不必翻講義 | 新內容種類 `content/formulas/`（51 條）與講義對照檔、總覽與條目頁（`/formulas/`、`/formulas/<id>/`）、各入口、公式與苦練的互連（從公式開一輪相關題的練習、題目頁的「相關公式」） | 14 第 5.2 節（2026-11-07，我的決定）；不開新的 D 編號 | 無 | 已完成（已合併並部署，2026-11-07，PR 110、111、112） |
 | M4c 期中考苦練（2026-11-04 插入，排在 M4b 之前） | 學生只練老師講義的題 | 抽題工具與 `content/handout/`、三頁（`/exam/`、`/exam/<setId>/`、`/exam/teacher/`）、獨立資料庫 `ledgerland-exam`、題庫檔的執行期快取、老師審核頁 | 14 第 5.2 節（2026-11-04，維護者）與 T34 補記（老師同意收錄練習題原文）；不開新的 D 編號 | 無 | 已完成（已合併並部署，2026-11-05，PR 75、76、78、79；回報 [docs/reports/m4c.md](../reports/m4c.md)）；實機與螢幕閱讀器的清單還沒走 |
-| M4b 報表實驗室：追蹤與 IFRS 切換 | 回答「這個數字從哪裡來」，並能切換到 IFRS 對照 | 完整公式樹與來源分錄、`ifrs@1` 政策與版面、IFRS 黃金測試 | D1、D10(c)、D10(f)、D11 | 無（T04、T05 的兩套政策已決定） | 已完成（PR 113、114、115 已合併，2026-11-07；回報 [docs/reports/m4b.md](../reports/m4b.md)）；實機與螢幕閱讀器的清單還沒走 |
-| M5 跨模組導覽 | 串起闖關區與實驗室 | `labRef` 深連結、帶入交易前的狀態、章末連結 | 沿用 M2 與 M4a 的設計 | 沒有 | 已完成（2026-11-08，回報在 [docs/reports/m5.md](../reports/m5.md)；VoiceOver、TalkBack 與實機留給我的裝置） |
+| M4b 報表實驗室：追蹤與 IFRS 切換 | 回答「這個數字從哪裡來」，並能切換到 IFRS 對照 | 完整公式樹與來源分錄、`ifrs@1` 政策與版面、IFRS 黃金測試 | D1、D10(c)、D10(f)、D11 | 無（T04、T05 的兩套政策已決定） | 已完成（PR 113、114、115 已合併，2026-11-07；回報 [docs/reports/m4b.md](../reports/m4b.md)；實機主要流程 2026-11-08 走過，細項不逐條測，見回報第 7 節） |
+| M5 跨模組導覽 | 串起闖關區與實驗室 | `labRef` 深連結、帶入交易前的狀態、章末連結 | 沿用 M2 與 M4a 的設計 | 沒有 | 已完成（2026-11-08，回報在 [docs/reports/m5.md](../reports/m5.md)；實機主要流程同日走過，細項不逐條測，見回報第 7 節） |
 | M6 題庫匯入 | 讓不寫程式的人用 Excel 維護文字型題目與名詞 | 範本產生（含「判分方式」欄）、本機匯入指令、錯誤報告、預覽、差異摘要；老師要自己操作時加瀏覽器匯入頁 | D10(d)、D10(g)、D12 | 已處理：函式庫查證後自己寫（14 第 5.2 節）；老師是否要自己操作仍等回覆 | 已完成（2026-11-08，PR 125、126；回報 [docs/reports/m6.md](../reports/m6.md)）；瀏覽器匯入頁等老師回覆再排 |
 | M7 管理後台 | 讓管理者在後台編輯與發布 | `apps/admin`（使用 `packages/web-ui`）、Cloudflare Access 加 Workers 加 D1、獨立 origin、伺服器端權限、revisions 表、發布靜態快照 | D3、D4、D10(e)、D10(g)、D12 | V10 的結果；後台的子網域 | 未開始 |
 | M8 公開上線 | 正式對外宣布（repo 從 M0b 起、網站從 M2 起就已公開） | 老師同意與署名的定稿、授權與安全標頭的最終確認、整個歷史的稽核、最終稽核 | D3、D4、D6、D7、D9、D11 | T34 的致謝文字與位置（請老師看一眼）；商標檢索 | 未開始 |
@@ -576,12 +576,12 @@ D10(c) 決定做完整公式樹與來源分錄，M4 的介面工作量因此最�
 
 - [x] 三表上每個可追蹤的數字都能展開到來源步驟；公式樹每一層的數字都和核心輸出一致（`apps/web/test/lab-trace-model.test.ts` 的「traceLabLine 等於直接呼叫核心的 traceLine」；`packages/core/test/trace.property.test.ts` 與 `story-official.property.test.ts` 用 `verifyTraceTree` 走過全部的線；E2E `lab.spec.ts`「電腦：第 3 層往下鑽走得到來源步驟」）。
 - [x] 來源分錄層預設收合；展開後的分錄和核心過帳的分錄一致（E2E `lab.spec.ts`「看分錄」預設收合；`lab-trace-model.test.ts` 的 `sourceSteps`：每一行都指得到該步過帳的分錄）。
-- [ ] 來源面板可以只用鍵盤操作（Enter 開啟、Esc 關閉、焦點回到原數字）；VoiceOver 與 TalkBack 唸出每一層的公式與數字。（鍵盤部分已通過，E2E `lab.spec.ts`「只用鍵盤：Tab 到數字按 Enter 開面板、Tab 到節點按 Enter 展開、Esc 關閉」；VoiceOver 與 TalkBack 需要我的裝置，還沒做，所以不打勾，清單在回報第 7 節）
+- [x] 來源面板可以只用鍵盤操作（Enter 開啟、Esc 關閉、焦點回到原數字）；VoiceOver 與 TalkBack 唸出每一層的公式與數字。（鍵盤：E2E `lab.spec.ts`「只用鍵盤：Tab 到數字按 Enter 開面板、Tab 到節點按 Enter 展開、Esc 關閉」；螢幕閱讀器：往下鑽與數字按鈕的可及名稱由 E2E 斷言，主要流程 2026-11-08 在我的 iPhone 走過，細項不逐條測，見回報第 7 節補記）
 - [x] 小手機（320px）上的多層展開可用，沒有整頁橫向捲動（E2E `lab.spec.ts`「320px：往下鑽、路徑可以回去、0 元的項目收起來、整頁沒有橫向捲動」）。
 - [x] `ifrs@1` 的黃金測試（自編數字）通過；故事資料在 `ifrs@1` 下通過性質測試（`packages/core/test/lime-leaf-ifrs.golden.test.ts` 與 `test/golden/lime-leaf.ifrs@1.json`；`story-official.property.test.ts`；`tools/lib/content-rules.mjs` 的 `checkStory` 兩套政策都跑）。計算表腳本沒有進 repo，見回報的已知限制。
 - [x] IFRS 畫面一律顯示「IFRS 對照，不計分」；計分題的 `scenario.policy` 只允許 `teacher@1`（CI 檢查）；切換 IFRS 不影響任何計分與錯題紀錄（有測試）（報表區的固定橫幅 `BasisBanner`、來源面板副標前的標記與揭曉卡都有；`content-schema` 的 `scenario.ts` 與 `content-rules.mjs` 的 `acct.teacherPolicy`；E2E `lab.spec.ts`「步驟頁：切到 IFRS 對照後……設定有寫入、計分的 store 不動」）。
 - [x] 英文與中文介面的預設仍是教材版面；直接開啟故事步驟的網址時一律是教材版面（M5 的 `labRef` 深連結也走這條規則）（`apps/web/test/lab-view.test.ts`；E2E `lab.spec.ts`「口徑的記憶：同一次使用中換到別的步驟仍是 IFRS 對照；重新載入回到教材；從題目開啟一律教材」）。
-- [ ] 通過第 4 節的驗收閘門。（本機的數字：axe 涵蓋 `page-states.ts` 實驗室群組的全部狀態（含來源面板與 IFRS 對照）、純鍵盤、減少動態、Lighthouse 與體積預算都通過，lab-step LCP 2576ms、門檻 2700ms；E2E desktop-chromium 846 過，iphone-webkit 180 過，都沒有失敗；較早一輪 WebKit 有 1 個地圖「關卡面板」的既有測試在滿載時偶發失敗，重跑 10 次 10 過。VoiceOver、TalkBack 與實機還沒做，Firefox 這台 Mac 跑不起來、要看 main 的 CI，對比沒有完整的計算紀錄，切換語言時口徑的人工檢查還沒做，所以不打勾，見回報第 4、7 節）
+- [x] 通過第 4 節的驗收閘門。（本機的數字：axe 涵蓋 `page-states.ts` 實驗室群組的全部狀態（含來源面板與 IFRS 對照）、純鍵盤、減少動態、Lighthouse 與體積預算都通過，lab-step LCP 2576ms、門檻 2700ms；E2E desktop-chromium 846 過，iphone-webkit 180 過，都沒有失敗；較早一輪 WebKit 有 1 個地圖「關卡面板」的既有測試在滿載時偶發失敗，重跑 10 次 10 過。Firefox 與 WebKit 在 main 的 CI 綠；實機主要流程 2026-11-08 走過，螢幕閱讀器的細項不逐條測；對比沒有完整的計算紀錄，列為已知限制，見回報第 4、7 節）
 - [x] 停下回報（回報 [docs/reports/m4b.md](../reports/m4b.md)）。
 
 **開工前必須先決定**：
@@ -672,7 +672,7 @@ D10(c) 決定做完整公式樹與來源分錄，M4 的介面工作量因此最�
 - [x] E2E：答錯，開啟實驗室對應步驟，交易前的狀態正確，返回後作答狀態與捲動位置保留；中文與 `/en/` 兩種網址各走一次，語言不會在跳轉中改變。（`apps/web/e2e/cross-module.spec.ts`，Chromium 與 WebKit）
 - [x] 離線時跨模組導覽仍然可用。（同一個 E2E 的離線案例，Chromium）
 - [x] 步驟下架時，連結導向替代步驟或故事該章的開頭。（導到故事頁並說明一次；沒有替代步驟的資料欄位，見回報第 6 節）
-- [ ] 通過第 4 節的驗收閘門。（自動化的閘門通過；VoiceOver、TalkBack 與實機和 M4b 一樣留給我的裝置，見 [M5 回報](../reports/m5.md) 第 4、7 節）
+- [x] 通過第 4 節的驗收閘門。（自動化的閘門通過；實機主要流程 2026-11-08 走過，細項和 M4b 一樣不逐條測，見 [M5 回報](../reports/m5.md) 第 4、7 節）
 - [x] 停下回報。（[M5 回報](../reports/m5.md)，2026-11-08）
 
 **開工前必須先決定**：沒有新的決定，沿用 M2 與 M4a 的設計（D5 的網址、D10(b) 的帶入狀態）。M5 不依賴 M4b（M4b 已於 2026-11-07 完成）。
