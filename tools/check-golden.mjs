@@ -11,7 +11,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const problems = [];
 
 // 1. 兩套政策的黃金資料都能重現
-for (const policy of ['teacher@1', 'ifrs@1']) {
+for (const policy of /** @type {const} */ (['teacher@1', 'ifrs@1'])) {
   const golden = JSON.parse(readFileSync(goldenPath(policy), 'utf8'));
   const diffs = diffAgainst(golden, compute(policy));
   if (diffs.length > 0) problems.push(`${policy} 的黃金資料和計算表有 ${diffs.length} 項不同：${diffs.slice(0, 5).join('；')}`);
