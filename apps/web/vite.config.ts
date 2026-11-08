@@ -257,6 +257,17 @@ export default defineConfig({
               test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/]glossary[\\/]|packages[\\/]web-ui[\\/]src[\\/]components[\\/]GlossaryItem\.tsx$)/,
               priority: 2,
             },
+            // 會計公式的共用模組（索引 hook、目錄純函式、膠囊、條目的五段、分類名稱；2026-11-08）：自成一個 chunk。交給 shared 時，useFormulaIndex 被背題瀏覽與膠囊共用，
+            // 4 KB 的合併門檻把圖鑑搜尋框所在的共用 chunk 和徽章（連著整個地圖）併在一起，/terms/ 第一波多載 quest-map 與 overlay 約 26 KB，Lighthouse 的 LCP 多約 150ms
+            // （main c1b606f 兩次都紅）。FormulaSheet.tsx 不抓：它是 formula-sheet-lazy.ts 的動態進入點，第一次按膠囊才載
+            // 搜尋欄 SearchField（名詞圖鑑、會計公式、背題瀏覽共用；2026-11-08）：自成一個 chunk。交給 shared 時它和苦練的徽章膠囊（連著整個地圖）在 4 KB 門檻下併成一個，
+            // /terms/ 第一波就多載 quest-map 與 overlay 約 26 KB（main c1b606f 的 Lighthouse，/terms/ 的 LCP 多約 150ms）
+            { name: 'search', test: /[\\/]packages[\\/]web-ui[\\/]src[\\/]components[\\/]SearchField\.tsx$/, priority: 2 },
+            {
+              name: 'formulas',
+              test: /[\\/]apps[\\/]web[\\/]src[\\/]features[\\/]formulas[\\/](?!FormulaSheet\.tsx$)/,
+              priority: 2,
+            },
             // 作答頁（關卡、錯題本）第一次繪製就要的題目模組：關卡的工作階段（LevelSession）、題型對應、名詞卡、佔位符渲染與指標的顯示資料。不用 entriesAware：
             // 延後載入的四種題型（question-types.tsx）也用到這些模組，交給 quiz 群組的 entriesAware 會依「誰用到」拆成三個 chunk，作答頁第一波多兩個請求（2026-10-24 實測）。
             // 回饋區（FeedbackView、FeedbackPanel）不在這裡，由 feedback-lazy 和判分一起預載。它們的依賴（web-ui 的選項、是非、分類與選列元件）也一起進來；題目卡（Level 直接用）、數字輸入（計時器與延後的題型共用）與判分的載入器要另外列出。
