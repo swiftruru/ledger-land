@@ -1820,6 +1820,12 @@ msgstr "Related Lab steps"
 msgid "lab.home.steps"
 msgstr "See all the steps"
 
+#. 回饋區開啟實驗室對應步驟的按鈕（連結，03 第 2.9 節）
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.feedback.watchAnimation"
+msgstr "Watch the animation"
+
 #. 展開內嵌的安裝圖解
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
@@ -2444,6 +2450,12 @@ msgstr "No stars this time"
 #: src/features/quiz/QuestionView.tsx
 msgid "quiz.unsupportedType"
 msgstr "This question type ({type}) cannot be answered in this version yet."
+
+#. 回饋區「看動畫」按鈕旁的一句說明（題目有對應的實驗室步驟時）
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.feedback.labLead"
+msgstr "This transaction is animated in the Lab: watch it move through the three statements."
 
 #. 收藏的題目已不在任何關卡
 #. js-lingui-explicit-id

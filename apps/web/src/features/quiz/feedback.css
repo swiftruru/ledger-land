@@ -13,3 +13,16 @@
 .ll-optref:lang(zh) {
   quotes: '\300C' '\300D';
 }
+
+/* 「看動畫」一列（M5）：一句說明加按鈕，和解說、名詞 chip 各段同一個段距；窄的時候按鈕換到下一列 */
+.ll-fblab {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-2) var(--ll-space-3);
+  margin-top: var(--ll-space-4);
+}
+.ll-fblab__text {
+  margin: 0;
+  flex: 1 1 16rem;
+}

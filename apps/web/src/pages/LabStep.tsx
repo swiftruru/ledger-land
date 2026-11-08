@@ -9,7 +9,7 @@
 // 減少動態效果時天平與數字直接是結束狀態（motion.ts）。字串在第三層 catalog（lab.po）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router';
+import { Navigate, useParams, useSearchParams } from 'react-router';
 import { formatMoney, formatNumber, localePath } from '@ledgerland/i18n';
 import { Button, Card, CheckCircleIcon, ErrorState, HintBar, Toast, ToastRegion, TopBar, ValueButton, XCircleIcon } from '@ledgerland/web-ui';
 import { labPrefersReducedMotion } from '../features/lab/motion.ts';
@@ -47,6 +47,7 @@ import { IFRS_POLICY, TEACHER_POLICY, type LabPolicyId } from '../features/lab/l
 import { useLabView, type UseLabView } from '../features/lab/lab-view.ts';
 import { useLabStepLoad } from '../features/lab/useLab.ts';
 import { useExpanded } from '../features/me/useExpanded.ts';
+import { prefillPrediction, returnTargetFor } from '../features/nav/return-target.ts';
 import { useColumnsFit } from '../features/lab/useColumnsFit.ts';
 import { MarkupParagraphs } from '../features/quiz/Markup.tsx';
 import { TermsProvider, useTerms } from '../features/quiz/terms.tsx';
@@ -92,7 +93,12 @@ export default function LabStep() {
   const ifrs = labView.policy === IFRS_POLICY;
   const replay = useMemo(() => (core && story ? core.replayLab(core.asCoreStory(story)) : null), [core, story]);
   const replayIfrs = useMemo(() => (core && story && ifrs ? core.replayLab(core.asCoreStory(story), [], IFRS_POLICY) : null), [core, story, ifrs]);
-  if (lab.kind === 'error' && lab.error.kind === 'missing') return <NotFound />;
+  // 從題目開啟（?from=）而步驟下架或不存在（03 第 4.1 節、10 第 12 節的完成標準）：不顯示找不到頁面，改到故事頁並帶 ?missing=<步驟 ID>（故事頁顯示一次說明，
+  // 返回膠囊照樣有）；故事也不存在就到實驗室首頁。沒有 ?from= 的直接開網址維持找不到頁面
+  const from = params.get('from');
+  const missingHref = (stepIdMissing: string | undefined) =>
+    story === null ? href('/lab/') : href(`/lab/story/${story.id}/?from=${encodeURIComponent(from ?? '')}&missing=${encodeURIComponent(stepIdMissing ?? '')}`);
+  if (lab.kind === 'error' && lab.error.kind === 'missing') return from !== null ? <Navigate to={href('/lab/')} replace /> : <NotFound />;
   if (lab.kind === 'error')
     return (
       <>
@@ -102,14 +108,14 @@ export default function LabStep() {
     );
   if (lab.kind !== 'ok' || story === null)
     return <TopBar title={t({ id: 'lab.story.title', message: '故事' })} backHref={href('/lab/')} backLabel={back.label} backShortLabel={back.short} />;
-  if (!spec) return <NotFound />;
+  if (!spec) return from !== null ? <Navigate to={missingHref(stepId)} replace /> : <NotFound />;
   if (replay && !replay.ok) throw new Error(`故事重播失敗：${replay.error.code}`);
   if (replayIfrs && !replayIfrs.ok) throw new Error(`故事以 IFRS 對照重播失敗：${replayIfrs.error.code}`);
   const baseRun = replay ? replay.value : null;
   const run = ifrs ? (replayIfrs ? replayIfrs.value : null) : baseRun;
   const step = run && stepId ? run.stepById(stepId) : undefined;
   const baseStep = baseRun && stepId ? baseRun.stepById(stepId) : undefined;
-  if (run && !step) return <NotFound />;
+  if (run && !step) return from !== null ? <Navigate to={missingHref(stepId)} replace /> : <NotFound />;
   return (
     <TermsProvider locale={locale} deferIndex={!needCoreFirst}>
       <StepSession
@@ -202,8 +208,14 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   const practised = progress.practised.includes(spec.id);
   const predictRequired = !demo && !practised;
   const savedPrediction = progress.predictions[spec.id];
+  // 從題目開啟而且 store 裡有這一題剛剛的答案（交易影響題，M5，03 第 4.1 節）：這一步還沒記過預測時，先把對得上的目標填進面板（列 ID 對列 ID），
+  // 面板上方提示「已帶入你剛剛的答案，可以改」；不自動記下，學習者看過按「記下預測」才揭曉。示範模式沒有預測
+  const [brought] = useState<PredictionRecord>(() =>
+    from !== null && !demo && savedPrediction === undefined ? prefillPrediction(predictTargetsOf(spec.predictTargets), returnTargetFor(from)?.lineChoices) : {},
+  );
+  const prefilled = Object.keys(brought).length > 0;
   // record 是記下的那一份（揭曉與成績都看它）；draft 是面板上正在選的，按「記下預測」或「更新預測」才變成 record，同一步不會出現兩個成績
-  const [record, setRecord] = useState<PredictionRecord>(() => savedPrediction ?? {});
+  const [record, setRecord] = useState<PredictionRecord>(() => savedPrediction ?? brought);
   const [draft, setDraft] = useState<PredictionRecord>(record);
   const [submitted, setSubmitted] = useState(() => !demo && savedPrediction !== undefined && practised);
   // 目標以顯示中的版面為準（03 第 3.13 節）：ifrs@1 沒有經常利益、不顯示遞延的設立費。版面要核心才有，所以 IFRS 對照時預測階段等核心（go）；教材的目標兩邊相同，不必等
@@ -299,9 +311,15 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   const [fromHref, setFromHref] = useState<string | null>(null);
   const liveRef = useRef<HTMLParagraphElement>(null);
 
-  // 從題目開啟（?from=題目 ID）：返回膠囊回到那一關（03 第 4.6 節）
+  // 從題目開啟（?from=題目 ID）：返回膠囊回到那一題（03 第 4.6 節）。優先用 store 裡最近一筆同一題的返回目標（關卡頁或錯題本的網址，含查詢字串）；
+  // 沒有（重新整理、貼來的連結）才依 manifest 找那一題所在的關卡
   useEffect(() => {
     if (!from) return;
+    const stored = returnTargetFor(from);
+    if (stored !== undefined) {
+      setFromHref(stored.href);
+      return;
+    }
     let alive = true;
     findLevelOfQuestion(from).then(
       (entry) => alive && entry && setFromHref(localePath(locale, `/level/${entry.id}/`)),
@@ -710,6 +728,15 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
             submitted={submitted}
             submittedNote={t({ id: 'lab.live.predicted', message: '已記下你的預測。' })}
             dirty={draftDirty}
+            {...(prefilled
+              ? {
+                  prefilledNote: t({
+                    id: 'lab.predict.prefilled',
+                    message: '已帶入你剛剛的答案，可以改。',
+                    comment: '從題目開啟時，預測面板已填入那一題的答案（M5）',
+                  }),
+                }
+              : {})}
           />
         )}
         {views && step && chart && stageId === 'effects' && revealScore && (

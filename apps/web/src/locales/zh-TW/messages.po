@@ -1820,6 +1820,12 @@ msgstr "相關實驗室步驟"
 msgid "lab.home.steps"
 msgstr "看全部步驟"
 
+#. 回饋區開啟實驗室對應步驟的按鈕（連結，03 第 2.9 節）
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.feedback.watchAnimation"
+msgstr "看動畫"
+
 #. 展開內嵌的安裝圖解
 #. js-lingui-explicit-id
 #: src/components/InstallPrompt.tsx
@@ -2444,6 +2450,12 @@ msgstr "這次還沒拿到星星"
 #: src/features/quiz/QuestionView.tsx
 msgid "quiz.unsupportedType"
 msgstr "這種題型（{type}）這個版本還不能作答。"
+
+#. 回饋區「看動畫」按鈕旁的一句說明（題目有對應的實驗室步驟時）
+#. js-lingui-explicit-id
+#: src/features/quiz/FeedbackView.tsx
+msgid "quiz.feedback.labLead"
+msgstr "這筆交易在報表實驗室有動畫，可以看它怎麼走過三張報表。"
 
 #. 收藏的題目已不在任何關卡
 #. js-lingui-explicit-id

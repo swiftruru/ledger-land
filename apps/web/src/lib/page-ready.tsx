@@ -11,6 +11,12 @@ import { dismissLaunchScreen } from '../shell/launch-screen.ts';
 
 const WAIT_MS = 700;
 
+/** 下一次換頁掀開時不把焦點移到頁面標題（頁面自己接手：從實驗室回到題目時焦點回「看動畫」，M5）；用過一次就復原 */
+let headingFocusSuppressed = false;
+export function suppressHeadingFocusOnce(): void {
+  headingFocusSuppressed = true;
+}
+
 type Registry = {
   /** 回報某個 id 目前齊了沒；unregister 時傳 null */
   report: (id: string, ready: boolean | null) => void;
@@ -103,6 +109,12 @@ export function PageReveal({ children }: { children: ReactNode }) {
     const id = requestAnimationFrame(() => {
       const page = pageRef.current;
       if (!page || page.dataset.ready !== 'true') return;
+      // 頁面自己接手這一次的焦點（從實驗室回到題目時焦點回「看動畫」）：這次不移到標題，下次換頁照常
+      if (headingFocusSuppressed) {
+        headingFocusSuppressed = false;
+        needFocus.current = false;
+        return;
+      }
       const h1 = page.querySelector<HTMLElement>('h1') ?? document.querySelector<HTMLElement>('main h1');
       if (!h1 || getComputedStyle(h1).visibility === 'hidden') return;
       needFocus.current = false;

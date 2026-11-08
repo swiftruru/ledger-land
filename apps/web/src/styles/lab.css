@@ -236,6 +236,15 @@
 .ll-lab-predict__intro {
   margin: 0 0 var(--ll-space-3);
 }
+/* 從題目帶入答案的提示（M5）：導言下面一行，強調色底 */
+.ll-lab-predict__prefilled {
+  margin: 0 0 var(--ll-space-3);
+  padding: var(--ll-space-2) var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-accent-tint);
+  font-size: var(--ll-type-footnote-size);
+  line-height: var(--ll-type-footnote-line);
+}
 .ll-lab-predict__ratio {
   margin: var(--ll-space-3) 0 0;
   padding: var(--ll-space-3);

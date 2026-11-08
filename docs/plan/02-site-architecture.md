@@ -119,7 +119,7 @@
 - 根路徑 `/`：使用者主動選過英文（localStorage 的 `ll:locale` 為 en）時，head 裡的 boot 腳本在建立路由之前以 `history.replaceState` 把網址換成 `/en/`，不多一次請求，也不會先閃過中文；沒有偏好時（包括搜尋引擎爬蟲）就是中文首頁。只有根路徑這樣處理，其他網址一律照網址的語言顯示（05 第 8.3 節）。主畫面 App 的 `start_url` 是 `/`，所以選過英文的人從主畫面開啟時會直接進到英文首頁。
 - 站內連結一律帶結尾斜線。沒有結尾斜線或大小寫不對的網址（例如 `/en`、`/EN/Level/LV_K7M2Q9XD`）由用戶端路由轉成小寫並補上斜線，再以 replace 導到正確網址；SPA fallback 對不存在的檔案直接回傳殼層，所以這一步由用戶端負責。猜測的 `/zh-tw/`、`/zh/` 開頭不是語系片段，以 replace 導到去掉這一段的中文網址。
 - 日後若加入預先產生 HTML，結尾斜線也是必要條件：React Router v8 對結尾帶斜線的路徑產生 `<path>/_.data`（例如 `/en/_.data`）；沒有斜線時，client 導覽到 `/terms/abc` 會請求 `abc.data`，但建置只產生 `abc/_.data`（推論）。這一點與【待實測 V08】都只在那時才需要驗證，目前不需要。
-- 查詢字串只放非個人資料的檢視狀態：`?term=`（開啟名詞卡）、`?from=`（從哪一題跳來；在 `/play/` 是剛完成的關卡 ID，播放移動動畫）、`?chapter=`（`/play/` 捲到該章）、`?via=qr` 或 `?via=code`（從課堂 QR 或關卡代號進入關卡，作答頁不顯示地圖的建議提示）、`?scan=1`（`/play/` 的掃描疊加層）、`?import=code` 或 `?import=file`（`/me/backup/` 直接打開匯入）、`?mode=demo`（故事步驟的示範模式，第 5.4 節）、`?order=random`（`/exam/<setId>/` 隨機出題，沒有參數時依講義順序；`&n=20|30|50|all` 是抽幾題）、`?filter=unsure`（`/exam/list/` 看還不熟的那一組）、`?deck=d1`（`/exam/browse/` 只看一份講義）、`?q=` 與 `?group=`（`/formulas/` 的搜尋字與分類，和圖鑑同一套）、`?show=unread` 或 `?show=read`（`/exam/browse/` 只列未讀或已讀的題）、`?find=<關鍵字>`（`/exam/browse/` 的搜尋，使用者在搜尋框打的字）、`?formula=<公式 ID>`（`/exam/browse/` 只看某條公式的相關題）、`?q=<題目 ID>`（`/exam/browse/` 的閱讀頁，一次看一題）、名詞圖鑑的搜尋與篩選。不放任何進度、語言或身分資訊（語言由路徑決定，不用 `?lang=`）。
+- 查詢字串只放非個人資料的檢視狀態：`?term=`（開啟名詞卡）、`?from=`（從哪一題跳來；在 `/play/` 是剛完成的關卡 ID，播放移動動畫）、`?chapter=`（`/play/` 捲到該章）、`?via=qr` 或 `?via=code`（從課堂 QR 或關卡代號進入關卡，作答頁不顯示地圖的建議提示）、`?scan=1`（`/play/` 的掃描疊加層）、`?import=code` 或 `?import=file`（`/me/backup/` 直接打開匯入）、`?mode=demo`（故事步驟的示範模式，第 5.4 節）、`?order=random`（`/exam/<setId>/` 隨機出題，沒有參數時依講義順序；`&n=20|30|50|all` 是抽幾題）、`?filter=unsure`（`/exam/list/` 看還不熟的那一組）、`?deck=d1`（`/exam/browse/` 只看一份講義）、`?q=` 與 `?group=`（`/formulas/` 的搜尋字與分類，和圖鑑同一套）、`?show=unread` 或 `?show=read`（`/exam/browse/` 只列未讀或已讀的題）、`?find=<關鍵字>`（`/exam/browse/` 的搜尋，使用者在搜尋框打的字）、`?formula=<公式 ID>`（`/exam/browse/` 只看某條公式的相關題）、`?q=<題目 ID>`（`/exam/browse/` 的閱讀頁，一次看一題）、`?from=<題目 ID>&missing=<步驟 ID>`（故事頁：從題目開啟的步驟已經下架或不存在時，步驟頁導到這裡並顯示一次說明，M5）、名詞圖鑑的搜尋與篩選。不放任何進度、語言或身分資訊（語言由路徑決定，不用 `?lang=`）。
 
 來源：https://reactrouter.com/changelog 、https://developers.cloudflare.com/workers/static-assets/routing/single-page-application/ 、https://developers.cloudflare.com/workers/static-assets/routing/advanced/html-handling/ （查證日期 2026-10-20）
 
@@ -446,6 +446,7 @@
 - 返回目標存在 store（只記最近一個來源），實驗室頂部顯示固定的返回膠囊「回到題目」；網址上的 `?from=` 只是重新整理或 App 被系統回收後的備援，只放題目或步驟 ID，不放進度資料（與 03 相同）。
 - 按下「回到題目」後回到同一題、同一個捲動位置與回饋展開狀態，焦點回到「看動畫」按鈕。
 - 在實驗室裡換到別的步驟，返回膠囊仍然保留，直到學生回去或關閉它。
+- 已實作（2026-11-08，M5）：「看動畫」是回饋區解說下面的一顆連結（答對答錯都有；錯題複習的回饋也有），按下時把返回目標寫進 `sessionStorage` 的 `ll:return`（`features/nav/return-target.ts`：來源是關卡或錯題本、題目 ID、回去的網址、畫面最上方的錨點，交易影響題另記「版面列 → 方向」的答案），只記最近一筆、關掉分頁就沒了。步驟頁的返回膠囊優先用 store 裡同一題的網址，沒有才依 manifest 找那一題所在的關卡；關卡頁回來時目前這題就是那一題才依錨點還原捲動位置、焦點放回「看動畫」，用過就清掉。步驟下架或不存在而且有 `?from=` 時導到故事頁（`?missing=`，第 1.2 節）。
 
 ### 5.4 故事步驟的開啟方式（已決定 D10(b)；2026-11-02 改成示範與練習）
 
