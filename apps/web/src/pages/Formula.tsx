@@ -24,8 +24,8 @@ import {
   useUiLabels,
 } from '@ledgerland/web-ui';
 import { formulaReturnPath, formulaReturnSearch } from '../features/formulas/catalogue.ts';
+import { FormulaSections } from '../features/formulas/FormulaSections.tsx';
 import { useFormulaCategoryLabel } from '../features/formulas/useFormulaCategoryLabel.ts';
-import { plainParagraphs } from '../features/term-page/term-text.ts';
 import {
   ContentLoadError,
   loadFormulaDetail,
@@ -155,14 +155,6 @@ function FormulaPage({ retried, onRetry }: { retried: boolean; onRetry: () => vo
     return label === undefined || id === formula.id ? [] : [{ id, label }];
   });
   const n = (x: number) => formatNumber(x, locale);
-  const versionName = (v: FormulaSnapshot['versions'][number]) => {
-    const code = v.deck?.code ?? '';
-    return v.deck
-      ? t({ id: 'formula.version.deck', message: `講義 ${code} 的寫法`, comment: '公式卡裡講義版本的小標；code 是講義編號（例如 0-2）' })
-      : v.version === 'excel'
-        ? t({ id: 'formula.version.excel', message: '課程 Excel 版', comment: '公式卡裡課程 Excel 模板的寫法的小標' })
-        : t({ id: 'formula.version.dupont', message: '杜邦分解', comment: '公式卡裡杜邦分解式的小標' });
-  };
   const relationTitle = (r: FormulaLinkRelation, count: number) => {
     const c = n(count);
     switch (r) {
@@ -176,7 +168,6 @@ function FormulaPage({ retried, onRetry }: { retried: boolean; onRetry: () => vo
   };
   const questionTotal = RELATIONS.reduce((sum, r) => sum + formula.questions[r].length, 0);
   const questionTotalText = n(questionTotal);
-  const pageList = (slides: readonly number[]) => slides.map((s) => n(s)).join(locale === 'en' ? ', ' : '、');
   const termHref = localePath(locale, `/terms/${formula.termRef}/`);
 
   return (
@@ -195,104 +186,7 @@ function FormulaPage({ retried, onRetry }: { retried: boolean; onRetry: () => vo
           </span>
         )}
       </p>
-      <Card as="section" className="ll-fx-card ll-fx-card--formula" data-testid="formula-main">
-        <h2 className="ll-term-section__title">
-          <Trans id="formula.section.formula" comment="公式條目頁：公式卡的標題">
-            公式
-          </Trans>
-        </h2>
-        <p className="ll-num ll-fx-formula" data-testid="formula-line">
-          <span className="ll-fx-formula__name">{formula.label}</span>
-          <span className="ll-fx-formula__eq" aria-hidden="true">
-            ＝
-          </span>
-          <span className="ll-sr-only">{t({ id: 'formula.equals', message: '等於', comment: '公式一行裡等號的讀法（給螢幕閱讀器）' })}</span>
-          <span className="ll-fx-formula__body">{formula.formula}</span>
-        </p>
-        {formula.versions.length > 0 && (
-          <dl className="ll-fx-versions" data-testid="formula-versions">
-            {formula.versions.map((v) => (
-              <div key={v.version} className="ll-fx-versions__row">
-                <dt>{versionName(v)}</dt>
-                <dd>
-                  <span className="ll-num">{v.formula}</span>
-                  {v.note && <span className="ll-fx-versions__note">{plainParagraphs(v.note, locale).join(' ')}</span>}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        )}
-      </Card>
-      <Card as="section" className="ll-fx-card" data-testid="formula-components">
-        <h2 className="ll-term-section__title">
-          <Trans id="formula.section.components" comment="公式條目頁：各項數值的意思那一段的標題">
-            各項數值的意思
-          </Trans>
-        </h2>
-        <dl className="ll-fx-parts">
-          {formula.components.map((c, i) => (
-            <div key={i} className="ll-fx-parts__row">
-              <dt>
-                {c.term ? (
-                  <TermPill href={localePath(locale, `/terms/${c.term}/`)} cellProps={{ 'data-term-id': c.term }}>
-                    {c.label}
-                  </TermPill>
-                ) : (
-                  <span className="ll-fx-parts__plain">{c.label}</span>
-                )}
-              </dt>
-              <dd>{plainParagraphs(c.meaning, locale).join(' ')}</dd>
-            </div>
-          ))}
-        </dl>
-      </Card>
-      <Card as="section" className="ll-fx-card ll-fx-card--example" data-testid="formula-example">
-        <h2 className="ll-term-section__title">
-          <Trans id="formula.section.example" comment="公式條目頁：計算範例那一段的標題">
-            計算範例
-          </Trans>
-        </h2>
-        <div className="ll-fx-example ll-num">
-          {plainParagraphs(formula.example, locale).map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
-      </Card>
-      <Card as="section" className="ll-fx-card" data-testid="formula-reading">
-        <h2 className="ll-term-section__title">
-          <Trans id="formula.section.reading" comment="公式條目頁：怎麼看那一段的標題（高低代表什麼、要和誰比）">
-            怎麼看
-          </Trans>
-        </h2>
-        {plainParagraphs(formula.reading, locale).map((para, i) => (
-          <p key={i}>{para}</p>
-        ))}
-      </Card>
-      {formula.sources.length > 0 && (
-        <Card as="section" className="ll-fx-card" data-testid="formula-sources">
-          <h2 className="ll-term-section__title">
-            <Trans id="formula.section.sources" comment="公式條目頁：講義出處那一段的標題（講義與頁碼）">
-              講義出處
-            </Trans>
-          </h2>
-          <ul className="ll-fx-sources">
-            {formula.sources.map((s) => {
-              const code = s.code;
-              const title = s.title;
-              const pages = pageList(s.slides);
-              return (
-                <li key={s.id} lang="zh-TW">
-                  {t({
-                    id: 'formula.source.item',
-                    message: `講義 ${code}「${title}」第 ${pages} 頁`,
-                    comment: '講義出處的一列；code 是講義編號、title 是講義名稱、pages 是已格式化、用頓號隔開的頁碼',
-                  })}
-                </li>
-              );
-            })}
-          </ul>
-        </Card>
-      )}
+      <FormulaSections formula={formula} />
       {questionTotal > 0 && (
         <Card as="section" className="ll-fx-card" aria-labelledby={questionsId} data-testid="formula-questions">
           <h2 id={questionsId} className="ll-term-section__title">
@@ -318,6 +212,16 @@ function FormulaPage({ retried, onRetry }: { retried: boolean; onRetry: () => vo
                 comment: '公式條目頁的主要按鈕：開一輪只有這些題的練習；questionTotalText 已格式化',
               })}
             </Button>
+            {/* 到背題瀏覽，清單只列這些題（?formula=，2026-11-08） */}
+            <Button
+              variant="secondary"
+              size="md"
+              icon={<CardsIcon />}
+              href={localePath(locale, `/exam/browse/?formula=${formula.id}`)}
+              data-testid="formula-browse"
+            >
+              {t({ id: 'formula.browse', message: '在背題瀏覽讀', comment: '公式條目頁的次要按鈕：到背題瀏覽，只列這條公式的相關題' })}
+            </Button>
           </div>
           {RELATIONS.filter((r) => formula.questions[r].length > 0).map((r, i) => (
             <Disclosure
@@ -332,7 +236,7 @@ function FormulaPage({ retried, onRetry }: { retried: boolean; onRetry: () => vo
                 {formula.questions[r].map((q) => (
                   <NavRow
                     key={q.id}
-                    href={localePath(locale, `/exam/browse/?deck=${q.deck}&q=${q.id}`)}
+                    href={localePath(locale, `/exam/browse/?formula=${formula.id}&q=${q.id}`)}
                     icon={<CardsIcon />}
                     title={q.topic}
                     size="compact"

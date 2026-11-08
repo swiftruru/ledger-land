@@ -81,6 +81,8 @@ describe('背題瀏覽：範圍與已讀', () => {
 describe('背題瀏覽：網址的查詢字串', () => {
   it('預設的值都不寫；有的才寫', () => {
     expect(browseParams({ scope: ALL_SCOPE })).toEqual({});
+    expect(browseParams({ scope: ALL_SCOPE, formula: 'fm_abc12345', q: 'hq_1' })).toEqual({ formula: 'fm_abc12345', q: 'hq_1' });
+    expect(browseParams({ scope: 'd1', formula: null })).toEqual({ deck: 'd1' });
     expect(browseParams({ scope: 'd2' })).toEqual({ deck: 'd2' });
     expect(browseParams({ scope: 'd2', show: 'unread', find: '現金 存貨', q: 'hq_d' })).toEqual({ deck: 'd2', show: 'unread', find: '現金 存貨', q: 'hq_d' });
     expect(browseParams({ scope: ALL_SCOPE, show: 'all', find: '   ', q: null })).toEqual({});

@@ -394,3 +394,21 @@
     break-after: avoid;
   }
 }
+
+/* 背題瀏覽：只看某條公式的相關題（?formula=，2026-11-08）的膠囊與清除鈕 */
+.ll-exam-browse__only {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ll-space-1) var(--ll-space-2);
+  margin: var(--ll-space-2) 0;
+  padding: var(--ll-space-1) var(--ll-space-3);
+  border-radius: var(--ll-radius-full);
+  background: var(--ll-info-tint);
+  color: var(--ll-info-ink);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
+.ll-exam-browse__only-text {
+  flex: 1 1 auto;
+}

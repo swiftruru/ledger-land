@@ -639,17 +639,17 @@ msgstr "Different answers in two handouts"
 msgid "design.languages.title"
 msgstr "Two languages"
 
+#. 公式條目頁：公式卡的標題
+#. js-lingui-explicit-id
+#: src/features/formulas/FormulaSections.tsx
+msgid "formula.section.formula"
+msgstr "Formula"
+
 #. 公式條目頁返回按鈕在畫面上的短字（必須是「回到會計公式」的一部分）
 #. js-lingui-explicit-id
 #: src/pages/Formula.tsx
 msgid "formula.back.short"
 msgstr "Formulas"
-
-#. 公式條目頁：公式卡的標題
-#. js-lingui-explicit-id
-#: src/pages/Formula.tsx
-msgid "formula.section.formula"
-msgstr "Formula"
 
 #. 公式題組的練習頁：返回按鈕的短字（必須是「回到公式」的一部分）
 #. js-lingui-explicit-id
@@ -868,6 +868,12 @@ msgstr "Camera permission is requested only when you tap ‘Start scanning’ in
 msgid "backup.export.includeErrorsDesc"
 msgstr "Only used for reporting problems."
 
+#. 背題瀏覽：只看某條公式的相關題時的膠囊；onlyName 是公式名稱、onlyCountText 是已格式化的題數
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.only"
+msgstr "Only: questions related to {onlyName} ({onlyCountText})"
+
 #. 按鈕：只練練過但還沒連對兩次的題；count 已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(unsureCount)
@@ -926,7 +932,7 @@ msgstr "Practise section by section"
 
 #. 公式條目頁：各項數值的意思那一段的標題
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.section.components"
 msgstr "What each item means"
 
@@ -1032,6 +1038,12 @@ msgstr "See the term in the glossary"
 #: src/pages/Privacy.tsx
 msgid "privacy.delete.how"
 msgstr "Clear this site’s data in your browser settings; progress, settings and offline files all go. On iPhone and iPad, removing the Home Screen app deletes its copy. To keep a copy, export one from <0>Me › Backup</0>."
+
+#. 公式條目頁的次要按鈕：到背題瀏覽，只列這條公式的相關題
+#. js-lingui-explicit-id
+#: src/pages/Formula.tsx
+msgid "formula.browse"
+msgstr "Read in browse mode"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1451,7 +1463,7 @@ msgstr "Badges"
 
 #. 公式條目頁：怎麼看那一段的標題（高低代表什麼、要和誰比）
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.section.reading"
 msgstr "How to read it"
 
@@ -1945,7 +1957,7 @@ msgstr "DuPont analysis"
 
 #. 公式卡裡杜邦分解式的小標
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.version.dupont"
 msgstr "DuPont breakdown"
 
@@ -2364,6 +2376,18 @@ msgstr "Related question: "
 msgid "formula.section.questions"
 msgstr "Related questions ({questionTotalText})"
 
+#. 背題瀏覽的閱讀頁：只看某條公式的相關題時這一題的位置；數字已格式化
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseReader.tsx
+msgid "exam.browse.pos.formula"
+msgstr "Related question {at} of {of}"
+
+#. 背題瀏覽：清掉「只看某條公式的相關題」的按鈕
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.only.clear"
+msgstr "Show all"
+
 #. 苦練首頁最下面的連結：到「我的」的徽章頁
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -2381,6 +2405,12 @@ msgstr "See every question I got wrong or have not yet got solid"
 #: src/components/ProtectProgress.tsx
 msgid "settings.protect.install"
 msgstr "See the install guide"
+
+#. 公式面板腳部的按鈕：到公式條目頁
+#. js-lingui-explicit-id
+#: src/features/formulas/FormulaSheet.tsx
+msgid "formulas.sheet.full"
+msgstr "See the full entry and related questions"
 
 #. 苦練首頁第 3 步的按鈕：上一次已經交卷
 #. js-lingui-explicit-id
@@ -2451,7 +2481,7 @@ msgstr "Step {stepNo}"
 
 #. 公式一行裡等號的讀法（給螢幕閱讀器）
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.equals"
 msgstr "equals"
 
@@ -2790,7 +2820,7 @@ msgstr "Answers and explanations follow the handouts; if in doubt, the teacher�
 
 #. 公式條目頁：計算範例那一段的標題
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.section.example"
 msgstr "Worked example"
 
@@ -2822,7 +2852,7 @@ msgstr "Language"
 
 #. 公式卡裡課程 Excel 模板的寫法的小標
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.version.excel"
 msgstr "Course Excel version"
 
@@ -2865,13 +2895,13 @@ msgstr "Handout {0}, slide {1}"
 
 #. 公式卡裡講義版本的小標；code 是講義編號（例如 0-2）
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.version.deck"
 msgstr "As written in handout {code}"
 
 #. 講義出處的一列；code 是講義編號、title 是講義名稱、pages 是已格式化、用頓號隔開的頁碼
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.source.item"
 msgstr "Handout {code} ‘{title}’, pages {pages}"
 
@@ -2885,7 +2915,7 @@ msgstr "You have read all of handout {scopeCode}"
 
 #. 公式條目頁：講義出處那一段的標題（講義與頁碼）
 #. js-lingui-explicit-id
-#: src/pages/Formula.tsx
+#: src/features/formulas/FormulaSections.tsx
 msgid "formula.section.sources"
 msgstr "Where it is in the handouts"
 
@@ -3112,6 +3142,12 @@ msgstr "Not available in this environment; please export a backup regularly."
 #: src/features/credits/StackExplorer.tsx
 msgid "eggs.offline.noSw"
 msgstr "There is no service worker in this environment (development mode, or a browser without support); the production site stores the page first."
+
+#. 背題瀏覽：只看某條公式的相關題，但目前範圍裡一題都沒有
+#. js-lingui-explicit-id
+#: src/features/exam/BrowseList.tsx
+msgid "exam.browse.only.empty"
+msgstr "This range has no questions related to this formula. Pick another handout, or show all."
 
 #. 背題瀏覽：篩選未讀但沒有未讀的題
 #. js-lingui-explicit-id

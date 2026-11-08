@@ -189,3 +189,15 @@
     justify-items: start;
   }
 }
+
+/* 公式面板（FormulaSheet，2026-11-08）：條目頁的五張卡放進面板，卡片不再各自有外框與陰影，只留間距與標題 */
+.ll-fxsheet .ll-fx-card {
+  margin: 0 0 var(--ll-space-3);
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.ll-fxsheet .ll-fx-card:last-child {
+  margin-bottom: 0;
+}
