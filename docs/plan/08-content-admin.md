@@ -1607,6 +1607,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 - **首選**：Access 的 independent MFA（TOTP、安全金鑰、生物辨識）。它在 Zero Trust Free 方案能否使用，M7 前實測【待實測 V10】。
 - **不行時**：改用登入來源（IdP）本身的兩步驟驗證，並在 M7 前回報。要注意：Access 以 IdP 回報判斷是否做過兩步驟驗證，只支援 Okta、Entra ID、generic OIDC、SAML，不含 GitHub 與 Google（11.1 節）。所以用 GitHub 或 Google 登入時，Access 無法確認對方真的做過兩步驟驗證，只能要求每位管理者在自己的帳號啟用，回報時要寫明這個限制；若用 GitHub 登入，安全方法的方案限制見【待實測 V16】。
 - Access 的一次性 email 驗證碼屬於單一因素，不當成管理者唯一的登入方式。
+- 已決定（2026-11-09）：Cloudflare 只用免費方案的功能，不升級付費方案；independent MFA 若要付費才有，就直接走「不行時」那一條，不另外評估。
 
 #### 11.6.4 D1 資料表
 
@@ -1651,11 +1652,11 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 | 項目 | 費用與額度（2026-10-20 查證，見 11.3 節） |
 | --- | --- |
 | Cloudflare Zero Trust（Access） | Free 0 元，50 users 以內；log 保留 24 小時 |
-| Workers | 免費額度內 0 元；需要時 Workers Paid 每月最低 5 美元 |
-| D1 | Free 每日 500 萬列讀取、10 萬列寫入、總儲存 5 GB；Time Travel 7 天（Paid 30 天） |
+| Workers | 免費額度內 0 元；不升級 Workers Paid（2026-11-09 決定） |
+| D1 | Free 每日 500 萬列讀取、10 萬列寫入、總儲存 5 GB；Time Travel 7 天（不升級 Paid，所以沒有 30 天） |
 | GitHub Actions（發布 workflow） | 公開 repo 照一般 CI 使用 |
 
-一人維運加少數老師的用量遠低於免費額度；主要成本是自寫後台介面與 Worker API 的維護量。
+一人維運加少數老師的用量遠低於免費額度；主要成本是自寫後台介面與 Worker API 的維護量。已決定（2026-11-09，見 [14](14-open-questions.md) 第 5.2 節）：Cloudflare 只用免費方案的功能，任何要付費才有的功能都不用；免費額度不夠時縮小後台範圍或換做法（例如把更多檢查移到發布 workflow、降低稽核紀錄的寫入量），不升級方案。
 
 #### 11.6.8 比較過、未採用的方案
 
@@ -1844,7 +1845,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 | A 檔案加 CI 驗證 | `content/` JSON、Zod 驗證、lock 檔、覆蓋報表、本機預覽 | M0b 到 M5（確定） | 無 | 0 元 | 不能，由我維護 |
 | B Excel 匯入 | 範本產生器、匯入 CLI、錯誤報告、差異摘要；老師要自己操作時加「只產出檔案」的瀏覽器匯入頁（後台獨立 origin） | M6（已決定，D10(d)） | 匯入工具與 vendored 函式庫 | 0 元 | 可以編 Excel，匯入由我執行 |
 | C Git-based 後台 | Sveltia（退路 Decap）、GitHub 組織強制兩步驟驗證、OAuth 代理 Worker | 不做（D10(e) 未採用） | 不適用 | 不適用 | 不適用 |
-| D 資料庫型後台 | Cloudflare Access 加 Workers 加 D1；獨立後台 origin；Worker 驗 JWT 再查角色表；`revisions` 表；發布仍輸出靜態快照（11.6 節） | M7（已決定，D10(e)） | Access 應用程式、Worker API、D1 資料庫與 migration、後台介面、發布 workflow | 0 元（免費額度內；需要時 Workers Paid 每月最低 5 美元） | 可以，帳號不必是 GitHub |
+| D 資料庫型後台 | Cloudflare Access 加 Workers 加 D1；獨立後台 origin；Worker 驗 JWT 再查角色表；`revisions` 表；發布仍輸出靜態快照（11.6 節） | M7（已決定，D10(e)） | Access 應用程式、Worker API、D1 資料庫與 migration、後台介面、發布 workflow | 0 元（只用免費方案，不升級付費方案，2026-11-09 決定） | 可以，帳號不必是 GitHub |
 
 ### 13.2 這樣分階段的理由
 
@@ -1872,7 +1873,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 ### 13.4 已決定的做法
 
-已決定（D10(d)、D10(e)，2026-10-20）：A 現在就做（M0b 到 M5）；B 在 M6 做，先做本機 CLI，老師要自己操作時加只產出檔案的瀏覽器匯入頁；C 不做；D 在 M7 做，用 Cloudflare Access 加 Workers 加 D1，Access 的獨立兩步驟驗證依實測結果【待實測 V10】，不行就改用 IdP 的兩步驟驗證並在 M7 前回報。里程碑的工作項目見 [10 里程碑](10-milestones.md)。
+已決定（D10(d)、D10(e)，2026-10-20）：A 現在就做（M0b 到 M5）；B 在 M6 做，先做本機 CLI，老師要自己操作時加只產出檔案的瀏覽器匯入頁；C 不做；D 在 M7 做，用 Cloudflare Access 加 Workers 加 D1，Access 的獨立兩步驟驗證依實測結果【待實測 V10】，不行就改用 IdP 的兩步驟驗證並在 M7 前回報。已決定（2026-11-09）：Cloudflare 只用免費方案的功能，不升級付費方案（11.6.7 節）。里程碑的工作項目見 [10 里程碑](10-milestones.md)。
 
 ---
 
