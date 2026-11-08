@@ -32,7 +32,8 @@ import {
   type ShowFilter,
 } from '../features/exam/reading.ts';
 import { buildSearchIndex, matchingIds, searchTerms } from '../features/exam/search.ts';
-import { useFormulasOfQuestions } from '../features/formulas/FormulaPills.tsx';
+import { formulasOfQuestion } from '../features/formulas/catalogue.ts';
+import { useFormulaIndex } from '../features/formulas/useFormulaIndex.ts';
 import { loadHandoutDeck, loadHandoutIndex, type HandoutManifestEntry, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
@@ -99,7 +100,12 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
   const locale = useLocale();
   const [search, setSearch] = useSearchParams();
   const [marks, setMarks] = useState(initialMarks);
-  const formulasOf = useFormulasOfQuestions();
+  const formulaIndex = useFormulaIndex();
+  const formulasOf = useMemo(() => formulasOfQuestion(formulaIndex), [formulaIndex]);
+  // 只看某條公式的相關題（?formula=，從公式條目頁來）：清單與閱讀頁的翻頁都只在這些題裡；索引還沒到時先不篩（參數留著）
+  const formulaId = search.get('formula');
+  const formulaEntry = formulaId === null ? null : (formulaIndex.find((f) => f.id === formulaId) ?? null);
+  const only = useMemo(() => (formulaEntry === null ? null : new Set(formulaEntry.questionIds)), [formulaEntry]);
   const [pos, setPosState] = useState(readExamBrowsePos);
   const posRef = useRef(pos);
   const [hide, setHideState] = useState(readExamBrowseHide);
@@ -131,8 +137,8 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
   const terms = searchTerms(find);
   const searchIndex = useMemo(() => buildSearchIndex(questions.values()), [questions]);
 
-  const paramsOf = (s: string, f: ShowFilter, q: string | null, keyword: string = find): Record<string, string> =>
-    browseParams({ scope: s, show: f, find: keyword, q });
+  const paramsOf = (s: string, f: ShowFilter, q: string | null, keyword: string = find, formula: string | null = formulaId): Record<string, string> =>
+    browseParams({ scope: s, show: f, find: keyword, formula, q });
   const hrefOf = (s: string, f: ShowFilter, q: string | null, keyword: string = find): string => {
     const query = new URLSearchParams(paramsOf(s, f, q, keyword)).toString();
     return localePath(locale, '/exam/browse/') + (query ? `?${query}` : '');
@@ -206,7 +212,10 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
     // 搜尋中而且這一題在結果裡：上一題、下一題與「第幾題」都照搜尋結果；不在結果裡（例如貼來的連結）就照整個範圍
     const hits = terms.length > 0 ? matchingIds(order, searchIndex, terms) : order;
     const searching = terms.length > 0 && hits.includes(current.id);
-    const sequence = searching ? hits : order;
+    // 只看某條公式的相關題：這一題在裡面才照它翻頁（不在裡面例如貼來的連結，就照整個範圍）
+    const filtering = only !== null && only.has(current.id);
+    const sequence = (searching ? hits : order).filter((id) => !filtering || only!.has(id));
+    const posKind = filtering ? 'formula' : searching ? 'find' : 'scope';
     const { prev, next } = neighbours(sequence, current.id, read, show);
     return (
       <>
@@ -225,7 +234,7 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
           sectionTitle={section?.title ?? ''}
           position={sequence.indexOf(current.id) + 1}
           positionTotal={sequence.length}
-          searching={searching}
+          posKind={posKind}
           total={order.length}
           readCount={readCountOf(order, read)}
           isRead={read.has(current.id)}
@@ -275,6 +284,9 @@ function Browse({ index, questions, initialMarks }: { index: HandoutManifestEntr
         terms={terms}
         searchIndex={searchIndex}
         onFind={(v) => setSearch(paramsOf(scope, show, null, v), { replace: true })}
+        only={only}
+        onlyLabel={formulaEntry?.label ?? null}
+        onClearOnly={() => setSearch(paramsOf(scope, show, null, find, null), { replace: true })}
         onReset={resetScope}
         focusId={leftQuestion}
         onFocusUsed={() => setLeftQuestion(null)}

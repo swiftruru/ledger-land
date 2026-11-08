@@ -105,7 +105,8 @@ test.describe('會計公式', () => {
     const q = f.questions.formula[0]!;
     await page.getByTestId('formula-questions-formula').getByTestId('formula-question').first().click();
     await waitForApp(page);
-    await expect(page).toHaveURL(new RegExp(`/exam/browse/\\?deck=${q.deck}&q=${q.id}$`));
+    await expect(page).toHaveURL(new RegExp(`/exam/browse/\\?formula=${f.id}&q=${q.id}$`));
+    await expect(page.getByTestId('exam-reader-pos')).toHaveText(/^相關題第 [0-9]+／[0-9]+ 題$/);
     await expect(page.getByTestId('exam-reader')).toContainText(q.topic);
     // 回到條目頁再按返回：帶回原本的搜尋
     await page.goBack();
@@ -185,5 +186,55 @@ test.describe('會計公式', () => {
     await waitForApp(page);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(index[0]!.label);
     await expect(page.getByTestId('formula-back')).toHaveAttribute('href', '/en/formulas/');
+  });
+
+  test('背題瀏覽只看某條公式的相關題（?formula=）：膠囊與題數、翻頁只在相關題裡、看全部清掉；膠囊開公式面板，腳部連到條目頁，Esc 後焦點回膠囊', async ({
+    page,
+    request,
+  }) => {
+    const idx = await indexOf(request);
+    const details = await detailsOf(request);
+    const f = details.find((d) => d.questions.formula.length + d.questions.numeric.length + d.questions.concept.length >= 3)!;
+    const entry = idx.find((x) => x.id === f.id)!;
+    const n = entry.questionIds.length;
+    await page.goto(`/exam/browse/?formula=${f.id}`);
+    await waitForApp(page);
+    const only = page.getByTestId('exam-browse-only');
+    await expect(only).toContainText(`只看：${f.label} 的相關題（${n} 題）`);
+    await expect(page.getByTestId('exam-browse-start')).toHaveCount(0);
+    const rows = page.getByTestId('exam-browse-row');
+    await expect(rows).toHaveCount(n);
+    // 點第一題：位置照相關題，下一題也在相關題裡，網址仍帶 formula
+    await rows.first().click();
+    const reader = page.getByTestId('exam-reader');
+    await expect(reader).toBeVisible();
+    await expect(page.getByTestId('exam-reader-pos')).toHaveText(`相關題第 1／${n} 題`);
+    await expect(page).toHaveURL(new RegExp(`[?&]formula=${f.id}`));
+    await page.getByTestId('exam-reader-next').click();
+    await expect(page.getByTestId('exam-reader-pos')).toHaveText(`相關題第 2／${n} 題`);
+    expect(entry.questionIds).toContain(await reader.getAttribute('data-question'));
+    // 膠囊開公式面板（不換頁）：公式一行、腳部連到條目頁；Esc 關閉後焦點回到膠囊
+    const pill = reader.getByTestId('formula-pills').locator(`a[href$="/formulas/${f.id}/"]`);
+    await pill.click();
+    const sheet = page.getByTestId('formula-sheet');
+    await expect(sheet).toBeVisible();
+    await expect(sheet.getByRole('heading', { level: 2 })).toHaveText(f.label);
+    await expect(sheet.getByTestId('formula-line')).toContainText(f.formula);
+    await expect(sheet.getByTestId('formula-sheet-full')).toHaveAttribute('href', `/formulas/${f.id}/`);
+    await expect(page).toHaveURL(new RegExp(`/exam/browse/`));
+    await page.keyboard.press('Escape');
+    await expect(sheet).toBeHidden();
+    await expect(pill).toBeFocused();
+    // 回清單按「看全部」：參數拿掉，列出全部
+    await page.goBack();
+    await expect(only).toBeVisible();
+    await page.getByTestId('exam-browse-only-clear').click();
+    await expect(page).not.toHaveURL(/formula=/);
+    await expect(only).toHaveCount(0);
+    await expect.poll(() => rows.count()).toBeGreaterThan(n);
+    // 條目頁的「在背題瀏覽讀」連到帶 ?formula= 的清單
+    await page.goto(`/formulas/${f.id}/`);
+    await waitForApp(page);
+    await expect(page.getByTestId('formula-browse')).toHaveAttribute('href', `/exam/browse/?formula=${f.id}`);
   });
 });

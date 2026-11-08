@@ -27,6 +27,7 @@ import {
   Switch,
   Toast,
   ToastRegion,
+  XIcon,
 } from '@ledgerland/web-ui';
 import type { HandoutManifestEntry, HandoutQuestionSnapshot } from '../../lib/content.ts';
 import { useLocale } from '../../lib/useLocale.ts';
@@ -51,6 +52,10 @@ export interface BrowseListProps {
   terms: readonly string[];
   searchIndex: SearchIndex;
   onFind: (keyword: string) => void;
+  /** 只看某條公式的相關題（?formula=）：題目 ID 的集合與公式名稱；清除就拿掉參數 */
+  only: ReadonlySet<string> | null;
+  onlyLabel: string | null;
+  onClearOnly: () => void;
   /** 把目前範圍改回未讀；回傳復原 */
   onReset: () => () => void;
   /** 剛從閱讀頁回來時的那一題 */
@@ -76,6 +81,9 @@ export function BrowseList({
   terms,
   searchIndex,
   onFind,
+  only,
+  onlyLabel,
+  onClearOnly,
   onReset,
   focusId,
   onFocusUsed,
@@ -177,10 +185,16 @@ export function BrowseList({
     : t({ id: 'exam.browse.reset.all', message: '全部改回未讀', comment: '背題瀏覽：重設全部題目的已讀' });
   const readCountText = n(readCount);
   const noteCount = n(note?.count ?? 0);
-  // 搜尋：清單只列比中的題（再套已讀與未讀的篩選）
+  // 搜尋：清單只列比中的題（再套已讀與未讀的篩選）；只看某條公式的相關題時再交集
   const searching = terms.length > 0;
-  const listed = (ids: readonly string[]) => visibleIds(ids, read, show).filter((id) => matchesTerms(searchIndex, id, terms));
-  const scopeHits = searching ? order.filter((id) => matchesTerms(searchIndex, id, terms)).length : order.length;
+  const inOnly = (id: string) => only === null || only.has(id);
+  const listed = (ids: readonly string[]) => visibleIds(ids, read, show).filter((id) => inOnly(id) && matchesTerms(searchIndex, id, terms));
+  const scopeHits = searching ? order.filter((id) => inOnly(id) && matchesTerms(searchIndex, id, terms)).length : order.length;
+  const onlyCount = only === null ? 0 : order.filter((id) => only.has(id)).length;
+  const onlyCountText = n(onlyCount);
+  const onlyName = onlyLabel ?? '';
+  // 開始卡在搜尋中或只看相關題時不顯示（接著讀的位置和篩過的清單對不上）
+  const filtering = searching || only !== null;
   const listedCount = listed(order).length;
   const anyVisible = listedCount > 0;
   const hitsText = n(listedCount);
@@ -233,6 +247,20 @@ export function BrowseList({
           describedBy={searching ? 'll-exam-browse-found' : undefined}
           data-testid="exam-browse-search"
         />
+        {only !== null && (
+          <div className="ll-exam-browse__only" data-testid="exam-browse-only">
+            <span className="ll-exam-browse__only-text">
+              {t({
+                id: 'exam.browse.only',
+                message: `只看：${onlyName} 的相關題（${onlyCountText} 題）`,
+                comment: '背題瀏覽：只看某條公式的相關題時的膠囊；onlyName 是公式名稱、onlyCountText 是已格式化的題數',
+              })}
+            </span>
+            <Button size="sm" variant="quiet" icon={<XIcon />} onClick={onClearOnly} data-testid="exam-browse-only-clear">
+              {t({ id: 'exam.browse.only.clear', message: '看全部', comment: '背題瀏覽：清掉「只看某條公式的相關題」的按鈕' })}
+            </Button>
+          </div>
+        )}
         {/* 結果數：看得到，輸入時也禮貌地唸出來 */}
         <p id="ll-exam-browse-found" className="ll-exam-browse__found" aria-live="polite" data-testid="exam-browse-found">
           {searching && scopeHits > 0
@@ -240,7 +268,7 @@ export function BrowseList({
             : ''}
         </p>
 
-        {target && !searching && (
+        {target && !filtering && (
           <Card as="section" className="ll-exam-hero" aria-labelledby="ll-exam-browse-start" data-testid="exam-browse-start" data-kind={target.kind}>
             <h2 id="ll-exam-browse-start" className="ll-exam-hero__title">
               {target.kind === 'start'
@@ -318,9 +346,15 @@ export function BrowseList({
                   message: `找不到含有「${keyword}」的題目。換一個詞，或清掉搜尋看全部。`,
                   comment: '背題瀏覽：搜尋沒有結果；keyword 是使用者輸入的字',
                 })
-              : show === 'unread'
-                ? t({ id: 'exam.browse.empty.unread', message: '這個範圍的題都讀過了。', comment: '背題瀏覽：篩選未讀但沒有未讀的題' })
-                : t({ id: 'exam.browse.empty.read', message: '這個範圍還沒有讀過的題。', comment: '背題瀏覽：篩選已讀但還沒有已讀的題' })}
+              : only !== null && onlyCount === 0
+                ? t({
+                    id: 'exam.browse.only.empty',
+                    message: '這個範圍沒有這條公式的相關題。換一份講義，或看全部。',
+                    comment: '背題瀏覽：只看某條公式的相關題，但目前範圍裡一題都沒有',
+                  })
+                : show === 'unread'
+                  ? t({ id: 'exam.browse.empty.unread', message: '這個範圍的題都讀過了。', comment: '背題瀏覽：篩選未讀但沒有未讀的題' })
+                  : t({ id: 'exam.browse.empty.read', message: '這個範圍還沒有讀過的題。', comment: '背題瀏覽：篩選已讀但還沒有已讀的題' })}
           </p>
         )}
 
@@ -345,7 +379,8 @@ export function BrowseList({
                 if (ids.length === 0) return null;
                 const done = readCountOf(s.questionIds, read);
                 // 搜尋中比中的段落都打開
-                const isOpen = searching || open.has(s.id);
+                // 搜尋中或只看某條公式的相關題時，有題的段落全部打開
+                const isOpen = filtering || open.has(s.id);
                 return (
                   <Disclosure
                     key={s.id}

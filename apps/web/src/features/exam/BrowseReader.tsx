@@ -20,7 +20,8 @@ export interface BrowseReaderProps {
   position: number;
   positionTotal: number;
   /** 上一題與下一題是不是只在搜尋結果裡走 */
-  searching: boolean;
+  /** 位置怎麼說：目前範圍、搜尋結果、某條公式的相關題 */
+  posKind: 'scope' | 'find' | 'formula';
   /** 範圍的總題數與其中已讀的題數（結束卡用） */
   total: number;
   readCount: number;
@@ -48,7 +49,7 @@ export function BrowseReader({
   sectionTitle,
   position,
   positionTotal,
-  searching,
+  posKind,
   total,
   readCount,
   isRead,
@@ -126,9 +127,15 @@ export function BrowseReader({
       <article className="ll-exam-reader" aria-labelledby="ll-exam-reader-title" data-testid="exam-reader" data-question={q.id}>
         <p className="ll-exam-reader__pos">
           <span className="ll-num" data-testid="exam-reader-pos">
-            {searching
+            {posKind === 'find'
               ? t({ id: 'exam.browse.pos.find', message: `搜尋結果第 ${at}／${of} 題`, comment: '背題瀏覽的閱讀頁：這一題在搜尋結果裡的位置；數字已格式化' })
-              : t({ id: 'exam.browse.pos', message: `第 ${at}／${of} 題`, comment: '背題瀏覽的閱讀頁：這一題在目前範圍裡的位置；數字已格式化' })}
+              : posKind === 'formula'
+                ? t({
+                    id: 'exam.browse.pos.formula',
+                    message: `相關題第 ${at}／${of} 題`,
+                    comment: '背題瀏覽的閱讀頁：只看某條公式的相關題時這一題的位置；數字已格式化',
+                  })
+                : t({ id: 'exam.browse.pos', message: `第 ${at}／${of} 題`, comment: '背題瀏覽的閱讀頁：這一題在目前範圍裡的位置；數字已格式化' })}
           </span>
           {isRead && (
             <>
