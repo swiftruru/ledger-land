@@ -951,9 +951,9 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `pnpm content:i18n-report` | 缺翻譯報表（已發布項目強制） | 是 |
 | `pnpm content:coverage` | 觀念覆蓋表的進度報表：每個學習目標的 `plannedQuestions` 對已寫、已發布的題數，以及每個迷思有沒有被干擾選項練到。實際用法（2026-10-23）：`pnpm content:coverage`，在終端機輸出表格；CI 貼 PR 留言留到 M6。加 `--check`（M3 起，10 第 10 節完成標準第一條）時，任一個未下架的學習目標已發布題數少於 `plannedQuestions`（`coverage.planned`），或題目的 `objectiveId` 不存在（`coverage.unassigned`），就逐條列出檔案、`items.<i>.plannedQuestions` 路徑、已發布對預計的題數與建議修正，並以失敗結束；M3 收尾時執行，平時不擋 CI | 是（貼在 PR 留言，M6 起；`--check` 在 M3 收尾執行） |
 | `pnpm schemas:check` | 重新產生 `schemas/*.schema.json`，CI 以 `git diff --exit-code` 比對 | 是 |
-| `pnpm content:preview` | 本機預覽，包含草稿 | 否 |
-| `pnpm content:template` | 由 Zod schema 產生 Excel 範本（M6，D10(d)，10.2 節） | 是（比對範本與 schema 一致） |
-| `pnpm content:import <檔案>` | 本機匯入指令：讀 xlsx 或 CSV、驗證、顯示差異摘要，確認後寫入 `content/`（M6，D10(d)，第 10 節） | 否 |
+| `pnpm content:preview` | 本機預覽，包含草稿。實際用法（2026-11-08）：`LL_INCLUDE_DRAFTS=1` 建置快照再開 web 的開發伺服器，草稿一併載入 | 否 |
+| `pnpm content:template` | 由欄位定義與目前的內容產生 Excel 範本（M6，D10(d)，10.2 節）。實際用法（2026-11-08）：`pnpm content:template [--filled] [--chapter ch_xxxxxx] [--csv] [--out <路徑>]`，寫到 `.local-reports/import/`（`.xlsx` 不 commit） | 是（`tools/test/sheet-template.test.ts` 比對欄位定義與 Zod schema，整份內容匯出再匯入要全部無變動） |
+| `pnpm content:import <檔案…>` | 本機匯入指令：讀 xlsx 或 CSV、驗證、顯示差異摘要，確認後寫入 `content/`（M6，D10(d)，第 10 節）。實際用法（2026-11-08）：不加旗標只報告；`--write` 寫入；有答案改版或下架時另加 `--accept-answer-changes`；`--verbose` 展開逐欄差異；寫入後自動跑 `content:check` | 否 |
 | `pnpm content:restore <id> --to <rev 或 git ref>` | 從 git 歷史還原單筆內容成新的 rev（6.4 節）；M7 起由後台管理的實體改從後台的 `revisions` 表還原 | 否 |
 
 錯誤訊息一律寫成「檔案、JSON 路徑、訊息、建議修正」，從 Excel 匯入時改用「工作表、列、欄」定位（10.3 節），後台表單則直接標示錯誤欄位。M7 起，CI 另外檢查「後台管理的實體在 `content/` 中的檔案只能由發布 workflow 改寫」（11.6 節），避免 git 與 D1 的內容分岔。另外，CI 會抽出規劃文件中的 JSON 範例，用同一套 schema 驗證（M0b 的完成標準之一，見 10）。
@@ -1289,8 +1289,14 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 | `status` 填 `retired` | 下架 |
 | `id` 欄以 `#example` 開頭 | 範例列，略過 |
 | `id` 空白但題幹與現有題目完全相同 | 警告可能重複（例如用了舊的範本檔再匯入一次） |
+| `id` 欄以 `#new:` 加暱稱 | 新題目要配選項或分類項目時用：題目列的 `id` 與選項列的 `questionId` 填同一個暫時代號，工具配對後換成產生的 ID（2026-11-08 實作） |
+| 已發布過的項目把 `status` 改回 `draft` | 錯誤（已發布的 ID 只能是 published 或 retired，4.5 節） |
+
+**表格沒有的欄位**（2026-11-08 實作時的決定，見 14 第 5.2 節）：匯入是「以表格的欄位覆蓋 JSON 的對應欄位」，不是整筆取代。`ratioTable`、`distractorExprs`、`display`、`supersededBy`、`retiredNote` 與名詞的 `labRefs`、`unlock` 不在表格上，修改既有項目時原樣保留；只有表格有的欄位被清空才算刪除（例如把 `hint` 兩欄清空就移除 `hint`）。表格裡少一欄絕不等於刪欄位。`rev`、`revKind`、`updatedAt` 由工具決定（4.2 節：已發布過的項目有改變就 `rev` 加一，答案欄位變了是 `answer`，否則 `text`；草稿維持 `rev: 1`）。
 
 **公式儲存格**：只讀取 Excel 存檔時的計算結果，不在匯入時重算。檔案若沒有快取的計算結果（例如由程式產生、從未用 Excel 開啟存檔），回報錯誤並提示「用 Excel 開啟後重新存檔」。
+
+**下架要先離開關卡**：已發布的關卡只能列已發布的題目，所以表格把題目改成 `retired` 之前，要先把它從關卡的 `questionIds` 拿掉（關卡在 JSON 維護）；不然匯入會在報告最後列出關卡檔的錯誤而不寫入。
 
 **M7 之後**：後台上線後，Excel 範本仍然可用，`baseRev` 改成和 D1 中的目前 rev 比對；匯入結果寫成後台的草稿，而不是 `content/` 的檔案（10.8 節）。
 
@@ -1317,52 +1323,47 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 ### 10.2 範本規格
 
-範本由 Zod schema 自動產生，schema 改了範本就跟著改；欄字母與欄位 key 的對應也由產生器決定並寫進「說明」工作表，下面是目前的規劃。
+範本由欄位定義（`tools/lib/sheet-template.mjs`）與目前的內容產生（2026-11-08 實作）；欄字母由欄位的順序決定並寫進「說明」工作表。`tools/test/sheet-template.test.ts` 用 Zod schema 的欄位逐一對照「欄位定義加保留清單」，schema 加新欄位時測試會失敗，提醒決定要進表格還是進保留清單（5.8 節「比對範本與 schema 一致」）。
 
-- **格式**：xlsx 為主；CSV 為輔（每個工作表一個 CSV，UTF-8 加 BOM，打包成 zip）。
+- **格式**：xlsx 為主；CSV 為輔（`--csv`：每個工作表一個 CSV，UTF-8 加 BOM，寫到資料夾，不另外打包）。CSV 匯入時一個檔案就是一張工作表，依第 1 列的 key 判斷是哪一張，可以一次傳多個檔案。
 - **工作表**：
-  - 「說明」：`templateVersion`、`schemaVersion`、產生日期、每個欄位的說明、填寫規則（第 9 節的列身分規則）。
-  - 「題目」：一題一列，欄位見下表。只列出表格可維護的題型（3.6 節）。
+  - 「說明」：`templateVersion`、產生時間、內容的 commit、填寫規則（第 9 節的列身分規則）、每個欄位的說明與適用題型。
+  - 「題目」：一題一列。只列出表格可維護的題型（3.6 節）。
   - 「選項」：長格式，一個選項一列。選項數量不固定，長格式比把選項攤在題目列上好維護。
-  - 「分類項目」：`classify` 的項目，一個項目一列（`questionId`、`itemId`、`account` 或 `ratio`、`allowContra`）。
-  - 「名詞」：一個名詞一列（`id`、`baseRev`、`status`、`category`、`label`、`teacherLabel`、`currentTwLabel`、`ifrsEnglish`、`aliases`、`flags`、`confidence`、`pendingRefs`、`definition`、`ifrsNote`，多語欄位各分 zh-TW 與 en 兩欄）。
-  - 「清單」：下拉選單的來源（章節、學習目標、難度、狀態、題型、標籤、名詞、判分方式），由目前的內容產生。章節、學習目標與故事不在表格中維護，要新增時由維護者先建立，再重新下載範本。
-- **第 1 列**是機器讀的欄位 key，**第 2 列**是中文欄位說明（匯入時略過），**第 3 列起**可以放範例列（`id` 以 `#example` 開頭，例如一題 `single_choice`、一題 `true_false` 與一題 `multi_choice`，中英欄位都填）。
-- **下拉選單**：章節、學習目標、難度、狀態（只有 `draft`、`published`、`retired`，D10(g)）、題型、標籤、判分方式使用資料驗證下拉選單；選單顯示中文名稱，寫入的是 ID 或代號。
-- **判分方式欄（D12）**：「題目」工作表的 `scoringMode` 欄只用於 `multi_choice`，下拉選單顯示「任一正確答案即可」與「須完整選出所有正確答案」，寫入 `any_correct` 或 `all_correct`。欄位預設空白：`multi_choice` 的列空白時匯入回報錯誤，其他題型填了值也回報錯誤（5.5 節的 `ans.scoringMode`）。第 2 列的欄位說明附上兩種方式在學習端顯示的提示文字。
-- **版本檢查**：匯入時比對 `templateVersion`；範本太舊時回報錯誤，並提示下載新範本。
+  - 「分類項目」：`classify` 的項目，一個項目一列。
+  - 「名詞」：一個名詞一列，多語欄位各分 zh-TW 與 en 兩欄。
+  - 「清單」：下拉選單的來源（狀態、題型、章節、學習目標、難度、布林、判分方式、分類維度、名詞類別、信心、固定位置），代號旁邊一欄中文名稱給人對照，由目前的內容產生。章節、學習目標與故事不在表格中維護，要新增時由維護者先建立，再重新下載範本。
+- **第 1 列**是機器讀的欄位 key（灰色小字，不要改），**第 2 列**是中文欄位說明（匯入時略過），**第 3 列起**是資料；空範本的範例列 `id` 以 `#example` 開頭（`single_choice`、`true_false`、`multi_choice`、`judgment`、`classify` 各一題與一個名詞，中英欄位都填、數字都用佔位符）。前兩列凍結。
+- **下拉選單**：資料驗證（`type="list"`）指向「清單」工作表的範圍，涵蓋第 3 到第 5000 列；寫入的值就是代號（Excel 的「顯示中文、寫入代號」需要命名範圍或 INDIRECT，第一版不做，匯入會檢查代號）。學習目標的下拉列出全部，匯入時檢查它屬於同一章（連動下拉同樣不做）。選了清單以外的值時 Excel 只警告不阻擋，由匯入回報。
+- **判分方式欄（D12）**：「題目」工作表的 `scoringMode` 欄只用於 `multi_choice`，下拉清單是 `any_correct`（任一正確答案即可）與 `all_correct`（須完整選出所有正確答案）。欄位預設空白：`multi_choice` 的列空白時匯入回報錯誤，其他題型填了值也回報錯誤。第 2 列的欄位說明附上兩種方式在學習端顯示的提示文字。
+- **版本檢查**：匯入時比對「說明」工作表的 `templateVersion`（目前 1）；範本太舊時回報錯誤，並提示重新下載範本。CSV 沒有說明表就不比對。
 
-「題目」工作表的欄位：
+「題目」工作表的欄位（順序就是欄字母的順序；最終以 `QUESTION_COLUMNS` 為準）：
 
-| 欄 | key | 適用題型 | 說明 |
-| --- | --- | --- | --- |
-| A | `id` | 全部 | 空白代表新增，由工具產生 ID |
-| B | `baseRev` | 全部 | 匯出時的 rev，用來偵測衝突；新增時空白 |
-| C | `status` | 全部 | 下拉選單 |
-| D | `type` | 全部 | 下拉選單 |
-| E | `chapterId` | 全部 | 下拉選單 |
-| F | `objectiveId` | 全部 | 下拉選單，只列出該章的學習目標 |
-| G | `difficulty` | 全部 | 1 到 3 |
-| H | `tags` | 全部 | 以半形逗號分隔 |
-| I | `termRefs` | 全部 | 以半形逗號分隔的名詞 ID |
-| J | `labRef.step` | 選填 | 故事步驟 ID；故事 ID 由工具依步驟補上 |
-| K | `scored` | 全部 | `judgment` 固定為 FALSE |
-| L | `prompt.zh-TW` | 全部 | 題幹；`true_false` 寫入 `statement` |
-| M | `prompt.en` | 全部 | 同上 |
-| N | `explanation.zh-TW` | 全部 | 解說 |
-| O | `explanation.en` | 全部 | 同上 |
-| P | `vars` | 選填 | JSON 物件文字，例如 `{"loan": 240000}` |
-| Q | `ratioRef` | `ratio_interpret` | 例如 `roa@excel` |
-| R | `correct` | `true_false` | TRUE 或 FALSE |
-| S 到 V | `feedbackTrue.zh-TW`、`feedbackTrue.en`、`feedbackFalse.zh-TW`、`feedbackFalse.en` | `true_false` | 兩種回饋 |
-| W、X | `viewpoint.zh-TW`、`viewpoint.en` | `judgment` | 解說觀點 |
-| Y | `dimension` | `classify` | 下拉選單 |
-| Z | `pendingRefs` | 選填 | 以半形逗號分隔的 T 系列編號；有值時這一題暫不計分，`scored` 必須為 FALSE。只在真正懸而未決時填，2026-10-23 起 T 系列已全部決定，一般留空 |
-| AA | `scoringMode` | `multi_choice` | 判分方式，下拉選單；`multi_choice` 必填、沒有預設值，其他題型留空 |
+| key | 適用題型 | 說明 |
+| --- | --- | --- |
+| `id` | 全部 | 空白代表新增，由工具產生 ID；`#example` 開頭略過；`#new:暱稱` 給新題目配選項 |
+| `baseRev` | 全部 | 匯出時的 rev，用來偵測衝突；新增時空白 |
+| `status`、`type`、`chapterId`、`objectiveId`、`difficulty`、`scored` | 全部 | 下拉選單；`judgment` 的 `scored` 固定 FALSE |
+| `tags`、`termRefs`、`pendingRefs` | 全部 | 半形逗號分隔；`pendingRefs` 有值時 `scored` 必須為 FALSE，2026-10-23 起 T 系列已全部決定，一般留空 |
+| `labRef.step` | 選填 | 故事步驟 ID；故事 ID 由工具依步驟補上 |
+| `ratioRef` | `ratio_interpret` | 例如 `roa@excel` |
+| `vars` | 選填 | JSON 物件文字，例如 `{"loan": 240000}` |
+| `prompt.zh-TW`、`prompt.en` | 全部 | 題幹；`true_false` 寫入 `statement` |
+| `explanation.zh-TW`、`explanation.en`、`hint.zh-TW`、`hint.en` | 全部 | 解說與選填的提示 |
+| `correct`、`feedbackTrue.*`、`feedbackFalse.*`、`misconceptionId` | `true_false` | 正解、兩種回饋、對應的迷思 |
+| `viewpoint.zh-TW`、`viewpoint.en` | `judgment` | 解說觀點（`attribution` 固定 `site`，不在表上） |
+| `dimension` | `classify` | 下拉選單 |
+| `scoringMode` | `multi_choice` | 判分方式，下拉選單；`multi_choice` 必填、沒有預設值，其他題型留空 |
+| `authorNotes` | 全部 | 不翻譯的作者備註 |
 
-「選項」工作表的欄位：A `questionId`、B `optionId`（空白代表新增）、C `order`（只影響編輯時的排列，作答時一律打散）、D 與 E `text`、F 與 G `feedback`、H 與 I `upside`、J 與 K `downside`（後兩組只用於 `judgment`）、L `isAnswer`（`judgment` 留空）。匯入工具把標為正解的選項寫成 `correctOptionId`；`multi_choice` 的每個正解都標 TRUE，寫成 `correctOptionIds`（至少 2 個，而且至少留 1 個 FALSE）。
+「選項」工作表的欄位：`questionId`、`optionId`（空白代表新增）、`order`（只影響編輯時的排列，作答時一律打散）、`text.*`、`short.*`、`feedback.*`、`upside.*`、`downside.*`（後兩組只用於 `judgment`，`judgment` 不用 `feedback`）、`misconceptionId`、`pin`（空白或 `last`）、`isAnswer`（`judgment` 留空）。匯入工具把標為正解的選項寫成 `correctOptionId`；`multi_choice` 的每個正解都標 TRUE，寫成 `correctOptionIds`（至少 2 個，而且至少留 1 個 FALSE）。有選項列的題目，選項整組以表格為準（少一列就是刪掉那個選項，屬於答案改版；刪掉的選項 ID 不得再用）；表格裡沒有任何選項列的題目，選項維持 JSON 原樣。
 
-寫入帶下拉選單的 xlsx，需要能寫入資料驗證的函式庫；能否用 SheetJS CE 做到，或要改用其他寫入函式庫，在 M6 開工前查證（列在文末「建議新增的待確認」）。
+「分類項目」工作表的欄位：`questionId`、`itemId`、`order`、`account`、`ratio`、`text.*`（三選一）、`allowContra`、`correctCategory`（只給自訂文字項目，寫入 `correctCategories`）。
+
+「名詞」工作表的欄位：`id`、`baseRev`、`status`、`category`、`label.*`、`teacherLabel`、`currentTwLabel`、`ifrsEnglish`（空白寫入 `null`）、`aliases.zh-TW`、`aliases.en`（分號分隔，別名本身可能含逗號）、`enUsVariant`、`flags`、`confidence`、`pendingRefs`、`ifrsBasis`、`note.*`、`definition.*`、`example.*`、`misconception.*`、`formula.*`、`ifrsNote.*`、`accountRef`、`ratioRef`、`related`、`authorNotes`。
+
+匯出時以 `=`、`+`、`-`、`@` 開頭的文字前面加單引號（10.7 節），匯入時去掉開頭的單引號。帶下拉清單的 xlsx 由 `tools/lib/xlsx-write.mjs` 自己寫出（10.6 節）。
 
 ### 10.3 錯誤報告格式
 
@@ -1463,6 +1464,8 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 ### 10.6 函式庫
 
+已決定（2026-11-08，M6 開工時查證，見 14 第 5.2 節）：**不加任何函式庫，自己寫最小的 OOXML 讀寫**（`tools/lib/zip-write.mjs`、`xlsx-write.mjs`、`xlsx-read.mjs`、`csv.mjs`、`ooxml.mjs`）。理由：SheetJS CE 0.20.3 寫 .xlsx 時不會寫入資料驗證下拉清單（寫入器只有註解佔位，「Data Validations」列在 Pro 的功能清單）；read-excel-file 只讀；write-excel-file 的核心沒有資料驗證，要靠 1.0.x 的第三方插件；exceljs 三年沒有穩定版。xlsx 是 zip 加 XML，repo 本來就有自己的 zip 讀取器（講義 pptx 用），補一個對稱的寫入器與幾個 XML 範本就夠；沒有 vendored tarball 要人工追版、沒有新的授權聲明。CSV 自己解（RFC 4180），Big5 用 Node 內建的 `TextDecoder('big5')`（官方二進位是 full ICU）。`check:hygiene` 另外檢查 `pnpm-lock.yaml` 不得出現 npm 上的 `xlsx`。下表保留當時比較過的選項。
+
 | 用途 | 建議 | 版本與日期 | 授權 | 備註 |
 | --- | --- | --- | --- | --- |
 | 讀 xlsx | read-excel-file | 9.3.12（2026-10-07） | MIT | 只讀 .xlsx；可用 schema 解析；回傳 `{ objects, errors }`，錯誤含列與欄 |
@@ -1476,14 +1479,14 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 - 這些函式庫只在匯入工具、匯入頁或後台延遲載入，絕不進學習端的 bundle。
 - vendored 的 tarball 不會被 Dependabot 或 Renovate 追蹤，也不受 pnpm `minimumReleaseAge` 管理，要人工追版（見 09）。
-- **CSV 編碼**：先以 UTF-8（含或不含 BOM）解碼；解碼失敗時改用 `new TextDecoder('big5', { fatal: true })` 並警告「已用 Big5 讀取」；兩者都失敗時回報錯誤，提示另存為「CSV UTF-8」。老師的 Excel 存 CSV 時預設是哪種編碼尚未查證，所以範本建議一律使用 .xlsx。
+- **CSV 編碼**：先以 UTF-8（含或不含 BOM）解碼；解碼失敗時改用 `new TextDecoder('big5', { fatal: true })` 並警告「已用 Big5 讀取」；兩者都失敗時回報錯誤，提示另存為「CSV UTF-8」；UTF-16 的 BOM（Excel 的「Unicode 文字」）另外指出。Big5 放不下的字（例如圈圈數字「③」）存成 Big5 就會變形，差異摘要會把它當文字改版列出來，所以範本一律建議 .xlsx（2026-11-08 來回測試看到的情況）。
 
 來源：https://docs.sheetjs.com/docs/getting-started/installation/frameworks 、https://registry.npmjs.org/xlsx 、https://encoding.spec.whatwg.org/#names-and-labels ，查證日期 2026-10-20。
 
 ### 10.7 處理上傳檔案的安全規則
 
 - 只接受 .xlsx 與 .csv；不接受 .xlsm 等含巨集的格式。
-- 限制檔案大小與列數，超過就拒絕。
+- 限制檔案大小與列數，超過就拒絕（實作：20 MB、單一工作表 5000 列，也是下拉清單涵蓋的範圍）。
 - 只讀取儲存格的值，不執行公式。
 - 匯出內容到 xlsx 或 CSV 時，以 `=`、`+`、`-`、`@` 開頭的文字儲存格前面加上單引號，避免在試算表中被當成公式執行（數值儲存格不受影響）。
 - 文字欄位一律經過受控標記的編譯，原始 HTML 會被驗證擋下。
@@ -1492,7 +1495,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 已決定（D10(d)，2026-10-20），配合 D10(e) 的後台時程：
 
-1. **M6：本機 CLI**。`pnpm content:template` 產生範本，`pnpm content:import` 匯入並寫入 `content/`，再由我開 PR。只有我一人維運時，CLI 的成本最低，而且範本、錯誤報告、差異摘要這三樣東西之後可以原封不動地搬到匯入頁或後台。
+1. **M6：本機 CLI**（2026-11-08 實作）。`pnpm content:template` 產生範本（`--filled` 帶目前內容做「匯出、編輯、匯入」的來回，`--chapter` 只帶一章，`--csv` 改出 CSV），`pnpm content:import <檔案…>` 讀 xlsx 或 CSV、印錯誤報告（工作表、列、欄、訊息、建議修正）與差異摘要、另存 `.local-reports/import/import-report.json`；加 `--write` 才寫入 `content/`，有「修改（答案）」或「下架」時要再加 `--accept-answer-changes`；寫入後自動跑 `content:check`，已發布的項目有變動時提醒執行 `content:lock --write`，再由我開 PR。驗證和 `content:check` 同一套（Zod、文字與結構規則、會計與答案規則、lock 的八條規則，加台灣用語與破折號），把候選放進完整的內容再跑，只回報匯入後新出現的問題。解析、組裝、驗證與差異摘要都是不碰檔案系統的純函式（`tools/lib/sheet-import.mjs`、`import-run.mjs`），之後搬到匯入頁或後台不用改。只有我一人維運時，CLI 的成本最低。
 2. **老師要自己操作時：只產出檔案的瀏覽器匯入頁**。放在後台的獨立 origin，與 CLI 共用同一套解析、驗證與差異摘要程式；老師下載轉好的 JSON 交給我，我再以 CLI 寫入。
 3. **M7 起：後台內建的匯入**。後台上線後，同一套範本、錯誤報告與差異摘要接到後台，匯入結果寫成 D1 的草稿，由 `publisher` 發布；這時只產出檔案的匯入頁就不再必要。後台內建匯入是否和後台第一版一起上線，在 M7 開工前依老師的實際使用情形排入。
 4. **未採用：PR 上的 GitHub Action**。協作者要有 GitHub 帳號與 Write 權限，而且匯入檔會永久留在公開 repo 的歷史（D3 已決定 repo 公開）。

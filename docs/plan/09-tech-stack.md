@@ -489,14 +489,16 @@ Catalog 位置：已決定（2026-10-20）：`apps/web/src/locales/{locale}/mess
 
 ### 6.7 Excel 與 CSV 匯入（M6，D10(d)）
 
-已決定（D10(d)，2026-10-20）：文字型題目與名詞用 Excel 範本維護；上傳入口先做本機匯入指令；老師要自己操作時，再加只產出檔案的瀏覽器匯入頁，放在後台的獨立 origin（流程見 [08 題庫與後台](08-content-admin.md)）。這裡只寫函式庫的選擇，實際版本在 M6 開工時依兩週規則選定。
+已決定（D10(d)，2026-10-20）：文字型題目與名詞用 Excel 範本維護；上傳入口先做本機匯入指令；老師要自己操作時，再加只產出檔案的瀏覽器匯入頁，放在後台的獨立 origin（流程見 [08 題庫與後台](08-content-admin.md)）。
+
+**已決定（2026-11-08，M6 開工時查證）：不加任何函式庫，自己寫最小的 OOXML 讀寫與 CSV 解析**（`tools/lib/zip-write.mjs`、`xlsx-write.mjs`、`xlsx-read.mjs`、`csv.mjs`、`ooxml.mjs`）。查證結果：SheetJS CE 0.20.3（2024-07-18）寫 .xlsx 時不會寫入資料驗證下拉清單（寫入器原始碼只有 `dataValidations` 的註解佔位，「Data Validations and Conditional Formatting」列在 sheetjs.com/pro 的 Pro Basic 清單）；read-excel-file 9.3.x 只讀；write-excel-file 4.1.1 的核心沒有資料驗證，要靠 1.0.2 的第三方插件；exceljs 仍停在 4.4.0（2023-10-19）。xlsx 是 zip 加 XML，repo 已有自己的 zip 讀取器（講義 pptx 用），補一個對稱的寫入器與幾個 XML 範本就夠，而且讀取端本來就要對 Excel 存檔的形狀做測試（共用字串、富文字、inlineStr、公式快取值）。這樣沒有 vendored tarball 要人工追版、沒有 THIRD_PARTY_NOTICES 的新條目。`<dataValidations>` 在 worksheet XML 裡放在 `sheetData` 之後、`pageMargins` 之前（ISO/IEC 29500 第 18.3.1.99 節），`formula1` 引用工作表時一律加單引號（`'清單'!$A$2:$A$9`）。CSV 自己解 RFC 4180；Big5 用 Node 內建的 `TextDecoder('big5')`（Node 24 官方二進位預設 full ICU，本機與 CI 的映像都實測可用）。下面保留 2026-10-20 比較過的選項。
 
 - **不可以 `npm i xlsx`**：npm registry 上的 `xlsx` 停在 0.18.5（2022-03-24），受 CVE-2023-30533（prototype pollution，0.19.3 修復）與 CVE-2024-22363（ReDoS，0.20.2 修復）影響。
 - 若選 SheetJS：SheetJS 官方 CDN 的最新版是 0.20.3（Apache-2.0）。把 0.20.3 的 tarball 放進 `vendor/`，`package.json` 以檔案路徑引用，避免 CDN 失效並確保 lockfile 可重現；Dependabot 不會追蹤，要人工追版。
 - 若選 read-excel-file（MIT）：只讀 `.xlsx`，可用 schema 解析，錯誤物件帶列與欄，適合產生「哪列哪欄錯」的報告。最新 9.3.12 發布於 2026-10-07，要到 2026-10-21 才滿兩週，實際版本在 M6 開工時再選。
 - 不用 exceljs：穩定版 4.4.0 發布於 2023-10-19，之後只有 2024-12-20 的 4.4.1-prerelease.0，約 3 年沒有穩定版。
 - CSV 用 papaparse 5.7.0（5.4.0 起處理 UTF-8 BOM）。老師用 Windows Excel 存的 CSV 可能是 Big5：偵測不到 BOM 或出現亂碼時，改用 `new TextDecoder('big5')`（`cp950` 不是合法的 label），或乾脆要求上傳 `.xlsx`。
-- 範本本身要能寫出 `.xlsx`，而且 D12 要求範本有「判分方式」下拉欄（資料驗證清單）。read-excel-file 只負責讀取；能不能用程式產生含下拉清單的範本（例如同作者的寫入套件或 SheetJS），本次沒有查證。查不到可靠的做法時，改為在 Excel 裡手工做好一份範本檔並 commit，匯入指令只負責讀取。
+- 範本本身要能寫出 `.xlsx`，而且 D12 要求範本有「判分方式」下拉欄（資料驗證清單）。read-excel-file 只負責讀取；能不能用程式產生含下拉清單的範本（例如同作者的寫入套件或 SheetJS），本次沒有查證。查不到可靠的做法時，改為在 Excel 裡手工做好一份範本檔並 commit，匯入指令只負責讀取。（2026-11-08 補：`.xlsx` 本來就不能 commit（第 10.2 節的 hygiene），所以這個備案不成立，範本一律由 `pnpm content:template` 現場產生到 `.local-reports/import/`。）
 - 匯入相關的函式庫只用在本機匯入指令，或在後台 origin 的匯入頁 lazy 載入，絕不進學習端的 bundle。匯入流程見 [08 題庫與後台](08-content-admin.md)。
 
 來源：https://docs.sheetjs.com/docs/getting-started/installation/frameworks 、https://registry.npmjs.org/read-excel-file 、https://encoding.spec.whatwg.org/#names-and-labels 。查證日期 2026-10-20。
@@ -887,7 +889,7 @@ M0b 的完成標準要附上第 1、4、5、7、8 步的指令輸出。
 | e2e | Playwright 專案：`iphone-webkit`（iPhone 裝置設定加 WebKit）、`desktop-chromium`、`desktop-firefox`，另有 `reducedMotion: 'reduce'` 的專案並做截圖比對；純鍵盤操作流程；直接開啟中文與 `/en/` 的深層連結；作答中切換語言後題目、已選選項、計時與捲動位置都保留；離線測試（SW 就緒後切離線，冷啟動與導覽，含 `/en/` 網址）；把統計服務的網域攔截成失敗時，功能與離線測試都不受影響；更新提示測試（作答中不出現）；監聽 `securitypolicyviolation`，有任何 CSP 違規就失敗；INP 用腳本實際操作量測（作答一題、分類、在實驗室改一個數字）；PR 另由 `preview.yml` 對預覽網址再跑一次（第 10.1 節）。已決定（2026-10-23）：PR 的 ci 與 preview 只跑 Chromium 的兩個專案，push 到 main 才跑三個瀏覽器，縮短 PR 的等待時間 | 全部通過 |
 | axe | `@axe-core/playwright` 掃描固定頁面清單，兩種語系、淺色與深色各一次 | 沒有 serious 或 critical 問題 |
 | lighthouse | lighthouse 13 CLI 對本機伺服器跑固定網址，伺服器要重現 Workers 的行為（沒有對應檔案的路徑回 `index.html`、狀態碼 200，並套用 `_headers`；候選做法是在 `apps/web` 執行 `wrangler dev`，不穩定時改用自寫的靜態伺服器），每個網址 5 次取中位數（PR 上 3 次，2026-10-23 決定；只有模擬 LCP 這一項不過時再量 6 次、用全部次數的中位數判定，2026-11-06，06 第 8.2 節）；以 metric 做 assertion，不依賴 audit ID；記錄 `benchmarkIndex` 並據此校準 `cpuSlowdownMultiplier`。量測時照正式網站的方式載入 D7 的統計腳本，但送出目的地指向 stub 端點（不送出真實資料，設定見 06 第 8.2 節的 `perf/urls.json`），讓統計腳本的成本計入效能預算；正式網址的長期趨勢由 `scheduled.yml` 量測 | 行動版效能至少 90、無障礙至少 95；LCP 不超過 2.5 秒；CLS 不超過 0.1（只有 Chromium 量得到） |
-| hygiene | `git ls-files` 不得出現 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也不得出現本機工具設定路徑（`.gitignore` 本機工具段落列出的）；`.gitignore` 仍包含上述排除規則；`release-age-exceptions.json` 與 `pnpm-workspace.yaml` 一致且沒有過期條目；`tools/` 的依賴方向檢查（各套件 `package.json` 的依賴符合第 8.2 節的方向，`packages/` 不引用 `apps/`）；純 TypeScript 套件的 DOM 禁用檢查（`web-ui` 以外的套件 tsconfig 的 `lib` 不列 `DOM`，第 8.3 節） | 全部通過 |
+| hygiene | `git ls-files` 不得出現 `references/`、`.xlsx`、`.pdf`、`.DS_Store`、`docs/plan/01-materials.md`、`docs/plan/13-material-questions.md`，也不得出現本機工具設定路徑（`.gitignore` 本機工具段落列出的）；`.gitignore` 仍包含上述排除規則；`pnpm-lock.yaml` 不得出現 npm 上的 `xlsx`（第 6.7 節，2026-11-08 起）；`release-age-exceptions.json` 與 `pnpm-workspace.yaml` 一致且沒有過期條目；`tools/` 的依賴方向檢查（各套件 `package.json` 的依賴符合第 8.2 節的方向，`packages/` 不引用 `apps/`）；純 TypeScript 套件的 DOM 禁用檢查（`web-ui` 以外的套件 tsconfig 的 `lib` 不列 `DOM`，第 8.3 節） | 全部通過 |
 
 固定量測網址：首頁 `/`、一個章節頁 `/chapter/<chapterId>/`（頁面上是該章的關卡列表，例如 `/chapter/ch_c5f8w2/`）、一個作答頁 `/level/<levelId>/`（例如 `/level/lv_k7m2q9xd/`）、實驗室故事第 7 筆 `/lab/story/<storyId>/<stepId>/`（例如 `/lab/story/story_k8p3x6/st_r2x9k4/`），另加同一個關卡的英文作答頁 `/en/level/<levelId>/`（例如 `/en/level/lv_k7m2q9xd/`，D5），確認英文殼層與英文 catalog 同樣達標。實際清單寫在 06 的 `perf/urls.json`，兩份文件一致。路由格式以 [02 網站架構](02-site-architecture.md) 為準，所有路徑都帶結尾斜線，ID 格式依 [08 題庫與後台](08-content-admin.md) 第 4.1 節（以上 ID 為示意）。作答頁與實驗室都經由 SPA fallback 直接開啟。還沒有對應頁面的里程碑，只量已存在的頁面。
 
