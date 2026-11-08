@@ -205,4 +205,12 @@ describe('錯題本的工作階段比對（quiz-3）', () => {
     expect(reviewSessionMatches(session, ['q_bbbbbbbb'], '2026-10-23')).toBe(false);
     expect(reviewSessionMatches(session, ['q_bbbbbbbb', 'q_aaaaaaaa'], '2026-10-23')).toBe(false);
   });
+  it('已經答過的題目不在今天的清單裡也沿用（答完按「看動畫」再回來）；全部答完、清單空了也沿用', () => {
+    const session = { questionIds: ['q_aaaaaaaa', 'q_bbbbbbbb'], startedAt: '2026-10-23T22:00:00+08:00' };
+    expect(reviewSessionMatches(session, ['q_bbbbbbbb'], '2026-10-23', new Set(['q_aaaaaaaa']))).toBe(true);
+    expect(reviewSessionMatches(session, [], '2026-10-23', new Set(['q_aaaaaaaa', 'q_bbbbbbbb']))).toBe(true);
+    // 答過的題還在清單裡（到期日沒改）就不算一致；沒答過的題少了也不算
+    expect(reviewSessionMatches(session, ['q_aaaaaaaa', 'q_bbbbbbbb'], '2026-10-23', new Set(['q_aaaaaaaa']))).toBe(false);
+    expect(reviewSessionMatches(session, [], '2026-10-23', new Set(['q_aaaaaaaa']))).toBe(false);
+  });
 });

@@ -48,11 +48,15 @@ export function revisedQuestionIds(
   });
 }
 
-/** 錯題本的工作階段能不能沿用：題目與順序和今天的清單相同，而且是今天（本地日期）開始的；App 開著過夜後要換成今天到期的題目 */
+/** 錯題本的工作階段能不能沿用：題目與順序和今天的清單相同，而且是今天（本地日期）開始的；App 開著過夜後要換成今天到期的題目。
+ *  已經答過的題目（answered）答完就不在今天的清單裡了（到期日改成之後），比對時先把它們從工作階段拿掉（2026-11-08：答完一題按「看動畫」再回來，
+ *  工作階段要沿用、回到同一題，不能因為那一題不再到期就重新開始） */
 export function reviewSessionMatches(
   session: { readonly questionIds: readonly string[]; readonly startedAt: string },
   ids: readonly string[],
   today: string,
+  answered: ReadonlySet<string> = new Set(),
 ): boolean {
-  return session.startedAt.slice(0, 10) === today && session.questionIds.length === ids.length && session.questionIds.every((id, i) => id === ids[i]);
+  const remaining = session.questionIds.filter((id) => !answered.has(id));
+  return session.startedAt.slice(0, 10) === today && remaining.length === ids.length && remaining.every((id, i) => id === ids[i]);
 }
