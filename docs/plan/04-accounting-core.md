@@ -1169,7 +1169,7 @@ interface LayoutOptions {
 | 投資活動現金流量 | -800,000 | -500,000 | +300,000 |
 | 期末現金 | 950,000 | 950,000 | 0 |
 
-黃金測試的期望值（自編青檸文具社故事第 18 步之後，數字由本文件手算，和 `packages/core/test/golden/lime-leaf.teacher@1.json`、`lime-leaf.ifrs@1.json` 第 18 步的值逐列相同）：設立費 150,000 改為當期費用，少記攤銷 30,000，所以稅前淨利淨減 120,000；付出的 150,000 由投資活動移到營業活動，期末現金不變。所得稅兩邊都用故事設定的金額（`incomeTax: cash_direct`，T10），沒有計算遞延所得稅（IAS 12），所以本期淨利與資產總計的差額等於稅前差額，這是模型的簡化：稅務上的處理和帳面不同時，帳面費用化會產生暫時性差異，真正的 IFRS 差額不會剛好相等。前面正式故事的表同樣如此，有效稅率的分母（稅前淨利）在 IFRS 對照下也跟著變。這一段只是揭露，不改 T10 的決定，也不改數字。
+黃金測試的期望值（自編青檸文具社故事第 18 步之後，數字由本文件手算，和 `packages/core/test/golden/lime-leaf.teacher@1.json`、`lime-leaf.ifrs@1.json` 第 18 步的值逐列相同；2026-11-08 起兩份黃金資料的 18 步都由 `packages/core/test/golden/calc-lime-leaf.mjs` 逐項重現，這支計算表只用加減法、不經過核心，`golden-calc.test.ts` 與 CI 的 `check:golden` 都跑它）：設立費 150,000 改為當期費用，少記攤銷 30,000，所以稅前淨利淨減 120,000；付出的 150,000 由投資活動移到營業活動，期末現金不變。所得稅兩邊都用故事設定的金額（`incomeTax: cash_direct`，T10），沒有計算遞延所得稅（IAS 12），所以本期淨利與資產總計的差額等於稅前差額，這是模型的簡化：稅務上的處理和帳面不同時，帳面費用化會產生暫時性差異，真正的 IFRS 差額不會剛好相等。前面正式故事的表同樣如此，有效稅率的分母（稅前淨利）在 IFRS 對照下也跟著變。這一段只是揭露，不改 T10 的決定，也不改數字。
 
 | 項目 | `teacher@1` | `ifrs@1` | 差額 |
 | --- | --- | --- | --- |
@@ -2975,7 +2975,7 @@ zh-TW 與 en 從 M0b 起都是 complete 語系（見 05），內容只有在中�
 | --- | --- | --- | --- | --- |
 | 單元測試 | 金額 helper、運算式 parser、型別檢查、求值器、每個範本（含 `policyWhen` 在兩套政策下的篩選）、每個版面列規則、每個指標版本、狀態判定、每個錯誤碼、追蹤樹、T 字帳、分錄比對（別名解析、合併同科目同方向的行、多重集合比對）。已決定（2026-10-20）：判分測試跟著判分移到 `packages/quiz`：多正解題判分（兩種 `scoringMode`）、數字題比對（含 N/A 與位數規則）、分錄題計分的判分結果與回饋（呼叫 `core` 的分錄比對），判分規則不變 | 會計：`packages/core/test/**/*.test.ts`；判分：`packages/quiz/test/**/*.test.ts` | 每次 CI | 是 |
 | 性質測試 | 隨機產生合法的事件序列，檢查不變式（下表），`teacher@1` 與 `ifrs@1` 都跑；另對正式故事（老師的金額，D2）逐步重播，只斷言不變式（每一步都能過帳、四個勾稽點差額為 0、間接法等於直接法、追蹤加總），不寫任何期望值 | `*.property.test.ts`，用 fast-check 與 `@fast-check/vitest`（版本見 09） | 每次 CI | 是 |
-| 黃金測試 | 自編青檸文具社 18 步的完整三表、23 項指標與勾稽結果，`teacher@1` 與 `ifrs@1` 各一份（第 10.3 節）；狀態邊界（na、zero、not_meaningful）。自訂期初的固定數字測試不在黃金資料裡：在 `scenario.test.ts` 與 `statements.test.ts`，期望值寫在測試內，只跑 `teacher@1` | `*.golden.test.ts`，期望值放 `test/golden/*.json` | 每次 CI | 是 |
+| 黃金測試 | 自編青檸文具社 18 步的完整三表、23 項指標與勾稽結果，`teacher@1` 與 `ifrs@1` 各一份（第 10.3 節），期望值另由獨立的計算表腳本 `test/golden/calc-lime-leaf.mjs` 重現（`golden-calc.test.ts`；CI 的 `check:golden` 再守不引用正式故事）；狀態邊界（na、zero、not_meaningful）。自訂期初的固定數字測試不在黃金資料裡：在 `scenario.test.ts` 與 `statements.test.ts`，期望值寫在測試內，只跑 `teacher@1` | `*.golden.test.ts`，期望值放 `test/golden/*.json` | 每次 CI | 是 |
 | 內容編譯測試 | 本文件與 fixtures 中的 JSON 範例通過 Zod 驗證與 `content:compile`；正式內容的 `multi_choice` 與 `journal_entry` 規則（第 14、16.2 節） | `tools/` | 每次 CI | 是 |
 | 本機老師 Excel 驗證 | 重播正式故事，對老師 Excel 情境 1 到 3 逐格比對 | `*.local.test.ts` | 只在本機 | 測試程式可進 repo（不寫入教材數字或文字）；期望值在執行時從本機的 `references/` 讀出，不進 repo |
 
