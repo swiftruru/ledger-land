@@ -46,6 +46,7 @@
     "content:import": "node tools/content-import.mjs",
     "content:preview": "LL_INCLUDE_DRAFTS=1 node tools/content-build.mjs && pnpm --filter @ledgerland/web dev",
     "handout:extract": "node tools/handout-extract.mjs",
+    "handout:import": "node tools/handout-import.mjs",
     "content:i18n-report": "node tools/content-i18n-report.mjs",
     "docs:examples": "node tools/docs-examples.mjs",
     "i18n:extract": "pnpm --filter @ledgerland/web run i18n:extract",

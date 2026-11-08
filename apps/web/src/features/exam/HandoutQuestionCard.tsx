@@ -95,10 +95,12 @@ export function HandoutQuestionCard({
     >
       {() => (
         <>
-          <blockquote className="ll-exam-scenario">
-            <span className="ll-exam-scenario__label">{t({ id: 'exam.scenario', message: '情境', comment: '苦練區題目的情境段落標籤（講義的用語）' })}</span>
-            <HandoutText text={q.scenario} />
-          </blockquote>
+          {q.scenario !== '' && (
+            <blockquote className="ll-exam-scenario">
+              <span className="ll-exam-scenario__label">{t({ id: 'exam.scenario', message: '情境', comment: '苦練區題目的情境段落標籤（講義的用語）' })}</span>
+              <HandoutText text={q.scenario} />
+            </blockquote>
+          )}
           <ChoiceGroup
             name={`exam-${q.id}`}
             prompt={<HandoutText as="span" text={q.question} />}

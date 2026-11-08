@@ -92,15 +92,21 @@ export interface HandoutQuestionSnapshot {
   answerRev: number;
   deck: string;
   section: string;
+  /** pptx 講義是投影片號；CSV 講義（2026-11-08）是 CSV 的列號 */
   slide: number;
+  /** CSV 講義的題才有（題目文字的雜湊鍵） */
+  key?: string;
   topic: string;
+  /** 可能是空字串（CSV 匯入的題沒有「情境：」分段時） */
   scenario: string;
   question: string;
-  options: { letter: 'A' | 'B' | 'C'; text: string }[];
+  /** 講義的練習題固定 A、B、C；CSV 匯入的題 2 到 5 個（是非題是 A 是、B 否） */
+  options: { letter: HandoutLetter; text: string }[];
   /** 正解的字母；兩個以上就是任一正確（B/C 都對那一題） */
-  answer: ('A' | 'B' | 'C')[];
+  answer: HandoutLetter[];
   explanation: string;
 }
+export type HandoutLetter = 'A' | 'B' | 'C' | 'D' | 'E';
 
 export interface HandoutDeckFile {
   id: string;

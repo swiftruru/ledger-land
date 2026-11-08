@@ -1707,7 +1707,17 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 ### 抽題工具 `tools/handout-extract.mjs`
 
 - **只在本機跑**：`pnpm handout:extract`（即 `node tools/handout-extract.mjs [--src <資料夾>] [--dry-run]`），預設讀 `references/handouts/`，可用 `--src` 指到別的資料夾。讀 pptx（OOXML 就是 zip，`tools/lib/zip-read.mjs` 只讀不寫；投影片 XML 的解析在 `tools/lib/handout-pptx.mjs`），依 `decks.json` 各段的投影片範圍找出每一張練習題，解析題幹、選項、答案與解析，寫成 `midterm.json`；第一次抽到的投影片配一個新 ID 並寫回 `ids.json`。
-- **工具是唯一的寫入者**：不手改 `midterm.json` 與 `ids.json`；講義改版、老師回饋或排除規則改變時改 `decks.json` 再重抽，所以 diff 就是講義的差異。
+- **工具是唯一的寫入者**：不手改 `midterm.json` 與 `ids.json`；講義改版、老師回饋或排除規則改變時改 `decks.json` 再重抽，所以 diff 就是講義的差異。2026-11-08 起寫入者有兩個工具：`handout:extract` 只重建 pptx 講義的題，`handout:import`（下一小節）只重建 CSV 講義的題，彼此保留對方的題；配 ID、算 rev 與合併的程式共用 `tools/lib/handout-bank.mjs`。
+
+### 匯入工具 `tools/handout-import.mjs`（CSV 講義，2026-11-08）
+
+老師在國北護 iClass（FormosaSoft 的 ee-class 3.0）出題時用的是平台「線上測驗匯入」的第 4 版 CSV 範本。2026-11-08 我決定：老師日後用這個格式給的題直接進講義題庫（不進原創題庫），所以匯入工具以這個格式為底，不另外設計欄位；瀏覽器匯入頁等 M7 後台一起做（第 10.8 節）。
+
+- **格式**（依平台內建的官方範例檔與廠商手冊查證，2026-11-08）：UTF-8 加 BOM、逗號分隔、CRLF，儲存格內可以換行（整格用雙引號包住）。第 1 列 `version: 4`，第 2 列標題（`題組`、`類別`、`題型`、`題目`、`答案`、`解說`、`難易度`、`選項1` 到 `選項20`，標題格裡還有換行與說明文字，工具只認開頭的欄名），第 3 列起資料。`題型` 1 是非（`答案` 1 是、2 否，選項全空）、2 單選（`答案` 是正確選項的編號）、3 複選（`答案` 寫 `"1,2"`）、4 填充（答案寫在題目的 `[*…*]` 裡，`選項1`、`選項2` 變成大小寫與順序的設定）、5 問答、6 說明、7 題組。「我的題庫」版的範本只有前兩欄的說明文字不同，也收。
+- **收哪些**：是非（轉成「是」「否」兩個選項，A、B）與單選（選項 2 到 5 個，要從選項 1 起連續填）。複選（全選才對，苦練區多個答案的意思是「任一正確」）、填充、問答、說明、題組一律略過並列在報告。`解說` 必填（苦練區每一題都有解析）；`題目` 有「情境：…」換行「問題：…」時拆成情境與題幹，沒有就整段是題幹、情境空白；`難易度`、`題組` 不存。
+- **講義與段**：一個 CSV 等於一份講義，在 `decks.json` 手寫 `{ "id": "d4", "order", "code", "title", "file": "….csv", "source": "csv", "sections": [{ "id": "d4s1", "title": "…" }] }`，段沒有投影片範圍；題目依 `類別` 欄的值對上段的 `title`，講義只有一段時 `類別` 可以留空。CSV 和 pptx 一樣只在本機（`--src` 指到的資料夾），不 commit。
+- **ID**：CSV 沒有 ID 欄，鍵是情境與題幹 NFKC 後去空白的 sha256 前 12 碼，寫成 `ids.json` 的 `d4:k<12 碼>`，題目本身帶 `key`。題目文字改了就是新題（舊題消失，學生對舊題的紀錄留著但不再出現）；只改選項或解析是文字改版（`rev` 加一）、只改答案是答案改版（`answerRev` 也加一），和 pptx 講義同一套規則。`slide` 存 CSV 的列號（Excel 看到的列，第 3 列是第一筆），每次匯入重算，只給人對照用；`exclusions` 與 `formula-links.json` 不能指到 CSV 講義（列號會變），題目有問題請老師直接改 CSV。同一份 CSV 裡題目文字相同的兩列：完全相同就略過後面那一列（警告），選項、答案或解說不同是錯誤。
+- **指令**：`pnpm handout:import [--src <資料夾>] [--dry-run] [--no-check]`。錯誤報告和 M6 匯入同一種形狀（檔案、列、欄、訊息、建議修正，第 10.3 節），終端機印表格並存 `.local-reports/handout/import-report.json`；差異摘要每份講義列新增、修改（文字）、修改（答案）、移除、無變動與略過的列。任何一列有錯就整個不寫；寫完自動跑 `content:check`。
 
 ### 資料檔 `content/handout/`
 
@@ -1715,8 +1725,8 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 | 檔 | 放什麼 | 誰改 |
 | --- | --- | --- |
-| `decks.json` | 三份講義：`id`（`d1`、`d2`、`d3`）、`order`、`code`（`0-1` 等）、`title`、`file`（pptx 檔名，只用來在本機找檔）、`sections`（各段的 `id`、`title` 與投影片範圍 `slides: [起, 迄]`，1 起算、依播放順序）；`exclusions` 是人工排除與請老師確認的題（`deck`、`slide`、`reason`、`note`，見下面的規則） | 我手改 |
-| `ids.json` | 投影片到題目 ID 的對照表：鍵是 `<deck>:<slide>`（例如 `d1:16`），值是 `hq_` 加 8 碼 Crockford Base32 小寫的 ID（第 4.1 節的規則）。ID 一旦指定永不改變：投影片換順序、改字、換段都不換 ID，學生的紀錄才對得上 | 工具 |
+| `decks.json` | 講義清單：`id`（`d1`、`d2`、`d3`…）、`order`、`code`（`0-1` 等）、`title`、`file`（pptx 或 csv 檔名，只用來在本機找檔）、`source`（省略是 `pptx`；`csv` 是老師的 CSV，2026-11-08）、`sections`（各段的 `id`、`title`；pptx 講義另有投影片範圍 `slides: [起, 迄]`，1 起算、依播放順序；CSV 講義沒有範圍，題目依「類別」欄對上 `title`）；`exclusions` 是人工排除與請老師確認的題（`deck`、`slide`、`reason`、`note`，見下面的規則；只能指到 pptx 講義） | 我手改 |
+| `ids.json` | 題目 ID 的對照表：pptx 講義的鍵是 `<deck>:<slide>`（例如 `d1:16`），CSV 講義的鍵是 `<deck>:k<題目文字雜湊 12 碼>`（例如 `d4:k3f9a1c2b7d4e`）；值是 `hq_` 加 8 碼 Crockford Base32 小寫的 ID（第 4.1 節的規則）。ID 一旦指定永不改變：pptx 的投影片換順序、改字、換段都不換 ID，學生的紀錄才對得上；CSV 的題只有題目文字改了才算新題 | 工具 |
 | `midterm.json` | `{ "id": "midterm", "rev", "title", "questions": [] }`，每一題的欄位見下表 | 工具 |
 | `formula-links.json`（2026-11-07） | 會計公式的講義對照：`links[]` 每一條 `{ formula: fm_id, sources: [{ deck, slides: [投影片號] }], questions: { formula: [{ deck, slide }], numeric: […], concept: […] } }`。`sources` 是這條公式在講義裡說明的投影片（公式頁的「講義出處」）；`questions` 是相關的講義題，分三種關係：`formula` 考這條公式的組成或關係、`numeric` 情境裡有數字可以拿公式驗算、`concept` 只考相關概念。用投影片號寫，建置時經 `ids.json` 換成 `hq_` ID；指到不收錄的題是錯誤，不悄悄略過。這是講義題庫這一側的檔案，所以可以有投影片號；原創的 `content/formulas/` 不行（第 1.4 節）。對應的 JSON Schema 是 `schemas/handout-formula-links.schema.json` | 我手改 |
 
@@ -1727,10 +1737,11 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 | `id` | `hq_` ID，來自 `ids.json` |
 | `rev`、`revKind` | 文字改版：題幹、選項或解析的字有變時 `rev` 加一，`revKind` 沿用第 4.2 節的種類 |
 | `answerRev` | 答案改版：正解的字母變時加一（`rev` 也加一）；苦練區用它判斷之前答對的那一版答案是否已經變了 |
-| `deck`、`section`、`slide` | 所屬講義、段落與投影片編號（1 起算）。老師審核頁用它對照講義；學生頁（背題閱讀頁、錯題清單、列印版）也顯示「講義 0-1 第 N 頁」，方便回頭查原文（2026-11-07 起明定，之前就已顯示） |
-| `topic` | 投影片標題「練習題：」後面的短語 |
-| `scenario`、`question` | 情境與題幹，照原文 |
-| `options[]` | `{ letter, text }` 固定三個，`letter` 是講義上的 A、B、C，順序照講義；打亂只在畫面上做，不改資料 |
+| `deck`、`section`、`slide` | 所屬講義、段落與投影片編號（1 起算）。老師審核頁用它對照講義；學生頁（背題閱讀頁、錯題清單、列印版）也顯示「講義 0-1 第 N 頁」，方便回頭查原文（2026-11-07 起明定，之前就已顯示）。CSV 講義的 `slide` 是 CSV 的列號，每次匯入重算 |
+| `key` | 只有 CSV 講義的題有：`ids.json` 鍵的後半（`k` 加 12 碼） |
+| `topic` | 投影片標題「練習題：」後面的短語；CSV 的題是題幹開頭的一句（最多 24 字） |
+| `scenario`、`question` | 情境與題幹，照原文；CSV 的題沒有「情境：」「問題：」分段時 `scenario` 是空字串，畫面不顯示情境區 |
+| `options[]` | `{ letter, text }`，`letter` 依序 A、B、C…；講義的練習題固定三個，CSV 匯入的題 2 到 5 個（是非題是「是」「否」），順序照原檔；打亂只在畫面上做，不改資料 |
 | `answer` | 正解字母的陣列；三選一通常只有一個，講義標兩個答案的題有兩個（當成任一正確） |
 | `explanation` | 老師的解析原文 |
 | `status` | `included` 或 `excluded` |
@@ -1765,6 +1776,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 - **文字變**（題幹、選項、解析的任何字）：`rev` 加一，`revKind` 記種類。
 - **答案變**（`answer` 的字母變）：`answerRev` 加一，`rev` 也加一。
 - **投影片換順序或換段**：ID 與 `rev` 都不變，只改 `deck`、`section`、`slide`。
+- **CSV 講義**（2026-11-08）：題目文字（情境與題幹）改了是新題，舊題從題庫消失；只改選項、解說是文字改版，只改答案是答案改版；列換順序只改 `slide`。
 - 學生的紀錄記 `id`、`rev` 與 `answerRev`（[06 PWA](06-pwa-responsive.md) 第 4.2 節的 `ledgerland-exam`）；`rev` 不同時只標「題目已更新」，`answerRev` 不同時之前的對錯不再採計。
 
 ### 去重與排除
@@ -1783,7 +1795,7 @@ Google Sheets 的「發布到網路」CSV 同樣不採用：發布到整個網�
 
 ### 建置輸出
 
-- `pnpm content:build` 讀 `content/handout/`（`tools/lib/handout-files.mjs`，和 `loadContentFiles` 分開；資料夾不存在時略過，還沒抽題的 repo 也能建置），驗過形狀後寫成四個帶 hash 的檔：`content/zh-TW/handout_d1.<hash>.json`、`handout_d2`、`handout_d3`（各講義 `included` 的題，去掉 `status` 與 `exclusion`）與 `handout_review.<hash>.json`（`excluded` 的題與 `check` 的題，連同 `exclusion`，給老師審核頁）。只有 zh-TW 一個語系，英文站讀同一批檔。
+- `pnpm content:build` 讀 `content/handout/`（`tools/lib/handout-files.mjs`，和 `loadContentFiles` 分開；資料夾不存在時略過，還沒抽題的 repo 也能建置），驗過形狀後寫成帶 hash 的檔：每份講義一檔 `content/zh-TW/handout_d1.<hash>.json`、`handout_d2`、`handout_d3`…（各講義 `included` 的題，去掉 `status` 與 `exclusion`；CSV 講義也是一份一檔）與 `handout_review.<hash>.json`（`excluded` 的題與 `check` 的題，連同 `exclusion`，給老師審核頁）。只有 zh-TW 一個語系，英文站讀同一批檔。Service Worker 的 `ll-handout` 快取 `maxEntries` 是 16（兩版乘全部講義檔加審核檔都放得下）。
 - `content-manifest.json` 加 `handouts` 小索引：講義、各段與題目 ID 清單、題數與檔案路徑，加審核檔的題數與路徑；苦練首頁只靠它畫進度，不必載題庫。manifest 本身在 precache 裡，題庫檔不在（`apps/web/vite.config.ts` 的 `globIgnores`），由 Service Worker 的執行期路由快取（[06 PWA](06-pwa-responsive.md) 第 3.1、3.2 節）。
 
 ```jsonc

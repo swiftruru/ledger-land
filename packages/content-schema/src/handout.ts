@@ -1,26 +1,42 @@
 // 講義題庫（08 的講義題庫一節；維護者 2026-11-04 的決定，14 第 5.2 節）：老師授權、逐字收錄的講義練習題，是原創內容以外的獨立非原創區。
 // 三個檔案都在 content/handout/：decks.json（講義清單、各段的投影片範圍、人工排除與請老師確認）、ids.json（投影片到 hq_ ID 的對照表，ID 永不改變）、
-// midterm.json（題目本身，由 tools/handout-extract.mjs 產生，不手改）。這裡只定義形狀與交叉檢查；不經過 validateBundle、lock 與原創性檢查。
+// midterm.json（題目本身，由 tools/handout-extract.mjs 與 tools/handout-import.mjs 產生，不手改）。這裡只定義形狀與交叉檢查；不經過 validateBundle、lock 與原創性檢查。
+// 講義有兩種來源（2026-11-08）：pptx（抽題工具，段落是投影片範圍，題目以 deck:slide 定位）與 csv（老師在 iClass 用的 ee-class 第 4 版測驗匯入檔，
+// 段落依「類別」欄分、沒有投影片範圍，題目以題目文字的雜湊 deck:k<12 碼> 定位，slide 存的是 CSV 的資料列號，給老師對照用）。
 // 純 TypeScript、只用 zod，不碰 DOM 與 Node。
 import { z } from 'zod';
 import { RevKind, idSchema } from './common.ts';
 import type { ContentIssue } from './validate.ts';
 
-export const HANDOUT_LETTERS = ['A', 'B', 'C'] as const;
+/** 選項的字母：講義的練習題是 A、B、C 三選一；CSV 匯入的題最多 5 個選項（2026-11-08），是非題是「是」「否」兩個 */
+export const HANDOUT_LETTERS = ['A', 'B', 'C', 'D', 'E'] as const;
 export const HandoutLetter = z.enum(HANDOUT_LETTERS);
 export type HandoutLetter = z.infer<typeof HandoutLetter>;
+export const HANDOUT_MIN_OPTIONS = 2;
+export const HANDOUT_MAX_OPTIONS = HANDOUT_LETTERS.length;
 
 /** 不收或請老師確認的原因：答案在兩份講義不同（不收）、解析有錯字或和公式不合（不收）、照收但請老師確認 */
 export const HandoutExclusionReason = z.enum(['conflicting_answer', 'explanation_issue', 'check']);
 export type HandoutExclusionReason = z.infer<typeof HandoutExclusionReason>;
 
+export const HANDOUT_SOURCES = ['pptx', 'csv'] as const;
+export const HandoutSource = z.enum(HANDOUT_SOURCES);
+export type HandoutSource = z.infer<typeof HandoutSource>;
+
 const DECK_ID_RE = /^d[1-9]\d*$/;
 const SECTION_ID_RE = /^d[1-9]\d*s[1-9]\d*$/;
-const SLIDE_KEY_RE = /^d[1-9]\d*:[1-9]\d*$/;
+/** CSV 題目的鍵：k 加題目文字雜湊的前 12 碼（十六進位），由匯入工具算 */
+const CSV_KEY_RE = /^k[0-9a-f]{12}$/;
+const SLIDE_KEY_RE = /^d[1-9]\d*:([1-9]\d*|k[0-9a-f]{12})$/;
 const slide = z.number().int().min(1);
 
 export const HandoutSection = z
-  .object({ id: z.string().regex(SECTION_ID_RE, '段的 ID 寫成 d1s1'), title: z.string().min(1), slides: z.tuple([slide, slide]) })
+  .object({
+    id: z.string().regex(SECTION_ID_RE, '段的 ID 寫成 d1s1'),
+    title: z.string().min(1),
+    /** 投影片範圍（pptx 講義必填）；CSV 講義的段沒有範圍，題目依「類別」欄的值對上段的 title */
+    slides: z.tuple([slide, slide]).optional(),
+  })
   .strict();
 export const HandoutDeck = z
   .object({
@@ -29,11 +45,15 @@ export const HandoutDeck = z
     /** 講義在教材裡的編號，例如 0-1 */
     code: z.string().min(1),
     title: z.string().min(1),
-    /** references/handouts/ 裡的檔名（永不 commit 的 pptx） */
-    file: z.string().regex(/\.pptx$/, '講義檔是 pptx'),
+    /** 本機講義資料夾裡的檔名（永不 commit 的 pptx，或老師的 csv） */
+    file: z.string().regex(/\.(pptx|csv)$/, '講義檔是 pptx 或 csv'),
+    /** 來源：省略就是 pptx（抽題工具）；csv 是 ee-class 第 4 版測驗匯入檔（匯入工具） */
+    source: HandoutSource.optional(),
     sections: z.array(HandoutSection).min(1),
   })
   .strict();
+/** 講義的來源（省略視為 pptx） */
+export const handoutSourceOf = (deck: { source?: HandoutSource | undefined }): HandoutSource => deck.source ?? 'pptx';
 const SlideRef = z.object({ deck: z.string().regex(DECK_ID_RE), slide }).strict();
 export const HandoutExclusionEntry = z
   .object({
@@ -71,14 +91,19 @@ export const HandoutQuestion = z
     answerRev: z.number().int().min(1),
     deck: z.string().regex(DECK_ID_RE),
     section: z.string().regex(SECTION_ID_RE),
+    /** pptx 講義：投影片編號（1 起算）；CSV 講義：CSV 的資料列號（第 1 筆資料是 1），每次匯入重算 */
     slide,
-    /** 投影片標題「練習題：」後面的短語 */
+    /** CSV 講義的題才有：ids.json 的鍵是 deck:key，題目文字改了就是新題 */
+    key: z.string().regex(CSV_KEY_RE, 'CSV 題目的鍵寫成 k 加 12 碼十六進位').optional(),
+    /** 投影片標題「練習題：」後面的短語；CSV 的題是題幹開頭的一句 */
     topic: z.string().min(1),
-    scenario: z.string().min(1),
+    /** 情境；CSV 的題沒有「情境：」「問題：」分段時是空字串 */
+    scenario: z.string(),
     question: z.string().min(1),
-    options: z.array(HandoutOption).length(3),
-    /** 正解的字母；只有一題是兩個（B/C 都對，當成任一正確） */
-    answer: z.array(HandoutLetter).min(1).max(3),
+    /** 講義的練習題固定三個；CSV 匯入的題 2 到 5 個 */
+    options: z.array(HandoutOption).min(HANDOUT_MIN_OPTIONS).max(HANDOUT_MAX_OPTIONS),
+    /** 正解的字母；兩個以上是任一正確（講義標 B/C 都對的題）。CSV 的複選題（全選才對）還不支援，匯入時略過 */
+    answer: z.array(HandoutLetter).min(1).max(HANDOUT_MAX_OPTIONS),
     explanation: z.string().min(1),
     status: z.enum(['included', 'excluded']),
     exclusion: HandoutExclusion.optional(),
@@ -121,23 +146,42 @@ export function validateHandout(decksData: unknown, idsData: unknown, bankData: 
   decks.decks.forEach((d, di) => {
     if (deckById.has(d.id)) push(FILES.decks, `decks.${di}.id`, `講義 ID 重複：${d.id}`);
     deckById.set(d.id, d);
-    const sorted = [...d.sections].sort((a, b) => a.slides[0] - b.slides[0]);
-    sorted.forEach((s, i) => {
+    const source = handoutSourceOf(d);
+    if (source === 'csv' && !d.file.endsWith('.csv')) push(FILES.decks, `decks.${di}.file`, `CSV 講義 ${d.id} 的檔名要以 .csv 結尾`);
+    if (source === 'pptx' && !d.file.endsWith('.pptx')) push(FILES.decks, `decks.${di}.file`, `pptx 講義 ${d.id} 的檔名要以 .pptx 結尾`);
+    const titles = new Set<string>();
+    d.sections.forEach((s, i) => {
       if (!s.id.startsWith(`${d.id}s`)) push(FILES.decks, `decks.${di}.sections.${i}.id`, `段的 ID ${s.id} 要以 ${d.id}s 開頭`);
-      if (s.slides[0] > s.slides[1]) push(FILES.decks, `decks.${di}.sections.${i}.slides`, `段 ${s.id} 的範圍起點大於終點`);
-      const prev = sorted[i - 1];
-      if (prev && prev.slides[1] >= s.slides[0]) push(FILES.decks, `decks.${di}.sections.${i}.slides`, `段 ${s.id} 和 ${prev.id} 的投影片範圍重疊`);
+      if (source === 'csv') {
+        if (s.slides) push(FILES.decks, `decks.${di}.sections.${i}.slides`, `CSV 講義的段 ${s.id} 沒有投影片範圍`);
+        if (titles.has(s.title)) push(FILES.decks, `decks.${di}.sections.${i}.title`, `CSV 講義的段 title「${s.title}」重複（題目依「類別」欄對上 title）`);
+        titles.add(s.title);
+      } else if (!s.slides) push(FILES.decks, `decks.${di}.sections.${i}.slides`, `pptx 講義的段 ${s.id} 要有投影片範圍`);
     });
+    if (source === 'pptx') {
+      const sorted = d.sections.filter((s) => s.slides).sort((a, b) => a.slides![0] - b.slides![0]);
+      sorted.forEach((s, i) => {
+        if (s.slides![0] > s.slides![1]) push(FILES.decks, `decks.${di}.sections.${i}.slides`, `段 ${s.id} 的範圍起點大於終點`);
+        const prev = sorted[i - 1];
+        if (prev && prev.slides![1] >= s.slides![0]) push(FILES.decks, `decks.${di}.sections.${i}.slides`, `段 ${s.id} 和 ${prev.id} 的投影片範圍重疊`);
+      });
+    }
   });
-  const sectionOf = (deckId: string, n: number) => deckById.get(deckId)?.sections.find((s) => n >= s.slides[0] && n <= s.slides[1]);
+  const sectionOf = (deckId: string, n: number) => deckById.get(deckId)?.sections.find((s) => s.slides && n >= s.slides[0] && n <= s.slides[1]);
+  const isCsvDeck = (deckId: string) => {
+    const d = deckById.get(deckId);
+    return d !== undefined && handoutSourceOf(d) === 'csv';
+  };
 
   const idValues = new Map<string, string>();
   for (const [key, id] of Object.entries(ids)) {
     const prev = idValues.get(id);
     if (prev !== undefined) push(FILES.ids, key, `ID ${id} 同時給了 ${prev} 與 ${key}`);
     idValues.set(id, key);
-    const deckId = key.split(':')[0]!;
+    const [deckId, rest] = key.split(':') as [string, string];
     if (!deckById.has(deckId)) push(FILES.ids, key, `講義 ${deckId} 不在 decks.json 裡`);
+    else if (isCsvDeck(deckId) !== rest.startsWith('k'))
+      push(FILES.ids, key, isCsvDeck(deckId) ? `CSV 講義 ${deckId} 的鍵要寫成 ${deckId}:k<雜湊>` : `pptx 講義 ${deckId} 的鍵要寫成 ${deckId}:<投影片號>`);
   }
 
   const byId = new Map<string, HandoutQuestion>();
@@ -146,15 +190,27 @@ export function validateHandout(decksData: unknown, idsData: unknown, bankData: 
     const path = `questions.${qi}`;
     if (byId.has(q.id)) push(FILES.bank, `${path}.id`, `題目 ID 重複：${q.id}`);
     byId.set(q.id, q);
-    const key = `${q.deck}:${q.slide}`;
-    if (slideKeys.has(key)) push(FILES.bank, `${path}.slide`, `同一張投影片出現兩次：${key}`);
-    slideKeys.add(key);
-    if (ids[key] !== q.id) push(FILES.bank, `${path}.id`, `ids.json 的 ${key} 是 ${ids[key] ?? '（沒有）'}，題目卻是 ${q.id}`);
     const deck = deckById.get(q.deck);
+    const csv = deck !== undefined && handoutSourceOf(deck) === 'csv';
+    const slideKey = `${q.deck}:${q.slide}`;
+    if (slideKeys.has(slideKey)) push(FILES.bank, `${path}.slide`, csv ? `同一列出現兩次：${slideKey}` : `同一張投影片出現兩次：${slideKey}`);
+    slideKeys.add(slideKey);
     if (!deck) push(FILES.bank, `${path}.deck`, `講義 ${q.deck} 不在 decks.json 裡`);
-    const section = sectionOf(q.deck, q.slide);
-    if (deck && !section) push(FILES.bank, `${path}.slide`, `第 ${q.slide} 張不在 ${q.deck} 任何一段的範圍內`);
-    else if (section && section.id !== q.section) push(FILES.bank, `${path}.section`, `第 ${q.slide} 張依範圍屬於 ${section.id}，題目寫 ${q.section}`);
+    if (csv) {
+      if (!q.key) push(FILES.bank, `${path}.key`, `CSV 講義 ${q.deck} 的題要有 key`);
+      else {
+        const idKey = `${q.deck}:${q.key}`;
+        if (ids[idKey] !== q.id) push(FILES.bank, `${path}.id`, `ids.json 的 ${idKey} 是 ${ids[idKey] ?? '（沒有）'}，題目卻是 ${q.id}`);
+      }
+      if (!deck.sections.some((s) => s.id === q.section)) push(FILES.bank, `${path}.section`, `段 ${q.section} 不在講義 ${q.deck} 裡`);
+    } else {
+      if (q.key !== undefined) push(FILES.bank, `${path}.key`, `pptx 講義的題沒有 key`);
+      if (ids[slideKey] !== q.id) push(FILES.bank, `${path}.id`, `ids.json 的 ${slideKey} 是 ${ids[slideKey] ?? '（沒有）'}，題目卻是 ${q.id}`);
+      if (q.scenario === '') push(FILES.bank, `${path}.scenario`, '講義的練習題一定有情境');
+      const section = sectionOf(q.deck, q.slide);
+      if (deck && !section) push(FILES.bank, `${path}.slide`, `第 ${q.slide} 張不在 ${q.deck} 任何一段的範圍內`);
+      else if (section && section.id !== q.section) push(FILES.bank, `${path}.section`, `第 ${q.slide} 張依範圍屬於 ${section.id}，題目寫 ${q.section}`);
+    }
     q.options.forEach((o, oi) => {
       if (o.letter !== HANDOUT_LETTERS[oi]) push(FILES.bank, `${path}.options.${oi}.letter`, `第 ${oi + 1} 個選項的字母應該是 ${HANDOUT_LETTERS[oi]}`);
     });
@@ -176,9 +232,12 @@ export function validateHandout(decksData: unknown, idsData: unknown, bankData: 
   });
   decks.exclusions.forEach((ex, i) => {
     if (!deckById.has(ex.deck)) push(FILES.decks, `exclusions.${i}.deck`, `講義 ${ex.deck} 不在 decks 裡`);
-    if (!slideKeys.has(`${ex.deck}:${ex.slide}`)) push(FILES.decks, `exclusions.${i}.slide`, `${ex.deck} 第 ${ex.slide} 張不是題目（midterm.json 裡沒有）`);
+    else if (isCsvDeck(ex.deck)) push(FILES.decks, `exclusions.${i}.deck`, `CSV 講義 ${ex.deck} 不支援 exclusions（列號會變；請老師直接改 CSV）`);
+    else if (!slideKeys.has(`${ex.deck}:${ex.slide}`))
+      push(FILES.decks, `exclusions.${i}.slide`, `${ex.deck} 第 ${ex.slide} 張不是題目（midterm.json 裡沒有）`);
     for (const r of ex.related ?? [])
-      if (!slideKeys.has(`${r.deck}:${r.slide}`)) push(FILES.decks, `exclusions.${i}.related`, `${r.deck} 第 ${r.slide} 張不是題目`);
+      if (isCsvDeck(r.deck)) push(FILES.decks, `exclusions.${i}.related`, `相關題不能指到 CSV 講義 ${r.deck}`);
+      else if (!slideKeys.has(`${r.deck}:${r.slide}`)) push(FILES.decks, `exclusions.${i}.related`, `${r.deck} 第 ${r.slide} 張不是題目`);
   });
   return issues;
 }
@@ -227,6 +286,7 @@ export function validateFormulaLinks(
   if (!links) return issues;
   const push = (path: string, message: string) => issues.push({ file: LINKS_FILE, path, message, rule: 'handout.formulaLinks' });
   const deckIds = new Set(decks.decks.map((d) => d.id));
+  const csvDecks = new Set(decks.decks.filter((d) => handoutSourceOf(d) === 'csv').map((d) => d.id));
   const byId = new Map(bank.questions.map((q) => [q.id, q]));
   const seenFormula = new Set<string>();
   links.links.forEach((link, li) => {
@@ -236,6 +296,7 @@ export function validateFormulaLinks(
     seenFormula.add(link.formula);
     link.sources.forEach((s, si) => {
       if (!deckIds.has(s.deck)) push(`${path}.sources.${si}.deck`, `講義 ${s.deck} 不在 decks.json 裡`);
+      else if (csvDecks.has(s.deck)) push(`${path}.sources.${si}.deck`, `CSV 講義 ${s.deck} 沒有投影片，不能當出處`);
       if (new Set(s.slides).size !== s.slides.length) push(`${path}.sources.${si}.slides`, '出處的投影片重複');
     });
     const seenQuestion = new Map<string, FormulaLinkRelation>();
@@ -245,6 +306,10 @@ export function validateFormulaLinks(
         const key = `${r.deck}:${r.slide}`;
         if (!deckIds.has(r.deck)) {
           push(qPath, `講義 ${r.deck} 不在 decks.json 裡`);
+          return;
+        }
+        if (csvDecks.has(r.deck)) {
+          push(qPath, `CSV 講義 ${r.deck} 的題不能列為相關題（列號會變）`);
           return;
         }
         const id = ids[key];

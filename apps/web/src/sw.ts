@@ -67,7 +67,8 @@ registerRoute(new PrecacheRoute(controller));
 // 第一次讀到才快取、之後直接從快取回（檔名帶內容雜湊，永不過期），舊雜湊的檔靠 maxEntries 淘汰。開過苦練首頁之後離線也能練：
 // 首頁畫好後會送 PREFETCH_HANDOUT 訊息（features/exam/prefetch.ts），這裡用同一個策略把三份講義檔抓進快取
 const HANDOUT_PATH = /^\/content\/[^/]+\/handout_[^/]+\.json$/;
-const handoutStrategy = new CacheFirst({ cacheName: 'll-handout', plugins: [new ExpirationPlugin({ maxEntries: 8 })] });
+// maxEntries 要放得下「兩版 × 全部講義檔加審核檔」：三份 pptx 講義時 8 就夠，CSV 講義（2026-11-08）會再加檔，所以放到 16
+const handoutStrategy = new CacheFirst({ cacheName: 'll-handout', plugins: [new ExpirationPlugin({ maxEntries: 16 })] });
 registerRoute(({ url, sameOrigin }) => sameOrigin && HANDOUT_PATH.test(url.pathname), handoutStrategy);
 // 會計公式的完整內容檔（2026-11-07）：每個語系一檔、合計約 0.3 MB，同樣不進 precache；公式總覽畫好後送 PREFETCH_FORMULAS 把兩個語系抓進快取（索引檔在 precache）
 const FORMULA_PATH = /^\/content\/[^/]+\/formulas\.[^/]+\.json$/;
