@@ -593,6 +593,9 @@ function checkQuestion(entry, ctx, stories, templatesById, registry, issues, ope
   /** @type {CompiledQuestion} */
   const compiled = {};
   let failed = false;
+  // ref.labRefRequired（M5，03 第 4.1 節、10 第 12 節）：交易影響題都要有 labRef（回饋區「看動畫」的入口）；確定沒有對應步驟的題在 tags 加 no_lab 明確標示
+  if (q.type === 'transaction_effect' && q.labRef === undefined && !q.tags.includes('no_lab'))
+    issues.push(error('ref.labRefRequired', entry.file, 'labRef', '交易影響題要有 labRef（回饋區的「看動畫」）；確定沒有對應的實驗室步驟時在 tags 加 no_lab'));
   const { scenario, path } = scenarioOf(q);
   if (scenario !== undefined) {
     if (scenario.policy !== 'teacher@1' || scenario.layout !== 'teacher@1') {

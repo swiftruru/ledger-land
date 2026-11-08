@@ -87,6 +87,21 @@ describe('04 第 17.2 節的交易影響題（acct.scenarioComputes、ans.expect
   });
 });
 
+describe('交易影響題都要有 labRef（ref.labRefRequired，M5）', () => {
+  it('有 labRef 通過；拿掉 labRef 就錯，路徑是 labRef', () => {
+    expect(run([q172]).rules).not.toContain('ref.labRefRequired');
+    const { labRef: _l, ...without } = q172;
+    const hit = run([without]).errors.filter((i) => i.rule === 'ref.labRefRequired');
+    expect(hit).toHaveLength(1);
+    expect(hit[0]!.path).toBe('labRef');
+  });
+  it('tags 有 no_lab 的題明確標示沒有對應步驟，不報；其他題型不看這條', () => {
+    const { labRef: _l, ...without } = q172;
+    expect(run([{ ...without, tags: [...q172.tags, 'no_lab'] }]).rules).not.toContain('ref.labRefRequired');
+    expect(run([qMulti]).rules).not.toContain('ref.labRefRequired');
+  });
+});
+
 describe('04 第 17.11 節的分錄題（acct.entryBlocked）', () => {
   it('正解分錄由核心產生，與文件相同', () => {
     const r = run([qJournal]);

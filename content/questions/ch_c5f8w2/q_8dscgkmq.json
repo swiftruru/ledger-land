@@ -15,6 +15,10 @@
     "tm_y37ymj9w",
     "tm_ec80jjev"
   ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_skx6ss"
+  },
   "scored": true,
   "type": "transaction_effect",
   "scenario": {

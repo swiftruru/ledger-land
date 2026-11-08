@@ -16,6 +16,10 @@
     "tm_z3vbt800",
     "tm_g8p4w1rz"
   ],
+  "labRef": {
+    "story": "story_ywv2dy",
+    "step": "st_vf8115"
+  },
   "scored": true,
   "type": "transaction_effect",
   "scenario": {
