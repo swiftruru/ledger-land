@@ -94,7 +94,7 @@ export {
 export { TermChip, type TermChipProps } from './components/TermChip.tsx';
 export { LevelCodePlaceholder, type LevelCodePlaceholderProps } from './components/LevelCodeText.tsx';
 export { TermSheet, type TermSheetProps, type TermSheetData } from './components/TermSheet.tsx';
-export { NoteTag, useNoteTagLabels, type NoteTagProps, type NoteTagKind } from './components/NoteTag.tsx';
+export { NoteTag, NoteTagButton, useNoteTagLabels, type NoteTagButtonProps, type NoteTagProps, type NoteTagKind } from './components/NoteTag.tsx';
 export { Stars, type StarsProps } from './components/Stars.tsx';
 export { Badge, type BadgeProps } from './components/Badge.tsx';
 export { Switch, type SwitchProps } from './components/Switch.tsx';

@@ -12,6 +12,9 @@
   transform: translate(-50%, 50%);
 }
 .ll-node__btn {
+  /* 鍵盤焦點的捲動對齊（17 第 7 節，2026-11-08）：Tab 走到時避開地圖頁頂部的 sticky 區塊（--qm-sticky-h 由地圖頁量好寫在頁面上）與底部的 Tab bar */
+  scroll-margin-top: calc(var(--qm-sticky-h, 64px) + var(--ll-space-3));
+  scroll-margin-bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--ll-space-3));
   position: relative;
   display: block;
   width: 64px;
@@ -328,6 +331,8 @@ html[data-theme='dark'] .ll-node__stars {
   }
 }
 .ll-chbanner__link {
+  scroll-margin-top: calc(var(--qm-sticky-h, 64px) + var(--ll-space-3));
+  scroll-margin-bottom: calc(var(--ll-tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--ll-space-3));
   display: flex;
   align-items: center;
   min-height: var(--ll-target-min);

@@ -7,9 +7,10 @@
 // 標記、列下方小字「教材口徑：x」（累計檢視比交易後的金額，本筆變動檢視比差額）。
 import { useLingui } from '@lingui/react/macro';
 import { formatMoney } from '@ledgerland/i18n';
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { NoteTag, ValueButton } from '@ledgerland/web-ui';
 import type { Statements, TraceWindow } from './lab-core.ts';
+import { useTerms } from '../quiz/terms.tsx';
 import { ARROW, directionOf, useLabLabels } from './labels.ts';
 import { LabTag } from './LabTag.tsx';
 import { RollingMoney } from './RollingMoney.tsx';
@@ -69,8 +70,28 @@ export function StatementTable({
 }: StatementTableProps) {
   const { t } = useLingui();
   const { locale, lineLabel } = useLabLabels(layout);
+  const { terms, openTerm } = useTerms();
   const rows = after.statements[statement];
   const fmt = (v: number) => formatMoney(v, locale);
+  // 標記按下去開這一列的名詞卡（2026-11-08，M4b 回報第 12 節）：名詞卡有「IFRS 怎麼處理」段落（ifrsEnglish 是 null 或帶 not_ifrs_line、
+  // ifrs_treatment_differs 旗標，content-schema 要求有 ifrsNote）就直接開到那一段；沒有就開到卡片頂端。沒有名詞的列只是標籤
+  const termOf = (lineId: string): { id: string; ifrs: boolean } | null => {
+    const line = Object.values(layout.statements)
+      .flat()
+      .find((l) => l.id === lineId);
+    const ref = line?.termRef;
+    if (!ref) return null;
+    const entry = terms.get(ref);
+    if (entry === undefined) return null;
+    const ifrs = entry.ifrsEnglish === null || entry.flags.includes('not_ifrs_line') || entry.flags.includes('ifrs_treatment_differs');
+    return { id: ref, ifrs };
+  };
+  // 關閉名詞卡後焦點回到按下的那顆標記（Safari 點按鈕不給焦點，所以不能只靠 document.activeElement）
+  const tagEl = useRef<HTMLElement | null>(null);
+  const openTermOf = (term: { id: string; ifrs: boolean }, el: HTMLElement) => {
+    tagEl.current = el;
+    openTerm(term.id, tagEl, term.ifrs ? { section: 'ifrs' } : {});
+  };
   const shownCaption =
     (compare !== undefined || ifrsOnly) && typeof caption === 'string'
       ? t({ id: 'lab.policy.caption', message: `${caption}（IFRS 對照）`, comment: 'IFRS 對照時的表格標題；caption 是報表名稱' })
@@ -202,12 +223,44 @@ export function StatementTable({
                   </td>
                 </tr>
               );
+            const term = r.flags.includes('not_ifrs_line') || basis ? termOf(r.id) : null;
             return (
               <tr key={r.id} className={`${cls}${basis ? ' is-diff' : ''}`} data-line={r.id}>
                 <th scope="row" className={`ll-mini-table__line ll-indent-${indentOf(r)}`}>
                   {lineLabel(r.id)}
-                  {r.flags.includes('not_ifrs_line') && <NoteTag kind="not_ifrs_line" className="ll-lab-row__tag" />}
-                  {basis && <LabTag kind="diff" className="ll-lab-row__tag" testId="lab-row-diff" />}
+                  {r.flags.includes('not_ifrs_line') &&
+                    (term ? (
+                      // NoteTag 的 onClick 沒有事件：外層先記下按到的按鈕，開名詞卡時當作焦點要回去的地方
+                      <span
+                        className="ll-lab-row__tagwrap"
+                        onClickCapture={(e) => {
+                          tagEl.current = (e.target as HTMLElement).closest('button');
+                        }}
+                      >
+                        <NoteTag
+                          kind="not_ifrs_line"
+                          className="ll-lab-row__tag"
+                          subject={lineLabel(r.id)}
+                          onClick={() => openTerm(term.id, tagEl, term.ifrs ? { section: 'ifrs' } : {})}
+                        />
+                      </span>
+                    ) : (
+                      <NoteTag kind="not_ifrs_line" className="ll-lab-row__tag" />
+                    ))}
+                  {basis && (
+                    <LabTag
+                      kind="diff"
+                      className="ll-lab-row__tag"
+                      testId="lab-row-diff"
+                      {...(term
+                        ? {
+                            subject: lineLabel(r.id),
+                            opens: term.ifrs ? 'ifrs' : 'term',
+                            onClick: (e: { currentTarget: HTMLElement }) => openTermOf(term, e.currentTarget),
+                          }
+                        : {})}
+                    />
+                  )}
                   {note}
                   {basis}
                 </th>

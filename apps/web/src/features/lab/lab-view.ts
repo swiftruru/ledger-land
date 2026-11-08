@@ -1,4 +1,6 @@
-// 實驗室的檢視設定（settings 的 labView，06 第 4.2 節；schema 在 packages/progress 的 LabView）：報表口徑（教材／IFRS 對照）與分錄層的展開狀態。
+// 實驗室的檢視設定（settings 的 labView，06 第 4.2 節；schema 在 packages/progress 的 LabView）：報表口徑（教材／IFRS 對照）、報表的檢視
+// （累計／本筆變動，跨步驟與重新載入都記住）與分錄層的展開狀態。選到哪張表（statement）只是 schema 的欄位，畫面不讀不寫：階段 5 到 7 各對一張表，
+// 進入時自動切換是教學順序，跨步驟記住會蓋掉它（2026-11-08 的決定，14 第 5.2 節）。
 // 口徑的記憶規則（2026-11-07 的決定，03 第 3.13 節、10 第 11.2 節）：預設一律教材；同一次使用中換步驟、換頁都沿用；重新載入網站或直接開網址回到教材；
 // 從題目開啟（?from=）一律先用教材。做法：模組層的旗標記「這個 document 內使用者已切換過口徑」，旗標沒有時第一次讀設定只回傳教材（設定值保留不改寫，
 // 備份照常帶著），使用者切換後旗標設起、之後的頁面照設定值。寫不進去（儲存壞掉）時畫面照常。
@@ -9,12 +11,16 @@ import { IFRS_POLICY, TEACHER_POLICY, type LabPolicyId } from './lab-policy.ts';
 
 export const LAB_VIEW_SETTING = 'labView';
 
+export type LabWindow = 'cumulative' | 'transaction';
+
 export interface LabViewState {
   readonly policy: LabPolicyId;
+  /** 報表的檢視：累計或本筆變動（三表並排的電腦版面不用它） */
+  readonly window: LabWindow;
   readonly journalLayerOpen: boolean;
 }
 
-export const DEFAULT_LAB_VIEW: LabViewState = { policy: TEACHER_POLICY, journalLayerOpen: false };
+export const DEFAULT_LAB_VIEW: LabViewState = { policy: TEACHER_POLICY, window: 'cumulative', journalLayerOpen: false };
 
 /** 設定裡存的整筆值（schema 是 strict：四個欄位都要在） */
 interface StoredLabView {
@@ -48,6 +54,7 @@ export function normaliseLabView(value: unknown): LabViewState {
   const o = value as Partial<Record<keyof StoredLabView, unknown>>;
   return {
     policy: isLabPolicyId(o.policy) ? o.policy : TEACHER_POLICY,
+    window: o.window === 'transaction' ? 'transaction' : 'cumulative',
     journalLayerOpen: typeof o.journalLayerOpen === 'boolean' ? o.journalLayerOpen : false,
   };
 }
@@ -69,7 +76,7 @@ export async function readLabView(store: Pick<ProgressStore, 'getSetting'>): Pro
   }
 }
 
-/** 讀、改、寫一筆：其他欄位保留（window 與 statement 目前沒有畫面在用，維持 schema 要的預設） */
+/** 讀、改、寫一筆：其他欄位保留（statement 沒有畫面在用，維持 schema 要的預設） */
 export async function writeLabView(store: Pick<ProgressStore, 'getSetting' | 'setSetting'>, patch: Partial<LabViewState>, now: string): Promise<void> {
   try {
     const cur = (await store.getSetting(LAB_VIEW_SETTING))?.value;
@@ -84,6 +91,9 @@ export async function writeLabView(store: Pick<ProgressStore, 'getSetting' | 'se
 export interface UseLabView {
   readonly policy: LabPolicyId;
   readonly setPolicy: (policy: LabPolicyId) => void;
+  /** 累計或本筆變動：設定值一到就套用，之後每次切換都寫回（跨步驟、重新載入都記住） */
+  readonly window: LabWindow;
+  readonly setWindow: (window: LabWindow) => void;
   readonly journalLayerOpen: boolean;
   readonly setJournalLayerOpen: (open: boolean) => void;
 }
@@ -101,7 +111,11 @@ export function useLabView(opts: { readonly fromQuestion?: boolean } = {}): UseL
       .then((s) => readLabView(s))
       .then((v) => {
         if (!alive) return;
-        setState((cur) => ({ policy: policyToShow(v.policy, { switched, fromQuestion }), journalLayerOpen: cur.journalLayerOpen || v.journalLayerOpen }));
+        setState((cur) => ({
+          policy: policyToShow(v.policy, { switched, fromQuestion }),
+          window: v.window,
+          journalLayerOpen: cur.journalLayerOpen || v.journalLayerOpen,
+        }));
       })
       .catch(() => {});
     return () => {
@@ -116,6 +130,13 @@ export function useLabView(opts: { readonly fromQuestion?: boolean } = {}): UseL
       () => {},
     );
   }, []);
+  const setWindow = useCallback((window: LabWindow) => {
+    setState((cur) => (cur.window === window ? cur : { ...cur, window }));
+    void getProgressStore().then(
+      (s) => writeLabView(s, { window }, nowIso()),
+      () => {},
+    );
+  }, []);
   const setJournalLayerOpen = useCallback((open: boolean) => {
     setState((cur) => (cur.journalLayerOpen === open ? cur : { ...cur, journalLayerOpen: open }));
     void getProgressStore().then(
@@ -123,5 +144,5 @@ export function useLabView(opts: { readonly fromQuestion?: boolean } = {}): UseL
       () => {},
     );
   }, []);
-  return { policy: state.policy, setPolicy, journalLayerOpen: state.journalLayerOpen, setJournalLayerOpen };
+  return { policy: state.policy, setPolicy, window: state.window, setWindow, journalLayerOpen: state.journalLayerOpen, setJournalLayerOpen };
 }

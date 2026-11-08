@@ -242,7 +242,9 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
   useEffect(() => (revealed && views === null ? afterFirstPaint(loadViews) : undefined), [revealed, views, loadViews]);
   const [manualTab, setManualTab] = useState(false);
   const [tab, setTab] = useState<StatementCode>('is');
-  const [view, setView] = useState<StatementView>('cumulative');
+  // 累計或本筆變動記在 settings 的 labView.window（lab-view.ts）：跨步驟與重新載入都沿用
+  const view: StatementView = labView.window;
+  const setView = labView.setWindow;
   const [onlyChanged, setOnlyChanged] = useState(false);
   const [highlight, setHighlight] = useState<ReadonlySet<string>>(() => new Set());
   const [selectedLight, setSelectedLight] = useState<2 | 3 | 4 | 5 | null>(null);
@@ -751,7 +753,7 @@ function StepSession({ mode, core, coreError, onLoadCore, story, spec, step, bas
               )}
               {!wide && (
                 <views.Segmented
-                  value={view === 'columns' ? 'cumulative' : view}
+                  value={view}
                   options={[
                     { value: 'cumulative', label: t({ id: 'lab.tables.cumulative', message: '累計', comment: '檢視切換' }) },
                     { value: 'transaction', label: t({ id: 'lab.tables.transaction', message: '本筆變動', comment: '檢視切換' }) },
