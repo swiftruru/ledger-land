@@ -486,6 +486,40 @@ test.describe('自由實驗', () => {
     await expect(steps).toHaveCount(18);
     await expect(page.getByTestId('lab-sandbox-result')).toBeVisible();
   });
+  test('先猜再改：替八個目標選方向、記下，改第 12 步的收款後套用，報表區最上面揭曉；再改一次沒有先猜就沒有揭曉卡', async ({ page }) => {
+    await page.goto('/lab/sandbox/');
+    await waitForApp(page);
+    const step12 = page.locator(`[data-step="${STEP12}"]`);
+    await step12.getByTestId('lab-sandbox-guess').click();
+    const panel = step12.getByTestId('lab-sandbox-guess-panel');
+    await expect(panel).toBeVisible();
+    await expect(panel.getByTestId('lab-predict-submit')).toBeDisabled();
+    // 現金與五層利益選「減少」，兩個指標選「仍無法計算」與「▲ 上升」
+    const lines = panel.getByRole('radio', { name: /^減少$/ });
+    await expect(lines).toHaveCount(6);
+    for (let i = 0; i < 6; i++) await lines.nth(i).check();
+    await panel.getByRole('radio', { name: '仍無法計算' }).first().check();
+    await panel.getByRole('radio', { name: '▲ 上升' }).last().check();
+    await panel.getByTestId('lab-predict-submit').click();
+    await expect(panel.getByTestId('lab-predict-note')).toContainText('已記下');
+    // 第 12 步收款由 10,000,000 改成 9,500,000（後面的付款要有現金可付，最少 9,050,000）：現金減少、五層利益不變、流動比率仍無法計算（沒有流動負債）、負債比率不變
+    await step12.getByRole('textbox').fill('9500000');
+    await step12.getByTestId('lab-sandbox-apply').click();
+    const reveal = page.getByTestId('lab-sandbox-result').getByTestId('lab-reveal');
+    await expect(reveal).toBeVisible();
+    await expect(reveal.getByRole('heading')).toHaveText('揭曉：8 個猜對 2 個');
+    await expect(reveal.locator('li')).toHaveCount(8);
+    await expect(reveal.locator('li').first()).toContainText('你猜減少，答對了');
+    await expect(reveal.locator('li').first()).toContainText('→');
+    await expect(reveal).toContainText('和你改之前第 18 步之後的報表比');
+    await expect(page.getByTestId('lab-sandbox-toasts')).toContainText('揭曉：8 個猜對 2 個');
+    await expect(step12.getByTestId('lab-sandbox-guess-panel')).toHaveCount(0);
+    // 沒有先猜就套用：揭曉卡消失，只剩一般的提示
+    await step12.getByRole('textbox').fill('9800000');
+    await step12.getByTestId('lab-sandbox-apply').click();
+    await expect(page.getByTestId('lab-sandbox-toasts')).toContainText('已套用，三張報表與指標重算好了');
+    await expect(reveal).toHaveCount(0);
+  });
 });
 
 test.describe('勾稽練習', () => {

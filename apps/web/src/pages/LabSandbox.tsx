@@ -31,11 +31,14 @@ import type { LabReplay, LabRun, LabStep, ParamOverride } from '../features/lab/
 import { loadTracePanel, tracePanelNow, type TraceViews } from '../features/lab/lazy-trace.ts';
 import type { TraceTarget } from '../features/lab/TracePanel.tsx';
 import { TraceLoadToast } from '../features/lab/TraceLoadToast.tsx';
-import { lineAt, useLabLabels } from '../features/lab/labels.ts';
+import { formatRatio, lineAt, useLabLabels } from '../features/lab/labels.ts';
+import { PredictPanel } from '../features/lab/PredictPanel.tsx';
+import { PredictReveal, type RevealItem } from '../features/lab/PredictReveal.tsx';
+import { SANDBOX_PREDICT_TARGETS, scorePrediction, type PredictPoints, type PredictionRecord } from '../features/lab/predict.ts';
 import { labPrefersReducedMotion } from '../features/lab/motion.ts';
 import { clearSandbox, readSandbox, writeSandbox } from '../features/lab/progress.ts';
 import { RatioList } from '../features/lab/RatioList.tsx';
-import { ratioChanges, ratioSpecOf } from '../features/lab/ratio-changes.ts';
+import { ratioChanges, ratioPoint, ratioSpecOf } from '../features/lab/ratio-changes.ts';
 import {
   isLocalStepId,
   newSandbox,
@@ -166,6 +169,9 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
     return () => window.clearInterval(id);
   }, [note]);
   const say = (text: string, extra: { undo?: SandboxState; jump?: boolean } = {}) => setNote({ n: ++noteSeq.current, text, ...extra });
+  // 先猜再改（03 第 3.11 節、實驗室流程 2）：某一格金額先替八個目標選方向，按「套用」後和改之前的最後一步比，揭曉卡放在報表區最上面；不計分、不存
+  const [guess, setGuess] = useState<{ key: string; record: PredictionRecord; submitted: boolean } | null>(null);
+  const [reveal, setReveal] = useState<{ sandbox: SandboxState; items: RevealItem[]; right: number; total: number; order: number } | null>(null);
 
   const edited = useMemo(() => sandboxStory(story, sandbox), [story, sandbox]);
   const toOverrides = (sb: SandboxState): ParamOverride[] =>
@@ -187,7 +193,17 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
   // 只有一套算得下去時：算不下去的那一套說明原因，另一套照常顯示；教材算不下去時有 lab-sandbox-broken 的橫幅，IFRS 的原因在 BasisBanner
   const { view, basis } = sandboxView(replay, replayIfrs);
   const layout = lab.core.labContext(view.ok ? view.value.policyId : TEACHER_POLICY).layout;
-  const { lineLabel, accountLabel } = useLabLabels(layout);
+  const { lineLabel, accountLabel, ratioLabel } = useLabLabels(layout);
+  const predictLabel = (tg: (typeof SANDBOX_PREDICT_TARGETS)[number]) =>
+    tg.kind === 'line' ? lineLabel(tg.line) : tg.kind === 'ratio' ? ratioLabel(tg.ratioRef.split('@')[0]!) : tg.id;
+  /** 揭曉用的數字：某一步交易後的列與指標 */
+  const pointsOf = (step: LabStep): PredictPoints => ({
+    line: (id) => lineAt(step.after, id),
+    ratio: (ref) => {
+      const r = step.ratiosAfter.find((x) => x.ratioRef === ref);
+      return { ...ratioPoint(r), exact: r?.value ?? null };
+    },
+  });
   const templateOf = (id: string) => lab.core.templates.find((x) => x.id === id);
   const text = (lt: { 'zh-TW': string; en: string } | undefined) => lt?.[locale] ?? lt?.['zh-TW'] ?? '';
   usePageReady(ready);
@@ -263,6 +279,52 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
     setBlocked(null);
     setIssue(null);
     setSandbox(next);
+    // 先猜再改：記下預測後套用，用畫面上這一套口徑比較改之前與改之後的最後一步
+    const guessed = guess?.key === key && guess.submitted && r.ok && view.ok ? guess.record : null;
+    if (guessed !== null && r.ok && view.ok) {
+      const policy = view.value.policyId;
+      const after = policy === TEACHER_POLICY ? r : lab.core.replayLab(lab.core.asCoreStory(sandboxStory(story, next)), nextOverrides, policy);
+      const run = after.ok ? after.value : r.value;
+      const beforeStep = view.value.step(view.value.stepIds.length - 1);
+      const afterStep = run.step(run.stepIds.length - 1);
+      const { results, score } = scorePrediction(SANDBOX_PREDICT_TARGETS, guessed, pointsOf(beforeStep), pointsOf(afterStep));
+      const items: RevealItem[] = results.map(({ target, answer, correct }) => {
+        const detail =
+          target.kind === 'line'
+            ? `${formatMoney(lineAt(beforeStep.after, target.line), locale)} → ${formatMoney(lineAt(afterStep.after, target.line), locale)}`
+            : target.kind === 'ratio'
+              ? ((): string | undefined => {
+                  const spec = ratioSpecOf(lab.core, target.ratioRef);
+                  const b = beforeStep.ratiosAfter.find((x) => x.ratioRef === target.ratioRef);
+                  const a = afterStep.ratiosAfter.find((x) => x.ratioRef === target.ratioRef);
+                  return spec && b && a
+                    ? `${formatRatio(b, spec.unit, locale, spec.displayDecimals)} → ${formatRatio(a, spec.unit, locale, spec.displayDecimals)}`
+                    : undefined;
+                })()
+              : undefined;
+        return {
+          id: target.id,
+          label: predictLabel(target),
+          kind: target.kind,
+          chosen: guessed[target.id],
+          answer: answer.answer,
+          correct,
+          nearly: answer.nearly,
+          ...(detail === undefined ? {} : { detail }),
+        };
+      });
+      setReveal({ sandbox: next, items, right: score.right, total: score.total, order: beforeStep.order });
+      setGuess(null);
+      say(
+        t({
+          id: 'lab.sandbox.guessApplied',
+          message: `已套用。揭曉：${formatNumber(score.total, locale)} 個猜對 ${formatNumber(score.right, locale)} 個。`,
+          comment: '先猜再改：套用金額後的浮動提示；兩個數字已格式化',
+        }),
+        { jump: true },
+      );
+      return;
+    }
     if (r.ok) say(t({ id: 'lab.sandbox.applied', message: '已套用，三張報表與指標重算好了。', comment: '套用金額後的浮動提示' }), { jump: true });
   };
   // 刪除：先試算。會讓後面的步驟算不下去就留著，在這張卡片上說明是哪一步、為什麼（已經算不下去時不擋，讓人可以修好）
@@ -627,6 +689,24 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
                   <Trans id="lab.effects.none">本筆無影響</Trans>
                 </p>
               )}
+              {guess !== null && guess.key.startsWith(`${s.id}:`) && (
+                <div className="ll-lab-sbstep__guess" data-testid="lab-sandbox-guess-panel">
+                  <p className="ll-lab-sbstep__guess-hint">
+                    <Trans id="lab.sandbox.guessHint" comment="先猜再改面板上方的說明">
+                      先替每個目標選方向，再改金額按「套用」就揭曉；和改之前最後一步之後的報表比，不計分。
+                    </Trans>
+                  </p>
+                  <PredictPanel
+                    targets={SANDBOX_PREDICT_TARGETS}
+                    labelOf={predictLabel}
+                    record={guess.record}
+                    onChange={(record) => setGuess((g) => (g ? { ...g, record } : g))}
+                    onSubmit={() => setGuess((g) => (g ? { ...g, submitted: true } : g))}
+                    submitted={guess.submitted}
+                    submittedNote={t({ id: 'lab.sandbox.guessNoted', message: '已記下，改金額後按「套用」揭曉。', comment: '先猜再改：記下預測後的提示' })}
+                  />
+                </div>
+              )}
               {params.length > 0 && (
                 <div className="ll-lab-sbstep__params">
                   {params.map((p) => {
@@ -655,6 +735,18 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
                         <Button type="submit" size="sm" data-testid="lab-sandbox-apply">
                           {t({ id: 'lab.sandbox.apply', message: '套用', comment: '改金額的按鈕' })}
                         </Button>
+                        {view.ok && (
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="quiet"
+                            aria-expanded={guess?.key === key}
+                            onClick={() => setGuess((g) => (g?.key === key ? null : { key, record: {}, submitted: false }))}
+                            data-testid="lab-sandbox-guess"
+                          >
+                            {t({ id: 'lab.sandbox.guess', message: '先猜再改', comment: '自由實驗：改金額前先預測方向的按鈕（03 第 3.11 節）' })}
+                          </Button>
+                        )}
                         {blocked?.key === key && <FieldError id={`${key}-err`}>{blocked.text}</FieldError>}
                       </form>
                     );
@@ -723,6 +815,20 @@ function SandboxBody({ lab, initial }: { lab: Ok; initial: SandboxState | null }
                 />
               )}
               {(basis === 'ifrs' || basis === 'ifrs_only') && <BasisNote noCompare={basis === 'ifrs_only'} />}
+              {reveal !== null && reveal.sandbox === sandbox && (
+                <PredictReveal
+                  items={reveal.items}
+                  right={reveal.right}
+                  total={reveal.total}
+                  locale={locale}
+                  note={t({
+                    id: 'lab.sandbox.revealNote',
+                    message: `和你改之前第 ${formatNumber(reveal.order, locale)} 步之後的報表比；自由實驗不計分。`,
+                    comment: '先猜再改的揭曉卡說明；步數已格式化',
+                  })}
+                  basis={view.value.policyId}
+                />
+              )}
               <p className="ll-lab-session__equation">
                 {lineLabel('bs_total_assets')} {formatMoney(lineAt(shown.after, 'bs_total_assets'), locale)} ＝ {lineLabel('bs_total_liabilities')}{' '}
                 {formatMoney(lineAt(shown.after, 'bs_total_liabilities'), locale)} ＋ {lineLabel('bs_total_equity')}{' '}
