@@ -43,7 +43,8 @@ import { getProgressStore } from '../lib/progress/index.ts';
 import { useLocale } from '../lib/useLocale.ts';
 import { installQuizPersistence, useQuiz } from '../store/quiz.ts';
 import { lineChoicesOf, writeReturnTarget } from '../features/nav/return-target.ts';
-import { captureScrollAnchor } from '../features/quiz/useScrollAnchor.ts';
+import { useReturnRestore } from '../features/nav/useReturnRestore.ts';
+import { captureScrollAnchor, useScrollAnchor } from '../features/quiz/useScrollAnchor.ts';
 
 export interface ReviewItem {
   entry: ReviewQueueEntry;
@@ -55,6 +56,8 @@ export interface ReviewItem {
   resolved?: ResolvedId;
   /** 這次載入時發現的改版種類 */
   revised?: 'answer' | 'text';
+  /** 今天已經答過、不在到期清單裡的題目：只為了沿用暫存裡的工作階段而載入（從實驗室回來要回到同一題），不算進今天要複習的題數 */
+  extra?: boolean;
 }
 
 const KEY = 'review';
@@ -86,15 +89,20 @@ async function retiredOrigin(
   return { ...(levelTitle === undefined ? {} : { levelTitle }), ...(levelCode === undefined ? {} : { levelCode }) };
 }
 
-/** 讀今天到期的題目並比對 rev（answer 改版回盒子 1，text 改版只標記），回傳可作答與已下架的清單 */
-export async function loadReviewItems(locale: 'zh-TW' | 'en'): Promise<ReviewItem[]> {
+/** 讀今天到期的題目並比對 rev（answer 改版回盒子 1，text 改版只標記），回傳可作答與已下架的清單。
+ *  extraIds：暫存裡今天的工作階段的題目；其中今天已經答過、不再到期的也載進來（標 extra），工作階段才沿用得了 */
+export async function loadReviewItems(locale: 'zh-TW' | 'en', extraIds: readonly string[] = []): Promise<ReviewItem[]> {
   const store = await getProgressStore();
   const due = await store.listDueReviews(todayLocal(), REVIEW_DAILY_LIMIT);
-  const manifest = due.length > 0 ? await loadManifest().catch(() => undefined) : undefined;
+  const dueIds = new Set(due.map((e) => e.questionId));
+  const extra = extraIds.filter((id) => !dueIds.has(id));
+  const extraEntries = extra.length === 0 ? [] : (await store.listReviews()).filter((e) => extra.includes(e.questionId));
+  const manifest = due.length > 0 || extraEntries.length > 0 ? await loadManifest().catch(() => undefined) : undefined;
   const items: ReviewItem[] = [];
-  for (const entry of due) {
+  for (const [entry, isExtra] of [...due.map((e) => [e, false] as const), ...extraEntries.map((e) => [e, true] as const)]) {
     const found = await loadQuestion(entry.questionId, locale).catch(() => undefined);
     if (found === undefined) {
+      if (isExtra) continue;
       const resolved = await resolveId(entry.questionId, locale).catch((): ResolvedId => ({ status: 'unknown' }));
       items.push({ entry, resolved, ...(await retiredOrigin(store, entry.questionId, locale, manifest)) });
       continue;
@@ -108,7 +116,14 @@ export async function loadReviewItems(locale: 'zh-TW' | 'en'): Promise<ReviewIte
       await store.putReview(current);
     } else if (entry.updateKind !== undefined) revised = entry.updateKind;
     const levelCode = manifest === undefined ? undefined : levelCodeLabel(manifest, found.level.id);
-    items.push({ entry: current, question: q, levelTitle: found.level.title, ...(levelCode === undefined ? {} : { levelCode }), revised });
+    items.push({
+      entry: current,
+      question: q,
+      levelTitle: found.level.title,
+      ...(levelCode === undefined ? {} : { levelCode }),
+      revised,
+      ...(isExtra ? { extra: true } : {}),
+    });
   }
   return items;
 }
@@ -143,20 +158,40 @@ function ReviewSession() {
   // 判分與紀錄的 chunk 在第一次繪製送出後預載（和作答頁相同，見 scoring-lazy.ts）
   useEffect(() => afterFirstPaint(() => void loadScoring()), []);
 
+  // 先問暫存裡有沒有今天開始、還沒做完的錯題本工作階段（null 是還沒問）：有的話它的題目連同今天到期的一起載，答過的題才對得回來
+  const [cachedIds, setCachedIds] = useState<readonly string[] | null>(null);
   useEffect(() => {
     let alive = true;
-    loadReviewItems(locale).then(
+    void useQuiz
+      .getState()
+      .hydrate(KEY)
+      .then((restored) => {
+        if (!alive) return;
+        const current = useQuiz.getState();
+        const cached = restored && current.key === KEY ? current.session : null;
+        setCachedIds(cached !== null && !cached.completed && cached.startedAt.slice(0, 10) === todayLocal() ? cached.questionIds : []);
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (cachedIds === null) return;
+    let alive = true;
+    loadReviewItems(locale, cachedIds).then(
       (list) => alive && setItems(list),
       () => alive && setItems([]),
     );
     return () => {
       alive = false;
     };
-  }, [locale]);
+  }, [locale, cachedIds]);
 
-  const answerable = useMemo(() => (items ?? []).filter((it) => it.question !== undefined), [items]);
+  // 今天要複習的（到期的）；extra 是沿用的工作階段裡今天已經答過的題，只在 byId 裡
+  const answerable = useMemo(() => (items ?? []).filter((it) => it.question !== undefined && !it.extra), [items]);
   const retired = useMemo(() => (items ?? []).filter((it) => it.question === undefined), [items]);
-  const byId = useMemo(() => new Map(answerable.map((it) => [it.entry.questionId, it] as const)), [answerable]);
+  const byId = useMemo(() => new Map((items ?? []).filter((it) => it.question !== undefined).map((it) => [it.entry.questionId, it] as const)), [items]);
 
   const beginFresh = useCallback(() => {
     if (answerable.length === 0) return;
@@ -172,36 +207,28 @@ function ReviewSession() {
     );
   }, [answerable]);
 
-  // 開始或還原（每次掛載都比對）：store 已有錯題本的工作階段時 hydrate 直接沿用它（已完成的回 false），
-  // 題目、順序與開始日期都和今天的清單一致、答案也沒改版才沿用，否則重新開始
+  // 開始或沿用（每次掛載都比對；暫存已在上面還原）：工作階段是今天開始的、還沒答的題目和順序與今天的清單一致、答案也沒改版才沿用（kept），
+  // 否則重新開始。已經答過的題不在今天的清單裡，比對時先拿掉（session-entry.ts 的 reviewSessionMatches）
+  const [kept, setKept] = useState(false);
   useEffect(() => {
-    if (items === null || answerable.length === 0 || settled) return;
-    let alive = true;
-    void useQuiz
-      .getState()
-      .hydrate(KEY)
-      .then((restored) => {
-        if (!alive) return;
-        setSettled(true);
-        const current = useQuiz.getState();
-        const session = current.session;
-        const ids = answerable.map((it) => it.entry.questionId);
-        const matches =
-          restored &&
-          current.key === KEY &&
-          session !== null &&
-          reviewSessionMatches(session, ids, todayLocal()) &&
-          // 答案改版的題目（暫存記的 answerRev 和現在不同）：整個錯題本重新開始，不沿用舊的判分
-          ids.every((id) => {
-            const was = current.answerRevs[id];
-            return was === undefined || was === byId.get(id)?.question?.answerRev;
-          });
-        if (!matches) beginFresh();
+    if (items === null || cachedIds === null || settled) return;
+    if (answerable.length === 0 && cachedIds.length === 0) return;
+    setSettled(true);
+    const current = useQuiz.getState();
+    const cached = current.key === KEY && current.session !== null && !current.session.completed ? current.session : null;
+    const ids = answerable.map((it) => it.entry.questionId);
+    const answered = new Set(cached === null ? [] : cached.questionIds.filter((id) => cached.questions[id]?.confirmed));
+    const matches =
+      cached !== null &&
+      reviewSessionMatches(cached, ids, todayLocal(), answered) &&
+      // 答案改版的題目（暫存記的 answerRev 和現在不同）：整個錯題本重新開始，不沿用舊的判分
+      cached.questionIds.every((id) => {
+        const was = current.answerRevs[id];
+        return was === undefined || was === byId.get(id)?.question?.answerRev;
       });
-    return () => {
-      alive = false;
-    };
-  }, [items, answerable, byId, beginFresh, settled]);
+    setKept(matches);
+    if (!matches) beginFresh();
+  }, [items, cachedIds, answerable, byId, beginFresh, settled]);
 
   const session = quiz.key === KEY ? quiz.session : null;
 
@@ -273,7 +300,8 @@ function ReviewSession() {
   // 沒有到期題時的下一次排程（「下次複習：10月27日 2 題」）：清單讀到、確定是空的才讀；undefined 是還在讀，null 是沒有排程（讀不到也算沒有）。
   // 空狀態要等它到了才算齊（那一行不能晚一步冒出來）
   const [nextDue, setNextDue] = useState<{ date: string; count: number } | null | undefined>(undefined);
-  const empty = items !== null && answerable.length === 0;
+  // 沿用的工作階段（kept）裡的題目都答完了：不算空狀態，顯示完成畫面或（複習中）最後一題的回饋
+  const empty = items !== null && answerable.length === 0 && !kept;
   useEffect(() => {
     if (!empty) return;
     let alive = true;
@@ -309,6 +337,15 @@ function ReviewSession() {
   useEffect(() => {
     if (currentQ) preloadQuestionModules(currentQ);
   }, [currentQ]);
+  // 從實驗室的「回到題目」回來（M5 的尾巴，2026-11-08）：複習中、內容齊了那一次排版，依離開時記下的錨點還原捲動位置、焦點放回「看動畫」（和關卡頁同一個 hook）；
+  // 複習中的捲動位置也和關卡頁一樣依錨點記錄與還原（切換語言、離開再回來）
+  const restoreOn = inReview && session !== null && !session.completed && ready;
+  useReturnRestore(restoreOn, (target) => target.kind === 'review');
+  useScrollAnchor(
+    restoreOn,
+    () => useQuiz.getState().getAnchor(),
+    (anchor) => useQuiz.getState().setAnchor(anchor),
+  );
 
   const playHref = localePath(locale, '/play/');
   const topBar = (
@@ -449,8 +486,11 @@ function ReviewSession() {
     );
   };
 
-  if (answerable.length === 0) {
+  // 沿用的工作階段裡的題目都答過了：複習中就照常顯示最後一題（下面的作答畫面），不在複習中就當今天做完了
+  const allAnswered = kept && session !== null && !session.completed && session.questionIds.every((id) => session.questions[id]?.confirmed);
+  if (answerable.length === 0 && !(allAnswered && inReview)) {
     if (doneToday !== null) return doneView(doneToday);
+    if (allAnswered && session !== null) return doneView(session);
     const date = nextDue ? formatDate(nextDue.date, locale) : '';
     const n = nextDue ? formatNumber(nextDue.count, locale) : '';
     const nextLine = nextDue
@@ -515,7 +555,8 @@ function ReviewSession() {
 
   // 入口：今天要複習 N 題，最多列 5 題（不可點的資訊列），其餘「還有 N 題」；做到一半回來是「繼續複習」
   if (!inReview) {
-    const count = answerable.length;
+    // 沿用的工作階段：還要複習的是還沒答的那幾題
+    const count = kept ? session.questionIds.filter((id) => !session.questions[id]?.confirmed).length : answerable.length;
     const shown = answerable.slice(0, 5);
     const more = count - shown.length;
     const started = session.currentIndex > 0 || session.questionIds.some((id) => session.questions[id]?.confirmed);
@@ -633,7 +674,8 @@ function ReviewSession() {
 
   return (
     <>
-      <div className="ll-level-head ll-review-head">
+      {/* 捲動錨點（data-ll-anchor，useScrollAnchor）：頁首、題目卡、回饋區，和關卡頁同一套 */}
+      <div id="ll-review-head" data-ll-anchor className="ll-level-head ll-review-head">
         <TopBar
           compact
           title={
@@ -655,7 +697,7 @@ function ReviewSession() {
       </p>
       {loadFailedBanner}
       {/* 作答區還沒齊時整張題目卡隱藏、齊了淡入（和 LevelSession 同一個 .ll-question-wrap） */}
-      <div className="ll-question-wrap" data-ready={area.pending ? 'false' : 'true'}>
+      <div id={`ll-q-${qid}`} data-ll-anchor className="ll-question-wrap" data-ready={area.pending ? 'false' : 'true'}>
         <>
           <QuestionCard
             className="ll-question--review"
@@ -674,27 +716,30 @@ function ReviewSession() {
             {...(q.type === 'classify' ? { submitLabel: t({ id: 'quiz.submit.classify', message: '確認分類' }) } : {})}
             feedback={
               result === undefined ? undefined : (
-                <FeedbackView
-                  q={q}
-                  result={result}
-                  mistakeState="none"
-                  onNext={() => useQuiz.getState().next()}
-                  scrollOnMount={freshConfirm === qid}
-                  // 「看動畫」（M5）：返回膠囊回到錯題複習的這一題（工作階段在暫存裡，回來還原到同一題）；剛剛的答案帶進預測階段
-                  onShowAnimation={() => {
-                    const anchor = captureScrollAnchor();
-                    const lineChoices = lineChoicesOf(q, qs.answer);
-                    writeReturnTarget({
-                      kind: 'review',
-                      questionId: qid,
-                      href: window.location.pathname + window.location.search,
-                      ...(anchor === undefined ? {} : { anchor }),
-                      ...(Object.keys(lineChoices).length === 0 ? {} : { lineChoices }),
-                    });
-                    void useQuiz.getState().flush();
-                  }}
-                  nextLabel={note && <p className="ll-review-box">{boxText(note)}</p>}
-                />
+                // 回饋區的 id 給回來時的焦點（useReturnRestore 找 #ll-fb-<題目> 裡的「看動畫」）與捲動錨點用
+                <div id={`ll-fb-${qid}`} data-ll-anchor>
+                  <FeedbackView
+                    q={q}
+                    result={result}
+                    mistakeState="none"
+                    onNext={() => useQuiz.getState().next()}
+                    scrollOnMount={freshConfirm === qid}
+                    // 「看動畫」（M5）：返回膠囊回到錯題複習的這一題（工作階段在暫存裡，回來還原到同一題）；剛剛的答案帶進預測階段
+                    onShowAnimation={() => {
+                      const anchor = captureScrollAnchor();
+                      const lineChoices = lineChoicesOf(q, qs.answer);
+                      writeReturnTarget({
+                        kind: 'review',
+                        questionId: qid,
+                        href: window.location.pathname + window.location.search,
+                        ...(anchor === undefined ? {} : { anchor }),
+                        ...(Object.keys(lineChoices).length === 0 ? {} : { lineChoices }),
+                      });
+                      void useQuiz.getState().flush();
+                    }}
+                    nextLabel={note && <p className="ll-review-box">{boxText(note)}</p>}
+                  />
+                </div>
               )
             }
           >

@@ -49,12 +49,13 @@ import { TIMER_ANNOUNCE_SETTING, TIMER_RELAXED_SETTING, parseTimerSettings } fro
 import { TimerDisplay, timerDisplayProps } from './TimerDisplay.tsx';
 import { PendingContext, usePendingScope } from './useAsync.ts';
 import { captureScrollAnchor, useScrollAnchor } from './useScrollAnchor.ts';
-import { clearReturnTarget, lineChoicesOf, readReturnTarget, writeReturnTarget } from '../nav/return-target.ts';
+import { lineChoicesOf, writeReturnTarget } from '../nav/return-target.ts';
+import { useReturnRestore } from '../nav/useReturnRestore.ts';
 import type { LevelSnapshot, QuestionSnapshot } from '../../lib/content.ts';
 import { generateAttemptId } from '@ledgerland/progress';
 import { logError } from '../../lib/errors.ts';
 import { afterFirstPaint } from '../../lib/idle.ts';
-import { suppressHeadingFocusOnce, usePageReady } from '../../lib/page-ready.tsx';
+import { usePageReady } from '../../lib/page-ready.tsx';
 import { nowIso, secureRandom } from '../../lib/progress/app-info.ts';
 import { getProgressStore } from '../../lib/progress/index.ts';
 import { maybePersist } from '../../lib/progress/persist.ts';
@@ -453,30 +454,7 @@ export function LevelSession({ snapshot, notes }: { snapshot: LevelSnapshot; not
   // 從實驗室的「回到題目」回來（M5，02 第 5.3 節、03 第 4.6 節）：store 裡最近一筆是這一關、而且目前這題就是那一題時，捲動位置依離開時記下的錨點還原
   //（先寫進工作階段的錨點，下面的 useScrollAnchor 在同一次排版讀它），焦點回到「看動畫」按鈕；用過就清掉。別關的那一筆也清掉（最近一筆已經沒用了），別題的不動
   const restoreOn = session !== null && !completed && pageReady;
-  useLayoutEffect(() => {
-    if (!restoreOn) return;
-    const target = readReturnTarget();
-    if (target === undefined || target.kind !== 'level' || target.levelId !== level.id) return;
-    clearReturnTarget();
-    const current = useQuiz.getState().session;
-    if (current === null || current.questionIds[current.currentIndex] !== target.questionId) return;
-    if (target.anchor) useQuiz.getState().setAnchor(target.anchor);
-    // 換頁後的焦點這一次不移到頁面標題（lib/page-ready.tsx），由這裡放到「看動畫」
-    suppressHeadingFocusOnce();
-    let frame = 0;
-    let tries = 0;
-    const tryFocus = () => {
-      const btn = document.querySelector<HTMLElement>(`#ll-fb-${CSS.escape(target.questionId)} [data-testid="feedback-animation"]`);
-      if (!btn) return;
-      btn.focus({ preventScroll: true });
-      // 整頁的布幕還沒掀開時不能取得焦點：下一個影格再試，最多等約一秒（和換題後移焦點到題幹的作法相同）
-      if (document.activeElement !== btn && tries++ < 60) frame = requestAnimationFrame(tryFocus);
-    };
-    frame = requestAnimationFrame(tryFocus);
-    return () => cancelAnimationFrame(frame);
-    // level.id 跟著 key 換，整個元件重新掛載
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [restoreOn]);
+  useReturnRestore(restoreOn, (target) => target.kind === 'level' && target.levelId === level.id);
   // 捲動位置依錨點還原：要等這一頁的內容齊了（pageReady）那一次排版才做，太早做頁面還太短、捲不到，布幕一掀開就會從頂端跳到還原的位置
   //（2026-10-26 CI 的 Linux WebKit：切換語言後先停在 6px，一個影格後才到 324px）
   useScrollAnchor(

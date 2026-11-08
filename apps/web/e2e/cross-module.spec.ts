@@ -2,7 +2,7 @@
 // 回饋展開、捲動位置還原、焦點回到「看動畫」；預測面板帶入剛剛的答案；步驟下架導到故事頁；章末相關關卡；名詞卡兩邊同一張；離線可用。
 // 中英各走一次（語言不變）。Chromium 與 WebKit 都跑；離線那一段只在 Chromium（和 offline.spec 相同）。
 import { expect, test, type Page } from '@playwright/test';
-import { waitForApp, waitForSw } from './helpers.ts';
+import { waitForApp, waitForProgressDb, waitForSw } from './helpers.ts';
 
 /** 第 2 章「填出兩邊的數字」：第 1 題是交易影響題 q_59v8fm8w（賒銷全部商品，五個方向目標），labRef 是正式故事第 10 步 */
 const LEVEL = 'lv_gtpyj3s8';
@@ -113,6 +113,70 @@ test.describe('跨模組導覽：題目與實驗室', () => {
       await expect(page).toHaveURL(new RegExp(`/lab/story/${STORY}/${STEP}/\\?from=${Q}$`));
     });
   }
+
+  test('錯題複習：看動畫、回到複習的同一題（回饋展開、位置與焦點還原）', async ({ page }) => {
+    const c = CASES[0];
+    await clearProgress(page);
+    // 先在關卡答錯這一題，錯題本才有它（盒子 1 明天到期）；再把到期日改成今天
+    await page.goto(`/level/${LEVEL}/`);
+    await waitForApp(page);
+    await firstQuestionReady(page, c.q1);
+    await answerAllUp(page, c.up, c.submit);
+    await waitForProgressDb(page, ['reviewQueue']);
+    await page.evaluate(async (questionId) => {
+      const d = new Date();
+      const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        const req = indexedDB.open('ledgerland');
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+      await new Promise<void>((resolve, reject) => {
+        const tx = db.transaction('reviewQueue', 'readwrite');
+        const store = tx.objectStore('reviewQueue');
+        const get = store.get(questionId);
+        get.onsuccess = () => {
+          const entry = get.result as Record<string, unknown> | undefined;
+          if (entry === undefined) {
+            reject(new Error(`reviewQueue 裡沒有 ${questionId}`));
+            return;
+          }
+          store.put({ ...entry, dueAt: today });
+        };
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error ?? new Error('transaction aborted'));
+      });
+      db.close();
+    }, Q);
+    await page.goto('/review/');
+    await waitForApp(page);
+    await page.getByTestId('review-start').click();
+    await expect(page.locator('.ll-question-wrap[data-ready="true"]')).toBeVisible();
+    await answerAllUp(page, c.up, c.submit);
+    await expect(page.locator('.ll-feedback__title')).toHaveText(c.wrong);
+    const watch = page.getByTestId('feedback-animation');
+    await expect(watch).toHaveAttribute('href', `/lab/story/${STORY}/${STEP}/?from=${Q}`);
+    await watch.click();
+    await expect(page.getByTestId('lab-card')).toBeVisible();
+    // 返回膠囊回到錯題本；返回目標是複習那一筆（帶錨點）
+    const back = page.getByRole('link', { name: c.back });
+    await expect(back).toHaveAttribute('href', '/review/');
+    const stored = await page.evaluate(() => JSON.parse(sessionStorage.getItem('ll:return') ?? 'null') as Record<string, unknown> | null);
+    expect(stored).toMatchObject({ kind: 'review', questionId: Q, href: '/review/' });
+    expect(typeof (stored?.['anchor'] as { elementId?: unknown } | undefined)?.elementId).toBe('string');
+    // 回到複習的同一題：回饋還展開著、「看動畫」在畫面裡而且有焦點；返回目標用過就清掉
+    await back.click();
+    await expect(page).toHaveURL(/\/review\/$/);
+    await expect(page.locator('.ll-feedback__title')).toHaveText(c.wrong);
+    const again = page.getByTestId('feedback-animation');
+    await expect(again).toBeFocused();
+    const box = (await again.boundingBox())!;
+    const viewport = page.viewportSize()!;
+    expect(box.y, '「看動畫」在畫面裡').toBeGreaterThanOrEqual(0);
+    expect(box.y + box.height, '「看動畫」在畫面裡').toBeLessThanOrEqual(viewport.height + 0.5);
+    expect(await page.evaluate(() => sessionStorage.getItem('ll:return'))).toBeNull();
+  });
 
   test('步驟下架或不存在：?from= 時導到故事頁並說明一次，返回膠囊照樣有；沒有 ?from= 維持找不到頁面', async ({ page }) => {
     await clearProgress(page);
