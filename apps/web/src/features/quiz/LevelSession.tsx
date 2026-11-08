@@ -28,7 +28,20 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { type JsonValue } from '@ledgerland/progress';
 import type { LevelItem, LevelScore } from '@ledgerland/quiz';
 import { localePath } from '@ledgerland/i18n';
-import { Button, IconButton, NoteTag, QuestionCard, TimerIcon, Toast, ToastRegion, TopBar, TranslateIcon, useStatementNames } from '@ledgerland/web-ui';
+import { useSearchParams } from 'react-router';
+import {
+  Button,
+  HintBar,
+  IconButton,
+  NoteTag,
+  QuestionCard,
+  TimerIcon,
+  Toast,
+  ToastRegion,
+  TopBar,
+  TranslateIcon,
+  useStatementNames,
+} from '@ledgerland/web-ui';
 import { LangSwitch, useSwitchLocale } from '../../components/LangSwitch.tsx';
 import { DeferredFeedbackView as FeedbackView } from './feedback-lazy.tsx';
 import { Markup } from './Markup.tsx';
@@ -524,6 +537,11 @@ export function LevelSession({ snapshot, notes }: { snapshot: LevelSnapshot; not
 
   const backHref = localePath(locale, `/play/?from=${encodeURIComponent(level.id)}`);
   const hasNotes = notes.notInExam || notes.investment;
+  const [searchParams] = useSearchParams();
+  // 從實驗室的故事頁（章末的相關關卡）進來：?from=<故事 ID>，頂端一條「回到實驗室」的膠囊（和步驟頁的「回到題目」同一種）。
+  // 作答中與結果頁都有；從題目按「看動畫」再回來時網址還帶著 ?from=，膠囊也還在（巢狀的返回不必另外記）。格式不對就當沒有
+  const fromStory = searchParams.get('from');
+  const labHref = fromStory !== null && /^story_[0-9a-hjkmnp-tv-z]{6}$/.test(fromStory) ? localePath(locale, `/lab/story/${fromStory}/`) : null;
   // 頁首：TopBar compact（返回是圖示，可讀名稱「離開這一關，回到闖關地圖」；不跳確認，作答已暫存，站規 2.4.1）、關卡名稱、語言切換（窄時收成圖示）；
   // 下面一列是章節標示（延伸、非投資建議）。計時（倒數或「這一關計時」）在題目卡的題號列右側，不在頁首和題目之間另佔一列
   const header = () => (
@@ -535,6 +553,16 @@ export function LevelSession({ snapshot, notes }: { snapshot: LevelSnapshot; not
         backLabel={t({ id: 'level.back', message: '離開這一關，回到闖關地圖', comment: '作答頁頁首返回圖示的可讀名稱（不跳確認，作答已暫存）' })}
         actions={<QuizLangSwitch />}
       />
+      {labHref !== null && (
+        <HintBar
+          kind="info"
+          detailsHref={labHref}
+          detailsLabel={t({ id: 'level.backToLab', message: '回到實驗室', comment: '從實驗室的故事頁進關卡時，頂端的返回膠囊' })}
+          data-testid="level-from-lab"
+        >
+          {t({ id: 'level.fromLab', message: '你從實驗室的故事來到這一關。', comment: '從實驗室的故事頁進關卡時，返回膠囊的說明' })}
+        </HintBar>
+      )}
       {hasNotes && (
         <div className="ll-level-strip">
           <p className="ll-level-notes" data-testid="level-notes">
