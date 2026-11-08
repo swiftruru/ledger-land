@@ -55,6 +55,7 @@
     "check:tw": "node tools/check-tw-style.mjs",
     "check:hygiene": "node tools/check-hygiene.mjs",
     "check:core": "node tools/check-core.mjs",
+    "check:golden": "node tools/check-golden.mjs",
     "licenses:build": "node tools/licenses.mjs --write",
     "licenses:check": "node tools/licenses.mjs --check",
     "perf": "node tools/perf.mjs",

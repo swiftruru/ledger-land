@@ -189,9 +189,9 @@ IFRS 對照：
 
 測試與紀錄：
 
-- 黃金測試的計算表腳本沒有進 repo，PR 113 也沒有附逐步計算過程；有獨立依據的只有兩處：第 18 步對過 [04](../plan/04-accounting-core.md) 第 10.3 節的表，`ifrs@1` 前 4 步和 `teacher@1` 的黃金資料相同；其餘步沒有獨立證據。
+- 黃金測試的計算表腳本已進 repo（2026-11-08）：`packages/core/test/golden/calc-lime-leaf.mjs` 只用加減法、不經過核心，兩套政策的 18 步三表、23 項指標與五步驟都和黃金資料逐項相同（`golden-calc.test.ts`）。PR 113 當時沒有附逐步計算過程，現在整份都有獨立依據。
 - 隨機性質測試沒有在同一組事件上逐步比兩套政策的現金；隨機金額的餘額規則、三表的自訂期初只跑教材；`ifrs@1` 的指標沒有隨機測試。
-- 找不到「黃金測試的期望值沒有引用故事資料」的 CI 檢查（10 第 8 節），`ifrs@1` 的黃金資料也沒有被它守住。
+- 「黃金測試的期望值沒有引用故事資料」的 CI 檢查已補上（2026-11-08，`check:golden`）：黃金資料、fixture 與計算表不得引用正式故事的 ID，計算表的金額沒有一個和正式故事的事件金額相同，而且兩份黃金資料都要能由計算表重現。
 - 沒有元件層測試環境，「第一次繪製就是完整的」是用 E2E 的 `MutationObserver` 驗。
 - axe 的 incomplete 節點沒有處理（閘門 7）。實驗室首頁與故事步驟列表沒有進 Tab 走一輪（閘門 2）。
 - WebKit 地圖測試那次偶發失敗的原因沒有查出來，Firefox 要等 main 的 CI（第 4 節）。
@@ -213,4 +213,4 @@ IFRS 對照：
 - 累計或本筆變動、選到哪張表要不要跨步驟記住（`labView` 的欄位已經在）。
 - `ifrs@1` 版面的列名：第 9 節那 34 列要不要換成現行用語；「設立費」要不要換成開辦費（順便替名詞 `tm_hz08w4k5` 補 `currentTwLabel`）；中英不對稱的幾列要不要對齊，例如 `is_directors_remuneration`（董事酬勞／Remuneration of directors and supervisors）、`is_packing_freight_expense`（運費／Packing and delivery expenses），以及同一條現金流量在間接法叫「營業活動的現金流量總計」、直接法叫「營業活動之淨現金流量」。
 - 闖關地圖 `.qm-sticky` 蓋住焦點要不要在 M5 前先修（第 8 節）。
-- 計算表腳本要不要進 repo，順便補第 9 節的 CI 檢查。
+- 計算表腳本要不要進 repo，順便補第 9 節的 CI 檢查。已決定並做了（2026-11-08）：進 repo，`check:golden` 進 CI，見 14 第 5.2 節。

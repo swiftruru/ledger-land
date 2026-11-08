@@ -807,6 +807,7 @@ tools       -> content-schema、core、quiz、i18n、tokens
 1. 這些套件的 tsconfig 不含 DOM 型別（`lib` 不列 `DOM`）。
 2. lint 規則（`no-restricted-imports`）禁止匯入 `react`、`react-dom`、`vite`、`node:*`。
 3. `tools/` 的檢查腳本確認各套件 `package.json` 的依賴符合第 8.2 節的方向，CI 的 hygiene 工作執行它（第 10.2 節）。根目錄的指令名稱是 `check:deps`（依賴方向）與 `check:dom`（DOM 禁用檢查）。
+5. 2026-11-08 起另有 `check:golden`（`tools/check-golden.mjs`）：黃金資料要能由獨立的計算表腳本 `packages/core/test/golden/calc-lime-leaf.mjs`（只用加減法、不經過核心）逐項重現，而且黃金資料、自編故事的 fixture 與計算表都不得引用正式故事的 ID，計算表的金額沒有一個和正式故事的事件金額相同（04 第 10.3 節、10 第 8 節）。
 4. M1 起（2026-10-23）另有 `check:core`：`packages/core/src` 不得含 `eval`、`new Function`、`Date`、`Math.random`、`Intl` 與計時器（`setTimeout`、`setInterval`、`queueMicrotask`），讓核心保持純函式；以及 `test:coverage`：只量 `packages/core/src`，陳述式與行 90%、分支 85%、函式 90%，低於門檻就失敗。
 
 ## 9. repo 初始化的固定步驟（M0b 執行）
