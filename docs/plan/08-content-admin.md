@@ -851,6 +851,7 @@ ID 分成兩類，共同規則是：**建立後不變、永不重用、由工具
 | `ref.termRefsListed` | 題目文字（題幹、選項、回饋、解說等所有 LocalizedText）裡的 `{{term:tm_id}}`（含 `{{term:tm_id\|plain}}`）必須列在該題的 `termRefs`；作答後的名詞列表、名詞圖鑑的收集與「在哪一關會遇到」都只看 `termRefs`（2026-10-24 加入，`tools/lib/content-text.mjs`） | 錯誤 | 全部 |
 | `ref.placeholderScope` | 數值佔位符的來源符合文字所在的作用範圍（8.1 節：`param.`、`derived.` 只用於交易範本的 `summary` 與 `explanation`，`amount` 只用於核心的 `effects` 片語樣板），而且引用的 `vars`、事件、參數、推導值或 target 都有宣告 | 錯誤 | 全部 |
 | `ref.labStep` | `labRef`、`labRefs`、`chapterEndLinks` 指向存在的故事與步驟，而且步驟屬於該故事 | 錯誤 | 全部 |
+| `ref.labRefRequired` | 交易影響題（`transaction_effect`）都要有 `labRef`（回饋區「看動畫」的入口，M5）；確定沒有對應的實驗室步驟時在 `tags` 加 `no_lab` 明確標示（2026-11-08 加入，`tools/lib/content-rules.mjs`）。補 `labRef` 不升 `rev`：它不是文字也不是答案（4.2 節的 answerHash 不含它），和 `termRefs` 一樣屬於資料欄位 | 錯誤 | 全部 |
 | `ref.ratio` | `ratioRef` 的指標與版本存在於指標登錄檔 | 錯誤 | 全部 |
 | `ref.ratioExists`、`ref.formulaRatioUnique`、`ref.ratioVersionExists` | 公式的 `ratioRef` 是登錄檔的指標、一個指標只能有一條公式、`versions[].version` 是該指標有的版本（`relation` 不得列 versions）（2026-11-07，`tools/lib/content-rules.mjs` 的 `runFormulaChecks`） | 錯誤 | 公式 |
 | `ref.formulaCoverage` | 指標登錄檔有、公式沒有的指標 | 警告 | 公式 |
