@@ -102,3 +102,51 @@ export interface PredictScore {
   readonly right: number;
   readonly total: number;
 }
+
+/** 自由實驗「先猜再改」的目標（03 第 3.11 節）：固定六個加流動比率與負債比率（故事流程 2 的兩個例子，一個會變得可以計算、一個從 0 上升） */
+export const SANDBOX_PREDICT_TARGETS: readonly PredictTarget[] = [
+  ...DEFAULT_LINE_TARGETS.map((t): PredictTarget => ({ id: t.id, kind: 'line', line: t.line })),
+  { id: 'r-current', kind: 'ratio', ratioRef: 'current_ratio@excel' },
+  { id: 'r-debt', kind: 'ratio', ratioRef: 'debt_ratio@excel' },
+];
+
+/** 一個時點的數字：某一列的金額、某個指標的顯示值（N/A 是 null）與精確值 */
+export interface PredictPoints {
+  readonly line: (lineId: string) => number;
+  readonly ratio: (ratioRef: string) => { readonly display: number | null; readonly exact: number | null };
+}
+
+export interface PredictAnswer {
+  readonly answer: PredictChoice;
+  readonly nearly: boolean;
+  /** 幾乎不變時實際的方向（也算對） */
+  readonly exact?: LineChoice;
+}
+
+/** 線與指標目標的正解（科目目標由步驟頁依科目表算，這裡不收）：改之前與改之後各一組數字 */
+export function judgeTarget(tg: PredictTarget, before: PredictPoints, after: PredictPoints): PredictAnswer {
+  if (tg.kind === 'line') return { answer: lineDirection(before.line(tg.line), after.line(tg.line)), nearly: false };
+  if (tg.kind === 'account') throw new Error('judgeTarget 不處理科目目標');
+  const b = before.ratio(tg.ratioRef);
+  const a = after.ratio(tg.ratioRef);
+  const d = ratioDirection(b, a);
+  const nearly = d.answer === 'unchanged' && a.exact !== null && b.exact !== null && a.exact !== b.exact;
+  return { answer: d.answer, nearly, ...(nearly ? { exact: lineDirection(b.exact!, a.exact!) } : {}) };
+}
+
+/** 揭曉：每個目標對不對，加總成成績 */
+export function scorePrediction(
+  targets: readonly PredictTarget[],
+  record: PredictionRecord,
+  before: PredictPoints,
+  after: PredictPoints,
+): {
+  readonly results: readonly { readonly target: PredictTarget; readonly answer: PredictAnswer; readonly correct: boolean }[];
+  readonly score: PredictScore;
+} {
+  const results = targets.map((target) => {
+    const answer = judgeTarget(target, before, after);
+    return { target, answer, correct: isPredictionCorrect(record[target.id], answer.answer, answer.nearly, answer.exact) };
+  });
+  return { results, score: { right: results.filter((r) => r.correct).length, total: results.length } };
+}

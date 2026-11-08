@@ -386,6 +386,18 @@ msgstr "Solvency"
 msgid "lab.reconcile.upstream"
 msgstr "Fix the cells used by step {firstFailed} first"
 
+#. 先猜再改面板上方的說明
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guessHint"
+msgstr "Pick a direction for each target first, then change the amount and press ‘Apply’ to reveal; it compares with the statements after the last step before your change, and is not scored."
+
+#. 自由實驗：改金額前先預測方向的按鈕（03 第 3.11 節）
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guess"
+msgstr "Predict first"
+
 #. 天平的結論
 #. js-lingui-explicit-id
 #: src/features/lab/BalanceScale.tsx
@@ -555,6 +567,13 @@ msgstr "no net change"
 #: src/pages/LabRatios.tsx
 msgid "lab.ratio.suggest.borrow"
 msgstr "Short-term bank loan"
+
+#. 先猜再改的揭曉卡說明；步數已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(reveal.order, locale)
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.revealNote"
+msgstr "Compared with the statements after step {0} before your change; the sandbox is not scored."
 
 #. 預測揭曉
 #. js-lingui-explicit-id
@@ -760,6 +779,14 @@ msgstr "Marked {first} and {second} on the statements."
 msgid "lab.sandbox.applied"
 msgstr "Applied. The three statements and the ratios have been recalculated."
 
+#. 先猜再改：套用金額後的浮動提示；兩個數字已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(score.total, locale)
+#. placeholder {1}: formatNumber(score.right, locale)
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guessApplied"
+msgstr "Applied. Revealed: {1} of {0} right."
+
 #. 收合公式樹節點時的播報；名稱已代入
 #. js-lingui-explicit-id
 #: src/features/lab/TraceTree.tsx
@@ -772,6 +799,12 @@ msgstr "Collapsed {label}."
 #: src/features/lab/StepPicker.tsx
 msgid "lab.reconcile.sheet.progress"
 msgstr "{done} of {0} steps practised"
+
+#. 先猜再改：記下預測後的提示
+#. js-lingui-explicit-id
+#: src/pages/LabSandbox.tsx
+msgid "lab.sandbox.guessNoted"
+msgstr "Noted. Change the amount and press ‘Apply’ to reveal."
 
 #. 記下預測後的播報
 #. js-lingui-explicit-id

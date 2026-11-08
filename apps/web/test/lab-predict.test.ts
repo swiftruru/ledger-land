@@ -15,6 +15,10 @@ import {
   recordOnTargets,
   targetsOnLayout,
   type PredictionRecord,
+  judgeTarget,
+  SANDBOX_PREDICT_TARGETS,
+  scorePrediction,
+  type PredictPoints,
 } from '../src/features/lab/predict.ts';
 
 describe('predictTargetsOf', () => {
@@ -143,5 +147,42 @@ describe('savePrediction 的口徑（03 第 3.13 節）', () => {
     p = (await readStoryProgress('story_x')).progress;
     expect(p.predictBasis).toEqual({});
     expect(Object.keys(p.predictions).sort()).toEqual(['st_a', 'st_b']);
+  });
+});
+
+describe('自由實驗的先猜再改（judgeTarget、scorePrediction）', () => {
+  const points = (lines: Record<string, number>, ratios: Record<string, { display: number | null; exact: number | null }>): PredictPoints => ({
+    line: (id) => lines[id] ?? 0,
+    ratio: (ref) => ratios[ref] ?? { display: null, exact: null },
+  });
+  it('目標是固定六個加流動比率與負債比率', () => {
+    expect(SANDBOX_PREDICT_TARGETS.map((t) => t.id)).toEqual(['cash', 'l1', 'l2', 'l3', 'l4', 'l5', 'r-current', 'r-debt']);
+  });
+  it('線看金額差額的正負；指標 N/A 變成數字是變得可以計算，0 變成數字是上升；幾乎不變時兩種答案都算對', () => {
+    const before = points({ bs_cash: 718_000 }, { 'current_ratio@excel': { display: null, exact: null }, 'debt_ratio@excel': { display: 0, exact: 0 } });
+    const after = points(
+      { bs_cash: 868_000 },
+      { 'current_ratio@excel': { display: 5.79, exact: 5.786 }, 'debt_ratio@excel': { display: 15.03, exact: 0.1503 } },
+    );
+    const { results, score } = scorePrediction(SANDBOX_PREDICT_TARGETS, { cash: 'up', l1: 'unchanged', 'r-current': 'up', 'r-debt': 'up' }, before, after);
+    const byId = Object.fromEntries(results.map((r) => [r.target.id, r]));
+    expect(byId['cash']!.answer).toEqual({ answer: 'up', nearly: false });
+    expect(byId['cash']!.correct).toBe(true);
+    expect(byId['l1']!.correct).toBe(true);
+    expect(byId['r-current']!.answer.answer).toBe('becomes_computable');
+    expect(byId['r-current']!.correct).toBe(false);
+    expect(byId['r-debt']!.answer.answer).toBe('up');
+    expect(byId['r-debt']!.correct).toBe(true);
+    // 沒選的四個目標算錯
+    expect(score).toEqual({ right: 3, total: 8 });
+    // 幾乎不變：精確值有變、顯示值相同
+    const nearly = judgeTarget(
+      { id: 'x', kind: 'ratio', ratioRef: 'roa@excel' },
+      points({}, { 'roa@excel': { display: 5.66, exact: 0.05661 } }),
+      points({}, { 'roa@excel': { display: 5.66, exact: 0.05664 } }),
+    );
+    expect(nearly).toEqual({ answer: 'unchanged', nearly: true, exact: 'up' });
+    expect(isPredictionCorrect('up', nearly.answer, nearly.nearly, nearly.exact)).toBe(true);
+    expect(isPredictionCorrect('unchanged', nearly.answer, nearly.nearly, nearly.exact)).toBe(true);
   });
 });

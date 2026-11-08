@@ -1577,3 +1577,18 @@ html:has(.ll-lab-session__sticky) {
 .ll-lab-sandbox__head h2 {
   margin: 0;
 }
+
+/* 自由實驗的「先猜再改」（03 第 3.11 節，2026-11-08）：面板放在步驟卡的金額格上方，揭曉卡沿用步驟頁的 .ll-lab-reveal-card */
+.ll-lab-sbstep__guess {
+  margin: var(--ll-space-2) 0 var(--ll-space-3);
+  padding: var(--ll-space-3);
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+}
+.ll-lab-sbstep__guess-hint {
+  margin: 0 0 var(--ll-space-2);
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-body-sm-size);
+  line-height: var(--ll-type-body-sm-line);
+}
