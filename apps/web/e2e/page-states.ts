@@ -679,6 +679,26 @@ export const CASES: readonly PageCase[] = [
   { group: '實驗室', name: '首頁', path: '/lab/', prepare: (page) => visible(page, 'lab-hero') },
   { group: '實驗室', name: '故事步驟', path: `/lab/story/${STORY}/`, tablet: true, prepare: (page) => visible(page, 'lab-step-row') },
   { group: '實驗室', name: '步驟頁交易卡', path: `/lab/story/${STORY}/${STORY_STEP}/`, tablet: true, prepare: (page) => visible(page, 'lab-card') },
+  // 從題目開啟（M5）：頂端返回膠囊「回到題目」（依 manifest 找到那一題的關卡）
+  {
+    group: '實驗室',
+    name: '從題目開啟的步驟頁',
+    path: `/lab/story/${STORY}/st_aw2j4t/?from=q_59v8fm8w`,
+    prepare: async (page) => {
+      await visible(page, 'lab-card');
+      await expect(page.getByRole('link', { name: /回到題目|Back to the question/ })).toBeVisible();
+    },
+  },
+  // 步驟下架或不存在而且有 ?from=：故事頁頂端的一次性說明
+  {
+    group: '實驗室',
+    name: '故事頁步驟已更新的說明',
+    path: `/lab/story/${STORY}/st_nothing/?from=q_59v8fm8w`,
+    prepare: async (page) => {
+      await visible(page, 'lab-story-missing');
+      await visible(page, 'lab-step-row');
+    },
+  },
   {
     group: '實驗室',
     name: '步驟頁預測',

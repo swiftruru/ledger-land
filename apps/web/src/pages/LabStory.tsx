@@ -3,15 +3,16 @@
 // 字串在第三層 catalog（lab.po）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { formatNumber, localePath } from '@ledgerland/i18n';
-import { Badge, Button, CheckCircleIcon, ErrorState, NavList, NavRow, PlayIcon, TopBar } from '@ledgerland/web-ui';
+import { Badge, Button, CheckCircleIcon, ErrorState, HintBar, NavList, NavRow, PlayIcon, TopBar } from '@ledgerland/web-ui';
 import { MapIcon } from '@ledgerland/web-ui/map';
 import { predictTotals } from '../features/lab/progress.ts';
 import { useModeNames } from '../features/lab/StageBar.tsx';
 import { useLabStory } from '../features/lab/useLab.ts';
 import { useLabBack } from '../features/lab/useLabBack.ts';
-import { loadChapterIndex, type ChapterSummary, type StorySnapshot } from '../lib/content.ts';
+import { returnTargetFor } from '../features/nav/return-target.ts';
+import { findLevelOfQuestion, loadChapterIndex, type ChapterSummary, type StorySnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
 import { NotFound } from './NotFound.tsx';
@@ -33,6 +34,32 @@ export default function LabStory() {
   const back = useLabBack();
   const lab = useLabStory(storyId, locale);
   const modes = useModeNames();
+  // 從題目開啟的步驟下架或不存在時步驟頁導到這裡（?from=<題目 ID>&missing=<步驟 ID>，03 第 4.1 節）：頂端一次性的說明加返回膠囊「回到題目」，關掉就從網址拿掉
+  const [params, setParams] = useSearchParams();
+  const from = params.get('from');
+  const missing = params.get('missing');
+  const [fromHref, setFromHref] = useState<string | null>(null);
+  useEffect(() => {
+    if (!from) return;
+    const stored = returnTargetFor(from);
+    if (stored !== undefined) {
+      setFromHref(stored.href);
+      return;
+    }
+    let alive = true;
+    findLevelOfQuestion(from).then(
+      (entry) => alive && entry && setFromHref(localePath(locale, `/level/${entry.id}/`)),
+      () => {},
+    );
+    return () => {
+      alive = false;
+    };
+  }, [from, locale]);
+  const dismissMissing = () => {
+    const next = new URLSearchParams(params);
+    next.delete('missing');
+    setParams(next, { replace: true });
+  };
   const [chapterIndex, setChapterIndex] = useState<ChapterSummary[] | null>(null);
   useEffect(() => {
     let alive = true;
@@ -77,6 +104,22 @@ export default function LabStory() {
   return (
     <>
       {top}
+      {from !== null && missing !== null && (
+        <HintBar
+          kind="info"
+          {...(fromHref === null
+            ? {}
+            : { detailsHref: fromHref, detailsLabel: t({ id: 'lab.step.backToQuestion', message: '回到題目', comment: '從題目開啟實驗室時的返回膠囊' }) })}
+          onClose={dismissMissing}
+          data-testid="lab-story-missing"
+        >
+          {t({
+            id: 'lab.story.missingStep',
+            message: '這一題對應的步驟已經更新，先從故事開始。',
+            comment: '從題目開啟的步驟已經下架或不存在時，故事頁頂端的一次性說明（M5）',
+          })}
+        </HintBar>
+      )}
       <p className="ll-lab-story__company">{story.company.name}</p>
       {totals.steps > 0 && (
         <p className="ll-lab-story__score" data-testid="lab-story-score">

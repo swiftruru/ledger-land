@@ -1,10 +1,13 @@
 // 回饋區（03 第 2.9 節）：由 packages/quiz 的 ScoreResult 組出 FeedbackPanel 的各段：結果列、摘要（多正解題數量、分類與逐目標的對幾個）、
 // 解說（{{option:…}} 已代入）、逐選項說明（multi_choice 全部展開、取捨題列出三個方案的好處與要注意）、名詞 chip、錯題本狀態、「下一題」。
 // 這一題剛收進圖鑑的名詞（newTermIds）：「相關名詞」小標旁「新收進 N」，那幾個 chip 整顆鍍金、最前面是金色勾章（不再用浮動提示，M3 驗收第 2 輪）。
+// 題目有 labRef 時（M5，03 第 2.9 節第 6 點、第 4.1 節），解說下面、名詞 chip 上面一列「看動畫」：連到 /lab/story/<story>/<step>/?from=<題目 ID>
+// 的連結（推一筆瀏覽歷史，Android 返回鍵與上一頁一致），答對答錯都有；按下的那一刻父層先記返回目標（features/nav/return-target.ts）。
 import { useLingui } from '@lingui/react/macro';
 import { useRef, useState, type ReactNode } from 'react';
+import { localePath } from '@ledgerland/i18n';
 import type { ScoreResult } from '@ledgerland/quiz';
-import { FeedbackPanel, TermChip, type FeedbackOptionNote } from '@ledgerland/web-ui';
+import { Button, FeedbackPanel, PlayIcon, TermChip, type FeedbackOptionNote } from '@ledgerland/web-ui';
 import type { QuestionSnapshot } from '../../lib/content.ts';
 import { Markup } from './Markup.tsx';
 import { optionsOf, useOptionTexts, useRatioStrings, valueContextOf } from './QuestionView.tsx';
@@ -28,6 +31,8 @@ export interface FeedbackViewProps {
   scrollOnMount?: boolean;
   /** 這一題剛收進圖鑑的名詞 ID（寫進進度之後才知道） */
   newTermIds?: readonly string[];
+  /** 按下「看動畫」（題目有 labRef 時才有這顆）：父層記下返回目標；連結本身照常導航 */
+  onShowAnimation?: () => void;
 }
 
 function TermChips({ ids, fresh }: { ids: readonly string[]; fresh: ReadonlySet<string> }) {
@@ -62,6 +67,7 @@ export function FeedbackView({
   favourited,
   scrollOnMount,
   newTermIds,
+  onShowAnimation,
 }: FeedbackViewProps) {
   const { t } = useLingui();
   const { locale } = useTerms();
@@ -180,6 +186,8 @@ export function FeedbackView({
   // 只算這一題的相關名詞裡新收進的（recordAttempt 的 unlockedTerms 本來就是 termRefs 的子集）
   const fresh = new Set((newTermIds ?? []).filter((id) => q.termRefs.includes(id)));
   const explanationText = judgment ? (q['viewpoint'] as string | undefined) : (q['explanation'] as string | undefined);
+  // 「看動畫」：取捨題沒有對應的交易；連結帶語系前綴與 ?from=（02 第 5.3 節）
+  const labHref = !judgment && q.labRef ? localePath(locale, `/lab/story/${q.labRef.story}/${q.labRef.step}/?from=${encodeURIComponent(q.id)}`) : undefined;
   return (
     <FeedbackPanel
       outcome={judgment ? 'neutral' : result.correct ? 'correct' : 'wrong'}
@@ -205,6 +213,20 @@ export function FeedbackView({
     >
       {judgment && (
         <p className="ll-muted ll-small">{t({ id: 'quiz.judgment.unscored', message: '這一題不計分，也不進錯題本。', comment: '取捨題回饋區的說明' })}</p>
+      )}
+      {labHref !== undefined && (
+        <div className="ll-fblab" data-testid="feedback-lab">
+          <p className="ll-fblab__text">
+            {t({
+              id: 'quiz.feedback.labLead',
+              message: '這筆交易在報表實驗室有動畫，可以看它怎麼走過三張報表。',
+              comment: '回饋區「看動畫」按鈕旁的一句說明（題目有對應的實驗室步驟時）',
+            })}
+          </p>
+          <Button size="sm" icon={<PlayIcon />} href={labHref} onClick={onShowAnimation} data-testid="feedback-animation">
+            {t({ id: 'quiz.feedback.watchAnimation', message: '看動畫', comment: '回饋區開啟實驗室對應步驟的按鈕（連結，03 第 2.9 節）' })}
+          </Button>
+        </div>
       )}
       {nextLabel}
     </FeedbackPanel>

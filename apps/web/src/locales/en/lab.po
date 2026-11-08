@@ -633,8 +633,10 @@ msgid "lab.step.back"
 msgstr "Back to the story steps"
 
 #. 從題目開啟實驗室時的返回膠囊
+#. 從題目開啟實驗室時的返回膠囊
 #. js-lingui-explicit-id
 #: src/pages/LabStep.tsx
+#: src/pages/LabStory.tsx
 msgid "lab.step.backToQuestion"
 msgstr "Back to the question"
 
@@ -798,6 +800,12 @@ msgstr "Applied. The three statements and the ratios have been recalculated."
 #: src/pages/LabSandbox.tsx
 msgid "lab.sandbox.guessApplied"
 msgstr "Applied. Revealed: {1} of {0} right."
+
+#. 從題目開啟時，預測面板已填入那一題的答案（M5）
+#. js-lingui-explicit-id
+#: src/pages/LabStep.tsx
+msgid "lab.predict.prefilled"
+msgstr "Your answer from the question has been filled in. You can change it."
 
 #. 收合公式樹節點時的播報；名稱已代入
 #. js-lingui-explicit-id
@@ -1717,6 +1725,12 @@ msgstr "You have watched this step"
 #: src/pages/LabStep.tsx
 msgid "lab.finish.story"
 msgstr "This step is done"
+
+#. 從題目開啟的步驟已經下架或不存在時，故事頁頂端的一次性說明（M5）
+#. js-lingui-explicit-id
+#: src/pages/LabStory.tsx
+msgid "lab.story.missingStep"
+msgstr "The step this question pointed to has been updated. Start from the story instead."
 
 #. 存下來的修改重播失敗時的橫幅標題
 #. js-lingui-explicit-id

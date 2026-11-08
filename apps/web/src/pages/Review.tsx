@@ -42,6 +42,8 @@ import { nowIso, secureRandom, todayLocal } from '../lib/progress/app-info.ts';
 import { getProgressStore } from '../lib/progress/index.ts';
 import { useLocale } from '../lib/useLocale.ts';
 import { installQuizPersistence, useQuiz } from '../store/quiz.ts';
+import { lineChoicesOf, writeReturnTarget } from '../features/nav/return-target.ts';
+import { captureScrollAnchor } from '../features/quiz/useScrollAnchor.ts';
 
 export interface ReviewItem {
   entry: ReviewQueueEntry;
@@ -678,6 +680,19 @@ function ReviewSession() {
                   mistakeState="none"
                   onNext={() => useQuiz.getState().next()}
                   scrollOnMount={freshConfirm === qid}
+                  // 「看動畫」（M5）：返回膠囊回到錯題複習的這一題（工作階段在暫存裡，回來還原到同一題）；剛剛的答案帶進預測階段
+                  onShowAnimation={() => {
+                    const anchor = captureScrollAnchor();
+                    const lineChoices = lineChoicesOf(q, qs.answer);
+                    writeReturnTarget({
+                      kind: 'review',
+                      questionId: qid,
+                      href: window.location.pathname + window.location.search,
+                      ...(anchor === undefined ? {} : { anchor }),
+                      ...(Object.keys(lineChoices).length === 0 ? {} : { lineChoices }),
+                    });
+                    void useQuiz.getState().flush();
+                  }}
                   nextLabel={note && <p className="ll-review-box">{boxText(note)}</p>}
                 />
               )

@@ -286,6 +286,8 @@ export interface QuestionSnapshot {
   revKind: 'text' | 'answer';
   answerRev: number;
   termRefs: string[];
+  /** 對應的實驗室步驟（03 第 4.1 節）：回饋區的「看動畫」開 /lab/story/<story>/<step>/?from=<題目 ID>；沒有就不顯示 */
+  labRef?: { story: string; step: string };
   vars?: Record<string, number>;
   compiled?: {
     expected?: Record<string, unknown>;

@@ -17,6 +17,8 @@ export interface PredictPanelProps {
   submittedNote?: string;
   /** 記下之後又改了選項、還沒按「更新預測」：揭曉與成績仍是記下的那一份 */
   dirty?: boolean;
+  /** 從題目開啟時已把剛剛的答案填進來（M5，03 第 4.1 節）：導言下面一句提示；記下之後不再顯示 */
+  prefilledNote?: string;
 }
 
 const RATIO_CHOICES: readonly RatioChoice[] = ['up', 'down', 'unchanged', 'becomes_computable', 'becomes_na', 'stays_na'];
@@ -33,7 +35,7 @@ export function useRatioChoiceLabels(): Record<RatioChoice, string> {
   };
 }
 
-export function PredictPanel({ targets, labelOf, record, onChange, onSubmit, submitted, submittedNote, dirty = false }: PredictPanelProps) {
+export function PredictPanel({ targets, labelOf, record, onChange, onSubmit, submitted, submittedNote, dirty = false, prefilledNote }: PredictPanelProps) {
   const { t } = useLingui();
   const name = useId();
   const ratioLabels = useRatioChoiceLabels();
@@ -61,6 +63,11 @@ export function PredictPanel({ targets, labelOf, record, onChange, onSubmit, sub
       <p className="ll-lab-predict__intro">
         {t({ id: 'lab.predict.intro', message: '揭曉之前先猜一猜：這筆交易會讓下面這些數字怎麼變？', comment: '預測面板的導言' })}
       </p>
+      {prefilledNote !== undefined && !submitted && (
+        <p className="ll-lab-predict__prefilled" role="note" data-testid="lab-predict-prefilled">
+          {prefilledNote}
+        </p>
+      )}
       {lineTargets.length > 0 && (
         <ImpactPicker
           name={`${name}-lines`}
