@@ -155,11 +155,11 @@
         "kind": "accounts",
         "label": {
           "zh-TW": "董事酬勞",
-          "en": "Remuneration of directors and supervisors"
+          "en": "Directors' remuneration"
         },
         "aliases": {
           "zh-TW": ["董監事酬勞"],
-          "en": ["Directors' remuneration"]
+          "en": ["Remuneration of directors and supervisors"]
         },
         "termRef": "tm_q5srzxb2",
         "accounts": ["directors_remuneration"],
@@ -187,11 +187,11 @@
         "kind": "accounts",
         "label": {
           "zh-TW": "運費",
-          "en": "Packing and delivery expenses"
+          "en": "Freight expenses"
         },
         "aliases": {
           "zh-TW": ["包裝運送費"],
-          "en": ["Freight-out"]
+          "en": ["Freight-out", "Packing and delivery expenses"]
         },
         "termRef": "tm_dxr5anv4",
         "accounts": ["packing_freight_expense"],
@@ -235,11 +235,11 @@
         "cell": null,
         "kind": "accounts",
         "label": {
-          "zh-TW": "設立費",
+          "zh-TW": "開辦費",
           "en": "Start-up costs"
         },
         "aliases": {
-          "zh-TW": ["設立費（費用化）"],
+          "zh-TW": ["設立費（費用化）", "設立費"],
           "en": ["Start-up costs (expensed)"]
         },
         "termRef": "tm_hz08w4k5",
@@ -522,11 +522,11 @@
         "cell": null,
         "kind": "accounts",
         "label": {
-          "zh-TW": "預付費用",
+          "zh-TW": "預付款項",
           "en": "Prepayments"
         },
         "aliases": {
-          "zh-TW": ["預付款項"],
+          "zh-TW": ["預付費用"],
           "en": ["Prepaid expenses"]
         },
         "termRef": "tm_5xm3qcz9",
@@ -968,11 +968,11 @@
         "cell": null,
         "kind": "total",
         "label": {
-          "zh-TW": "負債總額",
+          "zh-TW": "負債總計",
           "en": "Total liabilities"
         },
         "aliases": {
-          "zh-TW": ["負債總計"],
+          "zh-TW": ["負債總額"],
           "en": []
         },
         "termRef": "tm_fwys72qx",
@@ -1129,11 +1129,11 @@
         "cell": null,
         "kind": "total",
         "label": {
-          "zh-TW": "權益總額",
+          "zh-TW": "權益總計",
           "en": "Total equity"
         },
         "aliases": {
-          "zh-TW": ["股東權益總額", "權益總計"],
+          "zh-TW": ["股東權益總額", "權益總額"],
           "en": []
         },
         "termRef": "tm_y37ymj9w",
@@ -1171,11 +1171,11 @@
         "cell": null,
         "kind": "group",
         "label": {
-          "zh-TW": "營業活動的現金流量",
+          "zh-TW": "營業活動之現金流量",
           "en": "Cash flows from operating activities"
         },
         "aliases": {
-          "zh-TW": ["營業活動之現金流量", "營業活動現金流量"],
+          "zh-TW": ["營業活動現金流量", "營業活動的現金流量"],
           "en": []
         },
         "termRef": "tm_p2a7c5vk",
@@ -1374,11 +1374,11 @@
         "cell": null,
         "kind": "total",
         "label": {
-          "zh-TW": "小計",
+          "zh-TW": "營運產生之現金流入（流出）",
           "en": "Cash generated from operations"
         },
         "aliases": {
-          "zh-TW": ["營運產生之現金"],
+          "zh-TW": ["營運產生之現金", "小計"],
           "en": ["Subtotal"]
         },
         "termRef": "tm_mcjk5sza",
@@ -1401,11 +1401,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "支付利息(-)",
+          "zh-TW": "支付之利息(-)",
           "en": "Interest paid (-)"
         },
         "aliases": {
-          "zh-TW": ["利息支出(-)", "支付之利息(-)", "支付之利息"],
+          "zh-TW": ["利息支出(-)", "支付之利息", "支付利息(-)"],
           "en": []
         },
         "termRef": "tm_y7a34vmk",
@@ -1419,11 +1419,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "支付所得稅(-)",
+          "zh-TW": "支付之所得稅(-)",
           "en": "Income taxes paid (-)"
         },
         "aliases": {
-          "zh-TW": ["支付之所得稅(-)"],
+          "zh-TW": ["支付所得稅(-)"],
           "en": []
         },
         "termRef": "tm_w60nbtch",
@@ -1437,11 +1437,11 @@
         "cell": null,
         "kind": "total",
         "label": {
-          "zh-TW": "營業活動的現金流量總計",
+          "zh-TW": "營業活動之淨現金流入（流出）",
           "en": "Net cash from operating activities"
         },
         "aliases": {
-          "zh-TW": ["營業活動的現金流量統計", "營業活動之淨現金流量", "營業活動淨現金流量"],
+          "zh-TW": ["營業活動的現金流量統計", "營業活動之淨現金流量", "營業活動淨現金流量", "營業活動的現金流量總計"],
           "en": ["Net cash from (used in) operating activities"]
         },
         "termRef": "tm_e61ht6yh",
@@ -1453,11 +1453,11 @@
         "cell": null,
         "kind": "group",
         "label": {
-          "zh-TW": "投資活動的現金流量",
+          "zh-TW": "投資活動之現金流量",
           "en": "Cash flows from investing activities"
         },
         "aliases": {
-          "zh-TW": ["投資活動之現金流量"],
+          "zh-TW": ["投資活動的現金流量"],
           "en": []
         },
         "termRef": "tm_9hrfpqem",
@@ -1486,11 +1486,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "放貸支出(-)",
+          "zh-TW": "資金貸與(-)",
           "en": "Loans advanced to other parties (-)"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["放貸支出(-)"],
           "en": ["Loans advanced (-)"]
         },
         "termRef": "tm_wqc6rnsx",
@@ -1521,11 +1521,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "收回放款(+)",
+          "zh-TW": "收回資金貸與(+)",
           "en": "Receipts from repayment of loans made to other parties (+)"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["收回放款(+)"],
           "en": ["Receipts from repayment of loans (+)"]
         },
         "termRef": "tm_tgfsn0x3",
@@ -1539,12 +1539,12 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "處分資產收入(+)",
-          "en": "Proceeds from disposal of non-current assets (+)"
+          "zh-TW": "處分不動產、廠房及設備(+)",
+          "en": "Proceeds from disposal of property, plant and equipment (+)"
         },
         "aliases": {
-          "zh-TW": [],
-          "en": []
+          "zh-TW": ["處分資產收入(+)"],
+          "en": ["Proceeds from disposal of non-current assets (+)"]
         },
         "termRef": "tm_z2c2sbg4",
         "extension": true,
@@ -1557,12 +1557,12 @@
         "cell": null,
         "kind": "total",
         "label": {
-          "zh-TW": "投資活動的現金流量總計(-)",
-          "en": "Net cash used in investing activities (-)"
+          "zh-TW": "投資活動之淨現金流入（流出）",
+          "en": "Net cash used in investing activities"
         },
         "aliases": {
-          "zh-TW": ["投資活動的現金流量統計(-)", "投資活動之淨現金流量"],
-          "en": ["Net cash from (used in) investing activities"]
+          "zh-TW": ["投資活動的現金流量統計(-)", "投資活動之淨現金流量", "投資活動的現金流量總計(-)"],
+          "en": ["Net cash from (used in) investing activities", "Net cash used in investing activities (-)"]
         },
         "termRef": "tm_fkpb3evq",
         "sum": ["cf_capex", "cf_loans_advanced", "cf_other_investing", "cf_loans_collected", "cf_disposal_proceeds"]
@@ -1572,11 +1572,11 @@
         "cell": null,
         "kind": "group",
         "label": {
-          "zh-TW": "籌資活動的現金流量",
+          "zh-TW": "籌資活動之現金流量",
           "en": "Cash flows from financing activities"
         },
         "aliases": {
-          "zh-TW": ["籌資活動之現金流量"],
+          "zh-TW": ["籌資活動的現金流量"],
           "en": []
         },
         "termRef": "tm_f9a4c6md",
@@ -1595,11 +1595,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "短期借款收入(+)",
+          "zh-TW": "短期借款增加(+)",
           "en": "Proceeds from short-term borrowings (+)"
         },
         "aliases": {
-          "zh-TW": ["短期借款增加"],
+          "zh-TW": ["短期借款增加", "短期借款收入(+)"],
           "en": []
         },
         "termRef": "tm_s0b4f89c",
@@ -1612,11 +1612,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "短期借款返還(-)",
+          "zh-TW": "短期借款減少(-)",
           "en": "Repayment of short-term borrowings (-)"
         },
         "aliases": {
-          "zh-TW": ["短期借款減少"],
+          "zh-TW": ["短期借款減少", "短期借款返還(-)"],
           "en": []
         },
         "termRef": "tm_vgf3h5z9",
@@ -1629,11 +1629,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "發行股票收入(+)",
+          "zh-TW": "現金增資(+)",
           "en": "Proceeds from issuing shares (+)"
         },
         "aliases": {
-          "zh-TW": ["現金增資"],
+          "zh-TW": ["現金增資", "發行股票收入(+)"],
           "en": []
         },
         "termRef": "tm_4n517fc3",
@@ -1646,11 +1646,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "支付股息(-)",
+          "zh-TW": "發放現金股利(-)",
           "en": "Dividends paid (-)"
         },
         "aliases": {
-          "zh-TW": ["支付之股利(-)", "發放現金股利"],
+          "zh-TW": ["支付之股利(-)", "發放現金股利", "支付股息(-)"],
           "en": []
         },
         "termRef": "tm_zqzrfgfn",
@@ -1663,11 +1663,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "長期借款收入(+)",
+          "zh-TW": "舉借長期借款(+)",
           "en": "Proceeds from long-term borrowings (+)"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["長期借款收入(+)"],
           "en": []
         },
         "termRef": "tm_fk8yqnyt",
@@ -1681,11 +1681,11 @@
         "cell": null,
         "kind": "cash_tag",
         "label": {
-          "zh-TW": "長期借款返還(-)",
+          "zh-TW": "償還長期借款(-)",
           "en": "Repayment of long-term borrowings (-)"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["長期借款返還(-)"],
           "en": []
         },
         "termRef": "tm_tfmnrp7r",
@@ -1699,11 +1699,11 @@
         "cell": null,
         "kind": "total",
         "label": {
-          "zh-TW": "籌資活動的現金流量總計",
+          "zh-TW": "籌資活動之淨現金流入（流出）",
           "en": "Net cash from financing activities"
         },
         "aliases": {
-          "zh-TW": ["籌資活動的現金流量統計", "籌資活動之淨現金流量"],
+          "zh-TW": ["籌資活動的現金流量統計", "籌資活動之淨現金流量", "籌資活動的現金流量總計"],
           "en": ["Net cash from (used in) financing activities"]
         },
         "termRef": "tm_vk8v09cy",
@@ -1736,11 +1736,11 @@
         "cell": null,
         "kind": "formula",
         "label": {
-          "zh-TW": "現金及約當現金增減額",
+          "zh-TW": "本期現金及約當現金增加（減少）數",
           "en": "Net increase (decrease) in cash and cash equivalents"
         },
         "aliases": {
-          "zh-TW": ["本期現金及約當現金增加（減少）數", "現金及約當現金淨變動"],
+          "zh-TW": ["現金及約當現金淨變動", "現金及約當現金增減額"],
           "en": []
         },
         "termRef": "tm_x6gmpvm5",
@@ -1786,11 +1786,11 @@
         "cell": null,
         "kind": "group",
         "label": {
-          "zh-TW": "營業活動的現金流量（直接法）",
+          "zh-TW": "營業活動之現金流量（直接法）",
           "en": "Cash flows from operating activities (direct method)"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["營業活動的現金流量（直接法）"],
           "en": []
         },
         "termRef": "tm_p2a7c5vk",
@@ -1875,11 +1875,11 @@
         "cell": null,
         "kind": "total",
         "label": {
-          "zh-TW": "小計",
+          "zh-TW": "營運產生之現金流入（流出）",
           "en": "Cash generated from operations"
         },
         "aliases": {
-          "zh-TW": ["營運產生之現金"],
+          "zh-TW": ["營運產生之現金", "小計"],
           "en": ["Subtotal"]
         },
         "termRef": "tm_mcjk5sza",
@@ -1926,11 +1926,11 @@
         "cell": null,
         "kind": "total",
         "label": {
-          "zh-TW": "營業活動之淨現金流量",
+          "zh-TW": "營業活動之淨現金流入（流出）",
           "en": "Net cash from operating activities"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["營業活動之淨現金流量"],
           "en": []
         },
         "termRef": "tm_e61ht6yh",
@@ -1942,11 +1942,11 @@
         "cell": null,
         "kind": "link",
         "label": {
-          "zh-TW": "投資活動之淨現金流量",
+          "zh-TW": "投資活動之淨現金流入（流出）",
           "en": "Net cash used in investing activities"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["投資活動之淨現金流量"],
           "en": []
         },
         "termRef": "tm_fkpb3evq",
@@ -1957,11 +1957,11 @@
         "cell": null,
         "kind": "link",
         "label": {
-          "zh-TW": "籌資活動之淨現金流量",
+          "zh-TW": "籌資活動之淨現金流入（流出）",
           "en": "Net cash from financing activities"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["籌資活動之淨現金流量"],
           "en": []
         },
         "termRef": "tm_vk8v09cy",
@@ -1972,11 +1972,11 @@
         "cell": null,
         "kind": "formula",
         "label": {
-          "zh-TW": "現金及約當現金增減額",
+          "zh-TW": "本期現金及約當現金增加（減少）數",
           "en": "Net increase (decrease) in cash and cash equivalents"
         },
         "aliases": {
-          "zh-TW": [],
+          "zh-TW": ["現金及約當現金增減額"],
           "en": []
         },
         "termRef": "tm_x6gmpvm5",

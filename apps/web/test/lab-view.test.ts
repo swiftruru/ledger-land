@@ -42,7 +42,8 @@ describe('normaliseLabView', () => {
   it('壞掉或缺欄位用預設；只認兩套口徑', () => {
     expect(normaliseLabView(undefined)).toEqual(DEFAULT_LAB_VIEW);
     expect(normaliseLabView('x')).toEqual(DEFAULT_LAB_VIEW);
-    expect(normaliseLabView({ policy: 'ifrs@1', journalLayerOpen: true })).toEqual({ policy: 'ifrs@1', journalLayerOpen: true });
+    expect(normaliseLabView({ policy: 'ifrs@1', journalLayerOpen: true })).toEqual({ policy: 'ifrs@1', window: 'cumulative', journalLayerOpen: true });
+    expect(normaliseLabView({ policy: 'teacher@1', window: 'transaction' })).toEqual({ policy: 'teacher@1', window: 'transaction', journalLayerOpen: false });
     expect(normaliseLabView({ policy: 'ifrs@2', journalLayerOpen: 'yes' })).toEqual(DEFAULT_LAB_VIEW);
   });
 });
@@ -53,7 +54,9 @@ describe('readLabView 與 writeLabView', () => {
     await writeLabView(store, { policy: 'ifrs@1' }, NOW);
     expect((await store.getSetting(LAB_VIEW_SETTING))?.value).toEqual({ policy: 'ifrs@1', window: 'cumulative', statement: 'is', journalLayerOpen: false });
     await writeLabView(store, { journalLayerOpen: true }, NOW);
-    expect(await readLabView(store)).toEqual({ policy: 'ifrs@1', journalLayerOpen: true });
+    expect(await readLabView(store)).toEqual({ policy: 'ifrs@1', window: 'cumulative', journalLayerOpen: true });
+    await writeLabView(store, { window: 'transaction' }, NOW);
+    expect(await readLabView(store)).toEqual({ policy: 'ifrs@1', window: 'transaction', journalLayerOpen: true });
   });
   it('既有的 window 與 statement 保留；壞掉的口徑寫回時改成教材', async () => {
     await store.setSetting(LAB_VIEW_SETTING, { policy: 'nope', window: 'transaction', statement: 'bs', journalLayerOpen: true }, NOW);

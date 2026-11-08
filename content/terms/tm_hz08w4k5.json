@@ -1,6 +1,6 @@
 {
   "id": "tm_hz08w4k5",
-  "rev": 1,
+  "rev": 2,
   "revKind": "text",
   "status": "published",
   "category": "account",
@@ -9,7 +9,7 @@
     "en": "Start-up costs (expensed)"
   },
   "teacherLabel": "設立費（費用化）",
-  "currentTwLabel": null,
+  "currentTwLabel": "開辦費",
   "ifrsEnglish": "Start-up costs (expensed)",
   "aliases": {
     "zh-TW": [

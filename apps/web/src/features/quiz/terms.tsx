@@ -22,7 +22,8 @@ export interface TermsContextValue {
   readonly otherTerms: ReadonlyMap<string, TermIndexEntry>;
   readonly ready: boolean;
   readonly labelOf: (id: string) => string | undefined;
-  readonly openTerm: (id: string, returnFocusTo?: RefObject<HTMLElement | null>) => void;
+  /** 開名詞卡；section 是 'ifrs' 時直接到「IFRS 怎麼處理」段落（沒有那個段落時和平常一樣） */
+  readonly openTerm: (id: string, returnFocusTo?: RefObject<HTMLElement | null>, opts?: { readonly section?: 'ifrs' }) => void;
 }
 
 const TermsContext = createContext<TermsContextValue | null>(null);
@@ -151,7 +152,7 @@ export function TermsProvider({ locale, deferIndex = false, children }: { locale
   const [others, setOthers] = useState<TermIndexEntry[]>([]);
   // 名詞卡打不開（索引與完整內容都讀不到，或名詞卡元件載不到）時的提示
   const [unavailable, setUnavailable] = useState(false);
-  const [open, setOpen] = useState<{ id: string; returnFocusTo?: RefObject<HTMLElement | null> } | null>(null);
+  const [open, setOpen] = useState<{ id: string; returnFocusTo?: RefObject<HTMLElement | null>; section?: 'ifrs' } | null>(null);
   // 打開的名詞的完整內容：value 為 null 代表讀不到（離線又沒有快取）；還在讀時是 undefined
   const [detail, setDetail] = useState<{ id: string; locale: Locale; value: TermSnapshot | null } | undefined>(undefined);
   // 名詞卡元件：第一次繪製後預載，打開名詞卡時一定等到
@@ -219,12 +220,12 @@ export function TermsProvider({ locale, deferIndex = false, children }: { locale
   const otherTerms = useMemo(() => new Map(others.map((t) => [t.id, t] as const)), [others]);
   const labelOf = useCallback((id: string) => terms.get(id)?.label, [terms]);
   const openTerm = useCallback(
-    (id: string, ref?: RefObject<HTMLElement | null>) => {
+    (id: string, ref?: RefObject<HTMLElement | null>, opts?: { readonly section?: 'ifrs' }) => {
       setUnavailable(false);
       // 先前讀不到的完整內容不沿用（恢復連線後再打開要重新讀）；索引先前讀不到也順便再讀一次
       setDetail((d) => (d !== undefined && d.value === null ? undefined : d));
       if (indexFailed) loadIndex();
-      setOpen(ref === undefined ? { id } : { id, returnFocusTo: ref });
+      setOpen({ id, ...(ref === undefined ? {} : { returnFocusTo: ref }), ...(opts?.section === undefined ? {} : { section: opts.section }) });
     },
     [indexFailed, loadIndex],
   );
@@ -267,6 +268,7 @@ export function TermsProvider({ locale, deferIndex = false, children }: { locale
             categoryLabel(current.category),
           )}
           {...(open.returnFocusTo === undefined ? {} : { returnFocusTo: open.returnFocusTo })}
+          {...(open.section === undefined ? {} : { focusSection: open.section })}
         />
       )}
     </TermsContext.Provider>
