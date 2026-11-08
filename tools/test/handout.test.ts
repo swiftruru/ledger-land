@@ -1,48 +1,12 @@
 // 講義題庫的抽題（tools/lib/handout-pptx.mjs 與 zip-read.mjs）：在測試裡組一個最小的 pptx（zip），驗投影片順序、題目欄位、B/C 都對、不是題目的投影片、
 // 形狀不對的投影片會丟錯、比對重複用的鍵。文字全是自己編的句子，不含講義內容。
-import { deflateRawSync } from 'node:zlib';
 import { describe, expect, it } from 'vitest';
 import { decodeXml, dedupeKey, extractQuestion, parseSlide, slideOrder, textOfBody } from '../lib/handout-pptx.mjs';
 import { listZipEntries, readZipEntry, readZipTexts } from '../lib/zip-read.mjs';
+import { writeZip } from '../lib/zip-write.mjs';
 
-/** 最小的 zip 寫入（只給測試）：store 或 deflate，CRC 填 0（讀取端不驗） */
-function zip(entries: { name: string; data: string; deflate?: boolean }[]): Buffer {
-  const parts: Buffer[] = [];
-  const central: Buffer[] = [];
-  let offset = 0;
-  for (const e of entries) {
-    const name = Buffer.from(e.name, 'utf8');
-    const raw = Buffer.from(e.data, 'utf8');
-    const data = e.deflate ? deflateRawSync(raw) : raw;
-    const local = Buffer.alloc(30);
-    local.writeUInt32LE(0x04034b50, 0);
-    local.writeUInt16LE(20, 4);
-    local.writeUInt16LE(e.deflate ? 8 : 0, 8);
-    local.writeUInt32LE(data.length, 18);
-    local.writeUInt32LE(raw.length, 22);
-    local.writeUInt16LE(name.length, 26);
-    parts.push(local, name, data);
-    const cd = Buffer.alloc(46);
-    cd.writeUInt32LE(0x02014b50, 0);
-    cd.writeUInt16LE(20, 4);
-    cd.writeUInt16LE(20, 6);
-    cd.writeUInt16LE(e.deflate ? 8 : 0, 10);
-    cd.writeUInt32LE(data.length, 20);
-    cd.writeUInt32LE(raw.length, 24);
-    cd.writeUInt16LE(name.length, 28);
-    cd.writeUInt32LE(offset, 42);
-    central.push(cd, name);
-    offset += local.length + name.length + data.length;
-  }
-  const cdBuf = Buffer.concat(central);
-  const eocd = Buffer.alloc(22);
-  eocd.writeUInt32LE(0x06054b50, 0);
-  eocd.writeUInt16LE(entries.length, 8);
-  eocd.writeUInt16LE(entries.length, 10);
-  eocd.writeUInt32LE(cdBuf.length, 12);
-  eocd.writeUInt32LE(offset, 16);
-  return Buffer.concat([...parts, cdBuf, eocd]);
-}
+/** 測試用的 zip：和正式的寫入器同一支（M6 起），deflate 預設關、要測 deflate 時明確開 */
+const zip = (entries: { name: string; data: string; deflate?: boolean }[]) => writeZip(entries.map((e) => ({ ...e, deflate: e.deflate ?? false })));
 
 const sp = (text: string) => `<p:sp><p:nvSpPr><p:cNvPr id="1" name="Shape"/></p:nvSpPr><p:txBody>${text}</p:txBody></p:sp>`;
 const run = (t: string) => `<a:r><a:rPr lang="zh-TW"/><a:t>${t}</a:t></a:r>`;

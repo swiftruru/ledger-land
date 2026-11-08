@@ -1,5 +1,6 @@
 // hygiene（09 第 10.2 節）：git ls-files 不得出現 references/、.xlsx、.pdf、.DS_Store、01、13、AI 設定路徑；.gitignore 仍含排除規則；
-// 另外檢查公開內容沒有出現深色色票的來源名稱（16 第 0 節，名稱本身不寫在這裡，以 base64 比對）
+// 另外檢查公開內容沒有出現深色色票的來源名稱（16 第 0 節，名稱本身不寫在這裡，以 base64 比對）；
+// pnpm-lock.yaml 不得出現 npm 上的 xlsx（09 第 6.7 節：0.18.5 有已知漏洞，M6 的 Excel 讀寫自己寫，10 第 13 節完成標準）
 import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -57,4 +58,10 @@ for (const p of tracked) {
       ok = false;
     }
 }
-if (ok) console.log(`check:hygiene：${tracked.length} 個被追蹤的檔案沒有禁止路徑；.gitignore 規則齊全；沒有色票來源名稱`);
+// npm 上的 xlsx（SheetJS 停在 0.18.5，CVE-2023-30533、CVE-2024-22363）：lockfile 的 packages 鍵（xlsx@0.18.5:）或 importers 的依賴（xlsx: 0.18.5）都不得出現
+const lock = readFileSync(join(ROOT, 'pnpm-lock.yaml'), 'utf8');
+if (/^\s+'?xlsx'?(@\d|:\s)/m.test(lock)) {
+  fail('check:hygiene：pnpm-lock.yaml 出現 npm 上的 xlsx（有已知漏洞，09 第 6.7 節禁止；Excel 讀寫用 tools/lib/xlsx-read.mjs 與 xlsx-write.mjs）');
+  ok = false;
+}
+if (ok) console.log(`check:hygiene：${tracked.length} 個被追蹤的檔案沒有禁止路徑；.gitignore 規則齊全；沒有色票來源名稱；lockfile 沒有 npm 的 xlsx`);

@@ -3,15 +3,9 @@
 // 一個「解答：X」加一個全形空白再接解析的文字框。文字逐字保留（連錯字、全形空白與破折號都不改，維護者 2026-11-04 的決定），只去每一行的頭尾空白；
 // 比對重複用的正規化（NFKC、去空白）只在 dedupeKey，不回寫到資料。不用 DOM 或 XML 套件：投影片的 XML 由 Google 簡報與 PowerPoint 產生，結構固定，用正規式分段就夠。
 
-const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
+import { decodeXml } from './ooxml.mjs';
 
-/** 解 XML 實體（含十進位與十六進位的數字實體） */
-export function decodeXml(text) {
-  return text.replace(/&(#x[0-9a-fA-F]+|#\d+|[a-z]+);/g, (m, body) => {
-    if (body[0] === '#') return String.fromCodePoint(body[1] === 'x' || body[1] === 'X' ? parseInt(body.slice(2), 16) : parseInt(body.slice(1), 10));
-    return body in ENTITIES ? ENTITIES[body] : m;
-  });
-}
+export { decodeXml };
 
 /** 去每一行頭尾的空白（含全形空白），去掉頭尾的空行；行內內容不動 */
 function tidy(text) {
