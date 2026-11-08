@@ -339,6 +339,12 @@ msgstr "作答時計時"
 msgid "me.credits.desc"
 msgstr "作者、老師，還有做網站的技術"
 
+#. 從實驗室的故事頁進關卡時，返回膠囊的說明
+#. js-lingui-explicit-id
+#: src/features/quiz/LevelSession.tsx
+msgid "level.fromLab"
+msgstr "你從實驗室的故事來到這一關。"
+
 #. 分類題作答後的摘要；correctCount 是放對的張數、total 是總張數
 #. js-lingui-explicit-id
 #: src/features/quiz/FeedbackView.tsx
@@ -757,6 +763,12 @@ msgstr "回到地圖"
 #: src/features/quiz/ResultView.tsx
 msgid "level.result.backToMap"
 msgstr "回到地圖"
+
+#. 從實驗室的故事頁進關卡時，頂端的返回膠囊
+#. js-lingui-explicit-id
+#: src/features/quiz/LevelSession.tsx
+msgid "level.backToLab"
+msgstr "回到實驗室"
 
 #. 子頁頂部返回鍵的可讀名稱
 #. js-lingui-explicit-id

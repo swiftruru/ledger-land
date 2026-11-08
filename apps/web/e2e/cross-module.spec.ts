@@ -178,6 +178,41 @@ test.describe('跨模組導覽：題目與實驗室', () => {
     expect(await page.evaluate(() => sessionStorage.getItem('ll:return'))).toBeNull();
   });
 
+  test('從實驗室進關卡：「回到實驗室」膠囊，按看動畫再回來膠囊還在，按膠囊回故事頁', async ({ page }) => {
+    const c = CASES[0];
+    await clearProgress(page);
+    // 故事頁章末的相關關卡連結帶 ?from=<故事 ID>
+    await page.goto(`/lab/story/${STORY}/`);
+    await waitForApp(page);
+    const related = page.locator('.ll-lab-chapter__links a[href*="/level/"]').first();
+    await expect(related).toHaveAttribute('href', new RegExp(`/level/[a-z0-9_]+/\\?from=${STORY}$`));
+    // 關卡頁：頂端的膠囊連回故事頁
+    await page.goto(`/level/${LEVEL}/?from=${STORY}`);
+    await waitForApp(page);
+    await firstQuestionReady(page, c.q1);
+    const hint = page.getByTestId('level-from-lab');
+    await expect(hint.getByRole('link', { name: '回到實驗室' })).toHaveAttribute('href', `/lab/story/${STORY}/`);
+    // 看動畫再回來：返回膠囊帶著 ?from=，回到關卡後「回到實驗室」的膠囊還在、焦點在「看動畫」
+    await answerAllUp(page, c.up, c.submit);
+    await page.getByTestId('feedback-animation').click();
+    await expect(page.getByTestId('lab-card')).toBeVisible();
+    const back = page.getByRole('link', { name: c.back });
+    await expect(back).toHaveAttribute('href', `/level/${LEVEL}/?from=${STORY}`);
+    await back.click();
+    await expect(page).toHaveURL(new RegExp(`/level/${LEVEL}/\\?from=${STORY}$`));
+    await expect(page.getByTestId('feedback-animation')).toBeFocused();
+    await expect(page.getByTestId('level-from-lab')).toBeVisible();
+    // 按膠囊回到故事頁
+    await page.getByTestId('level-from-lab').getByRole('link', { name: '回到實驗室' }).click();
+    await expect(page).toHaveURL(new RegExp(`/lab/story/${STORY}/$`));
+    await expect(page.getByTestId('lab-step-row').first()).toBeVisible();
+    // 沒有 ?from= 或格式不對：沒有膠囊
+    await page.goto(`/level/${LEVEL}/?from=nope`);
+    await waitForApp(page);
+    await firstQuestionReady(page, c.q1);
+    await expect(page.getByTestId('level-from-lab')).toHaveCount(0);
+  });
+
   test('步驟下架或不存在：?from= 時導到故事頁並說明一次，返回膠囊照樣有；沒有 ?from= 維持找不到頁面', async ({ page }) => {
     await clearProgress(page);
     await page.goto(`/lab/story/${STORY}/st_nothing/?from=${Q}`);
@@ -208,7 +243,8 @@ test.describe('跨模組導覽：題目與實驗室', () => {
     await waitForApp(page);
     const related = page.locator('.ll-lab-chapter__links a').first();
     await expect(related).toBeVisible();
-    await expect(related).toHaveAttribute('href', /\/(level|chapter)\/[a-z0-9_]+\/$/);
+    // 關卡的連結帶 ?from=<故事 ID>（關卡頁的「回到實驗室」膠囊），章節的沒有
+    await expect(related).toHaveAttribute('href', /\/(level\/[a-z0-9_]+\/\?from=story_[a-z0-9]+|chapter\/[a-z0-9_]+\/)$/);
 
     // 回饋區的第一個名詞 chip（題目與第 10 步的第一個 termRef 都是 tm_r7x2c9fa）
     await page.goto(`/level/${LEVEL}/`);

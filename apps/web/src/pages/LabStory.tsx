@@ -212,7 +212,8 @@ export default function LabStory() {
                     size="compact"
                     title={l.level ? levelTitle(l.chapter, l.level) : chapterTitle(l.chapter)}
                     description={l.level ? chapterTitle(l.chapter) : undefined}
-                    href={l.level ? href(`/level/${l.level}/`) : href(`/chapter/${l.chapter}/`)}
+                    // 關卡頁帶 ?from=<故事 ID>：頂端顯示「回到實驗室」的膠囊，從題目再進步驟頁、再回來時也還在（步驟頁的「回到題目」帶整個網址）
+                    href={l.level ? href(`/level/${l.level}/?from=${story.id}`) : href(`/chapter/${l.chapter}/`)}
                   />
                 ))}
               </NavList>
