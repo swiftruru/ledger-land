@@ -280,9 +280,13 @@ export default defineConfig({
             // 每一頁都預先載入 session（route-preload.json 的 always），input.ts 搬過來會讓 session 依賴這個 chunk，首頁也得多載 markup 與 prose（PR 63 第二輪 CI 的 preload.spec 抓到）；
             // 代價是實驗室第一波仍載 session（約 6 KB），但不再載作答題型的 chunk。它們原本在 quiz-view 裡，實驗室的每一頁為了故事文字裡的名詞 chip 要在第一波多載整個作答題型的 chunk（約 17 KB gzip：
             // LevelSession、題型元件、計時器等實驗室用不到的東西）；CI 執行器對第 7 步的 LCP 量到 3205ms（本機 2420）。作答頁第一波多一個小請求，本機 Lighthouse 要重量
+            // 返回目標（features/nav/return-target.ts，M5）也放這裡（2026-11-08）：它被作答頁（LevelSession、FeedbackView、Review）與實驗室的步驟頁、故事頁共用，
+            // 不明確列出時被 quiz-view 群組連依賴抓走，步驟頁與故事頁第一波為了這個 1 KB 的模組多載整個 quiz-view（約 16 KB gzip），CI 的 lab-step LCP 慢模式從約 2600 變成
+            // 2740 到 2800ms、貼著 2700 的門檻（main f83cb73 起連續四個只動 tools 或文件的 run 都紅過）。放 common 會把 common 推過一次往返送得完的大小，所以放這裡：
+            // 作答頁與步驟頁本來就載 markup，故事頁多載 markup（約 4 KB gzip）而不是 quiz-view
             {
               name: 'markup',
-              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/]quiz[\\/](Markup|terms|ratio-format)\.tsx?|packages[\\/]web-ui[\\/]src[\\/]components[\\/](TermChip|NumberInput)\.tsx)$/,
+              test: /[\\/](apps[\\/]web[\\/]src[\\/]features[\\/](quiz[\\/](Markup|terms|ratio-format)|nav[\\/]return-target)\.tsx?|packages[\\/]web-ui[\\/]src[\\/]components[\\/](TermChip|NumberInput)\.tsx)$/,
               priority: 2,
             },
             {
