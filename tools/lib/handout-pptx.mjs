@@ -7,8 +7,8 @@ import { decodeXml } from './ooxml.mjs';
 
 export { decodeXml };
 
-/** 去每一行頭尾的空白（含全形空白），去掉頭尾的空行；行內內容不動 */
-function tidy(text) {
+/** 去每一行頭尾的空白（含全形空白），去掉頭尾的空行；行內內容不動（CSV 匯入也用） */
+export function tidy(text) {
   const lines = text.split('\n').map((l) => l.replace(/^[\s　]+|[\s　]+$/g, ''));
   while (lines.length && lines[0] === '') lines.shift();
   while (lines.length && lines[lines.length - 1] === '') lines.pop();

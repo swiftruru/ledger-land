@@ -101,3 +101,90 @@ describe('validateHandout', () => {
     );
   });
 });
+
+describe('CSV 講義（2026-11-08）', () => {
+  const csvDeck = {
+    id: 'd4',
+    order: 4,
+    code: 'c',
+    title: '老師的 CSV',
+    file: 'teacher.csv',
+    source: 'csv',
+    sections: [
+      { id: 'd4s1', title: '財務結構' },
+      { id: 'd4s2', title: '償債能力' },
+    ],
+  };
+  const both = { ...decks, decks: [...decks.decks, csvDeck] };
+  const csvIds = { ...ids, 'd4:kaaaaaaaaaaaa': 'hq_aaaaaaa4', 'd4:kbbbbbbbbbbbb': 'hq_aaaaaaa5' };
+  const five = ['A', 'B', 'C', 'D', 'E'].map((letter) => ({ letter, text: `選項 ${letter}` }));
+  const csvQ = {
+    ...base,
+    id: 'hq_aaaaaaa4',
+    deck: 'd4',
+    section: 'd4s1',
+    slide: 3,
+    key: 'kaaaaaaaaaaaa',
+    scenario: '',
+    options: five,
+    answer: ['E'],
+    status: 'included',
+  };
+  const tf = {
+    ...base,
+    id: 'hq_aaaaaaa5',
+    deck: 'd4',
+    section: 'd4s2',
+    slide: 4,
+    key: 'kbbbbbbbbbbbb',
+    options: [
+      { letter: 'A', text: '是' },
+      { letter: 'B', text: '否' },
+    ],
+    answer: ['B'],
+    status: 'included',
+  };
+  const csvBank = { ...bank, questions: [...bank.questions, csvQ, tf] };
+
+  it('五個選項、兩個選項、空情境、雜湊鍵都通過；splitHandout 依講義順序再列號', () => {
+    expect(validateHandout(both, csvIds, csvBank)).toEqual([]);
+    const { included } = splitHandout(both as never, csvBank as never);
+    expect(included.map((q) => q.id)).toEqual(['hq_aaaaaaa1', 'hq_aaaaaaa2', 'hq_aaaaaaa4', 'hq_aaaaaaa5']);
+  });
+
+  it('CSV 講義的段不能有投影片範圍、title 不能重複；pptx 講義的段一定要有範圍；檔名要對上來源', () => {
+    const withSlides = { ...both, decks: [decks.decks[0], { ...csvDeck, sections: [{ id: 'd4s1', title: '財務結構', slides: [1, 2] }, csvDeck.sections[1]] }] };
+    expect(messages(validateHandout(withSlides, csvIds, csvBank))).toContainEqual(expect.stringContaining('沒有投影片範圍'));
+    const dupTitle = { ...both, decks: [decks.decks[0], { ...csvDeck, sections: [csvDeck.sections[0], { id: 'd4s2', title: '財務結構' }] }] };
+    expect(messages(validateHandout(dupTitle, csvIds, csvBank))).toContainEqual(expect.stringContaining('重複'));
+    const pptxNoSlides = { ...decks, decks: [{ ...decks.decks[0], sections: [{ id: 'd1s1', title: '段一' }] }] };
+    expect(messages(validateHandout(pptxNoSlides, ids, bank))).toContainEqual(expect.stringContaining('要有投影片範圍'));
+    const wrongFile = { ...both, decks: [decks.decks[0], { ...csvDeck, file: 'teacher.pptx' }] };
+    expect(messages(validateHandout(wrongFile, csvIds, csvBank))).toContainEqual(expect.stringContaining('.csv 結尾'));
+  });
+
+  it('CSV 的題要有 key 且對得上 ids.json；段要存在；pptx 的題不能有 key、情境不能空；ids 的鍵形式要對來源', () => {
+    const noKey = { ...csvBank, questions: [...bank.questions, { ...csvQ, key: undefined }, tf] };
+    expect(messages(validateHandout(both, csvIds, noKey))).toContainEqual(expect.stringContaining('要有 key'));
+    expect(messages(validateHandout(both, { ...csvIds, 'd4:kaaaaaaaaaaaa': 'hq_zzzzzzz9' }, csvBank))).toContainEqual(
+      expect.stringContaining('ids.json 的 d4:kaaaaaaaaaaaa'),
+    );
+    const badSection = { ...csvBank, questions: [...bank.questions, { ...csvQ, section: 'd4s9' }, tf] };
+    expect(messages(validateHandout(both, csvIds, badSection))).toContainEqual(expect.stringContaining('段 d4s9 不在'));
+    const pptxWithKey = { ...bank, questions: [{ ...bank.questions[0], key: 'kaaaaaaaaaaaa' }, ...bank.questions.slice(1)] };
+    expect(messages(validateHandout(decks, ids, pptxWithKey))).toContainEqual(expect.stringContaining('沒有 key'));
+    const emptyScenario = { ...bank, questions: [{ ...bank.questions[0], scenario: '' }, ...bank.questions.slice(1)] };
+    expect(messages(validateHandout(decks, ids, emptyScenario))).toContainEqual(expect.stringContaining('一定有情境'));
+    expect(messages(validateHandout(both, { ...csvIds, 'd4:9': 'hq_aaaaaaa6' }, csvBank))).toContainEqual(expect.stringContaining('d4:k<雜湊>'));
+    expect(messages(validateHandout(both, { ...csvIds, 'd1:kaaaaaaaaaaaa': 'hq_aaaaaaa7' }, csvBank))).toContainEqual(expect.stringContaining('<投影片號>'));
+  });
+
+  it('exclusions 不能指到 CSV 講義；選項超過五個或字母不對被擋', () => {
+    const ex = { ...both, exclusions: [...decks.exclusions, { deck: 'd4', slide: 3, reason: 'check', note: 'x' }] };
+    expect(messages(validateHandout(ex, csvIds, csvBank))).toContainEqual(expect.stringContaining('不支援 exclusions'));
+    const six = { ...csvBank, questions: [...bank.questions, { ...csvQ, options: [...five, { letter: 'F', text: '六' }] }, tf] };
+    expect(validateHandout(both, csvIds, six).some((i) => i.path.includes('options'))).toBe(true);
+    const wrongLetter = { ...csvBank, questions: [...bank.questions, { ...csvQ, options: [five[0], five[2]], answer: ['A'] }, tf] };
+    expect(messages(validateHandout(both, csvIds, wrongLetter))).toContainEqual(expect.stringContaining('應該是 B'));
+  });
+});

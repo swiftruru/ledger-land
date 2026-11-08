@@ -101,7 +101,14 @@
         },
         "file": {
           "type": "string",
-          "pattern": "\\.pptx$"
+          "pattern": "\\.(pptx|csv)$"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "pptx",
+            "csv"
+          ]
         },
         "sections": {
           "minItems": 1,
@@ -149,8 +156,7 @@
       },
       "required": [
         "id",
-        "title",
-        "slides"
+        "title"
       ],
       "additionalProperties": false
     },

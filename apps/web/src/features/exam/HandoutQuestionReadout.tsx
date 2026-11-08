@@ -52,7 +52,7 @@ export function HandoutQuestionReadout({
           {q.topic}
         </Heading>
       )}
-      <HandoutText text={q.scenario} className="ll-exam-q__scenario" />
+      {q.scenario !== '' && <HandoutText text={q.scenario} className="ll-exam-q__scenario" />}
       <HandoutText text={q.question} className="ll-exam-q__question" />
       <ol className="ll-exam-q__options" lang="zh-TW">
         {q.options.map((o) => {
