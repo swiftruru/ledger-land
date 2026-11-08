@@ -3,38 +3,9 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, fail, walk } from './lib/fs.mjs';
+import { DASH_RE as DASH, NON_TW_WORDS as NON_TW, NON_TW_WITH_EXCEPTIONS, isDiscussing } from './lib/tw-style.mjs';
 
-const DASH = /[–—―]/;
-/** 非台灣用語與台灣寫法；同一行同時出現兩者（用語對照表、審稿範例）或明說「中國用語」時視為討論該詞，不算違規 */
-const NON_TW_MAP = {
-  軟件: '軟體',
-  信息: '資訊',
-  默認: '預設',
-  設置: '設定',
-  視頻: '影片',
-  屏幕: '螢幕',
-  網絡: '網路',
-  服務器: '伺服器',
-  文件夾: '資料夾',
-  打印: '列印',
-  質量: '品質',
-  鼠標: '滑鼠',
-  加載: '載入',
-  調用: '呼叫',
-  函數: '函式',
-  接口: '介面',
-  兼容: '相容',
-  回調: '回呼',
-  異步: '非同步',
-  併發: '並行',
-  數據庫: '資料庫',
-  內存: '記憶體',
-  硬盤: '硬碟',
-  程序員: '工程師',
-};
-const NON_TW = Object.keys(NON_TW_MAP);
-const NON_TW_WITH_EXCEPTIONS = [{ word: '用戶', allow: ['用戶端'] }];
-const isDiscussing = (line, w) => line.includes('中國用語') || line.includes(NON_TW_MAP[w]);
+// 用語對照表在 lib/tw-style.mjs（Excel 匯入也用同一份）
 const US_SPELLING = [/\bcolor\b/i, /\borganization\b/i, /\banalyze\b/i, /\bcenter\b/i, /\bfavorite\b/i, /\blicense\b(?!d)/];
 /** 英式拼字只檢查介面字串的 en catalog 與 content 的 en 欄位；程式碼裡的 color 等屬性名不算 */
 const targets = [
