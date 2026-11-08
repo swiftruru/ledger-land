@@ -1812,6 +1812,74 @@ test.describe('IFRS 對照（M4b，03 第 3.13 節）', () => {
     await expect(sga.getByTestId('lab-row-diff')).toHaveText('Differs from the course basis');
     await expect(sga.getByTestId('lab-row-basis')).toHaveText('Course basis: NT$250,000');
   });
+
+  test('標記是按鈕：「與教材口徑不同」開這一列的名詞卡、「非 IFRS 項目」直接開到「IFRS 怎麼處理」段落，關閉後焦點回到標記', async ({ page }) => {
+    await page.goto(DEMO5);
+    await waitForApp(page);
+    await toStage(page, 4);
+    // 教材口徑：經常利益是非 IFRS 項目，標記按下去開到 IFRS 段落（段落標題取得焦點）
+    const notIfrs = page.locator('#ll-lab-table-is tr[data-line="is_ordinary_income"] .ll-notetag--btn');
+    await expect(notIfrs).toHaveAttribute('aria-label', /非 IFRS 項目：經常利益。查看 IFRS 怎麼處理/);
+    await notIfrs.click();
+    const dialog = page.locator('dialog[open]');
+    await expect(dialog).toBeVisible();
+    await expect(page.getByTestId('term-ifrs-section')).toBeVisible();
+    await expect(page.getByTestId('term-ifrs-section').getByRole('heading', { level: 3 })).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    await expect(notIfrs).toBeFocused();
+    // IFRS 對照：開辦費那一列和教材不同，標記開名詞卡（這個名詞沒有 IFRS 段落，開到頂端）
+    await policyRadio(page, 'IFRS 對照').click();
+    const diff = page.locator('#ll-lab-table-is tr[data-line="is_organisation_costs_expense"] [data-testid="lab-row-diff"]');
+    await expect(diff).toHaveAttribute('aria-label', '與教材口徑不同：開辦費。看名詞卡');
+    await diff.click();
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText('開辦費');
+    await expect(dialog.getByRole('heading', { level: 2 })).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    await expect(diff).toBeFocused();
+    // 沒有名詞的列只是標籤，不是按鈕
+    await expect(page.locator('#ll-lab-table-is tr[data-line="is_sga_total"] [data-testid="lab-row-diff"]')).toHaveAttribute(
+      'aria-label',
+      /與教材口徑不同：營業費用合計。看名詞卡/,
+    );
+  });
+
+  test('ifrs@1 的列名是現行用語：開辦費、營業費用合計、現金流量表的現金增資與營業活動之淨現金流入（流出）', async ({ page }) => {
+    await page.goto(DEMO5);
+    await waitForApp(page);
+    await toStage(page, 4);
+    await policyRadio(page, 'IFRS 對照').click();
+    await expect(page.locator('#ll-lab-table-is tr[data-line="is_organisation_costs_expense"] th')).toContainText('開辦費');
+    await expect(page.locator('#ll-lab-table-is tr[data-line="is_sga_total"] th')).toContainText('營業費用合計');
+    await toStage(page, 5, 4);
+    await expect(page.locator('#ll-lab-table-cf tr[data-line="cf_share_issue"] th')).toContainText('現金增資(+)');
+    await expect(page.locator('#ll-lab-table-cf tr[data-line="cf_operating_total"] th')).toContainText('營業活動之淨現金流入（流出）');
+    await expect(page.locator('#ll-lab-table-cf tr[data-line="cf_net_change"] th')).toContainText('本期現金及約當現金增加（減少）數');
+  });
+
+  test('累計或本筆變動記在 labView.window：切到本筆變動後重新載入仍是本筆變動；選到哪張表不記', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'desktop-chromium' || testInfo.project.name === 'desktop-firefox', '電腦版三表並排，沒有累計／本筆變動的切換');
+    await page.goto(DEMO5);
+    await waitForApp(page);
+    await toStage(page, 4);
+    await page.getByRole('radio', { name: '本筆變動' }).click();
+    await expect(page.locator('#ll-lab-table-is thead')).toContainText('本筆變動');
+    await expect
+      .poll(async () => {
+        const settings = (await readStore(page, 'settings')) as { key: string; value: { window?: unknown } }[];
+        return settings.find((s) => s.key === 'labView')?.value.window;
+      })
+      .toBe('transaction');
+    await page.getByRole('radio', { name: '資產負債表' }).click();
+    await page.reload();
+    await waitForApp(page);
+    await toStage(page, 4);
+    await expect(page.getByRole('radio', { name: '本筆變動' })).toBeChecked();
+    await expect(page.locator('#ll-lab-table-is thead')).toContainText('本筆變動');
+    await expect(page.getByRole('radio', { name: '損益表' })).toBeChecked();
+  });
 });
 
 test.describe('來源面板載入失敗或還沒好（M4b）', () => {

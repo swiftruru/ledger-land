@@ -129,6 +129,18 @@ msgstr "{name} went from {from} to {to}"
 msgid "lab.trace.accountPart"
 msgstr "{name} account"
 
+#. 差異標記按鈕的可讀名稱（名詞卡有 IFRS 段落）；text 是標籤文字、line 是列名
+#. js-lingui-explicit-id
+#: src/features/lab/LabTag.tsx
+msgid "lab.policy.tag.a11yIfrs"
+msgstr "{text}: {line}. See how IFRS treats it"
+
+#. 差異標記按鈕的可讀名稱（名詞卡沒有 IFRS 段落）；text 是標籤文字、line 是列名
+#. js-lingui-explicit-id
+#: src/features/lab/LabTag.tsx
+msgid "lab.policy.tag.a11yTerm"
+msgstr "{text}: {line}. Open the term card"
+
 #. 指標預測的選項
 #. js-lingui-explicit-id
 #: src/features/lab/PredictPanel.tsx

@@ -72,6 +72,7 @@ jobs:
       - run: pnpm check:tw
       - run: pnpm check:hygiene
       - run: pnpm check:core
+      - run: pnpm check:golden
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm typecheck

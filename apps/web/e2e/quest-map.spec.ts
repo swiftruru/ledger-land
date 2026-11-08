@@ -476,10 +476,29 @@ test.describe('闖關地圖', () => {
     await openMap(page);
     await page.locator('[data-chapter-id="ch_fx0001"] .ll-chbanner__link').focus();
     const visited: string[] = [];
+    const covered: string[] = [];
     for (let i = 0; i < 16; i++) {
       visited.push(await page.evaluate(() => (document.activeElement?.getAttribute('aria-label') ?? document.activeElement?.textContent ?? '').trim()));
+      // 焦點所在的元素要整個在可用區內：sticky 區塊之下、Tab bar 之上（M4b 回報第 8 節；scroll-margin 在 quest-map.css）
+      covered.push(
+        await page.evaluate(() => {
+          const el = document.activeElement;
+          if (!(el instanceof HTMLElement)) return '';
+          const r = el.getBoundingClientRect();
+          const top = document.querySelector('.qm-sticky')!.getBoundingClientRect().bottom;
+          const bar = document.querySelector('.ll-tabbar');
+          const bottom =
+            bar && getComputedStyle(bar).display !== 'none' && bar.getBoundingClientRect().top > innerHeight / 2
+              ? bar.getBoundingClientRect().top
+              : innerHeight;
+          return r.top >= top && r.bottom <= bottom
+            ? ''
+            : `${el.getAttribute('aria-label') ?? el.textContent}：top ${Math.round(r.top)} bottom ${Math.round(r.bottom)}（可用區 ${Math.round(top)} 到 ${Math.round(bottom)}）`;
+        }),
+      );
       await page.keyboard.press('Tab');
     }
+    expect(covered.filter((c) => c !== '')).toEqual([]);
     expect(visited[0]).toBe('一家小店的帳');
     expect(visited[1]).toMatch(/^1-1，第 1 章第 1 關/);
     expect(visited[5]).toBe('三張報表');

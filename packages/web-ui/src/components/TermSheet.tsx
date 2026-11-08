@@ -5,7 +5,7 @@
 // 名稱表：教材用語與現行用語相同時合併成一列。相關名詞的 chip 排成一列（gap 8），NoteTag 另起一列放在「用語說明」下方。
 // 內容由父層依介面語言從名詞資料取好後傳入；元件不自己寫術語（類別名稱也由父層格式化後傳入）。
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useId, type ReactNode, type RefObject } from 'react';
+import { useEffect, useId, useRef, type ReactNode, type RefObject } from 'react';
 import { Badge } from './Badge.tsx';
 import { Button } from './Button.tsx';
 import { TermCategoryIcon, type TermCategory } from './GlossaryItem.tsx';
@@ -52,12 +52,24 @@ export interface TermSheetProps {
   returnFocusTo?: RefObject<HTMLElement | null>;
   /** 名詞頁的網址：有值時腳部放「在圖鑑看完整說明」。作答中不傳 */
   fullHref?: string;
+  /** 打開時直接到「IFRS 怎麼處理」段落（報表的非 IFRS 項目與 IFRS 對照的差異標記用）：段落標題取得焦點並捲到可見；沒有那個段落時和平常一樣 */
+  focusSection?: 'ifrs';
 }
 
-export function TermSheet({ open, onClose, term, onFlagClick, returnFocusTo, fullHref }: TermSheetProps) {
+export function TermSheet({ open, onClose, term, onFlagClick, returnFocusTo, fullHref, focusSection }: TermSheetProps) {
   const { t } = useLingui();
   const baseId = useId();
   const ifrsId = `${baseId}-ifrs`;
+  const ifrsHeading = useRef<HTMLHeadingElement>(null);
+  const hasIfrs = term.ifrsNote !== undefined;
+  // Sheet 開啟時把焦點放在標題（子元件的 effect 先跑）；要直接到 IFRS 段落時在這之後把焦點移到段落標題並捲到可見
+  useEffect(() => {
+    if (!open || focusSection !== 'ifrs' || !hasIfrs) return;
+    const h = ifrsHeading.current;
+    if (!h) return;
+    h.focus({ preventScroll: true });
+    h.scrollIntoView({ block: 'start' });
+  }, [open, focusSection, hasIfrs]);
   const sameLabel = term.currentTwLabel !== null && term.currentTwLabel === term.teacherLabel;
   const subtitle =
     term.secondaryLabel || term.translationPending ? (
@@ -194,8 +206,8 @@ export function TermSheet({ open, onClose, term, onFlagClick, returnFocusTo, ful
         </section>
       )}
       {term.ifrsNote && (
-        <section className="ll-sheet__section" id={ifrsId}>
-          <h3>
+        <section className="ll-sheet__section" id={ifrsId} data-testid="term-ifrs-section">
+          <h3 ref={ifrsHeading} tabIndex={-1} className="ll-sheet__section-title">
             <Trans id="term.underIfrs" comment="名詞卡：IFRS 怎麼處理的段落標題">
               IFRS 怎麼處理
             </Trans>
