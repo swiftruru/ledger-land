@@ -204,7 +204,15 @@ describe('sets 與 stats', () => {
     expect([...unsureIdsOf(states)]).toEqual(['hq_aaaaaaa1', 'hq_aaaaaaa2']);
     expect(isMastered(states.get('hq_bbbbbbb1'))).toBe(true);
     expect(isMastered(undefined)).toBe(false);
-    expect(picksOf(states)).toEqual({ wrongIds: new Set(['hq_aaaaaaa1']), unsureIds: new Set(['hq_aaaaaaa1', 'hq_aaaaaaa2']) });
+    expect(picksOf(states)).toEqual({ wrongIds: new Set(['hq_aaaaaaa1']), unsureIds: new Set(['hq_aaaaaaa1', 'hq_aaaaaaa2']), wrongOrder: ['hq_aaaaaaa1'] });
+    // 題組照錯題複習的優先順序出題，不在題庫裡的題略過；沒給順序就照講義順序
+    const order = {
+      wrongIds: new Set(['hq_bbbbbbb1', 'hq_aaaaaaa2', 'hq_zzzzzzzz']),
+      unsureIds: new Set<string>(),
+      wrongOrder: ['hq_bbbbbbb1', 'hq_zzzzzzzz', 'hq_aaaaaaa2'],
+    };
+    expect(resolveSet(index, 'wrong', order)?.questionIds).toEqual(['hq_bbbbbbb1', 'hq_aaaaaaa2']);
+    expect(resolveSet(index, 'wrong', { wrongIds: order.wrongIds, unsureIds: order.unsureIds })?.questionIds).toEqual(['hq_aaaaaaa2', 'hq_bbbbbbb1']);
   });
 });
 

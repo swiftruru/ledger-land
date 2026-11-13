@@ -41,9 +41,9 @@ import { COUNT_OPTIONS, DEFAULT_RANDOM_COUNT, type CountOption } from '../featur
 import { readExamBrowsePos, readExamRandomCount, readExamShuffle, writeExamRandomCount, writeExamShuffle } from '../features/exam/prefs.ts';
 import { getExamReadDb } from '../features/exam/read-db.ts';
 import { ALL_SCOPE, browseParams, lastIn, orderOf, resumeTarget, scopeOf } from '../features/exam/reading.ts';
-import { isFinished, isMock, MOCK_KEY, summarise, type ExamRun } from '../features/exam/run.ts';
+import { answerOf, isFinished, isMock, MOCK_KEY, summarise, type ExamRun } from '../features/exam/run.ts';
 import { allQuestionIds } from '../features/exam/sets.ts';
-import { statsOf, unsureIdsOf, wrongIdsOf } from '../features/exam/stats.ts';
+import { stageOf, statsOf, unsureIdsOf, wrongStatsOf } from '../features/exam/stats.ts';
 import { recommendedStep, type ExamStep } from '../features/exam/steps.ts';
 import { loadHandoutIndex, type HandoutManifestEntry } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
@@ -109,7 +109,8 @@ export default function Exam() {
   useEffect(() => (index ? scheduleHandoutPrefetch(index) : undefined), [index]);
   const all = useMemo(() => (index ? allQuestionIds(index) : []), [index]);
   const stats = useMemo(() => statsOf(all, states ?? new Map()), [all, states]);
-  const wrongCount = useMemo(() => (states ? [...wrongIdsOf(states)].filter((id) => all.includes(id)).length : 0), [states, all]);
+  // 錯題複習（2026-11-13）：答錯過的題各在哪個階段、今天要練幾題
+  const wrongStats = useMemo(() => wrongStatsOf(all, states ?? new Map()), [all, states]);
   const unsureCount = useMemo(() => (states ? [...unsureIdsOf(states)].filter((id) => all.includes(id)).length : 0), [states, all]);
 
   // 苦練徽章：資料都到齊後判定一次全部，達成而還沒有的寫進進度（補發），再拿來顯示
@@ -183,6 +184,12 @@ export default function Exam() {
   const readGoHref = readTarget && readTarget.kind !== 'done' ? browseHref(browseParams({ scope: readScope, q: readTarget.id })) : browseHref({});
   const step = recommendedStep({ total, read: readCount, practised: stats.practised });
   const mockDone = mock && isFinished(mock) ? summarise(mock) : null;
+  // 上次模擬考答錯的題（沒作答的不寫進紀錄，不算）都進了錯題複習：其中還有幾題沒熟練
+  const mockWrongIds = mock && mockDone ? mockDone.wrongIds.filter((id) => answerOf(mock, id).chosen !== null) : [];
+  const mockOpen = mockWrongIds.filter((id) => {
+    const stage = stageOf(states?.get(id));
+    return stage === 'fix' || stage === 'review';
+  }).length;
   const mockCorrect = n(mockDone?.correct ?? 0);
   const mockTotal = n(mockDone?.total ?? 0);
 
@@ -338,15 +345,6 @@ export default function Exam() {
               ? t({ id: 'exam.start.randomAll', message: '全部隨機練', comment: '次要按鈕：全部題目打亂順序練一輪' })
               : t({ id: 'exam.start.random', message: `隨機抽 ${n(randomCount)} 題`, comment: '次要按鈕：全部題目裡隨機抽幾題；count 已格式化' })}
           </Button>
-          {wrongCount > 0 ? (
-            <Button size="md" variant="quiet" icon={<BookIcon />} href={href('/exam/wrong/')} data-testid="exam-start-wrong">
-              {t({ id: 'exam.start.wrong', message: `只練錯過的（${n(wrongCount)} 題）`, comment: '按鈕：只練這台裝置上一次答錯的題；count 已格式化' })}
-            </Button>
-          ) : (
-            <Button size="md" variant="quiet" icon={<BookIcon />} disabled data-testid="exam-start-wrong">
-              {t({ id: 'exam.start.wrongNone', message: '只練錯過的（還沒有）', comment: '按鈕（停用）：還沒有答錯的題' })}
-            </Button>
-          )}
           {unsureCount > 0 ? (
             <Button size="md" variant="quiet" icon={<BookIcon />} href={href('/exam/unsure/')} data-testid="exam-start-unsure">
               {t({ id: 'exam.start.unsure', message: `只練不熟的（${n(unsureCount)} 題）`, comment: '按鈕：只練練過但還沒連對兩次的題；count 已格式化' })}
@@ -390,9 +388,48 @@ export default function Exam() {
             comment: '打亂選項開關的說明',
           })}
         />
+        <div className="ll-exam-wrongbox" data-testid="exam-wrongbox">
+          <h3 className="ll-exam-wrongbox__title">{t({ id: 'exam.wrongbox.title', message: '錯題複習', comment: '苦練首頁第 2 步裡的小標：錯題複習' })}</h3>
+          <p className="ll-exam-hero__note">
+            {t({
+              id: 'exam.wrongbox.desc',
+              message: '答錯的題會留在這裡安排練習：連續答對兩次才算熟練；反覆答錯的題要連對三次，而且最後一次要在隔天。',
+              comment: '苦練首頁錯題複習的說明：熟練的門檻',
+            })}
+          </p>
+          {wrongStats.everWrong > 0 && (
+            <div className="ll-exam-hero__progress">
+              <ProgressBar size="md" value={wrongStats.mastered} max={wrongStats.everWrong} />
+              <span className="ll-exam-hero__count ll-num" data-testid="exam-wrong-counts">
+                {t({
+                  id: 'exam.wrongbox.counts',
+                  message: `待訂正 ${n(wrongStats.fix)} 題、複習中 ${n(wrongStats.review)} 題、已熟練 ${n(wrongStats.mastered)} 題`,
+                  comment: '苦練首頁錯題複習的三個階段各幾題；數字都已格式化',
+                })}
+              </span>
+            </div>
+          )}
+          <div className="ll-exam-hero__actions">
+            {wrongStats.due > 0 ? (
+              <Button size="md" icon={<BookIcon />} href={href('/exam/wrong/')} data-testid="exam-start-wrong">
+                {t({ id: 'exam.start.wrong', message: `練今天的錯題（${n(wrongStats.due)} 題）`, comment: '按鈕：錯題複習今天要練的題；count 已格式化' })}
+              </Button>
+            ) : (
+              <Button size="md" icon={<BookIcon />} disabled data-testid="exam-start-wrong">
+                {wrongStats.waiting > 0
+                  ? t({
+                      id: 'exam.start.wrongTomorrow',
+                      message: `今天的錯題練完了（明天再練 ${n(wrongStats.waiting)} 題）`,
+                      comment: '按鈕（停用）：今天要練的錯題都練完了；count 是明天再練的題數（已格式化）',
+                    })
+                  : t({ id: 'exam.start.wrongNone', message: '練今天的錯題（還沒有）', comment: '按鈕（停用）：沒有要練的錯題' })}
+              </Button>
+            )}
+          </div>
+        </div>
         <div className="ll-exam-hero__actions">
           <Button size="sm" variant="quiet" icon={<BookmarkIcon />} iconEnd={<ArrowRightIcon />} href={href('/exam/list/')} data-testid="exam-more-list">
-            {t({ id: 'exam.step.practise.list', message: '看答錯與還不熟的題', comment: '苦練首頁第 2 步最下面的連結：錯題與不熟的清單' })}
+            {t({ id: 'exam.step.practise.list', message: '看錯題複習的紀錄', comment: '苦練首頁第 2 步最下面的連結：錯題複習的清單頁' })}
           </Button>
           <Button size="sm" variant="quiet" icon={<RatioIcon />} iconEnd={<ArrowRightIcon />} href={href('/formulas/')} data-testid="exam-more-formulas">
             {t({ id: 'exam.step.practise.formulas', message: '查公式', comment: '苦練首頁第 2 步最下面的連結：會計公式總覽（卡住時查比率怎麼算）' })}
@@ -423,6 +460,21 @@ export default function Exam() {
             })}
           </p>
         )}
+        {mockWrongIds.length > 0 && (
+          <p className="ll-exam-hero__note ll-num" data-testid="exam-mock-wrong-note">
+            {mockOpen > 0
+              ? t({
+                  id: 'exam.step.mock.wrongOpen',
+                  message: `上次答錯的 ${n(mockWrongIds.length)} 題已放進錯題複習，還有 ${n(mockOpen)} 題沒熟練。`,
+                  comment: '苦練首頁第 3 步：上次模擬考答錯的題進了錯題複習，其中還沒熟練的題數；數字都已格式化',
+                })
+              : t({
+                  id: 'exam.step.mock.wrongDone',
+                  message: `上次答錯的 ${n(mockWrongIds.length)} 題都練到熟練了。`,
+                  comment: '苦練首頁第 3 步：上次模擬考答錯的題都已經熟練；count 已格式化',
+                })}
+          </p>
+        )}
         <div className="ll-exam-hero__actions">
           <Button variant={step === 'mock' ? 'primary' : 'secondary'} size="md" icon={<TimerIcon />} href={href('/exam/mock/')} data-testid="exam-more-mock">
             {mockDone
@@ -431,6 +483,11 @@ export default function Exam() {
                 ? t({ id: 'exam.step.mock.resume', message: '回到進行中的模擬考', comment: '苦練首頁第 3 步的按鈕：有還沒交卷的模擬考' })
                 : t({ id: 'exam.step.mock.go', message: '開始模擬考', comment: '苦練首頁第 3 步的按鈕' })}
           </Button>
+          {mockOpen > 0 && (
+            <Button size="md" variant="quiet" icon={<BookIcon />} href={href('/exam/wrong/')} data-testid="exam-mock-to-wrong">
+              {t({ id: 'exam.step.mock.toWrong', message: '到錯題複習訂正', comment: '苦練首頁第 3 步的按鈕：上次模擬考答錯的題還沒熟練，連到錯題複習' })}
+            </Button>
+          )}
         </div>
         {stepBadges('mock')}
       </Card>

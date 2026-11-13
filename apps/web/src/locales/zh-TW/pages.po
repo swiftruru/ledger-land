@@ -143,12 +143,6 @@ msgstr "{usageKb} KB"
 msgid "about.license.name"
 msgstr "「LedgerLand 會計樂園」的名稱與標誌另外保留，不隨開源授權授出。"
 
-#. 錯題與不熟的清單頁開頭的說明
-#. js-lingui-explicit-id
-#: src/pages/ExamList.tsx
-msgid "exam.list.intro"
-msgstr "「答錯的」是最近一次答錯的題；「還不熟的」是練過但還沒連續答對兩次的題。只看這台裝置的紀錄。"
-
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.mode.inApp"
@@ -253,6 +247,21 @@ msgstr "上次匯出"
 msgid "exam.step.mock.last"
 msgstr "上次模擬考：答對 {mockCorrect}／{mockTotal} 題"
 
+#. 苦練首頁第 3 步：上次模擬考答錯的題進了錯題複習，其中還沒熟練的題數；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(mockWrongIds.length)
+#. placeholder {1}: n(mockOpen)
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.wrongOpen"
+msgstr "上次答錯的 {0} 題已放進錯題複習，還有 {1} 題沒熟練。"
+
+#. 苦練首頁第 3 步：上次模擬考答錯的題都已經熟練；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(mockWrongIds.length)
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.wrongDone"
+msgstr "上次答錯的 {0} 題都練到熟練了。"
+
 #. 背題瀏覽的題目列：上次停在這一題
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseList.tsx
@@ -347,6 +356,34 @@ msgstr "交卷"
 #: src/features/badges/exam-text.ts
 msgid "badges.exam.mockFirst.cond"
 msgstr "交卷一次 {min} 題以上的模擬考"
+
+#. 確認答案後的階段說明：反覆答錯的題當天已經連對，剩下要隔天再答對一次
+#. js-lingui-explicit-id
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.tomorrow"
+msgstr "今天先到這裡，明天再答對一次就熟練。"
+
+#. 按鈕（停用）：今天要練的錯題都練完了；count 是明天再練的題數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(wrongStats.waiting)
+#: src/pages/Exam.tsx
+msgid "exam.start.wrongTomorrow"
+msgstr "今天的錯題練完了（明天再練 {0} 題）"
+
+#. 錯題複習：今天要練的都練完了，只剩明天再練的題
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.doneToday"
+msgstr "今天的錯題都練完了"
+
+#. 錯題複習的總結卡：今天要練的都練完了；count 是明天再練的題數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(stats.waiting)
+#. placeholder {0}: n(waiting)
+#: src/pages/ExamList.tsx
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.waiting"
+msgstr "今天的錯題都練完了，還有 {0} 題明天再練。"
 
 #. 苦練徽章「讀完一份」的取得條件
 #. js-lingui-explicit-id
@@ -514,12 +551,11 @@ msgstr "償債能力"
 msgid "debug.storage"
 msgstr "儲存"
 
-#. 練習頁空狀態的說明
+#. 錯題複習清單頁空狀態的說明
 #. js-lingui-explicit-id
 #: src/pages/ExamList.tsx
-#: src/pages/ExamRun.tsx
-msgid "exam.run.emptyWrong.desc"
-msgstr "先練幾題，答錯的題會集中到這裡。"
+msgid "exam.list.empty.desc"
+msgstr "先練幾題，答錯的題會集中到這裡，一直安排練習到熟練為止。"
 
 #. 引導卡第一步
 #. js-lingui-explicit-id
@@ -707,14 +743,12 @@ msgstr "再看公式"
 msgid "exam.summary.again"
 msgstr "再練一次"
 
-#. 總結卡按鈕；count 已格式化
+#. 錯題複習的總結卡按鈕：依最新的紀錄再出一輪；count 是今天還要練的題數（已格式化）
 #. js-lingui-explicit-id
-#. placeholder {0}: n(wrongAnswered)
-#. placeholder {0}: n(wrongHere.length)
-#: src/pages/ExamMock.tsx
+#. placeholder {0}: n(nextAll.length)
 #: src/pages/ExamRun.tsx
-msgid "exam.summary.retryWrong"
-msgstr "再練錯的（{0} 題）"
+msgid "exam.summary.nextRound"
+msgstr "再練下一輪（還有 {0} 題）"
 
 #. 模擬考成績卡的按鈕：用同樣的設定再抽一場
 #. js-lingui-explicit-id
@@ -734,6 +768,20 @@ msgstr "再自己練"
 msgid "exam.step.read.again"
 msgstr "再讀一次"
 
+#. 清單頁每題標題下的說明：複習中的題；more 是還要連對幾次（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(step.more)
+#: src/pages/ExamList.tsx
+msgid "exam.list.hint.more"
+msgstr "再連對 {0} 次就熟練"
+
+#. 確認答案後的階段說明：複習中又答對一次；more 是還要連對幾次（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(step.more)
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.more"
+msgstr "再連對 {0} 次就熟練。"
+
 #. updated 是已依語言格式化的日期
 #. js-lingui-explicit-id
 #: src/pages/Privacy.tsx
@@ -745,6 +793,12 @@ msgstr "最後更新：{updated}"
 #: src/pages/Exam.tsx
 msgid "exam.step.mock.title"
 msgstr "最後模擬考"
+
+#. 錯題複習清單頁第二張卡的小標：還沒熟練的錯題最多的段與公式
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.weak.title"
+msgstr "最需要加強的地方"
 
 #. 公式總覽分類切換的群組名稱
 #. js-lingui-explicit-id
@@ -769,6 +823,21 @@ msgstr "初次上場"
 #: src/features/credits/StackExplorer.tsx
 msgid "stack.node.quiz.role"
 msgstr "判分：每一種題型怎麼算對、算幾顆星，都在這裡。"
+
+#. 苦練首頁第 3 步的按鈕：上次模擬考答錯的題還沒熟練，連到錯題複習
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.mock.toWrong"
+msgstr "到錯題複習訂正"
+
+#. 總結卡與模擬考成績卡的按鈕：這一輪答錯的題數，連到錯題複習；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(wrongAnswered)
+#. placeholder {0}: n(wrongHere.length)
+#: src/pages/ExamMock.tsx
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.retryWrong"
+msgstr "到錯題複習訂正（{0} 題）"
 
 #. 苦練徽章格的眉標：作答練習的徽章
 #. js-lingui-explicit-id
@@ -828,6 +897,13 @@ msgstr "原始碼與第三方授權聲明"
 msgid "exam.browse.done.practise"
 msgstr "去練習"
 
+#. 清單頁每題標題下的說明：待訂正、反覆答錯的題；need 是要連對幾次（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(needOf(s))
+#: src/pages/ExamList.tsx
+msgid "exam.list.hint.fixRepeat"
+msgstr "反覆答錯：要連對 {0} 次，最後一次在隔天"
+
 #. 找齊彩蛋時的提示標題；第二行是徽章名稱
 #. js-lingui-explicit-id
 #: src/pages/Credits.tsx
@@ -886,19 +962,6 @@ msgstr "只練不熟的（{0} 題）"
 #: src/pages/Exam.tsx
 msgid "exam.start.unsureNone"
 msgstr "只練不熟的（還沒有）"
-
-#. 按鈕：只練這台裝置上一次答錯的題；count 已格式化
-#. js-lingui-explicit-id
-#. placeholder {0}: n(wrongCount)
-#: src/pages/Exam.tsx
-msgid "exam.start.wrong"
-msgstr "只練錯過的（{0} 題）"
-
-#. 按鈕（停用）：還沒有答錯的題
-#. js-lingui-explicit-id
-#: src/pages/Exam.tsx
-msgid "exam.start.wrongNone"
-msgstr "只練錯過的（還沒有）"
 
 #. 相關題目的第三類；c 是已格式化的題數
 #. js-lingui-explicit-id
@@ -1227,6 +1290,12 @@ msgstr "已合併，兩邊的紀錄都保留。"
 msgid "exam.teacher.reason.check"
 msgstr "已收錄，想請教"
 
+#. 錯題複習的分頁：答錯過、已經練到熟練的題；count 已格式化
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.tab.mastered"
+msgstr "已熟練 {count}"
+
 #. 備份頁狀態卡的欄位標籤，後面是 KB 數（保持短字：320 寬時標籤欄太寬會把日期擠成兩行）
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -1409,6 +1478,21 @@ msgstr "彩蛋 {foundText}／{totalText}"
 msgid "eggs.hints.title"
 msgstr "彩蛋藏在哪裡？給點提示"
 
+#. 苦練首頁錯題複習的三個階段各幾題；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(wrongStats.fix)
+#. placeholder {1}: n(wrongStats.review)
+#. placeholder {2}: n(wrongStats.mastered)
+#: src/pages/Exam.tsx
+msgid "exam.wrongbox.counts"
+msgstr "待訂正 {0} 題、複習中 {1} 題、已熟練 {2} 題"
+
+#. 錯題複習的分頁：最近一次答錯的題；count 已格式化
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.tab.fix"
+msgstr "待訂正 {count}"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.unsaid.2"
@@ -1521,6 +1605,12 @@ msgstr "我的"
 #: src/pages/ExamTeacher.tsx
 msgid "exam.teacher.note"
 msgstr "我的想法"
+
+#. 錯題複習清單頁第一張卡的小標
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.progress.title"
+msgstr "我的進度"
 
 #. 苦練區唯讀的題目：標在我上次選的選項後面
 #. js-lingui-explicit-id
@@ -1754,6 +1844,12 @@ msgstr "改回未讀"
 msgid "exam.mock.abandon"
 msgstr "放棄重來"
 
+#. 確認答案後的階段說明：第一次答錯
+#. js-lingui-explicit-id
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.firstWrong"
+msgstr "放進錯題複習了，之後會再安排你練這一題。"
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -1808,6 +1904,12 @@ msgstr "數字格式"
 #: src/pages/Credits.tsx
 msgid "eggs.hint.version"
 msgstr "方塊板下面那一串版本號，按按看。"
+
+#. 清單頁每題標題下的說明：複習中、今天已經升不上去的題
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.hint.tomorrow"
+msgstr "明天再答對一次就熟練"
 
 #. 模擬考：限時到了自動交卷的提示
 #. js-lingui-explicit-id
@@ -2096,6 +2198,12 @@ msgstr "沒有 cookie 的流量統計，只在正式網站、畫面閒下來才�
 msgid "design.play.title"
 msgstr "沒有生命值，沒有排行榜"
 
+#. 練習頁：錯題複習裡沒有還沒熟練的題（沒答錯過，或都練到熟練了）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.emptyReview"
+msgstr "沒有要練的錯題"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.progress.2"
@@ -2203,6 +2311,12 @@ msgstr "為什麼想做這個"
 #: src/pages/Backup.tsx
 msgid "backup.code.copyFailed"
 msgstr "無法自動複製，請自己選取下方的備份碼。"
+
+#. 確認答案後的階段說明：答錯過的題達到熟練
+#. js-lingui-explicit-id
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.mastered"
+msgstr "熟練了，這一題從錯題複習畢業。"
 
 #. 方塊上版本號前面給螢幕閱讀器唸的字
 #. js-lingui-explicit-id
@@ -2364,6 +2478,12 @@ msgstr "相關公式"
 msgid "formula.related"
 msgstr "相關公式"
 
+#. 最需要加強的地方：依公式分組的小標
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.weak.formulas"
+msgstr "相關公式"
+
 #. 審核頁原因框：答案不同的另一題的連結前綴
 #. js-lingui-explicit-id
 #: src/pages/ExamTeacher.tsx
@@ -2394,12 +2514,6 @@ msgstr "看全部"
 msgid "exam.badges.link"
 msgstr "看全部徽章"
 
-#. 總結卡：連到錯題與不熟的清單頁
-#. js-lingui-explicit-id
-#: src/pages/ExamRun.tsx
-msgid "exam.summary.toList"
-msgstr "看全部錯過與還不熟的題"
-
 #. 被拒後的下一步：連到安裝教學
 #. js-lingui-explicit-id
 #: src/components/ProtectProgress.tsx
@@ -2424,11 +2538,17 @@ msgstr "看成績，或再考一次"
 msgid "exam.browse.reveal"
 msgstr "看答案"
 
-#. 苦練首頁第 2 步最下面的連結：錯題與不熟的清單
+#. 苦練首頁第 2 步最下面的連結：錯題複習的清單頁
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
 msgid "exam.step.practise.list"
-msgstr "看答錯與還不熟的題"
+msgstr "看錯題複習的紀錄"
+
+#. 總結卡：連到錯題複習的清單頁
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.toList"
+msgstr "看錯題複習的紀錄"
 
 #. js-lingui-explicit-id
 #: src/pages/About.tsx
@@ -2521,18 +2641,29 @@ msgstr "答錯"
 msgid "exam.list.wrongTimes"
 msgstr "答錯 {0} 次"
 
-#. 清單頁篩選：最近答錯的題；count 已格式化
-#. js-lingui-explicit-id
-#. placeholder {0}: n(count.wrong)
-#: src/pages/ExamList.tsx
-msgid "exam.list.filter.wrong"
-msgstr "答錯的 {0}"
-
 #. 總結卡：答錯清單的小標
 #. js-lingui-explicit-id
 #: src/pages/ExamRun.tsx
 msgid "exam.summary.wrongList"
 msgstr "答錯的題"
+
+#. 錯題複習清單頁開頭的說明：三個階段與熟練的門檻
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.intro"
+msgstr "答錯的題會留在這裡：最近一次答錯的是「待訂正」，答對了但還沒熟練的是「複習中」。連續答對兩次算熟練；反覆答錯的題要連對三次，而且最後一次要在隔天。只看這台裝置的紀錄。"
+
+#. 苦練首頁錯題複習的說明：熟練的門檻
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.wrongbox.desc"
+msgstr "答錯的題會留在這裡安排練習：連續答對兩次才算熟練；反覆答錯的題要連對三次，而且最後一次要在隔天。"
+
+#. 練習頁空狀態的說明（錯題複習）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.emptyReview.desc"
+msgstr "答錯的題會集中到這裡，練到熟練為止。"
 
 #. 模擬考成績卡的篩選；count 已格式化
 #. js-lingui-explicit-id
@@ -2540,6 +2671,20 @@ msgstr "答錯的題"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.filter.wrong"
 msgstr "答錯與沒作答 {0}"
+
+#. 錯題複習清單頁的進度；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(stats.everWrong)
+#. placeholder {1}: n(stats.mastered)
+#: src/pages/ExamList.tsx
+msgid "exam.list.progress"
+msgstr "答錯過 {0} 題，已熟練 {1} 題"
+
+#. 錯題複習清單頁：沒有還沒熟練的錯題
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.allMastered"
+msgstr "答錯過的題都練到熟練了。"
 
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
@@ -2603,6 +2748,21 @@ msgstr "網站裡所有的數字，包括餘額、三張報表、財務比率、
 msgid "stack.node.icons.role"
 msgstr "線條圖示。建置時直接寫進頁面，不另外發請求，也不用字型檔。"
 
+#. 按鈕：錯題複習今天要練的題；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(stats.due)
+#. placeholder {0}: n(wrongStats.due)
+#: src/pages/Exam.tsx
+#: src/pages/ExamList.tsx
+msgid "exam.start.wrong"
+msgstr "練今天的錯題（{0} 題）"
+
+#. 按鈕（停用）：沒有要練的錯題
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.start.wrongNone"
+msgstr "練今天的錯題（還沒有）"
+
 #. 總結卡標題
 #. js-lingui-explicit-id
 #: src/pages/ExamRun.tsx
@@ -2614,13 +2774,6 @@ msgstr "練完這一輪"
 #: src/pages/Formula.tsx
 msgid "formula.practise"
 msgstr "練習相關題目（{questionTotalText} 題）"
-
-#. 清單頁的按鈕：把目前這一組拿去練；count 已格式化
-#. js-lingui-explicit-id
-#. placeholder {0}: n(count[filter])
-#: src/pages/ExamList.tsx
-msgid "exam.list.practise"
-msgstr "練這些（{0} 題）"
 
 #. 講義卡的按鈕
 #. js-lingui-explicit-id
@@ -2648,7 +2801,6 @@ msgstr "練過 {0}／{1} 題，熟練 {2} 題，答對率 {3}"
 
 #. 練習頁空狀態的說明（不熟的題）
 #. js-lingui-explicit-id
-#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.run.emptyUnsure.desc"
 msgstr "練過的題連續答對兩次就算熟練；還沒熟練的會集中到這裡。"
@@ -2746,6 +2898,12 @@ msgstr "處理 CSS：壓縮、補上舊版 iOS 需要的前綴。"
 msgid "debug.env"
 msgstr "裝置與環境"
 
+#. 錯題複習的分頁：答對了但還沒熟練的題；count 已格式化
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.tab.review"
+msgstr "複習中 {count}"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.export.code"
@@ -2818,6 +2976,13 @@ msgstr "解析出自講義"
 msgid "exam.run.hint"
 msgstr "解答與解析都照講義，有疑問以老師的說明為準。"
 
+#. 確認答案後的階段說明：答錯之後第一次答對；more 是還要連對幾次（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(step.more)
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.fixed"
+msgstr "訂正成功，再連對 {0} 次就熟練。"
+
 #. 公式條目頁：計算範例那一段的標題
 #. js-lingui-explicit-id
 #: src/features/formulas/FormulaSections.tsx
@@ -2868,6 +3033,7 @@ msgstr "課程的版面，現行的準則"
 
 #. 講義卡的小標；code 是講義編號，例如 0-1
 #. js-lingui-explicit-id
+#. placeholder {0}: a.deckCode ?? ''
 #. placeholder {0}: d.code
 #. placeholder {0}: deck.code
 #: src/features/exam/BrowseList.tsx
@@ -3044,6 +3210,15 @@ msgstr "這一場怎麼考"
 msgid "exam.step.badges"
 msgstr "這一步的徽章"
 
+#. 總結卡：這一輪作答過的題裡，答錯過的各在錯題複習的哪個階段；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(stages.mastered)
+#. placeholder {1}: n(stages.review)
+#. placeholder {2}: n(stages.fix)
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.stages"
+msgstr "這一輪的錯題：已熟練 {0} 題、複習中 {1} 題、待訂正 {2} 題"
+
 #. js-lingui-explicit-id
 #: src/pages/Debug.tsx
 msgid "debug.hint"
@@ -3082,6 +3257,13 @@ msgstr "這一頁說說做這個網站的人、教我會計的老師，還有把
 #: src/pages/Formulas.tsx
 msgid "content.offlineMissing"
 msgstr "這一頁還沒下載到這台裝置。連上網路後再試一次，已下載的內容現在也能繼續使用。"
+
+#. 確認答案後的階段說明：再次答錯；count 是累計答錯次數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(state.wrong)
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.repeatWrong"
+msgstr "這一題第 {0} 次答錯，會多安排幾次練習。"
 
 #. 選了一個目前沒有條目的分類
 #. js-lingui-explicit-id
@@ -3179,6 +3361,12 @@ msgstr "這個網站怎麼設計出來的"
 msgid "credits.stack.title"
 msgstr "這個網站是用什麼做的"
 
+#. 錯題複習清單頁：選的分頁沒有題
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.tab.none"
+msgstr "這個階段現在沒有題。"
+
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
 msgid "backup.status.title"
@@ -3212,6 +3400,13 @@ msgstr "這條公式還沒有相關題目"
 #: src/pages/Design.tsx
 msgid "design.source.2"
 msgstr "這樣做的理由很簡單：如果有一天某個地方算錯了，它只會錯在一個地方，改一次就好。也因為這樣，你在實驗室裡改了一筆金額，後面的每一張表都會跟著變，不會有哪個角落還留著舊的數字。"
+
+#. 清單頁每題標題下的說明：待訂正的題；need 是要連對幾次（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(needOf(s))
+#: src/pages/ExamList.tsx
+msgid "exam.list.hint.fix"
+msgstr "連對 {0} 次就熟練"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -3260,18 +3455,17 @@ msgstr "遮回去"
 msgid "backup.import.file"
 msgstr "選擇備份檔"
 
-#. 清單頁篩選：練過但還沒熟練的題；count 已格式化
-#. js-lingui-explicit-id
-#. placeholder {0}: n(count.unsure)
-#: src/pages/ExamList.tsx
-msgid "exam.list.filter.unsure"
-msgstr "還不熟的 {0}"
-
 #. 練習頁的標題：只練不熟的（練過但還沒連對兩次）
 #. js-lingui-explicit-id
 #: src/pages/ExamRun.tsx
 msgid "exam.set.unsure"
 msgstr "還不熟的題"
+
+#. 錯題複習空狀態的按鈕：把明天再練的題也拿來練（純練習）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.practiseAnyway"
+msgstr "還是想再練一次"
 
 #. 模擬考交卷確認；count 已格式化
 #. js-lingui-explicit-id
@@ -3279,6 +3473,13 @@ msgstr "還不熟的題"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.confirm.blank"
 msgstr "還有 {0} 題沒作答，交卷後算答錯。交卷後不能再改。"
+
+#. 錯題複習空狀態的說明；count 是明天再練的題數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: formatNumber(state.waiting, locale)
+#: src/pages/ExamRun.tsx
+msgid "exam.run.doneToday.desc"
+msgstr "還有 {0} 題要等明天再答對一次才算熟練。"
 
 #. 彩蛋提示清單：這一個還沒找到
 #. js-lingui-explicit-id
@@ -3306,17 +3507,22 @@ msgstr "還沒收錄，想請教"
 
 #. 練習頁：「只練不熟的」但這台裝置沒有練過而未熟練的題
 #. js-lingui-explicit-id
-#: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.run.emptyUnsure"
 msgstr "還沒有不熟的題"
 
-#. 練習頁：「只練錯過的」但這台裝置沒有答錯的紀錄
+#. 錯題複習清單頁：這台裝置沒有答錯過的題
 #. js-lingui-explicit-id
 #: src/pages/ExamList.tsx
-#: src/pages/ExamRun.tsx
-msgid "exam.run.emptyWrong"
-msgstr "還沒有錯過的題"
+msgid "exam.list.empty"
+msgstr "還沒有錯題"
+
+#. 最需要加強的地方：這一段或這條公式還沒熟練的錯題數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(count)
+#: src/pages/ExamList.tsx
+msgid "exam.list.weak.count"
+msgstr "還沒熟練 {0} 題"
 
 #. 苦練首頁第 1 步的說明
 #. js-lingui-explicit-id
@@ -3391,23 +3597,29 @@ msgstr "鈴：嗨！謝謝你跑來看幕後。"
 msgid "debug.errors"
 msgstr "錯誤紀錄（最近 50 筆）"
 
-#. 練習頁的標題：只練錯過的
-#. js-lingui-explicit-id
-#: src/pages/ExamRun.tsx
-msgid "exam.set.wrong"
-msgstr "錯過的題"
-
-#. 錯題與不熟的清單頁的標題
-#. js-lingui-explicit-id
-#: src/pages/ExamList.tsx
-msgid "exam.list.title"
-msgstr "錯過與還不熟的題"
-
 #. 苦練徽章的名稱：每一題都練過而且沒有停在答錯的題
 #. js-lingui-explicit-id
 #: src/features/badges/exam-text.ts
 msgid "badges.exam.noWrong"
 msgstr "錯題歸零"
+
+#. 苦練首頁第 2 步裡的小標：錯題複習
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.wrongbox.title"
+msgstr "錯題複習"
+
+#. 練習頁的標題：錯題複習（答錯過、還沒熟練的題）
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.set.wrong"
+msgstr "錯題複習"
+
+#. 錯題複習清單頁的標題
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.title"
+msgstr "錯題複習"
 
 #. 苦練首頁第 3 步的按鈕
 #. js-lingui-explicit-id

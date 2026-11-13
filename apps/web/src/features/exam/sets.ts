@@ -1,5 +1,6 @@
 // 期中考苦練的題組（M4c）：由 manifest.handouts 的小索引組出來，不必載題庫。
-// 題組 ID：all（全部）、wrong（這台裝置上一次答錯的）、unsure（練過但還沒連對兩次的，M4c 第二批）、講義 ID（d1）、段 ID（d1s2）、
+// 題組 ID：all（全部）、wrong（錯題複習：這台裝置答錯過、還沒熟練、今天要練的題，依優先順序；2026-11-13 之前是「上一次答錯的」）、
+// unsure（練過但還沒熟練的，M4c 第二批）、講義 ID（d1）、段 ID（d1s2）、
 // formula:<公式 ID>（一條會計公式的相關講義題，2026-11-07；題目清單來自公式索引，依講義順序）。
 // teacher、list、browse、mock 是苦練區其他頁面的路由，不是題組。
 import type { FormulaIndexEntry, HandoutDeckEntry, HandoutManifestEntry } from '../../lib/content.ts';
@@ -29,6 +30,8 @@ export const isDynamicSet = (id: string): boolean => id === 'wrong' || id === 'u
 export interface SetPicks {
   wrongIds: ReadonlySet<string>;
   unsureIds: ReadonlySet<string>;
+  /** wrong 題組的出題順序（錯題複習的優先順序）；沒給就照講義順序 */
+  wrongOrder?: readonly string[];
 }
 
 /** 講義順序的全部題目 ID */
@@ -53,7 +56,10 @@ export function resolveSet(index: HandoutManifestEntry, setId: string, picks: Se
   }
   if (setId === 'wrong' || setId === 'unsure') {
     const picked = setId === 'wrong' ? picks.wrongIds : picks.unsureIds;
-    const ids = allQuestionIds(index).filter((id) => picked.has(id));
+    const inBank = allQuestionIds(index);
+    const bank = new Set(inBank);
+    const ordered = setId === 'wrong' ? picks.wrongOrder : undefined;
+    const ids = ordered ? ordered.filter((id) => picked.has(id) && bank.has(id)) : inBank.filter((id) => picked.has(id));
     const deckIds = decks.filter((d) => d.sections.some((s) => s.questionIds.some((id) => picked.has(id)))).map((d) => d.id);
     return { id: setId, kind: setId, deckIds, questionIds: ids };
   }
