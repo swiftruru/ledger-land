@@ -1,0 +1,160 @@
+/* 練習紀錄頁（/exam/history/，2026-11-13）：四個數字、每天練了幾題的長條圖、每天的數字表格。和苦練其他頁共用 exam.css 的卡片與說明文字 */
+.ll-exam-history__tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ll-space-2);
+  margin: var(--ll-space-3) 0 0;
+}
+.ll-exam-history__tiles > div {
+  padding: var(--ll-space-3);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-surface-2);
+}
+.ll-exam-history__tiles dt,
+.ll-exam-history__tiles dd,
+.ll-daychart__legend,
+.ll-daychart__axis,
+.ll-daychart__xs,
+.ll-exam-history__table {
+  color: var(--ll-text-2);
+  font-size: var(--ll-type-footnote-size);
+}
+.ll-exam-history__tiles dd {
+  margin: 0;
+}
+.ll-exam-history__tiles dd:first-of-type {
+  color: var(--ll-text);
+  font-size: var(--ll-type-title-3-size);
+  font-weight: 700;
+}
+.ll-exam-history__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ll-space-2);
+}
+.ll-exam-history__table {
+  width: 100%;
+  margin-top: var(--ll-space-2);
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.ll-exam-history__table th,
+.ll-exam-history__table td {
+  padding: var(--ll-space-2) var(--ll-space-1);
+  border-bottom: 1px solid var(--ll-border);
+  text-align: end;
+  white-space: nowrap;
+}
+.ll-exam-history__table th:first-child,
+.ll-exam-history__table td:first-child {
+  text-align: start;
+}
+
+/* ---- 長條圖 ---- */
+.ll-daychart {
+  margin: var(--ll-space-3) 0 0;
+}
+.ll-daychart__legend {
+  display: flex;
+  gap: var(--ll-space-4);
+  margin: 0 0 var(--ll-space-3);
+  padding: 0;
+  list-style: none;
+}
+.ll-daychart__key {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-inline-end: 6px;
+  border-radius: 3px;
+  vertical-align: -1px;
+}
+.ll-daychart__seg--ok {
+  background: var(--ll-success-ink);
+}
+/* 答錯：斜線紋（顏色不是唯一的區別） */
+.ll-daychart__seg--no {
+  background: repeating-linear-gradient(135deg, var(--ll-danger-ink) 0 2px, var(--ll-danger-tint) 2px 5px);
+}
+.ll-daychart__plot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--ll-space-2);
+}
+.ll-daychart__axis,
+.ll-daychart__cols {
+  position: relative;
+  height: 160px;
+}
+.ll-daychart__axis {
+  min-width: 1.5em;
+}
+.ll-daychart__axis > span {
+  position: absolute;
+  inset-inline-end: 0;
+  line-height: 1;
+  transform: translateY(50%);
+}
+.ll-daychart__cols {
+  display: flex;
+  border-bottom: 1px solid var(--ll-border);
+  touch-action: pan-y;
+}
+.ll-daychart__line {
+  position: absolute;
+  inset-inline: 0;
+  border-top: 1px solid var(--ll-border);
+}
+.ll-daychart__col {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  min-width: 0;
+  padding-inline: 1px;
+  border-radius: var(--ll-radius-xs) var(--ll-radius-xs) 0 0;
+}
+.ll-daychart__col[data-picked='true'] {
+  background: var(--ll-surface-2);
+}
+.ll-daychart__seg {
+  flex: none;
+  width: 100%;
+  max-width: 24px;
+  min-height: 3px;
+}
+.ll-daychart__col > .ll-daychart__seg:first-child {
+  border-radius: 4px 4px 0 0;
+}
+.ll-daychart__xs {
+  display: flex;
+  grid-column: 2;
+  margin-top: var(--ll-space-1);
+}
+.ll-daychart__x {
+  display: flex;
+  flex: 1 1 0;
+  justify-content: center;
+  min-width: 0;
+  white-space: nowrap;
+}
+.ll-daychart__x[data-today='true'] {
+  color: var(--ll-text);
+  font-weight: 700;
+}
+.ll-daychart__readout {
+  margin-top: var(--ll-space-3);
+  color: var(--ll-text);
+  font-size: var(--ll-type-body-sm-size);
+  font-weight: 600;
+}
+@media (min-width: 600px) {
+  .ll-exam-history__tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

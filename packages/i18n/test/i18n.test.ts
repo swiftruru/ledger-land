@@ -9,6 +9,7 @@ import {
   completeNonBaseLocales,
   fallbackChain,
   formatDate,
+  formatMonthDay,
   formatMoney,
   formatMoneyCompact,
   formatNumber,
@@ -130,6 +131,11 @@ describe('格式化（05 第 10 節）', () => {
   it('日期用 UTC，en 為英式', () => {
     expect(formatDate('2026-11-03', 'en')).toBe('3 November 2026');
     expect(formatDate('2026-11-03', 'zh-TW')).toBe('2026年11月3日');
+  });
+  it('只有月與日的短日期：zh-TW 是數字，en 的月份用縮寫', () => {
+    expect(formatMonthDay('2026-11-03', 'zh-TW')).toBe('11/3');
+    expect(formatMonthDay('2026-11-03', 'en')).toBe('3 Nov');
+    expect(() => formatMonthDay('11/3', 'en')).toThrow(/ISO/);
   });
   it('formatNumber 的千分位', () => {
     expect(formatNumber(1234567.5, 'en', { digits: 1 })).toBe('1,234,567.5');

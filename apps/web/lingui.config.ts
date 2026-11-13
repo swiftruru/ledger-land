@@ -31,6 +31,7 @@ const PAGE_CATALOG_SOURCES = [
   '<rootDir>/src/pages/ExamRun.tsx',
   '<rootDir>/src/pages/ExamTeacher.tsx',
   '<rootDir>/src/pages/ExamList.tsx',
+  '<rootDir>/src/pages/ExamHistory.tsx',
   '<rootDir>/src/pages/ExamBrowse.tsx',
   '<rootDir>/src/pages/ExamMock.tsx',
   '<rootDir>/src/features/exam',

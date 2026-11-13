@@ -1,5 +1,6 @@
 // 期中考苦練的紀錄（M4c，06 第 4.2 節）：自己一個 IndexedDB 資料庫 ledgerland-exam，和學習進度的 ledgerland 分開，不碰錯題本與星星。
 // 每題的累計（questionState）會跟著備份走（2026-11-05，features/exam/backup.ts；06 第 4.6 節）；作答明細與做到一半的一輪留在這台裝置。
+// 作答明細從 2026-11-13 起有讀的用途：練習紀錄頁（features/exam/history.ts）用它算每天練了幾題；仍然不進備份。
 // 三個 store：attempts（每一次確認答案）、questionState（每題的累計：看過幾次、對幾次、最近一次對不對）、runs（進行中或剛完成的一輪，鍵是題組 ID）。
 // 開不了（私密瀏覽、配額）時退到記憶體，和 features/quiz/session-cache.ts 同一套做法。
 import { openDB, type IDBPDatabase } from 'idb';
@@ -56,6 +57,8 @@ export interface ExamDb {
   writeStates(states: readonly QuestionState[], clearFirst: boolean): Promise<void>;
   addAttempt(attempt: ExamAttempt): Promise<void>;
   countAttempts(): Promise<number>;
+  /** 這台裝置的每一次作答（練習紀錄頁用）；順序不保證 */
+  allAttempts(): Promise<ExamAttempt[]>;
 }
 
 export function memoryExamDb(): ExamDb {
@@ -87,6 +90,9 @@ export function memoryExamDb(): ExamDb {
     },
     async countAttempts() {
       return attempts.length;
+    },
+    async allAttempts() {
+      return [...attempts];
     },
   };
 }
@@ -132,6 +138,17 @@ export function indexedDbExamDb(name: string = EXAM_DB): ExamDb {
     },
     async countAttempts() {
       return (await db()).count(STORES.attempts);
+    },
+    async allAttempts() {
+      const raw = (await (await db()).getAll(STORES.attempts)) as unknown[];
+      return raw.filter(
+        (a): a is ExamAttempt =>
+          a !== null &&
+          typeof a === 'object' &&
+          typeof (a as ExamAttempt).questionId === 'string' &&
+          typeof (a as ExamAttempt).at === 'string' &&
+          typeof (a as ExamAttempt).correct === 'boolean',
+      );
     },
   };
 }
@@ -197,6 +214,11 @@ export function getExamDb(): ExamDb {
       guard(
         () => idb.countAttempts(),
         () => memory.countAttempts(),
+      ),
+    allAttempts: () =>
+      guard(
+        () => idb.allAttempts(),
+        () => memory.allAttempts(),
       ),
   };
   return current;

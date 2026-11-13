@@ -23,6 +23,7 @@ import {
   NavRow,
   PlayIcon,
   ProgressBar,
+  PulseIcon,
   RetryIcon,
   SearchIcon,
   Segmented,
@@ -430,6 +431,9 @@ export default function Exam() {
         <div className="ll-exam-hero__actions">
           <Button size="sm" variant="quiet" icon={<BookmarkIcon />} iconEnd={<ArrowRightIcon />} href={href('/exam/list/')} data-testid="exam-more-list">
             {t({ id: 'exam.step.practise.list', message: '看錯題複習的紀錄', comment: '苦練首頁第 2 步最下面的連結：錯題複習的清單頁' })}
+          </Button>
+          <Button size="sm" variant="quiet" icon={<PulseIcon />} iconEnd={<ArrowRightIcon />} href={href('/exam/history/')} data-testid="exam-more-history">
+            {t({ id: 'exam.step.practise.history', message: '看練習紀錄', comment: '苦練首頁第 2 步最下面的連結：每天練了幾題的練習紀錄頁' })}
           </Button>
           <Button size="sm" variant="quiet" icon={<RatioIcon />} iconEnd={<ArrowRightIcon />} href={href('/formulas/')} data-testid="exam-more-formulas">
             {t({ id: 'exam.step.practise.formulas', message: '查公式', comment: '苦練首頁第 2 步最下面的連結：會計公式總覽（卡住時查比率怎麼算）' })}

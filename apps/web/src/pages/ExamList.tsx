@@ -206,6 +206,11 @@ export default function ExamList() {
               : t({ id: 'exam.list.allMastered', message: '答錯過的題都練到熟練了。', comment: '錯題複習清單頁：沒有還沒熟練的錯題' })}
           </p>
         )}
+        <p className="ll-exam-run__hint" data-testid="exam-list-history">
+          <TextLink href={href('/exam/history/')}>
+            {t({ id: 'exam.list.toHistory', message: '看每天的練習紀錄', comment: '錯題複習清單頁進度卡裡的連結：每天練了幾題的練習紀錄頁' })}
+          </TextLink>
+        </p>
       </Card>
       {sections.length > 0 && (
         <Card as="section" className="ll-exam-hero" aria-labelledby="ll-exam-weak-title" data-testid="exam-weak">

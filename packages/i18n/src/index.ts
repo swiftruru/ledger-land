@@ -9,6 +9,7 @@ export {
   formatUnit,
   formatMoneyCompact,
   formatDate,
+  formatMonthDay,
   partsToNumber,
   moneyParts,
   noNegZero,

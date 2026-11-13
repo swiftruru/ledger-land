@@ -18,3 +18,10 @@ export const localDayOf: DayOf = (iso) => {
 };
 
 export const deviceClock = (): Clock => ({ today: todayLocal(), dayOf: localDayOf });
+
+/** 本地日期加減幾天（YYYY-MM-DD 進、YYYY-MM-DD 出）；不是合法的日期回空字串 */
+export function addDays(day: string, n: number): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day);
+  if (!m) return '';
+  return todayLocal(new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]) + n));
+}

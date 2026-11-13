@@ -92,6 +92,20 @@ export function formatDate(iso: string, code: Locale, style?: 'long' | 'medium')
   return f.format(new Date(`${iso}T00:00:00Z`));
 }
 
+/** 只有月與日的短日期（圖表的橫軸、表格的日期欄）：zh-TW 是 11/3，en 是 3 Nov（英式的純數字 03/11 容易和美式看反，所以月份用縮寫）；
+ *  和 formatDate 一樣以 UTC 解析 */
+export function formatMonthDay(iso: string, code: Locale): string {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) throw new Error(`不是 ISO 日期：${iso}`);
+  const def = getLocale(code);
+  const key = `${def.intlLocale}|md`;
+  let f = dateCache.get(key);
+  if (!f) {
+    f = new Intl.DateTimeFormat(def.intlLocale, { month: def.intlLocale.startsWith('zh') ? 'numeric' : 'short', day: 'numeric', timeZone: 'UTC' });
+    dateCache.set(key, f);
+  }
+  return f.format(new Date(`${iso}T00:00:00Z`));
+}
+
 /** formatToParts 往返檢查用（05 第 10.5 節第 4 條）：把 parts 組回數字 */
 export function partsToNumber(parts: Intl.NumberFormatPart[]): number {
   let s = '';

@@ -52,6 +52,12 @@
       "catalog": "pages"
     },
     {
+      "pattern": "^/exam/history/$",
+      "module": "src/pages/ExamHistory.tsx",
+      "content": [],
+      "catalog": "pages"
+    },
+    {
       "pattern": "^/exam/browse/$",
       "module": "src/pages/ExamBrowse.tsx",
       "content": [],
