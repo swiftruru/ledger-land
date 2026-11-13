@@ -762,6 +762,12 @@ msgstr "再考一次"
 msgid "exam.step.practise.title"
 msgstr "再自己練"
 
+#. 練習頁題號列右側的標籤：這一題在這一輪答錯過，現在再出一次
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.retryTag"
+msgstr "再試一次"
+
 #. 苦練首頁第 1 步的按鈕：全部讀完了，回到題目清單
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -1850,6 +1856,12 @@ msgstr "放棄重來"
 msgid "exam.stage.firstWrong"
 msgstr "放進錯題複習了，之後會再安排你練這一題。"
 
+#. 確認答案後的階段說明：第一次答錯，這一輪後面還會再出一次
+#. js-lingui-explicit-id
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.firstWrongAgain"
+msgstr "放進錯題複習了，隔幾題會再出一次。"
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -2647,6 +2659,14 @@ msgstr "答錯 {0} 次"
 msgid "exam.summary.wrongList"
 msgstr "答錯的題"
 
+#. 總結卡：答錯的題排回同一輪再練；retried 是加練的次數、fixed 是再出現時答對的題數（都已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(sum.retried)
+#. placeholder {1}: n(sum.fixedIds.length)
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.retried"
+msgstr "答錯的題在這一輪加練了 {0} 次，訂正成功 {1} 題"
+
 #. 錯題複習清單頁開頭的說明：三個階段與熟練的門檻
 #. js-lingui-explicit-id
 #: src/pages/ExamList.tsx
@@ -3210,6 +3230,12 @@ msgstr "這一場怎麼考"
 msgid "exam.step.badges"
 msgstr "這一步的徽章"
 
+#. 總結卡答錯清單裡的標籤：第一次答錯、同一輪再出現時答對
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.fixedTag"
+msgstr "這一輪已訂正"
+
 #. 總結卡：這一輪作答過的題裡，答錯過的各在錯題複習的哪個階段；數字都已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(stages.mastered)
@@ -3264,6 +3290,13 @@ msgstr "這一頁還沒下載到這台裝置。連上網路後再試一次，已
 #: src/features/exam/StageNote.tsx
 msgid "exam.stage.repeatWrong"
 msgstr "這一題第 {0} 次答錯，會多安排幾次練習。"
+
+#. 確認答案後的階段說明：再次答錯，這一輪後面還會再出一次；count 是累計答錯次數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(state.wrong)
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.repeatWrongAgain"
+msgstr "這一題第 {0} 次答錯，隔幾題會再出一次。"
 
 #. 選了一個目前沒有條目的分類
 #. js-lingui-explicit-id

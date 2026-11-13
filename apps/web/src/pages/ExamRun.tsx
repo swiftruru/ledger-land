@@ -4,12 +4,14 @@
 // wrong 與 unsure 是會變動的題組（sets.ts 的 isDynamicSet）：每次進來、每次「再練」都依目前的紀錄重新出題，不沿用上一輪（2026-11-13）。
 // wrong 是錯題複習（2026-11-13）：今天要練的錯題依優先順序出題，一輪最多 WRONG_ROUND_SIZE 題；?all=1 連「明天再練」的也一起練（純練習）；
 // 確認答案後正解行下面多一行階段說明（features/exam/StageNote.tsx），總結卡多一行這一輪的錯題各在哪個階段。
+// 答錯的題排回同一輪（2026-11-13，features/exam/run.ts 的 requeueWrong）：隔幾題再出一次、同一題一輪最多再出兩次，再出現的題題號列有「再試一次」的標籤；
+// 總結卡的成績以題為單位（第一次就答對的題數），另一行寫加練幾次、訂正成功幾題。模擬考不排。
 // 題目卡是 features/exam/HandoutQuestionCard.tsx；練完是總結卡（答對幾題、答錯的題可展開看題目與解析、再練錯的、再練一次）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { formatNumber, localePath } from '@ledgerland/i18n';
-import { BookIcon, Button, Card, Disclosure, ErrorState, HouseIcon, PlayIcon, RatioIcon, RetryIcon, TextLink, TopBar } from '@ledgerland/web-ui';
+import { Badge, BookIcon, Button, Card, Disclosure, ErrorState, HouseIcon, PlayIcon, RatioIcon, RetryIcon, TextLink, TopBar } from '@ledgerland/web-ui';
 import { deviceClock } from '../features/exam/day.ts';
 import { getExamDb, nextState, type QuestionState } from '../features/exam/db.ts';
 import { HandoutQuestionCard } from '../features/exam/HandoutQuestionCard.tsx';
@@ -19,9 +21,13 @@ import { readExamShuffle } from '../features/exam/prefs.ts';
 import {
   answerOf,
   checkAnswer,
-  currentQuestionId,
+  comesAgain,
+  currentSlot,
   isFinished,
+  isRetrySlot,
   nextQuestion,
+  questionOf,
+  requeueWrong,
   restoreRun,
   selectAnswer,
   startRun,
@@ -289,9 +295,10 @@ export default function ExamRun() {
   if (isFinished(run)) {
     const sum = summarise(run);
     const wrongHere = sum.wrongIds.map((id) => questions.get(id)).filter((q): q is HandoutQuestionSnapshot => q !== undefined);
-    // 這一輪作答過的題裡，答錯過的各在哪個階段
+    const fixedHere = new Set(sum.fixedIds);
+    // 這一輪作答過的題裡，答錯過的各在哪個階段（同一題再出現的只算一次；第一次出現的格子就是題目 ID）
     const stages = { fix: 0, review: 0, mastered: 0 };
-    for (const id of run.questionIds) {
+    for (const id of new Set(run.questionIds.map(questionOf))) {
       const stage = answerOf(run, id).checked ? stageOf(states.get(id), clock) : null;
       if (stage !== null) stages[stage]++;
     }
@@ -307,6 +314,15 @@ export default function ExamRun() {
           <p className="ll-exam-summary__score ll-num" data-testid="exam-score">
             {t({ id: 'exam.summary.score', message: `答對 ${n(sum.correct)}／${n(sum.total)} 題`, comment: '總結卡的成績；數字已格式化' })}
           </p>
+          {sum.retried > 0 && (
+            <p className="ll-exam-summary__stages ll-num" data-testid="exam-summary-retried">
+              {t({
+                id: 'exam.summary.retried',
+                message: `答錯的題在這一輪加練了 ${n(sum.retried)} 次，訂正成功 ${n(sum.fixedIds.length)} 題`,
+                comment: '總結卡：答錯的題排回同一輪再練；retried 是加練的次數、fixed 是再出現時答對的題數（都已格式化）',
+              })}
+            </p>
+          )}
           {stages.fix + stages.review + stages.mastered > 0 && (
             <p className="ll-exam-summary__stages ll-num" data-testid="exam-summary-stages">
               {t({
@@ -365,7 +381,23 @@ export default function ExamRun() {
             <div className="ll-exam-summary__wrong">
               <h3 className="ll-exam-summary__subtitle">{t({ id: 'exam.summary.wrongList', message: '答錯的題', comment: '總結卡：答錯清單的小標' })}</h3>
               {wrongHere.map((q) => (
-                <Disclosure key={q.id} summary={<span lang="zh-TW">{q.topic}</span>} variant="plain">
+                <Disclosure
+                  key={q.id}
+                  summary={
+                    <>
+                      <span lang="zh-TW">{q.topic}</span>
+                      {fixedHere.has(q.id) && (
+                        <>
+                          {' '}
+                          <Badge kind="success">
+                            {t({ id: 'exam.summary.fixedTag', message: '這一輪已訂正', comment: '總結卡答錯清單裡的標籤：第一次答錯、同一輪再出現時答對' })}
+                          </Badge>
+                        </>
+                      )}
+                    </>
+                  }
+                  variant="plain"
+                >
                   <HandoutQuestionReadout q={q} heading={false} chosen={answerOf(run, q.id).chosen}>
                     <FormulaPills questionId={q.id} formulas={formulasOf} />
                   </HandoutQuestionReadout>
@@ -383,13 +415,18 @@ export default function ExamRun() {
     );
   }
 
-  const qid = currentQuestionId(run)!;
+  // 格子：第一次出現的是題目 ID，答錯後再出現的是另一格（作答各記各的）
+  const slot = currentSlot(run)!;
+  const qid = questionOf(slot);
+  const retry = isRetrySlot(slot);
   const q = questions.get(qid)!;
-  const answer = answerOf(run, qid);
+  const answer = answerOf(run, slot);
   const check = () => {
-    const next = checkAnswer(run, qid, q.answer);
-    const a = answerOf(next, qid);
+    const checkedRun = checkAnswer(run, slot, q.answer);
+    const a = answerOf(checkedRun, slot);
     if (!a.checked) return;
+    // 答錯的題排回這一輪後面（隔幾題再出一次；到上限就不排）
+    const next = requeueWrong(checkedRun, slot);
     const at = new Date().toISOString();
     const prev = states.get(qid);
     const ns = nextState(prev, qid, q.answerRev, a.correct === true, at, a.chosen!);
@@ -397,7 +434,7 @@ export default function ExamRun() {
     void db.putState(ns).catch(() => {});
     void db
       .addAttempt({
-        id: `${run.runId}-${qid}`,
+        id: `${run.runId}-${slot}`,
         questionId: qid,
         rev: q.rev,
         answerRev: q.answerRev,
@@ -429,21 +466,33 @@ export default function ExamRun() {
       )}
       <div className="ll-question-wrap" data-ready="true">
         <HandoutQuestionCard
-          key={qid}
+          key={slot}
           q={q}
           answer={answer}
           shuffle={shuffle}
-          runId={run.runId}
+          // 打亂選項時，再出現的那一次用另一個種子（順序重新打亂）
+          runId={retry ? `${run.runId}${slot.slice(qid.length)}` : run.runId}
           index={run.index + 1}
           total={run.questionIds.length}
-          onSelect={(letter) => update((r) => selectAnswer(r, qid, letter))}
+          {...(retry
+            ? {
+                meta: (
+                  <Badge kind="warning">
+                    <span data-testid="exam-retry-tag">
+                      {t({ id: 'exam.run.retryTag', message: '再試一次', comment: '練習頁題號列右側的標籤：這一題在這一輪答錯過，現在再出一次' })}
+                    </span>
+                  </Badge>
+                ),
+              }
+            : {})}
+          onSelect={(letter) => update((r) => selectAnswer(r, slot, letter))}
           onCheck={check}
           onNext={() => {
             setFreshConfirm(null);
             update((r) => nextQuestion(r));
           }}
           scrollOnMount={freshConfirm === qid}
-          note={answer.checked ? <StageNote state={states.get(qid)} correct={answer.correct === true} /> : undefined}
+          note={answer.checked ? <StageNote state={states.get(qid)} correct={answer.correct === true} again={comesAgain(run, qid)} /> : undefined}
           extra={<FormulaPills questionId={qid} formulas={formulasOf} />}
         />
       </div>

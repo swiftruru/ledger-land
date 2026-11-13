@@ -762,6 +762,12 @@ msgstr "Sit another one"
 msgid "exam.step.practise.title"
 msgstr "Then practise"
 
+#. 練習頁題號列右側的標籤：這一題在這一輪答錯過，現在再出一次
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.run.retryTag"
+msgstr "Try again"
+
 #. 苦練首頁第 1 步的按鈕：全部讀完了，回到題目清單
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -1850,6 +1856,12 @@ msgstr "Abandon and start over"
 msgid "exam.stage.firstWrong"
 msgstr "Added to mistake review. This question will come back for practice."
 
+#. 確認答案後的階段說明：第一次答錯，這一輪後面還會再出一次
+#. js-lingui-explicit-id
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.firstWrongAgain"
+msgstr "Added to mistake review. It will come up again in a few questions."
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -2647,6 +2659,14 @@ msgstr "Wrong {0} times"
 msgid "exam.summary.wrongList"
 msgstr "Questions you got wrong"
 
+#. 總結卡：答錯的題排回同一輪再練；retried 是加練的次數、fixed 是再出現時答對的題數（都已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(sum.retried)
+#. placeholder {1}: n(sum.fixedIds.length)
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.retried"
+msgstr "Extra tries on missed questions this round: {0}. Fixed: {1}."
+
 #. 錯題複習清單頁開頭的說明：三個階段與熟練的門檻
 #. js-lingui-explicit-id
 #: src/pages/ExamList.tsx
@@ -3210,6 +3230,12 @@ msgstr "Set up this paper"
 msgid "exam.step.badges"
 msgstr "Badges for this step"
 
+#. 總結卡答錯清單裡的標籤：第一次答錯、同一輪再出現時答對
+#. js-lingui-explicit-id
+#: src/pages/ExamRun.tsx
+msgid "exam.summary.fixedTag"
+msgstr "Fixed this round"
+
 #. 總結卡：這一輪作答過的題裡，答錯過的各在錯題複習的哪個階段；數字都已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(stages.mastered)
@@ -3264,6 +3290,13 @@ msgstr "This page has not been downloaded to this device yet. Try again once you
 #: src/features/exam/StageNote.tsx
 msgid "exam.stage.repeatWrong"
 msgstr "Wrong {0} times now, so this one will come back a few more times."
+
+#. 確認答案後的階段說明：再次答錯，這一輪後面還會再出一次；count 是累計答錯次數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(state.wrong)
+#: src/features/exam/StageNote.tsx
+msgid "exam.stage.repeatWrongAgain"
+msgstr "Wrong {0} times now. It will come up again in a few questions."
 
 #. 選了一個目前沒有條目的分類
 #. js-lingui-explicit-id
