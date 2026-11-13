@@ -17,7 +17,18 @@ describe('exam db', () => {
     await db.putState(s);
     await db.putState(nextState(s, 'hq_aaaaaaa1', 1, true, '2026-11-04T00:00:02Z', 'B'));
     expect(await db.allStates()).toEqual([
-      { questionId: 'hq_aaaaaaa1', answerRev: 1, seen: 2, correct: 1, wrong: 1, lastCorrect: true, lastAt: '2026-11-04T00:00:02Z', streak: 1, lastChosen: 'B' },
+      {
+        questionId: 'hq_aaaaaaa1',
+        answerRev: 1,
+        seen: 2,
+        correct: 1,
+        wrong: 1,
+        lastCorrect: true,
+        lastAt: '2026-11-04T00:00:02Z',
+        streak: 1,
+        lastChosen: 'B',
+        lastWrongAt: '2026-11-04T00:00:01Z',
+      },
     ]);
     await db.addAttempt({ id: 'r-1', questionId: 'hq_aaaaaaa1', rev: 1, answerRev: 1, setId: 'd1', chosen: 'B', correct: true, at: '' });
     await db.addAttempt({ id: 'r-1', questionId: 'hq_aaaaaaa1', rev: 1, answerRev: 1, setId: 'd1', chosen: 'B', correct: true, at: '' });

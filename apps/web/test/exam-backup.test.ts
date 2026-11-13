@@ -42,12 +42,53 @@ describe('苦練紀錄的備份', () => {
     s = nextState(s, 'hq_aaaaaaa1', 3, false, '2026-11-05T02:00:20.400Z', 'A');
     await db.putState(s);
     const parsed = parseExamBackup(JSON.parse(JSON.stringify(await exportExamBackup(db))));
-    expect(parsed).toEqual([{ ...s, lastAt: '2026-11-05T02:00:20.000Z' }]);
+    expect(parsed).toEqual([{ ...s, lastAt: '2026-11-05T02:00:20.000Z', lastWrongAt: '2026-11-05T02:00:20.000Z' }]);
+  });
+
+  it('第 2 版：最近一次答錯的時間跟著走（答對之後才需要多寫一欄），第 1 版的備份照樣讀得進來', async () => {
+    const db = memoryExamDb();
+    let s = nextState(undefined, 'hq_aaaaaaa1', 1, false, '2026-11-12T03:00:00.000Z', 'A');
+    s = nextState(s, 'hq_aaaaaaa1', 1, false, '2026-11-13T03:00:00.000Z', 'A');
+    await db.putState(s);
+    // 最近一次是答錯的：不必多寫，讀回來就是最近一次的時間
+    expect((await exportExamBackup(db))!.q[0]).toHaveLength(8);
+    expect(parseExamBackup(JSON.parse(JSON.stringify(await exportExamBackup(db))))).toEqual([s]);
+    s = nextState(s, 'hq_aaaaaaa1', 1, true, '2026-11-13T03:05:00.000Z', 'B');
+    await db.putState(s);
+    const backup = (await exportExamBackup(db))!;
+    expect(backup.v).toBe(2);
+    expect(backup.q[0]).toEqual(['aaaaaaa1', 1, 3, 1, 1, 1, Date.parse('2026-11-13T03:05:00.000Z') / 1000, 'B', Date.parse('2026-11-13T03:00:00.000Z') / 1000]);
+    expect(parseExamBackup(JSON.parse(JSON.stringify(backup)))).toEqual([s]);
+    // 沒答錯過的題還是 8 個元素
+    await db.putState(nextState(undefined, 'hq_bbbbbbb2', 1, true, '2026-11-13T03:06:00.000Z', 'C'));
+    expect((await exportExamBackup(db))!.q.map((row) => row.length)).toEqual([9, 8]);
+    // 第 1 版：沒有那一欄；最近一次答錯的補成最近一次的時間，其餘留空
+    const v1 = parseExamBackup({
+      v: 1,
+      q: [
+        ['aaaaaaa1', 1, 3, 1, 0, 0, 1794000000, 'A'],
+        ['bbbbbbb2', 1, 3, 2, 2, 1, 1794000000, 'A'],
+      ],
+    })!;
+    expect(v1.map((x) => x.lastWrongAt)).toEqual([new Date(1794000000 * 1000).toISOString(), undefined]);
+    // 第 9 個元素不合理的列略過：比最近一次作答晚、沒答錯過卻有、最近一次是答錯卻有
+    const bad = parseExamBackup({
+      v: 2,
+      q: [
+        ['aaaaaaa1', 1, 3, 1, 1, 1, 1794000000, 'A', 1794000001],
+        ['aaaaaaa2', 1, 2, 2, 2, 1, 1794000000, 'A', 1793000000],
+        ['aaaaaaa3', 1, 3, 1, 0, 0, 1794000000, 'A', 1793000000],
+        ['aaaaaaa4', 1, 3, 1, 1, 1, 1794000000, 'A', 0],
+        ['aaaaaaa5', 1, 3, 1, 1, 1, 1794000000, 'A', 1793000000],
+      ],
+    })!;
+    expect(bad.map((x) => x.questionId)).toEqual(['hq_aaaaaaa5']);
+    expect(parseExamBackup({ v: 3, q: [] })).toBeNull();
   });
 
   it('驗證：不是這個格式回 null；壞掉的單列略過，其餘照收；同一題重複留後面那一列', () => {
     expect(parseExamBackup(null)).toBeNull();
-    expect(parseExamBackup({ v: 2, q: [] })).toBeNull();
+    expect(parseExamBackup({ v: 3, q: [] })).toBeNull();
     expect(parseExamBackup({ v: 1, questionState: [] })).toBeNull();
     const good = ['aaaaaaa1', 1, 3, 2, 0, 0, 1794000000, 'A'];
     const rows = [
