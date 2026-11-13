@@ -417,6 +417,8 @@ test.describe('期中考苦練', () => {
   });
 
   test('錯題複習：再答錯的題下一輪還在、排在最前面；訂正、再練下一輪、熟練；反覆答錯的題當天連對兩次後明天再練，隔天答對才熟練', async ({ page, request }) => {
+    // 這一條走完整個流程，作答二十幾次：CI 的 WebKit 原本就要 46 秒，加上同一輪再出現的兩次之後超過預設的 60 秒
+    test.setTimeout(150_000);
     const idx = await index(request);
     const d1 = idx.decks.find((d) => d.id === 'd1')!;
     const qs = await deckQuestions(request, d1);
