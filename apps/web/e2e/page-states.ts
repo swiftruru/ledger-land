@@ -145,6 +145,51 @@ const reviewEntry = (questionId: string, today: string) => ({
 
 const visible = (page: Page, testId: string) => expect(page.getByTestId(testId).first()).toBeVisible();
 const question = (page: Page) => page.locator('.ll-question');
+
+/** 苦練的練習頁（講義 d1 第 1 段）：把第 1 題答錯並等紀錄寫進 ledgerland-exam。正解從講義檔讀，不寫死；
+ *  紀錄是非同步寫進 IndexedDB 的，接著整頁導航會和寫入競速，所以等 questionState 有那一筆才回來 */
+async function answerFirstExamQuestionWrong(page: Page): Promise<void> {
+  type Deck = { id: string; file: string; sections: { questionIds: string[] }[] };
+  type Q = { id: string; options: { letter: string }[]; answer: string[] };
+  const manifest = (await (await page.request.get('/content/content-manifest.json')).json()) as { handouts: { decks: Deck[] }[] };
+  const deck = manifest.handouts[0]!.decks.find((d) => d.id === 'd1')!;
+  const file = (await (await page.request.get(`/${deck.file}`)).json()) as { questions: Q[] };
+  const q = file.questions.find((x) => x.id === deck.sections[0]!.questionIds[0])!;
+  const wrong = q.options.findIndex((o) => !q.answer.includes(o.letter));
+  await question(page).getByRole('radio').nth(wrong).check();
+  await question(page)
+    .getByRole('button', { name: /確認答案|Check answer/ })
+    .click();
+  await expect(page.locator('.ll-feedback__title')).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        (id) =>
+          new Promise<boolean>((resolve) => {
+            const req = indexedDB.open('ledgerland-exam');
+            req.onerror = () => resolve(false);
+            req.onsuccess = () => {
+              const db = req.result;
+              if (!db.objectStoreNames.contains('questionState')) {
+                db.close();
+                return resolve(false);
+              }
+              const get = db.transaction('questionState', 'readonly').objectStore('questionState').get(id);
+              get.onsuccess = () => {
+                db.close();
+                resolve(get.result !== undefined);
+              };
+              get.onerror = () => {
+                db.close();
+                resolve(false);
+              };
+            };
+          }),
+        q.id,
+      ),
+    )
+    .toBe(true);
+}
 /** 第一題整張畫好：整頁的布幕掀開（作答區齊了才 data-ready，lib/page-ready.tsx），而且題號是第 1 題 */
 const firstQuestionReady = async (page: Page) => {
   await expect(page.locator('.ll-page[data-ready="true"]')).toBeVisible();
@@ -509,7 +554,23 @@ export const CASES: readonly PageCase[] = [
       await visible(page, 'exam-mock-result');
     },
   },
-  { group: '苦練', name: '錯題清單', path: '/exam/list/', prepare: (page) => expect(page.getByRole('radio', { name: /^答錯的|^Got wrong/ })).toBeVisible() },
+  // 錯題複習的清單（2026-11-13 改寫）：新使用者是空狀態；答錯一題之後才有進度卡、最需要加強的地方與三個分頁
+  { group: '苦練', name: '錯題清單（空）', path: '/exam/list/', prepare: (page) => expect(page.getByText(/^還沒有錯題$|^No mistakes yet$/)).toBeVisible() },
+  {
+    group: '苦練',
+    name: '錯題清單',
+    path: '/exam/d1s1/',
+    prepare: async (page) => {
+      await answerFirstExamQuestionWrong(page);
+      // 同一個語系與主題下換到清單頁
+      const url = new URL(page.url());
+      url.pathname = url.pathname.replace(/d1s1\/$/, 'list/');
+      await page.goto(url.toString());
+      await waitForApp(page);
+      await expect(page.getByRole('radio', { name: /^待訂正|^To fix/ })).toBeVisible();
+      await visible(page, 'exam-weak-sections');
+    },
+  },
   { group: '錯題本', name: '空', path: '/review/', prepare: (page) => expect(page.locator('.ll-review-empty')).toBeVisible() },
   {
     group: '錯題本',
