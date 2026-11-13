@@ -422,7 +422,7 @@ export default function ExamMock() {
             </Button>
             {wrongAnswered > 0 && (
               <Button size="md" icon={<BookIcon />} href={href('/exam/wrong/')} data-testid="exam-mock-wrong">
-                {t({ id: 'exam.summary.retryWrong', message: `再練錯的（${n(wrongAnswered)} 題）` })}
+                {t({ id: 'exam.summary.retryWrong', message: `到錯題複習訂正（${n(wrongAnswered)} 題）` })}
               </Button>
             )}
             <Button size="md" variant="quiet" icon={<GearIcon />} onClick={toSetup} data-testid="exam-mock-resetup">

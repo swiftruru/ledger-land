@@ -32,11 +32,18 @@ export interface QuestionState {
   streak: number;
   /** 最近一次選的講義字母（錯題清單用）；第一批的紀錄沒有 */
   lastChosen?: string;
+  /** 最近一次答錯的時間（錯題複習，2026-11-13）：反覆答錯的題要在這之後的隔天答對才算熟練（stats.ts）。
+   *  之前存的紀錄沒有這一欄：最近一次是答錯的讀出來時補成 lastAt，其餘留空（照舊的門檻算） */
+  lastWrongAt?: string;
 }
 
-/** 第一批（2026-11-04）存的紀錄沒有 streak：最近一次答對算連對 1 次，答錯算 0；不升資料庫版本 */
+/** 第一批（2026-11-04）存的紀錄沒有 streak：最近一次答對算連對 1 次，答錯算 0；不升資料庫版本。
+ *  沒有 lastWrongAt 而最近一次是答錯的紀錄，那一次的時間就是 lastAt */
 export function normaliseState(s: QuestionState): QuestionState {
-  return typeof s.streak === 'number' ? s : { ...s, streak: s.lastCorrect ? 1 : 0 };
+  const withStreak = typeof s.streak === 'number' ? s : { ...s, streak: s.lastCorrect ? 1 : 0 };
+  return !withStreak.lastCorrect && withStreak.seen > 0 && withStreak.lastWrongAt === undefined
+    ? { ...withStreak, lastWrongAt: withStreak.lastAt }
+    : withStreak;
 }
 
 export interface ExamDb {
@@ -221,5 +228,6 @@ export function nextState(
     lastAt: at,
     streak: correct ? base.streak + 1 : 0,
     ...(chosen === undefined ? {} : { lastChosen: chosen }),
+    ...(correct ? {} : { lastWrongAt: at }),
   };
 }

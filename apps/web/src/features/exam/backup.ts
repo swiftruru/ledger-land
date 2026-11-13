@@ -3,19 +3,24 @@
 // 這是「練過幾題、錯過的題、熟練」的來源。不帶：每一次作答的明細（attempts，只增不減，量大又只用來數筆數）與做到一半的一輪（runs，換裝置就重開）。
 // 合併規則：同一題以「最近練的那一次」為準（lastAt 較晚的那一筆整筆留下；一樣晚就留練得多的）。兩台裝置各自累計的次數不相加：
 // 相加的話同一份備份匯入兩次就會重複計算，而進度的合併規則是「匯入幾次結果都一樣」。題庫的答案改版過（answerRev 不同）時留版本新的。
+// 第 2 版（2026-11-13，錯題複習）：一列可以多第 9 個元素「最近一次答錯的時間」，反覆答錯的題要靠它判斷「隔天答對」。讀的時候第 1、2 版都收；
+// 寫的一律是第 2 版（只認得第 1 版的舊 App 會整塊略過苦練的紀錄，其他進度照常匯入）。
 // 這個檔只給備份頁用，驗證用手寫的（不引 zod，苦練各頁的 chunk 不必多載它）。
 import type { ExamDb, QuestionState } from './db.ts';
 
 /** extensions 裡的鍵 */
 export const EXAM_BACKUP_KEY = 'exam';
 /** 這一塊自己的格式版本 */
-export const EXAM_BACKUP_VERSION = 1;
+export const EXAM_BACKUP_VERSION = 2;
+const READABLE_VERSIONS: readonly unknown[] = [1, 2];
 
 /**
  * 備份檔裡的樣子（純 JSON）。每題一列、欄位照固定的順序排，不寫欄位名稱：備份碼有長度上限（8000 個字），
  * 300 題都練過時用物件寫，光這一塊就超過；寫成一列一列大約少三分之一（約 5400 個字）。
  * 一列是：[題目 ID 去掉 hq_ 的 8 個字, answerRev, 練過幾次, 對幾次, 連對幾次, 最近一次對不對（1 或 0）, 最近一次的時間（Unix 秒）, 最近選的字母（沒有是空字串）]。
  * 錯幾次不寫（練過減對的）；時間只到秒，合併時只拿來比先後。
+ * 第 2 版：最近一次答對、而且知道最近一次答錯是什麼時候的題，多第 9 個元素（Unix 秒）。最近一次是答錯的不必寫（就是最近一次的時間），
+ * 沒答錯過的也沒有，所以大部分的列還是 8 個元素。
  */
 export type ExamBackupRow = [
   id: string,
@@ -26,6 +31,7 @@ export type ExamBackupRow = [
   lastCorrect: 0 | 1,
   lastAt: number,
   lastChosen: string,
+  lastWrongAt?: number,
 ];
 export interface ExamBackup {
   v: typeof EXAM_BACKUP_VERSION;
@@ -34,17 +40,22 @@ export interface ExamBackup {
 
 const ID_PREFIX = 'hq_';
 
+const seconds = (iso: string): number => Math.floor(Date.parse(iso) / 1000);
+
 function toRow(s: QuestionState): ExamBackupRow {
-  return [
+  const lastWrong = s.lastCorrect && s.lastWrongAt !== undefined ? seconds(s.lastWrongAt) : Number.NaN;
+  const row: ExamBackupRow = [
     s.questionId.slice(ID_PREFIX.length),
     s.answerRev,
     s.seen,
     s.correct,
     s.streak,
     s.lastCorrect ? 1 : 0,
-    Math.floor(Date.parse(s.lastAt) / 1000),
+    seconds(s.lastAt),
     s.lastChosen ?? '',
   ];
+  if (Number.isInteger(lastWrong) && lastWrong > 0) row.push(lastWrong);
+  return row;
 }
 
 /** 這台裝置的苦練紀錄轉成備份用的 JSON；一題都沒練過回 null（備份就不帶 extensions.exam）。列依題目 ID 排序，同一份紀錄永遠得到同一串文字 */
@@ -57,14 +68,18 @@ export async function exportExamBackup(db: ExamDb): Promise<ExamBackup | null> {
 const isCount = (x: unknown): x is number => typeof x === 'number' && Number.isInteger(x) && x >= 0;
 
 function fromRow(raw: unknown): QuestionState | null {
-  if (!Array.isArray(raw) || raw.length !== 8) return null;
-  const [id, answerRev, seen, correct, streak, lastCorrect, lastAt, lastChosen] = raw as unknown[];
+  if (!Array.isArray(raw) || (raw.length !== 8 && raw.length !== 9)) return null;
+  const [id, answerRev, seen, correct, streak, lastCorrect, lastAt, lastChosen, lastWrong] = raw as unknown[];
   if (typeof id !== 'string' || !/^[0-9a-z]{8}$/.test(id)) return null;
   if (!isCount(answerRev) || answerRev < 1 || !isCount(seen) || seen < 1 || !isCount(correct) || correct > seen) return null;
   if (!isCount(streak) || streak > correct || (lastCorrect !== 0 && lastCorrect !== 1)) return null;
   // 最近一次答錯時連對一定是 0，答對時至少是 1
   if ((lastCorrect === 0) !== (streak === 0)) return null;
   if (!isCount(lastAt) || lastAt === 0 || typeof lastChosen !== 'string' || !/^[A-E]?$/.test(lastChosen)) return null;
+  // 第 9 個元素：只有答錯過、最近一次答對的題才有，而且不會比最近一次作答晚
+  if (raw.length === 9 && (!isCount(lastWrong) || lastWrong === 0 || lastWrong > lastAt || correct === seen || lastCorrect !== 1)) return null;
+  const iso = (t: number) => new Date(t * 1000).toISOString();
+  const lastWrongAt = lastCorrect === 0 ? iso(lastAt) : raw.length === 9 ? iso(lastWrong as number) : undefined;
   return {
     questionId: `${ID_PREFIX}${id}`,
     answerRev,
@@ -72,9 +87,10 @@ function fromRow(raw: unknown): QuestionState | null {
     correct,
     wrong: seen - correct,
     lastCorrect: lastCorrect === 1,
-    lastAt: new Date(lastAt * 1000).toISOString(),
+    lastAt: iso(lastAt),
     streak,
     ...(lastChosen === '' ? {} : { lastChosen }),
+    ...(lastWrongAt === undefined ? {} : { lastWrongAt }),
   };
 }
 
@@ -83,7 +99,7 @@ function fromRow(raw: unknown): QuestionState | null {
 export function parseExamBackup(raw: unknown): QuestionState[] | null {
   if (raw === null || typeof raw !== 'object') return null;
   const r = raw as Record<string, unknown>;
-  if (r['v'] !== EXAM_BACKUP_VERSION || !Array.isArray(r['q'])) return null;
+  if (!READABLE_VERSIONS.includes(r['v']) || !Array.isArray(r['q'])) return null;
   const byId = new Map<string, QuestionState>();
   for (const row of r['q']) {
     const s = fromRow(row);

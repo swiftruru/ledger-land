@@ -2,12 +2,15 @@
 // 有進行中的一輪就沿用（features/exam/run.ts 的 restoreRun：題庫改版的題作廢重答），沒有就開新的一輪；每一次確認都寫進 ledgerland-exam。
 // 隨機的一輪題數和網址要的不一樣（換了 n）就開新的一輪。題組除了全部、講義、段，還有 wrong（最近答錯的）與 unsure（練過但還沒連對兩次的）。
 // wrong 與 unsure 是會變動的題組（sets.ts 的 isDynamicSet）：每次進來、每次「再練」都依目前的紀錄重新出題，不沿用上一輪（2026-11-13）。
+// wrong 是錯題複習（2026-11-13）：今天要練的錯題依優先順序出題，一輪最多 WRONG_ROUND_SIZE 題；?all=1 連「明天再練」的也一起練（純練習）；
+// 確認答案後正解行下面多一行階段說明（features/exam/StageNote.tsx），總結卡多一行這一輪的錯題各在哪個階段。
 // 題目卡是 features/exam/HandoutQuestionCard.tsx；練完是總結卡（答對幾題、答錯的題可展開看題目與解析、再練錯的、再練一次）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { formatNumber, localePath } from '@ledgerland/i18n';
 import { BookIcon, Button, Card, Disclosure, ErrorState, HouseIcon, PlayIcon, RatioIcon, RetryIcon, TextLink, TopBar } from '@ledgerland/web-ui';
+import { deviceClock } from '../features/exam/day.ts';
 import { getExamDb, nextState, type QuestionState } from '../features/exam/db.ts';
 import { HandoutQuestionCard } from '../features/exam/HandoutQuestionCard.tsx';
 import { HandoutQuestionReadout } from '../features/exam/HandoutQuestionReadout.tsx';
@@ -27,7 +30,8 @@ import {
   type ExamRun,
 } from '../features/exam/run.ts';
 import { formulaIdOfSet, isDynamicSet, isSetId, resolveSet, type ExamSet } from '../features/exam/sets.ts';
-import { picksOf } from '../features/exam/stats.ts';
+import { StageNote } from '../features/exam/StageNote.tsx';
+import { picksOf, stageOf, wrongQueueOf, WRONG_ROUND_SIZE } from '../features/exam/stats.ts';
 import { FormulaPills, useFormulasOfQuestions } from '../features/formulas/FormulaPills.tsx';
 import { loadFormulaIndex, loadHandoutDeck, loadHandoutIndex, type HandoutManifestEntry, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
@@ -37,7 +41,8 @@ import '../styles/exam.css';
 type State =
   | { kind: 'loading' }
   | { kind: 'notfound' }
-  | { kind: 'empty'; set: ExamSet }
+  /** waiting：錯題複習裡明天再練的題數（今天要練的都練完了） */
+  | { kind: 'empty'; set: ExamSet; waiting: number }
   | { kind: 'error' }
   | {
       kind: 'ok';
@@ -58,6 +63,8 @@ export default function ExamRun() {
   const order: ExamOrder = search.get('order') === 'random' ? 'random' : 'handout';
   const count = parseCount(search.get('n'), DEFAULT_RANDOM_COUNT);
   const key = `${setId}:${order}`;
+  // 錯題複習的 ?all=1：連今天已經升不上去（明天再練）的題也一起練
+  const everything = setId === 'wrong' && search.get('all') === '1';
   const href = (p: string) => localePath(locale, p);
   const [state, setState] = useState<State>({ kind: 'loading' });
   const [states, setStates] = useState<Map<string, QuestionState>>(new Map());
@@ -77,14 +84,17 @@ export default function ExamRun() {
       if (alive) setStates(map);
       // 公式題組（formula:<id>）的題目清單在公式索引裡（在 precache），只有這種題組才讀
       const formulas = formulaIdOfSet(setId) === null ? undefined : await loadFormulaIndex(locale).catch(() => []);
-      const set = resolveSet(index, setId, picksOf(map), formulas);
+      const clock = deviceClock();
+      const set = resolveSet(index, setId, picksOf(map, clock, { all: everything }), formulas);
       if (!set) return { kind: 'notfound' } as State;
-      if (set.questionIds.length === 0) return { kind: 'empty', set } as State;
+      if (set.questionIds.length === 0) return { kind: 'empty', set, waiting: set.kind === 'wrong' ? wrongQueueOf(map, clock).waiting.length : 0 } as State;
       const decks = await Promise.all(set.deckIds.map((d) => loadHandoutDeck(d)));
       const all = new Map(decks.flatMap((d) => d.questions).map((q) => [q.id, q] as const));
       const wanted = set.questionIds.filter((id) => all.has(id));
       const questions = new Map(wanted.map((id) => [id, all.get(id)!] as const));
-      const limit = limitOf(count, wanted.length);
+      // 錯題複習一輪最多 WRONG_ROUND_SIZE 題（questions 留著全部要練的，下一輪接著用）
+      const round = set.kind === 'wrong' ? wanted.slice(0, WRONG_ROUND_SIZE) : wanted;
+      const limit = limitOf(count, round.length);
       // 會變動的題組不沿用存下來的一輪：上一輪練完了會只看到舊的總結卡，練到一半則會跳過已經答錯的題
       const stored = isDynamicSet(setId) ? undefined : await db.getRun(key).catch(() => undefined);
       // 隨機的一輪：題數和這次要的不一樣（換了 n、或題組變大變小）就不沿用
@@ -104,7 +114,7 @@ export default function ExamRun() {
       }
       const run = startRun({
         key,
-        questions: wanted.map((id) => questions.get(id)!),
+        questions: round.map((id) => questions.get(id)!),
         order,
         bankRev: index.rev,
         ...(order === 'random' ? { limit } : {}),
@@ -119,7 +129,7 @@ export default function ExamRun() {
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, count]);
+  }, [key, count, everything]);
   usePageReady(state.kind !== 'loading');
 
   const update = useCallback(
@@ -139,7 +149,7 @@ export default function ExamRun() {
       case 'all':
         return t({ id: 'exam.set.all', message: '全部題目', comment: '練習頁的標題：全部題目' });
       case 'wrong':
-        return t({ id: 'exam.set.wrong', message: '錯過的題', comment: '練習頁的標題：只練錯過的' });
+        return t({ id: 'exam.set.wrong', message: '錯題複習', comment: '練習頁的標題：錯題複習（答錯過、還沒熟練的題）' });
       case 'unsure':
         return t({ id: 'exam.set.unsure', message: '還不熟的題', comment: '練習頁的標題：只練不熟的（練過但還沒連對兩次）' });
       case 'deck':
@@ -193,6 +203,26 @@ export default function ExamRun() {
         />
       </>
     );
+  if (state.kind === 'empty' && state.set.kind === 'wrong' && state.waiting > 0)
+    return (
+      <>
+        {topBar(setTitle(state.set))}
+        <ErrorState
+          pose="clasp"
+          title={t({ id: 'exam.run.doneToday', message: '今天的錯題都練完了', comment: '錯題複習：今天要練的都練完了，只剩明天再練的題' })}
+          description={t({
+            id: 'exam.run.doneToday.desc',
+            message: `還有 ${formatNumber(state.waiting, locale)} 題要等明天再答對一次才算熟練。`,
+            comment: '錯題複習空狀態的說明；count 是明天再練的題數（已格式化）',
+          })}
+          action={
+            <Button variant="secondary" icon={<RetryIcon />} href={href('/exam/wrong/?all=1')} data-testid="exam-wrong-all">
+              {t({ id: 'exam.run.practiseAnyway', message: '還是想再練一次', comment: '錯題複習空狀態的按鈕：把明天再練的題也拿來練（純練習）' })}
+            </Button>
+          }
+        />
+      </>
+    );
   if (state.kind === 'empty')
     return (
       <>
@@ -204,7 +234,7 @@ export default function ExamRun() {
               ? t({ id: 'exam.run.emptyUnsure', message: '還沒有不熟的題', comment: '練習頁：「只練不熟的」但這台裝置沒有練過而未熟練的題' })
               : state.set.kind === 'formula'
                 ? t({ id: 'exam.run.emptyFormula', message: '這條公式還沒有相關題目', comment: '練習頁：公式題組沒有題' })
-                : t({ id: 'exam.run.emptyWrong', message: '還沒有錯過的題', comment: '練習頁：「只練錯過的」但這台裝置沒有答錯的紀錄' })
+                : t({ id: 'exam.run.emptyReview', message: '沒有要練的錯題', comment: '練習頁：錯題複習裡沒有還沒熟練的題（沒答錯過，或都練到熟練了）' })
           }
           description={
             state.set.kind === 'unsure'
@@ -219,7 +249,7 @@ export default function ExamRun() {
                     message: '講義的練習題裡沒有用到這條公式的題，先練整份講義吧。',
                     comment: '練習頁空狀態的說明（公式題組）',
                   })
-                : t({ id: 'exam.run.emptyWrong.desc', message: '先練幾題，答錯的題會集中到這裡。', comment: '練習頁空狀態的說明' })
+                : t({ id: 'exam.run.emptyReview.desc', message: '答錯的題會集中到這裡，練到熟練為止。', comment: '練習頁空狀態的說明（錯題複習）' })
           }
           action={
             <Button variant="primary" icon={<PlayIcon />} href={href('/exam/all/')}>
@@ -234,12 +264,15 @@ export default function ExamRun() {
   const n = (x: number) => formatNumber(x, locale);
   const dynamic = isDynamicSet(set.id);
   // 會變動的題組：下一輪的題依頁面裡最新的紀錄重新挑（這一輪答對的已經離開、答錯的還在）。題目只會比載入時少，questions 夠用
-  const nextSet = dynamic ? (resolveSet(state.index, set.id, picksOf(states)) ?? set) : set;
-  const nextIds = nextSet.questionIds.filter((id) => questions.has(id));
+  const clock = deviceClock();
+  const nextSet = dynamic ? (resolveSet(state.index, set.id, picksOf(states, clock, { all: everything })) ?? set) : set;
+  const nextAll = nextSet.questionIds.filter((id) => questions.has(id));
+  const nextIds = set.kind === 'wrong' ? nextAll.slice(0, WRONG_ROUND_SIZE) : nextAll;
+  const waiting = set.kind === 'wrong' ? wrongQueueOf(states, clock).waiting.length : 0;
   const restart = () => {
     setFreshConfirm(null);
     if (nextIds.length === 0) {
-      setState({ kind: 'empty', set: nextSet });
+      setState({ kind: 'empty', set: nextSet, waiting });
       return;
     }
     const fresh = startRun({
@@ -256,6 +289,12 @@ export default function ExamRun() {
   if (isFinished(run)) {
     const sum = summarise(run);
     const wrongHere = sum.wrongIds.map((id) => questions.get(id)).filter((q): q is HandoutQuestionSnapshot => q !== undefined);
+    // 這一輪作答過的題裡，答錯過的各在哪個階段
+    const stages = { fix: 0, review: 0, mastered: 0 };
+    for (const id of run.questionIds) {
+      const stage = answerOf(run, id).checked ? stageOf(states.get(id), clock) : null;
+      if (stage !== null) stages[stage]++;
+    }
     return (
       <>
         {topBar(setTitle(set))}
@@ -268,21 +307,47 @@ export default function ExamRun() {
           <p className="ll-exam-summary__score ll-num" data-testid="exam-score">
             {t({ id: 'exam.summary.score', message: `答對 ${n(sum.correct)}／${n(sum.total)} 題`, comment: '總結卡的成績；數字已格式化' })}
           </p>
+          {stages.fix + stages.review + stages.mastered > 0 && (
+            <p className="ll-exam-summary__stages ll-num" data-testid="exam-summary-stages">
+              {t({
+                id: 'exam.summary.stages',
+                message: `這一輪的錯題：已熟練 ${n(stages.mastered)} 題、複習中 ${n(stages.review)} 題、待訂正 ${n(stages.fix)} 題`,
+                comment: '總結卡：這一輪作答過的題裡，答錯過的各在錯題複習的哪個階段；數字都已格式化',
+              })}
+            </p>
+          )}
+          {set.kind === 'wrong' && nextAll.length === 0 && waiting > 0 && (
+            <p className="ll-exam-summary__stages" data-testid="exam-summary-waiting">
+              {t({
+                id: 'exam.summary.waiting',
+                message: `今天的錯題都練完了，還有 ${n(waiting)} 題明天再練。`,
+                comment: '錯題複習的總結卡：今天要練的都練完了；count 是明天再練的題數（已格式化）',
+              })}
+            </p>
+          )}
           <div className="ll-exam-summary__actions">
-            {wrongHere.length > 0 && (
-              // 已經在錯題練習裡：網址不會變，直接在這一頁開新的一輪（連到同一個網址不會重新載入）
-              <Button
-                variant="primary"
-                size="md"
-                icon={<BookIcon />}
-                {...(set.kind === 'wrong' ? { onClick: restart } : { href: href('/exam/wrong/') })}
-                data-testid="exam-retry-wrong"
-              >
-                {t({ id: 'exam.summary.retryWrong', message: `再練錯的（${n(wrongHere.length)} 題）`, comment: '總結卡按鈕；count 已格式化' })}
-              </Button>
-            )}
-            {/* 會變動的題組：沒有題可練了就不給「再練一次」；錯題練習還有錯的時候上面那一顆就是再練一次 */}
-            {nextIds.length > 0 && !(set.kind === 'wrong' && wrongHere.length > 0) && (
+            {set.kind === 'wrong'
+              ? // 錯題複習：網址不會變，直接在這一頁依最新的紀錄開下一輪（連到同一個網址不會重新載入）
+                nextAll.length > 0 && (
+                  <Button variant="primary" size="md" icon={<BookIcon />} onClick={restart} data-testid="exam-retry-wrong">
+                    {t({
+                      id: 'exam.summary.nextRound',
+                      message: `再練下一輪（還有 ${n(nextAll.length)} 題）`,
+                      comment: '錯題複習的總結卡按鈕：依最新的紀錄再出一輪；count 是今天還要練的題數（已格式化）',
+                    })}
+                  </Button>
+                )
+              : wrongHere.length > 0 && (
+                  <Button variant="primary" size="md" icon={<BookIcon />} href={href('/exam/wrong/')} data-testid="exam-retry-wrong">
+                    {t({
+                      id: 'exam.summary.retryWrong',
+                      message: `到錯題複習訂正（${n(wrongHere.length)} 題）`,
+                      comment: '總結卡與模擬考成績卡的按鈕：這一輪答錯的題數，連到錯題複習；count 已格式化',
+                    })}
+                  </Button>
+                )}
+            {/* 錯題複習的「再練下一輪」就是再練一次；其他會變動的題組沒有題可練了就不給 */}
+            {set.kind !== 'wrong' && nextIds.length > 0 && (
               <Button size="md" variant={wrongHere.length > 0 ? 'secondary' : 'primary'} icon={<RetryIcon />} onClick={restart} data-testid="exam-restart">
                 {t({ id: 'exam.summary.again', message: '再練一次', comment: '總結卡按鈕：同一組重來' })}
               </Button>
@@ -308,7 +373,7 @@ export default function ExamRun() {
               ))}
               <p className="ll-exam-run__hint">
                 <TextLink href={href('/exam/list/')}>
-                  {t({ id: 'exam.summary.toList', message: '看全部錯過與還不熟的題', comment: '總結卡：連到錯題與不熟的清單頁' })}
+                  {t({ id: 'exam.summary.toList', message: '看錯題複習的紀錄', comment: '總結卡：連到錯題複習的清單頁' })}
                 </TextLink>
               </p>
             </div>
@@ -378,6 +443,7 @@ export default function ExamRun() {
             update((r) => nextQuestion(r));
           }}
           scrollOnMount={freshConfirm === qid}
+          note={answer.checked ? <StageNote state={states.get(qid)} correct={answer.correct === true} /> : undefined}
           extra={<FormulaPills questionId={qid} formulas={formulasOf} />}
         />
       </div>

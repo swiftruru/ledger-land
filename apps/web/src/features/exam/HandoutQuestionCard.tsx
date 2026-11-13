@@ -30,6 +30,8 @@ export interface HandoutQuestionCardProps {
   meta?: ReactNode;
   /** 回饋面板的解析下面（「相關公式」膠囊，2026-11-07） */
   extra?: ReactNode;
+  /** 回饋面板的正解行下面（錯題複習的階段說明，2026-11-13）：放在解析前面，解析很長時不必捲到底才看得到 */
+  note?: ReactNode;
 }
 
 export function HandoutQuestionCard({
@@ -47,6 +49,7 @@ export function HandoutQuestionCard({
   submitLabel,
   meta,
   extra,
+  note,
 }: HandoutQuestionCardProps) {
   const { t } = useLingui();
   const options = useMemo(() => {
@@ -77,7 +80,12 @@ export function HandoutQuestionCard({
           <FeedbackPanel
             correct={answer.correct === true}
             {...(multi ? { multi: 'any_correct' as const } : {})}
-            answer={t({ id: 'exam.feedback.answer', message: `正確答案：${letters}`, comment: '苦練區回饋的正解行；letters 是講義的字母（可能是「B、C」）' })}
+            answer={
+              <>
+                {t({ id: 'exam.feedback.answer', message: `正確答案：${letters}`, comment: '苦練區回饋的正解行；letters 是講義的字母（可能是「B、C」）' })}
+                {note}
+              </>
+            }
             explanation={
               <div className="ll-exam-explain">
                 <Badge kind="info" className="ll-exam-explain__tag">

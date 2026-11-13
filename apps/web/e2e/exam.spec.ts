@@ -8,6 +8,7 @@
 // 模擬考（第二批的第二次交付）：設定與記住上次的選擇、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄、接續與限時自動交卷。
 // 苦練的紀錄跟著備份走（2026-11-05）：練過的題匯出備份碼、清掉資料、匯入後回來，再匯入一次不重複計算。
 // 錯題再答錯（2026-11-13）：錯過的與不熟的題組每次進來都依目前的紀錄重新出題，不沿用上一輪。
+// 錯題複習（2026-11-13）：三個階段、訂正與再練下一輪、反覆答錯的題當天連對兩次後明天再練、隔天答對才熟練；確認答案後的階段說明。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 import { waitForApp, waitForSw } from './helpers.ts';
@@ -204,6 +205,35 @@ async function mockRun(page: Page, patch?: Record<string, unknown>): Promise<{ q
   }, patch ?? null);
 }
 
+/** 把 ledgerland-exam 的 questionState 裡某一題的欄位改掉（測試用來把作答時間往前撥，模擬「隔天」） */
+async function patchState(page: Page, id: string, patch: Record<string, unknown>): Promise<void> {
+  await page.evaluate(
+    ({ qid, fields }) =>
+      new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('ledgerland-exam');
+        req.onerror = () => reject(new Error('open'));
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction('questionState', 'readwrite');
+          const store = tx.objectStore('questionState');
+          const get = store.get(qid);
+          get.onsuccess = () => {
+            if (get.result) store.put({ ...get.result, ...fields });
+          };
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => {
+            db.close();
+            reject(new Error('tx'));
+          };
+        };
+      }),
+    { qid: id, fields: patch },
+  );
+}
+
 /** 三份講義收錄的題合成一張表（模擬考跨講義抽題） */
 /** 背題瀏覽的已讀紀錄（ledgerland-exam-read 的 marks）現在有幾筆；資料庫還沒建就是 0（不自己開庫，理由同 seenOf）。
  *  已讀是先改畫面再寫資料庫，測試要換頁或重新載入之前先等它寫進去 */
@@ -309,7 +339,7 @@ test.describe('期中考苦練', () => {
     }
     await expect(page.getByTestId('exam-summary')).toBeVisible();
     await expect(page.getByTestId('exam-score')).toHaveText(`答對 ${total - 1}／${total} 題`);
-    await expect(page.getByTestId('exam-retry-wrong')).toContainText('再練錯的（1 題）');
+    await expect(page.getByTestId('exam-retry-wrong')).toContainText('到錯題複習訂正（1 題）');
     // 首頁的統計跟著變；只練錯過的只有那一題
     await page.goto('/exam/');
     await waitForApp(page);
@@ -317,75 +347,118 @@ test.describe('期中考苦練', () => {
     // 作答過之後，建議的步驟移到第 2 步
     await expect(page.getByTestId('exam-step-recommended')).toHaveCount(1);
     await expect(page.getByTestId('exam-step-practise').getByTestId('exam-step-recommended')).toHaveText('建議下一步');
-    await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
+    await expect(page.getByTestId('exam-start-wrong')).toContainText('練今天的錯題（1 題）');
     await page.getByTestId('exam-start-wrong').click();
     await expect(page).toHaveURL(/\/exam\/wrong\/$/);
     await expect(card(page)).toContainText('第 1 題，共 1 題');
     await answerOne(page, qs.get(section.questionIds[0]!)!, true);
     await goNext(page);
     await expect(page.getByTestId('exam-score')).toHaveText('答對 1／1 題');
+    // 答對一次是訂正，還在錯題複習裡；再連對一次才熟練、離開
+    await expect(page.getByTestId('exam-retry-wrong')).toHaveText('再練下一輪（還有 1 題）');
+    await page.getByTestId('exam-retry-wrong').click();
+    await answerOne(page, qs.get(section.questionIds[0]!)!, true);
+    await goNext(page);
     await expect(page.getByTestId('exam-retry-wrong')).toHaveCount(0);
   });
 
-  test('錯題再答錯：下一輪還在；總結卡的「再練錯的」會出新的一輪；練到一半離開再回來也從目前的錯題出題', async ({ page, request }) => {
+  test('錯題複習：再答錯的題下一輪還在、排在最前面；訂正、再練下一輪、熟練；反覆答錯的題當天連對兩次後明天再練，隔天答對才熟練', async ({ page, request }) => {
     const idx = await index(request);
     const d1 = idx.decks.find((d) => d.id === 'd1')!;
     const qs = await deckQuestions(request, d1);
     const [a, b, c] = d1.sections[0]!.questionIds.slice(0, 3).map((id) => qs.get(id)!) as [Question, Question, Question];
+    const note = page.getByTestId('exam-stage-note');
     await clearAll(page);
-    // 第一輪：前三題都答錯
+    // 第一輪：前三題都答錯，每一題都說放進錯題複習了
     await page.goto('/exam/all/');
     await waitForApp(page);
     for (const q of [a, b, c]) {
       await answerOne(page, q, false);
+      await expect(note).toHaveText('放進錯題複習了，之後會再安排你練這一題。');
       await goNext(page);
     }
-    // 第二輪（錯題練習）：第 1 題再答錯就離開。回來要依目前的錯題重新出題，再答錯的那一題還在第一個
+    // 錯題複習：第 1 題再答錯就離開。回來要依目前的錯題重新出題，再答錯的那一題還在第一個
     await page.goto('/exam/wrong/');
     await waitForApp(page);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('錯題複習');
     await expect(card(page)).toContainText('第 1 題，共 3 題');
     await answerOne(page, a, false);
+    await expect(note).toHaveText('這一題第 2 次答錯，會多安排幾次練習。');
     await goNext(page);
     await page.goto('/exam/');
     await waitForApp(page);
-    await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（3 題）');
+    await expect(page.getByTestId('exam-wrong-counts')).toHaveText('待訂正 3 題、複習中 0 題、已熟練 0 題');
+    await expect(page.getByTestId('exam-start-wrong')).toHaveText('練今天的錯題（3 題）');
     await page.getByTestId('exam-start-wrong').click();
     await waitForApp(page);
     await expect(page.getByTestId('exam-resume')).toHaveCount(0);
     await expect(card(page)).toContainText('第 1 題，共 3 題');
-    // 這一輪練完：第 1 題第三次答錯，另外兩題答對
+    // 這一輪練完：第 1 題第三次答錯，另外兩題訂正
     await answerOne(page, a, false);
     await goNext(page);
     await answerOne(page, b, true);
+    await expect(note).toHaveText('訂正成功，再連對 1 次就熟練。');
     await goNext(page);
     await answerOne(page, c, true);
     await goNext(page);
     await expect(page.getByTestId('exam-score')).toHaveText('答對 2／3 題');
-    // 總結卡的「再練錯的」：同一頁直接出新的一輪，只有還錯著的那一題
-    await expect(page.getByTestId('exam-retry-wrong')).toContainText('再練錯的（1 題）');
+    await expect(page.getByTestId('exam-summary-stages')).toHaveText('這一輪的錯題：已熟練 0 題、複習中 2 題、待訂正 1 題');
+    await expect(page.getByTestId('exam-restart')).toHaveCount(0);
+    // 再練下一輪：同一頁直接出新的一輪；待訂正的排最前面，訂正過的還要再對一次
+    await expect(page.getByTestId('exam-retry-wrong')).toHaveText('再練下一輪（還有 3 題）');
     await page.getByTestId('exam-retry-wrong').click();
     await expect(page.getByTestId('exam-summary')).toHaveCount(0);
-    await expect(card(page)).toContainText('第 1 題，共 1 題');
-    await answerOne(page, a, false);
+    await expect(card(page)).toContainText('第 1 題，共 3 題');
+    await answerOne(page, a, true);
+    await expect(note).toHaveText('訂正成功，再連對 2 次就熟練。');
     await goNext(page);
-    await expect(page.getByTestId('exam-score')).toHaveText('答對 0／1 題');
-    // 練完之後從首頁再進來：不是上一輪的總結卡，那一題還在
+    await answerOne(page, b, true);
+    await expect(note).toHaveText('熟練了，這一題從錯題複習畢業。');
+    await goNext(page);
+    await answerOne(page, c, true);
+    await goNext(page);
+    await expect(page.getByTestId('exam-summary-stages')).toHaveText('這一輪的錯題：已熟練 2 題、複習中 1 題、待訂正 0 題');
+    // 反覆答錯的那一題：當天連對兩次就先到這裡，明天再練
+    await expect(page.getByTestId('exam-retry-wrong')).toHaveText('再練下一輪（還有 1 題）');
+    await page.getByTestId('exam-retry-wrong').click();
+    await expect(card(page)).toContainText('第 1 題，共 1 題');
+    await answerOne(page, a, true);
+    await expect(note).toHaveText('今天先到這裡，明天再答對一次就熟練。');
+    await goNext(page);
+    await expect(page.getByTestId('exam-retry-wrong')).toHaveCount(0);
+    await expect(page.getByTestId('exam-summary-waiting')).toHaveText('今天的錯題都練完了，還有 1 題明天再練。');
     await page.goto('/exam/');
     await waitForApp(page);
-    await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
-    await page.getByTestId('exam-start-wrong').click();
-    await waitForApp(page);
-    await expect(page.getByTestId('exam-summary')).toHaveCount(0);
-    await expect(card(page)).toContainText('第 1 題，共 1 題');
-    // 答對了才離開錯題；已經沒有題可練，總結卡不給「再練一次」
-    await answerOne(page, a, true);
-    await goNext(page);
-    await expect(page.getByTestId('exam-score')).toHaveText('答對 1／1 題');
-    await expect(page.getByTestId('exam-retry-wrong')).toHaveCount(0);
-    await expect(page.getByTestId('exam-restart')).toHaveCount(0);
+    await expect(page.getByTestId('exam-wrong-counts')).toHaveText('待訂正 0 題、複習中 1 題、已熟練 2 題');
+    await expect(page.getByTestId('exam-start-wrong')).toBeDisabled();
+    await expect(page.getByTestId('exam-start-wrong')).toHaveText('今天的錯題練完了（明天再練 1 題）');
+    await expect(page.getByTestId('exam-progress')).toContainText('熟練 2 題');
+    // 今天沒有要練的：完成的畫面；還是想練可以再練一次（純練習，升不了級）
     await page.goto('/exam/wrong/');
     await waitForApp(page);
-    await expect(page.getByText('還沒有錯過的題')).toBeVisible();
+    await expect(page.getByText('今天的錯題都練完了')).toBeVisible();
+    await page.getByTestId('exam-wrong-all').click();
+    await expect(page).toHaveURL(/\/exam\/wrong\/\?all=1$/);
+    await waitForApp(page);
+    await expect(card(page)).toContainText('第 1 題，共 1 題');
+    await answerOne(page, a, true);
+    await expect(note).toHaveText('今天先到這裡，明天再答對一次就熟練。');
+    // 隔天：把那一題的作答時間往前撥兩天（不改時鐘），它回到今天要練的題，答對一次就熟練
+    const twoDaysAgo = new Date(Date.now() - 2 * 86_400_000).toISOString();
+    await patchState(page, a.id, { lastAt: twoDaysAgo, lastWrongAt: twoDaysAgo });
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-start-wrong')).toHaveText('練今天的錯題（1 題）');
+    await page.getByTestId('exam-start-wrong').click();
+    await waitForApp(page);
+    await answerOne(page, a, true);
+    await expect(note).toHaveText('熟練了，這一題從錯題複習畢業。');
+    await goNext(page);
+    await expect(page.getByTestId('exam-summary-stages')).toHaveText('這一輪的錯題：已熟練 1 題、複習中 0 題、待訂正 0 題');
+    await expect(page.getByTestId('exam-retry-wrong')).toHaveCount(0);
+    await page.goto('/exam/wrong/');
+    await waitForApp(page);
+    await expect(page.getByText('沒有要練的錯題')).toBeVisible();
   });
 
   test('離開再回來沿用上次，可以重新開始；再進首頁主按鈕寫著繼續', async ({ page, request }) => {
@@ -573,32 +646,49 @@ test.describe('期中考苦練', () => {
     await expect(page.getByText('還沒有不熟的題')).toBeVisible();
   });
 
-  test('錯題與不熟的清單：空狀態、兩組的題數、展開看我選的與解析、拿去練；noindex', async ({ page, request }) => {
+  test('錯題複習的清單：空狀態、進度、最需要加強的地方、三個分頁與每題離熟練還差什麼、展開看我選的與解析、拿去練；noindex', async ({ page, request }) => {
     const idx = await index(request);
     const d1 = idx.decks.find((d) => d.id === 'd1')!;
+    const section = d1.sections[0]!;
     const qs = await deckQuestions(request, d1);
-    const ids = d1.sections[0]!.questionIds;
+    const ids = section.questionIds;
     await clearAll(page);
     await page.goto('/exam/list/');
     await waitForApp(page);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('錯過與還不熟的題');
-    await expect(page.getByText('還沒有錯過的題')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('錯題複習');
+    await expect(page.getByText('還沒有錯題')).toBeVisible();
     await expect(page.getByTestId('exam-list-practise')).toHaveCount(0);
     await expect(page.locator('meta[name="robots"][data-ll]')).toHaveAttribute('content', 'noindex');
-    // 第 1 題答錯、第 2 題答對：答錯的 1 題，還不熟的 2 題
-    await page.goto(`/exam/${d1.sections[0]!.id}/`);
+    // 第 1、2 題答錯，第 3 題答對（沒答錯過，不進清單）
+    await page.goto(`/exam/${section.id}/`);
     await waitForApp(page);
     const wrongLetter = await answerOne(page, qs.get(ids[0]!)!, false);
+    await goNext(page);
+    await answerOne(page, qs.get(ids[1]!)!, false);
+    await goNext(page);
+    await answerOne(page, qs.get(ids[2]!)!, true);
+    // 錯題複習：第 1 題再答錯（反覆答錯），第 2 題訂正（複習中）
+    await page.goto('/exam/wrong/');
+    await waitForApp(page);
+    await answerOne(page, qs.get(ids[0]!)!, false);
     await goNext(page);
     await answerOne(page, qs.get(ids[1]!)!, true);
     await page.goto('/exam/list/');
     await waitForApp(page);
-    await expect(page.getByRole('radio', { name: '答錯的 1' })).toBeChecked();
-    await expect(page.getByTestId('exam-list-practise')).toHaveText('練這些（1 題）');
+    await expect(page.getByTestId('exam-list-progress')).toHaveText('答錯過 2 題，已熟練 0 題');
+    await expect(page.getByTestId('exam-list-practise')).toHaveText('練今天的錯題（2 題）');
     await expect(page.getByTestId('exam-list-practise')).toHaveAttribute('href', /\/exam\/wrong\/$/);
+    // 最需要加強的地方：這一段有 2 題還沒熟練，連到這一段的練習
+    const weak = page.getByTestId('exam-weak-sections').locator('li').first();
+    await expect(weak).toContainText(section.title);
+    await expect(weak).toContainText('還沒熟練 2 題');
+    await expect(weak.getByRole('link')).toHaveAttribute('href', new RegExp(`/exam/${section.id}/$`));
+    // 待訂正：反覆答錯的那一題
+    await expect(page.getByRole('radio', { name: '待訂正 1' })).toBeChecked();
     const deck = page.getByTestId('exam-list-deck-d1');
     await expect(deck.locator('summary')).toHaveCount(1);
-    await expect(deck.getByText('答錯 1 次')).toBeVisible();
+    await expect(deck.getByText('答錯 2 次')).toBeVisible();
+    await expect(deck.getByText('反覆答錯：要連對 3 次，最後一次在隔天')).toBeVisible();
     await deck.locator('summary').first().click();
     const wrongOption = deck.locator('.ll-exam-q__option.is-wrong');
     await expect(wrongOption).toHaveCount(1);
@@ -606,10 +696,18 @@ test.describe('期中考苦練', () => {
     await expect(wrongOption).toContainText('我選的');
     await expect(deck.locator('.ll-exam-q__option.is-correct')).toHaveCount(qs.get(ids[0]!)!.answer.length);
     await expect(deck.getByText('解析出自講義')).toBeVisible();
-    await page.getByRole('radio', { name: '還不熟的 2' }).click();
-    await expect(page).toHaveURL(/\/exam\/list\/\?filter=unsure$/);
-    await expect(deck.locator('summary')).toHaveCount(2);
-    await expect(page.getByTestId('exam-list-practise')).toHaveAttribute('href', /\/exam\/unsure\/$/);
+    // 複習中：訂正過一次的那一題；已熟練還沒有
+    await page.getByRole('radio', { name: '複習中 1' }).click();
+    await expect(page).toHaveURL(/\/exam\/list\/\?tab=review$/);
+    await expect(deck.locator('summary')).toHaveCount(1);
+    await expect(deck.getByText('答錯 1 次')).toBeVisible();
+    await expect(deck.getByText('再連對 1 次就熟練')).toBeVisible();
+    await page.getByRole('radio', { name: '已熟練 0' }).click();
+    await expect(page.getByTestId('exam-list-none')).toBeVisible();
+    // 首頁的連結
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-more-list')).toContainText('看錯題複習的紀錄');
   });
 
   test('背題瀏覽：清單只列標題、點進去一次一題、遮住答案與看答案、偏好記住、列印印出這個範圍的完整題目；noindex', async ({ page, request }) => {
@@ -1017,7 +1115,7 @@ test.describe('期中考苦練', () => {
     const firstWrong = page.getByTestId('exam-mock-items').locator('.ll-exam-q').first();
     await expect(firstWrong.locator('.ll-exam-q__option.is-wrong')).toContainText('我選的');
     await expect(firstWrong.getByText('解析出自講義')).toBeVisible();
-    await expect(page.getByTestId('exam-mock-wrong')).toHaveText('再練錯的（1 題）');
+    await expect(page.getByTestId('exam-mock-wrong')).toHaveText('到錯題複習訂正（1 題）');
     // 重新整理成績還在；作答過的兩題進了紀錄，沒選的不算
     await expect.poll(() => seenOf(page, q2.id)).toBe(1);
     await page.reload();
@@ -1026,9 +1124,12 @@ test.describe('期中考苦練', () => {
     await page.goto('/exam/');
     await waitForApp(page);
     await expect(page.getByTestId('exam-progress')).toContainText(`練過 2／${idx.questionCount} 題`);
-    await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
+    await expect(page.getByTestId('exam-start-wrong')).toContainText('練今天的錯題（1 題）');
     // 第 3 步：寫著上次的成績，按鈕回到成績頁
     await expect(page.getByTestId('exam-mock-last')).toHaveText('上次模擬考：答對 1／50 題');
+    // 模擬考答錯的題進了錯題複習（沒作答的不算）：第 3 步寫著還有幾題沒熟練，可以直接去訂正
+    await expect(page.getByTestId('exam-mock-wrong-note')).toHaveText('上次答錯的 1 題已放進錯題複習，還有 1 題沒熟練。');
+    await expect(page.getByTestId('exam-mock-to-wrong')).toHaveAttribute('href', /\/exam\/wrong\/$/);
     // 交過一場模擬考：有「初次上場」；答對不到八成，沒有「模擬考過關」
     await expect(page.getByTestId('exam-badge-mockFirst')).toHaveAttribute('data-state', 'done');
     await expect(page.getByTestId('exam-badge-mockPass')).toHaveAttribute('data-state', 'locked');
@@ -1140,7 +1241,7 @@ test.describe('期中考苦練', () => {
       await page.goto('/exam/');
       await waitForApp(page);
       await expect(page.getByTestId('exam-progress')).toContainText(`練過 2／${idx.questionCount} 題`);
-      await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
+      await expect(page.getByTestId('exam-start-wrong')).toContainText('練今天的錯題（1 題）');
       await expect(page.getByTestId('exam-start-unsure')).toContainText('只練不熟的（2 題）');
     };
     await importOnce();

@@ -6,6 +6,7 @@
 .ll-exam-scenario__label,
 .ll-exam-deck__code,
 .ll-exam-summary__subtitle,
+.ll-exam-wrongbox__title,
 .ll-exam-hero__random-label,
 .ll-exam-browse__section,
 .ll-exam-q__reason-title {
@@ -20,6 +21,9 @@
 .ll-exam-hero__count,
 .ll-exam-deck__count,
 .ll-exam-hero__note,
+.ll-exam-summary__stages,
+.ll-exam-list__hint,
+.ll-exam-weak__count,
 .ll-exam-run__hint,
 .ll-exam-resume,
 .ll-exam-teacher__stats,
@@ -32,6 +36,10 @@
 .ll-exam-hero__count,
 .ll-exam-deck__count,
 .ll-exam-hero__note,
+.ll-exam-summary__stages,
+.ll-exam-stage-note,
+.ll-exam-list__hint,
+.ll-exam-weak__count,
 .ll-exam-run__hint,
 .ll-exam-resume,
 .ll-exam-q__source,
@@ -178,6 +186,19 @@
 .ll-exam-summary__subtitle {
   margin: var(--ll-space-4) 0 var(--ll-space-2);
 }
+/* 錯題複習（2026-11-13）：首頁第 2 步裡的小區塊、確認答案後的階段說明、總結卡的階段行 */
+.ll-exam-wrongbox {
+  margin-top: var(--ll-space-4);
+  padding-top: var(--ll-space-3);
+  border-top: 1px solid var(--ll-border);
+}
+.ll-exam-stage-note,
+.ll-exam-summary__stages {
+  margin: var(--ll-space-2) 0 0;
+}
+.ll-exam-stage-note {
+  font-weight: 600;
+}
 
 /* ---- 唯讀的題目（背題、清單、總結卡、審核頁共用） ---- */
 .ll-exam-summary__score,
@@ -243,9 +264,32 @@
   background: var(--ll-warning-tint);
 }
 
-/* ---- 錯題與不熟的清單、背題瀏覽 ---- */
+/* ---- 錯題複習的清單、背題瀏覽 ---- */
 .ll-exam-list__head {
   justify-content: space-between;
+}
+/* 清單的每一列：主題下面一行寫離熟練還差什麼 */
+.ll-exam-list__row {
+  display: grid;
+  gap: 2px;
+}
+/* 最需要加強的地方：一列是連結加題數，放不下題數就換行 */
+.ll-exam-weak {
+  display: grid;
+  gap: var(--ll-space-2);
+  margin: var(--ll-space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ll-exam-weak > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ll-space-1) var(--ll-space-3);
+}
+.ll-exam-weak__count {
+  white-space: nowrap;
 }
 .ll-exam-browse__tools {
   margin-top: var(--ll-space-4);
