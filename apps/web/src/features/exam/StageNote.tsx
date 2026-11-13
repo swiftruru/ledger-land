@@ -1,5 +1,6 @@
 // 錯題複習的階段說明（2026-11-13）：確認答案後，回饋面板的正解行下面多一行，說這一題現在在哪個階段、離熟練還差什麼。
 // 只有答錯過的題才有（沒答錯過的題答對了不必多說）；內容由這一題最新的累計算出來（features/exam/stats.ts）。
+// 答錯而且這一輪後面還會再出一次（features/exam/run.ts 的 requeueWrong）時，說的是「隔幾題會再出一次」。
 import { useLingui } from '@lingui/react/macro';
 import { formatNumber } from '@ledgerland/i18n';
 import { useLocale } from '../../lib/useLocale.ts';
@@ -12,15 +13,30 @@ export interface StageNoteProps {
   state: QuestionState | undefined;
   /** 這一次答對了沒 */
   correct: boolean;
+  /** 這一題在這一輪後面還會再出一次（答錯後排回去的） */
+  again?: boolean;
 }
 
-export function StageNote({ state, correct }: StageNoteProps) {
+export function StageNote({ state, correct, again = false }: StageNoteProps) {
   const { t } = useLingui();
   const locale = useLocale();
   if (!state || state.wrong === 0) return null;
   const n = (x: number) => formatNumber(x, locale);
   let text: string;
-  if (!correct) {
+  if (!correct && again) {
+    text =
+      state.wrong === 1
+        ? t({
+            id: 'exam.stage.firstWrongAgain',
+            message: '放進錯題複習了，隔幾題會再出一次。',
+            comment: '確認答案後的階段說明：第一次答錯，這一輪後面還會再出一次',
+          })
+        : t({
+            id: 'exam.stage.repeatWrongAgain',
+            message: `這一題第 ${n(state.wrong)} 次答錯，隔幾題會再出一次。`,
+            comment: '確認答案後的階段說明：再次答錯，這一輪後面還會再出一次；count 是累計答錯次數（已格式化）',
+          });
+  } else if (!correct) {
     text =
       state.wrong === 1
         ? t({ id: 'exam.stage.firstWrong', message: '放進錯題複習了，之後會再安排你練這一題。', comment: '確認答案後的階段說明：第一次答錯' })

@@ -6,6 +6,14 @@ import {
   answerOf,
   checkAnswer,
   chosenCount,
+  comesAgain,
+  currentQuestionId,
+  currentSlot,
+  isRetrySlot,
+  questionOf,
+  requeueWrong,
+  RETRY_GAP,
+  RETRY_MAX,
   gotoQuestion,
   isExpired,
   isMock,
@@ -75,7 +83,7 @@ describe('run', () => {
     r = nextQuestion(r, '2026-11-04T01:00:00Z');
     expect(isFinished(r)).toBe(true);
     expect(r.finishedAt).toBe('2026-11-04T01:00:00Z');
-    expect(summarise(r)).toEqual({ total: 3, answered: 3, correct: 2, wrongIds: [Q[0]!.id], unanswered: 0 });
+    expect(summarise(r)).toEqual({ total: 3, answered: 3, correct: 2, wrongIds: [Q[0]!.id], unanswered: 0, retried: 0, fixedIds: [] });
     expect(isCorrectChoice(['B', 'C'], 'B')).toBe(true);
     expect(isCorrectChoice(['B'], null)).toBe(false);
   });
@@ -94,6 +102,112 @@ describe('run', () => {
     expect(restored?.run.answers[Q[0]!.id]).toBeUndefined();
     expect(restored?.run.answers[Q[1]!.id]?.checked).toBe(true);
     expect(restoreRun(r, new Map(Q.slice(1).map((x) => [x.id, x])))).toBeNull();
+  });
+});
+
+describe('答錯的題排回同一輪（run.ts 的 requeueWrong）', () => {
+  const many = Array.from({ length: 8 }, (_, i) => q(`hq_cccccc${String(i).padStart(2, '0')}`));
+  const ids = many.map((x) => x.id);
+  /** 作答現在這一格（對或錯）並排回，再到下一格 */
+  const answer = (r: ReturnType<typeof startRun>, correct: boolean) => {
+    const slot = currentSlot(r)!;
+    const checked = checkAnswer(selectAnswer(r, slot, correct ? 'B' : 'A'), slot, ['B']);
+    return nextQuestion(requeueWrong(checked, slot));
+  };
+
+  it('答錯的題隔 RETRY_GAP 題再出現；後面不夠就排在最後；答對的不排', () => {
+    let r = startRun({ key: 'k', questions: many, order: 'handout', bankRev: 1 });
+    r = answer(r, true);
+    expect(r.questionIds).toEqual(ids);
+    r = answer(r, false); // 第 2 題（index 1）答錯
+    expect(RETRY_GAP).toBe(3);
+    expect(r.questionIds).toEqual([ids[0], ids[1], ids[2], ids[3], ids[4], `${ids[1]}~2`, ids[5], ids[6], ids[7]]);
+    expect(isRetrySlot(r.questionIds[5]!)).toBe(true);
+    expect(questionOf(r.questionIds[5]!)).toBe(ids[1]);
+    expect(comesAgain(r, ids[1]!)).toBe(true);
+    expect(comesAgain(r, ids[0]!)).toBe(false);
+    // 走到再出現的那一格：題目 ID 是原來那一題，格子不同
+    r = answer(answer(answer(r, true), true), true);
+    expect(currentSlot(r)).toBe(`${ids[1]}~2`);
+    expect(currentQuestionId(r)).toBe(ids[1]);
+    expect(answerOf(r, currentSlot(r)!)).toEqual({ chosen: null, checked: false });
+    // 再出現時答對：不再排
+    r = answer(r, true);
+    expect(r.questionIds).toHaveLength(9);
+    expect(comesAgain(r, ids[1]!)).toBe(false);
+    // 倒數第 2 題答錯：後面只剩 1 題，排在最後
+    r = answer(r, true);
+    r = answer(r, false);
+    expect(r.questionIds.slice(-2)).toEqual([ids[7], `${ids[6]}~2`]);
+    // 最後一題答錯：排在它後面
+    r = answer(r, false);
+    expect(r.questionIds.slice(-3)).toEqual([ids[7], `${ids[6]}~2`, `${ids[7]}~2`]);
+  });
+
+  it('同一題一輪最多再出現 RETRY_MAX 次；重複呼叫不會多排；沒確認、模擬考、練完的一輪都不排', () => {
+    expect(RETRY_MAX).toBe(2);
+    const one = [many[0]!];
+    let r = startRun({ key: 'k', questions: one, order: 'handout', bankRev: 1 });
+    const fresh = r;
+    expect(requeueWrong(r, ids[0]!)).toBe(r); // 還沒確認
+    r = checkAnswer(selectAnswer(r, ids[0]!, 'A'), ids[0]!, ['B']);
+    r = requeueWrong(r, ids[0]!);
+    expect(r.questionIds).toEqual([ids[0], `${ids[0]}~2`]);
+    expect(requeueWrong(r, ids[0]!)).toBe(r); // 已經排過
+    r = answer(nextQuestion(r), false);
+    expect(r.questionIds).toEqual([ids[0], `${ids[0]}~2`, `${ids[0]}~3`]);
+    r = answer(r, false); // 第三次還錯：不再排，這一輪結束
+    expect(r.questionIds).toHaveLength(3);
+    expect(isFinished(r)).toBe(true);
+    expect(requeueWrong(r, `${ids[0]}~3`)).toBe(r);
+    expect(summarise(r)).toEqual({ total: 1, answered: 1, correct: 0, wrongIds: [ids[0]], unanswered: 0, retried: 2, fixedIds: [] });
+    const mock = submitRun(startRun({ key: 'mock', questions: one, order: 'random', bankRev: 1, mode: 'mock' }), new Map(one.map((x) => [x.id, x])));
+    expect(requeueWrong(mock, ids[0]!)).toBe(mock);
+    expect(requeueWrong(fresh, 'hq_nothere1')).toBe(fresh);
+  });
+
+  it('成績以題為單位：再出現的不算進題數與第一次答對，另外數加練幾次與訂正成功的題', () => {
+    let r = startRun({ key: 'k', questions: many.slice(0, 3), order: 'handout', bankRev: 1 });
+    r = answer(r, false); // 第 1 題錯，排在最後（後面只有 2 題）
+    r = answer(r, true);
+    r = answer(r, false); // 第 3 題錯，排在最後
+    expect(r.questionIds).toEqual([ids[0], ids[1], ids[2], `${ids[0]}~2`, `${ids[2]}~2`]);
+    r = answer(r, true); // 第 1 題訂正成功
+    expect(summarise(r)).toEqual({ total: 3, answered: 3, correct: 1, wrongIds: [ids[0], ids[2]], unanswered: 0, retried: 1, fixedIds: [ids[0]] });
+    r = answer(r, false); // 第 3 題又錯，再排一次
+    r = answer(r, true);
+    expect(isFinished(r)).toBe(true);
+    expect(summarise(r)).toEqual({ total: 3, answered: 3, correct: 1, wrongIds: [ids[0], ids[2]], unanswered: 0, retried: 3, fixedIds: [ids[0], ids[2]] });
+  });
+
+  it('還原：之前存的一輪（沒有再出現的格子）照常；排回的格子留著；改版的題連再出現的格子一起拿掉', () => {
+    const bank = new Map(many.map((x) => [x.id, x]));
+    let r = startRun({ key: 'k', questions: many, order: 'handout', bankRev: 1 });
+    r = answer(r, false); // 第 1 題錯，排到第 5 格
+    r = answer(r, true);
+    expect(r.index).toBe(2);
+    const same = restoreRun(r, bank);
+    expect(same?.run).toEqual(r);
+    expect(same?.revised).toEqual([]);
+    // 第 1 題改版：作答作廢、再出現的格子拿掉、退回第 1 題
+    const revisedBank = new Map(bank).set(ids[0]!, q(ids[0]!, ['C'], 2, 2));
+    const restored = restoreRun(r, revisedBank);
+    expect(restored?.revised).toEqual([ids[0]]);
+    expect(restored?.run.questionIds).toEqual(ids);
+    expect(restored?.run.index).toBe(0);
+    expect(restored?.run.answers[ids[0]!]).toBeUndefined();
+    expect(restored?.run.answers[ids[1]!]?.checked).toBe(true);
+    // 再出現的那一格已經答過之後才改版：那一格的作答也拿掉，只列一次
+    let later = answer(answer(r, true), true);
+    expect(currentSlot(later)).toBe(`${ids[0]}~2`);
+    later = answer(later, true);
+    const again = restoreRun(later, revisedBank);
+    expect(again?.revised).toEqual([ids[0]]);
+    expect(again?.run.questionIds).toEqual(ids);
+    expect(again?.run.answers[`${ids[0]}~2`]).toBeUndefined();
+    expect(again?.run.index).toBe(0);
+    // 題目不在題庫裡了：整輪重來
+    expect(restoreRun(r, new Map(many.slice(1).map((x) => [x.id, x])))).toBeNull();
   });
 });
 
@@ -293,7 +407,7 @@ describe('模擬考（run.ts 的 mock 模式）', () => {
     expect(answerOf(done, ids[0]!)).toMatchObject({ checked: true, correct: true });
     expect(answerOf(done, ids[1]!)).toMatchObject({ checked: true, correct: false });
     expect(answerOf(done, ids[2]!)).toEqual({ chosen: null, checked: true, correct: false });
-    expect(summarise(done)).toEqual({ total: 3, answered: 3, correct: 1, wrongIds: [ids[1], ids[2]], unanswered: 1 });
+    expect(summarise(done)).toEqual({ total: 3, answered: 3, correct: 1, wrongIds: [ids[1], ids[2]], unanswered: 1, retried: 0, fixedIds: [] });
     expect(usedSeconds(done)).toBe(90);
     expect(usedSeconds(r)).toBeNull();
     expect(submitRun(done, byId)).toBe(done);

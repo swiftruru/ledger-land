@@ -3,6 +3,8 @@
 // 題庫改版（rev 或 answerRev 變了）時那幾題的作答作廢重答（和錯題本的「題目已更新」同一個想法）；題目從題庫消失時整輪重來。
 // 模擬考（mode: 'mock'，M4c 第二批）：一律隨機抽題、可以前後移動與改選、作答中不判分；交卷（submitRun）才一次判完，沒選的算錯。
 // 限時的場次有 deadlineAt（開始時間加題數乘每題秒數），時間照牆上的鐘走，離開頁面不暫停。
+// 答錯的題排回同一輪（2026-11-13，維護者的決定）：練習中答錯的題隔 RETRY_GAP 題再出一次，同一題一輪最多再出 RETRY_MAX 次；模擬考不排。
+// 所以 questionIds 是「作答的格子」：第一次出現的格子就是題目 ID（之前存的一輪照樣能讀），再出現的是 <題目 ID>~<第幾次>；answers 以格子為鍵。
 import type { HandoutQuestionSnapshot } from '../../lib/content.ts';
 
 export type ExamOrder = 'handout' | 'random';
@@ -22,11 +24,12 @@ export interface ExamRun {
   runId: string;
   order: ExamOrder;
   bankRev: number;
-  /** 作答順序 */
+  /** 作答順序的格子：第一次出現的是題目 ID，答錯後再出現的是 <題目 ID>~2、~3（questionOf 取回題目 ID） */
   questionIds: string[];
   /** 開始時每題的版本，還原時比對 */
   revs: Record<string, { rev: number; answerRev: number }>;
   index: number;
+  /** 以格子為鍵 */
   answers: Record<string, RunAnswer>;
   startedAt: string;
   finishedAt?: string;
@@ -42,14 +45,39 @@ export interface ExamRun {
 /** 模擬考那一輪在 runs 裡的鍵（同時只有一輪；pages/ExamMock.tsx 寫、苦練首頁讀） */
 export const MOCK_KEY = 'mock';
 
+/** 成績以題為單位：再出現的那幾次不算進 total 與 correct */
 export interface RunSummary {
+  /** 這一輪不重複的題數 */
   total: number;
+  /** 作答過的題數 */
   answered: number;
+  /** 第一次就答對的題數 */
   correct: number;
+  /** 第一次答錯的題 */
   wrongIds: string[];
   /** 模擬考交卷時沒選的題數（算錯，但不寫進紀錄）；練習一律 0 */
   unanswered: number;
+  /** 加練幾次（答錯後再出現、而且確認過的格子數）；模擬考一律 0 */
+  retried: number;
+  /** 第一次答錯、這一輪再出現時答對的題 */
+  fixedIds: string[];
 }
+
+/** 答錯的題隔幾題再出現（後面不夠就排在最後）：不讓人只靠剛看過的答案作答 */
+export const RETRY_GAP = 3;
+/** 同一題在同一輪最多再出現幾次 */
+export const RETRY_MAX = 2;
+
+const SLOT_SEP = '~';
+
+/** 格子是哪一題 */
+export const questionOf = (slot: string): string => {
+  const i = slot.indexOf(SLOT_SEP);
+  return i < 0 ? slot : slot.slice(0, i);
+};
+
+/** 是不是答錯後再出現的格子 */
+export const isRetrySlot = (slot: string): boolean => slot.includes(SLOT_SEP);
 
 /** 兩個以上的正解就是任一正確（B/C 都對那一題） */
 export const isCorrectChoice = (answer: readonly string[], chosen: string | null): boolean => chosen !== null && answer.includes(chosen);
@@ -114,12 +142,40 @@ export function startRun(input: {
   };
 }
 
-export function currentQuestionId(run: ExamRun): string | undefined {
+/** 現在這一格 */
+export function currentSlot(run: ExamRun): string | undefined {
   return run.questionIds[run.index];
 }
 
+export function currentQuestionId(run: ExamRun): string | undefined {
+  const slot = currentSlot(run);
+  return slot === undefined ? undefined : questionOf(slot);
+}
+
+/** id 是格子（第一次出現的格子就是題目 ID，所以傳題目 ID 拿到的是第一次的作答） */
 export function answerOf(run: ExamRun, id: string): RunAnswer {
   return run.answers[id] ?? { chosen: null, checked: false };
+}
+
+/** 這一題在這一輪後面還會不會再出現 */
+export const comesAgain = (run: ExamRun, questionId: string): boolean => run.questionIds.slice(run.index + 1).some((s) => questionOf(s) === questionId);
+
+/**
+ * 答錯的題排回這一輪後面：這一格確認後是答錯、是這一題目前最後一次出現、還沒到上限時，在隔 RETRY_GAP 格的位置插入下一次
+ * （後面不夠就排在最後）。模擬考、已經練完的一輪、答對的格子都原樣回傳；重複呼叫不會多排。
+ */
+export function requeueWrong(run: ExamRun, slot: string): ExamRun {
+  if (isMock(run) || isFinished(run)) return run;
+  const a = answerOf(run, slot);
+  if (!a.checked || a.correct !== false) return run;
+  const at = run.questionIds.indexOf(slot);
+  if (at < 0) return run;
+  const id = questionOf(slot);
+  const seen = run.questionIds.filter((s) => questionOf(s) === id);
+  if (seen[seen.length - 1] !== slot || seen.length >= 1 + RETRY_MAX) return run;
+  const questionIds = [...run.questionIds];
+  questionIds.splice(Math.min(at + 1 + RETRY_GAP, questionIds.length), 0, `${id}${SLOT_SEP}${seen.length + 1}`);
+  return { ...run, questionIds };
 }
 
 export function selectAnswer(run: ExamRun, id: string, chosen: string): ExamRun {
@@ -136,8 +192,8 @@ export function checkAnswer(run: ExamRun, id: string, correctLetters: readonly s
 
 /** 下一題；最後一題之後標 finishedAt */
 export function nextQuestion(run: ExamRun, now: string = new Date().toISOString()): ExamRun {
-  const id = currentQuestionId(run);
-  if (id === undefined || !answerOf(run, id).checked) return run;
+  const slot = currentSlot(run);
+  if (slot === undefined || !answerOf(run, slot).checked) return run;
   if (run.index + 1 >= run.questionIds.length) return { ...run, index: run.questionIds.length, finishedAt: now };
   return { ...run, index: run.index + 1 };
 }
@@ -145,13 +201,19 @@ export function nextQuestion(run: ExamRun, now: string = new Date().toISOString(
 export const isFinished = (run: ExamRun): boolean => run.finishedAt !== undefined || run.index >= run.questionIds.length;
 
 export function summarise(run: ExamRun): RunSummary {
-  const answered = run.questionIds.filter((id) => answerOf(run, id).checked);
+  const first = run.questionIds.filter((slot) => !isRetrySlot(slot));
+  const again = run.questionIds.filter((slot) => isRetrySlot(slot) && answerOf(run, slot).checked);
+  const answered = first.filter((id) => answerOf(run, id).checked);
+  const wrongIds = answered.filter((id) => answerOf(run, id).correct !== true);
+  const fixed = new Set(again.filter((slot) => answerOf(run, slot).correct === true).map(questionOf));
   return {
-    total: run.questionIds.length,
+    total: first.length,
     answered: answered.length,
     correct: answered.filter((id) => answerOf(run, id).correct === true).length,
-    wrongIds: answered.filter((id) => answerOf(run, id).correct !== true),
+    wrongIds,
     unanswered: answered.filter((id) => answerOf(run, id).chosen === null).length,
+    retried: again.length,
+    fixedIds: wrongIds.filter((id) => fixed.has(id)),
   };
 }
 
@@ -205,26 +267,31 @@ export function usedSeconds(run: ExamRun): number | null {
 }
 
 /**
- * 還原存起來的一輪：題目不在題庫裡了就回 null（整輪重來）；rev 或 answerRev 變了的題作廢重答，index 退到第一個沒確認的題
+ * 還原存起來的一輪：題目不在題庫裡了就回 null（整輪重來）；rev 或 answerRev 變了的題作廢重答，index 退到第一個沒確認的題。
+ * 改版的題連它再出現的格子一起拿掉（重新作答第一次，答錯再排）
  */
 export function restoreRun(run: ExamRun, questions: ReadonlyMap<string, HandoutQuestionSnapshot>): { run: ExamRun; revised: string[] } | null {
   if (isFinished(run)) return { run, revised: [] };
   const revised: string[] = [];
+  const changed = new Set<string>();
   const answers = { ...run.answers };
   const revs = { ...run.revs };
-  for (const id of run.questionIds) {
+  for (const slot of run.questionIds) {
+    const id = questionOf(slot);
     const q = questions.get(id);
     if (!q) return null;
     const was = run.revs[id];
-    if (!was || was.rev !== q.rev || was.answerRev !== q.answerRev) {
-      if (answers[id]?.checked || (isMock(run) && answers[id]?.chosen != null)) revised.push(id);
-      delete answers[id];
+    if (changed.has(id) || !was || was.rev !== q.rev || was.answerRev !== q.answerRev) {
+      if (!changed.has(id) && (answers[slot]?.checked || (isMock(run) && answers[slot]?.chosen != null))) revised.push(id);
+      changed.add(id);
+      delete answers[slot];
       revs[id] = { rev: q.rev, answerRev: q.answerRev };
     }
   }
+  const questionIds = changed.size === 0 ? run.questionIds : run.questionIds.filter((slot) => !(isRetrySlot(slot) && changed.has(questionOf(slot))));
   // 模擬考交卷前沒有「確認」這一步，停在原來那一題
   if (isMock(run)) return { run: { ...run, answers, revs, index: Math.min(run.index, run.questionIds.length - 1) }, revised };
-  const firstOpen = run.questionIds.findIndex((id) => !answers[id]?.checked);
-  const index = firstOpen < 0 ? run.questionIds.length : Math.min(run.index, firstOpen);
-  return { run: { ...run, answers, revs, index }, revised };
+  const firstOpen = questionIds.findIndex((slot) => !answers[slot]?.checked);
+  const index = firstOpen < 0 ? questionIds.length : Math.min(run.index, firstOpen);
+  return { run: { ...run, questionIds, answers, revs, index }, revised };
 }
