@@ -6,9 +6,8 @@ packages:
 minimumReleaseAge: 20160
 trustPolicy: no-downgrade
 # 每一條例外都要在 tools/release-age-exceptions.json 留紀錄（含公告編號與到期日），CI 比對並在到期時提醒移除
-minimumReleaseAgeExclude:
-  # undici 7.30.1（2026-10-15 發布，2026-10-29 滿兩週）：GHSA-xjj6-f33q-929c 的修正版；紀錄在 tools/release-age-exceptions.json
-  - 'undici@7.30.1'
+# （undici 7.30.1 的例外在 2026-11-09 到期，這一版已經滿兩週，2026-11-13 移除；overrides 還留著）
+minimumReleaseAgeExclude: []
 # 信任政策例外與版本覆寫的紀錄在 tools/trust-policy-exceptions.json（M0b 安裝時依實際觸發情況填寫）
 trustPolicyExclude:
   # semver@6.3.1：2023-07 在 6.x 版線補發的安全修正版，沒有 provenance；pnpm 只依發布日期比較而判為信任降級。
