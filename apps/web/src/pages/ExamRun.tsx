@@ -1,6 +1,7 @@
 // 期中考苦練的練習頁（M4c，02 第 1.1 節）：/exam/<setId>/，?order=random 隨機，&n=20|30|50|all 抽幾題（預設 20；第二批）。只抓這個題組要的講義檔；
 // 有進行中的一輪就沿用（features/exam/run.ts 的 restoreRun：題庫改版的題作廢重答），沒有就開新的一輪；每一次確認都寫進 ledgerland-exam。
 // 隨機的一輪題數和網址要的不一樣（換了 n）就開新的一輪。題組除了全部、講義、段，還有 wrong（最近答錯的）與 unsure（練過但還沒連對兩次的）。
+// wrong 與 unsure 是會變動的題組（sets.ts 的 isDynamicSet）：每次進來、每次「再練」都依目前的紀錄重新出題，不沿用上一輪（2026-11-13）。
 // 題目卡是 features/exam/HandoutQuestionCard.tsx；練完是總結卡（答對幾題、答錯的題可展開看題目與解析、再練錯的、再練一次）。
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useState } from 'react';
@@ -25,10 +26,10 @@ import {
   type ExamOrder,
   type ExamRun,
 } from '../features/exam/run.ts';
-import { formulaIdOfSet, isSetId, resolveSet, type ExamSet } from '../features/exam/sets.ts';
+import { formulaIdOfSet, isDynamicSet, isSetId, resolveSet, type ExamSet } from '../features/exam/sets.ts';
 import { picksOf } from '../features/exam/stats.ts';
 import { FormulaPills, useFormulasOfQuestions } from '../features/formulas/FormulaPills.tsx';
-import { loadFormulaIndex, loadHandoutDeck, loadHandoutIndex, type HandoutQuestionSnapshot } from '../lib/content.ts';
+import { loadFormulaIndex, loadHandoutDeck, loadHandoutIndex, type HandoutManifestEntry, type HandoutQuestionSnapshot } from '../lib/content.ts';
 import { usePageReady } from '../lib/page-ready.tsx';
 import { useLocale } from '../lib/useLocale.ts';
 import '../styles/exam.css';
@@ -38,7 +39,16 @@ type State =
   | { kind: 'notfound' }
   | { kind: 'empty'; set: ExamSet }
   | { kind: 'error' }
-  | { kind: 'ok'; set: ExamSet; bankRev: number; questions: ReadonlyMap<string, HandoutQuestionSnapshot>; run: ExamRun; resumed: boolean; revised: number };
+  | {
+      kind: 'ok';
+      set: ExamSet;
+      /** 講義的小索引：會變動的題組「再練」時用它重新解析題組 */
+      index: HandoutManifestEntry;
+      questions: ReadonlyMap<string, HandoutQuestionSnapshot>;
+      run: ExamRun;
+      resumed: boolean;
+      revised: number;
+    };
 
 export default function ExamRun() {
   const { t } = useLingui();
@@ -75,7 +85,8 @@ export default function ExamRun() {
       const wanted = set.questionIds.filter((id) => all.has(id));
       const questions = new Map(wanted.map((id) => [id, all.get(id)!] as const));
       const limit = limitOf(count, wanted.length);
-      const stored = await db.getRun(key).catch(() => undefined);
+      // 會變動的題組不沿用存下來的一輪：上一輪練完了會只看到舊的總結卡，練到一半則會跳過已經答錯的題
+      const stored = isDynamicSet(setId) ? undefined : await db.getRun(key).catch(() => undefined);
       // 隨機的一輪：題數和這次要的不一樣（換了 n、或題組變大變小）就不沿用
       const existing = stored && order === 'random' && stored.questionIds.length !== limit ? undefined : stored;
       const restored = existing ? restoreRun(existing, questions) : null;
@@ -84,7 +95,7 @@ export default function ExamRun() {
         return {
           kind: 'ok',
           set,
-          bankRev: index.rev,
+          index,
           questions,
           run: restored.run,
           resumed: !isFinished(restored.run) && restored.run.index > 0,
@@ -99,7 +110,7 @@ export default function ExamRun() {
         ...(order === 'random' ? { limit } : {}),
       });
       await db.putRun(run).catch(() => {});
-      return { kind: 'ok', set, bankRev: index.rev, questions, run, resumed: false, revised: 0 } as State;
+      return { kind: 'ok', set, index, questions, run, resumed: false, revised: 0 } as State;
     })().then(
       (s) => alive && setState(s),
       () => alive && setState({ kind: 'error' }),
@@ -221,16 +232,24 @@ export default function ExamRun() {
 
   const { set, run, questions } = state;
   const n = (x: number) => formatNumber(x, locale);
+  const dynamic = isDynamicSet(set.id);
+  // 會變動的題組：下一輪的題依頁面裡最新的紀錄重新挑（這一輪答對的已經離開、答錯的還在）。題目只會比載入時少，questions 夠用
+  const nextSet = dynamic ? (resolveSet(state.index, set.id, picksOf(states)) ?? set) : set;
+  const nextIds = nextSet.questionIds.filter((id) => questions.has(id));
   const restart = () => {
+    setFreshConfirm(null);
+    if (nextIds.length === 0) {
+      setState({ kind: 'empty', set: nextSet });
+      return;
+    }
     const fresh = startRun({
       key,
-      questions: set.questionIds.filter((id) => questions.has(id)).map((id) => questions.get(id)!),
+      questions: nextIds.map((id) => questions.get(id)!),
       order,
-      bankRev: state.bankRev,
-      ...(order === 'random' ? { limit: limitOf(count, questions.size) } : {}),
+      bankRev: state.index.rev,
+      ...(order === 'random' ? { limit: limitOf(count, nextIds.length) } : {}),
     });
-    setFreshConfirm(null);
-    setState({ ...state, run: fresh, resumed: false, revised: 0 });
+    setState({ ...state, set: nextSet, run: fresh, resumed: false, revised: 0 });
     void db.putRun(fresh).catch(() => {});
   };
 
@@ -251,13 +270,23 @@ export default function ExamRun() {
           </p>
           <div className="ll-exam-summary__actions">
             {wrongHere.length > 0 && (
-              <Button variant="primary" size="md" icon={<BookIcon />} href={href('/exam/wrong/')} data-testid="exam-retry-wrong">
+              // 已經在錯題練習裡：網址不會變，直接在這一頁開新的一輪（連到同一個網址不會重新載入）
+              <Button
+                variant="primary"
+                size="md"
+                icon={<BookIcon />}
+                {...(set.kind === 'wrong' ? { onClick: restart } : { href: href('/exam/wrong/') })}
+                data-testid="exam-retry-wrong"
+              >
                 {t({ id: 'exam.summary.retryWrong', message: `再練錯的（${n(wrongHere.length)} 題）`, comment: '總結卡按鈕；count 已格式化' })}
               </Button>
             )}
-            <Button size="md" variant={wrongHere.length > 0 ? 'secondary' : 'primary'} icon={<RetryIcon />} onClick={restart} data-testid="exam-restart">
-              {t({ id: 'exam.summary.again', message: '再練一次', comment: '總結卡按鈕：同一組重來' })}
-            </Button>
+            {/* 會變動的題組：沒有題可練了就不給「再練一次」；錯題練習還有錯的時候上面那一顆就是再練一次 */}
+            {nextIds.length > 0 && !(set.kind === 'wrong' && wrongHere.length > 0) && (
+              <Button size="md" variant={wrongHere.length > 0 ? 'secondary' : 'primary'} icon={<RetryIcon />} onClick={restart} data-testid="exam-restart">
+                {t({ id: 'exam.summary.again', message: '再練一次', comment: '總結卡按鈕：同一組重來' })}
+              </Button>
+            )}
             {formulaHref !== null && (
               <Button size="md" variant="quiet" icon={<RatioIcon />} href={formulaHref} data-testid="exam-back-formula">
                 {t({ id: 'exam.summary.formula', message: '再看公式', comment: '公式題組的總結卡：回公式頁' })}

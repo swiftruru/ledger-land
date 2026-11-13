@@ -56,7 +56,7 @@ describe('苦練紀錄的備份', () => {
       ['aaaaaaa2', 1, 2, 3, 1, 1, 1794000000, 'A'], // 對的比練過的多
       ['aaaaaaa3', 1, 2, 1, 1, 0, 1794000000, 'A'], // 最近答錯卻有連對
       ['aaaaaaa4', 1, 2, 1, 0, 1, 1794000000, 'A'], // 最近答對卻沒有連對
-      ['aaaaaaa5', 1, 2, 1, 1, 1, 1794000000, 'D'], // 沒有 D 這個選項
+      ['aaaaaaa5', 1, 2, 1, 1, 1, 1794000000, 'F'], // 選項只到 E
       ['aaaaaaa6', 1, 2, 1, 1, 1, 1794000000], // 少一欄
       'nope',
       ['aaaaaaa1', 1, 4, 3, 1, 1, 1794000100, 'B'],
@@ -64,6 +64,12 @@ describe('苦練紀錄的備份', () => {
     const parsed = parseExamBackup({ v: 1, q: rows });
     expect(parsed).toHaveLength(1);
     expect(parsed![0]).toMatchObject({ questionId: 'hq_aaaaaaa1', seen: 4, correct: 3, wrong: 1, streak: 1, lastCorrect: true, lastChosen: 'B' });
+  });
+
+  it('最近選的字母收 A 到 E（題庫的選項放寬到 5 個之後，選 D、E 的紀錄匯入時不能被丟掉）', () => {
+    const rows = ['A', 'B', 'C', 'D', 'E', ''].map((letter, i) => [`aaaaaaa${i + 1}`, 1, 2, 1, 1, 1, 1794000000, letter]);
+    const parsed = parseExamBackup({ v: 1, q: rows });
+    expect(parsed?.map((s) => s.lastChosen)).toEqual(['A', 'B', 'C', 'D', 'E', undefined]);
   });
 
   it('同一題留哪一筆：答案版本新的；同版本留最近練的；一樣晚留練得多的；全一樣留本機的', () => {
