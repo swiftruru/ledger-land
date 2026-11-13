@@ -40,7 +40,7 @@
       "setting": "overrides",
       "pinnedTo": "7.30.1",
       "declaredBy": "miniflare 5.20261006.0-alpha（7.29.1），經由 wrangler 4.148.0",
-      "reason": "GHSA-xjj6-f33q-929c（content-encoding 過多時的阻斷服務，high）；7.30.1 是 7.x 的修正版，2026-10-15 發布（未滿兩週，另有 minimumReleaseAgeExclude）。只在 wrangler 本機與 CI 執行，不進網站。",
+      "reason": "GHSA-xjj6-f33q-929c（content-encoding 過多時的阻斷服務，high）；7.30.1 是 7.x 的修正版，2026-10-15 發布（當時未滿兩週，另加的 minimumReleaseAgeExclude 已在 2026-11-13 到期移除）。只在 wrangler 本機與 CI 執行，不進網站。",
       "approvedBy": "使用者（2026-10-26，每週檢查 issue 20）",
       "added": "2026-10-26",
       "expires": null,
