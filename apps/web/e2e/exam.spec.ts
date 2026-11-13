@@ -7,6 +7,7 @@
 // 背題瀏覽的關鍵字搜尋（2026-11-06）：只列比中的題、閱讀頁在結果裡翻頁、換範圍、沒有結果與清除。
 // 模擬考（第二批的第二次交付）：設定與記住上次的選擇、作答中沒有回饋、上一題與改選、交卷確認、成績與逐題清單、算進紀錄、接續與限時自動交卷。
 // 苦練的紀錄跟著備份走（2026-11-05）：練過的題匯出備份碼、清掉資料、匯入後回來，再匯入一次不重複計算。
+// 錯題再答錯（2026-11-13）：錯過的與不熟的題組每次進來都依目前的紀錄重新出題，不沿用上一輪。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 import { waitForApp, waitForSw } from './helpers.ts';
@@ -324,6 +325,67 @@ test.describe('期中考苦練', () => {
     await goNext(page);
     await expect(page.getByTestId('exam-score')).toHaveText('答對 1／1 題');
     await expect(page.getByTestId('exam-retry-wrong')).toHaveCount(0);
+  });
+
+  test('錯題再答錯：下一輪還在；總結卡的「再練錯的」會出新的一輪；練到一半離開再回來也從目前的錯題出題', async ({ page, request }) => {
+    const idx = await index(request);
+    const d1 = idx.decks.find((d) => d.id === 'd1')!;
+    const qs = await deckQuestions(request, d1);
+    const [a, b, c] = d1.sections[0]!.questionIds.slice(0, 3).map((id) => qs.get(id)!) as [Question, Question, Question];
+    await clearAll(page);
+    // 第一輪：前三題都答錯
+    await page.goto('/exam/all/');
+    await waitForApp(page);
+    for (const q of [a, b, c]) {
+      await answerOne(page, q, false);
+      await goNext(page);
+    }
+    // 第二輪（錯題練習）：第 1 題再答錯就離開。回來要依目前的錯題重新出題，再答錯的那一題還在第一個
+    await page.goto('/exam/wrong/');
+    await waitForApp(page);
+    await expect(card(page)).toContainText('第 1 題，共 3 題');
+    await answerOne(page, a, false);
+    await goNext(page);
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（3 題）');
+    await page.getByTestId('exam-start-wrong').click();
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-resume')).toHaveCount(0);
+    await expect(card(page)).toContainText('第 1 題，共 3 題');
+    // 這一輪練完：第 1 題第三次答錯，另外兩題答對
+    await answerOne(page, a, false);
+    await goNext(page);
+    await answerOne(page, b, true);
+    await goNext(page);
+    await answerOne(page, c, true);
+    await goNext(page);
+    await expect(page.getByTestId('exam-score')).toHaveText('答對 2／3 題');
+    // 總結卡的「再練錯的」：同一頁直接出新的一輪，只有還錯著的那一題
+    await expect(page.getByTestId('exam-retry-wrong')).toContainText('再練錯的（1 題）');
+    await page.getByTestId('exam-retry-wrong').click();
+    await expect(page.getByTestId('exam-summary')).toHaveCount(0);
+    await expect(card(page)).toContainText('第 1 題，共 1 題');
+    await answerOne(page, a, false);
+    await goNext(page);
+    await expect(page.getByTestId('exam-score')).toHaveText('答對 0／1 題');
+    // 練完之後從首頁再進來：不是上一輪的總結卡，那一題還在
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-start-wrong')).toContainText('只練錯過的（1 題）');
+    await page.getByTestId('exam-start-wrong').click();
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-summary')).toHaveCount(0);
+    await expect(card(page)).toContainText('第 1 題，共 1 題');
+    // 答對了才離開錯題；已經沒有題可練，總結卡不給「再練一次」
+    await answerOne(page, a, true);
+    await goNext(page);
+    await expect(page.getByTestId('exam-score')).toHaveText('答對 1／1 題');
+    await expect(page.getByTestId('exam-retry-wrong')).toHaveCount(0);
+    await expect(page.getByTestId('exam-restart')).toHaveCount(0);
+    await page.goto('/exam/wrong/');
+    await waitForApp(page);
+    await expect(page.getByText('還沒有錯過的題')).toBeVisible();
   });
 
   test('離開再回來沿用上次，可以重新開始；再進首頁主按鈕寫著繼續', async ({ page, request }) => {

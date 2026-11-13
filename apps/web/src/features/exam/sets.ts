@@ -21,6 +21,10 @@ export const formulaIdOfSet = (id: string): string | null => FORMULA_SET_RE.exec
 export const isSetId = (id: string): boolean =>
   id === 'all' || id === 'wrong' || id === 'unsure' || /^d[1-9]\d*(s[1-9]\d*)?$/.test(id) || FORMULA_SET_RE.test(id);
 
+/** 會變動的題組：題目是依這台裝置的紀錄挑的（wrong、unsure），每答一題都可能變。這種題組每次進來都重新出題，不沿用存下來的一輪
+ *  （2026-11-13：沿用的話，錯題練習裡再答錯的題下次進來會被跳過，或只看到上一輪的總結卡） */
+export const isDynamicSet = (id: string): boolean => id === 'wrong' || id === 'unsure';
+
 /** 依這台裝置的紀錄挑出來的兩組題（stats.ts 的 picksOf） */
 export interface SetPicks {
   wrongIds: ReadonlySet<string>;

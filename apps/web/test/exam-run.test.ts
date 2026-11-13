@@ -22,7 +22,7 @@ import {
   startRun,
   summarise,
 } from '../src/features/exam/run.ts';
-import { allQuestionIds, isSetId, resolveSet } from '../src/features/exam/sets.ts';
+import { allQuestionIds, isDynamicSet, isSetId, resolveSet } from '../src/features/exam/sets.ts';
 import { isMastered, MASTERY_STREAK, picksOf, statsOf, unsureIdsOf, wrongIdsOf } from '../src/features/exam/stats.ts';
 import { DEFAULT_MOCK_SETTINGS, encodeMockSettings, limitOf, parseCount, parseMockSettings, parseSeconds } from '../src/features/exam/options.ts';
 
@@ -142,6 +142,16 @@ describe('sets 與 stats', () => {
     for (const page of ['teacher', 'list', 'browse', 'mock']) expect(isSetId(page)).toBe(false);
     expect(isSetId('unsure')).toBe(true);
     expect(isSetId('d1s10')).toBe(true);
+  });
+
+  it('會變動的題組只有錯過的與不熟的：每次進來都重新出題；其他題組沿用存下來的一輪', () => {
+    expect(['wrong', 'unsure'].map(isDynamicSet)).toEqual([true, true]);
+    expect(['all', 'd1', 'd1s2', 'formula:fm_abcdefgh', 'mock'].map(isDynamicSet)).toEqual([false, false, false, false, false]);
+    // 答對之後題目離開「錯過的」：用新的紀錄重新解析，下一輪就沒有它；再答錯的還在
+    const before = { wrongIds: new Set(['hq_aaaaaaa1', 'hq_bbbbbbb1']), unsureIds: new Set<string>() };
+    const after = { wrongIds: new Set(['hq_bbbbbbb1']), unsureIds: new Set<string>() };
+    expect(resolveSet(index, 'wrong', before)?.questionIds).toEqual(['hq_aaaaaaa1', 'hq_bbbbbbb1']);
+    expect(resolveSet(index, 'wrong', after)?.questionIds).toEqual(['hq_bbbbbbb1']);
   });
 
   it('公式題組 formula:<id>：題目是公式索引列的那些、依講義順序，只載有題的講義；沒傳索引或沒這條公式回 null', () => {

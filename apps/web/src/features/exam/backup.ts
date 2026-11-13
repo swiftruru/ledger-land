@@ -64,7 +64,7 @@ function fromRow(raw: unknown): QuestionState | null {
   if (!isCount(streak) || streak > correct || (lastCorrect !== 0 && lastCorrect !== 1)) return null;
   // 最近一次答錯時連對一定是 0，答對時至少是 1
   if ((lastCorrect === 0) !== (streak === 0)) return null;
-  if (!isCount(lastAt) || lastAt === 0 || typeof lastChosen !== 'string' || !/^[A-C]?$/.test(lastChosen)) return null;
+  if (!isCount(lastAt) || lastAt === 0 || typeof lastChosen !== 'string' || !/^[A-E]?$/.test(lastChosen)) return null;
   return {
     questionId: `${ID_PREFIX}${id}`,
     answerRev,
