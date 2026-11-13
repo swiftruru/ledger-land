@@ -112,6 +112,8 @@ function buildRoutes(locale: Locale): RouteObject[] {
       handle: { noindex: true, blocksUpdatePrompt: true } satisfies RouteHandle,
     },
     { path: 'exam/list', lazy: lazyPage(() => import('../pages/ExamList.tsx'), undefined, 'pages'), handle: { noindex: true } satisfies RouteHandle },
+    // 練習紀錄（2026-11-13）：每天練了幾題；只有這台裝置的紀錄，noindex；一樣要排在 exam/:setId 前面
+    { path: 'exam/history', lazy: lazyPage(() => import('../pages/ExamHistory.tsx'), undefined, 'pages'), handle: { noindex: true } satisfies RouteHandle },
     {
       path: 'exam/browse',
       lazy: lazyPage(() => import('../pages/ExamBrowse.tsx'), undefined, 'pages'),

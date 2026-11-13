@@ -571,6 +571,27 @@ export const CASES: readonly PageCase[] = [
       await visible(page, 'exam-weak-sections');
     },
   },
+  // 練習紀錄（2026-11-13）：新使用者是空狀態；答過一題之後才有數字、長條圖與整體進度
+  {
+    group: '苦練',
+    name: '練習紀錄（空）',
+    path: '/exam/history/',
+    prepare: (page) => expect(page.getByText(/^還沒有練習紀錄$|^No practice log yet$/)).toBeVisible(),
+  },
+  {
+    group: '苦練',
+    name: '練習紀錄',
+    path: '/exam/d1s1/',
+    prepare: async (page) => {
+      await answerFirstExamQuestionWrong(page);
+      const url = new URL(page.url());
+      url.pathname = url.pathname.replace(/d1s1\/$/, 'history/');
+      await page.goto(url.toString());
+      await waitForApp(page);
+      await visible(page, 'exam-daychart');
+      await visible(page, 'exam-history-overall');
+    },
+  },
   { group: '錯題本', name: '空', path: '/review/', prepare: (page) => expect(page.locator('.ll-review-empty')).toBeVisible() },
   {
     group: '錯題本',

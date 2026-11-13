@@ -10,6 +10,7 @@
 // 錯題再答錯（2026-11-13）：錯過的與不熟的題組每次進來都依目前的紀錄重新出題，不沿用上一輪。
 // 錯題複習（2026-11-13）：三個階段、訂正與再練下一輪、反覆答錯的題當天連對兩次後明天再練、隔天答對才熟練；確認答案後的階段說明。
 // 答錯的題排回同一輪（2026-11-13）：隔 3 題再出一次並標「再試一次」、同一題一輪最多再出兩次、總結卡以題計分並寫加練與訂正。
+// 練習紀錄（2026-11-13）：空狀態、今天與近 7 天的數字、長條圖與每天的數字表格、把作答時間往前撥後的兩天與連續天數、近 30 天、入口。
 // 題目內容從建置好的快照讀（content-manifest 的 handouts 與講義檔），測試不寫死任何講義文字。
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 import { waitForApp, waitForSw } from './helpers.ts';
@@ -238,6 +239,35 @@ async function patchState(page: Page, id: string, patch: Record<string, unknown>
 /** 三份講義收錄的題合成一張表（模擬考跨講義抽題） */
 /** 背題瀏覽的已讀紀錄（ledgerland-exam-read 的 marks）現在有幾筆；資料庫還沒建就是 0（不自己開庫，理由同 seenOf）。
  *  已讀是先改畫面再寫資料庫，測試要換頁或重新載入之前先等它寫進去 */
+/** 把某一題在 ledgerland-exam 的作答明細（attempts）的時間改掉（測試用來模擬前幾天練的題，不改時鐘） */
+async function shiftAttempts(page: Page, id: string, at: string): Promise<void> {
+  await page.evaluate(
+    ({ qid, time }) =>
+      new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('ledgerland-exam');
+        req.onerror = () => reject(new Error('open'));
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction('attempts', 'readwrite');
+          const store = tx.objectStore('attempts');
+          const all = store.getAll();
+          all.onsuccess = () => {
+            for (const a of all.result as { questionId: string }[]) if (a.questionId === qid) store.put({ ...a, at: time });
+          };
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => {
+            db.close();
+            reject(new Error('tx'));
+          };
+        };
+      }),
+    { qid: id, time: at },
+  );
+}
+
 async function readMarkCount(page: Page): Promise<number> {
   return page.evaluate(async () => {
     const dbs = await indexedDB.databases();
@@ -778,6 +808,77 @@ test.describe('期中考苦練', () => {
     await page.goto('/exam/');
     await waitForApp(page);
     await expect(page.getByTestId('exam-more-list')).toContainText('看錯題複習的紀錄');
+  });
+
+  test('練習紀錄：空狀態；今天與近 7 天的數字、長條圖與表格；前一天也有練時是兩根長條與連續 2 天；近 30 天；入口；noindex', async ({ page, request }) => {
+    const idx = await index(request);
+    const d1 = idx.decks.find((d) => d.id === 'd1')!;
+    const section = d1.sections[1]!;
+    const qs = await deckQuestions(request, d1);
+    const ids = section.questionIds;
+    const readout = page.getByTestId('exam-daychart-readout');
+    const bars = page.locator('.ll-daychart__col:has(.ll-daychart__seg)');
+    await clearAll(page);
+    await page.goto('/exam/history/');
+    await waitForApp(page);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('練習紀錄');
+    await expect(page.getByText('還沒有練習紀錄')).toBeVisible();
+    await expect(page.getByTestId('exam-daychart')).toHaveCount(0);
+    await expect(page.getByTestId('exam-history-device')).toContainText('只存在這台裝置');
+    await expect(page.locator('meta[name="robots"][data-ll]')).toHaveAttribute('content', 'noindex');
+    // 練三題：第 1 題對、第 2 題錯、第 3 題對
+    await page.goto(`/exam/${section.id}/`);
+    await waitForApp(page);
+    await answerOne(page, qs.get(ids[0]!)!, true);
+    await goNext(page);
+    await answerOne(page, qs.get(ids[1]!)!, false);
+    await goNext(page);
+    await answerOne(page, qs.get(ids[2]!)!, true);
+    // 從苦練首頁進來
+    await page.goto('/exam/');
+    await waitForApp(page);
+    await page.getByTestId('exam-more-history').click();
+    await expect(page).toHaveURL(/\/exam\/history\/$/);
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-history-streak')).toHaveText('1 天');
+    await expect(page.getByTestId('exam-history-today')).toHaveText('3 題');
+    await expect(page.getByTestId('exam-history-week')).toHaveText('3 題');
+    await expect(page.getByTestId('exam-history-tiles')).toContainText('答對率 67%');
+    await expect(page.getByTestId('exam-history-compare')).toHaveCount(0);
+    await expect(page.getByTestId('exam-history-mastered')).toHaveText('熟練 0 題');
+    await expect(page.getByTestId('exam-history-fixed')).toHaveText('訂正成功 0 題');
+    // 長條圖：預設說的是今天；只有今天那一根，答對與答錯兩段
+    await expect(readout).toHaveText('今天：練了 3 題，答對 2 題、答錯 1 題');
+    await expect(page.locator('.ll-daychart__col')).toHaveCount(14);
+    await expect(bars).toHaveCount(1);
+    await expect(bars.locator('.ll-daychart__seg')).toHaveCount(2);
+    await expect(page.getByTestId('exam-history-progress')).toHaveText(`練過 3／${idx.questionCount} 題，熟練 0 題`);
+    // 把第 1 題的作答撥到昨天：兩天都有練，連續 2 天；今天剩 2 題，近 7 天還是 3 題
+    await shiftAttempts(page, ids[0]!, new Date(Date.now() - 86_400_000).toISOString());
+    await page.reload();
+    await waitForApp(page);
+    await expect(page.getByTestId('exam-history-streak')).toHaveText('2 天');
+    await expect(page.getByTestId('exam-history-today')).toHaveText('2 題');
+    await expect(page.getByTestId('exam-history-week')).toHaveText('3 題');
+    await expect(readout).toHaveText('今天：練了 2 題，答對 1 題、答錯 1 題');
+    await expect(bars).toHaveCount(2);
+    // 每天的數字：有練的日子各一列，新的在上面
+    const table = page.getByTestId('exam-history-table');
+    await table.locator('summary').click();
+    await expect(table.locator('tbody tr')).toHaveCount(2);
+    await expect(table.locator('tbody tr').first()).toContainText('今天');
+    await expect(table.locator('tbody tr').first()).toContainText('50%');
+    await expect(table.locator('tbody tr').nth(1)).toContainText('100%');
+    // 近 30 天
+    await page.getByRole('radio', { name: '近 30 天' }).click();
+    await expect(page).toHaveURL(/\/exam\/history\/\?days=30$/);
+    await expect(page.locator('.ll-daychart__col')).toHaveCount(30);
+    await expect(bars).toHaveCount(2);
+    // 錯題複習的清單頁也進得來
+    await page.goto('/exam/list/');
+    await waitForApp(page);
+    await page.getByTestId('exam-list-history').getByRole('link').click();
+    await expect(page).toHaveURL(/\/exam\/history\/$/);
   });
 
   test('背題瀏覽：清單只列標題、點進去一次一題、遮住答案與看答案、偏好記住、列印印出這個範圍的完整題目；noindex', async ({ page, request }) => {

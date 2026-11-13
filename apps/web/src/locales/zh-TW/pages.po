@@ -56,6 +56,13 @@ msgstr "（未取得）"
 msgid "exam.browse.row.unread"
 msgstr "（未讀）"
 
+#. 練習紀錄：連續練習的天數；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(streak)
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.streak.value"
+msgstr "{0} 天"
+
 #. 模擬考每題時間的選項；s 是已格式化的秒數
 #. js-lingui-explicit-id
 #. placeholder {0}: n(s)
@@ -70,6 +77,13 @@ msgstr "{0} 秒"
 #: src/features/exam/BrowseList.tsx
 #: src/pages/Exam.tsx
 msgid "exam.section.untouched"
+msgstr "{0} 題"
+
+#. 練習紀錄：題數；count 已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(count)
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.count"
 msgstr "{0} 題"
 
 #. 審核頁相關題的連結文字
@@ -125,6 +139,21 @@ msgstr "{levels} 個有星星的關卡"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.clock"
 msgstr "{m} 分 {s} 秒"
+
+#. 練習紀錄圖表下面的一行：選到的那一天沒有作答；name 是日期或「今天」
+#. js-lingui-explicit-id
+#: src/features/exam/DayChart.tsx
+msgid "exam.history.readout.none"
+msgstr "{name}：沒有練習"
+
+#. 練習紀錄圖表下面的一行：選到的那一天的數字；name 是日期或「今天」，數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(shown.answered)
+#. placeholder {1}: n(shown.correct)
+#. placeholder {2}: n(shown.answered - shown.correct)
+#: src/features/exam/DayChart.tsx
+msgid "exam.history.readout"
+msgstr "{name}：練了 {0} 題，答對 {1} 題、答錯 {2} 題"
 
 #. 模擬考不到一分鐘的時間長度；s 是已格式化的秒數
 #. js-lingui-explicit-id
@@ -357,6 +386,13 @@ msgstr "交卷"
 msgid "badges.exam.mockFirst.cond"
 msgstr "交卷一次 {min} 題以上的模擬考"
 
+#. 練習紀錄：圖表橫軸與說明裡的「今天」
+#. js-lingui-explicit-id
+#: src/features/exam/DayChart.tsx
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.today"
+msgstr "今天"
+
 #. 確認答案後的階段說明：反覆答錯的題當天已經連對，剩下要隔天再答對一次
 #. js-lingui-explicit-id
 #: src/features/exam/StageNote.tsx
@@ -466,6 +502,7 @@ msgstr "依講義與段落列出收錄的全部題目。點題目進去一次讀
 #. 主按鈕：全部題目依講義順序
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
+#: src/pages/ExamHistory.tsx
 #: src/pages/ExamList.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.start.order"
@@ -800,6 +837,12 @@ msgstr "最後更新：{updated}"
 msgid "exam.step.mock.title"
 msgstr "最後模擬考"
 
+#. 練習紀錄頁第一張卡的小標
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.now.title"
+msgstr "最近的練習"
+
 #. 錯題複習清單頁第二張卡的小標：還沒熟練的錯題最多的段與公式
 #. js-lingui-explicit-id
 #: src/pages/ExamList.tsx
@@ -1041,6 +1084,7 @@ msgstr "回到會計公式"
 #. 練習頁頁首返回按鈕的可讀名稱
 #. js-lingui-explicit-id
 #: src/pages/ExamBrowse.tsx
+#: src/pages/ExamHistory.tsx
 #: src/pages/ExamList.tsx
 #: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
@@ -1901,6 +1945,12 @@ msgstr "教材裡有一些地方沒有明說，例如設立費要不要資本化
 msgid "badges.rules.unscored"
 msgstr "整章不計分的延伸章，每關讀完就完成，沒有精通。"
 
+#. 練習紀錄頁第三張卡的小標
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.overall.title"
+msgstr "整體進度"
+
 #. js-lingui-explicit-id
 #: src/pages/Design.tsx
 msgid "design.source.title"
@@ -1916,6 +1966,12 @@ msgstr "數字格式"
 #: src/pages/Credits.tsx
 msgid "eggs.hint.version"
 msgstr "方塊板下面那一串版本號，按按看。"
+
+#. 練習紀錄表格的欄名
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.col.day"
+msgstr "日期"
 
 #. 清單頁每題標題下的說明：複習中、今天已經升不上去的題
 #. js-lingui-explicit-id
@@ -2175,6 +2231,30 @@ msgstr "每一題都作答過一次"
 msgid "badges.exam.noWrong.cond"
 msgstr "每一題都練過，而且沒有一題停在答錯"
 
+#. 練習紀錄：展開看每天的數字表格
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.table.title"
+msgstr "每天的數字"
+
+#. 練習紀錄頁最下面的一句：每天的紀錄不進備份
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.device"
+msgstr "每天的紀錄只存在這台裝置，換裝置後會從頭累積；每一題的對錯與熟練會跟著備份走。"
+
+#. 練習紀錄頁第二張卡的小標：長條圖
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.chart.title"
+msgstr "每天練了幾題"
+
+#. 練習紀錄頁開頭的說明：數字怎麼算
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.intro"
+msgstr "每天練了幾題、答對多少都記在這裡。同一題練兩次算兩次，模擬考交卷的題算在交卷那一天。"
+
 #. 技術棧節點的角色說明
 #. js-lingui-explicit-id
 #: src/features/credits/StackExplorer.tsx
@@ -2323,6 +2403,19 @@ msgstr "為什麼想做這個"
 #: src/pages/Backup.tsx
 msgid "backup.code.copyFailed"
 msgstr "無法自動複製，請自己選取下方的備份碼。"
+
+#. 練習紀錄表格的欄名：練到熟練的題數
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.col.mastered"
+msgstr "熟練"
+
+#. 練習紀錄：近 7 天練到熟練的題數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(recent.mastered)
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.gain.mastered"
+msgstr "熟練 {0} 題"
 
 #. 確認答案後的階段說明：答錯過的題達到熟練
 #. js-lingui-explicit-id
@@ -2544,11 +2637,23 @@ msgstr "看完整條目與相關題目"
 msgid "exam.step.mock.result"
 msgstr "看成績，或再考一次"
 
+#. 錯題複習清單頁進度卡裡的連結：每天練了幾題的練習紀錄頁
+#. js-lingui-explicit-id
+#: src/pages/ExamList.tsx
+msgid "exam.list.toHistory"
+msgstr "看每天的練習紀錄"
+
 #. 背題瀏覽頁：答案遮住時，只掀開這一題
 #. js-lingui-explicit-id
 #: src/features/exam/BrowseReader.tsx
 msgid "exam.browse.reveal"
 msgstr "看答案"
+
+#. 苦練首頁第 2 步最下面的連結：每天練了幾題的練習紀錄頁
+#. js-lingui-explicit-id
+#: src/pages/Exam.tsx
+msgid "exam.step.practise.history"
+msgstr "看練習紀錄"
 
 #. 苦練首頁第 2 步最下面的連結：錯題複習的清單頁
 #. js-lingui-explicit-id
@@ -2558,6 +2663,7 @@ msgstr "看錯題複習的紀錄"
 
 #. 總結卡：連到錯題複習的清單頁
 #. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
 #: src/pages/ExamRun.tsx
 msgid "exam.summary.toList"
 msgstr "看錯題複習的紀錄"
@@ -2617,6 +2723,12 @@ msgstr "第 {stepNo} 步"
 msgid "formula.equals"
 msgstr "等於"
 
+#. 練習紀錄圖表的圖例：答對的題數
+#. js-lingui-explicit-id
+#: src/features/exam/DayChart.tsx
+msgid "exam.history.legend.correct"
+msgstr "答對"
+
 #. 模擬考逐題清單的標籤
 #. js-lingui-explicit-id
 #: src/pages/ExamMock.tsx
@@ -2639,6 +2751,45 @@ msgstr "答對 {0}／{1} 題"
 #: src/pages/ExamMock.tsx
 msgid "exam.mock.score"
 msgstr "答對 {0}／{1} 題（{2}）"
+
+#. 練習紀錄表格的欄名
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.col.accuracy"
+msgstr "答對率"
+
+#. 練習紀錄：近 7 天的答對率；已格式化成百分比
+#. js-lingui-explicit-id
+#. placeholder {0}: percent(recentAcc)
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.week.accuracy"
+msgstr "答對率 {0}"
+
+#. 練習紀錄：近 7 天的答對率和前 7 天相差不到 1 個百分點
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.week.same"
+msgstr "答對率和前 7 天差不多"
+
+#. 練習紀錄：近 7 天的答對率比前 7 天高；diff 是百分點（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(diff)
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.week.up"
+msgstr "答對率比前 7 天多 {0} 個百分點"
+
+#. 練習紀錄：近 7 天的答對率比前 7 天低；diff 是百分點（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(-diff)
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.week.down"
+msgstr "答對率比前 7 天少 {0} 個百分點"
+
+#. 練習紀錄圖表的圖例：答錯的題數
+#. js-lingui-explicit-id
+#: src/features/exam/DayChart.tsx
+msgid "exam.history.legend.wrong"
+msgstr "答錯"
 
 #. 模擬考逐題清單的標籤
 #. js-lingui-explicit-id
@@ -2695,7 +2846,10 @@ msgstr "答錯與沒作答 {0}"
 #. 錯題複習清單頁的進度；數字都已格式化
 #. js-lingui-explicit-id
 #. placeholder {0}: n(stats.everWrong)
+#. placeholder {0}: n(wrong.everWrong)
 #. placeholder {1}: n(stats.mastered)
+#. placeholder {1}: n(wrong.mastered)
+#: src/pages/ExamHistory.tsx
 #: src/pages/ExamList.tsx
 msgid "exam.list.progress"
 msgstr "答錯過 {0} 題，已熟練 {1} 題"
@@ -2795,6 +2949,12 @@ msgstr "練完這一輪"
 msgid "formula.practise"
 msgstr "練習相關題目（{questionTotalText} 題）"
 
+#. 苦練的練習紀錄頁的標題
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.title"
+msgstr "練習紀錄"
+
 #. 講義卡的按鈕
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
@@ -2808,6 +2968,15 @@ msgstr "練這份講義"
 #: src/pages/Exam.tsx
 msgid "exam.section.count"
 msgstr "練過 {0}／{1} 題"
+
+#. 練習紀錄的整體進度；數字都已格式化
+#. js-lingui-explicit-id
+#. placeholder {0}: n(stats.practised)
+#. placeholder {1}: n(stats.total)
+#. placeholder {2}: n(stats.mastered)
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.overall"
+msgstr "練過 {0}／{1} 題，熟練 {2} 題"
 
 #. 主卡進度；熟練是連續答對兩次的題數；數字都已格式化
 #. js-lingui-explicit-id
@@ -2824,6 +2993,12 @@ msgstr "練過 {0}／{1} 題，熟練 {2} 題，答對率 {3}"
 #: src/pages/ExamRun.tsx
 msgid "exam.run.emptyUnsure.desc"
 msgstr "練過的題連續答對兩次就算熟練；還沒熟練的會集中到這裡。"
+
+#. 練習紀錄頁空狀態的說明
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.empty.desc"
+msgstr "練過第一題之後，這裡會開始記每天練了幾題、有沒有進步。"
 
 #. 主按鈕：有做到一半的一輪時；n 是題號（已格式化）
 #. js-lingui-explicit-id
@@ -2888,6 +3063,7 @@ msgstr "自己作答，答完馬上看對錯與解析；答錯的題會留下來
 #. 練習頁頁首返回按鈕上的短字（必須是「回到期中考苦練」的一部分）
 #. js-lingui-explicit-id
 #: src/pages/ExamBrowse.tsx
+#: src/pages/ExamHistory.tsx
 #: src/pages/ExamList.tsx
 #: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
@@ -2995,6 +3171,19 @@ msgstr "解析出自講義"
 #: src/pages/ExamRun.tsx
 msgid "exam.run.hint"
 msgstr "解答與解析都照講義，有疑問以老師的說明為準。"
+
+#. 練習紀錄表格的欄名：訂正成功的題數
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.col.fixed"
+msgstr "訂正"
+
+#. 練習紀錄：近 7 天把答錯的題答對的題數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(recent.fixed)
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.gain.fixed"
+msgstr "訂正成功 {0} 題"
 
 #. 確認答案後的階段說明：答錯之後第一次答對；more 是還要連對幾次（已格式化）
 #. js-lingui-explicit-id
@@ -3218,6 +3407,34 @@ msgstr "跟鈴打個招呼"
 msgid "settings.theme.system"
 msgstr "跟隨系統"
 
+#. 練習紀錄圖表的範圍切換；days 是天數（已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(Number(s))
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.span"
+msgstr "近 {0} 天"
+
+#. 練習紀錄圖表的可讀名稱；days 是天數、active 是有練習的天數、max 是最多的一天的題數（都已格式化）
+#. js-lingui-explicit-id
+#. placeholder {0}: n(days.length)
+#. placeholder {1}: n(active)
+#. placeholder {2}: n(max)
+#: src/features/exam/DayChart.tsx
+msgid "exam.history.chart.label"
+msgstr "近 {0} 天每天練了幾題的長條圖：有練習的有 {1} 天，最多的一天 {2} 題。每天的數字在下面的表格。"
+
+#. 練習紀錄的數字：近 7 天（含今天）練了幾題
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.week"
+msgstr "近 7 天"
+
+#. 練習紀錄的數字：近 7 天訂正成功與練到熟練的題數
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.gain"
+msgstr "近 7 天的進步"
+
 #. 模擬考設定卡的標題
 #. js-lingui-explicit-id
 #: src/pages/ExamMock.tsx
@@ -3434,12 +3651,24 @@ msgstr "這條公式還沒有相關題目"
 msgid "design.source.2"
 msgstr "這樣做的理由很簡單：如果有一天某個地方算錯了，它只會錯在一個地方，改一次就好。也因為這樣，你在實驗室裡改了一筆金額，後面的每一張表都會跟著變，不會有哪個角落還留著舊的數字。"
 
+#. 練習紀錄的表格：選的範圍裡沒有作答
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.table.none"
+msgstr "這段時間沒有練習。"
+
 #. 清單頁每題標題下的說明：待訂正的題；need 是要連對幾次（已格式化）
 #. js-lingui-explicit-id
 #. placeholder {0}: n(needOf(s))
 #: src/pages/ExamList.tsx
 msgid "exam.list.hint.fix"
 msgstr "連對 {0} 次就熟練"
+
+#. 練習紀錄的數字：連續幾天有練習
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.streak"
+msgstr "連續練習"
 
 #. js-lingui-explicit-id
 #: src/pages/Backup.tsx
@@ -3544,6 +3773,12 @@ msgstr "還沒收錄，想請教"
 msgid "exam.run.emptyUnsure"
 msgstr "還沒有不熟的題"
 
+#. 練習紀錄頁：這台裝置還沒有作答過
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.empty"
+msgstr "還沒有練習紀錄"
+
 #. 錯題複習清單頁：這台裝置沒有答錯過的題
 #. js-lingui-explicit-id
 #: src/pages/ExamList.tsx
@@ -3596,6 +3831,7 @@ msgstr "都是講義的練習題，點一題會到背題瀏覽的閱讀頁。"
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
 #: src/pages/ExamBrowse.tsx
+#: src/pages/ExamHistory.tsx
 #: src/pages/ExamList.tsx
 #: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
@@ -3814,12 +4050,19 @@ msgstr "題庫更新了，有 {0} 題要重新作答。"
 #. js-lingui-explicit-id
 #: src/pages/Exam.tsx
 #: src/pages/ExamBrowse.tsx
+#: src/pages/ExamHistory.tsx
 #: src/pages/ExamList.tsx
 #: src/pages/ExamMock.tsx
 #: src/pages/ExamRun.tsx
 #: src/pages/ExamTeacher.tsx
 msgid "exam.error.title"
 msgstr "題庫載入不到"
+
+#. 練習紀錄表格的欄名：那一天練了幾題
+#. js-lingui-explicit-id
+#: src/pages/ExamHistory.tsx
+msgid "exam.history.col.answered"
+msgstr "題數"
 
 #. 模擬考設定：抽幾題
 #. js-lingui-explicit-id
